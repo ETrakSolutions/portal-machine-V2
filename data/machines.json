@@ -2,25 +2,1085 @@
   "Excavatrice": {
     "Caterpillar": {
       "2024": {
-        "CAT 320 GC": {
-          "Poids operationnel": "22 200 kg",
-          "Puissance moteur": "162 hp (121 kW)",
-          "Profondeur de fouille max": "6.72 m",
-          "Portee max": "9.93 m",
-          "Force de cavage godet": "162 kN",
-          "Capacite godet": "0.55 - 1.34 m3"
+        "300.9D": {
+          "Poids operationnel": "2 205 lb",
+          "Puissance moteur": "13 hp",
+          "Profondeur de fouille max": "5.7 ft",
+          "Capacite godet": "N/A"
+        },
+        "301.5": {
+          "Poids operationnel": "3 500 lb",
+          "Puissance moteur": "13.5 hp",
+          "Profondeur de fouille max": "7.8 ft",
+          "Capacite godet": "N/A"
+        },
+        "301.7 CR": {
+          "Poids operationnel": "4 000 lb",
+          "Puissance moteur": "13.5 hp",
+          "Profondeur de fouille max": "8.2 ft",
+          "Capacite godet": "N/A"
+        },
+        "302 CR": {
+          "Poids operationnel": "4 600 lb",
+          "Puissance moteur": "19.2 hp",
+          "Profondeur de fouille max": "8.8 ft",
+          "Capacite godet": "N/A"
+        },
+        "303 CR": {
+          "Poids operationnel": "7 000 lb",
+          "Puissance moteur": "23 hp",
+          "Profondeur de fouille max": "9 ft",
+          "Capacite godet": "N/A"
+        },
+        "303.5 CR": {
+          "Poids operationnel": "7 734 lb",
+          "Puissance moteur": "32 hp",
+          "Profondeur de fouille max": "10 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "304 CR": {
+          "Poids operationnel": "9 000 lb",
+          "Puissance moteur": "40 hp",
+          "Profondeur de fouille max": "11 ft",
+          "Capacite godet": "N/A"
+        },
+        "305 CR": {
+          "Poids operationnel": "11 000 lb",
+          "Puissance moteur": "45 hp",
+          "Profondeur de fouille max": "11 ft",
+          "Capacite godet": "N/A"
+        },
+        "305.5 CR": {
+          "Poids operationnel": "12 000 lb",
+          "Puissance moteur": "44 hp",
+          "Profondeur de fouille max": "12 ft",
+          "Capacite godet": "N/A"
+        },
+        "306 CR": {
+          "Poids operationnel": "15 800 lb",
+          "Puissance moteur": "55 hp",
+          "Profondeur de fouille max": "13.5 ft",
+          "Capacite godet": "N/A"
+        },
+        "308 CR": {
+          "Poids operationnel": "20 000 lb",
+          "Puissance moteur": "70 hp",
+          "Profondeur de fouille max": "13.5 ft",
+          "Capacite godet": "N/A"
+        },
+        "310": {
+          "Poids operationnel": "22 500 lb",
+          "Puissance moteur": "70 hp",
+          "Profondeur de fouille max": "17 ft",
+          "Capacite godet": "N/A"
+        },
+        "315": {
+          "Poids operationnel": "34 000 lb",
+          "Puissance moteur": "108 hp",
+          "Profondeur de fouille max": "19 ft",
+          "Capacite godet": "N/A"
+        },
+        "319": {
+          "Poids operationnel": "42 000 lb",
+          "Puissance moteur": "130 hp",
+          "Profondeur de fouille max": "20 ft",
+          "Capacite godet": "N/A"
+        },
+        "320": {
+          "Poids operationnel": "48 000 lb",
+          "Puissance moteur": "162 hp",
+          "Profondeur de fouille max": "22 ft",
+          "Capacite godet": "1.19 yd3"
+        },
+        "323": {
+          "Poids operationnel": "51 500 lb",
+          "Puissance moteur": "168 hp",
+          "Profondeur de fouille max": "22.3 ft",
+          "Capacite godet": "1.38 yd3"
+        },
+        "325": {
+          "Poids operationnel": "55 700 lb",
+          "Puissance moteur": "204 hp",
+          "Profondeur de fouille max": "22.6 ft",
+          "Capacite godet": "1.5 yd3"
+        },
+        "330": {
+          "Poids operationnel": "66 200 lb",
+          "Puissance moteur": "275 hp",
+          "Profondeur de fouille max": "23.6 ft",
+          "Capacite godet": "1.75 yd3"
+        },
+        "336": {
+          "Poids operationnel": "80 000 lb",
+          "Puissance moteur": "311 hp",
+          "Profondeur de fouille max": "24 ft",
+          "Capacite godet": "2.0 yd3"
+        },
+        "340": {
+          "Poids operationnel": "88 000 lb",
+          "Puissance moteur": "311 hp",
+          "Profondeur de fouille max": "24.6 ft",
+          "Capacite godet": "2.2 yd3"
+        },
+        "345": {
+          "Poids operationnel": "100 000 lb",
+          "Puissance moteur": "366 hp",
+          "Profondeur de fouille max": "24.9 ft",
+          "Capacite godet": "2.65 yd3"
+        },
+        "349": {
+          "Poids operationnel": "105 200 lb",
+          "Puissance moteur": "424 hp",
+          "Profondeur de fouille max": "25 ft",
+          "Capacite godet": "3.0 yd3"
+        },
+        "352": {
+          "Poids operationnel": "115 000 lb",
+          "Puissance moteur": "424 hp",
+          "Profondeur de fouille max": "25.7 ft",
+          "Capacite godet": "3.2 yd3"
+        },
+        "374": {
+          "Poids operationnel": "158 000 lb",
+          "Puissance moteur": "484 hp",
+          "Profondeur de fouille max": "27 ft",
+          "Capacite godet": "4.0 yd3"
+        },
+        "390": {
+          "Poids operationnel": "190 204 lb",
+          "Puissance moteur": "523 hp",
+          "Profondeur de fouille max": "29 ft",
+          "Capacite godet": "5.0 yd3"
+        },
+        "395": {
+          "Poids operationnel": "207 300 lb",
+          "Puissance moteur": "542 hp",
+          "Profondeur de fouille max": "31.9 ft",
+          "Capacite godet": "6.0 yd3"
         }
       }
     },
     "Komatsu": {
-      "2023": {
+      "2024": {
+        "PC24MR-5": {
+          "Poids operationnel": "5 490 lb",
+          "Puissance moteur": "19.3 hp",
+          "Profondeur de fouille max": "8.2 ft",
+          "Capacite godet": "N/A"
+        },
+        "PC30MR-5": {
+          "Poids operationnel": "7 320 lb",
+          "Puissance moteur": "24.4 hp",
+          "Profondeur de fouille max": "9.3 ft",
+          "Capacite godet": "N/A"
+        },
+        "PC35MR-5": {
+          "Poids operationnel": "8 330 lb",
+          "Puissance moteur": "28.4 hp",
+          "Profondeur de fouille max": "10.6 ft",
+          "Capacite godet": "N/A"
+        },
+        "PC55MR-5": {
+          "Poids operationnel": "12 340 lb",
+          "Puissance moteur": "42.6 hp",
+          "Profondeur de fouille max": "12.5 ft",
+          "Capacite godet": "N/A"
+        },
+        "PC78US-11": {
+          "Poids operationnel": "18 520 lb",
+          "Puissance moteur": "68 hp",
+          "Profondeur de fouille max": "14.6 ft",
+          "Capacite godet": "N/A"
+        },
+        "PC130LC-11": {
+          "Poids operationnel": "27 690 lb",
+          "Puissance moteur": "91.2 hp",
+          "Profondeur de fouille max": "17.6 ft",
+          "Capacite godet": "0.45 yd3"
+        },
         "PC210LC-11": {
-          "Poids operationnel": "22 500 kg",
-          "Puissance moteur": "165 hp (123 kW)",
-          "Profondeur de fouille max": "6.68 m",
-          "Portee max": "10.06 m",
-          "Force de cavage godet": "154 kN",
-          "Capacite godet": "0.52 - 1.30 m3"
+          "Poids operationnel": "49 604 lb",
+          "Puissance moteur": "159 hp",
+          "Profondeur de fouille max": "21.6 ft",
+          "Capacite godet": "1.0 yd3"
+        },
+        "PC220LC-12": {
+          "Poids operationnel": "52 800 lb",
+          "Puissance moteur": "168 hp",
+          "Profondeur de fouille max": "22.1 ft",
+          "Capacite godet": "1.24 yd3"
+        },
+        "PC290LC-11": {
+          "Poids operationnel": "67 120 lb",
+          "Puissance moteur": "197 hp",
+          "Profondeur de fouille max": "23.4 ft",
+          "Capacite godet": "1.5 yd3"
+        },
+        "PC360LC-11": {
+          "Poids operationnel": "78 550 lb",
+          "Puissance moteur": "257 hp",
+          "Profondeur de fouille max": "24.2 ft",
+          "Capacite godet": "1.96 yd3"
+        },
+        "PC390LC-11": {
+          "Poids operationnel": "85 980 lb",
+          "Puissance moteur": "289 hp",
+          "Profondeur de fouille max": "25 ft",
+          "Capacite godet": "2.22 yd3"
+        },
+        "PC490LC-11": {
+          "Poids operationnel": "107 500 lb",
+          "Puissance moteur": "359 hp",
+          "Profondeur de fouille max": "25.8 ft",
+          "Capacite godet": "3.0 yd3"
+        },
+        "PC650LC-11": {
+          "Poids operationnel": "146 390 lb",
+          "Puissance moteur": "429 hp",
+          "Profondeur de fouille max": "27.2 ft",
+          "Capacite godet": "4.2 yd3"
+        },
+        "PC900LC-11": {
+          "Poids operationnel": "199 520 lb",
+          "Puissance moteur": "536 hp",
+          "Profondeur de fouille max": "28.7 ft",
+          "Capacite godet": "5.5 yd3"
+        }
+      }
+    },
+    "John Deere": {
+      "2024": {
+        "17 P-Tier": {
+          "Poids operationnel": "3 800 lb",
+          "Puissance moteur": "13.2 hp",
+          "Profondeur de fouille max": "6 ft",
+          "Capacite godet": "N/A"
+        },
+        "26 P-Tier": {
+          "Poids operationnel": "5 730 lb",
+          "Puissance moteur": "19.5 hp",
+          "Profondeur de fouille max": "8.2 ft",
+          "Capacite godet": "N/A"
+        },
+        "35 P-Tier": {
+          "Poids operationnel": "7 850 lb",
+          "Puissance moteur": "24.7 hp",
+          "Profondeur de fouille max": "10.2 ft",
+          "Capacite godet": "N/A"
+        },
+        "50 P-Tier": {
+          "Poids operationnel": "11 280 lb",
+          "Puissance moteur": "37.4 hp",
+          "Profondeur de fouille max": "11.2 ft",
+          "Capacite godet": "N/A"
+        },
+        "75 P-Tier": {
+          "Poids operationnel": "16 500 lb",
+          "Puissance moteur": "55.2 hp",
+          "Profondeur de fouille max": "13.5 ft",
+          "Capacite godet": "N/A"
+        },
+        "85 P-Tier": {
+          "Poids operationnel": "19 000 lb",
+          "Puissance moteur": "65 hp",
+          "Profondeur de fouille max": "14 ft",
+          "Capacite godet": "N/A"
+        },
+        "130 P-Tier": {
+          "Poids operationnel": "30 000 lb",
+          "Puissance moteur": "93 hp",
+          "Profondeur de fouille max": "18 ft",
+          "Capacite godet": "0.58 yd3"
+        },
+        "160 P-Tier": {
+          "Poids operationnel": "39 500 lb",
+          "Puissance moteur": "115 hp",
+          "Profondeur de fouille max": "19.8 ft",
+          "Capacite godet": "0.72 yd3"
+        },
+        "210 P-Tier": {
+          "Poids operationnel": "48 000 lb",
+          "Puissance moteur": "159 hp",
+          "Profondeur de fouille max": "21 ft",
+          "Capacite godet": "1.19 yd3"
+        },
+        "250 P-Tier": {
+          "Poids operationnel": "58 700 lb",
+          "Puissance moteur": "188 hp",
+          "Profondeur de fouille max": "22.5 ft",
+          "Capacite godet": "1.5 yd3"
+        },
+        "300 P-Tier": {
+          "Poids operationnel": "66 100 lb",
+          "Puissance moteur": "223 hp",
+          "Profondeur de fouille max": "23 ft",
+          "Capacite godet": "1.75 yd3"
+        },
+        "345 P-Tier": {
+          "Poids operationnel": "80 200 lb",
+          "Puissance moteur": "271 hp",
+          "Profondeur de fouille max": "24 ft",
+          "Capacite godet": "2.2 yd3"
+        },
+        "380 P-Tier": {
+          "Poids operationnel": "90 000 lb",
+          "Puissance moteur": "308 hp",
+          "Profondeur de fouille max": "25 ft",
+          "Capacite godet": "2.8 yd3"
+        },
+        "510 P-Tier": {
+          "Poids operationnel": "103 500 lb",
+          "Puissance moteur": "388 hp",
+          "Profondeur de fouille max": "26 ft",
+          "Capacite godet": "3.5 yd3"
+        },
+        "670 P-Tier": {
+          "Poids operationnel": "146 000 lb",
+          "Puissance moteur": "512 hp",
+          "Profondeur de fouille max": "27 ft",
+          "Capacite godet": "4.5 yd3"
+        },
+        "870 P-Tier": {
+          "Poids operationnel": "188 750 lb",
+          "Puissance moteur": "597 hp",
+          "Profondeur de fouille max": "28 ft",
+          "Capacite godet": "6.0 yd3"
+        }
+      }
+    },
+    "Volvo CE": {
+      "2024": {
+        "ECR18E": {
+          "Poids operationnel": "4 078 lb",
+          "Puissance moteur": "14.8 hp",
+          "Profondeur de fouille max": "8 ft",
+          "Capacite godet": "N/A"
+        },
+        "ECR25E": {
+          "Poids operationnel": "5 700 lb",
+          "Puissance moteur": "19.6 hp",
+          "Profondeur de fouille max": "8.5 ft",
+          "Capacite godet": "N/A"
+        },
+        "EC37": {
+          "Poids operationnel": "7 700 lb",
+          "Puissance moteur": "24.8 hp",
+          "Profondeur de fouille max": "10 ft",
+          "Capacite godet": "N/A"
+        },
+        "EC55E": {
+          "Poids operationnel": "12 100 lb",
+          "Puissance moteur": "47.6 hp",
+          "Profondeur de fouille max": "12 ft",
+          "Capacite godet": "N/A"
+        },
+        "ECR88E": {
+          "Poids operationnel": "19 400 lb",
+          "Puissance moteur": "66 hp",
+          "Profondeur de fouille max": "14.3 ft",
+          "Capacite godet": "N/A"
+        },
+        "ECR145": {
+          "Poids operationnel": "34 650 lb",
+          "Puissance moteur": "117 hp",
+          "Profondeur de fouille max": "18.5 ft",
+          "Capacite godet": "0.65 yd3"
+        },
+        "EC220": {
+          "Poids operationnel": "50 700 lb",
+          "Puissance moteur": "172 hp",
+          "Profondeur de fouille max": "22 ft",
+          "Capacite godet": "1.24 yd3"
+        },
+        "EC260": {
+          "Poids operationnel": "59 360 lb",
+          "Puissance moteur": "196 hp",
+          "Profondeur de fouille max": "22.5 ft",
+          "Capacite godet": "1.5 yd3"
+        },
+        "EC300": {
+          "Poids operationnel": "68 000 lb",
+          "Puissance moteur": "260 hp",
+          "Profondeur de fouille max": "23 ft",
+          "Capacite godet": "1.75 yd3"
+        },
+        "EC380": {
+          "Poids operationnel": "86 700 lb",
+          "Puissance moteur": "311 hp",
+          "Profondeur de fouille max": "24 ft",
+          "Capacite godet": "2.5 yd3"
+        },
+        "EC480": {
+          "Poids operationnel": "109 000 lb",
+          "Puissance moteur": "380 hp",
+          "Profondeur de fouille max": "25 ft",
+          "Capacite godet": "3.2 yd3"
+        },
+        "EC750": {
+          "Poids operationnel": "170 000 lb",
+          "Puissance moteur": "523 hp",
+          "Profondeur de fouille max": "27.5 ft",
+          "Capacite godet": "5.0 yd3"
+        }
+      }
+    },
+    "Hitachi": {
+      "2024": {
+        "ZX17U-5N": {
+          "Poids operationnel": "3 790 lb",
+          "Puissance moteur": "14.7 hp",
+          "Profondeur de fouille max": "7 ft 2 in",
+          "Capacite godet": "N/A"
+        },
+        "ZX26U-5N": {
+          "Poids operationnel": "5 560 lb",
+          "Puissance moteur": "19.6 hp",
+          "Profondeur de fouille max": "8 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "ZX35U-5N": {
+          "Poids operationnel": "8 050 lb",
+          "Puissance moteur": "27.8 hp",
+          "Profondeur de fouille max": "10 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "ZX60USB-5N": {
+          "Poids operationnel": "13 900 lb",
+          "Puissance moteur": "53.8 hp",
+          "Profondeur de fouille max": "12 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "ZX130-7": {
+          "Poids operationnel": "30 870 lb",
+          "Puissance moteur": "100 hp",
+          "Profondeur de fouille max": "19 ft 9 in",
+          "Capacite godet": "0.5 yd3"
+        },
+        "ZX210LC-7": {
+          "Poids operationnel": "49 833 lb",
+          "Puissance moteur": "162 hp",
+          "Profondeur de fouille max": "21 ft 11 in",
+          "Capacite godet": "1.0 yd3"
+        },
+        "ZX250LC-7": {
+          "Poids operationnel": "60 407 lb",
+          "Puissance moteur": "184 hp",
+          "Profondeur de fouille max": "24 ft",
+          "Capacite godet": "1.24 yd3"
+        },
+        "ZX300LC-7": {
+          "Poids operationnel": "69 005 lb",
+          "Puissance moteur": "222 hp",
+          "Profondeur de fouille max": "25 ft 10 in",
+          "Capacite godet": "1.56 yd3"
+        },
+        "ZX350LC-7": {
+          "Poids operationnel": "78 000 lb",
+          "Puissance moteur": "270 hp",
+          "Profondeur de fouille max": "24 ft 6 in",
+          "Capacite godet": "1.96 yd3"
+        },
+        "ZX490LC-7": {
+          "Poids operationnel": "108 000 lb",
+          "Puissance moteur": "369 hp",
+          "Profondeur de fouille max": "26 ft",
+          "Capacite godet": "3.0 yd3"
+        },
+        "ZX690LC-7": {
+          "Poids operationnel": "153 000 lb",
+          "Puissance moteur": "468 hp",
+          "Profondeur de fouille max": "27 ft",
+          "Capacite godet": "4.0 yd3"
+        },
+        "ZX890LC-7": {
+          "Poids operationnel": "188 936 lb",
+          "Puissance moteur": "536 hp",
+          "Profondeur de fouille max": "28.5 ft",
+          "Capacite godet": "5.5 yd3"
+        }
+      }
+    },
+    "Kobelco": {
+      "2024": {
+        "SK17SR-7": {
+          "Poids operationnel": "3 671 lb",
+          "Puissance moteur": "14.7 hp",
+          "Profondeur de fouille max": "7 ft 2 in",
+          "Capacite godet": "N/A"
+        },
+        "SK35SR-7": {
+          "Poids operationnel": "8 560 lb",
+          "Puissance moteur": "27.2 hp",
+          "Profondeur de fouille max": "10 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "SK55SRX-7": {
+          "Poids operationnel": "11 860 lb",
+          "Puissance moteur": "42.7 hp",
+          "Profondeur de fouille max": "12 ft",
+          "Capacite godet": "N/A"
+        },
+        "SK75SR-7": {
+          "Poids operationnel": "17 000 lb",
+          "Puissance moteur": "56.5 hp",
+          "Profondeur de fouille max": "14 ft",
+          "Capacite godet": "0.28 yd3"
+        },
+        "SK130LC-11": {
+          "Poids operationnel": "30 870 lb",
+          "Puissance moteur": "96 hp",
+          "Profondeur de fouille max": "18 ft",
+          "Capacite godet": "0.5 yd3"
+        },
+        "SK210LC-11": {
+          "Poids operationnel": "50 000 lb",
+          "Puissance moteur": "160 hp",
+          "Profondeur de fouille max": "21 ft",
+          "Capacite godet": "1.1 yd3"
+        },
+        "SK260LC-11": {
+          "Poids operationnel": "59 600 lb",
+          "Puissance moteur": "177 hp",
+          "Profondeur de fouille max": "22 ft 6 in",
+          "Capacite godet": "1.3 yd3"
+        },
+        "SK350LC-11": {
+          "Poids operationnel": "76 000 lb",
+          "Puissance moteur": "268 hp",
+          "Profondeur de fouille max": "24 ft",
+          "Capacite godet": "1.96 yd3"
+        },
+        "SK490LC-11": {
+          "Poids operationnel": "108 000 lb",
+          "Puissance moteur": "359 hp",
+          "Profondeur de fouille max": "25 ft 6 in",
+          "Capacite godet": "3.0 yd3"
+        }
+      }
+    },
+    "Kubota": {
+      "2024": {
+        "K008-5": {
+          "Poids operationnel": "2 025 lb",
+          "Puissance moteur": "10.3 hp",
+          "Profondeur de fouille max": "5 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "KX018-4": {
+          "Poids operationnel": "3 737 lb",
+          "Puissance moteur": "17 hp",
+          "Profondeur de fouille max": "7 ft 10 in",
+          "Capacite godet": "N/A"
+        },
+        "U27-4": {
+          "Poids operationnel": "6 063 lb",
+          "Puissance moteur": "24.8 hp",
+          "Profondeur de fouille max": "9 ft 2 in",
+          "Capacite godet": "N/A"
+        },
+        "U35-4": {
+          "Poids operationnel": "7 650 lb",
+          "Puissance moteur": "24.8 hp",
+          "Profondeur de fouille max": "10 ft 2 in",
+          "Capacite godet": "N/A"
+        },
+        "KX040-5": {
+          "Poids operationnel": "8 900 lb",
+          "Puissance moteur": "40.3 hp",
+          "Profondeur de fouille max": "11 ft 2 in",
+          "Capacite godet": "N/A"
+        },
+        "U55-5": {
+          "Poids operationnel": "12 247 lb",
+          "Puissance moteur": "47.6 hp",
+          "Profondeur de fouille max": "11 ft 11 in",
+          "Capacite godet": "N/A"
+        },
+        "KX057-5": {
+          "Poids operationnel": "12 346 lb",
+          "Puissance moteur": "47.6 hp",
+          "Profondeur de fouille max": "12 ft 9 in",
+          "Capacite godet": "N/A"
+        },
+        "KX080-5": {
+          "Poids operationnel": "18 596 lb",
+          "Puissance moteur": "70 hp",
+          "Profondeur de fouille max": "15 ft 1 in",
+          "Capacite godet": "N/A"
+        }
+      }
+    },
+    "Bobcat": {
+      "2024": {
+        "E10": {
+          "Poids operationnel": "2 593 lb",
+          "Puissance moteur": "10.2 hp",
+          "Profondeur de fouille max": "5.9 ft",
+          "Capacite godet": "N/A"
+        },
+        "E20": {
+          "Poids operationnel": "4 430 lb",
+          "Puissance moteur": "19.5 hp",
+          "Profondeur de fouille max": "8 ft",
+          "Capacite godet": "N/A"
+        },
+        "E35": {
+          "Poids operationnel": "7 788 lb",
+          "Puissance moteur": "33 hp",
+          "Profondeur de fouille max": "10.2 ft",
+          "Capacite godet": "N/A"
+        },
+        "E50": {
+          "Poids operationnel": "11 400 lb",
+          "Puissance moteur": "42 hp",
+          "Profondeur de fouille max": "11.4 ft",
+          "Capacite godet": "N/A"
+        },
+        "E55": {
+          "Poids operationnel": "12 400 lb",
+          "Puissance moteur": "49.8 hp",
+          "Profondeur de fouille max": "12 ft",
+          "Capacite godet": "N/A"
+        },
+        "E85": {
+          "Poids operationnel": "19 000 lb",
+          "Puissance moteur": "65.7 hp",
+          "Profondeur de fouille max": "14.6 ft",
+          "Capacite godet": "N/A"
+        },
+        "E145": {
+          "Poids operationnel": "33 773 lb",
+          "Puissance moteur": "115 hp",
+          "Profondeur de fouille max": "19.6 ft",
+          "Capacite godet": "0.65 yd3"
+        }
+      }
+    },
+    "Case": {
+      "2024": {
+        "CX17C": {
+          "Poids operationnel": "3 748 lb",
+          "Puissance moteur": "13.2 hp",
+          "Profondeur de fouille max": "7 ft",
+          "Capacite godet": "N/A"
+        },
+        "CX26C": {
+          "Poids operationnel": "5 520 lb",
+          "Puissance moteur": "24.8 hp",
+          "Profondeur de fouille max": "8 ft",
+          "Capacite godet": "N/A"
+        },
+        "CX37C": {
+          "Poids operationnel": "7 990 lb",
+          "Puissance moteur": "24.4 hp",
+          "Profondeur de fouille max": "10 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "CX57C": {
+          "Poids operationnel": "12 500 lb",
+          "Puissance moteur": "47.6 hp",
+          "Profondeur de fouille max": "12 ft",
+          "Capacite godet": "N/A"
+        },
+        "CX75C SR": {
+          "Poids operationnel": "17 600 lb",
+          "Puissance moteur": "56.8 hp",
+          "Profondeur de fouille max": "14 ft",
+          "Capacite godet": "N/A"
+        },
+        "CX145E SR": {
+          "Poids operationnel": "34 700 lb",
+          "Puissance moteur": "102 hp",
+          "Profondeur de fouille max": "18.5 ft",
+          "Capacite godet": "0.65 yd3"
+        },
+        "CX210E": {
+          "Poids operationnel": "50 600 lb",
+          "Puissance moteur": "160 hp",
+          "Profondeur de fouille max": "22 ft",
+          "Capacite godet": "1.0 yd3"
+        },
+        "CX350E": {
+          "Poids operationnel": "78 000 lb",
+          "Puissance moteur": "271 hp",
+          "Profondeur de fouille max": "23.5 ft",
+          "Capacite godet": "1.96 yd3"
+        },
+        "CX490E": {
+          "Poids operationnel": "109 128 lb",
+          "Puissance moteur": "369 hp",
+          "Profondeur de fouille max": "26.6 ft",
+          "Capacite godet": "3.0 yd3"
+        },
+        "CX750E": {
+          "Poids operationnel": "165 000 lb",
+          "Puissance moteur": "512 hp",
+          "Profondeur de fouille max": "27 ft",
+          "Capacite godet": "5.0 yd3"
+        }
+      }
+    },
+    "Develon (Doosan)": {
+      "2024": {
+        "DX17Z-7": {
+          "Poids operationnel": "4 211 lb",
+          "Puissance moteur": "16 hp",
+          "Profondeur de fouille max": "7 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "DX35Z-7": {
+          "Poids operationnel": "8 807 lb",
+          "Puissance moteur": "24.7 hp",
+          "Profondeur de fouille max": "10 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "DX55R-7": {
+          "Poids operationnel": "12 655 lb",
+          "Puissance moteur": "47.1 hp",
+          "Profondeur de fouille max": "12 ft",
+          "Capacite godet": "N/A"
+        },
+        "DX89R-7": {
+          "Poids operationnel": "21 025 lb",
+          "Puissance moteur": "63.2 hp",
+          "Profondeur de fouille max": "13 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "DX140LC-7": {
+          "Poids operationnel": "32 500 lb",
+          "Puissance moteur": "96 hp",
+          "Profondeur de fouille max": "18 ft",
+          "Capacite godet": "0.52 yd3"
+        },
+        "DX225LC-7X": {
+          "Poids operationnel": "52 018 lb",
+          "Puissance moteur": "162.3 hp",
+          "Profondeur de fouille max": "21 ft 7 in",
+          "Capacite godet": "1.15 yd3"
+        },
+        "DX300LC-7": {
+          "Poids operationnel": "67 900 lb",
+          "Puissance moteur": "260 hp",
+          "Profondeur de fouille max": "23 ft",
+          "Capacite godet": "1.6 yd3"
+        },
+        "DX350LC-7": {
+          "Poids operationnel": "77 800 lb",
+          "Puissance moteur": "286 hp",
+          "Profondeur de fouille max": "23 ft 6 in",
+          "Capacite godet": "1.96 yd3"
+        },
+        "DX530LC-7": {
+          "Poids operationnel": "117 500 lb",
+          "Puissance moteur": "400 hp",
+          "Profondeur de fouille max": "26 ft",
+          "Capacite godet": "3.6 yd3"
+        },
+        "DX800LC-7": {
+          "Poids operationnel": "179 428 lb",
+          "Puissance moteur": "539 hp",
+          "Profondeur de fouille max": "27 ft 5 in",
+          "Capacite godet": "5.4 yd3"
+        }
+      }
+    },
+    "Takeuchi": {
+      "2024": {
+        "TB210R": {
+          "Poids operationnel": "2 315 lb",
+          "Puissance moteur": "10.3 hp",
+          "Profondeur de fouille max": "5 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "TB216": {
+          "Poids operationnel": "3 690 lb",
+          "Puissance moteur": "13.5 hp",
+          "Profondeur de fouille max": "7 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "TB225": {
+          "Poids operationnel": "5 540 lb",
+          "Puissance moteur": "18.2 hp",
+          "Profondeur de fouille max": "8 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "TB235-2": {
+          "Poids operationnel": "7 639 lb",
+          "Puissance moteur": "24.4 hp",
+          "Profondeur de fouille max": "10 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "TB240": {
+          "Poids operationnel": "8 990 lb",
+          "Puissance moteur": "35.8 hp",
+          "Profondeur de fouille max": "11 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "TB257FR": {
+          "Poids operationnel": "12 400 lb",
+          "Puissance moteur": "47.6 hp",
+          "Profondeur de fouille max": "12 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "TB290": {
+          "Poids operationnel": "19 145 lb",
+          "Puissance moteur": "69.2 hp",
+          "Profondeur de fouille max": "15 ft",
+          "Capacite godet": "N/A"
+        },
+        "TB2150": {
+          "Poids operationnel": "33 000 lb",
+          "Puissance moteur": "112 hp",
+          "Profondeur de fouille max": "18.5 ft",
+          "Capacite godet": "N/A"
+        }
+      }
+    },
+    "Yanmar": {
+      "2024": {
+        "SV08-1B": {
+          "Poids operationnel": "2 348 lb",
+          "Puissance moteur": "10.3 hp",
+          "Profondeur de fouille max": "5 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "ViO17-A": {
+          "Poids operationnel": "3 968 lb",
+          "Puissance moteur": "14.8 hp",
+          "Profondeur de fouille max": "7 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "ViO25-6A": {
+          "Poids operationnel": "5 732 lb",
+          "Puissance moteur": "19.6 hp",
+          "Profondeur de fouille max": "8 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "ViO35-7": {
+          "Poids operationnel": "8 047 lb",
+          "Puissance moteur": "27.2 hp",
+          "Profondeur de fouille max": "11 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "ViO55-6A": {
+          "Poids operationnel": "12 247 lb",
+          "Puissance moteur": "47.6 hp",
+          "Profondeur de fouille max": "13 ft 6 in",
+          "Capacite godet": "N/A"
+        },
+        "ViO80-7": {
+          "Poids operationnel": "18 700 lb",
+          "Puissance moteur": "66 hp",
+          "Profondeur de fouille max": "14 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "SV100-7": {
+          "Poids operationnel": "21 385 lb",
+          "Puissance moteur": "72 hp",
+          "Profondeur de fouille max": "14 ft 11 in",
+          "Capacite godet": "N/A"
+        }
+      }
+    },
+    "SANY": {
+      "2024": {
+        "SY16C": {
+          "Poids operationnel": "4 023 lb",
+          "Puissance moteur": "18.2 hp",
+          "Profondeur de fouille max": "7 ft 9 in",
+          "Capacite godet": "N/A"
+        },
+        "SY26U": {
+          "Poids operationnel": "6 085 lb",
+          "Puissance moteur": "19.4 hp",
+          "Profondeur de fouille max": "9 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "SY35U": {
+          "Poids operationnel": "8 444 lb",
+          "Puissance moteur": "22.1 hp",
+          "Profondeur de fouille max": "10 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "SY50U": {
+          "Poids operationnel": "11 707 lb",
+          "Puissance moteur": "45.2 hp",
+          "Profondeur de fouille max": "11 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "SY75C": {
+          "Poids operationnel": "16 050 lb",
+          "Puissance moteur": "54 hp",
+          "Profondeur de fouille max": "14 ft 7 in",
+          "Capacite godet": "N/A"
+        },
+        "SY135C": {
+          "Poids operationnel": "32 783 lb",
+          "Puissance moteur": "103.9 hp",
+          "Profondeur de fouille max": "18 ft 1 in",
+          "Capacite godet": "N/A"
+        },
+        "SY215C LC": {
+          "Poids operationnel": "51 919 lb",
+          "Puissance moteur": "163.6 hp",
+          "Profondeur de fouille max": "21 ft 8 in",
+          "Capacite godet": "N/A"
+        },
+        "SY265C": {
+          "Poids operationnel": "59 525 lb",
+          "Puissance moteur": "194.4 hp",
+          "Profondeur de fouille max": "22 ft",
+          "Capacite godet": "N/A"
+        },
+        "SY335C": {
+          "Poids operationnel": "74 075 lb",
+          "Puissance moteur": "280.3 hp",
+          "Profondeur de fouille max": "22 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "SY385C": {
+          "Poids operationnel": "85 318 lb",
+          "Puissance moteur": "314 hp",
+          "Profondeur de fouille max": "26 ft 4 in",
+          "Capacite godet": "N/A"
+        },
+        "SY500H": {
+          "Poids operationnel": "120 152 lb",
+          "Puissance moteur": "400 hp",
+          "Profondeur de fouille max": "25 ft 3 in",
+          "Capacite godet": "N/A"
+        },
+        "SY750H": {
+          "Poids operationnel": "173 063 lb",
+          "Puissance moteur": "524 hp",
+          "Profondeur de fouille max": "24 ft 10 in",
+          "Capacite godet": "N/A"
+        }
+      }
+    },
+    "XCMG": {
+      "2024": {
+        "XE35U": {
+          "Poids operationnel": "9 259 lb",
+          "Puissance moteur": "24.4 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "0.16 yd3"
+        },
+        "XE55U": {
+          "Poids operationnel": "12 566 lb",
+          "Puissance moteur": "41.2 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "0.21 yd3"
+        },
+        "XE80U": {
+          "Poids operationnel": "20 944 lb",
+          "Puissance moteur": "73.2 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "0.46 yd3"
+        },
+        "XE210U": {
+          "Poids operationnel": "50 706 lb",
+          "Puissance moteur": "173 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "1.57 yd3"
+        },
+        "XE300U": {
+          "Poids operationnel": "71 650 lb",
+          "Puissance moteur": "232 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "2.1 yd3"
+        },
+        "XE360U": {
+          "Poids operationnel": "87 303 lb",
+          "Puissance moteur": "338 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "2.2 yd3"
+        },
+        "XE490U": {
+          "Poids operationnel": "109 790 lb",
+          "Puissance moteur": "430 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "3.15 yd3"
+        }
+      }
+    },
+    "LiuGong": {
+      "2024": {
+        "9035EZTS": {
+          "Poids operationnel": "8 510 lb",
+          "Puissance moteur": "24.4 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "N/A"
+        },
+        "915F": {
+          "Poids operationnel": "31 500 lb",
+          "Puissance moteur": "115 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "N/A"
+        },
+        "922F": {
+          "Poids operationnel": "49 600 lb",
+          "Puissance moteur": "158 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "N/A"
+        },
+        "930F": {
+          "Poids operationnel": "67 240 lb",
+          "Puissance moteur": "208 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "N/A"
+        },
+        "950F": {
+          "Poids operationnel": "109 000 lb",
+          "Puissance moteur": "360 hp",
+          "Profondeur de fouille max": "N/A",
+          "Capacite godet": "N/A"
+        }
+      }
+    },
+    "Link-Belt": {
+      "2024": {
+        "75 X3 Spin Ace": {
+          "Poids operationnel": "17 200 lb",
+          "Puissance moteur": "55.2 hp",
+          "Profondeur de fouille max": "13.5 ft",
+          "Capacite godet": "N/A"
+        },
+        "130 X4": {
+          "Poids operationnel": "30 800 lb",
+          "Puissance moteur": "93 hp",
+          "Profondeur de fouille max": "17 ft",
+          "Capacite godet": "0.5 yd3"
+        },
+        "210 X4": {
+          "Poids operationnel": "48 900 lb",
+          "Puissance moteur": "160 hp",
+          "Profondeur de fouille max": "21 ft",
+          "Capacite godet": "1.0 yd3"
+        },
+        "250 X4": {
+          "Poids operationnel": "58 200 lb",
+          "Puissance moteur": "177 hp",
+          "Profondeur de fouille max": "22 ft",
+          "Capacite godet": "1.24 yd3"
+        },
+        "350 X4": {
+          "Poids operationnel": "77 100 lb",
+          "Puissance moteur": "270 hp",
+          "Profondeur de fouille max": "23 ft 6 in",
+          "Capacite godet": "1.96 yd3"
+        },
+        "490 X4": {
+          "Poids operationnel": "112 900 lb",
+          "Puissance moteur": "362 hp",
+          "Profondeur de fouille max": "25.5 ft",
+          "Capacite godet": "3.0 yd3"
+        },
+        "750 X4": {
+          "Poids operationnel": "158 300 lb",
+          "Puissance moteur": "512 hp",
+          "Profondeur de fouille max": "27 ft",
+          "Capacite godet": "5.0 yd3"
         }
       }
     }
