@@ -1,0 +1,126 @@
+{
+  "Excavatrice": {
+    "Caterpillar": {
+      "2024": {
+        "CAT 320 GC": {
+          "Poids operationnel": "22 200 kg",
+          "Puissance moteur": "162 hp (121 kW)",
+          "Profondeur de fouille max": "6.72 m",
+          "Portee max": "9.93 m",
+          "Force de cavage godet": "162 kN",
+          "Capacite godet": "0.55 - 1.34 m3"
+        }
+      }
+    },
+    "Komatsu": {
+      "2023": {
+        "PC210LC-11": {
+          "Poids operationnel": "22 500 kg",
+          "Puissance moteur": "165 hp (123 kW)",
+          "Profondeur de fouille max": "6.68 m",
+          "Portee max": "10.06 m",
+          "Force de cavage godet": "154 kN",
+          "Capacite godet": "0.52 - 1.30 m3"
+        }
+      }
+    }
+  },
+  "Pompe a Beton": {
+    "Putzmeister": {
+      "2024": {
+        "BSF 36-4.16H": {
+          "Portee verticale": "35.4 m",
+          "Portee horizontale": "31.5 m",
+          "Nombre de sections": "4",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Diametre tuyauterie": "125 mm"
+        }
+      }
+    }
+  },
+  "Camion Girafe (Boom Truck)": {
+    "Manitex": {
+      "2024": {
+        "30112S": {
+          "Capacite max": "30 US ton",
+          "Portee max fleche": "33.5 m",
+          "Hauteur max sous crochet": "38.7 m",
+          "Nombre de sections": "4",
+          "Chassis": "3 essieux",
+          "Stabilisateurs": "Outriggers H-style"
+        }
+      }
+    }
+  },
+  "Telehandler": {
+    "JLG": {
+      "2024": {
+        "1055": {
+          "Capacite max": "10 000 lb (4 536 kg)",
+          "Hauteur de levee max": "55 ft (16.8 m)",
+          "Portee avant max": "42 ft (12.8 m)",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "13 200 kg",
+          "Type direction": "4 modes"
+        }
+      }
+    }
+  },
+  "Camion Vacuum": {
+    "Vactor": {
+      "2024": {
+        "2100 Plus": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "1 500 gal US",
+          "Debit air max": "5 800 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "2 500 PSI",
+          "Chassis": "Tandem essieu"
+        }
+      }
+    }
+  },
+  "Retrocaveuse": {
+    "Case": {
+      "2024": {
+        "580SV": {
+          "Puissance moteur": "97 hp",
+          "Profondeur de fouille max": "4.36 m",
+          "Hauteur de chargement": "3.48 m",
+          "Capacite godet chargeur": "1.0 m3",
+          "Force de cavage godet retro": "56.9 kN",
+          "Poids operationnel": "7 800 kg"
+        }
+      }
+    }
+  },
+  "Foreuse": {
+    "Epiroc": {
+      "2024": {
+        "FlexiROC T20 R": {
+          "Diametre de forage": "51 - 102 mm",
+          "Profondeur de forage max": "18.6 m",
+          "Puissance moteur": "175 hp",
+          "Poids operationnel": "12 000 kg",
+          "Force de rotation": "5 000 Nm",
+          "Type compresseur": "Integre 12 bar"
+        }
+      }
+    }
+  },
+  "Grue Mobile": {
+    "Liebherr": {
+      "2024": {
+        "LTM 1060-3.1": {
+          "Capacite max": "60 t",
+          "Longueur fleche telescopique": "48 m",
+          "Hauteur max sous crochet": "69 m",
+          "Nombre essieux": "3",
+          "Puissance moteur": "367 hp",
+          "Contrepoids max": "12.8 t"
+        }
+      }
+    }
+  }
+}

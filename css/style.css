@@ -1,0 +1,350 @@
+/* ============================================
+   e-Trak Portal Machine — Styles
+   ============================================ */
+
+:root {
+    --etrak-blue-dark: #002B5C;
+    --etrak-blue: #003D7A;
+    --etrak-blue-light: #0056A6;
+    --etrak-orange: #FF6A00;
+    --etrak-orange-hover: #E85D00;
+    --etrak-white: #FFFFFF;
+    --etrak-gray-50: #F8F9FA;
+    --etrak-gray-100: #F0F2F5;
+    --etrak-gray-200: #E1E5EB;
+    --etrak-gray-300: #C4CBD6;
+    --etrak-gray-500: #6B7785;
+    --etrak-gray-700: #3A4550;
+    --etrak-gray-900: #1A2530;
+    --shadow-sm: 0 1px 3px rgba(0, 43, 92, 0.08);
+    --shadow-md: 0 4px 12px rgba(0, 43, 92, 0.10);
+    --shadow-lg: 0 8px 30px rgba(0, 43, 92, 0.12);
+    --radius: 8px;
+    --radius-lg: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--etrak-gray-50);
+    color: var(--etrak-gray-900);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---- HEADER ---- */
+header {
+    background: linear-gradient(135deg, var(--etrak-blue-dark) 0%, var(--etrak-blue) 100%);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-e {
+    color: var(--etrak-orange);
+}
+
+.logo-dash {
+    color: var(--etrak-white);
+}
+
+.logo-trak {
+    color: var(--etrak-white);
+}
+
+.logo-divider {
+    width: 1px;
+    height: 28px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.header-subtitle {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* ---- MAIN ---- */
+main {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ---- SELECTOR SECTION ---- */
+.selector-section {
+    background: var(--etrak-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 2rem;
+}
+
+.selector-section h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--etrak-blue-dark);
+    margin-bottom: 0.5rem;
+}
+
+.intro-text {
+    color: var(--etrak-gray-500);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+}
+
+.selectors-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+}
+
+.selector-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.selector-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--etrak-gray-500);
+}
+
+.selector-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    background: var(--etrak-gray-50);
+    border: 2px solid var(--etrak-gray-200);
+    border-radius: var(--radius);
+    padding: 0.75rem 2.5rem 0.75rem 0.875rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    color: var(--etrak-gray-900);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7785' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+}
+
+.selector-group select:hover:not(:disabled) {
+    border-color: var(--etrak-blue-light);
+}
+
+.selector-group select:focus {
+    outline: none;
+    border-color: var(--etrak-orange);
+    box-shadow: 0 0 0 3px rgba(255, 106, 0, 0.15);
+}
+
+.selector-group select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: var(--etrak-gray-100);
+}
+
+.btn-reset {
+    margin-top: 1.25rem;
+    padding: 0.6rem 1.5rem;
+    background: transparent;
+    border: 2px solid var(--etrak-gray-300);
+    border-radius: var(--radius);
+    color: var(--etrak-gray-500);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+    border-color: var(--etrak-orange);
+    color: var(--etrak-orange);
+}
+
+/* ---- RESULTS ---- */
+.results-section {
+    background: var(--etrak-white);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.3s ease;
+}
+
+.results-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--etrak-gray-100);
+}
+
+.results-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--etrak-blue-dark);
+}
+
+.badge {
+    background: var(--etrak-orange);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.specs-table tr {
+    border-bottom: 1px solid var(--etrak-gray-100);
+    transition: background 0.15s ease;
+}
+
+.specs-table tr:last-child {
+    border-bottom: none;
+}
+
+.specs-table tr:hover {
+    background: var(--etrak-gray-50);
+}
+
+.specs-table td {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+}
+
+.specs-table td:first-child {
+    font-weight: 600;
+    color: var(--etrak-gray-700);
+    width: 40%;
+}
+
+.specs-table td:last-child {
+    color: var(--etrak-gray-900);
+}
+
+/* ---- EMPTY STATE ---- */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--etrak-gray-300);
+}
+
+.empty-icon {
+    margin-bottom: 1rem;
+}
+
+.empty-icon svg {
+    stroke: var(--etrak-gray-300);
+}
+
+.empty-state p {
+    font-size: 1rem;
+    color: var(--etrak-gray-500);
+}
+
+/* ---- FOOTER ---- */
+footer {
+    background: var(--etrak-blue-dark);
+    padding: 1.25rem 2rem;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+footer p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+}
+
+/* ---- ANIMATIONS ---- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 900px) {
+    .selectors-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 1rem;
+    }
+
+    .selector-section {
+        padding: 1.25rem;
+    }
+
+    .selectors-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .results-section {
+        padding: 1.25rem;
+    }
+
+    .specs-table td:first-child {
+        width: 45%;
+    }
+
+    .header-subtitle {
+        display: none;
+    }
+
+    .logo-divider {
+        display: none;
+    }
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Portail Machine</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-text">
+                    <span class="logo-e">e</span><span class="logo-dash">-</span><span class="logo-trak">Trak</span>
+                </div>
+                <span class="logo-divider"></span>
+                <span class="header-subtitle">Portail Machine</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="selector-section">
+            <h1>Recherche de machine</h1>
+            <p class="intro-text">Selectionnez les criteres pour afficher les details techniques de la machine.</p>
+
+            <div class="selectors-grid">
+                <div class="selector-group">
+                    <label for="select-type">Type de machine</label>
+                    <select id="select-type">
+                        <option value="">-- Selectionnez un type --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-fabricant">Fabricant</label>
+                    <select id="select-fabricant" disabled>
+                        <option value="">-- Selectionnez un fabricant --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-annee">Annee</label>
+                    <select id="select-annee" disabled>
+                        <option value="">-- Selectionnez une annee --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-modele">Modele</label>
+                    <select id="select-modele" disabled>
+                        <option value="">-- Selectionnez un modele --</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="btn-reset" class="btn-reset" style="display:none;">Reinitialiser</button>
+        </section>
+
+        <section id="results-section" class="results-section" style="display:none;">
+            <div class="results-header">
+                <h2 id="results-title"></h2>
+                <span id="results-badge" class="badge"></span>
+            </div>
+            <div id="results-table-container"></div>
+        </section>
+
+        <section id="empty-state" class="empty-state">
+            <div class="empty-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+            </div>
+            <p>Selectionnez une machine pour afficher ses specifications techniques.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 e-Trak Solutions | Portail Machine</p>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
