@@ -1091,10 +1091,118 @@
         "BSF 36-4.16H": {
           "Portee verticale": "35.4 m",
           "Portee horizontale": "31.5 m",
-          "Nombre de sections": "4",
+          "Sections": "4",
           "Debit max": "160 m3/h",
           "Pression beton max": "85 bar",
-          "Diametre tuyauterie": "125 mm"
+          "Tuyauterie": "125 mm"
+        },
+        "BSF 42-5.16H": {
+          "Portee verticale": "41.7 m",
+          "Portee horizontale": "37.2 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "BSF 47-5.16H": {
+          "Portee verticale": "46.8 m",
+          "Portee horizontale": "42.5 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "BSF 56-5.16H": {
+          "Portee verticale": "55.8 m",
+          "Portee horizontale": "51.2 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        }
+      }
+    },
+    "Schwing": {
+      "2024": {
+        "S 28 X": {
+          "Portee verticale": "27.8 m",
+          "Portee horizontale": "23.9 m",
+          "Sections": "4",
+          "Debit max": "150 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "S 36 SX": {
+          "Portee verticale": "35.4 m",
+          "Portee horizontale": "31.3 m",
+          "Sections": "4",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "S 43 SX": {
+          "Portee verticale": "42.7 m",
+          "Portee horizontale": "38.1 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "S 58 SX": {
+          "Portee verticale": "57.3 m",
+          "Portee horizontale": "52 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        }
+      }
+    },
+    "SANY": {
+      "2024": {
+        "SYG5271THB 38": {
+          "Portee verticale": "37.4 m",
+          "Portee horizontale": "33 m",
+          "Sections": "4",
+          "Debit max": "150 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "SYG5418THB 47": {
+          "Portee verticale": "46.8 m",
+          "Portee horizontale": "42 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "SYG5530THB 56": {
+          "Portee verticale": "55.6 m",
+          "Portee horizontale": "50 m",
+          "Sections": "5",
+          "Debit max": "170 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
+        }
+      }
+    },
+    "Alliance": {
+      "2024": {
+        "33-4M": {
+          "Portee verticale": "32.5 m",
+          "Portee horizontale": "28 m",
+          "Sections": "4",
+          "Debit max": "150 m3/h",
+          "Pression beton max": "80 bar",
+          "Tuyauterie": "125 mm"
+        },
+        "47-5M": {
+          "Portee verticale": "46.8 m",
+          "Portee horizontale": "42 m",
+          "Sections": "5",
+          "Debit max": "160 m3/h",
+          "Pression beton max": "85 bar",
+          "Tuyauterie": "125 mm"
         }
       }
     }
@@ -1102,13 +1210,125 @@
   "Camion Girafe (Boom Truck)": {
     "Manitex": {
       "2024": {
+        "TC22086": {
+          "Capacite max": "22 US ton",
+          "Portee max fleche": "86 ft",
+          "Sections": "3",
+          "Chassis": "Peterbilt / Kenworth"
+        },
+        "2892C": {
+          "Capacite max": "28 US ton",
+          "Portee max fleche": "92 ft",
+          "Sections": "4",
+          "Chassis": "Peterbilt / Kenworth"
+        },
+        "30100C": {
+          "Capacite max": "30 US ton",
+          "Portee max fleche": "100 ft",
+          "Sections": "4",
+          "Chassis": "Peterbilt / Kenworth"
+        },
         "30112S": {
           "Capacite max": "30 US ton",
-          "Portee max fleche": "33.5 m",
-          "Hauteur max sous crochet": "38.7 m",
-          "Nombre de sections": "4",
-          "Chassis": "3 essieux",
-          "Stabilisateurs": "Outriggers H-style"
+          "Portee max fleche": "112 ft",
+          "Sections": "4",
+          "Chassis": "Freightliner / Peterbilt"
+        },
+        "TC40124SHL": {
+          "Capacite max": "40 US ton",
+          "Portee max fleche": "124 ft",
+          "Sections": "4",
+          "Chassis": "Tandem / Tri-axle"
+        },
+        "TC50128SHL": {
+          "Capacite max": "50 US ton",
+          "Portee max fleche": "128 ft",
+          "Sections": "5",
+          "Chassis": "Tri-axle"
+        },
+        "TC60142SHL": {
+          "Capacite max": "60 US ton",
+          "Portee max fleche": "142 ft",
+          "Sections": "5",
+          "Chassis": "Tri-axle / Quad-axle"
+        }
+      }
+    },
+    "National Crane": {
+      "2024": {
+        "NBT30H-2": {
+          "Capacite max": "30 US ton",
+          "Portee max fleche": "110 ft",
+          "Sections": "4",
+          "Chassis": "Freightliner / Peterbilt"
+        },
+        "NBT40-1": {
+          "Capacite max": "40 US ton",
+          "Portee max fleche": "127 ft",
+          "Sections": "4",
+          "Chassis": "Tandem axle"
+        },
+        "NBT55": {
+          "Capacite max": "55 US ton",
+          "Portee max fleche": "151 ft",
+          "Sections": "5",
+          "Chassis": "Tri-axle"
+        },
+        "NBT60XL": {
+          "Capacite max": "60 US ton",
+          "Portee max fleche": "151 ft",
+          "Sections": "5",
+          "Chassis": "Tri-axle"
+        }
+      }
+    },
+    "Elliott": {
+      "2024": {
+        "1870F": {
+          "Capacite max": "18 US ton",
+          "Portee max fleche": "70 ft",
+          "Sections": "3",
+          "Chassis": "Single axle"
+        },
+        "24105F": {
+          "Capacite max": "24 US ton",
+          "Portee max fleche": "105 ft",
+          "Sections": "4",
+          "Chassis": "Tandem axle"
+        },
+        "32117F": {
+          "Capacite max": "32 US ton",
+          "Portee max fleche": "117 ft",
+          "Sections": "4",
+          "Chassis": "Tandem axle"
+        },
+        "40142": {
+          "Capacite max": "40 US ton",
+          "Portee max fleche": "142 ft",
+          "Sections": "5",
+          "Chassis": "Tri-axle"
+        }
+      }
+    },
+    "Tadano": {
+      "2024": {
+        "TM-1882": {
+          "Capacite max": "18 US ton",
+          "Portee max fleche": "82 ft",
+          "Sections": "3",
+          "Chassis": "Single axle"
+        },
+        "TM-20105": {
+          "Capacite max": "20 US ton",
+          "Portee max fleche": "105 ft",
+          "Sections": "4",
+          "Chassis": "Tandem axle"
+        },
+        "TM-30110-2": {
+          "Capacite max": "30 US ton",
+          "Portee max fleche": "110 ft",
+          "Sections": "4",
+          "Chassis": "Tandem axle"
         }
       }
     }
@@ -1116,13 +1336,140 @@
   "Telehandler": {
     "JLG": {
       "2024": {
-        "1055": {
-          "Capacite max": "10 000 lb (4 536 kg)",
-          "Hauteur de levee max": "55 ft (16.8 m)",
-          "Portee avant max": "42 ft (12.8 m)",
+        "742": {
+          "Capacite max": "7 000 lb",
+          "Hauteur levee max": "42 ft",
+          "Portee avant max": "29 ft",
+          "Puissance moteur": "74 hp",
+          "Poids operationnel": "16 650 lb"
+        },
+        "943": {
+          "Capacite max": "9 000 lb",
+          "Hauteur levee max": "43 ft",
+          "Portee avant max": "31 ft",
           "Puissance moteur": "120 hp",
-          "Poids operationnel": "13 200 kg",
-          "Type direction": "4 modes"
+          "Poids operationnel": "22 500 lb"
+        },
+        "1055": {
+          "Capacite max": "10 000 lb",
+          "Hauteur levee max": "55 ft",
+          "Portee avant max": "42 ft",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "26 500 lb"
+        },
+        "1255": {
+          "Capacite max": "12 000 lb",
+          "Hauteur levee max": "55 ft",
+          "Portee avant max": "42 ft",
+          "Puissance moteur": "130 hp",
+          "Poids operationnel": "29 000 lb"
+        }
+      }
+    },
+    "Genie (Terex)": {
+      "2024": {
+        "GTH-636": {
+          "Capacite max": "6 000 lb",
+          "Hauteur levee max": "36 ft",
+          "Portee avant max": "23 ft",
+          "Puissance moteur": "74 hp",
+          "Poids operationnel": "14 500 lb"
+        },
+        "GTH-844": {
+          "Capacite max": "8 000 lb",
+          "Hauteur levee max": "44 ft",
+          "Portee avant max": "30 ft",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "22 000 lb"
+        },
+        "GTH-1056": {
+          "Capacite max": "10 000 lb",
+          "Hauteur levee max": "56 ft",
+          "Portee avant max": "42 ft",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "27 000 lb"
+        }
+      }
+    },
+    "JCB": {
+      "2024": {
+        "506-36": {
+          "Capacite max": "5 500 lb",
+          "Hauteur levee max": "36 ft",
+          "Portee avant max": "23 ft",
+          "Puissance moteur": "74 hp",
+          "Poids operationnel": "14 000 lb"
+        },
+        "507-42": {
+          "Capacite max": "7 000 lb",
+          "Hauteur levee max": "42 ft",
+          "Portee avant max": "29 ft",
+          "Puissance moteur": "109 hp",
+          "Poids operationnel": "19 000 lb"
+        },
+        "510-56": {
+          "Capacite max": "10 000 lb",
+          "Hauteur levee max": "56 ft",
+          "Portee avant max": "42 ft",
+          "Puissance moteur": "130 hp",
+          "Poids operationnel": "27 000 lb"
+        },
+        "512-56": {
+          "Capacite max": "12 000 lb",
+          "Hauteur levee max": "56 ft",
+          "Portee avant max": "42 ft",
+          "Puissance moteur": "145 hp",
+          "Poids operationnel": "30 000 lb"
+        }
+      }
+    },
+    "CAT": {
+      "2024": {
+        "TL642D": {
+          "Capacite max": "6 400 lb",
+          "Hauteur levee max": "42 ft",
+          "Portee avant max": "29 ft",
+          "Puissance moteur": "74 hp",
+          "Poids operationnel": "18 000 lb"
+        },
+        "TL943D": {
+          "Capacite max": "9 000 lb",
+          "Hauteur levee max": "43 ft",
+          "Portee avant max": "31 ft",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "23 000 lb"
+        },
+        "TL1055D": {
+          "Capacite max": "10 000 lb",
+          "Hauteur levee max": "55 ft",
+          "Portee avant max": "42 ft",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "27 000 lb"
+        }
+      }
+    },
+    "Manitou": {
+      "2024": {
+        "MT 625": {
+          "Capacite max": "6 000 lb",
+          "Hauteur levee max": "25 ft",
+          "Portee avant max": "16 ft",
+          "Puissance moteur": "74 hp",
+          "Poids operationnel": "12 000 lb"
+        },
+        "MT 733": {
+          "Capacite max": "7 000 lb",
+          "Hauteur levee max": "33 ft",
+          "Portee avant max": "20 ft",
+          "Puissance moteur": "74 hp",
+          "Poids operationnel": "15 000 lb"
+        },
+        "MT 1040": {
+          "Capacite max": "10 000 lb",
+          "Hauteur levee max": "40 ft",
+          "Portee avant max": "28 ft",
+          "Puissance moteur": "120 hp",
+          "Poids operationnel": "22 000 lb"
         }
       }
     }
@@ -1130,13 +1477,117 @@
   "Camion Vacuum": {
     "Vactor": {
       "2024": {
-        "2100 Plus": {
+        "2100i": {
           "Capacite debris": "12 yd3",
-          "Capacite eau": "1 500 gal US",
-          "Debit air max": "5 800 CFM",
+          "Capacite eau": "1 500 gal",
+          "Debit air max": "5 000 CFM",
+          "Vacuum max": "18 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        },
+        "2112i": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "1 500 gal",
+          "Debit air max": "5 200 CFM",
           "Vacuum max": "27 inHg",
-          "Pression eau max": "2 500 PSI",
-          "Chassis": "Tandem essieu"
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        },
+        "HXX": {
+          "Capacite debris": "15 yd3",
+          "Capacite eau": "1 300 gal",
+          "Debit air max": "5 250 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem / Tri-axle"
+        }
+      }
+    },
+    "Vac-Con": {
+      "2024": {
+        "Combination 12yd": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "1 500 gal",
+          "Debit air max": "5 200 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        },
+        "X-Cavator": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "1 200 gal",
+          "Debit air max": "5 200 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        }
+      }
+    },
+    "GapVax": {
+      "2024": {
+        "HV Series": {
+          "Capacite debris": "15 yd3",
+          "Capacite eau": "1 000 gal",
+          "Debit air max": "6 200 CFM",
+          "Vacuum max": "28 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem / Tri-axle"
+        },
+        "VHE Series": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "2 000 gal",
+          "Debit air max": "4 000 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        }
+      }
+    },
+    "Super Products": {
+      "2024": {
+        "Mud Dog 700": {
+          "Capacite debris": "7 yd3",
+          "Capacite eau": "600 gal",
+          "Debit air max": "3 700 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Non-CDL single axle"
+        },
+        "Mud Dog 1200": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "1 000 gal",
+          "Debit air max": "5 800 CFM",
+          "Vacuum max": "28 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        },
+        "Mud Dog 1600": {
+          "Capacite debris": "16 yd3",
+          "Capacite eau": "1 500 gal",
+          "Debit air max": "5 800 CFM",
+          "Vacuum max": "28 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tri-axle"
+        }
+      }
+    },
+    "Vacall": {
+      "2024": {
+        "AllJetVac 12yd": {
+          "Capacite debris": "12 yd3",
+          "Capacite eau": "1 500 gal",
+          "Debit air max": "5 200 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
+        },
+        "AllExcavate 811": {
+          "Capacite debris": "8 yd3",
+          "Capacite eau": "1 100 gal",
+          "Debit air max": "5 200 CFM",
+          "Vacuum max": "27 inHg",
+          "Pression eau max": "3 000 PSI",
+          "Chassis": "Tandem axle"
         }
       }
     }
@@ -1144,13 +1595,125 @@
   "Retrocaveuse": {
     "Case": {
       "2024": {
-        "580SV": {
+        "580 Super N": {
           "Puissance moteur": "97 hp",
-          "Profondeur de fouille max": "4.36 m",
-          "Hauteur de chargement": "3.48 m",
-          "Capacite godet chargeur": "1.0 m3",
-          "Force de cavage godet retro": "56.9 kN",
-          "Poids operationnel": "7 800 kg"
+          "Profondeur fouille max": "17.9 ft",
+          "Hauteur chargement": "11.2 ft",
+          "Godet chargeur": "1.0 yd3",
+          "Force cavage": "14 452 lb",
+          "Poids operationnel": "15 500 lb"
+        },
+        "590 Super N": {
+          "Puissance moteur": "110 hp",
+          "Profondeur fouille max": "19.8 ft",
+          "Hauteur chargement": "12 ft",
+          "Godet chargeur": "1.3 yd3",
+          "Force cavage": "16 000 lb",
+          "Poids operationnel": "20 532 lb"
+        }
+      }
+    },
+    "Caterpillar": {
+      "2024": {
+        "420": {
+          "Puissance moteur": "97 hp",
+          "Profondeur fouille max": "14 ft",
+          "Hauteur chargement": "10.8 ft",
+          "Godet chargeur": "1.25 yd3",
+          "Force cavage": "12 469 lb",
+          "Poids operationnel": "21 000 lb"
+        },
+        "440": {
+          "Puissance moteur": "127 hp",
+          "Profondeur fouille max": "15.5 ft",
+          "Hauteur chargement": "11.5 ft",
+          "Godet chargeur": "1.3 yd3",
+          "Force cavage": "15 320 lb",
+          "Poids operationnel": "24 000 lb"
+        },
+        "450": {
+          "Puissance moteur": "145 hp",
+          "Profondeur fouille max": "17 ft",
+          "Hauteur chargement": "12 ft",
+          "Godet chargeur": "1.5 yd3",
+          "Force cavage": "17 000 lb",
+          "Poids operationnel": "26 500 lb"
+        }
+      }
+    },
+    "John Deere": {
+      "2024": {
+        "310 P-Tier": {
+          "Puissance moteur": "100 hp",
+          "Profondeur fouille max": "14 ft",
+          "Hauteur chargement": "10.7 ft",
+          "Godet chargeur": "1.0 yd3",
+          "Force cavage": "12 250 lb",
+          "Poids operationnel": "15 221 lb"
+        },
+        "410 P-Tier": {
+          "Puissance moteur": "116 hp",
+          "Profondeur fouille max": "15.9 ft",
+          "Hauteur chargement": "11.6 ft",
+          "Godet chargeur": "1.15 yd3",
+          "Force cavage": "14 500 lb",
+          "Poids operationnel": "17 582 lb"
+        },
+        "710 P-Tier": {
+          "Puissance moteur": "148 hp",
+          "Profondeur fouille max": "18.8 ft",
+          "Hauteur chargement": "12.5 ft",
+          "Godet chargeur": "1.5 yd3",
+          "Force cavage": "17 800 lb",
+          "Poids operationnel": "24 000 lb"
+        }
+      }
+    },
+    "JCB": {
+      "2024": {
+        "3CX": {
+          "Puissance moteur": "92 hp",
+          "Profondeur fouille max": "21.4 ft",
+          "Hauteur chargement": "11 ft",
+          "Godet chargeur": "1.0 yd3",
+          "Force cavage": "13 448 lb",
+          "Poids operationnel": "17 857 lb"
+        },
+        "4CX": {
+          "Puissance moteur": "109 hp",
+          "Profondeur fouille max": "20.1 ft",
+          "Hauteur chargement": "11.5 ft",
+          "Godet chargeur": "1.3 yd3",
+          "Force cavage": "14 770 lb",
+          "Poids operationnel": "21 300 lb"
+        },
+        "5CX": {
+          "Puissance moteur": "130 hp",
+          "Profondeur fouille max": "21.5 ft",
+          "Hauteur chargement": "12 ft",
+          "Godet chargeur": "1.5 yd3",
+          "Force cavage": "16 500 lb",
+          "Poids operationnel": "24 000 lb"
+        }
+      }
+    },
+    "New Holland": {
+      "2024": {
+        "B95D": {
+          "Puissance moteur": "95 hp",
+          "Profondeur fouille max": "14 ft",
+          "Hauteur chargement": "10.8 ft",
+          "Godet chargeur": "1.0 yd3",
+          "Force cavage": "12 250 lb",
+          "Poids operationnel": "16 800 lb"
+        },
+        "B110D": {
+          "Puissance moteur": "110 hp",
+          "Profondeur fouille max": "17.5 ft",
+          "Hauteur chargement": "11.5 ft",
+          "Godet chargeur": "1.25 yd3",
+          "Force cavage": "14 500 lb",
+          "Poids operationnel": "20 000 lb"
         }
       }
     }
@@ -1158,13 +1721,126 @@
   "Foreuse": {
     "Epiroc": {
       "2024": {
+        "SmartROC D60": {
+          "Diametre forage": "89-178 mm",
+          "Profondeur max": "30 m",
+          "Puissance moteur": "300 hp",
+          "Poids operationnel": "18 000 kg",
+          "Type": "Surface DTH"
+        },
+        "SmartROC D65": {
+          "Diametre forage": "110-229 mm",
+          "Profondeur max": "32 m",
+          "Puissance moteur": "350 hp",
+          "Poids operationnel": "22 000 kg",
+          "Type": "Surface DTH"
+        },
         "FlexiROC T20 R": {
-          "Diametre de forage": "51 - 102 mm",
-          "Profondeur de forage max": "18.6 m",
+          "Diametre forage": "51-102 mm",
+          "Profondeur max": "18.6 m",
           "Puissance moteur": "175 hp",
           "Poids operationnel": "12 000 kg",
-          "Force de rotation": "5 000 Nm",
-          "Type compresseur": "Integre 12 bar"
+          "Type": "Surface top hammer"
+        }
+      }
+    },
+    "Sandvik": {
+      "2024": {
+        "Ranger DX800": {
+          "Diametre forage": "64-127 mm",
+          "Profondeur max": "30 m",
+          "Puissance moteur": "282 hp",
+          "Poids operationnel": "17 500 kg",
+          "Type": "Surface DTH"
+        },
+        "Leopard DI650i": {
+          "Diametre forage": "152-251 mm",
+          "Profondeur max": "54 m",
+          "Puissance moteur": "700 hp",
+          "Poids operationnel": "55 000 kg",
+          "Type": "Blasthole DTH"
+        }
+      }
+    },
+    "Ditch Witch": {
+      "2024": {
+        "JT10": {
+          "Diametre forage": "2-6 in",
+          "Profondeur max": "300 ft",
+          "Puissance moteur": "49 hp",
+          "Poids operationnel": "9 300 lb",
+          "Type": "HDD"
+        },
+        "JT24": {
+          "Diametre forage": "4-12 in",
+          "Profondeur max": "600 ft",
+          "Puissance moteur": "101 hp",
+          "Poids operationnel": "17 500 lb",
+          "Type": "HDD"
+        },
+        "JT40": {
+          "Diametre forage": "6-24 in",
+          "Profondeur max": "1 000 ft",
+          "Puissance moteur": "165 hp",
+          "Poids operationnel": "30 000 lb",
+          "Type": "HDD"
+        },
+        "AT120": {
+          "Diametre forage": "12-48 in",
+          "Profondeur max": "2 500 ft",
+          "Puissance moteur": "440 hp",
+          "Poids operationnel": "96 000 lb",
+          "Type": "HDD"
+        }
+      }
+    },
+    "Vermeer": {
+      "2024": {
+        "D24": {
+          "Diametre forage": "4-12 in",
+          "Profondeur max": "480 ft",
+          "Puissance moteur": "100 hp",
+          "Poids operationnel": "16 000 lb",
+          "Type": "HDD"
+        },
+        "D40x55 S3": {
+          "Diametre forage": "6-20 in",
+          "Profondeur max": "1 000 ft",
+          "Puissance moteur": "160 hp",
+          "Poids operationnel": "28 000 lb",
+          "Type": "HDD"
+        },
+        "D100x140 S3": {
+          "Diametre forage": "12-48 in",
+          "Profondeur max": "2 500 ft",
+          "Puissance moteur": "440 hp",
+          "Poids operationnel": "95 000 lb",
+          "Type": "HDD"
+        }
+      }
+    },
+    "Bauer": {
+      "2024": {
+        "BG 12 H": {
+          "Diametre forage": "1 500 mm max",
+          "Profondeur max": "24 m",
+          "Puissance moteur": "240 hp",
+          "Poids operationnel": "43.4 t",
+          "Type": "Piling rig"
+        },
+        "BG 24 H": {
+          "Diametre forage": "2 400 mm max",
+          "Profondeur max": "48 m",
+          "Puissance moteur": "400 hp",
+          "Poids operationnel": "90 t",
+          "Type": "Piling rig"
+        },
+        "BG 45": {
+          "Diametre forage": "3 000 mm max",
+          "Profondeur max": "60 m",
+          "Puissance moteur": "600 hp",
+          "Poids operationnel": "135 t",
+          "Type": "Piling rig"
         }
       }
     }
@@ -1172,13 +1848,213 @@
   "Grue Mobile": {
     "Liebherr": {
       "2024": {
-        "LTM 1060-3.1": {
-          "Capacite max": "60 t",
-          "Longueur fleche telescopique": "48 m",
-          "Hauteur max sous crochet": "69 m",
-          "Nombre essieux": "3",
+        "LTM 1030-2.1": {
+          "Capacite max": "30 t",
+          "Fleche telescopique": "26 m",
+          "Hauteur max": "38 m",
+          "Essieux": "2",
+          "Puissance moteur": "272 hp",
+          "Contrepoids max": "4.2 t"
+        },
+        "LTM 1050-3.1": {
+          "Capacite max": "50 t",
+          "Fleche telescopique": "38 m",
+          "Hauteur max": "54 m",
+          "Essieux": "3",
           "Puissance moteur": "367 hp",
-          "Contrepoids max": "12.8 t"
+          "Contrepoids max": "10 t"
+        },
+        "LTM 1070-4.2": {
+          "Capacite max": "70 t",
+          "Fleche telescopique": "50 m",
+          "Hauteur max": "65 m",
+          "Essieux": "4",
+          "Puissance moteur": "408 hp",
+          "Contrepoids max": "14.5 t"
+        },
+        "LTM 1100-5.3": {
+          "Capacite max": "100 t",
+          "Fleche telescopique": "62 m",
+          "Hauteur max": "76 m",
+          "Essieux": "5",
+          "Puissance moteur": "449 hp",
+          "Contrepoids max": "22 t"
+        },
+        "LTM 1150-5.3": {
+          "Capacite max": "150 t",
+          "Fleche telescopique": "66 m",
+          "Hauteur max": "87 m",
+          "Essieux": "5",
+          "Puissance moteur": "510 hp",
+          "Contrepoids max": "30 t"
+        },
+        "LTM 1250-5.1": {
+          "Capacite max": "250 t",
+          "Fleche telescopique": "60 m",
+          "Hauteur max": "108 m",
+          "Essieux": "5",
+          "Puissance moteur": "544 hp",
+          "Contrepoids max": "48 t"
+        },
+        "LTM 1300-6.4": {
+          "Capacite max": "300 t",
+          "Fleche telescopique": "78 m",
+          "Hauteur max": "114 m",
+          "Essieux": "6",
+          "Puissance moteur": "598 hp",
+          "Contrepoids max": "60 t"
+        },
+        "LTM 1450-8.1": {
+          "Capacite max": "450 t",
+          "Fleche telescopique": "85 m",
+          "Hauteur max": "145 m",
+          "Essieux": "8",
+          "Puissance moteur": "680 hp",
+          "Contrepoids max": "100 t"
+        }
+      }
+    },
+    "Grove (Manitowoc)": {
+      "2024": {
+        "GMK3060L-1": {
+          "Capacite max": "60 t",
+          "Fleche telescopique": "48 m",
+          "Hauteur max": "60 m",
+          "Essieux": "3",
+          "Puissance moteur": "354 hp",
+          "Contrepoids max": "9.3 t"
+        },
+        "GMK4100L-2": {
+          "Capacite max": "100 t",
+          "Fleche telescopique": "60 m",
+          "Hauteur max": "78 m",
+          "Essieux": "4",
+          "Puissance moteur": "390 hp",
+          "Contrepoids max": "16.5 t"
+        },
+        "GMK5150XL": {
+          "Capacite max": "150 t",
+          "Fleche telescopique": "69 m",
+          "Hauteur max": "95 m",
+          "Essieux": "5",
+          "Puissance moteur": "530 hp",
+          "Contrepoids max": "30 t"
+        },
+        "GMK5220": {
+          "Capacite max": "220 t",
+          "Fleche telescopique": "68 m",
+          "Hauteur max": "108 m",
+          "Essieux": "5",
+          "Puissance moteur": "530 hp",
+          "Contrepoids max": "48 t"
+        },
+        "GMK6400-1": {
+          "Capacite max": "400 t",
+          "Fleche telescopique": "60 m",
+          "Hauteur max": "130 m",
+          "Essieux": "6",
+          "Puissance moteur": "598 hp",
+          "Contrepoids max": "80 t"
+        }
+      }
+    },
+    "Tadano": {
+      "2024": {
+        "AC 4.080-1": {
+          "Capacite max": "80 t",
+          "Fleche telescopique": "60 m",
+          "Hauteur max": "72 m",
+          "Essieux": "4",
+          "Puissance moteur": "400 hp",
+          "Contrepoids max": "14.5 t"
+        },
+        "AC 5.160-1": {
+          "Capacite max": "160 t",
+          "Fleche telescopique": "68 m",
+          "Hauteur max": "100 m",
+          "Essieux": "5",
+          "Puissance moteur": "510 hp",
+          "Contrepoids max": "30 t"
+        },
+        "AC 5.220-1": {
+          "Capacite max": "220 t",
+          "Fleche telescopique": "68 m",
+          "Hauteur max": "108 m",
+          "Essieux": "5",
+          "Puissance moteur": "530 hp",
+          "Contrepoids max": "45 t"
+        },
+        "AC 7.450-1": {
+          "Capacite max": "450 t",
+          "Fleche telescopique": "80 m",
+          "Hauteur max": "140 m",
+          "Essieux": "7",
+          "Puissance moteur": "625 hp",
+          "Contrepoids max": "100 t"
+        }
+      }
+    },
+    "Link-Belt": {
+      "2024": {
+        "HTC 8650": {
+          "Capacite max": "45 t",
+          "Fleche telescopique": "33.5 m",
+          "Hauteur max": "44 m",
+          "Essieux": "3",
+          "Puissance moteur": "300 hp",
+          "Contrepoids max": "6.8 t"
+        },
+        "HTC 8690": {
+          "Capacite max": "82 t",
+          "Fleche telescopique": "42 m",
+          "Hauteur max": "56 m",
+          "Essieux": "4",
+          "Puissance moteur": "400 hp",
+          "Contrepoids max": "13.6 t"
+        },
+        "120 HT": {
+          "Capacite max": "109 t",
+          "Fleche telescopique": "46 m",
+          "Hauteur max": "65 m",
+          "Essieux": "4",
+          "Puissance moteur": "450 hp",
+          "Contrepoids max": "18 t"
+        },
+        "248 HSL": {
+          "Capacite max": "225 t",
+          "Fleche telescopique": "55 m",
+          "Hauteur max": "85 m",
+          "Essieux": "5",
+          "Puissance moteur": "530 hp",
+          "Contrepoids max": "40 t"
+        }
+      }
+    },
+    "SANY": {
+      "2024": {
+        "SRA350A": {
+          "Capacite max": "35 US ton",
+          "Fleche telescopique": "35 m",
+          "Hauteur max": "42 m",
+          "Essieux": "2",
+          "Puissance moteur": "210 hp",
+          "Contrepoids max": "4 t"
+        },
+        "SRA550A": {
+          "Capacite max": "55 US ton",
+          "Fleche telescopique": "35 m",
+          "Hauteur max": "48 m",
+          "Essieux": "2",
+          "Puissance moteur": "260 hp",
+          "Contrepoids max": "6.5 t"
+        },
+        "SRA750A": {
+          "Capacite max": "75 US ton",
+          "Fleche telescopique": "43.5 m",
+          "Hauteur max": "55 m",
+          "Essieux": "2",
+          "Puissance moteur": "300 hp",
+          "Contrepoids max": "9 t"
         }
       }
     }
