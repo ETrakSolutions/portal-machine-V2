@@ -3,20 +3,20 @@
    ============================================ */
 
 :root {
-    --bg-dark: #0C1117;
-    --bg-card: #151B23;
-    --bg-card-hover: #1A2230;
-    --bg-input: #1E2633;
-    --border: #2A3444;
+    --bg-dark: #B8B0A8;
+    --bg-card: #D1C9C1;
+    --bg-card-hover: #C5BDB5;
+    --bg-input: #C8C0B8;
+    --border: #A69E96;
     --border-focus: #FF6A00;
     --etrak-orange: #FF6A00;
-    --etrak-orange-glow: rgba(255, 106, 0, 0.15);
+    --etrak-orange-glow: rgba(255, 106, 0, 0.2);
     --etrak-orange-dim: #CC5500;
     --etrak-blue: #3B82F6;
     --etrak-blue-dark: #002B5C;
-    --text-primary: #F0F2F5;
-    --text-secondary: #8B95A5;
-    --text-muted: #5A6577;
+    --text-primary: #1A1A1A;
+    --text-secondary: #4A4440;
+    --text-muted: #7A726A;
     --white: #FFFFFF;
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
     --shadow-orange: 0 0 20px rgba(255, 106, 0, 0.1);
@@ -37,8 +37,8 @@ body {
 
 /* ---- HEADER ---- */
 header {
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
+    background: #2A2520;
+    border-bottom: 1px solid #3A3530;
     padding: 0 2rem;
     height: 60px;
     display: flex;
@@ -66,7 +66,7 @@ header {
 
 .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
 .logo-e { color: var(--etrak-orange); }
-.logo-dash, .logo-trak { color: var(--white); }
+.logo-dash, .logo-trak { color: #F0EDE8; }
 
 .logo-divider {
     width: 1px;
@@ -75,7 +75,7 @@ header {
 }
 
 .header-subtitle {
-    color: var(--text-secondary);
+    color: #9A9490;
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 2px;
@@ -243,7 +243,7 @@ main {
 
 .badge {
     background: var(--etrak-orange);
-    color: var(--bg-dark);
+    color: #FFFFFF;
     font-size: 0.6rem;
     font-weight: 800;
     padding: 3px 8px;
@@ -315,8 +315,8 @@ main {
 
 /* ---- FOOTER ---- */
 footer {
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
+    background: #2A2520;
+    border-top: 1px solid #3A3530;
     padding: 1.25rem 2rem;
     margin-top: auto;
 }
@@ -332,17 +332,18 @@ footer {
 .footer-brand {
     font-size: 1rem;
     font-weight: 800;
+    color: #F0EDE8;
 }
 
 .footer-text {
-    color: var(--text-muted);
+    color: #9A9490;
     font-weight: 400;
     font-size: 0.85rem;
     margin-left: 0.25rem;
 }
 
 .footer-copy {
-    color: var(--text-muted);
+    color: #7A7470;
     font-size: 0.7rem;
 }
 
@@ -351,7 +352,7 @@ footer {
 
 .hamburger-btn {
     background: none;
-    border: 1px solid var(--border);
+    border: 1px solid #4A4540;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -361,13 +362,13 @@ footer {
     transition: all 0.2s;
 }
 
-.hamburger-btn:hover { border-color: var(--text-secondary); }
+.hamburger-btn:hover { border-color: #9A9490; }
 
 .hamburger-btn span {
     display: block;
     width: 18px;
     height: 2px;
-    background: var(--text-secondary);
+    background: #B0AAA4;
     border-radius: 1px;
     transition: all 0.3s ease;
 }
