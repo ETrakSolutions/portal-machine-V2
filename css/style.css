@@ -376,14 +376,6 @@ main {
     accent-color: #FF0000;
 }
 
-.kit-table input[type="radio"]:checked {
-    animation: flashRadio 0.8s ease-in-out infinite;
-}
-
-@keyframes flashRadio {
-    0%, 100% { box-shadow: 0 0 8px 4px rgba(255, 0, 0, 0.8); }
-    50% { box-shadow: 0 0 0px 0px rgba(255, 0, 0, 0); }
-}
 
 /* ---- FLASH YELLOW ---- */
 @keyframes flashYellow {
