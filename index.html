@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=21">
+    <link rel="stylesheet" href="css/style.css?v=22">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -161,6 +161,18 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- NOTES SECTION -->
+            <div id="notes-section" class="notes-section" style="display:none;">
+                <div class="notes-header">
+                    <h3>Notes</h3>
+                    <div class="notes-lock-row">
+                        <p class="notes-subtitle" id="notes-status">Verrouille — entrer le NIP pour modifier</p>
+                        <button id="notes-save-btn" class="notes-save-btn" style="display:none;" title="Enregistrer">&#128190; Enregistrer</button>
+                    </div>
+                </div>
+                <textarea id="notes-textarea" class="notes-textarea" placeholder="Aucune note pour ce modele..." readonly></textarea>
+            </div>
         </section>
 
         <!-- EMPTY STATE -->
@@ -198,6 +210,6 @@
         </div>
     </footer>
 
-    <script src="js/app.js?v=17"></script>
+    <script src="js/app.js?v=18"></script>
 </body>
 </html>

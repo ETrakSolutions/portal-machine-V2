@@ -138,6 +138,8 @@ function showResults(modele, type, fab, annee, specs) {
     const kitSection = document.getElementById('kit-machine-section');
     if (type === 'Excavatrice') {
         kitSection.style.display = 'block';
+        // Load notes for this model
+        loadNotes(fab, modele, annee);
         // Re-lock kit on model change
         if (typeof lockKit === 'function') lockKit();
         // Auto-check options for all models
@@ -221,7 +223,72 @@ function hideResults() {
     emptyState.style.display = 'block';
     const kitSection = document.getElementById('kit-machine-section');
     if (kitSection) kitSection.style.display = 'none';
+    const notesSection = document.getElementById('notes-section');
+    if (notesSection) notesSection.style.display = 'none';
 }
+
+// ---- NOTES SYSTEM ----
+let currentNoteKey = '';
+
+function getNotesKey(fab, modele, annee) {
+    return 'notes_' + fab + '_' + modele + '_' + annee;
+}
+
+function loadNotes(fab, modele, annee) {
+    const notesSection = document.getElementById('notes-section');
+    const notesTextarea = document.getElementById('notes-textarea');
+    const notesSaveBtn = document.getElementById('notes-save-btn');
+    const notesStatus = document.getElementById('notes-status');
+    if (!notesSection) return;
+
+    currentNoteKey = getNotesKey(fab, modele, annee);
+    const saved = localStorage.getItem(currentNoteKey) || '';
+    notesTextarea.value = saved;
+    notesTextarea.readOnly = true;
+    notesSaveBtn.style.display = 'none';
+    notesStatus.textContent = 'Verrouille — entrer le NIP pour modifier';
+    notesSection.style.display = 'block';
+
+    // If kit is unlocked, unlock notes too
+    if (kitUnlocked) {
+        unlockNotes();
+    }
+}
+
+function unlockNotes() {
+    const notesTextarea = document.getElementById('notes-textarea');
+    const notesSaveBtn = document.getElementById('notes-save-btn');
+    const notesStatus = document.getElementById('notes-status');
+    if (!notesTextarea) return;
+    notesTextarea.readOnly = false;
+    notesSaveBtn.style.display = 'inline-block';
+    notesStatus.textContent = 'Editable — cliquer Enregistrer pour sauvegarder';
+}
+
+function lockNotes() {
+    const notesTextarea = document.getElementById('notes-textarea');
+    const notesSaveBtn = document.getElementById('notes-save-btn');
+    const notesStatus = document.getElementById('notes-status');
+    if (!notesTextarea) return;
+    notesTextarea.readOnly = true;
+    notesSaveBtn.style.display = 'none';
+    notesStatus.textContent = 'Verrouille — entrer le NIP pour modifier';
+}
+
+function saveNotes() {
+    const notesTextarea = document.getElementById('notes-textarea');
+    if (!notesTextarea || !currentNoteKey) return;
+    localStorage.setItem(currentNoteKey, notesTextarea.value);
+    // Lock after save
+    lockNotes();
+    lockKit();
+}
+
+// Attach save button
+document.addEventListener('DOMContentLoaded', () => {
+    const saveBtn = document.getElementById('notes-save-btn');
+    if (saveBtn) saveBtn.addEventListener('click', saveNotes);
+});
 
 function resetFrom(level) {
     const levels = ['fabricant', 'annee', 'modele'];
@@ -281,6 +348,7 @@ function lockKit() {
     if (kitLockBtn) kitLockBtn.innerHTML = '&#128274;';
     if (kitLockBtn) kitLockBtn.classList.remove('unlocked');
     if (kitPinInput) { kitPinInput.style.display = 'none'; kitPinInput.value = ''; }
+    lockNotes();
 }
 
 function unlockKit() {
@@ -290,6 +358,7 @@ function unlockKit() {
     if (kitLockBtn) kitLockBtn.innerHTML = '&#128275;';
     if (kitLockBtn) kitLockBtn.classList.add('unlocked');
     if (kitPinInput) kitPinInput.style.display = 'none';
+    unlockNotes();
 }
 
 if (kitLockBtn) {

@@ -496,6 +496,66 @@ main {
     display: inline-block;
 }
 
+/* ---- NOTES SECTION ---- */
+.notes-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+.notes-header h3 {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+.notes-lock-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+.notes-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+.notes-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--white);
+    font-family: 'Acumin Pro', 'Inter', sans-serif;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+    resize: vertical;
+    box-sizing: border-box;
+}
+.notes-textarea:read-only {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.notes-textarea:not(:read-only) {
+    opacity: 1;
+    border-color: #0062CC;
+    box-shadow: 0 0 0 2px rgba(0, 98, 204, 0.3);
+}
+.notes-save-btn {
+    background: #0062CC;
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.notes-save-btn:hover {
+    background: #004A99;
+}
+
 /* ---- FOOTER ---- */
 footer {
     background: #085591;
