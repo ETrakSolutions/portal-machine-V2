@@ -244,8 +244,8 @@ function loadNotes(fab, modele, annee) {
 
     currentNoteKey = getNotesKey(fab, modele, annee);
     notesTextarea.value = '';
-    notesTextarea.readOnly = true;
-    notesSaveBtn.style.display = 'none';
+    notesTextarea.readOnly = false;
+    notesSaveBtn.style.display = 'inline-block';
     notesStatus.textContent = 'Chargement...';
     notesSection.style.display = 'block';
 
