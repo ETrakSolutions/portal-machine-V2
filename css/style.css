@@ -373,6 +373,9 @@ main {
     width: 18px;
     height: 18px;
     cursor: pointer;
+}
+
+.kit-table input.radio-red {
     accent-color: #FF0000;
 }
 

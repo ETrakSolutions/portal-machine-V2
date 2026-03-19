@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="stylesheet" href="css/style.css?v=12">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -105,64 +105,64 @@
                         <tr>
                             <th>Option</th>
                             <th>Code produit</th>
-                            <th style="text-align:center;">Oui</th>
-                            <th style="text-align:center;">Non</th>
+                            <th style="text-align:center;">Obligatoire</th>
+                            <th style="text-align:center;">Option</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Machine <strong>avec cabine</strong> (kit de base)</td>
                             <td class="kit-code">1500-0000</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-cabine" value="avec"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-cabine" value="sans"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-cabine" value="avec" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-cabine" value="sans" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Machine <strong>sans cabine</strong> (kit de base) <span class="kit-special">*** Cas speciaux seulement</span></td>
                             <td class="kit-code">1500-0003</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-sans-cabine" value="oui"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-sans-cabine" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Option <strong>Hauteur</strong></td>
                             <td class="kit-code">1500-0001</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-hauteur" value="oui" class="radio-yellow"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-hauteur" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-hauteur" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-hauteur" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Option <strong>Rotation</strong></td>
                             <td class="kit-code">1500-0002</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-rotation" value="oui" class="radio-yellow"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-rotation" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-rotation" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-rotation" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Option <strong>mini excavatrice</strong></td>
                             <td class="kit-code">1500-0004-install</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-mini" value="oui"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-mini" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-mini" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-mini" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Boite <strong>(GC)</strong></td>
                             <td class="kit-code">1000-0070</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-gc" value="oui"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-gc" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-gc" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-gc" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Gestion <strong>swing boom</strong></td>
                             <td class="kit-code">1500-0008</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-swing" value="oui"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-swing" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-swing" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-swing" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td>Drain <strong>hydraulique</strong></td>
                             <td class="kit-code">1500-0009</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-drain" value="oui"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-drain" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-drain" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-drain" value="non" class="radio-yellow"></td>
                         </tr>
                         <tr>
                             <td><strong>Multi Axes</strong> complet hauteur-rotation (2 booms et 1 stick)</td>
                             <td class="kit-code">1500-0005</td>
-                            <td style="text-align:center;"><input type="radio" name="kit-multi" value="oui"></td>
-                            <td style="text-align:center;"><input type="radio" name="kit-multi" value="non"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-multi" value="oui" class="radio-red"></td>
+                            <td style="text-align:center;"><input type="radio" name="kit-multi" value="non" class="radio-yellow"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -192,6 +192,6 @@
         </div>
     </footer>
 
-    <script src="js/app.js?v=7"></script>
+    <script src="js/app.js?v=8"></script>
 </body>
 </html>
