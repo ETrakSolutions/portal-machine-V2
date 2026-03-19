@@ -356,6 +356,10 @@ main {
 .kit-table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
+}
+.kit-machine-section {
+    overflow-x: hidden;
 }
 
 .kit-table thead th {
@@ -673,11 +677,42 @@ footer {
 }
 
 @media (max-width: 600px) {
-    main { padding: 1rem; }
-    .selector-section { padding: 1.25rem; }
+    main { padding: 0.5rem; }
+    .selector-section { padding: 1rem; }
     .selectors-grid { grid-template-columns: 1fr; }
-    .results-section { padding: 1.25rem; }
+    .results-section { padding: 0.75rem; }
     .specs-table td:first-child { width: 45%; }
     .header-subtitle, .logo-divider { display: none; }
     .footer-content { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+    /* Kit table mobile */
+    .kit-machine-section { padding: 0.75rem; }
+    .kit-table thead th {
+        font-size: 0.55rem;
+        padding: 0.3rem 0.25rem;
+        letter-spacing: 0.5px;
+    }
+    .kit-table tbody td {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.25rem;
+    }
+    .kit-table tbody td:first-child {
+        max-width: 120px;
+        word-wrap: break-word;
+    }
+    .kit-code {
+        font-size: 0.6rem;
+    }
+    .kit-table input[type="radio"] {
+        width: 14px;
+        height: 14px;
+    }
+    .kit-header h3 { font-size: 0.95rem; }
+    .kit-subtitle { font-size: 0.65rem; }
+    .kit-lock-btn { padding: 4px 8px; font-size: 0.8rem; }
+
+    /* Notes mobile */
+    .notes-section { padding: 0.75rem; }
+    .notes-textarea { min-height: 80px; font-size: 0.8rem; }
+    .notes-save-btn { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
 }
