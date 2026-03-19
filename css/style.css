@@ -59,7 +59,7 @@ header {
     background: #085591;
     border-bottom: 1px solid #0A6AAB;
     padding: 0 2rem;
-    height: 60px;
+    height: 75px;
     display: flex;
     align-items: center;
     position: sticky;
@@ -74,16 +74,17 @@ header {
     margin: 0 auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .logo-section {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .header-logo {
-    height: 50px;
+    height: 60px;
     width: auto;
 }
 
@@ -680,11 +681,18 @@ main {
 }
 
 /* ---- GEAR MENU (Email Management) ---- */
+.section-title {
+    color: var(--white);
+    font-size: 1.1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
 .intro-row {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 0.5rem;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
 }
 .gear-wrap { position: relative; }
 .gear-btn {
