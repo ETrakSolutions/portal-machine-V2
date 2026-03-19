@@ -83,6 +83,12 @@ selectAnnee.addEventListener('change', () => {
         opt.textContent = modele;
         selectModele.appendChild(opt);
     });
+    // Add "Autre modele" option
+    const optAutre = document.createElement('option');
+    optAutre.value = '__OTHER__';
+    optAutre.textContent = '⊕ Autre modele (pas dans la liste)';
+    optAutre.style.fontStyle = 'italic';
+    selectModele.appendChild(optAutre);
     selectModele.disabled = false;
 });
 
@@ -97,11 +103,98 @@ selectModele.addEventListener('change', () => {
         return;
     }
 
+    if (modele === '__OTHER__') {
+        showCustomModelModal(type, fab, annee);
+        return;
+    }
+
     const specs = machinesData[type][fab][annee][modele];
     showResults(modele, type, fab, annee, specs);
 });
 
-function showResults(modele, type, fab, annee, specs) {
+// Custom model modal
+function showCustomModelModal(type, fab, annee) {
+    // Remove existing modal if any
+    const existing = document.getElementById('custom-model-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'custom-model-modal';
+    modal.className = 'custom-modal-overlay';
+    modal.innerHTML = `
+        <div class="custom-modal">
+            <h3>Nouveau modele</h3>
+            <p class="modal-desc">${fab} — ${annee}</p>
+            <input type="text" id="custom-model-name" class="modal-input" placeholder="Nom du modele (ex: CX250D)" autocomplete="off">
+            <div class="modal-buttons">
+                <button id="modal-cancel" class="modal-btn modal-btn-cancel">Annuler</button>
+                <button id="modal-create" class="modal-btn modal-btn-create">Creer la fiche</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    const inputField = document.getElementById('custom-model-name');
+    inputField.focus();
+
+    document.getElementById('modal-cancel').addEventListener('click', () => {
+        modal.remove();
+        selectModele.value = '';
+        hideResults();
+    });
+
+    document.getElementById('modal-create').addEventListener('click', () => {
+        const customName = inputField.value.trim();
+        if (!customName) { inputField.style.borderColor = 'red'; return; }
+        modal.remove();
+        createCustomModel(type, fab, annee, customName);
+    });
+
+    inputField.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') document.getElementById('modal-create').click();
+        if (e.key === 'Escape') document.getElementById('modal-cancel').click();
+    });
+}
+
+function createCustomModel(type, fab, annee, customName) {
+    // Create empty specs for custom model
+    const specs = {
+        'Image': '',
+        'Puissance moteur (kW / HP)': 'A completer',
+        'Type de traction': 'A completer',
+        'Type de boom': 'A completer',
+        'Longueur de fleche (m / pi)': 'A completer',
+        'Longueur de stick (m / pi)': 'A completer',
+        'Swing boom': 'A completer',
+        'Voltage machine (V/type)': 'A completer',
+        'Capacite max de levage (kg / lbs)': 'A completer',
+        'Poids operationnel (kg / lbs)': 'A completer'
+    };
+
+    // Save to API
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({
+            action: 'saveModel',
+            modelKey: fab + '_' + customName + '_' + annee,
+            specs: specs
+        })
+    }).catch(() => {});
+
+    // Add to local dropdown
+    const opt = document.createElement('option');
+    opt.value = customName;
+    opt.textContent = customName + ' ★';
+    selectModele.insertBefore(opt, selectModele.querySelector('option[value="__OTHER__"]'));
+    selectModele.value = customName;
+
+    // Show results with empty specs + request button
+    showResults(customName, type, fab, annee, specs, true);
+}
+
+
+function showResults(modele, type, fab, annee, specs, isCustom) {
     resultsTitle.textContent = `${fab} ${modele} (${annee})`;
     resultsBadge.textContent = type;
 
@@ -128,6 +221,27 @@ function showResults(modele, type, fab, annee, specs) {
     html += '</table>';
 
     // (Alert moved to kit Multi Axes row flash)
+
+    // Add "Demande kit machine" button for custom models
+    if (isCustom) {
+        const mailTo = 'robin@gryb.ca,k.berube@e-trak.ca';
+        const mailSubject = encodeURIComponent('Demande Kit Machine — ' + fab + ' ' + modele + ' (' + annee + ')');
+        const mailBody = encodeURIComponent(
+            'Bonjour,\n\n' +
+            'Veuillez configurer le kit machine pour :\n\n' +
+            '- Type : ' + type + '\n' +
+            '- Fabricant : ' + fab + '\n' +
+            '- Modele : ' + modele + '\n' +
+            '- Annee : ' + annee + '\n\n' +
+            'Merci de selectionner les options necessaires (Obligatoire / Option) pour cette machine.\n\n' +
+            'Portail Machine e-Trak\n' +
+            'https://etraksolutions.github.io/portal-machine/'
+        );
+        html += '<div class="kit-request-box">' +
+            '<p class="kit-request-text">⚠ Ce modele n\'est pas dans la base de donnees. Les specifications sont a completer.</p>' +
+            '<a href="mailto:' + mailTo + '?subject=' + mailSubject + '&body=' + mailBody + '" class="kit-request-btn">📧 Demande kit machine</a>' +
+            '</div>';
+    }
 
     resultsTableContainer.innerHTML = html;
 
