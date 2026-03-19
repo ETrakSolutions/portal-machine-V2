@@ -9575,6 +9575,54 @@
           "Voltage machine (V/type)": "24V DC",
           "Capacite max de levage (kg / lbs)": "30000 kg / 66138 lbs",
           "Poids operationnel (kg / lbs)": "74844 kg / 165000 lbs"
+        },
+        "WX140E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "86 kW / 115 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.2 m / 13'09\"",
+          "Longueur de bras (m / pi)": "2.1 m / 6'11\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "6500 kg / 14330 lbs",
+          "Poids operationnel (kg / lbs)": "14500 kg / 31967 lbs"
+        },
+        "WX160E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "100 kW / 134 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.5 m / 14'09\"",
+          "Longueur de bras (m / pi)": "2.3 m / 7'07\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "7500 kg / 16535 lbs",
+          "Poids operationnel (kg / lbs)": "16800 kg / 37038 lbs"
+        },
+        "WX175E SR": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "115 kW / 154 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.7 m / 15'05\"",
+          "Longueur de bras (m / pi)": "2.4 m / 7'10\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "8000 kg / 17637 lbs",
+          "Poids operationnel (kg / lbs)": "18500 kg / 40786 lbs"
+        },
+        "WX210E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "5.0 m / 16'05\"",
+          "Longueur de bras (m / pi)": "2.6 m / 8'06\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "9500 kg / 20944 lbs",
+          "Poids operationnel (kg / lbs)": "21000 kg / 46297 lbs"
         }
       },
       "2021": {
@@ -9697,6 +9745,54 @@
           "Voltage machine (V/type)": "24V DC",
           "Capacite max de levage (kg / lbs)": "30000 kg / 66138 lbs",
           "Poids operationnel (kg / lbs)": "74844 kg / 165000 lbs"
+        },
+        "WX140E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "86 kW / 115 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.2 m / 13'09\"",
+          "Longueur de bras (m / pi)": "2.1 m / 6'11\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "6500 kg / 14330 lbs",
+          "Poids operationnel (kg / lbs)": "14500 kg / 31967 lbs"
+        },
+        "WX160E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "100 kW / 134 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.5 m / 14'09\"",
+          "Longueur de bras (m / pi)": "2.3 m / 7'07\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "7500 kg / 16535 lbs",
+          "Poids operationnel (kg / lbs)": "16800 kg / 37038 lbs"
+        },
+        "WX175E SR": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "115 kW / 154 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.7 m / 15'05\"",
+          "Longueur de bras (m / pi)": "2.4 m / 7'10\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "8000 kg / 17637 lbs",
+          "Poids operationnel (kg / lbs)": "18500 kg / 40786 lbs"
+        },
+        "WX210E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "5.0 m / 16'05\"",
+          "Longueur de bras (m / pi)": "2.6 m / 8'06\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "9500 kg / 20944 lbs",
+          "Poids operationnel (kg / lbs)": "21000 kg / 46297 lbs"
         }
       },
       "2022": {
@@ -9819,6 +9915,54 @@
           "Voltage machine (V/type)": "24V DC",
           "Capacite max de levage (kg / lbs)": "30000 kg / 66138 lbs",
           "Poids operationnel (kg / lbs)": "74844 kg / 165000 lbs"
+        },
+        "WX140E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "86 kW / 115 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.2 m / 13'09\"",
+          "Longueur de bras (m / pi)": "2.1 m / 6'11\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "6500 kg / 14330 lbs",
+          "Poids operationnel (kg / lbs)": "14500 kg / 31967 lbs"
+        },
+        "WX160E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "100 kW / 134 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.5 m / 14'09\"",
+          "Longueur de bras (m / pi)": "2.3 m / 7'07\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "7500 kg / 16535 lbs",
+          "Poids operationnel (kg / lbs)": "16800 kg / 37038 lbs"
+        },
+        "WX175E SR": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "115 kW / 154 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.7 m / 15'05\"",
+          "Longueur de bras (m / pi)": "2.4 m / 7'10\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "8000 kg / 17637 lbs",
+          "Poids operationnel (kg / lbs)": "18500 kg / 40786 lbs"
+        },
+        "WX210E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "5.0 m / 16'05\"",
+          "Longueur de bras (m / pi)": "2.6 m / 8'06\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "9500 kg / 20944 lbs",
+          "Poids operationnel (kg / lbs)": "21000 kg / 46297 lbs"
         }
       },
       "2023": {
@@ -9941,6 +10085,54 @@
           "Voltage machine (V/type)": "24V DC",
           "Capacite max de levage (kg / lbs)": "30000 kg / 66138 lbs",
           "Poids operationnel (kg / lbs)": "74844 kg / 165000 lbs"
+        },
+        "WX140E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "86 kW / 115 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.2 m / 13'09\"",
+          "Longueur de bras (m / pi)": "2.1 m / 6'11\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "6500 kg / 14330 lbs",
+          "Poids operationnel (kg / lbs)": "14500 kg / 31967 lbs"
+        },
+        "WX160E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "100 kW / 134 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.5 m / 14'09\"",
+          "Longueur de bras (m / pi)": "2.3 m / 7'07\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "7500 kg / 16535 lbs",
+          "Poids operationnel (kg / lbs)": "16800 kg / 37038 lbs"
+        },
+        "WX175E SR": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "115 kW / 154 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.7 m / 15'05\"",
+          "Longueur de bras (m / pi)": "2.4 m / 7'10\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "8000 kg / 17637 lbs",
+          "Poids operationnel (kg / lbs)": "18500 kg / 40786 lbs"
+        },
+        "WX210E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "5.0 m / 16'05\"",
+          "Longueur de bras (m / pi)": "2.6 m / 8'06\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "9500 kg / 20944 lbs",
+          "Poids operationnel (kg / lbs)": "21000 kg / 46297 lbs"
         }
       },
       "2024": {
@@ -10307,6 +10499,106 @@
           "Voltage machine (V/type)": "24V DC",
           "Capacite max de levage (kg / lbs)": "30000 kg / 66138 lbs",
           "Poids operationnel (kg / lbs)": "74844 kg / 165000 lbs"
+        }
+      },
+      "2018": {
+        "WX140E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "86 kW / 115 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.2 m / 13'09\"",
+          "Longueur de bras (m / pi)": "2.1 m / 6'11\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "6500 kg / 14330 lbs",
+          "Poids operationnel (kg / lbs)": "14500 kg / 31967 lbs"
+        },
+        "WX160E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "100 kW / 134 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.5 m / 14'09\"",
+          "Longueur de bras (m / pi)": "2.3 m / 7'07\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "7500 kg / 16535 lbs",
+          "Poids operationnel (kg / lbs)": "16800 kg / 37038 lbs"
+        },
+        "WX175E SR": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "115 kW / 154 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.7 m / 15'05\"",
+          "Longueur de bras (m / pi)": "2.4 m / 7'10\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "8000 kg / 17637 lbs",
+          "Poids operationnel (kg / lbs)": "18500 kg / 40786 lbs"
+        },
+        "WX210E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "5.0 m / 16'05\"",
+          "Longueur de bras (m / pi)": "2.6 m / 8'06\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "9500 kg / 20944 lbs",
+          "Poids operationnel (kg / lbs)": "21000 kg / 46297 lbs"
+        }
+      },
+      "2019": {
+        "WX140E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "86 kW / 115 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.2 m / 13'09\"",
+          "Longueur de bras (m / pi)": "2.1 m / 6'11\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "6500 kg / 14330 lbs",
+          "Poids operationnel (kg / lbs)": "14500 kg / 31967 lbs"
+        },
+        "WX160E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "100 kW / 134 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.5 m / 14'09\"",
+          "Longueur de bras (m / pi)": "2.3 m / 7'07\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "7500 kg / 16535 lbs",
+          "Poids operationnel (kg / lbs)": "16800 kg / 37038 lbs"
+        },
+        "WX175E SR": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "115 kW / 154 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "4.7 m / 15'05\"",
+          "Longueur de bras (m / pi)": "2.4 m / 7'10\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "8000 kg / 17637 lbs",
+          "Poids operationnel (kg / lbs)": "18500 kg / 40786 lbs"
+        },
+        "WX210E": {
+          "Image": "",
+          "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+          "Machine sur roue ou chenille": "Roue",
+          "Type de bras": "Boom 2 parties (articule)",
+          "Longueur de fleche (m / pi)": "5.0 m / 16'05\"",
+          "Longueur de bras (m / pi)": "2.6 m / 8'06\"",
+          "Swing boom": "Non",
+          "Voltage machine (V/type)": "24V DC",
+          "Capacite max de levage (kg / lbs)": "9500 kg / 20944 lbs",
+          "Poids operationnel (kg / lbs)": "21000 kg / 46297 lbs"
         }
       }
     },
