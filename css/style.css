@@ -3,20 +3,20 @@
    ============================================ */
 
 :root {
-    --bg-dark: #B8B0A8;
-    --bg-card: #D1C9C1;
-    --bg-card-hover: #C5BDB5;
-    --bg-input: #C8C0B8;
-    --border: #A69E96;
+    --bg-dark: #6B6B6B;
+    --bg-card: #7A7A7A;
+    --bg-card-hover: #828282;
+    --bg-input: #858585;
+    --border: #909090;
     --border-focus: #FF6A00;
     --etrak-orange: #0062CC;
     --etrak-orange-glow: rgba(0, 98, 204, 0.2);
     --etrak-orange-dim: #004A99;
     --etrak-blue: #3B82F6;
     --etrak-blue-dark: #002B5C;
-    --text-primary: #1A1A1A;
-    --text-secondary: #4A4440;
-    --text-muted: #7A726A;
+    --text-primary: #F0F0F0;
+    --text-secondary: #B0B0B0;
+    --text-muted: #808080;
     --white: #FFFFFF;
     --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
     --shadow-orange: 0 0 20px rgba(255, 106, 0, 0.1);
