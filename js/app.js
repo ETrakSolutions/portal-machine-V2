@@ -198,6 +198,31 @@ function showResults(modele, type, fab, annee, specs) {
             if (miniOption) miniOption.checked = false;
         }
 
+        // Drain hydraulique (1500-0009): Obligatoire for specific models
+        const drainOblig = document.querySelector('input[name="kit-drain"][value="oui"]');
+        const drainOption = document.querySelector('input[name="kit-drain"][value="non"]');
+        const drainModels = [
+            'CX80C','CX80','CX220E','CX170E','145 D SR','CX210D','CX245D SR','CX350D','CX490D','CX300E','CX145C',
+            '315FL','440','450','320LU','308',
+            'DX190W-5','DX235',
+            '145X4 LC','145 X4','145X4','145X4D7','170X4S','170X4','170x4s','190','245X4','245X4LC','350X4',
+            'ZX210LC-8','EX200LC-5','ZX130-6','ZX190LC-7H','ZX350LC-6','ZX490LC-6','ZX50U-5N',
+            '135C','350','410','490D','330X','200CLC','130P-TIER',
+            'PC78US',
+            'R920 K LC',
+            'TB210','TW65C2HS',
+            'EC160BLC','235','EC160CL',
+            'EZ36'
+        ];
+        const modelUpper = modele.toUpperCase();
+        const isDrainOblig = drainModels.some(m => m.toUpperCase() === modelUpper);
+        if (isDrainOblig) {
+            if (drainOblig) drainOblig.checked = true;
+        } else {
+            if (drainOblig) drainOblig.checked = false;
+            if (drainOption) drainOption.checked = false;
+        }
+
         // Multi Axes row: flash if boom 2 parties
         const multiRow = document.querySelector('tr[data-kit="multi"]');
         if (multiRow) {
