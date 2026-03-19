@@ -37,8 +37,8 @@ body {
 
 /* ---- HEADER ---- */
 header {
-    background: #002B5C;
-    border-bottom: 1px solid #003D7A;
+    background: #085591;
+    border-bottom: 1px solid #0A6AAB;
     padding: 0 2rem;
     height: 60px;
     display: flex;
@@ -64,7 +64,7 @@ header {
 }
 
 .header-logo {
-    height: 40px;
+    height: 50px;
     width: auto;
 }
 
@@ -302,8 +302,8 @@ main {
 
 /* ---- FOOTER ---- */
 footer {
-    background: #002B5C;
-    border-top: 1px solid #003D7A;
+    background: #085591;
+    border-top: 1px solid #0A6AAB;
     padding: 1.25rem 2rem;
     margin-top: auto;
 }
@@ -317,7 +317,7 @@ footer {
 }
 
 .footer-brand { display: flex; align-items: center; }
-.footer-logo { height: 28px; width: auto; }
+.footer-logo { height: 36px; width: auto; }
 
 .footer-copy {
     color: #7A7470;
