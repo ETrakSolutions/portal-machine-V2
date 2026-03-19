@@ -178,6 +178,18 @@ function showResults(modele, type, fab, annee, specs) {
                 }
             }
         }
+        // Mini excavatrice: Obligatoire if < 5000 kg, reset otherwise
+        const poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
+        const poidsMatch = poidsStr.match(/^(\d+)/);
+        const poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 99999;
+        const miniOblig = document.querySelector('input[name="kit-mini"][value="oui"]');
+        const miniOption = document.querySelector('input[name="kit-mini"][value="non"]');
+        if (poidsKg < 5000) {
+            if (miniOblig) miniOblig.checked = true;
+        } else {
+            if (miniOblig) miniOblig.checked = false;
+            if (miniOption) miniOption.checked = false;
+        }
     } else {
         kitSection.style.display = 'none';
     }
