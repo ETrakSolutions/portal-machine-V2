@@ -189,6 +189,7 @@ main {
 .selector-group select:disabled {
     opacity: 0.35;
     cursor: not-allowed;
+    color: #999999;
 }
 
 .btn-reset {
