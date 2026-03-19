@@ -9,9 +9,9 @@
     --bg-input: #C8C0B8;
     --border: #A69E96;
     --border-focus: #FF6A00;
-    --etrak-orange: #FF6A00;
-    --etrak-orange-glow: rgba(255, 106, 0, 0.2);
-    --etrak-orange-dim: #CC5500;
+    --etrak-orange: #0062CC;
+    --etrak-orange-glow: rgba(0, 98, 204, 0.2);
+    --etrak-orange-dim: #004A99;
     --etrak-blue: #3B82F6;
     --etrak-blue-dark: #002B5C;
     --text-primary: #1A1A1A;
@@ -37,8 +37,8 @@ body {
 
 /* ---- HEADER ---- */
 header {
-    background: #2A2520;
-    border-bottom: 1px solid #3A3530;
+    background: #002B5C;
+    border-bottom: 1px solid #003D7A;
     padding: 0 2rem;
     height: 60px;
     display: flex;
@@ -65,7 +65,7 @@ header {
 }
 
 .logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-.logo-e { color: var(--etrak-orange); }
+.logo-e { color: #FF6A00; }
 .logo-dash, .logo-trak { color: #F0EDE8; }
 
 .logo-divider {
@@ -315,8 +315,8 @@ main {
 
 /* ---- FOOTER ---- */
 footer {
-    background: #2A2520;
-    border-top: 1px solid #3A3530;
+    background: #002B5C;
+    border-top: 1px solid #003D7A;
     padding: 1.25rem 2rem;
     margin-top: auto;
 }
@@ -352,7 +352,7 @@ footer {
 
 .hamburger-btn {
     background: none;
-    border: 1px solid #4A4540;
+    border: 1px solid #1A4D80;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -362,13 +362,13 @@ footer {
     transition: all 0.2s;
 }
 
-.hamburger-btn:hover { border-color: #9A9490; }
+.hamburger-btn:hover { border-color: #5A8ABF; }
 
 .hamburger-btn span {
     display: block;
     width: 18px;
     height: 2px;
-    background: #B0AAA4;
+    background: #8AB4E0;
     border-radius: 1px;
     transition: all 0.3s ease;
 }
