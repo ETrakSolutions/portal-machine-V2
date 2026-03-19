@@ -224,7 +224,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
 
     // Add "Demande kit machine" button for custom models
     if (isCustom) {
-        const mailTo = 'robin@gryb.ca,k.berube@e-trak.ca';
+        const mailTo = getMailTo();
         const mailSubject = encodeURIComponent('Demande Kit Machine — ' + fab + ' ' + modele + ' (' + annee + ')');
         const mailBody = encodeURIComponent(
             'Bonjour,\n\n' +
@@ -459,9 +459,112 @@ function saveNotes() {
 }
 
 // Attach save button + radio uncheck logic
+// ---- EMAIL MANAGEMENT ----
+const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
+let targetEmails = [...DEFAULT_EMAILS];
+let gearUnlocked = false;
+
+function loadEmails() {
+    fetch(API_URL + '?action=get&key=target_emails')
+        .then(r => r.json())
+        .then(data => {
+            if (data.value) {
+                try { targetEmails = JSON.parse(data.value); } catch(e) {}
+            }
+            renderEmailList();
+        })
+        .catch(() => renderEmailList());
+}
+
+function saveEmails() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'target_emails', value: JSON.stringify(targetEmails), pin: '1400' })
+    }).catch(() => {});
+}
+
+function renderEmailList() {
+    const list = document.getElementById('email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    targetEmails.forEach((email, i) => {
+        const item = document.createElement('div');
+        item.className = 'email-item';
+        item.innerHTML = '<span>' + email + '</span><button class="email-delete-btn ' + (gearUnlocked ? 'visible' : '') + '" data-idx="' + i + '" title="Supprimer">✕</button>';
+        list.appendChild(item);
+    });
+    // Attach delete handlers
+    list.querySelectorAll('.email-delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const idx = parseInt(this.dataset.idx);
+            targetEmails.splice(idx, 1);
+            saveEmails();
+            renderEmailList();
+        });
+    });
+}
+
+function getMailTo() {
+    return targetEmails.join(',');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('notes-save-btn');
     if (saveBtn) saveBtn.addEventListener('click', saveNotes);
+
+    // Gear menu
+    const gearBtn = document.getElementById('gear-btn');
+    const gearMenu = document.getElementById('gear-menu');
+    const gearPinInput = document.getElementById('gear-pin-input');
+    const addEmailBtn = document.getElementById('add-email-btn');
+    const addEmailInput = document.getElementById('add-email-input');
+    const gearEditSection = document.getElementById('gear-edit-section');
+
+    if (gearBtn) {
+        gearBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            gearMenu.classList.toggle('open');
+            if (gearMenu.classList.contains('open')) loadEmails();
+        });
+    }
+
+    if (gearPinInput) {
+        gearPinInput.addEventListener('input', function() {
+            if (this.value === '1400') {
+                gearUnlocked = true;
+                gearEditSection.style.display = 'block';
+                renderEmailList();
+                this.style.borderColor = '#00CC00';
+            }
+        });
+    }
+
+    if (addEmailBtn) {
+        addEmailBtn.addEventListener('click', () => {
+            const email = addEmailInput.value.trim();
+            if (email && email.includes('@')) {
+                targetEmails.push(email);
+                saveEmails();
+                renderEmailList();
+                addEmailInput.value = '';
+            }
+        });
+    }
+
+    // Close gear menu on outside click
+    document.addEventListener('click', (e) => {
+        if (gearMenu && !gearMenu.contains(e.target) && !gearBtn.contains(e.target)) {
+            gearMenu.classList.remove('open');
+            gearUnlocked = false;
+            if (gearEditSection) gearEditSection.style.display = 'none';
+            if (gearPinInput) { gearPinInput.value = ''; gearPinInput.style.borderColor = ''; }
+            renderEmailList();
+        }
+    });
+
+    // Load emails on startup
+    loadEmails();
 
     // Allow unchecking radio buttons by clicking again
     document.querySelectorAll('.kit-table input[type="radio"]').forEach(radio => {

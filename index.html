@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=25">
+    <link rel="stylesheet" href="css/style.css?v=26">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -25,7 +25,24 @@
     <main>
         <!-- SELECTOR PANEL -->
         <section class="selector-section">
-            <p class="intro-text">Selectionnez les criteres pour afficher les details techniques.</p>
+            <div class="intro-row">
+                <div class="gear-wrap">
+                    <button id="gear-btn" class="gear-btn" title="Gestion courriels">&#9881;</button>
+                    <div id="gear-menu" class="gear-menu">
+                        <div class="gear-menu-header">
+                            <span>Courriels cibles</span>
+                            <input type="tel" id="gear-pin-input" class="gear-pin-input" placeholder="NIP" maxlength="4" inputmode="numeric" pattern="[0-9]*">
+                        </div>
+                        <div id="email-list" class="email-list"></div>
+                        <div id="gear-edit-section" class="gear-edit-section" style="display:none;">
+                            <div class="gear-add-row">
+                                <input type="email" id="add-email-input" class="add-email-input" placeholder="nouveau@courriel.com">
+                                <button id="add-email-btn" class="add-email-btn" title="Ajouter">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="selectors-grid">
                 <div class="selector-group">
@@ -216,6 +233,6 @@
         </div>
     </footer>
 
-    <script src="js/app.js?v=29"></script>
+    <script src="js/app.js?v=30"></script>
 </body>
 </html>
