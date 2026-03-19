@@ -227,7 +227,8 @@ function hideResults() {
     if (notesSection) notesSection.style.display = 'none';
 }
 
-// ---- NOTES SYSTEM ----
+// ---- NOTES SYSTEM (Google Apps Script backend) ----
+const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
 let currentNoteKey = '';
 
 function getNotesKey(fab, modele, annee) {
@@ -242,17 +243,26 @@ function loadNotes(fab, modele, annee) {
     if (!notesSection) return;
 
     currentNoteKey = getNotesKey(fab, modele, annee);
-    const saved = localStorage.getItem(currentNoteKey) || '';
-    notesTextarea.value = saved;
+    notesTextarea.value = '';
     notesTextarea.readOnly = true;
     notesSaveBtn.style.display = 'none';
-    notesStatus.textContent = 'Verrouille — entrer le NIP pour modifier';
+    notesStatus.textContent = 'Chargement...';
     notesSection.style.display = 'block';
 
-    // If kit is unlocked, unlock notes too
-    if (kitUnlocked) {
-        unlockNotes();
-    }
+    // Load from API
+    fetch(API_URL + '?action=get&key=' + encodeURIComponent(currentNoteKey))
+        .then(r => r.json())
+        .then(data => {
+            notesTextarea.value = data.value || '';
+            notesStatus.textContent = 'Verrouille — entrer le NIP pour modifier';
+            if (kitUnlocked) unlockNotes();
+        })
+        .catch(() => {
+            // Fallback to localStorage
+            notesTextarea.value = localStorage.getItem(currentNoteKey) || '';
+            notesStatus.textContent = 'Mode hors-ligne — donnees locales';
+            if (kitUnlocked) unlockNotes();
+        });
 }
 
 function unlockNotes() {
@@ -277,8 +287,35 @@ function lockNotes() {
 
 function saveNotes() {
     const notesTextarea = document.getElementById('notes-textarea');
+    const notesStatus = document.getElementById('notes-status');
     if (!notesTextarea || !currentNoteKey) return;
+
+    // Save to localStorage as backup
     localStorage.setItem(currentNoteKey, notesTextarea.value);
+
+    // Save to API
+    notesStatus.textContent = 'Enregistrement...';
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({
+            key: currentNoteKey,
+            value: notesTextarea.value,
+            pin: '1400'
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            notesStatus.textContent = 'Enregistre avec succes!';
+        } else {
+            notesStatus.textContent = 'Erreur: ' + (data.error || 'inconnue');
+        }
+    })
+    .catch(() => {
+        notesStatus.textContent = 'Sauvegarde locale seulement (hors-ligne)';
+    });
+
     // Lock after save
     lockNotes();
     lockKit();
