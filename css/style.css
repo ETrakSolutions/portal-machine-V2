@@ -468,6 +468,19 @@ main {
     50% { background-color: transparent; color: #FFFFFF; }
 }
 
+/* ---- FLASH YELLOW ROW (Kit Multi Axes) ---- */
+.flash-yellow-row {
+    animation: flashYellowRow 1s ease-in-out infinite;
+}
+.flash-yellow-row td {
+    color: #000 !important;
+    font-weight: bold;
+}
+@keyframes flashYellowRow {
+    0%, 100% { background-color: #FFFF00; }
+    50% { background-color: transparent; }
+}
+
 .flash-yellow {
     animation: flashYellow 1s ease-in-out infinite;
     padding: 2px 8px;

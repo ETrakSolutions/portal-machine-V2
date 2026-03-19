@@ -127,11 +127,7 @@ function showResults(modele, type, fab, annee, specs) {
     }
     html += '</table>';
 
-    // Alert box for 2-boom machines
-    const typeBras = specs['Type de bras'] || '';
-    if (typeBras.includes('2 parties')) {
-        html += '<div class="alert-box flash-yellow-box">⚠️ NOTE À VÉRIFIER — Machine avec boom 2 parties (articulé). Valider la configuration du kit avec l\'ingénieur.</div>';
-    }
+    // (Alert moved to kit Multi Axes row flash)
 
     resultsTableContainer.innerHTML = html;
 
@@ -198,6 +194,24 @@ function showResults(modele, type, fab, annee, specs) {
         } else {
             if (miniOblig) miniOblig.checked = false;
             if (miniOption) miniOption.checked = false;
+        }
+
+        // Multi Axes row: flash if boom 2 parties
+        const multiRow = document.querySelector('tr[data-kit="multi"]');
+        if (multiRow) {
+            const typeBras = specs['Type de bras'] || '';
+            if (typeBras.includes('2 parties')) {
+                multiRow.classList.add('flash-yellow-row');
+                // Auto-check Obligatoire for multi axes
+                const multiOblig = multiRow.querySelector('input[value="oui"]');
+                if (multiOblig) multiOblig.checked = true;
+            } else {
+                multiRow.classList.remove('flash-yellow-row');
+                const multiOblig = multiRow.querySelector('input[value="oui"]');
+                const multiOption = multiRow.querySelector('input[value="non"]');
+                if (multiOblig) multiOblig.checked = false;
+                if (multiOption) multiOption.checked = false;
+            }
         }
     } else {
         kitSection.style.display = 'none';
