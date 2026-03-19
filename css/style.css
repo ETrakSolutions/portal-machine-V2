@@ -61,24 +61,11 @@ header {
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 
-.logo-text { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
-.logo-e { color: #FF6A00; }
-.logo-dash, .logo-trak { color: #F0EDE8; }
-
-.logo-divider {
-    width: 1px;
-    height: 24px;
-    background: var(--border);
-}
-
-.header-subtitle {
-    color: #9A9490;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 2px;
+.header-logo {
+    height: 40px;
+    width: auto;
 }
 
 /* ---- ACCENT BAR ---- */
@@ -329,18 +316,8 @@ footer {
     justify-content: space-between;
 }
 
-.footer-brand {
-    font-size: 1rem;
-    font-weight: 800;
-    color: #F0EDE8;
-}
-
-.footer-text {
-    color: #9A9490;
-    font-weight: 400;
-    font-size: 0.85rem;
-    margin-left: 0.25rem;
-}
+.footer-brand { display: flex; align-items: center; }
+.footer-logo { height: 28px; width: auto; }
 
 .footer-copy {
     color: #7A7470;

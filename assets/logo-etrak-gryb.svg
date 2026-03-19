@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 60">
+  <style>
+    .etrak { font-family: Arial, Helvetica, sans-serif; font-weight: 900; font-size: 38px; }
+    .sub { font-family: Arial, Helvetica, sans-serif; font-weight: 400; font-size: 11px; fill: #8AB4E0; }
+    .gryb-box { fill: white; }
+    .gryb-text { font-family: Arial, Helvetica, sans-serif; font-weight: 900; font-size: 22px; fill: #002B5C; }
+  </style>
+  <text x="0" y="38" class="etrak"><tspan fill="#FF6A00">e</tspan><tspan fill="white">-Trak</tspan></text>
+  <text x="0" y="52" class="sub">Solutions technologiques</text>
+  <line x1="210" y1="8" x2="210" y2="52" stroke="#3A6FA0" stroke-width="1"/>
+  <rect x="225" y="10" width="90" height="40" rx="3" class="gryb-box"/>
+  <text x="270" y="37" text-anchor="middle" class="gryb-text">GRYB</text>
+</svg>
