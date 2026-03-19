@@ -138,6 +138,9 @@ function showResults(modele, type, fab, annee, specs) {
     const kitSection = document.getElementById('kit-machine-section');
     if (type === 'Excavatrice') {
         kitSection.style.display = 'block';
+        // Set machine description
+        const kitDesc = document.getElementById('kit-machine-desc');
+        if (kitDesc) kitDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
         // Load notes for this model
         loadNotes(fab, modele, annee);
         // Re-lock kit on model change
