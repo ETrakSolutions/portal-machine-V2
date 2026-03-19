@@ -202,9 +202,7 @@ function showResults(modele, type, fab, annee, specs) {
             const typeBras = specs['Type de bras'] || '';
             if (typeBras.includes('2 parties')) {
                 multiRow.classList.add('flash-yellow-row');
-                // Auto-check Obligatoire for multi axes
-                const multiOblig = multiRow.querySelector('input[value="oui"]');
-                if (multiOblig) multiOblig.checked = true;
+                // Don't auto-check — just highlight for attention
             } else {
                 multiRow.classList.remove('flash-yellow-row');
                 const multiOblig = multiRow.querySelector('input[value="oui"]');
