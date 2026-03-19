@@ -312,6 +312,70 @@ main {
     color: var(--text-muted);
 }
 
+/* ---- KIT MACHINE ---- */
+.kit-machine-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: rgba(0, 98, 204, 0.15);
+    border: 2px solid #0062CC;
+    border-radius: var(--radius-lg);
+}
+
+.kit-header h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+}
+
+.kit-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+}
+
+.kit-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.kit-table thead th {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #3B82F6;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid #0062CC;
+    text-align: left;
+}
+
+.kit-table tbody td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    font-size: 0.85rem;
+}
+
+.kit-code {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: #3B82F6;
+}
+
+.kit-special {
+    color: #FF6A00;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.kit-table input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #0062CC;
+}
+
 /* ---- FLASH YELLOW ---- */
 @keyframes flashYellow {
     0%, 100% { background-color: #FFFF00; color: #000; }

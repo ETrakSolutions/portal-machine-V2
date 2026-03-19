@@ -130,11 +130,21 @@ function showResults(modele, type, fab, annee, specs) {
 
     resultsSection.style.display = 'block';
     emptyState.style.display = 'none';
+
+    // Show kit machine section only for excavators
+    const kitSection = document.getElementById('kit-machine-section');
+    if (type === 'Excavatrice') {
+        kitSection.style.display = 'block';
+    } else {
+        kitSection.style.display = 'none';
+    }
 }
 
 function hideResults() {
     resultsSection.style.display = 'none';
     emptyState.style.display = 'block';
+    const kitSection = document.getElementById('kit-machine-section');
+    if (kitSection) kitSection.style.display = 'none';
 }
 
 function resetFrom(level) {
