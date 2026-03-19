@@ -254,36 +254,17 @@ function loadNotes(fab, modele, annee) {
         .then(r => r.json())
         .then(data => {
             notesTextarea.value = data.value || '';
-            notesStatus.textContent = 'Verrouille — entrer le NIP pour modifier';
-            if (kitUnlocked) unlockNotes();
+            notesStatus.textContent = '';
         })
         .catch(() => {
             // Fallback to localStorage
             notesTextarea.value = localStorage.getItem(currentNoteKey) || '';
-            notesStatus.textContent = 'Mode hors-ligne — donnees locales';
-            if (kitUnlocked) unlockNotes();
+            notesStatus.textContent = '';
         });
 }
 
-function unlockNotes() {
-    const notesTextarea = document.getElementById('notes-textarea');
-    const notesSaveBtn = document.getElementById('notes-save-btn');
-    const notesStatus = document.getElementById('notes-status');
-    if (!notesTextarea) return;
-    notesTextarea.readOnly = false;
-    notesSaveBtn.style.display = 'inline-block';
-    notesStatus.textContent = 'Editable — cliquer Enregistrer pour sauvegarder';
-}
-
-function lockNotes() {
-    const notesTextarea = document.getElementById('notes-textarea');
-    const notesSaveBtn = document.getElementById('notes-save-btn');
-    const notesStatus = document.getElementById('notes-status');
-    if (!notesTextarea) return;
-    notesTextarea.readOnly = true;
-    notesSaveBtn.style.display = 'none';
-    notesStatus.textContent = 'Verrouille — entrer le NIP pour modifier';
-}
+function unlockNotes() {}
+function lockNotes() {}
 
 function saveNotes() {
     const notesTextarea = document.getElementById('notes-textarea');
@@ -316,9 +297,7 @@ function saveNotes() {
         notesStatus.textContent = 'Sauvegarde locale seulement (hors-ligne)';
     });
 
-    // Lock after save
-    lockNotes();
-    lockKit();
+    // Notes stay editable after save
 }
 
 // Attach save button
