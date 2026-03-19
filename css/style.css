@@ -312,6 +312,20 @@ main {
     color: var(--text-muted);
 }
 
+/* ---- FLASH YELLOW ---- */
+@keyframes flashYellow {
+    0%, 100% { background-color: #CCFF00; color: #000; }
+    50% { background-color: #FFFF00; color: #000; }
+}
+
+.flash-yellow {
+    animation: flashYellow 1s ease-in-out infinite;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    display: inline-block;
+}
+
 /* ---- FOOTER ---- */
 footer {
     background: #085591;
