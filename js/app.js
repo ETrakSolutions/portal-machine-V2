@@ -135,9 +135,13 @@ function showResults(modele, type, fab, annee, specs) {
     const kitSection = document.getElementById('kit-machine-section');
     if (type === 'Excavatrice') {
         kitSection.style.display = 'block';
-        // Auto-check 1500-0000 (avec cabine) = Oui for all models
+        // Auto-check options for all models
         const cabineOui = document.querySelector('input[name="kit-cabine"][value="avec"]');
         if (cabineOui) cabineOui.checked = true;
+        const hauteurOui = document.querySelector('input[name="kit-hauteur"][value="oui"]');
+        if (hauteurOui) hauteurOui.checked = true;
+        const rotationOui = document.querySelector('input[name="kit-rotation"][value="oui"]');
+        if (rotationOui) rotationOui.checked = true;
     } else {
         kitSection.style.display = 'none';
     }

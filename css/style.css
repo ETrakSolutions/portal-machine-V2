@@ -376,6 +376,10 @@ main {
     accent-color: #FF0000;
 }
 
+.kit-table input.radio-yellow {
+    accent-color: #FFFF00;
+}
+
 
 /* ---- FLASH YELLOW ---- */
 @keyframes flashYellow {
