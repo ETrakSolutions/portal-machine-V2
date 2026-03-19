@@ -300,10 +300,34 @@ function saveNotes() {
     // Notes stay editable after save
 }
 
-// Attach save button
+// Attach save button + radio uncheck logic
 document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('notes-save-btn');
     if (saveBtn) saveBtn.addEventListener('click', saveNotes);
+
+    // Allow unchecking radio buttons by clicking again
+    document.querySelectorAll('.kit-table input[type="radio"]').forEach(radio => {
+        radio.addEventListener('click', function(e) {
+            // If this radio was already checked before this click, uncheck it
+            if (this.dataset.wasChecked === 'true') {
+                this.checked = false;
+                this.dataset.wasChecked = 'false';
+            } else {
+                // Unmark all radios in same group
+                document.querySelectorAll('input[name="' + this.name + '"]').forEach(r => {
+                    r.dataset.wasChecked = 'false';
+                });
+                this.dataset.wasChecked = 'true';
+            }
+        });
+        // Track initial state on mousedown/touchstart
+        radio.addEventListener('mousedown', function() {
+            this.dataset.wasChecked = this.checked ? 'true' : 'false';
+        });
+        radio.addEventListener('touchstart', function() {
+            this.dataset.wasChecked = this.checked ? 'true' : 'false';
+        });
+    });
 });
 
 function resetFrom(level) {

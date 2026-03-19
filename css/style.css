@@ -533,14 +533,13 @@ main {
     resize: vertical;
     box-sizing: border-box;
 }
-.notes-textarea:read-only {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-.notes-textarea:not(:read-only) {
+.notes-textarea {
     opacity: 1;
     border-color: #0062CC;
     box-shadow: 0 0 0 2px rgba(0, 98, 204, 0.3);
+    -webkit-appearance: none;
+    -webkit-user-select: text;
+    user-select: text;
 }
 .notes-save-btn {
     background: #0062CC;
