@@ -138,10 +138,10 @@ function showResults(modele, type, fab, annee, specs) {
         // Auto-check options for all models
         const cabineOui = document.querySelector('input[name="kit-cabine"][value="avec"]');
         if (cabineOui) cabineOui.checked = true;
-        const hauteurOui = document.querySelector('input[name="kit-hauteur"][value="oui"]');
-        if (hauteurOui) hauteurOui.checked = true;
-        const rotationOui = document.querySelector('input[name="kit-rotation"][value="oui"]');
-        if (rotationOui) rotationOui.checked = true;
+        const hauteurOption = document.querySelector('input[name="kit-hauteur"][value="non"]');
+        if (hauteurOption) hauteurOption.checked = true;
+        const rotationOption = document.querySelector('input[name="kit-rotation"][value="non"]');
+        if (rotationOption) rotationOption.checked = true;
     } else {
         kitSection.style.display = 'none';
     }
