@@ -115,7 +115,7 @@ function showResults(modele, type, fab, annee, specs) {
             }
         } else if (key === 'Type de traction' && value === 'Roue') {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
-        } else if (key === 'Type de bras' && value.includes('2 parties')) {
+        } else if (key === 'Type de boom' && value.includes('2 parties')) {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Swing boom' && value === 'Oui') {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
@@ -226,7 +226,7 @@ function showResults(modele, type, fab, annee, specs) {
         // Multi Axes row: flash if boom 2 parties
         const multiRow = document.querySelector('tr[data-kit="multi"]');
         if (multiRow) {
-            const typeBras = specs['Type de bras'] || '';
+            const typeBras = specs['Type de boom'] || '';
             if (typeBras.includes('2 parties')) {
                 multiRow.classList.add('flash-yellow-row');
                 // Don't auto-check — just highlight for attention
