@@ -223,6 +223,22 @@ function showResults(modele, type, fab, annee, specs) {
             if (drainOption) drainOption.checked = false;
         }
 
+        // Rotation cremaillere (1500-0304): show + Obligatoire for TB216 only
+        const cremRow = document.querySelector('tr[data-kit="cremaillere"]');
+        if (cremRow) {
+            if (modelUpper === 'TB216') {
+                cremRow.style.display = '';
+                const cremOblig = cremRow.querySelector('input[value="oui"]');
+                if (cremOblig) cremOblig.checked = true;
+            } else {
+                cremRow.style.display = 'none';
+                const cremOblig = cremRow.querySelector('input[value="oui"]');
+                const cremOption = cremRow.querySelector('input[value="non"]');
+                if (cremOblig) cremOblig.checked = false;
+                if (cremOption) cremOption.checked = false;
+            }
+        }
+
         // Multi Axes row: flash if boom 2 parties
         const multiRow = document.querySelector('tr[data-kit="multi"]');
         if (multiRow) {
