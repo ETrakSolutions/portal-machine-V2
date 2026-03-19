@@ -147,3 +147,20 @@ btnReset.addEventListener('click', () => {
     resetFrom('fabricant');
     btnReset.style.display = 'none';
 });
+
+// Hamburger menu
+const hamburgerBtn = document.getElementById('hamburger-btn');
+const hamburgerMenu = document.getElementById('hamburger-menu');
+
+hamburgerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    hamburgerBtn.classList.toggle('active');
+    hamburgerMenu.classList.toggle('open');
+});
+
+document.addEventListener('click', (e) => {
+    if (!hamburgerMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+        hamburgerBtn.classList.remove('active');
+        hamburgerMenu.classList.remove('open');
+    }
+});
