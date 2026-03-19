@@ -375,6 +375,12 @@ main {
     cursor: pointer;
 }
 
+.kit-na {
+    color: #666;
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
 .kit-table input.radio-red {
     accent-color: #FF0000;
 }

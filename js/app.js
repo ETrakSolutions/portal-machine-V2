@@ -142,6 +142,42 @@ function showResults(modele, type, fab, annee, specs) {
         if (hauteurOption) hauteurOption.checked = true;
         const rotationOption = document.querySelector('input[name="kit-rotation"][value="non"]');
         if (rotationOption) rotationOption.checked = true;
+
+        // Reset swing boom row radios (in case previous model was N/A)
+        const swingRowReset = document.querySelector('tr[data-kit="swing"]');
+        if (swingRowReset) {
+            const cells = swingRowReset.querySelectorAll('td');
+            if (cells.length >= 4) {
+                cells[2].innerHTML = '<input type="radio" name="kit-swing" value="oui" class="radio-red">';
+                cells[3].innerHTML = '<input type="radio" name="kit-swing" value="non" class="radio-yellow">';
+            }
+        }
+
+        // Swing boom kit: Option if machine has swing boom, N/A otherwise
+        const swingRow = document.querySelector('tr[data-kit="swing"]');
+        if (swingRow) {
+            const swingValue = specs['Swing boom'] || 'Non';
+            const swingOblig = swingRow.querySelector('input[value="oui"]');
+            const swingOption = swingRow.querySelector('input[value="non"]');
+            if (swingValue === 'Oui') {
+                // Machine has swing boom -> check Option
+                if (swingOption) swingOption.checked = true;
+                swingOblig.disabled = false;
+                swingOption.disabled = false;
+            } else {
+                // No swing boom -> N/A
+                swingOblig.checked = false;
+                swingOption.checked = false;
+                swingOblig.disabled = true;
+                swingOption.disabled = true;
+                // Replace radio cells with N/A text
+                const cells = swingRow.querySelectorAll('td');
+                if (cells.length >= 4) {
+                    cells[2].innerHTML = '<span class="kit-na" style="text-align:center;display:block;">N/A</span>';
+                    cells[3].innerHTML = '<span class="kit-na" style="text-align:center;display:block;">N/A</span>';
+                }
+            }
+        }
     } else {
         kitSection.style.display = 'none';
     }
