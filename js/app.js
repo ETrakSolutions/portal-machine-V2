@@ -135,6 +135,8 @@ function showResults(modele, type, fab, annee, specs) {
     const kitSection = document.getElementById('kit-machine-section');
     if (type === 'Excavatrice') {
         kitSection.style.display = 'block';
+        // Re-lock kit on model change
+        if (typeof lockKit === 'function') lockKit();
         // Auto-check options for all models
         const cabineOui = document.querySelector('input[name="kit-cabine"][value="avec"]');
         if (cabineOui) cabineOui.checked = true;
@@ -245,3 +247,56 @@ document.addEventListener('click', (e) => {
         hamburgerMenu.classList.remove('open');
     }
 });
+
+// Kit PIN lock/unlock
+const kitLockBtn = document.getElementById('kit-lock-btn');
+const kitPinInput = document.getElementById('kit-pin-input');
+const KIT_PIN = '1400';
+let kitUnlocked = false;
+
+// Default: locked
+function lockKit() {
+    kitUnlocked = false;
+    const kitTable = document.querySelector('.kit-table');
+    if (kitTable) kitTable.classList.add('kit-locked');
+    if (kitLockBtn) kitLockBtn.innerHTML = '&#128274;';
+    if (kitLockBtn) kitLockBtn.classList.remove('unlocked');
+    if (kitPinInput) { kitPinInput.style.display = 'none'; kitPinInput.value = ''; }
+}
+
+function unlockKit() {
+    kitUnlocked = true;
+    const kitTable = document.querySelector('.kit-table');
+    if (kitTable) kitTable.classList.remove('kit-locked');
+    if (kitLockBtn) kitLockBtn.innerHTML = '&#128275;';
+    if (kitLockBtn) kitLockBtn.classList.add('unlocked');
+    if (kitPinInput) kitPinInput.style.display = 'none';
+}
+
+if (kitLockBtn) {
+    kitLockBtn.addEventListener('click', () => {
+        if (kitUnlocked) {
+            lockKit();
+        } else {
+            kitPinInput.style.display = 'inline-block';
+            kitPinInput.focus();
+        }
+    });
+}
+
+if (kitPinInput) {
+    kitPinInput.addEventListener('input', () => {
+        if (kitPinInput.value === KIT_PIN) {
+            unlockKit();
+        }
+    });
+    kitPinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            kitPinInput.style.display = 'none';
+            kitPinInput.value = '';
+        }
+    });
+}
+
+// Apply lock by default on page load
+lockKit();

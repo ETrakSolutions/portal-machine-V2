@@ -375,6 +375,58 @@ main {
     cursor: pointer;
 }
 
+/* Kit lock row */
+.kit-lock-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kit-lock {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.kit-lock-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    transition: all 0.2s;
+}
+
+.kit-lock-btn:hover {
+    border-color: #3B82F6;
+}
+
+.kit-lock-btn.unlocked {
+    border-color: #00CC00;
+}
+
+.kit-pin-input {
+    width: 60px;
+    padding: 4px 8px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: var(--radius);
+    background: rgba(0,0,0,0.3);
+    color: var(--white);
+    font-size: 0.85rem;
+    text-align: center;
+    font-family: monospace;
+}
+
+/* Hide unchecked radios when locked */
+.kit-locked input[type="radio"]:not(:checked) {
+    display: none;
+}
+
+.kit-locked input[type="radio"]:checked {
+    pointer-events: none;
+}
+
 .kit-na {
     color: #666;
     font-size: 0.8rem;

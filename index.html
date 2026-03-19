@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="stylesheet" href="css/style.css?v=14">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -98,7 +98,13 @@
             <div id="kit-machine-section" class="kit-machine-section" style="display:none;">
                 <div class="kit-header">
                     <h3>Kit Machine e-Trak</h3>
-                    <p class="kit-subtitle">Selectionnez les options applicables pour cette machine</p>
+                    <div class="kit-lock-row">
+                        <p class="kit-subtitle">Selectionnez les options applicables pour cette machine</p>
+                        <div class="kit-lock">
+                            <button id="kit-lock-btn" class="kit-lock-btn" title="Deverrouiller pour modifier">&#128274;</button>
+                            <input type="password" id="kit-pin-input" class="kit-pin-input" placeholder="NIP" maxlength="4" style="display:none;">
+                        </div>
+                    </div>
                 </div>
                 <table class="kit-table">
                     <thead>
@@ -192,6 +198,6 @@
         </div>
     </footer>
 
-    <script src="js/app.js?v=11"></script>
+    <script src="js/app.js?v=12"></script>
 </body>
 </html>
