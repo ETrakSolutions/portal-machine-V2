@@ -113,7 +113,7 @@ function showResults(modele, type, fab, annee, specs) {
             } else {
                 html += `<tr><td>${key}</td><td class="text-muted">Image non disponible</td></tr>`;
             }
-        } else if (key === 'Machine sur roue ou chenille' && value === 'Roue') {
+        } else if (key === 'Type de traction' && value === 'Roue') {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Type de bras' && value.includes('2 parties')) {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
