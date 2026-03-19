@@ -135,6 +135,9 @@ function showResults(modele, type, fab, annee, specs) {
     const kitSection = document.getElementById('kit-machine-section');
     if (type === 'Excavatrice') {
         kitSection.style.display = 'block';
+        // Auto-check 1500-0000 (avec cabine) = Oui for all models
+        const cabineOui = document.querySelector('input[name="kit-cabine"][value="avec"]');
+        if (cabineOui) cabineOui.checked = true;
     } else {
         kitSection.style.display = 'none';
     }
