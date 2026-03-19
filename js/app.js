@@ -126,6 +126,13 @@ function showResults(modele, type, fab, annee, specs) {
         }
     }
     html += '</table>';
+
+    // Alert box for 2-boom machines
+    const typeBras = specs['Type de bras'] || '';
+    if (typeBras.includes('2 parties')) {
+        html += '<div class="alert-box flash-yellow-box">⚠️ NOTE À VÉRIFIER — Machine avec boom 2 parties (articulé). Valider la configuration du kit avec l\'ingénieur.</div>';
+    }
+
     resultsTableContainer.innerHTML = html;
 
     resultsSection.style.display = 'block';

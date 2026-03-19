@@ -442,6 +442,26 @@ main {
 }
 
 
+/* ---- ALERT BOX ---- */
+.alert-box {
+    margin-top: 1.5rem;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+    border: 2px solid #FFFF00;
+}
+
+.flash-yellow-box {
+    animation: flashYellowBox 1s ease-in-out infinite;
+}
+
+@keyframes flashYellowBox {
+    0%, 100% { background-color: #FFFF00; color: #000; border-color: #FFFF00; }
+    50% { background-color: transparent; color: #FFFF00; border-color: #FFFF00; }
+}
+
 /* ---- FLASH YELLOW ---- */
 @keyframes flashYellow {
     0%, 100% { background-color: #FFFF00; color: #000; }
