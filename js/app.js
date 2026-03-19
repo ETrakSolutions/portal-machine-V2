@@ -107,7 +107,15 @@ function showResults(modele, type, fab, annee, specs) {
 
     let html = '<table class="specs-table">';
     for (const [key, value] of Object.entries(specs)) {
-        html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+        if (key === 'Image') {
+            if (value && value.trim() !== '') {
+                html += `<tr><td>${key}</td><td><img src="${value}" alt="${fab} ${modele}" style="max-width:300px;max-height:200px;border-radius:6px;"></td></tr>`;
+            } else {
+                html += `<tr><td>${key}</td><td class="text-muted">Image non disponible</td></tr>`;
+            }
+        } else {
+            html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+        }
     }
     html += '</table>';
     resultsTableContainer.innerHTML = html;
