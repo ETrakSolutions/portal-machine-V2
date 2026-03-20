@@ -225,14 +225,21 @@ function createCustomModel(type, fab, annee, customName) {
         'Poids operationnel (kg / lbs)': 'A completer'
     };
 
+    // Add to local machinesData
+    if (!machinesData[type]) machinesData[type] = {};
+    if (!machinesData[type][fab]) machinesData[type][fab] = {};
+    if (!machinesData[type][fab][annee]) machinesData[type][fab][annee] = {};
+    machinesData[type][fab][annee][customName] = specs;
+
     // Save to API
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
         body: JSON.stringify({
             action: 'saveModel',
-            modelKey: fab + '_' + customName + '_' + annee,
-            specs: specs
+            modelKey: type + '_' + fab + '_' + annee + '_' + customName,
+            specs: specs,
+            pin: '1400'
         })
     }).catch(() => {});
 
