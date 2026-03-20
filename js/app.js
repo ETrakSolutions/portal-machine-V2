@@ -468,6 +468,24 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             }
         }
 
+        // Boite GC (1000-0070): Only for Caterpillar Next Gen, N/A for all others
+        var gcRadio = document.querySelector('input[name="kit-gc"]');
+        var gcTr = gcRadio ? gcRadio.closest('tr') : null;
+        if (gcTr) {
+            var gcStatus = gcTr.querySelector('.kit-status-cell');
+            if (fab === 'Caterpillar') {
+                // Restore radios if replaced by N/A
+                if (gcStatus && !gcStatus.querySelector('input')) {
+                    gcStatus.innerHTML = '<input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow">';
+                }
+            } else {
+                // Not Caterpillar -> N/A
+                if (gcStatus) {
+                    gcStatus.innerHTML = '<span class="kit-na">N/A</span>';
+                }
+            }
+        }
+
         // Rotation cremaillere (1500-0304): show + Obligatoire for TB216 only
         const cremRow = document.querySelector('tr[data-kit="cremaillere"]');
         if (cremRow) {
