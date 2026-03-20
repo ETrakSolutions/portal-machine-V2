@@ -487,11 +487,10 @@ main {
 
 .kit-status-cell {
     text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: 1.2rem;
-    align-items: center;
-    padding: 0.5rem;
+    vertical-align: middle;
+}
+.kit-status-cell input[type="radio"] {
+    margin: 0 0.4rem;
 }
 
 .kit-legend {
