@@ -4,6 +4,14 @@
 
 let machinesData = {};
 
+// ---- LOGIN SYSTEM ----
+const AUTHORIZED_USERS = [
+    { email: 'robin@gryb.ca', pin: '1400', name: 'Robin' },
+    { email: 'k.berube@e-trak.ca', pin: '1400', name: 'Kevin' },
+    { email: 'jacquot@gryb.ca', pin: '1234', name: 'Jacquot' }
+];
+let currentUser = null; // { email, name }
+
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
 const selectAnnee = document.getElementById('select-annee');
@@ -431,21 +439,23 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             }
         }
 
-        // Multi Axes row: flash if boom 2 parties
+        // Multi Axes row: pulse yellow button if boom 2 parties
         const multiRow = document.querySelector('tr[data-kit="multi"]');
         if (multiRow) {
             const typeBras = specs['Type de boom'] || '';
+            const multiYellow = multiRow.querySelector('input.radio-yellow');
             if (typeBras.includes('2 parties')) {
-                multiRow.classList.add('flash-yellow-row');
-                // Don't auto-check — just highlight for attention
+                if (multiYellow) multiYellow.classList.add('radio-yellow-pulse');
             } else {
-                multiRow.classList.remove('flash-yellow-row');
+                if (multiYellow) multiYellow.classList.remove('radio-yellow-pulse');
                 const multiOblig = multiRow.querySelector('input[value="oui"]');
                 const multiOption = multiRow.querySelector('input[value="non"]');
                 if (multiOblig) multiOblig.checked = false;
                 if (multiOption) multiOption.checked = false;
             }
         }
+        // Auto-check checkboxes based on radio status
+        updateKitCheckboxes();
     } else {
         kitSection.style.display = 'none';
     }
@@ -587,6 +597,55 @@ function getMailTo() {
     return targetEmails.join(',');
 }
 
+// ---- USER MANAGEMENT ----
+function loadUsers() {
+    fetch(API_URL + '?action=get&key=authorized_users')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try {
+                    var saved = JSON.parse(data.value);
+                    if (Array.isArray(saved) && saved.length > 0) {
+                        // Replace AUTHORIZED_USERS contents (keep reference)
+                        AUTHORIZED_USERS.length = 0;
+                        saved.forEach(function(u) { AUTHORIZED_USERS.push(u); });
+                    }
+                } catch(e) {}
+            }
+            renderUserList();
+        })
+        .catch(function() { renderUserList(); });
+}
+
+function saveUsers() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'authorized_users', value: JSON.stringify(AUTHORIZED_USERS), pin: '1400' })
+    }).catch(function() {});
+}
+
+function renderUserList() {
+    var list = document.getElementById('user-list');
+    if (!list) return;
+    list.innerHTML = '';
+    AUTHORIZED_USERS.forEach(function(user, i) {
+        var item = document.createElement('div');
+        item.className = 'email-item';
+        item.innerHTML = '<span>' + user.name + ' &lt;' + user.email + '&gt; — NIP: ' + user.pin + '</span>' +
+            '<button class="email-delete-btn user-delete-btn ' + (gearUnlocked ? 'visible' : '') + '" data-idx="' + i + '" title="Supprimer">✕</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.user-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            AUTHORIZED_USERS.splice(idx, 1);
+            saveUsers();
+            renderUserList();
+        });
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const saveBtn = document.getElementById('notes-save-btn');
     if (saveBtn) saveBtn.addEventListener('click', saveNotes);
@@ -613,7 +672,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 gearUnlocked = true;
                 gearEditSection.style.display = 'block';
                 renderEmailList();
+                renderUserList();
                 this.style.borderColor = '#00CC00';
+            }
+        });
+    }
+
+    // Add user button
+    var addUserBtn = document.getElementById('add-user-btn');
+    if (addUserBtn) {
+        addUserBtn.addEventListener('click', function() {
+            var email = document.getElementById('add-user-email').value.trim();
+            var name = document.getElementById('add-user-name').value.trim();
+            var pin = document.getElementById('add-user-pin').value.trim();
+            if (email && email.includes('@') && name && pin) {
+                AUTHORIZED_USERS.push({ email: email, name: name, pin: pin });
+                saveUsers();
+                renderUserList();
+                document.getElementById('add-user-email').value = '';
+                document.getElementById('add-user-name').value = '';
+                document.getElementById('add-user-pin').value = '';
             }
         });
     }
@@ -638,11 +716,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (gearEditSection) gearEditSection.style.display = 'none';
             if (gearPinInput) { gearPinInput.value = ''; gearPinInput.style.borderColor = ''; }
             renderEmailList();
+            renderUserList();
         }
     });
 
-    // Load emails on startup
+    // Load emails and users on startup
     loadEmails();
+    loadUsers();
 
     // Allow unchecking radio buttons by clicking again
     document.querySelectorAll('.kit-table input[type="radio"]').forEach(radio => {
@@ -667,7 +747,153 @@ document.addEventListener('DOMContentLoaded', () => {
             this.dataset.wasChecked = this.checked ? 'true' : 'false';
         });
     });
+
+    // ---- LOGIN SYSTEM ----
+    const loginBtn = document.getElementById('login-btn');
+    const loginModal = document.getElementById('login-modal');
+    const loginClose = document.getElementById('login-close');
+    const loginSubmit = document.getElementById('login-submit');
+    const loginEmail = document.getElementById('login-email');
+    const loginPin = document.getElementById('login-pin');
+    const loginError = document.getElementById('login-error');
+    const loginUser = document.getElementById('login-user');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    function updateLoginUI() {
+        if (currentUser) {
+            loginBtn.style.display = 'none';
+            loginUser.style.display = '';
+            loginUser.textContent = '✓ ' + currentUser.name;
+            logoutBtn.style.display = '';
+        } else {
+            loginBtn.style.display = '';
+            loginUser.style.display = 'none';
+            logoutBtn.style.display = 'none';
+        }
+        updateKitCheckboxes();
+        updateQuoteButton();
+    }
+
+    if (loginBtn) {
+        loginBtn.addEventListener('click', function() {
+            loginModal.style.display = 'flex';
+            loginEmail.value = '';
+            loginPin.value = '';
+            loginError.style.display = 'none';
+            loginEmail.focus();
+        });
+    }
+
+    if (loginClose) {
+        loginClose.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+        });
+    }
+
+    if (loginModal) {
+        loginModal.addEventListener('click', function(e) {
+            if (e.target === loginModal) loginModal.style.display = 'none';
+        });
+    }
+
+    if (loginSubmit) {
+        loginSubmit.addEventListener('click', function() {
+            var email = loginEmail.value.trim().toLowerCase();
+            var pin = loginPin.value.trim();
+            var user = AUTHORIZED_USERS.find(function(u) {
+                return u.email.toLowerCase() === email && u.pin === pin;
+            });
+            if (user) {
+                currentUser = { email: user.email, name: user.name };
+                localStorage.setItem('portal_user', JSON.stringify(currentUser));
+                loginModal.style.display = 'none';
+                updateLoginUI();
+            } else {
+                loginError.textContent = 'Courriel ou NIP invalide';
+                loginError.style.display = 'block';
+            }
+        });
+    }
+
+    if (loginPin) {
+        loginPin.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') loginSubmit.click();
+        });
+    }
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            currentUser = null;
+            localStorage.removeItem('portal_user');
+            updateLoginUI();
+        });
+    }
+
+    // Restore session from localStorage
+    var saved = localStorage.getItem('portal_user');
+    if (saved) {
+        try {
+            var parsed = JSON.parse(saved);
+            // Verify user still exists in authorized list
+            var valid = AUTHORIZED_USERS.find(function(u) {
+                return u.email.toLowerCase() === parsed.email.toLowerCase();
+            });
+            if (valid) currentUser = parsed;
+        } catch(e) {}
+    }
+    updateLoginUI();
+
+    // ---- QUOTE REQUEST ----
+    var quoteBtn = document.getElementById('kit-quote-btn');
+    if (quoteBtn) {
+        quoteBtn.addEventListener('click', function() {
+            if (!currentUser) return;
+            var fab = selectFabricant.value;
+            var modele = selectModele.value;
+            var annee = selectAnnee.value;
+            if (!fab || !modele || !annee) return;
+
+            // Collect checked options
+            var options = [];
+            document.querySelectorAll('.kit-table tbody tr').forEach(function(row) {
+                var cb = row.querySelector('.kit-checkbox');
+                if (cb && cb.checked) {
+                    var optName = row.querySelector('td').textContent.trim();
+                    var code = row.querySelector('.kit-code');
+                    var codeText = code ? code.textContent.trim() : '';
+                    options.push(codeText + ' — ' + optName);
+                }
+            });
+
+            var mailTo = getMailTo();
+            var subject = encodeURIComponent('Demande de soumission — ' + fab + ' ' + modele + ' (' + annee + ')');
+            var body = encodeURIComponent(
+                'Bonjour,\n\n' +
+                'Demande de soumission pour:\n' +
+                '- Fabricant: ' + fab + '\n' +
+                '- Modele: ' + modele + '\n' +
+                '- Annee: ' + annee + '\n\n' +
+                'Options selectionnees:\n' +
+                options.map(function(o) { return '- ' + o; }).join('\n') + '\n\n' +
+                'Demande par: ' + currentUser.email + '\n\n' +
+                'Portail Machine e-Trak\n' +
+                'https://etraksolutions.github.io/portal-machine/'
+            );
+            window.open('mailto:' + mailTo + '?subject=' + subject + '&body=' + body, '_blank');
+        });
+    }
 });
+
+function updateQuoteButton() {
+    var section = document.getElementById('kit-quote-section');
+    if (!section) return;
+    var kitVisible = document.getElementById('kit-machine-section');
+    if (currentUser && kitVisible && kitVisible.style.display !== 'none') {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+    }
+}
 
 function resetFrom(level) {
     const levels = ['fabricant', 'annee', 'modele'];
@@ -718,6 +944,43 @@ const kitLockBtn = document.getElementById('kit-lock-btn');
 const kitPinInput = document.getElementById('kit-pin-input');
 const KIT_PIN = '1400';
 let kitUnlocked = false;
+
+// Update checkboxes: auto-check if radio-red is checked, uncheck if no radio checked
+function updateKitCheckboxes() {
+    var loggedIn = !!currentUser;
+    document.querySelectorAll('.kit-table tbody tr').forEach(function(row) {
+        var cb = row.querySelector('.kit-checkbox');
+        if (!cb) return;
+        var redRadio = row.querySelector('input.radio-red');
+        var yellowRadio = row.querySelector('input.radio-yellow');
+        // Reset
+        cb.classList.remove('auto-checked');
+        cb.disabled = false;
+        if (redRadio && redRadio.checked) {
+            // Obligatory — auto-check and lock
+            cb.checked = true;
+            cb.classList.add('auto-checked');
+        } else if (yellowRadio && yellowRadio.checked) {
+            // Optional — leave unchecked, user can select if logged in
+            if (!loggedIn) {
+                cb.checked = false;
+                cb.disabled = true;
+            }
+        } else {
+            // No status — uncheck, disable if not logged in
+            cb.checked = false;
+            if (!loggedIn) cb.disabled = true;
+        }
+        // If row has N/A (swing boom), hide checkbox
+        var naSpan = row.querySelector('.kit-na');
+        if (naSpan) {
+            cb.style.display = 'none';
+        } else {
+            cb.style.display = '';
+        }
+    });
+    updateQuoteButton();
+}
 
 // Default: locked
 function lockKit() {

@@ -26,6 +26,11 @@
         <section class="selector-section">
             <div class="intro-row">
                 <span class="section-title">Portail Machine</span>
+                <div class="login-wrap">
+                    <button id="login-btn" class="login-btn">&#128100; Login</button>
+                    <span id="login-user" class="login-user" style="display:none;"></span>
+                    <button id="logout-btn" class="logout-btn" style="display:none;">Deconnexion</button>
+                </div>
                 <div class="gear-wrap">
                     <button id="gear-btn" class="gear-btn" title="Gestion courriels">&#9881;</button>
                     <div id="gear-menu" class="gear-menu">
@@ -35,17 +40,41 @@
                         </div>
                         <div id="email-list" class="email-list"></div>
                         <div id="gear-edit-section" class="gear-edit-section" style="display:none;">
+                            <!-- Courriels soumission -->
+                            <div class="gear-section-label">Courriels soumission</div>
                             <div class="gear-add-row">
                                 <input type="email" id="add-email-input" class="add-email-input" placeholder="nouveau@courriel.com">
                                 <button id="add-email-btn" class="add-email-btn" title="Ajouter">+</button>
                             </div>
                             <div class="gear-divider"></div>
+                            <!-- Gestion utilisateurs -->
+                            <div class="gear-section-label">Utilisateurs autorises</div>
+                            <div id="user-list" class="email-list"></div>
+                            <div class="gear-add-row">
+                                <input type="email" id="add-user-email" class="add-email-input" placeholder="courriel@exemple.com" style="flex:2;">
+                                <input type="text" id="add-user-name" class="add-email-input" placeholder="Nom" style="flex:1;">
+                                <input type="text" id="add-user-pin" class="add-email-input" placeholder="NIP" maxlength="4" inputmode="numeric" style="flex:0.7;">
+                                <button id="add-user-btn" class="add-email-btn" title="Ajouter user">+</button>
+                            </div>
+                            <div class="gear-divider"></div>
                             <div class="gear-delete-section">
                                 <span class="gear-delete-label">Supprimer le modele selectionne</span>
-                                <button id="gear-delete-model-btn" class="gear-delete-model-btn" disabled>🗑 Supprimer</button>
+                                <button id="gear-delete-model-btn" class="gear-delete-model-btn" disabled>&#128465; Supprimer</button>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- LOGIN MODAL -->
+            <div id="login-modal" class="login-modal" style="display:none;">
+                <div class="login-modal-content">
+                    <button id="login-close" class="login-close">&times;</button>
+                    <h3>Connexion</h3>
+                    <input type="email" id="login-email" class="login-input" placeholder="Adresse courriel" autocomplete="email">
+                    <input type="password" id="login-pin" class="login-input" placeholder="NIP" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                    <button id="login-submit" class="login-submit">Se connecter</button>
+                    <p id="login-error" class="login-error" style="display:none;"></p>
                 </div>
             </div>
 
@@ -123,9 +152,10 @@
                 <table class="kit-table">
                     <thead>
                         <tr>
-                            <th style="width:45%;">Option</th>
-                            <th style="width:25%;">Code produit</th>
-                            <th style="text-align:center;width:30%;">Kit</th>
+                            <th style="width:42%;">Option</th>
+                            <th style="width:22%;">Code produit</th>
+                            <th style="text-align:center;width:18%;">Statut</th>
+                            <th style="text-align:center;width:18%;">Sel.</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,54 +163,67 @@
                             <td>Machine <strong>avec cabine</strong> (kit de base)</td>
                             <td class="kit-code">1500-0000</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-cabine" value="avec" class="radio-red"><input type="radio" name="kit-cabine" value="sans" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr>
                             <td>Machine <strong>sans cabine</strong> (kit de base) <span class="kit-special">*** Cas speciaux seulement</span></td>
                             <td class="kit-code">1500-0003</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr>
                             <td>Option <strong>Hauteur</strong></td>
                             <td class="kit-code">1500-0001</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-hauteur" value="oui" class="radio-red"><input type="radio" name="kit-hauteur" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr>
                             <td>Option <strong>Rotation</strong></td>
                             <td class="kit-code">1500-0002</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-rotation" value="oui" class="radio-red"><input type="radio" name="kit-rotation" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr data-kit="cremaillere" style="display:none;">
                             <td>Option <strong>rotation cremaillere</strong></td>
                             <td class="kit-code">1500-0304</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-cremaillere" value="oui" class="radio-red"><input type="radio" name="kit-cremaillere" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr>
                             <td>Option <strong>mini excavatrice</strong></td>
                             <td class="kit-code">1500-0004-install</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-mini" value="oui" class="radio-red"><input type="radio" name="kit-mini" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr>
                             <td>Boite <strong>(GC)</strong></td>
                             <td class="kit-code">1000-0070</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr data-kit="swing">
                             <td>Gestion <strong>swing boom</strong></td>
                             <td class="kit-code">1500-0008</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-swing" value="oui" class="radio-red"><input type="radio" name="kit-swing" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr>
                             <td>Drain <strong>hydraulique</strong></td>
                             <td class="kit-code">1500-0009</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-drain" value="oui" class="radio-red"><input type="radio" name="kit-drain" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                         <tr data-kit="multi">
                             <td><strong>Multi Axes</strong> complet hauteur-rotation (2 booms et 1 stick)</td>
                             <td class="kit-code">1500-0005</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-multi" value="oui" class="radio-red"><input type="radio" name="kit-multi" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
                     </tbody>
                 </table>
+                <div id="kit-quote-section" class="kit-quote-section" style="display:none;">
+                    <button id="kit-quote-btn" class="kit-quote-btn">&#128231; Demande de soumission</button>
+                </div>
             </div>
 
             <!-- NOTES SECTION -->

@@ -393,6 +393,7 @@ main {
     border-bottom: 1px solid rgba(255,255,255,0.06);
     color: var(--white);
     font-size: 0.85rem;
+    vertical-align: middle;
 }
 .kit-table tbody tr:nth-child(odd) {
     background: rgba(255,255,255,0.02);
@@ -462,8 +463,8 @@ main {
     font-family: monospace;
 }
 
-/* Hide unchecked radios when locked */
-.kit-locked input[type="radio"]:not(:checked) {
+/* Hide unchecked radios when locked — except pulsing ones */
+.kit-locked input[type="radio"]:not(:checked):not(.radio-yellow-pulse) {
     display: none;
 }
 
@@ -477,20 +478,110 @@ main {
     font-style: italic;
 }
 
+/* Solid filled circle radio buttons */
+.kit-table input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    vertical-align: middle;
+    margin: 0 0.4rem;
+    position: relative;
+    background-clip: padding-box;
+    -webkit-background-clip: padding-box;
+}
+.kit-table input[type="radio"]:focus {
+    outline: none;
+    box-shadow: none;
+}
+.kit-table input[type="radio"]::before,
+.kit-table input[type="radio"]::after {
+    display: none;
+}
+
 .kit-table input.radio-red {
-    accent-color: #FF0000;
+    background-color: #FF0000;
+    box-shadow: 0 0 4px rgba(255,0,0,0.5);
 }
 
 .kit-table input.radio-yellow {
-    accent-color: #FFFF00;
+    background-color: #FFFF00;
+    box-shadow: 0 0 4px rgba(255,255,0,0.5);
+}
+
+/* Checked state — slightly larger with inner dot */
+.kit-table input[type="radio"]:checked {
+    width: 20px;
+    height: 20px;
+}
+.kit-table input.radio-red:checked {
+    box-shadow: 0 0 8px rgba(255,0,0,0.7);
+}
+.kit-table input.radio-yellow:checked {
+    box-shadow: 0 0 8px rgba(255,255,0,0.7);
 }
 
 .kit-status-cell {
     text-align: center;
     vertical-align: middle;
+    white-space: nowrap;
 }
-.kit-status-cell input[type="radio"] {
-    margin: 0 0.4rem;
+
+/* Checkbox column */
+.kit-check-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+.kit-checkbox {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #555;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    vertical-align: middle;
+    position: relative;
+}
+.kit-checkbox:checked {
+    background: #3B82F6;
+    border-color: #3B82F6;
+}
+.kit-checkbox:checked::after {
+    content: '\2713';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+}
+/* Auto-checked (obligatory) — locked style */
+.kit-checkbox.auto-checked {
+    background: #FF0000;
+    border-color: #FF0000;
+    pointer-events: none;
+    opacity: 0.9;
+}
+.kit-checkbox.auto-checked::after {
+    content: '\2713';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
 }
 
 .kit-legend {
@@ -542,13 +633,13 @@ main {
     border-color: #FFFF00;
 }
 
-/* ---- HIGHLIGHT YELLOW ROW (Kit Multi Axes) ---- */
-.flash-yellow-row {
-    background-color: #FFFF00 !important;
+/* ---- PULSING YELLOW RADIO (Kit Multi Axes when boom 2 parties) ---- */
+@keyframes pulse-yellow {
+    0%, 100% { box-shadow: 0 0 4px 2px rgba(255,255,0,0.3); }
+    50% { box-shadow: 0 0 12px 6px rgba(255,255,0,0.8); }
 }
-.flash-yellow-row td {
-    color: #000 !important;
-    font-weight: bold;
+.radio-yellow-pulse {
+    animation: pulse-yellow 1.2s ease-in-out infinite;
 }
 
 .flash-yellow {
@@ -724,6 +815,14 @@ main {
 .gear-divider {
     border-top: 1px solid rgba(192,192,192,0.15);
     margin: 0.6rem 0;
+}
+.gear-section-label {
+    color: #3B82F6;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
 }
 .gear-delete-section {
     display: flex;
@@ -1019,4 +1118,152 @@ footer {
     .notes-section { padding: 0.75rem; }
     .notes-textarea { min-height: 80px; font-size: 0.8rem; }
     .notes-save-btn { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+}
+
+/* ================================================================
+   LOGIN SYSTEM
+   ================================================================ */
+
+.login-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.login-btn {
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+.login-btn:hover { background: #004A99; }
+
+.login-user {
+    color: #00CC66;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: none;
+    border: 1px solid #555;
+    color: #999;
+    border-radius: var(--radius);
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    cursor: pointer;
+}
+.logout-btn:hover { color: #FF4444; border-color: #FF4444; }
+
+/* Login Modal */
+.login-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    min-width: 300px;
+    max-width: 380px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.login-modal-content h3 {
+    color: var(--white);
+    margin: 0 0 1.2rem 0;
+    font-size: 1.1rem;
+}
+
+.login-input {
+    display: block;
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 0.8rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--white);
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+.login-input:focus {
+    outline: none;
+    border-color: #0062CC;
+}
+
+.login-submit {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+.login-submit:hover { background: #004A99; }
+
+.login-error {
+    color: #FF4444;
+    font-size: 0.8rem;
+    margin-top: 0.6rem;
+    text-align: center;
+}
+
+.login-close {
+    position: absolute;
+    top: 10px; right: 14px;
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+.login-close:hover { color: #fff; }
+
+/* Quote Request Button */
+.kit-quote-section {
+    margin-top: 1rem;
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.kit-quote-btn {
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 10px 24px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+.kit-quote-btn:hover { background: #004A99; }
+
+/* Disabled checkboxes when not logged in */
+.kit-checkbox:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+.kit-checkbox.auto-checked:disabled {
+    opacity: 0.9;
 }
