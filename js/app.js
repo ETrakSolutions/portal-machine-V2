@@ -259,7 +259,28 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
     resultsTitle.textContent = `${fab} ${modele} (${annee})`;
     resultsBadge.textContent = type;
 
+    // Auto-determine machine class from weight
+    const poidsVal = specs['Poids operationnel (kg / lbs)'] || '';
+    const poidsNum = parseInt((poidsVal.match(/^(\d+)/) || [])[1]) || 0;
+    let classMachine = '';
+    if (poidsNum > 0) {
+        if (poidsNum < 2000) classMachine = 'Ultra-micro';
+        else if (poidsNum < 6000) classMachine = 'Mini';
+        else if (poidsNum < 10000) classMachine = 'Compact';
+        else if (poidsNum < 20000) classMachine = 'Standard';
+        else if (poidsNum < 35000) classMachine = 'Moyen';
+        else if (poidsNum < 50000) classMachine = 'Grand';
+        else if (poidsNum < 80000) classMachine = 'Tres grand';
+        else classMachine = 'Mining';
+    }
+    const tractionVal = specs['Type de traction'] || '';
+    if (tractionVal === 'Roue') classMachine += ' (sur roues)';
+
     let html = '<table class="specs-table">';
+    // Show class as first row if determined
+    if (classMachine) {
+        html += `<tr><td>Classe machine</td><td><strong>${classMachine}</strong></td></tr>`;
+    }
     for (const [key, value] of Object.entries(specs)) {
         if (key === 'Image') {
             if (value && value.trim() !== '') {
@@ -331,10 +352,9 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         // Reset swing boom row radios (in case previous model was N/A)
         const swingRowReset = document.querySelector('tr[data-kit="swing"]');
         if (swingRowReset) {
-            const cells = swingRowReset.querySelectorAll('td');
-            if (cells.length >= 4) {
-                cells[2].innerHTML = '<input type="radio" name="kit-swing" value="oui" class="radio-red">';
-                cells[3].innerHTML = '<input type="radio" name="kit-swing" value="non" class="radio-yellow">';
+            const statusCell = swingRowReset.querySelector('.kit-status-cell');
+            if (statusCell) {
+                statusCell.innerHTML = '<input type="radio" name="kit-swing" value="oui" class="radio-red"><input type="radio" name="kit-swing" value="non" class="radio-yellow">';
             }
         }
 
@@ -347,19 +367,13 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             if (swingValue === 'Oui') {
                 // Machine has swing boom -> check Option
                 if (swingOption) swingOption.checked = true;
-                swingOblig.disabled = false;
-                swingOption.disabled = false;
+                if (swingOblig) swingOblig.disabled = false;
+                if (swingOption) swingOption.disabled = false;
             } else {
                 // No swing boom -> N/A
-                swingOblig.checked = false;
-                swingOption.checked = false;
-                swingOblig.disabled = true;
-                swingOption.disabled = true;
-                // Replace radio cells with N/A text
-                const cells = swingRow.querySelectorAll('td');
-                if (cells.length >= 4) {
-                    cells[2].innerHTML = '<span class="kit-na" style="text-align:center;display:block;">N/A</span>';
-                    cells[3].innerHTML = '<span class="kit-na" style="text-align:center;display:block;">N/A</span>';
+                const statusCell = swingRow.querySelector('.kit-status-cell');
+                if (statusCell) {
+                    statusCell.innerHTML = '<span class="kit-na">N/A</span>';
                 }
             }
         }

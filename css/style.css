@@ -485,6 +485,46 @@ main {
     accent-color: #FFFF00;
 }
 
+.kit-status-cell {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.kit-legend {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    color: #ccc;
+}
+.kit-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.legend-dot {
+    min-width: 14px;
+    min-height: 14px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block !important;
+    border: 1px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+}
+.legend-dot.legend-red {
+    background: #FF0000;
+    box-shadow: 0 0 4px rgba(255,0,0,0.5);
+}
+.legend-dot.legend-yellow {
+    background: #FFFF00;
+    box-shadow: 0 0 4px rgba(255,255,0,0.5);
+}
+
 
 /* ---- ALERT BOX ---- */
 .alert-box {
