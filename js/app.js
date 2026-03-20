@@ -385,17 +385,44 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 }
             }
         }
-        // Mini excavatrice: Obligatoire if < 5000 kg, reset otherwise
+        // Mini excavatrice: Obligatoire if < 5000 kg, N/A if >= 5000 kg
         const poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
         const poidsMatch = poidsStr.match(/^(\d+)/);
         const poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 99999;
-        const miniOblig = document.querySelector('input[name="kit-mini"][value="oui"]');
-        const miniOption = document.querySelector('input[name="kit-mini"][value="non"]');
-        if (poidsKg < 5000) {
-            if (miniOblig) miniOblig.checked = true;
-        } else {
-            if (miniOblig) miniOblig.checked = false;
-            if (miniOption) miniOption.checked = false;
+        const miniRow = document.querySelector('input[name="kit-mini"]');
+        const miniTr = miniRow ? miniRow.closest('tr') : null;
+        if (miniTr) {
+            const miniStatusCell = miniTr.querySelector('.kit-status-cell');
+            if (poidsKg < 5000 && poidsKg > 0) {
+                // Restore radios if they were replaced by N/A
+                if (miniStatusCell && !miniStatusCell.querySelector('input')) {
+                    miniStatusCell.innerHTML = '<input type="radio" name="kit-mini" value="oui" class="radio-red"><input type="radio" name="kit-mini" value="non" class="radio-yellow">';
+                }
+                var miniOblig = miniTr.querySelector('input[value="oui"]');
+                if (miniOblig) miniOblig.checked = true;
+            } else {
+                // >= 5000 kg or no weight -> N/A
+                if (miniStatusCell) {
+                    miniStatusCell.innerHTML = '<span class="kit-na">N/A</span>';
+                }
+            }
+        }
+
+        // Machine sans cabine (1500-0003): N/A if >= 5000 kg
+        var sansCabineRadio = document.querySelector('input[name="kit-sans-cabine"]');
+        var sansCabineTr = sansCabineRadio ? sansCabineRadio.closest('tr') : null;
+        if (sansCabineTr) {
+            var sansCabineStatus = sansCabineTr.querySelector('.kit-status-cell');
+            if (poidsKg >= 5000 || poidsKg === 0) {
+                if (sansCabineStatus) {
+                    sansCabineStatus.innerHTML = '<span class="kit-na">N/A</span>';
+                }
+            } else {
+                // < 5000 kg -> restore radios
+                if (sansCabineStatus && !sansCabineStatus.querySelector('input')) {
+                    sansCabineStatus.innerHTML = '<input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow">';
+                }
+            }
         }
 
         // Drain hydraulique (1500-0009): Obligatoire for specific models
