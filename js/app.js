@@ -92,6 +92,60 @@ selectAnnee.addEventListener('change', () => {
     selectModele.disabled = false;
 });
 
+// Delete model via gear menu
+function updateGearDeleteButton() {
+    const btn = document.getElementById('gear-delete-model-btn');
+    if (!btn) return;
+    const modele = selectModele.value;
+    const hasModel = modele && modele !== '' && modele !== '__OTHER__';
+    if (hasModel) {
+        const fab = selectFabricant.value;
+        const annee = selectAnnee.value;
+        btn.disabled = false;
+        btn.textContent = '🗑 Supprimer ' + fab + ' ' + modele + ' (' + annee + ')';
+    } else {
+        btn.disabled = true;
+        btn.textContent = '🗑 Aucun modele selectionne';
+    }
+}
+
+(function initGearDelete() {
+    const btn = document.getElementById('gear-delete-model-btn');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+        const type = selectType.value;
+        const fab = selectFabricant.value;
+        const annee = selectAnnee.value;
+        const mod = selectModele.value;
+        if (!mod || mod === '__OTHER__') return;
+
+        if (!confirm('⚠ Confirmer la suppression :\n\n' + fab + ' ' + mod + '\nAnnee : ' + annee + ' seulement\n\nCette action est irreversible.')) return;
+
+        // Delete from local data
+        if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee]) {
+            delete machinesData[type][fab][annee][mod];
+        }
+
+        // Save deletion to API
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/plain'},
+            body: JSON.stringify({ action: 'save', key: 'deleted_' + type + '_' + fab + '_' + annee + '_' + mod, value: 'deleted', pin: '1400' })
+        }).catch(() => {});
+
+        // Remove from dropdown
+        const opt = selectModele.querySelector('option[value="' + CSS.escape(mod) + '"]');
+        if (opt) opt.remove();
+        selectModele.value = '';
+        hideResults();
+        updateGearDeleteButton();
+
+        // Close gear menu
+        const gearMenu = document.getElementById('gear-menu');
+        if (gearMenu) gearMenu.classList.remove('open');
+    });
+})();
+
 // Modele changed -> show specs
 selectModele.addEventListener('change', () => {
     const type = selectType.value;
@@ -374,6 +428,9 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
     } else {
         kitSection.style.display = 'none';
     }
+
+    // Update gear menu delete button state
+    updateGearDeleteButton();
 }
 
 function hideResults() {

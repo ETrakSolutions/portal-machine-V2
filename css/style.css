@@ -681,6 +681,42 @@ main {
 }
 
 /* ---- GEAR MENU (Email Management) ---- */
+/* ---- GEAR MENU: DELETE MODEL ---- */
+.gear-divider {
+    border-top: 1px solid rgba(192,192,192,0.15);
+    margin: 0.6rem 0;
+}
+.gear-delete-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+.gear-delete-label {
+    font-size: 0.75rem;
+    color: #aaa;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.gear-delete-model-btn {
+    background: #CC0000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s ease;
+}
+.gear-delete-model-btn:hover:not(:disabled) {
+    background: #FF0000;
+}
+.gear-delete-model-btn:disabled {
+    background: #444;
+    color: #777;
+    cursor: not-allowed;
+}
+
 .section-title {
     color: var(--white);
     font-size: 1.1rem;
