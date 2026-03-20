@@ -52,6 +52,36 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+}
+
+/* Tech grid background */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        /* Grid lines */
+        linear-gradient(rgba(0,98,204,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,98,204,0.04) 1px, transparent 1px),
+        /* Larger grid */
+        linear-gradient(rgba(0,98,204,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,98,204,0.06) 1px, transparent 1px),
+        /* Radial glow from top center */
+        radial-gradient(ellipse at 50% 0%, rgba(0,98,204,0.08) 0%, transparent 60%);
+    background-size:
+        20px 20px,
+        20px 20px,
+        100px 100px,
+        100px 100px,
+        100% 100%;
+}
+
+body > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* ---- HEADER ---- */
