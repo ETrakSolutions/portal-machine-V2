@@ -35,7 +35,7 @@
                     <button id="gear-btn" class="gear-btn" title="Gestion courriels">&#9881;</button>
                     <div id="gear-menu" class="gear-menu">
                         <div class="gear-menu-header">
-                            <span>Courriels cibles</span>
+                            <span>Administrateur</span>
                             <input type="text" id="gear-pin-input" class="gear-pin-input" placeholder="NIP" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
                         </div>
                         <div id="email-list" class="email-list"></div>
@@ -47,16 +47,18 @@
                                 <button id="add-email-btn" class="add-email-btn" title="Ajouter">+</button>
                             </div>
                             <div class="gear-divider"></div>
-                            <!-- Gestion utilisateurs -->
-                            <div class="gear-section-label">Utilisateurs autorises</div>
-                            <div id="user-list" class="email-list"></div>
-                            <div class="gear-add-row">
-                                <input type="email" id="add-user-email" class="add-email-input" placeholder="courriel@exemple.com" style="flex:2;">
-                                <input type="text" id="add-user-name" class="add-email-input" placeholder="Nom" style="flex:1;">
-                                <input type="text" id="add-user-pin" class="add-email-input" placeholder="NIP" maxlength="4" inputmode="numeric" style="flex:0.7;">
-                                <button id="add-user-btn" class="add-email-btn" title="Ajouter user">+</button>
+                            <!-- Gestion utilisateurs (admin only) -->
+                            <div id="gear-users-section" style="display:none;">
+                                <div class="gear-section-label">Utilisateurs autorises</div>
+                                <div id="user-list" class="email-list"></div>
+                                <div class="gear-add-row">
+                                    <input type="email" id="add-user-email" class="add-email-input" placeholder="courriel@exemple.com" style="flex:2;">
+                                    <input type="text" id="add-user-name" class="add-email-input" placeholder="Nom" style="flex:1;">
+                                    <input type="text" id="add-user-pin" class="add-email-input" placeholder="NIP" maxlength="4" inputmode="numeric" style="flex:0.7;">
+                                    <button id="add-user-btn" class="add-email-btn" title="Ajouter user">+</button>
+                                </div>
+                                <div class="gear-divider"></div>
                             </div>
-                            <div class="gear-divider"></div>
                             <div class="gear-delete-section">
                                 <span class="gear-delete-label">Supprimer le modele selectionne</span>
                                 <button id="gear-delete-model-btn" class="gear-delete-model-btn" disabled>&#128465; Supprimer</button>

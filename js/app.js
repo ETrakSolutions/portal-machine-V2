@@ -735,7 +735,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 gearUnlocked = true;
                 gearEditSection.style.display = 'block';
                 renderEmailList();
-                renderUserList();
+                // Show users section only for admins
+                var usersSection = document.getElementById('gear-users-section');
+                var isAdmin = currentUser && targetEmails.some(function(e) {
+                    return e.toLowerCase() === currentUser.email.toLowerCase();
+                });
+                if (usersSection) {
+                    usersSection.style.display = isAdmin ? 'block' : 'none';
+                }
+                if (isAdmin) renderUserList();
                 this.style.borderColor = '#00CC00';
             }
         });
