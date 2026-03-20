@@ -443,11 +443,29 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         ];
         const modelUpper = modele.toUpperCase();
         const isDrainOblig = drainModels.some(m => m.toUpperCase() === modelUpper);
+        var drainTr = drainOblig ? drainOblig.closest('tr') : null;
         if (isDrainOblig) {
-            if (drainOblig) drainOblig.checked = true;
+            // Restore radios if replaced by N/A
+            if (drainTr) {
+                var drainStatus = drainTr.querySelector('.kit-status-cell');
+                if (drainStatus && !drainStatus.querySelector('input')) {
+                    drainStatus.innerHTML = '<input type="radio" name="kit-drain" value="oui" class="radio-red"><input type="radio" name="kit-drain" value="non" class="radio-yellow">';
+                }
+                var drOblig = drainTr.querySelector('input[value="oui"]');
+                if (drOblig) drOblig.checked = true;
+            }
         } else {
-            if (drainOblig) drainOblig.checked = false;
-            if (drainOption) drainOption.checked = false;
+            // Not in drain list -> N/A
+            if (!drainTr) {
+                drainTr = document.querySelector('input[name="kit-drain"]');
+                if (drainTr) drainTr = drainTr.closest('tr');
+            }
+            if (drainTr) {
+                var drainStatusCell = drainTr.querySelector('.kit-status-cell');
+                if (drainStatusCell) {
+                    drainStatusCell.innerHTML = '<span class="kit-na">N/A</span>';
+                }
+            }
         }
 
         // Rotation cremaillere (1500-0304): show + Obligatoire for TB216 only
