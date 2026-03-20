@@ -760,15 +760,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logout-btn');
 
     function updateLoginUI() {
+        var kitTable = document.querySelector('.kit-table');
         if (currentUser) {
             loginBtn.style.display = 'none';
             loginUser.style.display = '';
             loginUser.textContent = '✓ ' + currentUser.name;
             logoutBtn.style.display = '';
+            if (kitTable) kitTable.classList.remove('hide-sel');
         } else {
             loginBtn.style.display = '';
             loginUser.style.display = 'none';
             logoutBtn.style.display = 'none';
+            if (kitTable) kitTable.classList.add('hide-sel');
         }
         updateKitCheckboxes();
         updateQuoteButton();

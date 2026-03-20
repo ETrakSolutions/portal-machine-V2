@@ -1260,6 +1260,12 @@ footer {
 .kit-quote-btn:hover { background: #004A99; }
 
 /* Disabled checkboxes when not logged in */
+/* Hide SEL column when not logged in */
+.kit-table.hide-sel th:last-child,
+.kit-table.hide-sel td.kit-check-cell {
+    display: none;
+}
+
 .kit-checkbox:disabled {
     opacity: 0.3;
     cursor: not-allowed;
