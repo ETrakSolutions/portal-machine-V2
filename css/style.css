@@ -483,8 +483,8 @@ main {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     border: none;
     outline: none;
@@ -514,10 +514,10 @@ main {
     box-shadow: 0 0 4px rgba(255,255,0,0.5);
 }
 
-/* Checked state — slightly larger with inner dot */
+/* Checked state */
 .kit-table input[type="radio"]:checked {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
 }
 .kit-table input.radio-red:checked {
     box-shadow: 0 0 8px rgba(255,0,0,0.7);
