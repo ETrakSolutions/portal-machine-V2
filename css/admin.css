@@ -246,6 +246,48 @@
 .perm-yes { color: #00CC66; font-weight: 700; }
 .perm-no { color: #FF4444; opacity: 0.5; }
 
+/* Accounts by role */
+.accounts-role-group {
+    margin-bottom: 1.5rem;
+}
+.accounts-role-group:last-child { margin-bottom: 0; }
+.accounts-role-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 0 0.6rem;
+    color: #fff;
+    font-size: 0.9rem;
+}
+.accounts-count {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+.pwd-hidden {
+    cursor: pointer;
+    background: rgba(255,255,255,0.06);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #666;
+    user-select: none;
+}
+.pwd-hidden .pwd-text {
+    display: none;
+}
+.pwd-hidden.pwd-visible {
+    color: #fff;
+    background: rgba(0,98,204,0.15);
+}
+.pwd-hidden.pwd-visible .pwd-text {
+    display: inline;
+}
+.pwd-visible::first-line {
+    font-size: 0;
+}
+
 /* Toast notification */
 .admin-toast {
     position: fixed;

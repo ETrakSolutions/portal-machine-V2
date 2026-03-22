@@ -69,6 +69,7 @@ function showAdminSection() {
     loadEmails();
     loadSalesEmails();
     loadUsers();
+    // renderAccountsByRole is called after loadUsers completes
 }
 
 function hideAdminSection() {
@@ -230,6 +231,49 @@ function renderUsers() {
             renderUsers();
             showToast('Utilisateur "' + userName + '" supprime');
         });
+    });
+    renderAccountsByRole();
+}
+
+// ---- ACCOUNTS BY ROLE ----
+function renderAccountsByRole() {
+    var container = document.getElementById('admin-accounts-by-role');
+    if (!container) return;
+    container.innerHTML = '';
+
+    // Group users by role
+    var roleOrder = ['administrateur', 'technicien', 'ingenierie', 'distributeur', 'dealer', 'vente_interne'];
+    var grouped = {};
+    roleOrder.forEach(function(r) { grouped[r] = []; });
+    USERS.forEach(function(user) {
+        var role = user.role || 'autre';
+        if (!grouped[role]) grouped[role] = [];
+        grouped[role].push(user);
+    });
+
+    var SUPER_ADMIN = 'robin@gryb.ca';
+
+    roleOrder.forEach(function(role) {
+        var users = grouped[role];
+        if (users.length === 0) return;
+        var roleLabel = ROLES[role] ? ROLES[role].label : role;
+
+        var section = document.createElement('div');
+        section.className = 'accounts-role-group';
+        var html = '<h4 class="accounts-role-title"><span class="role-badge role-' + role + '">' + roleLabel + '</span> <span class="accounts-count">' + users.length + ' compte' + (users.length > 1 ? 's' : '') + '</span></h4>';
+        html += '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Nom</th><th>Courriel</th><th>Utilisateur</th><th>Mot de passe</th></tr></thead><tbody>';
+        users.forEach(function(u) {
+            var isSuperAdmin = u.email && u.email.toLowerCase() === SUPER_ADMIN;
+            html += '<tr>' +
+                '<td><strong>' + u.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">\u2733 SUPER</span>' : '') + '</td>' +
+                '<td>' + (u.email || '<span style="color:#555;">—</span>') + '</td>' +
+                '<td>' + u.username + '</td>' +
+                '<td><code class="pwd-hidden" onclick="this.classList.toggle(\'pwd-visible\')" title="Cliquer pour afficher">\u2022\u2022\u2022\u2022<span class="pwd-text">' + u.password + '</span></code></td>' +
+                '</tr>';
+        });
+        html += '</tbody></table></div>';
+        section.innerHTML = html;
+        container.appendChild(section);
     });
 }
 
