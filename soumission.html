@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Demande de soumission</title>
+    <link rel="stylesheet" href="css/style.css?v=43">
+    <link rel="stylesheet" href="css/soumission.css?v=43">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <a href="admin.html" class="header-back" title="Retour au Portail e-Trak">&larr; Portail</a>
+            <div class="logo-section">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+            </div>
+        </div>
+    </header>
+    <div class="accent-bar"></div>
+
+    <main>
+        <!-- SELECTOR PANEL -->
+        <section class="selector-section">
+            <div class="intro-row">
+                <span class="section-title">Demande de soumission</span>
+            </div>
+
+            <div class="selectors-grid">
+                <div class="selector-group">
+                    <label for="select-type">
+                        <span class="label-num">01</span> Type de machine
+                    </label>
+                    <select id="select-type">
+                        <option value="">-- Selectionnez --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-fabricant">
+                        <span class="label-num">02</span> Fabricant
+                    </label>
+                    <select id="select-fabricant" disabled>
+                        <option value="">-- Selectionnez --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-annee">
+                        <span class="label-num">03</span> Annee
+                    </label>
+                    <select id="select-annee" disabled>
+                        <option value="">-- Selectionnez --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-modele">
+                        <span class="label-num">04</span> Modele
+                    </label>
+                    <select id="select-modele" disabled>
+                        <option value="">-- Selectionnez --</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="btn-reset" class="btn-reset" style="display:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                Reinitialiser
+            </button>
+        </section>
+
+        <!-- OPTIONS e-TRAK (visible after model selection) -->
+        <section id="options-section" class="options-section" style="display:none;">
+            <div class="options-header">
+                <h3>Options e-Trak</h3>
+                <p class="options-desc">Selectionnez les produits souhaites pour cette machine.</p>
+            </div>
+
+            <div class="toggle-grid">
+                <div class="toggle-box" data-option="Limiteur de portee">
+                    <span class="toggle-label">Limiteur de portee</span>
+                    <span class="toggle-status">OFF</span>
+                </div>
+                <div class="toggle-box" data-option="Indicateur de charge">
+                    <span class="toggle-label">Indicateur de charge</span>
+                    <span class="toggle-status">OFF</span>
+                </div>
+                <div class="toggle-box" data-option="Guide de creusage">
+                    <span class="toggle-label">Guide de creusage</span>
+                    <span class="toggle-status">OFF</span>
+                </div>
+                <div class="toggle-box" data-option="Balance">
+                    <span class="toggle-label">Balance</span>
+                    <span class="toggle-status">OFF</span>
+                </div>
+                <div class="toggle-box" data-option="Camera">
+                    <span class="toggle-label">Camera</span>
+                    <span class="toggle-status">OFF</span>
+                </div>
+            </div>
+
+            <div class="options-comment">
+                <label for="soumission-comment">Commentaire (optionnel)</label>
+                <textarea id="soumission-comment" class="soumission-textarea" placeholder="Precision supplementaire, quantite, delai souhaite..." rows="3"></textarea>
+            </div>
+
+            <div class="options-info">
+                <p id="soumission-machine-info" class="machine-info-text"></p>
+            </div>
+
+            <button id="soumission-submit" class="soumission-submit-btn">&#128231; Envoyer la demande</button>
+        </section>
+
+        <!-- EMPTY STATE -->
+        <section id="empty-state" class="empty-state">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <polyline points="16 3 12 7 8 3"/>
+                </svg>
+            </div>
+            <p class="empty-title">Selectionnez une machine</p>
+            <p class="empty-subtitle">Utilisez les filtres ci-dessus pour choisir la machine et les options souhaitees.</p>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
+            </div>
+            <p class="footer-copy">&copy; 2026 Portail e-Trak &mdash; Demande de soumission</p>
+        </div>
+    </footer>
+
+    <script src="js/soumission.js?v=43"></script>
+</body>
+</html>

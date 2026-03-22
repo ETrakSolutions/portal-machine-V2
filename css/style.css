@@ -105,7 +105,27 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
+
+.header-back {
+    position: absolute;
+    left: 0;
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.7;
+    transition: all 0.2s;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+}
+.header-back:hover { opacity: 1; background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); }
 
 .logo-section {
     display: flex;
@@ -902,51 +922,13 @@ main {
     justify-content: space-between;
     margin-bottom: 0.75rem;
 }
-.gear-wrap { position: relative; }
-.gear-btn {
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-    font-size: 1.4rem;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: var(--radius);
-    line-height: 1;
-}
-.gear-btn:hover { color: var(--white); border-color: #0062CC; }
-.gear-menu {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    padding: 1rem;
-    z-index: 500;
-    min-width: 280px;
-}
-.gear-menu.open { display: block; }
-.gear-menu-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.75rem;
-    color: var(--white);
-    font-weight: 700;
-    font-size: 0.85rem;
-}
-.gear-pin-input {
-    width: 60px;
-    padding: 4px 8px;
-    background: var(--bg-input);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    color: var(--white);
-    font-size: 0.85rem;
-    text-align: center;
-}
+
+
+
+
+
+
+
 .email-list {
     margin-bottom: 0.5rem;
 }
@@ -1120,6 +1102,7 @@ footer {
     .results-section { padding: 0.75rem; }
     .specs-table td:first-child { width: 45%; }
     .header-subtitle, .logo-divider { display: none; }
+    .header-back { font-size: 0.7rem; padding: 4px 8px; }
     .footer-content { flex-direction: column; gap: 0.5rem; text-align: center; }
 
     /* Kit table mobile */
@@ -1162,6 +1145,7 @@ footer {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    position: relative;
 }
 
 .login-btn {
@@ -1177,22 +1161,10 @@ footer {
 }
 .login-btn:hover { background: #004A99; }
 
-.login-user {
-    color: #00CC66;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
 
-.logout-btn {
-    background: none;
-    border: 1px solid #555;
-    color: #999;
-    border-radius: var(--radius);
-    padding: 4px 10px;
-    font-size: 0.7rem;
-    cursor: pointer;
-}
-.logout-btn:hover { color: #FF4444; border-color: #FF4444; }
+
+
+
 
 /* Login Modal */
 .login-modal {
@@ -1307,3 +1279,174 @@ footer {
 .kit-checkbox.auto-checked:disabled {
     opacity: 0.9;
 }
+
+
+/* ================================================================
+   USER DROPDOWN (unified login + gear menu)
+   ================================================================ */
+
+.user-menu-btn {
+    background: rgba(0, 102, 204, 0.15);
+    border: 1px solid #0062CC;
+    color: #00CC66;
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+.user-menu-btn:hover { background: rgba(0, 102, 204, 0.3); }
+.user-menu-check { color: #00CC66; font-weight: 700; }
+.user-menu-arrow { font-size: 0.65rem; opacity: 0.7; }
+
+.user-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    padding: 1rem;
+    z-index: 600;
+    min-width: 300px;
+    max-height: 80vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.user-dropdown.open { display: block; }
+
+.ud-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+.ud-user-info { display: flex; flex-direction: column; }
+.ud-name {
+    color: var(--white);
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+.ud-role {
+    color: #0062CC;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.ud-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 0.6rem 0;
+}
+.ud-section-label {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+}
+.ud-logout {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    background: none;
+    border: 1px solid #555;
+    color: #999;
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+}
+.ud-logout:hover { color: #FF4444; border-color: #FF4444; }
+
+/* Overlay for mobile */
+.ud-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 550;
+}
+.ud-overlay.active { display: block; }
+
+/* ---- MOBILE RESPONSIVE DROPDOWN ---- */
+@media (max-width: 600px) {
+    .user-dropdown {
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        max-height: 92vh;
+        min-width: unset;
+        padding: 1.25rem 1.25rem 2rem 1.25rem;
+        animation: slideUp 0.25s ease-out;
+    }
+    @keyframes slideUp {
+        from { transform: translateY(100%); }
+        to { transform: translateY(0); }
+    }
+    .ud-logout {
+        padding: 12px;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+    .add-email-input, .add-email-btn {
+        min-height: 44px;
+        font-size: 16px !important;
+    }
+    .gear-add-row {
+        flex-wrap: wrap;
+    }
+    .gear-add-row .add-email-input {
+        min-width: 0;
+        flex: 1 1 45%;
+    }
+    .email-item {
+        padding: 0.5rem 0;
+        font-size: 0.85rem;
+    }
+    .user-menu-btn {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+    }
+    .login-input {
+        font-size: 16px !important;
+    }
+}
+
+/* Kit lock button — no PIN needed if has permission */
+.kit-lock-btn.perm-unlock {
+    color: #00CC66;
+    border-color: #00CC66;
+}
+
+/* Admin link button in dropdown */
+.ud-admin-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 98, 204, 0.15);
+    border: 1px solid #0062CC;
+    color: #0062CC;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-sizing: border-box;
+}
+.ud-admin-btn:hover { background: rgba(0, 98, 204, 0.3); color: #fff; }

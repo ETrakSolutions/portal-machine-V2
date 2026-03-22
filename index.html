@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=33">
+    <link rel="stylesheet" href="css/style.css?v=43">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -12,6 +12,7 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
+            <a href="admin.html" class="header-back" title="Retour au Portail e-Trak">&larr; Portail</a>
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
@@ -27,58 +28,17 @@
             <div class="intro-row">
                 <span class="section-title">Portail Machine</span>
                 <div class="login-wrap">
-                    <button id="login-btn" class="login-btn">&#128100; Login</button>
-                    <span id="login-user" class="login-user" style="display:none;"></span>
-                    <button id="logout-btn" class="logout-btn" style="display:none;">Deconnexion</button>
-                </div>
-                <div class="gear-wrap">
-                    <button id="gear-btn" class="gear-btn" title="Gestion courriels">&#9881;</button>
-                    <div id="gear-menu" class="gear-menu">
-                        <div class="gear-menu-header">
-                            <span>Administrateur</span>
-                            <input type="text" id="gear-pin-input" class="gear-pin-input" placeholder="NIP" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
-                        </div>
-                        <div id="email-list" class="email-list"></div>
-                        <div id="gear-edit-section" class="gear-edit-section" style="display:none;">
-                            <!-- Courriels soumission -->
-                            <div class="gear-section-label">Courriels soumission</div>
-                            <div class="gear-add-row">
-                                <input type="email" id="add-email-input" class="add-email-input" placeholder="nouveau@courriel.com">
-                                <button id="add-email-btn" class="add-email-btn" title="Ajouter">+</button>
-                            </div>
-                            <div class="gear-divider"></div>
-                            <!-- Gestion utilisateurs (admin only) -->
-                            <div id="gear-users-section" style="display:none;">
-                                <div class="gear-section-label">Utilisateurs autorises</div>
-                                <div id="user-list" class="email-list"></div>
-                                <div class="gear-add-row">
-                                    <input type="email" id="add-user-email" class="add-email-input" placeholder="courriel@exemple.com" style="flex:2;">
-                                    <input type="text" id="add-user-name" class="add-email-input" placeholder="Nom" style="flex:1;">
-                                    <input type="text" id="add-user-pin" class="add-email-input" placeholder="NIP" maxlength="4" inputmode="numeric" style="flex:0.7;">
-                                    <button id="add-user-btn" class="add-email-btn" title="Ajouter user">+</button>
-                                </div>
-                                <div class="gear-divider"></div>
-                            </div>
-                            <div class="gear-delete-section">
-                                <span class="gear-delete-label">Supprimer le modele selectionne</span>
-                                <button id="gear-delete-model-btn" class="gear-delete-model-btn" disabled>&#128465; Supprimer</button>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Not logged in -->
+                    <a href="admin.html" id="login-btn" class="login-btn">&#128100; Login</a>
+                    <!-- Logged in: link to hub -->
+                    <a href="admin.html" id="user-menu-btn" class="user-menu-btn" style="display:none;">
+                        <span class="user-menu-check">&#10003;</span>
+                        <span id="user-menu-name"></span>
+                    </a>
                 </div>
             </div>
 
-            <!-- LOGIN MODAL -->
-            <div id="login-modal" class="login-modal" style="display:none;">
-                <div class="login-modal-content">
-                    <button id="login-close" class="login-close">&times;</button>
-                    <h3>Connexion</h3>
-                    <input type="email" id="login-email" class="login-input" placeholder="Adresse courriel" autocomplete="email">
-                    <input type="password" id="login-pin" class="login-input" placeholder="NIP" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
-                    <button id="login-submit" class="login-submit">Se connecter</button>
-                    <p id="login-error" class="login-error" style="display:none;"></p>
-                </div>
-            </div>
+
 
             <div class="selectors-grid">
                 <div class="selector-group">
@@ -143,7 +103,6 @@
                         <p class="kit-subtitle" id="kit-machine-desc"></p>
                         <div class="kit-lock">
                             <button id="kit-lock-btn" class="kit-lock-btn" title="Deverrouiller pour modifier">&#128274;</button>
-                            <input type="text" id="kit-pin-input" class="kit-pin-input" placeholder="NIP" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="off" style="display:none;">
                         </div>
                     </div>
                 </div>
@@ -267,7 +226,7 @@
                 <div id="hamburger-menu" class="hamburger-menu">
                     <div class="menu-qr">
                         <p class="menu-qr-title">Acceder sur mobile</p>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAAChklEQVR4nO1bwW3rMAx9lAXkaAMdwKM4G3SkP9PfwB4lG1jHAApYkKKdtoeP9hIT3yQKxbJ4IEg/6pFSifFDWdJPNYFQTeEsxOeCQiZXAHQtWQaZD8C2lAMwcJIyOlYBigSlr8AyVjDfMjDp0urG1lCFQMgCxXPJYF47JhorGvIEdAhnwdfnUjQyj5b8GrZea8C/JeHsqvnzpK+ZAWGJ5a0S0L3AgBSq+KWzmFmzXgYWyYnL8CB71zPzHH718WXBKITItHb8fTDpmOfDbU2nV82Cnt0Ld1I6qMLL0GlWDGf5q7dyI4Y8FyKgv9sgORHL4MXWk6tCM6HuTK3omtYv2bFVY2tkQhfRSlpl0bVn3ooueRotbiZSMcODrSdXRQOOytx/HaBUQ5Cn03S0ren0qtmAIw2N6Ub6C0aRoV+FZdRMDWXp9M5KR3sAtkc1REnnacebYiv2LWfR4mohkwLL+ruNW2xls7Z258NtTadXheIIk4TsMzHUd/YU+5ZDBt9E96gWvC07Bra8RCtL1qskjEKFllFbu0I25A+4MEmTF8fbmkIVItrB0MMSTLeLVF6XPRPKetRbrvYtPFsW/b5v7QtRb/k635r+vmneIy21tEXIKA9NhbKQIxPCQbRgfYzn9QvhFnu9tXUMo0/oIlp7D367fqEbVWu66xUofafnksmBrSdXzcoJ9ZHkpN8O+TeKyChdxTLI9HBb0+lV8WQZ1sHFVm/tSdD6Uun0zkq+PNCxnp3wXITGj1od34XVx+3PV4XgV9iCHZHoBRprzge2fDF4tpnsYKWrpCUyBGC6ury7sDVUE7Bd92wu0YsY+70MpfH0J863fHwuFP8RhINDkEIV/6WzPgB3CaKDORRWQgAAAABJRU5ErkJggg==" alt="QR Code" class="qr-image">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAAFKAQAAAABTUiuoAAAChklEQVR4nO1bwW3rMAx9lAXkaAMdwKM4G3SkP9PfwB4lG1jHAApYkKKdtoeP9hIT3yQKxbJ4IEg/6pFSifFDWdJPNYFQTeEsxOeCQiZXAHQtWQaZD8C2lAMwcJIyOlYBigSlr8AyVjDfMjDp0urG1lCFQMgCxXPJYF47JhorGvIEdAhnwdfnUjQyj5b8GrZea8C/JeHsqvnzpK+ZAWGJ5a0S0L3AgBSq+KWzmFmzXgYWyYnL8CB71zPzHH718WXBKITItHb8fTDpmOfDbU2nV82Cnt0Ld1I6qMLL0GlWDGf5q7dyI4Y8FyKgv9sgORHL4MXWk6tCM6HuTK3omtYv2bFVY2tkQhfRSlpl0bVn3ooueRotbiZSMcODrSdXRQOOytx/HaBUQ5Cn03S0ben0qtmAIw2N6Ub6C0aRoV+FZdRMDWXp9M5KR3sAtkc1REnnacebYiv2LWfR4mohkwLL+ruNW2xls7Z258NtTadXheIIk4TsMzHUd/YU+5ZDBt9E96gWvC07Bra8RCtL1qskjEKFllFbu0I25A+4MEmTF8fbmkIVItrB0MMSTLeLVF6XPRPKetRbrvYtPFsW/b5v7QtRb/k635r+vmneIy21tEXIKA9NhbKQIxPCQbRgfYzn9QvhFnu9tXUMo0/oIlp7D367fqEbVWu66xUofafnksmBrSdXzcoJ9ZHkpN8O+TeKyChdxTLI9HBb0+lV8WQZ1sHFVm/tSdD6Uun0zkq+PNCxnp3wXITGj9od34XVx+3PV4XgV9iCHZHoBRprzge2fDF4tpnsYKWrpCUyBGC6ury7sDVUE7Bd92wu0YsY+70MpfH0J863fHwuFP8RhINDkEIV/6WzPgB3CaKDORRWQgAAAABJRU5ErkJggg==" alt="QR Code" class="qr-image">
                         <p class="menu-qr-url">etraksolutions.github.io/portal-machine/</p>
                     </div>
                 </div>
@@ -276,6 +235,7 @@
         </div>
     </footer>
 
-    <script src="js/app.js?v=33"></script>
+
+    <script src="js/app.js?v=43"></script>
 </body>
 </html>

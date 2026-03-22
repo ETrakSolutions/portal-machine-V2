@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Portail e-Trak</title>
+    <link rel="stylesheet" href="css/style.css?v=43">
+    <link rel="stylesheet" href="css/admin.css?v=43">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <!-- HERO -->
+        <div class="admin-hero">
+            <h1 class="admin-hero-title">Portail e-Trak</h1>
+            <div class="hub-login-area">
+                <!-- Not logged in -->
+                <button id="hub-login-btn" class="hub-login-btn">&#128100; Connexion</button>
+                <!-- Logged in -->
+                <div id="hub-user-bar" class="hub-user-bar" style="display:none;">
+                    <span id="hub-user-name" class="hub-user-name"></span>
+                    <span id="hub-user-role" class="hub-user-role"></span>
+                    <button id="hub-logout-btn" class="hub-logout-btn">Deconnexion</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGIN MODAL -->
+        <div id="hub-login-modal" class="login-modal" style="display:none;">
+            <div class="login-modal-content">
+                <button id="hub-login-close" class="login-close">&times;</button>
+                <h3>Connexion</h3>
+                <input type="text" id="hub-login-username" class="login-input" placeholder="Nom d'utilisateur" autocomplete="username">
+                <input type="password" id="hub-login-password" class="login-input" placeholder="Mot de passe" autocomplete="current-password">
+                <button id="hub-login-submit" class="login-submit">Se connecter</button>
+                <p id="hub-login-error" class="login-error" style="display:none;"></p>
+            </div>
+        </div>
+
+        <!-- NAVIGATION ICONS (shown when logged in) -->
+        <div id="hub-nav" class="hub-nav" style="display:none;">
+            <a href="index.html" class="hub-tile">
+                <div class="hub-tile-icon">&#128736;</div>
+                <div class="hub-tile-label">Portail Machine</div>
+                <div class="hub-tile-desc">Specifications et kits excavatrice</div>
+            </a>
+            <a href="soumission.html" class="hub-tile hub-tile-soumission">
+                <div class="hub-tile-icon">&#128231;</div>
+                <div class="hub-tile-label">Demande de soumission</div>
+                <div class="hub-tile-desc">Soumettre une demande de kit machine</div>
+            </a>
+            <a href="#admin" id="hub-tile-admin" class="hub-tile hub-tile-admin" style="display:none;">
+                <div class="hub-tile-icon">&#9881;</div>
+                <div class="hub-tile-label">Administration</div>
+                <div class="hub-tile-desc">Gestion utilisateurs et courriels</div>
+            </a>
+        </div>
+
+        <!-- NOT LOGGED IN STATE -->
+        <div id="hub-empty" class="hub-empty">
+            <p>Connectez-vous pour acceder aux applications e-Trak.</p>
+        </div>
+
+        <!-- ADMIN CONTENT (hidden by default, shown when admin clicks Administration) -->
+        <div id="admin-content" style="display:none;">
+            <div class="admin-section-header">
+                <button id="admin-back-to-hub" class="admin-back">&larr; Retour</button>
+                <h2 class="admin-section-title">Administration</h2>
+            </div>
+
+            <!-- Courriels soumission -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128231; Courriels soumission</h2>
+                    <p class="admin-card-desc">Adresses qui recoivent les demandes de soumission et kit machine.</p>
+                </div>
+                <div id="admin-email-list" class="admin-list"></div>
+                <div class="admin-add-row">
+                    <input type="email" id="admin-add-email" class="admin-input" placeholder="nouveau@courriel.com">
+                    <button id="admin-add-email-btn" class="admin-btn-add">+ Ajouter</button>
+                </div>
+            </section>
+
+            <!-- Utilisateurs -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128101; Utilisateurs autorises</h2>
+                    <p class="admin-card-desc">Comptes pouvant se connecter au portail. Chaque compte a un role et des permissions.</p>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table" id="admin-user-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Utilisateur</th>
+                                <th>Role</th>
+                                <th>Actif</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-user-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="admin-card-header" style="margin-top:1.5rem;">
+                    <h3>Ajouter un utilisateur</h3>
+                </div>
+                <div class="admin-add-user-form">
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label>Nom complet</label>
+                            <input type="text" id="admin-new-name" class="admin-input" placeholder="Jean Tremblay">
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Nom d'utilisateur</label>
+                            <input type="text" id="admin-new-username" class="admin-input" placeholder="jean.tremblay">
+                        </div>
+                    </div>
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label>Mot de passe</label>
+                            <input type="text" id="admin-new-password" class="admin-input" placeholder="MotDePasse123!">
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Role</label>
+                            <select id="admin-new-role" class="admin-input">
+                                <option value="technicien">Technicien</option>
+                                <option value="distributeur">Distributeur</option>
+                                <option value="dealer">Dealer</option>
+                                <option value="vente_interne">Vente interne</option>
+                                <option value="ingenierie">Ingenierie</option>
+                                <option value="administrateur">Administrateur</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide">+ Ajouter l'utilisateur</button>
+                </div>
+            </section>
+
+            <!-- Permissions -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128272; Permissions par role</h2>
+                    <p class="admin-card-desc">Reference des permissions accordees a chaque role.</p>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table admin-perm-table">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th style="text-align:center;">Modif. BOM</th>
+                                <th style="text-align:center;">Creation compte</th>
+                                <th style="text-align:center;">Modif. comptes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Administrateur</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td></tr>
+                            <tr><td>Technicien</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Ingenierie</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Distributeur</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Dealer</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Vente interne</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
+            </div>
+            <p class="footer-copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
+        </div>
+    </footer>
+
+    <script src="js/admin.js?v=43"></script>
+</body>
+</html>

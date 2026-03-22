@@ -1,0 +1,204 @@
+/* ================================================================
+   SOUMISSION PAGE STYLES
+   ================================================================ */
+
+/* Toggle boxes */
+.toggle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+.toggle-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.toggle-box:hover {
+    border-color: #555;
+}
+.toggle-box.active {
+    border-color: #00CC66;
+    background: rgba(0, 204, 102, 0.08);
+}
+.toggle-label {
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.toggle-status {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.08);
+    color: #666;
+    transition: all 0.2s;
+    min-width: 32px;
+    text-align: center;
+}
+.toggle-box.active .toggle-status {
+    background: #00CC66;
+    color: #000;
+}
+
+@media (max-width: 600px) {
+    .toggle-grid { grid-template-columns: 1fr; }
+    .toggle-box { padding: 16px; min-height: 48px; }
+    .toggle-label { font-size: 0.9rem; }
+}
+
+/* Options section */
+.options-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+.options-header h3 {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+}
+.options-desc {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin: 0 0 1.25rem;
+}
+
+/* Options grid — clickable cards */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+}
+.option-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    position: relative;
+}
+.option-card:hover {
+    border-color: #0062CC;
+    background: rgba(0,98,204,0.08);
+}
+.option-card input[type="checkbox"] {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    accent-color: #0062CC;
+    cursor: pointer;
+}
+.option-card:has(input:checked) {
+    border-color: #0062CC;
+    background: rgba(0,98,204,0.12);
+    box-shadow: 0 0 0 1px #0062CC;
+}
+.option-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+.option-label {
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* Comment */
+.options-comment {
+    margin-bottom: 1rem;
+}
+.options-comment label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.4rem;
+}
+.soumission-textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: vertical;
+    box-sizing: border-box;
+}
+.soumission-textarea:focus { outline: none; border-color: #0062CC; }
+
+/* Machine info */
+.options-info {
+    margin-bottom: 1rem;
+}
+.machine-info-text {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 8px 12px;
+    background: rgba(0,98,204,0.08);
+    border-radius: 6px;
+    border-left: 3px solid #0062CC;
+}
+
+/* Submit button */
+.soumission-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+}
+.soumission-submit-btn:hover { background: #004A99; }
+.soumission-submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ---- MOBILE ---- */
+@media (max-width: 600px) {
+    .options-section { padding: 1rem; }
+    .options-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .option-card { padding: 1rem 0.5rem; }
+    .option-icon { font-size: 1.4rem; }
+    .option-label { font-size: 0.7rem; }
+    .soumission-textarea { font-size: 16px !important; }
+    .soumission-submit-btn { min-height: 48px; font-size: 16px; }
+}

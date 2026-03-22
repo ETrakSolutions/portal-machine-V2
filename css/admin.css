@@ -1,0 +1,424 @@
+/* ================================================================
+   ADMIN PAGE STYLES
+   ================================================================ */
+
+.admin-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    min-height: calc(100vh - 200px);
+}
+
+/* Hero section */
+.admin-hero {
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+}
+.admin-hero-logo {
+    height: 60px;
+    width: auto;
+    margin-bottom: 0.75rem;
+}
+.admin-hero-title {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin: 0 0 0.25rem;
+    letter-spacing: -0.5px;
+}
+.admin-hero-sub {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* Top bar */
+.admin-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.admin-topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.admin-back {
+    color: #0062CC;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border: 1px solid #0062CC;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.admin-back:hover { background: #0062CC; color: #fff; }
+.admin-title {
+    color: #fff;
+    font-size: 1.4rem;
+    margin: 0;
+}
+.admin-user-info {
+    color: #00CC66;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Access denied */
+.admin-denied {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #999;
+}
+.denied-icon { font-size: 3rem; margin-bottom: 1rem; }
+.admin-denied h2 { color: #fff; margin: 0 0 0.5rem; }
+.admin-denied p { margin: 0 0 2rem; }
+.admin-back-btn {
+    display: inline-block;
+    color: #0062CC;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 24px;
+    border: 1px solid #0062CC;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.admin-back-btn:hover { background: #0062CC; color: #fff; }
+
+/* Cards */
+.admin-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.admin-card-header h2 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin: 0 0 0.3rem;
+}
+.admin-card-header h3 {
+    color: #fff;
+    font-size: 0.95rem;
+    margin: 0 0 0.3rem;
+}
+.admin-card-desc {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin: 0 0 1rem;
+}
+
+/* Lists */
+.admin-list {
+    margin-bottom: 1rem;
+}
+.admin-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 0.85rem;
+}
+.admin-list-item:last-child { border-bottom: none; }
+.admin-list-item .admin-delete-btn {
+    background: none;
+    border: 1px solid transparent;
+    color: #FF4444;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+.admin-list-item .admin-delete-btn:hover {
+    border-color: #FF4444;
+    background: rgba(255,68,68,0.1);
+}
+
+/* Add row */
+.admin-add-row {
+    display: flex;
+    gap: 0.75rem;
+}
+.admin-input {
+    flex: 1;
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+.admin-input:focus { outline: none; border-color: #0062CC; }
+.admin-btn-add {
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+}
+.admin-btn-add:hover { background: #004A99; }
+.admin-btn-wide { width: 100%; margin-top: 0.5rem; }
+
+/* Form */
+.admin-add-user-form {
+    margin-top: 0.5rem;
+}
+.admin-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+.admin-form-group label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.3rem;
+}
+
+/* Tables */
+.admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+.admin-table th {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+.admin-table td {
+    color: #fff;
+    padding: 0.7rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.admin-table tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+}
+.admin-table .role-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.role-administrateur { background: rgba(0,204,102,0.15); color: #00CC66; }
+.role-technicien { background: rgba(0,98,204,0.15); color: #4A9FFF; }
+.role-ingenierie { background: rgba(156,39,176,0.15); color: #CE93D8; }
+.role-distributeur { background: rgba(255,152,0,0.15); color: #FFB74D; }
+.role-dealer { background: rgba(255,152,0,0.15); color: #FFB74D; }
+.role-vente_interne { background: rgba(100,100,100,0.15); color: #999; }
+
+.admin-active-yes { color: #00CC66; }
+.admin-active-no { color: #FF4444; }
+
+/* Permission table */
+.admin-perm-table td, .admin-perm-table th { text-align: center; }
+.admin-perm-table td:first-child, .admin-perm-table th:first-child { text-align: left; }
+.perm-yes { color: #00CC66; font-weight: 700; }
+.perm-no { color: #FF4444; opacity: 0.5; }
+
+/* Toast notification */
+.admin-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00CC66;
+    color: #000;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    z-index: 9999;
+    animation: toastIn 0.3s ease-out;
+}
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* ---- MOBILE ---- */
+@media (max-width: 600px) {
+    .admin-main { padding: 1rem; }
+    .admin-topbar { flex-direction: column; align-items: flex-start; }
+    .admin-title { font-size: 1.1rem; }
+    .admin-card { padding: 1rem; }
+    .admin-form-row { grid-template-columns: 1fr; }
+    .admin-add-row { flex-direction: column; }
+    .admin-input { font-size: 16px !important; min-height: 44px; }
+    .admin-btn-add { min-height: 44px; }
+    .admin-table { font-size: 0.75rem; }
+    .admin-table th, .admin-table td { padding: 0.5rem; }
+    .admin-list-item { font-size: 0.8rem; padding: 0.75rem 0.5rem; }
+}
+
+/* ================================================================
+   HUB — Navigation tiles + login
+   ================================================================ */
+
+.hub-login-area {
+    margin-top: 1.25rem;
+}
+.hub-login-btn {
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 32px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+}
+.hub-login-btn:hover { background: #004A99; }
+
+.hub-user-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.hub-user-name {
+    color: #00CC66;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.hub-user-role {
+    color: #0062CC;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(0,98,204,0.15);
+    padding: 3px 10px;
+    border-radius: 4px;
+}
+.hub-logout-btn {
+    background: none;
+    border: 1px solid #555;
+    color: #999;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.hub-logout-btn:hover { color: #FF4444; border-color: #FF4444; }
+
+/* Navigation tiles */
+.hub-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+.hub-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.25s;
+    cursor: pointer;
+    display: block;
+}
+.hub-tile:hover {
+    border-color: #0062CC;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,98,204,0.2);
+}
+.hub-tile-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+}
+.hub-tile-label {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+.hub-tile-desc {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+.hub-tile-admin { border-color: rgba(0,204,102,0.2); }
+.hub-tile-admin:hover { border-color: #00CC66; box-shadow: 0 8px 25px rgba(0,204,102,0.15); }
+.hub-tile-soumission { border-color: rgba(0,98,204,0.2); }
+.hub-tile-soumission:hover { border-color: #0062CC; box-shadow: 0 8px 25px rgba(0,98,204,0.2); }
+
+/* Empty state */
+.hub-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Admin section header (when inside admin) */
+.admin-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+.admin-section-title {
+    color: #fff;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+/* ---- MOBILE HUB ---- */
+@media (max-width: 600px) {
+    .hub-nav {
+        grid-template-columns: 1fr;
+    }
+    .hub-tile {
+        padding: 1.5rem 1rem;
+    }
+    .hub-login-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        min-height: 48px;
+    }
+    .hub-user-bar {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .admin-hero-title {
+        font-size: 1.4rem;
+    }
+}
