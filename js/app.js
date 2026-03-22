@@ -751,7 +751,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ---- LOGIN UI (session from localStorage, login on admin.html) ----
+    // ---- LOGIN UI (session from localStorage, login on index.html) ----
     function updateLoginUI() {
         var kitTable = document.querySelector('.kit-table');
         var loginBtnEl = document.getElementById('login-btn');

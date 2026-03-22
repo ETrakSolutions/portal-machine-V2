@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e-Trak | Portail Machine</title>
+    <title>e-Trak | Portail e-Trak</title>
     <link rel="stylesheet" href="css/style.css?v=43">
+    <link rel="stylesheet" href="css/admin.css?v=43">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -12,227 +13,178 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            <a href="admin.html" class="header-back" title="Retour au Portail e-Trak">&larr; Portail</a>
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
         </div>
     </header>
 
-    <!-- HERO ACCENT BAR -->
-    <div class="accent-bar"></div>
-
-    <main>
-        <!-- SELECTOR PANEL -->
-        <section class="selector-section">
-            <div class="intro-row">
-                <span class="section-title">Portail Machine</span>
-                <div class="login-wrap">
-                    <!-- Not logged in -->
-                    <a href="admin.html" id="login-btn" class="login-btn">&#128100; Login</a>
-                    <!-- Logged in: link to hub -->
-                    <a href="admin.html" id="user-menu-btn" class="user-menu-btn" style="display:none;">
-                        <span class="user-menu-check">&#10003;</span>
-                        <span id="user-menu-name"></span>
-                    </a>
+    <main class="admin-main">
+        <!-- HERO -->
+        <div class="admin-hero">
+            <h1 class="admin-hero-title">Portail e-Trak</h1>
+            <div class="hub-login-area">
+                <!-- Not logged in -->
+                <button id="hub-login-btn" class="hub-login-btn">&#128100; Connexion</button>
+                <!-- Logged in -->
+                <div id="hub-user-bar" class="hub-user-bar" style="display:none;">
+                    <span id="hub-user-name" class="hub-user-name"></span>
+                    <span id="hub-user-role" class="hub-user-role"></span>
+                    <button id="hub-logout-btn" class="hub-logout-btn">Deconnexion</button>
                 </div>
             </div>
+        </div>
 
+        <!-- LOGIN MODAL -->
+        <div id="hub-login-modal" class="login-modal" style="display:none;">
+            <div class="login-modal-content">
+                <button id="hub-login-close" class="login-close">&times;</button>
+                <h3>Connexion</h3>
+                <input type="text" id="hub-login-username" class="login-input" placeholder="Courriel ou nom d'utilisateur" autocomplete="username">
+                <input type="password" id="hub-login-password" class="login-input" placeholder="Mot de passe" autocomplete="current-password">
+                <button id="hub-login-submit" class="login-submit">Se connecter</button>
+                <p id="hub-login-error" class="login-error" style="display:none;"></p>
+            </div>
+        </div>
 
+        <!-- NAVIGATION ICONS (shown when logged in) -->
+        <div id="hub-nav" class="hub-nav" style="display:none;">
+            <a href="machine.html" class="hub-tile">
 
-            <div class="selectors-grid">
-                <div class="selector-group">
-                    <label for="select-type">
-                        <span class="label-num">01</span> Type de machine
-                    </label>
-                    <select id="select-type">
-                        <option value="">-- Selectionnez --</option>
-                    </select>
-                </div>
+                <div class="hub-tile-label">Portail Machine</div>
+                <div class="hub-tile-desc">Specifications et kits excavatrice</div>
+            </a>
+            <a href="soumission.html" class="hub-tile hub-tile-soumission">
 
-                <div class="selector-group">
-                    <label for="select-fabricant">
-                        <span class="label-num">02</span> Fabricant
-                    </label>
-                    <select id="select-fabricant" disabled>
-                        <option value="">-- Selectionnez --</option>
-                    </select>
-                </div>
+                <div class="hub-tile-label">Demande de soumission</div>
+                <div class="hub-tile-desc">Soumettre une demande de kit machine</div>
+            </a>
+            <a href="#admin" id="hub-tile-admin" class="hub-tile hub-tile-admin" style="display:none;">
 
-                <div class="selector-group">
-                    <label for="select-annee">
-                        <span class="label-num">03</span> Annee
-                    </label>
-                    <select id="select-annee" disabled>
-                        <option value="">-- Selectionnez --</option>
-                    </select>
-                </div>
+                <div class="hub-tile-label">Administrateur</div>
+                <div class="hub-tile-desc">Gestion utilisateurs et courriels</div>
+            </a>
+        </div>
 
-                <div class="selector-group">
-                    <label for="select-modele">
-                        <span class="label-num">04</span> Modele
-                    </label>
-                    <select id="select-modele" disabled>
-                        <option value="">-- Selectionnez --</option>
-                    </select>
-                </div>
+        <!-- NOT LOGGED IN STATE -->
+        <div id="hub-empty" class="hub-empty">
+            <p>Connectez-vous pour acceder aux applications e-Trak.</p>
+        </div>
+
+        <!-- ADMIN CONTENT (hidden by default, shown when admin clicks Administration) -->
+        <div id="admin-content" style="display:none;">
+            <div class="admin-section-header">
+                <button id="admin-back-to-hub" class="admin-back">&larr; Retour</button>
+                <h2 class="admin-section-title">Administration</h2>
             </div>
 
-            <button id="btn-reset" class="btn-reset" style="display:none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-                Reinitialiser
-            </button>
-        </section>
-
-        <!-- RESULTS -->
-        <section id="results-section" class="results-section" style="display:none;">
-            <div class="results-header">
-                <div class="results-title-wrap">
-                    <span id="results-badge" class="badge"></span>
-                    <h2 id="results-title"></h2>
+            <!-- Courriels soumission -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128231; Courriels soumission</h2>
+                    <p class="admin-card-desc">Adresses qui recoivent les demandes de soumission et kit machine.</p>
                 </div>
-                <div class="results-accent"></div>
-            </div>
-            <div id="results-table-container"></div>
+                <div id="admin-email-list" class="admin-list"></div>
+                <div class="admin-add-row">
+                    <input type="email" id="admin-add-email" class="admin-input" placeholder="nouveau@courriel.com">
+                    <button id="admin-add-email-btn" class="admin-btn-add">+ Ajouter</button>
+                </div>
+            </section>
 
-            <!-- KIT MACHINE (excavatrice only) -->
-            <div id="kit-machine-section" class="kit-machine-section" style="display:none;">
-                <div class="kit-header">
-                    <h3>Kit Machine e-Trak</h3>
-                    <div class="kit-lock-row">
-                        <p class="kit-subtitle" id="kit-machine-desc"></p>
-                        <div class="kit-lock">
-                            <button id="kit-lock-btn" class="kit-lock-btn" title="Deverrouiller pour modifier">&#128274;</button>
+            <!-- Utilisateurs -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128101; Utilisateurs autorises</h2>
+                    <p class="admin-card-desc">Comptes pouvant se connecter au portail. Chaque compte a un role et des permissions.</p>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table" id="admin-user-table">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Utilisateur</th>
+                                <th>Role</th>
+                                <th>Actif</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-user-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="admin-card-header" style="margin-top:1.5rem;">
+                    <h3>Ajouter un utilisateur</h3>
+                </div>
+                <div class="admin-add-user-form">
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label>Nom complet</label>
+                            <input type="text" id="admin-new-name" class="admin-input" placeholder="Jean Tremblay">
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Nom d'utilisateur</label>
+                            <input type="text" id="admin-new-username" class="admin-input" placeholder="jean.tremblay">
                         </div>
                     </div>
-                </div>
-                <div class="kit-legend">
-                    <span class="kit-legend-item"><span class="legend-dot legend-red"></span> Obligatoire</span>
-                    <span class="kit-legend-item"><span class="legend-dot legend-yellow"></span> Optionnel</span>
-                </div>
-                <table class="kit-table">
-                    <thead>
-                        <tr>
-                            <th style="width:42%;">Option</th>
-                            <th style="width:22%;">Code produit</th>
-                            <th style="text-align:center;width:18%;">Statut</th>
-                            <th style="text-align:center;width:18%;">Sel.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Machine <strong>avec cabine</strong> (kit de base)</td>
-                            <td class="kit-code">1500-0000</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-cabine" value="avec" class="radio-red"><input type="radio" name="kit-cabine" value="sans" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td>Machine <strong>sans cabine</strong> (kit de base) <span class="kit-special">*** Cas speciaux seulement</span></td>
-                            <td class="kit-code">1500-0003</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td>Option <strong>Hauteur</strong></td>
-                            <td class="kit-code">1500-0001</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-hauteur" value="oui" class="radio-red"><input type="radio" name="kit-hauteur" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td>Option <strong>Rotation</strong></td>
-                            <td class="kit-code">1500-0002</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-rotation" value="oui" class="radio-red"><input type="radio" name="kit-rotation" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr data-kit="cremaillere" style="display:none;">
-                            <td>Option <strong>rotation cremaillere</strong></td>
-                            <td class="kit-code">1500-0304</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-cremaillere" value="oui" class="radio-red"><input type="radio" name="kit-cremaillere" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td>Option <strong>mini excavatrice</strong></td>
-                            <td class="kit-code">1500-0004-install</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-mini" value="oui" class="radio-red"><input type="radio" name="kit-mini" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td>Boite <strong>(GC)</strong></td>
-                            <td class="kit-code">1000-0070</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr data-kit="swing">
-                            <td>Gestion <strong>swing boom</strong></td>
-                            <td class="kit-code">1500-0008</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-swing" value="oui" class="radio-red"><input type="radio" name="kit-swing" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr>
-                            <td>Drain <strong>hydraulique</strong></td>
-                            <td class="kit-code">1500-0009</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-drain" value="oui" class="radio-red"><input type="radio" name="kit-drain" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                        <tr data-kit="multi">
-                            <td><strong>Multi Axes</strong> complet hauteur-rotation (2 booms et 1 stick)</td>
-                            <td class="kit-code">1500-0005</td>
-                            <td class="kit-status-cell"><input type="radio" name="kit-multi" value="oui" class="radio-red"><input type="radio" name="kit-multi" value="non" class="radio-yellow"></td>
-                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- NOTES SECTION -->
-            <div id="notes-section" class="notes-section" style="display:none;">
-                <div class="notes-header">
-                    <h3>Notes</h3>
-                    <div class="notes-lock-row">
-                        <p class="notes-subtitle" id="notes-status"></p>
-                        <button id="notes-save-btn" class="notes-save-btn" title="Enregistrer">&#128190; Enregistrer</button>
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label>Mot de passe</label>
+                            <input type="text" id="admin-new-password" class="admin-input" placeholder="MotDePasse123!">
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Role</label>
+                            <select id="admin-new-role" class="admin-input">
+                                <option value="technicien">Technicien</option>
+                                <option value="distributeur">Distributeur</option>
+                                <option value="dealer">Dealer</option>
+                                <option value="vente_interne">Vente interne</option>
+                                <option value="ingenierie">Ingenierie</option>
+                                <option value="administrateur">Administrateur</option>
+                            </select>
+                        </div>
                     </div>
+                    <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide">+ Ajouter l'utilisateur</button>
                 </div>
-                <textarea id="notes-textarea" class="notes-textarea" placeholder="Aucune note pour ce modele..." autocomplete="off" autocorrect="on" spellcheck="true" inputmode="text"></textarea>
-            </div>
-        </section>
+            </section>
 
-        <!-- EMPTY STATE -->
-        <section id="empty-state" class="empty-state">
-            <div class="empty-icon">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                    <polyline points="16 3 12 7 8 3"/>
-                </svg>
-            </div>
-            <p class="empty-title">Aucune machine selectionnee</p>
-            <p class="empty-subtitle">Utilisez les filtres ci-dessus pour consulter les specifications techniques.</p>
-        </section>
+            <!-- Permissions -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128272; Permissions par role</h2>
+                    <p class="admin-card-desc">Reference des permissions accordees a chaque role.</p>
+                </div>
+                <div class="admin-table-wrap">
+                    <table class="admin-table admin-perm-table">
+                        <thead>
+                            <tr>
+                                <th>Role</th>
+                                <th style="text-align:center;">Modif. BOM</th>
+                                <th style="text-align:center;">Creation compte</th>
+                                <th style="text-align:center;">Modif. comptes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Administrateur</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td></tr>
+                            <tr><td>Technicien</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Ingenierie</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Distributeur</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Dealer</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                            <tr><td>Vente interne</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </main>
 
-    <!-- FOOTER -->
     <footer>
         <div class="footer-content">
             <div class="footer-brand">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
             </div>
-            <div class="hamburger-wrap">
-                <button id="hamburger-btn" class="hamburger-btn" aria-label="Menu">
-                    <span></span><span></span><span></span>
-                </button>
-                <div id="hamburger-menu" class="hamburger-menu">
-                    <div class="menu-qr">
-                        <p class="menu-qr-title">Acceder sur mobile</p>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZoAAAGaAQAAAAAefbjOAAADMUlEQVR4nO1cS46jQAy1AamXRMoBchRygznSaI6UG6SO0gdoKbVsicgjP5uCmd40GpQMKb8FSiAWlHnyv8JCq5Ga9TJEIeQIRThCEY5QhCMU4QhFOEIRe1IEOzo7yXzQcOFwZz5nZqI8/eD8lMdbiRDaQBGDKG7gAZFcwQNqRX6dRGPPFdenKDRU/sKKIHvTg5JhuLUCbhD1E0EAXFBaGHOu//mamhDaUhFJXcfwri5CrcVMi83v9B2E0MMV0X0509+I0mnshPKBmHp82uBOTQjtShG9egN8ysxyzZ2Gl+ombq0gnhSR8XmPtwohtIEiEjIJzTBAgZ+IKOAwMqzI3VKNDe60DiH0JK8h84mkroL6TxaikSQdWliQf79TE0K7yzVIk0x1HYsDIsv5KhC5RgWMIKSb4EY5AIOMRguLMiL7rMdGtAtDAR6AJbggV5xTWoSNqMlGEHjgtariK/q/TEZ4jToiy3RmksStsFaxCVUIL0p0ai7uHVH/0e1jTU0IbVGPGP1Qck4+46BZxzW/ich7qWaFyitQRO78kE4job8lV3UYlN8E3S/Ai1g7WdMqhNCEPzKMcWp3lcP8Ow0vI7J8fRqRv+QeJerS3YR56JF4Ki3gTibmRD2ingpV72RYzkIYLdxGBCPqYYS4jUBDCybDzYPyAEBlIuoR9XgNmXzFXI2y4pTCfErUI6oTyp06hzvbLF06ffKiODXTYldr+i5C6KvXEA8vSzcDqYf1NdRaTNXLiCxryT5l0efUOMI8Cfqh9hUsCUbUFFn2pb9l5mFqePiEVeQaNc1Z5qPwcNH65BmTUq1WKm/kfY3MPoD56MdrQuhJuUbBsho1d0Hnhrn+JiZmXt9GsH9rR0lnNDI+OrFhO4xh5yMaoDpp99jHa0LouZFlW2zE1OEASgpqdiRsRHV7usTK1raxq7S7IvuscwdPOiCAbEc2Z2L5x414uPBO1tSE0KZ7uujeSfqh5crLcWRLMzJrTFF646HyivZ0yWKjJ+pSNrHfyvxfArtZ0yqE0ATPOQ3T3nALKm0WW89HzbIeGnH8M9ku3lMTQoZQhCMU4QhFOEIRjlCE43EVqt9gWZUtMlJBmAAAAABJRU5ErkJggg==" alt="QR Code" class="qr-image">
-                        <p class="menu-qr-url">etraksolutions.github.io/portal-machine/admin.html</p>
-                    </div>
-                </div>
-            </div>
-            <p class="footer-copy">&copy; 2026 Portail Machine — Usage interne</p>
+            <p class="footer-copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
         </div>
     </footer>
 
-
-    <script src="js/app.js?v=43"></script>
+    <script src="js/admin.js?v=43"></script>
 </body>
 </html>
