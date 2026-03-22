@@ -5,12 +5,13 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
 
 const ROLES = {
-    administrateur: { modifBom: true, createAccount: true, modifAccounts: true, label: 'Administrateur' },
-    distributeur:   { modifBom: false, createAccount: true, modifAccounts: false, label: 'Distributeur' },
-    dealer:         { modifBom: false, createAccount: true, modifAccounts: false, label: 'Dealer' },
-    technicien:     { modifBom: true, createAccount: true, modifAccounts: false, label: 'Technicien' },
-    vente_interne:  { modifBom: false, createAccount: true, modifAccounts: false, label: 'Vente interne' },
-    ingenierie:     { modifBom: true, createAccount: true, modifAccounts: false, label: 'Ingenierie' }
+    administrateur: { modifBom: true, createAccount: true, modifAccounts: true, shareAccess: true, label: 'Administrateur' },
+    vendeur_etrak:  { modifBom: false, createAccount: false, modifAccounts: false, shareAccess: true, label: 'Vendeur e-Trak' },
+    distributeur:   { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Distributeur' },
+    dealer:         { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Dealer' },
+    technicien:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Technicien' },
+    vente_interne:  { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Vente interne' },
+    ingenierie:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Ingenierie' }
 };
 
 const DEFAULT_USERS = [
@@ -43,6 +44,8 @@ function updateHubUI() {
     var hubEmpty = document.getElementById('hub-empty');
     var tileAdmin = document.getElementById('hub-tile-admin');
 
+    var hamburgerWrap = document.querySelector('.hamburger-wrap');
+
     if (currentUser) {
         if (loginBtn) loginBtn.style.display = 'none';
         if (userBar) userBar.style.display = 'flex';
@@ -54,11 +57,16 @@ function updateHubUI() {
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
         }
+        // Show hamburger (QR + share) only for super admin, admin, vendeur e-Trak
+        if (hamburgerWrap) {
+            hamburgerWrap.style.display = currentUser.permissions.shareAccess ? '' : 'none';
+        }
     } else {
         if (loginBtn) loginBtn.style.display = '';
         if (userBar) userBar.style.display = 'none';
         if (hubNav) hubNav.style.display = 'none';
         if (hubEmpty) hubEmpty.style.display = 'block';
+        if (hamburgerWrap) hamburgerWrap.style.display = 'none';
     }
 }
 

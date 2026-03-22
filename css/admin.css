@@ -235,6 +235,7 @@
 .role-ingenierie { background: rgba(156,39,176,0.15); color: #CE93D8; }
 .role-distributeur { background: rgba(255,152,0,0.15); color: #FFB74D; }
 .role-dealer { background: rgba(255,152,0,0.15); color: #FFB74D; }
+.role-vendeur_etrak { background: rgba(0,204,102,0.15); color: #66FF99; }
 .role-vente_interne { background: rgba(100,100,100,0.15); color: #999; }
 
 .admin-active-yes { color: #00CC66; }
