@@ -890,8 +890,8 @@ document.addEventListener('click', (e) => {
 });
 
 // Kit lock/unlock — permission-based (no PIN needed)
-const kitLockBtn = document.getElementById('kit-lock-btn');
-let kitUnlocked = false;
+var kitLockBtn = document.getElementById('kit-lock-btn');
+var kitUnlocked = false;
 
 function updateKitLockButton() {
     if (!kitLockBtn) return;
