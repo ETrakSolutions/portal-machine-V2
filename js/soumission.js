@@ -3,8 +3,7 @@
 // ============================================
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
-const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
-let targetEmails = [...DEFAULT_EMAILS];
+let salesEmails = [];
 let machinesData = {};
 let currentUser = null;
 
@@ -23,11 +22,11 @@ if (saved) {
 }
 
 // Load emails
-fetch(API_URL + '?action=get&key=target_emails')
+fetch(API_URL + '?action=get&key=sales_emails')
     .then(function(r) { return r.json(); })
     .then(function(data) {
         if (data.value) {
-            try { targetEmails = JSON.parse(data.value); } catch(e) {}
+            try { salesEmails = JSON.parse(data.value); } catch(e) {}
         }
     })
     .catch(function() {});
@@ -179,7 +178,11 @@ if (submitBtn) {
         var comment = (document.getElementById('soumission-comment').value || '').trim();
         var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
 
-        var mailTo = targetEmails.join(',');
+        if (salesEmails.length === 0) {
+            alert('Aucun courriel vente interne configure. Contactez l\'administrateur.');
+            return;
+        }
+        var mailTo = salesEmails.join(',');
         var subject = 'Demande de soumission \u2014 ' + fab + ' ' + modele + ' (' + annee + ')';
         var body =
             'Demande de soumission e-Trak\n' +

@@ -25,6 +25,8 @@ const DEFAULT_USERS = [
 let USERS = [...DEFAULT_USERS];
 const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
 let targetEmails = [...DEFAULT_EMAILS];
+const DEFAULT_SALES_EMAILS = [];
+let salesEmails = [...DEFAULT_SALES_EMAILS];
 let currentUser = null;
 
 function getUserPermissions(role) {
@@ -65,6 +67,7 @@ function showAdminSection() {
     document.getElementById('admin-content').style.display = 'block';
     document.querySelector('.admin-hero').style.display = 'none';
     loadEmails();
+    loadSalesEmails();
     loadUsers();
 }
 
@@ -123,6 +126,48 @@ function renderEmails() {
             saveEmails();
             renderEmails();
             showToast('Courriel supprime');
+        });
+    });
+}
+
+// ---- SALES EMAILS (vente interne) ----
+function loadSalesEmails() {
+    fetch(API_URL + '?action=get&key=sales_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try { salesEmails = JSON.parse(data.value); } catch(e) {}
+            }
+            renderSalesEmails();
+        })
+        .catch(function() { renderSalesEmails(); });
+}
+
+function saveSalesEmails() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'sales_emails', value: JSON.stringify(salesEmails), pin: '1400' })
+    }).catch(function() {});
+}
+
+function renderSalesEmails() {
+    var list = document.getElementById('admin-sales-email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    salesEmails.forEach(function(email, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            salesEmails.splice(idx, 1);
+            saveSalesEmails();
+            renderSalesEmails();
+            showToast('Courriel vente supprime');
         });
     });
 }
@@ -313,6 +358,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderEmails();
                 input.value = '';
                 showToast('Courriel ajoute');
+            }
+        });
+    }
+
+    // ADD SALES EMAIL
+    var addSalesEmailBtn = document.getElementById('admin-add-sales-email-btn');
+    if (addSalesEmailBtn) {
+        addSalesEmailBtn.addEventListener('click', function() {
+            var input = document.getElementById('admin-add-sales-email');
+            var email = input.value.trim();
+            if (email && email.includes('@')) {
+                salesEmails.push(email);
+                saveSalesEmails();
+                renderSalesEmails();
+                input.value = '';
+                showToast('Courriel vente ajoute');
             }
         });
     }
