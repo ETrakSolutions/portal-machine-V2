@@ -14,12 +14,12 @@ const ROLES = {
 };
 
 const DEFAULT_USERS = [
-    { username: 'administrateur', password: 'Admin2024!', role: 'administrateur', name: 'Robin Gagnon', active: true },
-    { username: 'distributeur', password: 'Dist2024!', role: 'distributeur', name: 'Distributeur', active: true },
-    { username: 'dealer', password: 'Deal2024!', role: 'dealer', name: 'Dealer', active: true },
-    { username: 'technicien', password: 'Tech2024!', role: 'technicien', name: 'Kevin Berube', active: true },
-    { username: 'vente.interne', password: 'Vente2024!', role: 'vente_interne', name: 'Vente interne', active: true },
-    { username: 'ingenierie', password: 'Ing2024!', role: 'ingenierie', name: 'Ingenierie', active: true }
+    { username: 'administrateur', email: 'robin@gryb.ca', password: '1400', role: 'administrateur', name: 'Robin Gagnon', active: true },
+    { username: 'distributeur', email: '', password: 'Dist2024!', role: 'distributeur', name: 'Distributeur', active: true },
+    { username: 'dealer', email: '', password: 'Deal2024!', role: 'dealer', name: 'Dealer', active: true },
+    { username: 'technicien', email: 'k.berube@e-trak.ca', password: 'Tech2024!', role: 'technicien', name: 'Kevin Berube', active: true },
+    { username: 'vente.interne', email: '', password: 'Vente2024!', role: 'vente_interne', name: 'Vente interne', active: true },
+    { username: 'ingenierie', email: '', password: 'Ing2024!', role: 'ingenierie', name: 'Ingenierie', active: true }
 ];
 
 let USERS = [...DEFAULT_USERS];
@@ -243,7 +243,9 @@ document.addEventListener('DOMContentLoaded', function() {
             var username = loginUsername.value.trim().toLowerCase();
             var password = loginPassword.value.trim();
             var user = USERS.find(function(u) {
-                return u.username.toLowerCase() === username && u.password === password && u.active !== false;
+                var matchUser = u.username.toLowerCase() === username;
+                var matchEmail = u.email && u.email.toLowerCase() === username;
+                return (matchUser || matchEmail) && u.password === password && u.active !== false;
             });
             if (user) {
                 currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
