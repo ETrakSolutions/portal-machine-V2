@@ -114,15 +114,15 @@ function showWelcome(name, role) {
         overlay.classList.add('welcome-visible');
     });
 
-    // Fade out after 2s, then remove and show hub
+    // Fade out after 1s, then remove and show hub
     setTimeout(function() {
         overlay.classList.remove('welcome-visible');
         overlay.classList.add('welcome-fadeout');
         setTimeout(function() {
             overlay.remove();
             updateHubUI();
-        }, 800);
-    }, 2000);
+        }, 1000);
+    }, 1000);
 }
 
 // ---- TOAST ----
