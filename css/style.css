@@ -1102,7 +1102,8 @@ footer {
     .results-section { padding: 0.75rem; }
     .specs-table td:first-child { width: 45%; }
     .header-subtitle, .logo-divider { display: none; }
-    .header-back { font-size: 0.7rem; padding: 4px 8px; }
+    .header-back { font-size: 0; padding: 6px 8px; border: none; }
+    .header-back::before { content: '\2190'; font-size: 1.2rem; }
     .footer-content { flex-direction: column; gap: 0.5rem; text-align: center; }
 
     /* Kit table mobile */
