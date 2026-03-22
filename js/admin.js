@@ -448,4 +448,38 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('Utilisateur "' + name + '" ajoute');
         });
     }
+
+    // HAMBURGER MENU
+    var hamburgerBtn = document.getElementById('hamburger-btn');
+    var hamburgerMenu = document.getElementById('hamburger-menu');
+    if (hamburgerBtn && hamburgerMenu) {
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            hamburgerBtn.classList.toggle('active');
+            hamburgerMenu.classList.toggle('open');
+        });
+        document.addEventListener('click', function(e) {
+            if (!hamburgerMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                hamburgerBtn.classList.remove('active');
+                hamburgerMenu.classList.remove('open');
+            }
+        });
+    }
+
+    // SHARE BY EMAIL
+    var shareSendBtn = document.getElementById('share-send-btn');
+    if (shareSendBtn) {
+        shareSendBtn.addEventListener('click', function() {
+            var emailInput = document.getElementById('share-email');
+            var email = emailInput.value.trim();
+            if (!email || !email.includes('@')) {
+                alert('Veuillez entrer une adresse courriel valide.');
+                return;
+            }
+            var subject = 'Portail e-Trak — Acces au portail';
+            var body = 'Bonjour,\n\nVoici le lien pour acceder au Portail e-Trak :\n\nhttps://etraksolutions.github.io/portal-machine/\n\nPortail e-Trak — e-Trak Technology Solutions';
+            window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+            emailInput.value = '';
+        });
+    }
 });
