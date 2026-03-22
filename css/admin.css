@@ -289,55 +289,95 @@
     font-size: 0;
 }
 
-/* Welcome banner (top of page) */
+/* Welcome banner (top of page) — WOW effect */
 .welcome-banner {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
-    background: linear-gradient(135deg, #0062CC 0%, #004A99 100%);
-    padding: 14px 20px;
-    border-radius: 10px;
+    background: linear-gradient(135deg, #0062CC 0%, #00AAFF 50%, #0062CC 100%);
+    background-size: 200% 200%;
+    padding: 18px 24px;
+    border-radius: 12px;
     margin-bottom: 1rem;
     opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.5s ease-in, transform 0.5s ease-out;
+    transform: translateY(-30px) scale(0.95);
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 0 rgba(0,98,204,0);
+    position: relative;
+    overflow: hidden;
+}
+.welcome-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+    animation: bannerShine 2s ease-in-out;
+}
+@keyframes bannerShine {
+    from { transform: translateX(-100%) rotate(25deg); }
+    to { transform: translateX(100%) rotate(25deg); }
 }
 .welcome-banner.welcome-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 30px rgba(0,98,204,0.4), 0 0 60px rgba(0,170,255,0.15);
+    animation: bannerPulse 2s ease-in-out infinite;
+}
+@keyframes bannerPulse {
+    0%, 100% { box-shadow: 0 4px 30px rgba(0,98,204,0.4), 0 0 60px rgba(0,170,255,0.15); }
+    50% { box-shadow: 0 4px 40px rgba(0,98,204,0.6), 0 0 80px rgba(0,170,255,0.25); }
 }
 .welcome-banner.welcome-fadeout {
     opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(-20px) scale(0.98);
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 0 rgba(0,98,204,0);
 }
 .welcome-banner-text {
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.3);
 }
 .welcome-banner-text strong {
     font-weight: 800;
+    background: linear-gradient(90deg, #fff, #cce5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 .welcome-banner-role {
     color: #fff;
     font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 3px 10px;
-    border: 1px solid rgba(255,255,255,0.3);
-    border-radius: 12px;
-    background: rgba(255,255,255,0.1);
+    letter-spacing: 1.5px;
+    padding: 4px 14px;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(4px);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.2);
 }
 
 @media (max-width: 600px) {
-    .welcome-banner { flex-direction: column; gap: 0.4rem; padding: 12px 16px; }
-    .welcome-banner-text { font-size: 0.9rem; }
+    .welcome-banner { flex-direction: column; gap: 0.5rem; padding: 16px 20px; }
+    .welcome-banner-text { font-size: 1rem; }
 }
 
 .goodbye-banner {
-    background: linear-gradient(135deg, #333 0%, #1a1a2e 100%);
+    background: linear-gradient(135deg, #1a1a2e 0%, #4a1942 50%, #1a1a2e 100%) !important;
+    background-size: 200% 200% !important;
+}
+.goodbye-banner.welcome-visible {
+    animation: bannerPulseGoodbye 2s ease-in-out infinite !important;
+}
+@keyframes bannerPulseGoodbye {
+    0%, 100% { box-shadow: 0 4px 30px rgba(74,25,66,0.4), 0 0 60px rgba(74,25,66,0.15); }
+    50% { box-shadow: 0 4px 40px rgba(74,25,66,0.6), 0 0 80px rgba(74,25,66,0.25); }
 }
 
 /* Share menu */
