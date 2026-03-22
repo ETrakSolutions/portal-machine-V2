@@ -404,7 +404,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (loginPassword) {
         loginPassword.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') loginSubmit.click();
+            if (e.key === 'Enter') { e.preventDefault(); loginSubmit.click(); }
+        });
+    }
+
+    if (loginUsername) {
+        loginUsername.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); loginPassword.focus(); }
         });
     }
 
