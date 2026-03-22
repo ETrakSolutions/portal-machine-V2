@@ -95,35 +95,32 @@ function hideAdminSection() {
     document.querySelector('.admin-hero').style.display = 'block';
 }
 
-// ---- WELCOME BANNER ----
+// ---- WELCOME OVERLAY ----
 function showWelcome(name, role) {
     var roleLabel = '';
     if (currentUser && ROLES[currentUser.role]) roleLabel = ROLES[currentUser.role].label;
 
-    // Show hub first
-    updateHubUI();
+    var overlay = document.createElement('div');
+    overlay.className = 'welcome-overlay';
+    overlay.innerHTML =
+        '<div class="welcome-line"></div>' +
+        '<div class="welcome-text">Bienvenue</div>' +
+        '<div class="welcome-name">' + name + '</div>' +
+        '<div class="welcome-role">' + roleLabel + '</div>' +
+        '<div class="welcome-line"></div>';
+    document.body.appendChild(overlay);
 
-    // Create banner at top of page
-    var banner = document.createElement('div');
-    banner.className = 'welcome-banner';
-    banner.innerHTML =
-        '<span class="welcome-banner-text">Bienvenue, <strong>' + name + '</strong></span>' +
-        '<span class="welcome-banner-role">' + roleLabel + '</span>';
-
-    var main = document.querySelector('.admin-main');
-    main.insertBefore(banner, main.firstChild);
-
-    // Trigger fade in
     requestAnimationFrame(function() {
-        banner.classList.add('welcome-visible');
+        overlay.classList.add('welcome-visible');
     });
 
-    // Fade out after 3s, then remove
+    // Fade out after 3s, then remove and show hub
     setTimeout(function() {
-        banner.classList.add('welcome-fadeout');
+        overlay.classList.add('welcome-fadeout');
         setTimeout(function() {
-            banner.remove();
-        }, 800);
+            overlay.remove();
+            updateHubUI();
+        }, 1000);
     }, 3000);
 }
 
@@ -421,24 +418,27 @@ document.addEventListener('DOMContentLoaded', function() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
             var userName = currentUser ? currentUser.name : '';
-            // Show goodbye banner
-            var banner = document.createElement('div');
-            banner.className = 'welcome-banner goodbye-banner';
-            banner.innerHTML = '<span class="welcome-banner-text">Au revoir, <strong>' + userName + '</strong></span>';
-            var main = document.querySelector('.admin-main');
-            main.insertBefore(banner, main.firstChild);
-            requestAnimationFrame(function() { banner.classList.add('welcome-visible'); });
+            // Show goodbye overlay
+            var overlay = document.createElement('div');
+            overlay.className = 'welcome-overlay goodbye-overlay';
+            overlay.innerHTML =
+                '<div class="welcome-line"></div>' +
+                '<div class="welcome-text">Au revoir</div>' +
+                '<div class="welcome-name">' + userName + '</div>' +
+                '<div class="welcome-line"></div>';
+            document.body.appendChild(overlay);
+            requestAnimationFrame(function() { overlay.classList.add('welcome-visible'); });
 
             // Fade out after 3s then disconnect
             setTimeout(function() {
-                banner.classList.add('welcome-fadeout');
+                overlay.classList.add('welcome-fadeout');
                 setTimeout(function() {
-                    banner.remove();
+                    overlay.remove();
                     currentUser = null;
                     localStorage.removeItem('portal_user');
                     hideAdminSection();
                     updateHubUI();
-                }, 800);
+                }, 1000);
             }, 3000);
         });
     }
