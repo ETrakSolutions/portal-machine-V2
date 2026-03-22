@@ -58,6 +58,59 @@
     .toggle-label { font-size: 0.9rem; }
 }
 
+/* Kit Machine summary in soumission */
+.soumission-kit-header {
+    margin: 1.25rem 0 0.5rem;
+}
+.soumission-kit-header h4 {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+}
+.soumission-kit-desc {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin: 0;
+}
+.soumission-kit-list {
+    margin-bottom: 0.5rem;
+}
+.soumission-kit-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.8rem;
+}
+.soumission-kit-item:last-child { border-bottom: none; }
+.soumission-kit-item .kit-item-name { color: #fff; }
+.soumission-kit-item .kit-item-code { color: var(--text-secondary); font-family: monospace; font-size: 0.7rem; }
+.soumission-kit-item .kit-item-status {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+}
+.kit-status-obligatoire { background: rgba(255,50,50,0.15); color: #FF5555; }
+.kit-status-optionnel { background: rgba(255,200,0,0.15); color: #FFD700; }
+.kit-status-na { background: rgba(100,100,100,0.15); color: #666; }
+
+.soumission-notes-content {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    color: #fff;
+    font-size: 0.8rem;
+    min-height: 40px;
+    white-space: pre-wrap;
+    margin-bottom: 1rem;
+}
+
 /* Options section */
 .options-section {
     background: var(--bg-card);
