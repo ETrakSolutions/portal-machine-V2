@@ -94,6 +94,37 @@ function hideAdminSection() {
     document.querySelector('.admin-hero').style.display = 'block';
 }
 
+// ---- WELCOME SCREEN ----
+function showWelcome(name, role) {
+    var roleLabel = '';
+    if (currentUser && ROLES[currentUser.role]) roleLabel = ROLES[currentUser.role].label;
+
+    var overlay = document.createElement('div');
+    overlay.className = 'welcome-overlay';
+    overlay.innerHTML =
+        '<div class="welcome-content">' +
+        '<div class="welcome-logo"><img src="assets/logo-white.png" alt="e-Trak"></div>' +
+        '<h1 class="welcome-name">Bienvenue, ' + name + '</h1>' +
+        '<span class="welcome-role">' + roleLabel + '</span>' +
+        '</div>';
+    document.body.appendChild(overlay);
+
+    // Trigger fade in
+    requestAnimationFrame(function() {
+        overlay.classList.add('welcome-visible');
+    });
+
+    // Fade out after 2s, then remove and show hub
+    setTimeout(function() {
+        overlay.classList.remove('welcome-visible');
+        overlay.classList.add('welcome-fadeout');
+        setTimeout(function() {
+            overlay.remove();
+            updateHubUI();
+        }, 800);
+    }, 2000);
+}
+
 // ---- TOAST ----
 function showToast(msg) {
     var existing = document.querySelector('.admin-toast');
@@ -363,8 +394,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
                 localStorage.setItem('portal_user', JSON.stringify(currentUser));
                 loginModal.style.display = 'none';
-                updateHubUI();
-                showToast('Bienvenue, ' + user.name + '!');
+                showWelcome(user.name, getUserPermissions(user.role).label || user.role);
             } else {
                 loginError.textContent = 'Utilisateur ou mot de passe invalide';
                 loginError.style.display = 'block';
