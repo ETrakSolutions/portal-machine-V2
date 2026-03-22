@@ -762,7 +762,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (loginBtnEl) loginBtnEl.style.display = 'none';
             if (userMenuBtnEl) userMenuBtnEl.style.display = 'flex';
             if (userMenuName) userMenuName.textContent = currentUser.name;
-            if (kitTable) kitTable.classList.remove('hide-sel');
+            // SEL column visible only for admin/super admin
+            var isAdmin = currentUser.permissions && currentUser.permissions.modifAccounts;
+            if (kitTable) {
+                if (isAdmin) {
+                    kitTable.classList.remove('hide-sel');
+                } else {
+                    kitTable.classList.add('hide-sel');
+                }
+            }
         } else {
             if (loginBtnEl) loginBtnEl.style.display = '';
             if (userMenuBtnEl) userMenuBtnEl.style.display = 'none';
