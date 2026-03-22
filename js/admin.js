@@ -420,10 +420,26 @@ document.addEventListener('DOMContentLoaded', function() {
     var logoutBtn = document.getElementById('hub-logout-btn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function() {
-            currentUser = null;
-            localStorage.removeItem('portal_user');
-            hideAdminSection();
-            updateHubUI();
+            var userName = currentUser ? currentUser.name : '';
+            // Show goodbye banner
+            var banner = document.createElement('div');
+            banner.className = 'welcome-banner goodbye-banner';
+            banner.innerHTML = '<span class="welcome-banner-text">Au revoir, <strong>' + userName + '</strong></span>';
+            var main = document.querySelector('.admin-main');
+            main.insertBefore(banner, main.firstChild);
+            requestAnimationFrame(function() { banner.classList.add('welcome-visible'); });
+
+            // Fade out after 3s then disconnect
+            setTimeout(function() {
+                banner.classList.add('welcome-fadeout');
+                setTimeout(function() {
+                    banner.remove();
+                    currentUser = null;
+                    localStorage.removeItem('portal_user');
+                    hideAdminSection();
+                    updateHubUI();
+                }, 800);
+            }, 3000);
         });
     }
 

@@ -336,6 +336,10 @@
     .welcome-banner-text { font-size: 0.9rem; }
 }
 
+.goodbye-banner {
+    background: linear-gradient(135deg, #333 0%, #1a1a2e 100%);
+}
+
 /* Share menu */
 .menu-share {
     border-top: 1px solid rgba(255,255,255,0.1);
