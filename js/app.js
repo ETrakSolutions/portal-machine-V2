@@ -19,6 +19,7 @@ const ROLES = {
 // ---- LOGIN SYSTEM ----
 const AUTHORIZED_USERS = [
     { username: 'administrateur', email: 'robin@gryb.ca', password: '1400', role: 'administrateur', name: 'Robin Gagnon', active: true },
+    { username: 'jacquot', email: 'jacquot@gryb.ca', password: '1234', role: 'administrateur', name: 'Jacquot', active: true },
     { username: 'distributeur', email: '', password: 'Dist2024!', role: 'distributeur', name: 'Distributeur', active: true },
     { username: 'dealer', email: '', password: 'Deal2024!', role: 'dealer', name: 'Dealer', active: true },
     { username: 'technicien', email: 'k.berube@e-trak.ca', password: 'Tech2024!', role: 'technicien', name: 'Kevin Berube', active: true },
