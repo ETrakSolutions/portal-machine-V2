@@ -157,21 +157,28 @@ function renderUsers() {
     var tbody = document.getElementById('admin-user-tbody');
     if (!tbody) return;
     tbody.innerHTML = '';
+    var SUPER_ADMIN = 'robin@gryb.ca';
     USERS.forEach(function(user, i) {
         var roleLabel = ROLES[user.role] ? ROLES[user.role].label : user.role;
+        var isSuperAdmin = user.email && user.email.toLowerCase() === SUPER_ADMIN;
         var tr = document.createElement('tr');
         tr.innerHTML =
-            '<td><strong>' + user.name + '</strong></td>' +
+            '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER ADMIN</span>' : '') + '</td>' +
             '<td>' + user.username + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
             '<td class="' + (user.active !== false ? 'admin-active-yes' : 'admin-active-no') + '">' + (user.active !== false ? '\u2713 Oui' : '\u2717 Non') + '</td>' +
-            '<td><button class="admin-delete-btn" data-idx="' + i + '">\u2715</button></td>';
+            '<td>' + (isSuperAdmin ? '' : '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>') + '</td>';
         tbody.appendChild(tr);
     });
     tbody.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
         btn.addEventListener('click', function() {
             var idx = parseInt(this.dataset.idx);
-            var userName = USERS[idx].name;
+            var user = USERS[idx];
+            if (user.email && user.email.toLowerCase() === SUPER_ADMIN) {
+                alert('Impossible de supprimer le super administrateur.');
+                return;
+            }
+            var userName = user.name;
             if (!confirm('Supprimer l\'utilisateur "' + userName + '" ?')) return;
             USERS.splice(idx, 1);
             saveUsers();
