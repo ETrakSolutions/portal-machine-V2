@@ -289,63 +289,51 @@
     font-size: 0;
 }
 
-/* Welcome overlay */
-.welcome-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(135deg, #0a1628 0%, #0d2847 50%, #0a1628 100%);
-    z-index: 10000;
+/* Welcome banner (top of page) */
+.welcome-banner {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.75rem;
+    background: linear-gradient(135deg, #0062CC 0%, #004A99 100%);
+    padding: 14px 20px;
+    border-radius: 10px;
+    margin-bottom: 1rem;
     opacity: 0;
-    transition: opacity 0.6s ease-in;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease-in, transform 0.5s ease-out;
 }
-.welcome-overlay.welcome-visible {
+.welcome-banner.welcome-visible {
     opacity: 1;
+    transform: translateY(0);
 }
-.welcome-overlay.welcome-fadeout {
+.welcome-banner.welcome-fadeout {
     opacity: 0;
-    transition: opacity 0.8s ease-out;
+    transform: translateY(-10px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-.welcome-content {
-    text-align: center;
-    animation: welcomeSlideUp 0.7s ease-out;
-}
-@keyframes welcomeSlideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-.welcome-logo img {
-    height: 50px;
-    width: auto;
-    margin-bottom: 1.5rem;
-    opacity: 0.7;
-}
-.welcome-name {
+.welcome-banner-text {
     color: #fff;
-    font-size: 2rem;
-    font-weight: 900;
-    margin: 0 0 0.75rem;
-    letter-spacing: -0.5px;
-    text-shadow: 0 2px 20px rgba(0,98,204,0.3);
+    font-size: 1rem;
 }
-.welcome-role {
-    display: inline-block;
-    color: #0062CC;
-    font-size: 0.8rem;
+.welcome-banner-text strong {
+    font-weight: 800;
+}
+.welcome-banner-role {
+    color: #fff;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    padding: 6px 20px;
-    border: 1px solid rgba(0,98,204,0.4);
-    border-radius: 20px;
-    background: rgba(0,98,204,0.1);
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.1);
 }
 
 @media (max-width: 600px) {
-    .welcome-name { font-size: 1.5rem; }
-    .welcome-role { font-size: 0.7rem; }
+    .welcome-banner { flex-direction: column; gap: 0.4rem; padding: 12px 16px; }
+    .welcome-banner-text { font-size: 0.9rem; }
 }
 
 /* Share menu */

@@ -95,35 +95,36 @@ function hideAdminSection() {
     document.querySelector('.admin-hero').style.display = 'block';
 }
 
-// ---- WELCOME SCREEN ----
+// ---- WELCOME BANNER ----
 function showWelcome(name, role) {
     var roleLabel = '';
     if (currentUser && ROLES[currentUser.role]) roleLabel = ROLES[currentUser.role].label;
 
-    var overlay = document.createElement('div');
-    overlay.className = 'welcome-overlay';
-    overlay.innerHTML =
-        '<div class="welcome-content">' +
-        '<div class="welcome-logo"><img src="assets/logo-white.png" alt="e-Trak"></div>' +
-        '<h1 class="welcome-name">Bienvenue, ' + name + '</h1>' +
-        '<span class="welcome-role">' + roleLabel + '</span>' +
-        '</div>';
-    document.body.appendChild(overlay);
+    // Show hub first
+    updateHubUI();
+
+    // Create banner at top of page
+    var banner = document.createElement('div');
+    banner.className = 'welcome-banner';
+    banner.innerHTML =
+        '<span class="welcome-banner-text">Bienvenue, <strong>' + name + '</strong></span>' +
+        '<span class="welcome-banner-role">' + roleLabel + '</span>';
+
+    var main = document.querySelector('.admin-main');
+    main.insertBefore(banner, main.firstChild);
 
     // Trigger fade in
     requestAnimationFrame(function() {
-        overlay.classList.add('welcome-visible');
+        banner.classList.add('welcome-visible');
     });
 
-    // Fade out after 1s, then remove and show hub
+    // Fade out after 3s, then remove
     setTimeout(function() {
-        overlay.classList.remove('welcome-visible');
-        overlay.classList.add('welcome-fadeout');
+        banner.classList.add('welcome-fadeout');
         setTimeout(function() {
-            overlay.remove();
-            updateHubUI();
-        }, 1000);
-    }, 1000);
+            banner.remove();
+        }, 800);
+    }, 3000);
 }
 
 // ---- TOAST ----
