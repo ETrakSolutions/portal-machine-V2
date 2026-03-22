@@ -5,13 +5,13 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
 
 const ROLES = {
-    administrateur: { modifBom: true, createAccount: true, modifAccounts: true, shareAccess: true, label: 'Administrateur' },
-    vendeur_etrak:  { modifBom: false, createAccount: false, modifAccounts: false, shareAccess: true, label: 'Vendeur e-Trak' },
-    distributeur:   { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Distributeur' },
-    dealer:         { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Dealer' },
-    technicien:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Technicien' },
-    vente_interne:  { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Vente interne' },
-    ingenierie:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, label: 'Ingenierie' }
+    administrateur: { modifBom: true, createAccount: true, modifAccounts: true, shareAccess: true, machineAccess: true, soumissionAccess: true, label: 'Administrateur' },
+    vendeur_etrak:  { modifBom: false, createAccount: false, modifAccounts: false, shareAccess: true, machineAccess: true, soumissionAccess: true, label: 'Vendeur e-Trak' },
+    distributeur:   { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: false, soumissionAccess: true, label: 'Distributeur' },
+    dealer:         { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: false, soumissionAccess: true, label: 'Dealer' },
+    technicien:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: true, soumissionAccess: false, label: 'Technicien' },
+    vente_interne:  { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: true, soumissionAccess: true, label: 'Vente interne' },
+    ingenierie:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: true, soumissionAccess: false, label: 'Ingenierie' }
 };
 
 const DEFAULT_USERS = [
@@ -53,7 +53,15 @@ function updateHubUI() {
         if (userRole) userRole.textContent = ROLES[currentUser.role] ? ROLES[currentUser.role].label : currentUser.role;
         if (hubNav) hubNav.style.display = 'grid';
         if (hubEmpty) hubEmpty.style.display = 'none';
-        // Show admin tile only for admins
+        // Show tiles based on permissions
+        var tileMachine = document.getElementById('hub-tile-machine');
+        var tileSoumission = document.getElementById('hub-tile-soumission');
+        if (tileMachine) {
+            tileMachine.style.display = currentUser.permissions.machineAccess ? 'block' : 'none';
+        }
+        if (tileSoumission) {
+            tileSoumission.style.display = currentUser.permissions.soumissionAccess ? 'block' : 'none';
+        }
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
         }
