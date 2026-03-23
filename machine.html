@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=67">
+    <link rel="stylesheet" href="css/style.css?v=68">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -184,6 +184,95 @@
                 </table>
             </div>
 
+            <!-- KIT POMPE BETON -->
+            <div id="kit-pompe-section" class="kit-machine-section" style="display:none;">
+                <div class="kit-header">
+                    <h3>Kit Machine e-Trak — Pompe a Beton</h3>
+                    <div class="kit-lock-row">
+                        <p class="kit-subtitle" id="kit-pompe-desc"></p>
+                        <div class="kit-lock">
+                            <button id="kit-pompe-lock-btn" class="kit-lock-btn" title="Deverrouiller pour modifier" onclick="toggleKitLock()">&#128274;</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="kit-legend">
+                    <span class="kit-legend-item"><span class="legend-dot legend-red"></span> Obligatoire</span>
+                    <span class="kit-legend-item"><span class="legend-dot legend-yellow"></span> Optionnel</span>
+                </div>
+                <table class="kit-table kit-locked">
+                    <thead>
+                        <tr>
+                            <th style="width:42%;">Option</th>
+                            <th style="width:22%;">Code produit</th>
+                            <th style="text-align:center;width:18%;">BOM</th>
+                            <th style="text-align:center;width:18%;">Option Soumission</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-kit="pompe-coffre">
+                            <td>Controle pour machine <strong>avec coffre</strong></td>
+                            <td class="kit-code">1500-0200</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-coffre" value="oui" class="radio-red"><input type="radio" name="kit-pompe-coffre" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-sans-coffre">
+                            <td>Controle pour machine <strong>sans coffre</strong> (boite etanche)</td>
+                            <td class="kit-code">1500-0203</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-sans-coffre" value="oui" class="radio-red"><input type="radio" name="kit-pompe-sans-coffre" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-hauteur">
+                            <td>Limitation <strong>Hauteur</strong></td>
+                            <td class="kit-code">1500-0201</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-hauteur" value="oui" class="radio-red"><input type="radio" name="kit-pompe-hauteur" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-rotation">
+                            <td>Limitation <strong>Rotation</strong></td>
+                            <td class="kit-code">1500-0202</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-rotation" value="oui" class="radio-red"><input type="radio" name="kit-pompe-rotation" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-4sec">
+                            <td>Option <strong>4 sections</strong></td>
+                            <td class="kit-code">1500-0204</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-4sec" value="oui" class="radio-red"><input type="radio" name="kit-pompe-4sec" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-5sec">
+                            <td>Option <strong>5 sections</strong></td>
+                            <td class="kit-code">1500-0205</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-5sec" value="oui" class="radio-red"><input type="radio" name="kit-pompe-5sec" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-6sec">
+                            <td>Option <strong>6 sections</strong></td>
+                            <td class="kit-code">1500-0206</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-6sec" value="oui" class="radio-red"><input type="radio" name="kit-pompe-6sec" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-rot-cylindre">
+                            <td>Rotation a <strong>cylindre</strong></td>
+                            <td class="kit-code">1500-0207</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-rot-cylindre" value="oui" class="radio-red"><input type="radio" name="kit-pompe-rot-cylindre" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-inclinometre">
+                            <td><strong>Inclinometre</strong> magnetique</td>
+                            <td class="kit-code">1500-0208</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-inclinometre" value="oui" class="radio-red"><input type="radio" name="kit-pompe-inclinometre" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                        <tr data-kit="pompe-reel">
+                            <td><strong>Reel 15M</strong></td>
+                            <td class="kit-code">1500-0209</td>
+                            <td class="kit-status-cell"><input type="radio" name="kit-pompe-reel" value="oui" class="radio-red"><input type="radio" name="kit-pompe-reel" value="non" class="radio-yellow"></td>
+                            <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <!-- NOTES SECTION -->
             <div id="notes-section" class="notes-section" style="display:none;">
                 <div class="notes-header">
@@ -221,6 +310,6 @@
     </footer>
 
 
-    <script src="js/app.js?v=67"></script>
+    <script src="js/app.js?v=68"></script>
 </body>
 </html>

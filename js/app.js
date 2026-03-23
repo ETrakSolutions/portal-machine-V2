@@ -535,6 +535,90 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         kitSection.style.display = 'none';
     }
 
+    // Show kit pompe section for Pompe a Beton
+    var kitPompeSection = document.getElementById('kit-pompe-section');
+    if (kitPompeSection) {
+        if (type === 'Pompe a Beton') {
+            kitPompeSection.style.display = 'block';
+            var kitPompeDesc = document.getElementById('kit-pompe-desc');
+            if (kitPompeDesc) kitPompeDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
+
+            // Auto-select section option based on Nombre de sections
+            var nbSections = specs['Nombre de sections'] || '';
+            var sec4 = kitPompeSection.querySelector('tr[data-kit="pompe-4sec"]');
+            var sec5 = kitPompeSection.querySelector('tr[data-kit="pompe-5sec"]');
+            var sec6 = kitPompeSection.querySelector('tr[data-kit="pompe-6sec"]');
+
+            // Show all section rows, set the matching one to red
+            [sec4, sec5, sec6].forEach(function(row) {
+                if (row) {
+                    row.style.display = '';
+                    var red = row.querySelector('.radio-red');
+                    var yellow = row.querySelector('.radio-yellow');
+                    if (red) red.checked = false;
+                    if (yellow) yellow.checked = false;
+                }
+            });
+
+            if (nbSections === '4' && sec4) {
+                var red = sec4.querySelector('.radio-red');
+                if (red) red.checked = true;
+                if (sec5) sec5.style.display = 'none';
+                if (sec6) sec6.style.display = 'none';
+            } else if (nbSections === '5' && sec5) {
+                var red = sec5.querySelector('.radio-red');
+                if (red) red.checked = true;
+                if (sec4) sec4.style.display = 'none';
+                if (sec6) sec6.style.display = 'none';
+            } else if (nbSections === '6' && sec6) {
+                var red = sec6.querySelector('.radio-red');
+                if (red) red.checked = true;
+                if (sec4) sec4.style.display = 'none';
+                if (sec5) sec5.style.display = 'none';
+            } else if (nbSections === 'N/A') {
+                // Stationary - hide all section options
+                if (sec4) sec4.style.display = 'none';
+                if (sec5) sec5.style.display = 'none';
+                if (sec6) sec6.style.display = 'none';
+            }
+
+            // Set default BOM: coffre = red, hauteur = yellow, rotation = yellow
+            var coffre = kitPompeSection.querySelector('tr[data-kit="pompe-coffre"] .radio-red');
+            if (coffre) coffre.checked = true;
+            var hauteur = kitPompeSection.querySelector('tr[data-kit="pompe-hauteur"] .radio-yellow');
+            if (hauteur) hauteur.checked = true;
+            var rotation = kitPompeSection.querySelector('tr[data-kit="pompe-rotation"] .radio-yellow');
+            if (rotation) rotation.checked = true;
+            var inclinometre = kitPompeSection.querySelector('tr[data-kit="pompe-inclinometre"] .radio-yellow');
+            if (inclinometre) inclinometre.checked = true;
+            var reel = kitPompeSection.querySelector('tr[data-kit="pompe-reel"] .radio-yellow');
+            if (reel) reel.checked = true;
+
+            // Hide sans-coffre for stationary (they always have a coffre)
+            var sansCoffre = kitPompeSection.querySelector('tr[data-kit="pompe-sans-coffre"]');
+            var typePompe = specs['Type'] || '';
+            if (typePompe.includes('Stationnaire') && sansCoffre) {
+                sansCoffre.style.display = 'none';
+            } else if (sansCoffre) {
+                sansCoffre.style.display = '';
+            }
+
+            // Hide rotation cylindre for stationary
+            var rotCyl = kitPompeSection.querySelector('tr[data-kit="pompe-rot-cylindre"]');
+            if (typePompe.includes('Stationnaire') && rotCyl) {
+                rotCyl.style.display = 'none';
+            } else if (rotCyl) {
+                rotCyl.style.display = '';
+            }
+
+            updateKitCheckboxes();
+            loadNotes(fab, modele, annee);
+            loadKitOverride(fab, modele, annee);
+        } else {
+            kitPompeSection.style.display = 'none';
+        }
+    }
+
     updateGearDeleteButton();
 }
 
