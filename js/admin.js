@@ -645,7 +645,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // ADD EMAIL
     var addEmailBtn = document.getElementById('admin-add-email-btn');
     if (addEmailBtn) {
-        addEmailBtn.addEventListener('click', function() {
+        addEmailBtn.onclick = function() {
             var input = document.getElementById('admin-add-email');
             var email = input.value.trim();
             if (email && email.includes('@')) {
@@ -655,13 +655,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.value = '';
                 showToast('Courriel ajoute');
             }
-        });
+        };
     }
 
     // ADD SALES EMAIL
     var addSalesEmailBtn = document.getElementById('admin-add-sales-email-btn');
     if (addSalesEmailBtn) {
-        addSalesEmailBtn.addEventListener('click', function() {
+        addSalesEmailBtn.onclick = function() {
             var input = document.getElementById('admin-add-sales-email');
             var email = input.value.trim();
             if (email && email.includes('@')) {
@@ -671,13 +671,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.value = '';
                 showToast('Courriel vente ajoute');
             }
-        });
+        };
     }
 
     // ADD KIT EMAIL
     var addKitEmailBtn = document.getElementById('admin-add-kit-email-btn');
     if (addKitEmailBtn) {
-        addKitEmailBtn.addEventListener('click', function() {
+        addKitEmailBtn.onclick = function() {
             var input = document.getElementById('admin-add-kit-email');
             var email = input.value.trim();
             if (email && email.includes('@')) {
@@ -687,13 +687,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.value = '';
                 showToast('Courriel kit ajoute');
             }
-        });
+        };
     }
 
-    // ADD USER — email is used as login identifier (username = email)
+    // ADD USER — use global function (addEventListener timing issues)
     var addUserBtn = document.getElementById('admin-add-user-btn');
     if (addUserBtn) {
-        addUserBtn.addEventListener('click', function() {
+        addUserBtn.onclick = function() {
             var name = document.getElementById('admin-new-name').value.trim();
             var email = document.getElementById('admin-new-email').value.trim();
             var role = document.getElementById('admin-new-role').value;
@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
             showToast('Utilisateur "' + name + '" ajoute (mdp temporaire: 0000)');
-        });
+        };
     }
 
     // HAMBURGER MENU
