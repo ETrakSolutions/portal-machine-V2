@@ -85,6 +85,7 @@ function showAdminSection() {
     document.querySelector('.admin-hero').style.display = 'none';
     loadEmails();
     loadSalesEmails();
+    loadKitEmails();
     loadUsers();
     // renderAccountsByRole is called after loadUsers completes
 }
@@ -215,6 +216,50 @@ function renderSalesEmails() {
             saveSalesEmails();
             renderSalesEmails();
             showToast('Courriel vente supprime');
+        });
+    });
+}
+
+// ---- KIT EMAILS ----
+let kitEmails = [];
+
+function loadKitEmails() {
+    fetch(API_URL + '?action=get&key=kit_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try { kitEmails = JSON.parse(data.value); } catch(e) {}
+            }
+            renderKitEmails();
+        })
+        .catch(function() { renderKitEmails(); });
+}
+
+function saveKitEmails() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'kit_emails', value: JSON.stringify(kitEmails), pin: '1400' })
+    }).catch(function() {});
+}
+
+function renderKitEmails() {
+    var list = document.getElementById('admin-kit-email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    kitEmails.forEach(function(email, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            kitEmails.splice(idx, 1);
+            saveKitEmails();
+            renderKitEmails();
+            showToast('Courriel kit supprime');
         });
     });
 }
@@ -497,6 +542,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderSalesEmails();
                 input.value = '';
                 showToast('Courriel vente ajoute');
+            }
+        });
+    }
+
+    // ADD KIT EMAIL
+    var addKitEmailBtn = document.getElementById('admin-add-kit-email-btn');
+    if (addKitEmailBtn) {
+        addKitEmailBtn.addEventListener('click', function() {
+            var input = document.getElementById('admin-add-kit-email');
+            var email = input.value.trim();
+            if (email && email.includes('@')) {
+                kitEmails.push(email);
+                saveKitEmails();
+                renderKitEmails();
+                input.value = '';
+                showToast('Courriel kit ajoute');
             }
         });
     }
