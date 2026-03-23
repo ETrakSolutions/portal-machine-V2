@@ -1140,15 +1140,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saved) {
         try {
             var parsed = JSON.parse(saved);
-            var valid = AUTHORIZED_USERS.find(function(u) {
-                return u.username.toLowerCase() === (parsed.username || '').toLowerCase();
-            });
-            if (valid) {
-                currentUser = { username: valid.username, name: valid.name, role: valid.role, permissions: getUserPermissions(valid.role) };
+            if (parsed && parsed.username) {
+                // Restore with permissions from role
+                currentUser = {
+                    username: parsed.username,
+                    name: parsed.name || parsed.username,
+                    role: parsed.role || 'dealer',
+                    permissions: parsed.permissions || getUserPermissions(parsed.role || 'dealer')
+                };
             }
         } catch(e) {}
     }
     updateLoginUI();
+    updateKitLockButton();
 
     // ---- QUOTE REQUEST ----
     var quoteBtn = document.getElementById('kit-quote-btn');
