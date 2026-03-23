@@ -4,6 +4,13 @@
 // ============================================
 
 let machinesData = {};
+let installedMachines = [];
+
+// Load installed machines list
+fetch('data/installed_machines.json')
+    .then(function(r) { return r.json(); })
+    .then(function(data) { installedMachines = data; })
+    .catch(function() {});
 
 // ---- ROLE PERMISSIONS ----
 const ROLES = {
@@ -346,6 +353,22 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         kitSection.style.display = 'block';
         const kitDesc = document.getElementById('kit-machine-desc');
         if (kitDesc) kitDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
+
+        // Check if machine has been installed before
+        var installedBanner = document.getElementById('kit-not-installed');
+        if (installedBanner) installedBanner.remove();
+        var isInstalled = installedMachines.some(function(m) {
+            return m.modele.toUpperCase() === modele.toUpperCase();
+        });
+        if (!isInstalled && installedMachines.length > 0) {
+            var banner = document.createElement('div');
+            banner.id = 'kit-not-installed';
+            banner.className = 'kit-not-installed';
+            banner.textContent = 'Machine jamais installee';
+            var kitHeader = kitSection.querySelector('.kit-header');
+            if (kitHeader) kitHeader.after(banner);
+        }
+
         loadNotes(fab, modele, annee);
         if (typeof lockKit === 'function') lockKit();
         const cabineOui = document.querySelector('input[name="kit-cabine"][value="avec"]');

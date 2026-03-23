@@ -711,6 +711,26 @@ main {
     display: inline-block;
 }
 
+/* ---- KIT NOT INSTALLED BANNER ---- */
+.kit-not-installed {
+    background: rgba(255, 68, 68, 0.15);
+    border: 2px solid #FF4444;
+    border-radius: 8px;
+    color: #FF4444;
+    font-weight: 800;
+    font-size: 1rem;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: flash-warning 1s ease-in-out infinite;
+}
+@keyframes flash-warning {
+    0%, 100% { opacity: 1; border-color: #FF4444; }
+    50% { opacity: 0.5; border-color: #FF0000; background: rgba(255,0,0,0.25); }
+}
+
 /* ---- KIT EDIT MODE ---- */
 .kit-edit-btn {
     background: none;

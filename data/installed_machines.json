@@ -1,0 +1,982 @@
+[
+  {
+    "marque": "KOBELCO",
+    "modele": "SK115SRD1-1E",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC380D",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "420 F IT",
+    "annee": "2013"
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "210-X2",
+    "annee": "2012"
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "Z200LC",
+    "annee": ""
+  },
+  {
+    "marque": "ATLAS",
+    "modele": "2902A6",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC88MR-8",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC210CL",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "315CL",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC360CL",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "160LC-3",
+    "annee": ""
+  },
+  {
+    "marque": "LIEBHERR",
+    "modele": "934",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "180LC",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "360CL",
+    "annee": ""
+  },
+  {
+    "marque": "HYUNDAI",
+    "modele": "ROBEX 110-7",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "160X2",
+    "annee": ""
+  },
+  {
+    "marque": "CASE",
+    "modele": "9020B",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC210CL",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "E330CL",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX450LC3",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "135",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "135D",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "135D",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC160LC-7A",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "315CL",
+    "annee": ""
+  },
+  {
+    "marque": "KOBELCO",
+    "modele": "SK210LC",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "210",
+    "annee": ""
+  },
+  {
+    "marque": "KOBELCO",
+    "modele": "SK160LC",
+    "annee": ""
+  },
+  {
+    "marque": "KOBELCO",
+    "modele": "SK210LC",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "336D",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC228LC",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR305CL",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "DX225LC-3",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "EX135US-5",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC200LC-8",
+    "annee": "2009"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC210 LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "225DLC",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC360LC",
+    "annee": "2012"
+  },
+  {
+    "marque": "CATERPILLAR",
+    "modele": "316E",
+    "annee": "2014"
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "130X3",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC 228",
+    "annee": "2012"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC78US-8",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC290LC-10",
+    "annee": "2013"
+  },
+  {
+    "marque": "CAT",
+    "modele": "345",
+    "annee": ""
+  },
+  {
+    "marque": "CATERPILLAR",
+    "modele": "315CL",
+    "annee": "2005"
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "LC270D",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC200-LC7",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "345DL",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC128US-1",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "336E",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EX300DL",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "480L",
+    "annee": "2015"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR235DL",
+    "annee": ""
+  },
+  {
+    "marque": "KOBELCO",
+    "modele": "SK80CS-2",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "DX225",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR145CL",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "35D",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "340LC",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC160LC-7A",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "210GLC",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC360LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC360LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "GEHL",
+    "modele": "Z35 GEN 2",
+    "annee": "2015"
+  },
+  {
+    "marque": "CASE",
+    "modele": "580",
+    "annee": "2015"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC220DL",
+    "annee": ""
+  },
+  {
+    "marque": "KOBELCO",
+    "modele": "SK115SRD1-1E",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR305CL",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "130X3",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC300EL",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "350G",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "314ELCR",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX200LC-3",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC200HD",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "SL175",
+    "annee": "2004"
+  },
+  {
+    "marque": "YANMAR",
+    "modele": "VIO35-3A",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC138USLC-10",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "DX140CLR-3",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC138USLC-8",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC360LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "490LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "490LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "160LC",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC158USL-2",
+    "annee": ""
+  },
+  {
+    "marque": "TAKEUCHI",
+    "modele": "TB260",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "290G",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "130LX",
+    "annee": "2005"
+  },
+  {
+    "marque": "CASE",
+    "modele": "CX350B",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "320EL",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "LC450D",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC480DL",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "60G",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC480DL",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "450C",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX135-3",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX470LC-5B",
+    "annee": ""
+  },
+  {
+    "marque": "BOBCAT",
+    "modele": "E45",
+    "annee": "2011"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC-450-LC",
+    "annee": "2010"
+  },
+  {
+    "marque": "KUBOTA",
+    "modele": "KX080-4",
+    "annee": "2015"
+  },
+  {
+    "marque": "KUBOTA",
+    "modele": "KX080-3",
+    "annee": "2011"
+  },
+  {
+    "marque": "HYUNDAI",
+    "modele": "145LCR9A",
+    "annee": "2014"
+  },
+  {
+    "marque": "KUBOTA",
+    "modele": "KX080-3",
+    "annee": "2012"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC308",
+    "annee": "2013"
+  },
+  {
+    "marque": "CASE",
+    "modele": "CX235C",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "336EL",
+    "annee": ""
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "300",
+    "annee": "2011"
+  },
+  {
+    "marque": "GEHL",
+    "modele": "245GEN2",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "350GLC",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC138USLC",
+    "annee": "2012"
+  },
+  {
+    "marque": "NEW HOLLAND",
+    "modele": "EH160",
+    "annee": "2004"
+  },
+  {
+    "marque": "CASE",
+    "modele": "CX350C",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "350X3",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC480DL",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC138USLC-8",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "LC210G",
+    "annee": ""
+  },
+  {
+    "marque": "LIEBHERR",
+    "modele": "R924LC",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "M318",
+    "annee": ""
+  },
+  {
+    "marque": "MENZI",
+    "modele": "MUCKA91",
+    "annee": "2008"
+  },
+  {
+    "marque": "HYUNDAI",
+    "modele": "80CR9",
+    "annee": "2014"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC300LC-7",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC228USLC10",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "345DL",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR145DL",
+    "annee": "2014"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC360",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "M316",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "210G",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC170LC",
+    "annee": "2016"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC170LC",
+    "annee": "2016"
+  },
+  {
+    "marque": "CAT",
+    "modele": "308D",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "320D",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC228USLC-10",
+    "annee": "2015"
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "350G",
+    "annee": "2013"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR145EL",
+    "annee": "2015"
+  },
+  {
+    "marque": "CASE",
+    "modele": "CX145CSR",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC160LC-7",
+    "annee": "2007"
+  },
+  {
+    "marque": "HYUNDAI",
+    "modele": "210LC-9",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "245 G",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC138 USLC",
+    "annee": ""
+  },
+  {
+    "marque": "HYUNDAI",
+    "modele": "145 LCR-9",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "210G",
+    "annee": "2015"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR305CL",
+    "annee": "2015"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC380EL",
+    "annee": "2015"
+  },
+  {
+    "marque": "CAT",
+    "modele": "336FL",
+    "annee": "2016"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC460BLC",
+    "annee": "2005"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "145",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "320-DL",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX200LC-3",
+    "annee": "2011"
+  },
+  {
+    "marque": "DEERE",
+    "modele": "135D",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX135US-5",
+    "annee": "2016"
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX210LC-5N",
+    "annee": "2016"
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX210LC-5N",
+    "annee": "2016"
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX210LC-5",
+    "annee": "2016"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC200LC-8",
+    "annee": "2016"
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "ZX135US-5",
+    "annee": "2016"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC350EL",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "ECR145EL",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC200LC-8",
+    "annee": "2016"
+  },
+  {
+    "marque": "CAT",
+    "modele": "349F",
+    "annee": "2015"
+  },
+  {
+    "marque": "CAT",
+    "modele": "316E",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "335FLCR",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "308E",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "Z AXIS 330LC",
+    "annee": "2005"
+  },
+  {
+    "marque": "DEERE",
+    "modele": "270G",
+    "annee": "2011"
+  },
+  {
+    "marque": "DEERE",
+    "modele": "470G LC",
+    "annee": ""
+  },
+  {
+    "marque": "LINK BELT",
+    "modele": "210X",
+    "annee": ""
+  },
+  {
+    "marque": "DEERE",
+    "modele": "75L",
+    "annee": "2008"
+  },
+  {
+    "marque": "CATERPILLAR",
+    "modele": "311FLRR",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC35MR-3",
+    "annee": "2011"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC88MR-8",
+    "annee": "2009"
+  },
+  {
+    "marque": "CAT",
+    "modele": "321D",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "325F",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "710G",
+    "annee": "2004"
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "410G",
+    "annee": "2004"
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "710J",
+    "annee": "2012"
+  },
+  {
+    "marque": "DOOSAN",
+    "modele": "225LC",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC490LC-11",
+    "annee": "2016"
+  },
+  {
+    "marque": "DAEWOO",
+    "modele": "EXCA",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "290X2",
+    "annee": ""
+  },
+  {
+    "marque": "LINK-BELT",
+    "modele": "210X2",
+    "annee": ""
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "450PC",
+    "annee": "2016"
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "245 GLC",
+    "annee": "2015"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC240LC-10",
+    "annee": ""
+  },
+  {
+    "marque": "CATERPILLAR",
+    "modele": "450E",
+    "annee": "2008"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "350LC",
+    "annee": ""
+  },
+  {
+    "marque": "KOBELCO",
+    "modele": "SK350-9",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC380EL",
+    "annee": "2016"
+  },
+  {
+    "marque": "KOMATSU",
+    "modele": "PC300LC-7L",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "350D",
+    "annee": "2016"
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "380EL",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "350G",
+    "annee": ""
+  },
+  {
+    "marque": "CASE",
+    "modele": "CX235CSR",
+    "annee": ""
+  },
+  {
+    "marque": "JOHN DEERE",
+    "modele": "210G",
+    "annee": ""
+  },
+  {
+    "marque": "CATERPILLAR",
+    "modele": "312DL",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "345D",
+    "annee": ""
+  },
+  {
+    "marque": "HITACHI",
+    "modele": "200LC",
+    "annee": ""
+  },
+  {
+    "marque": "CAT",
+    "modele": "345DL",
+    "annee": ""
+  },
+  {
+    "marque": "VOLVO",
+    "modele": "EC210CL",
+    "annee": "2006"
+  }
+]
