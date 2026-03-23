@@ -1270,21 +1270,19 @@ function toggleKitEdit() {
 
 function toggleKitLock() {
     if (kitEditMode) {
-        // In edit mode: cancel and go back to locked
-        exitKitEditMode(false);
-    } else if (kitUnlocked) {
-        // Unlocked: enter edit mode (admin only)
-        if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
-            enterKitEditMode();
-            var btn = document.getElementById('kit-lock-btn');
-            if (btn) { btn.innerHTML = '&#9998;'; btn.classList.add('editing'); btn.title = 'Annuler les modifications'; }
+        // In edit mode: confirm, save and lock
+        if (confirm('Sauvegarder les modifications?')) {
+            saveKitEditMode();
         } else {
-            lockKit();
+            exitKitEditMode(false);
         }
     } else {
-        // Locked: unlock
+        // Locked: unlock directly into edit mode (admin only)
         if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
             unlockKit();
+            enterKitEditMode();
+            var btn = document.getElementById('kit-lock-btn');
+            if (btn) { btn.innerHTML = '&#128275;'; btn.classList.add('editing'); btn.title = 'Sauvegarder et verrouiller'; }
         } else {
             alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
         }
