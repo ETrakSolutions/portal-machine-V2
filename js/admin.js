@@ -374,7 +374,6 @@ function renderUsers() {
         tr.innerHTML =
             '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
             '<td>' + (user.email || '<span style="color:#555;">\u2014</span>') + '</td>' +
-            '<td>' + user.username + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
             '<td class="perm-tags">' + permTags + '</td>' +
             '<td>' + (isSuperAdmin ? '' : '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>') + '</td>';
@@ -433,10 +432,8 @@ function openEditUserModal(idx) {
         '<h3>Modifier l\'utilisateur</h3>' +
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Nom complet</label>' +
         '<input type="text" id="edit-user-name" class="login-input" value="' + (user.name || '') + '"></div>' +
-        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Adresse courriel</label>' +
-        '<input type="email" id="edit-user-email" class="login-input" value="' + (user.email || '') + '"></div>' +
-        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Nom d\'utilisateur</label>' +
-        '<input type="text" id="edit-user-username" class="login-input" value="' + (user.username || '') + '"' + (isSuperAdmin ? ' readonly style="opacity:0.5;"' : '') + '></div>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Adresse courriel (identifiant de connexion)</label>' +
+        '<input type="email" id="edit-user-email" class="login-input" value="' + (user.email || '') + '"' + (isSuperAdmin ? ' readonly style="opacity:0.5;"' : '') + '></div>' +
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Mot de passe</label>' +
         '<input type="text" id="edit-user-password" class="login-input" value="' + (user.password || '') + '"></div>' +
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Role</label>' +
@@ -454,19 +451,18 @@ function openEditUserModal(idx) {
     document.getElementById('edit-user-save').addEventListener('click', function() {
         var newName = document.getElementById('edit-user-name').value.trim();
         var newEmail = document.getElementById('edit-user-email').value.trim();
-        var newUsername = document.getElementById('edit-user-username').value.trim();
         var newPassword = document.getElementById('edit-user-password').value.trim();
         var newRole = document.getElementById('edit-user-role').value;
 
-        if (!newName || !newUsername || !newPassword) {
-            alert('Nom, utilisateur et mot de passe sont obligatoires.');
+        if (!newName || !newEmail || !newPassword) {
+            alert('Nom, courriel et mot de passe sont obligatoires.');
             return;
         }
 
         USERS[idx].name = newName;
-        USERS[idx].email = newEmail;
         if (!isSuperAdmin) {
-            USERS[idx].username = newUsername.toLowerCase();
+            USERS[idx].email = newEmail.toLowerCase();
+            USERS[idx].username = newEmail.toLowerCase();
             USERS[idx].role = newRole;
         }
         USERS[idx].password = newPassword;
@@ -671,33 +667,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ADD USER
+    // ADD USER — email is used as login identifier (username = email)
     var addUserBtn = document.getElementById('admin-add-user-btn');
     if (addUserBtn) {
         addUserBtn.addEventListener('click', function() {
             var name = document.getElementById('admin-new-name').value.trim();
             var email = document.getElementById('admin-new-email').value.trim();
-            var username = document.getElementById('admin-new-username').value.trim();
             var role = document.getElementById('admin-new-role').value;
             var errorEl = document.getElementById('admin-add-user-error');
 
             if (errorEl) errorEl.style.display = 'none';
 
-            if (!name || !username) {
-                if (errorEl) { errorEl.textContent = 'Veuillez remplir le nom et le nom d\'utilisateur.'; errorEl.style.display = 'block'; }
+            if (!name || !email || !email.includes('@')) {
+                if (errorEl) { errorEl.textContent = 'Veuillez remplir le nom et une adresse courriel valide.'; errorEl.style.display = 'block'; }
                 return;
             }
-            var exists = USERS.find(function(u) { return u.username.toLowerCase() === username.toLowerCase(); });
+            var exists = USERS.find(function(u) { return (u.email && u.email.toLowerCase() === email.toLowerCase()) || u.username.toLowerCase() === email.toLowerCase(); });
             if (exists) {
-                if (errorEl) { errorEl.textContent = 'Ce nom d\'utilisateur existe deja.'; errorEl.style.display = 'block'; }
+                if (errorEl) { errorEl.textContent = 'Cette adresse courriel existe deja.'; errorEl.style.display = 'block'; }
                 return;
             }
-            USERS.push({ username: username.toLowerCase(), email: email || '', password: '0000', role: role, name: name, active: true, mustChangePassword: true });
+            USERS.push({ username: email.toLowerCase(), email: email.toLowerCase(), password: '0000', role: role, name: name, active: true, mustChangePassword: true });
             saveUsers();
             renderUsers();
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
-            document.getElementById('admin-new-username').value = '';
             showToast('Utilisateur "' + name + '" ajoute (mdp temporaire: 0000)');
         });
     }

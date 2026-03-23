@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
-    <link rel="stylesheet" href="css/style.css?v=48">
-    <link rel="stylesheet" href="css/admin.css?v=48">
+    <link rel="stylesheet" href="css/style.css?v=57">
+    <link rel="stylesheet" href="css/admin.css?v=57">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -40,7 +40,7 @@
             <div class="login-modal-content">
                 <button id="hub-login-close" class="login-close">&times;</button>
                 <h3>Connexion</h3>
-                <input type="text" id="hub-login-username" class="login-input" placeholder="Courriel ou nom d'utilisateur" autocomplete="off">
+                <input type="email" id="hub-login-username" class="login-input" placeholder="Adresse courriel" autocomplete="email">
                 <input type="password" id="hub-login-password" class="login-input" placeholder="Mot de passe" autocomplete="current-password">
                 <button type="button" id="hub-login-submit" class="login-submit">Se connecter</button>
                 <p id="hub-login-error" class="login-error" style="display:none;"></p>
@@ -129,7 +129,6 @@
                             <tr>
                                 <th>Nom</th>
                                 <th>Courriel</th>
-                                <th>Utilisateur</th>
                                 <th>Role</th>
                                 <th>Permissions</th>
                                 <th></th>
@@ -153,10 +152,6 @@
                         </div>
                     </div>
                     <div class="admin-form-row">
-                        <div class="admin-form-group">
-                            <label>Nom d'utilisateur</label>
-                            <input type="text" id="admin-new-username" class="admin-input" placeholder="jean.tremblay">
-                        </div>
                         <div class="admin-form-group">
                             <label>Role</label>
                             <select id="admin-new-role" class="admin-input">
@@ -235,6 +230,6 @@
         </div>
     </footer>
 
-    <script src="js/admin.js?v=48"></script>
+    <script src="js/admin.js?v=57"></script>
 </body>
 </html>
