@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
-    <link rel="stylesheet" href="css/style.css?v=43">
-    <link rel="stylesheet" href="css/admin.css?v=43">
+    <link rel="stylesheet" href="css/style.css?v=44">
+    <link rel="stylesheet" href="css/admin.css?v=44">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -148,14 +148,14 @@
                             <input type="text" id="admin-new-name" class="admin-input" placeholder="Jean Tremblay">
                         </div>
                         <div class="admin-form-group">
-                            <label>Nom d'utilisateur</label>
-                            <input type="text" id="admin-new-username" class="admin-input" placeholder="jean.tremblay">
+                            <label>Adresse courriel</label>
+                            <input type="email" id="admin-new-email" class="admin-input" placeholder="jean@exemple.com">
                         </div>
                     </div>
                     <div class="admin-form-row">
                         <div class="admin-form-group">
-                            <label>Mot de passe</label>
-                            <input type="text" id="admin-new-password" class="admin-input" placeholder="MotDePasse123!">
+                            <label>Nom d'utilisateur</label>
+                            <input type="text" id="admin-new-username" class="admin-input" placeholder="jean.tremblay">
                         </div>
                         <div class="admin-form-group">
                             <label>Role</label>
@@ -170,6 +170,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label>Mot de passe</label>
+                            <input type="password" id="admin-new-password" class="admin-input" placeholder="Mot de passe">
+                        </div>
+                        <div class="admin-form-group">
+                            <label>Confirmer mot de passe</label>
+                            <input type="password" id="admin-new-password-confirm" class="admin-input" placeholder="Confirmer">
+                        </div>
+                    </div>
+                    <p id="admin-add-user-error" class="login-error" style="display:none;"></p>
                     <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide">+ Ajouter l'utilisateur</button>
                 </div>
             </section>
@@ -233,6 +244,6 @@
         </div>
     </footer>
 
-    <script src="js/admin.js?v=43"></script>
+    <script src="js/admin.js?v=44"></script>
 </body>
 </html>

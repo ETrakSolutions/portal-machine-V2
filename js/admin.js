@@ -601,24 +601,37 @@ document.addEventListener('DOMContentLoaded', function() {
     if (addUserBtn) {
         addUserBtn.addEventListener('click', function() {
             var name = document.getElementById('admin-new-name').value.trim();
+            var email = document.getElementById('admin-new-email').value.trim();
             var username = document.getElementById('admin-new-username').value.trim();
             var password = document.getElementById('admin-new-password').value.trim();
+            var passwordConfirm = document.getElementById('admin-new-password-confirm').value.trim();
             var role = document.getElementById('admin-new-role').value;
+            var errorEl = document.getElementById('admin-add-user-error');
+
+            // Reset error
+            if (errorEl) errorEl.style.display = 'none';
+
             if (!name || !username || !password) {
-                alert('Veuillez remplir tous les champs.');
+                if (errorEl) { errorEl.textContent = 'Veuillez remplir tous les champs obligatoires.'; errorEl.style.display = 'block'; }
+                return;
+            }
+            if (password !== passwordConfirm) {
+                if (errorEl) { errorEl.textContent = 'Les mots de passe ne correspondent pas.'; errorEl.style.display = 'block'; }
                 return;
             }
             var exists = USERS.find(function(u) { return u.username.toLowerCase() === username.toLowerCase(); });
             if (exists) {
-                alert('Ce nom d\'utilisateur existe deja.');
+                if (errorEl) { errorEl.textContent = 'Ce nom d\'utilisateur existe deja.'; errorEl.style.display = 'block'; }
                 return;
             }
-            USERS.push({ username: username.toLowerCase(), password: password, role: role, name: name, active: true });
+            USERS.push({ username: username.toLowerCase(), email: email || '', password: password, role: role, name: name, active: true });
             saveUsers();
             renderUsers();
             document.getElementById('admin-new-name').value = '';
+            document.getElementById('admin-new-email').value = '';
             document.getElementById('admin-new-username').value = '';
             document.getElementById('admin-new-password').value = '';
+            document.getElementById('admin-new-password-confirm').value = '';
             showToast('Utilisateur "' + name + '" ajoute');
         });
     }
