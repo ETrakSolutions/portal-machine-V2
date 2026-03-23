@@ -649,14 +649,24 @@ function applyKitOverrides(overrides) {
             if (existingRadio) radioName = existingRadio.name;
 
             if (status === 'red') {
-                statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                // Ensure radios exist
+                if (!statusCell.querySelector('.radio-red')) {
+                    statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                }
                 var redRadio = statusCell.querySelector('.radio-red');
+                var yellowRadio = statusCell.querySelector('.radio-yellow');
                 if (redRadio) redRadio.checked = true;
+                if (yellowRadio) yellowRadio.checked = false;
                 row.style.display = '';
             } else if (status === 'yellow') {
-                statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
-                var yellowRadio = statusCell.querySelector('.radio-yellow');
-                if (yellowRadio) yellowRadio.checked = true;
+                // Ensure radios exist
+                if (!statusCell.querySelector('.radio-yellow')) {
+                    statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                }
+                var redR = statusCell.querySelector('.radio-red');
+                var yellowR = statusCell.querySelector('.radio-yellow');
+                if (yellowR) yellowR.checked = true;
+                if (redR) redR.checked = false;
                 row.style.display = '';
             } else if (status === 'na') {
                 statusCell.innerHTML = '<span class="kit-na">N/A</span>';
