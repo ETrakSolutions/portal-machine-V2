@@ -1250,6 +1250,26 @@ document.addEventListener('click', (e) => {
 var kitLockBtn = document.getElementById('kit-lock-btn');
 var kitUnlocked = false;
 
+function toggleKitEdit() {
+    if (kitEditMode) {
+        exitKitEditMode(false);
+    } else {
+        enterKitEditMode();
+    }
+}
+
+function toggleKitLock() {
+    if (kitUnlocked) {
+        lockKit();
+    } else {
+        if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
+            unlockKit();
+        } else {
+            alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
+        }
+    }
+}
+
 function updateKitLockButton() {
     if (!kitLockBtn) return;
     if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
@@ -1319,18 +1339,17 @@ function unlockKit() {
 }
 
 if (kitLockBtn) {
-    kitLockBtn.addEventListener('click', () => {
+    kitLockBtn.onclick = function() {
         if (kitUnlocked) {
             lockKit();
         } else {
-            // Check permission instead of PIN
             if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
                 unlockKit();
             } else {
                 alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
             }
         }
-    });
+    };
 }
 
 // Kit edit button listener — use onclick (addEventListener fails on some reflows)
