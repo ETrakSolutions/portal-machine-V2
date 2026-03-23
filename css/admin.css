@@ -241,6 +241,23 @@
 .admin-active-yes { color: #00CC66; }
 .admin-active-no { color: #FF4444; }
 
+/* Permission tags */
+.perm-tags { display: flex; flex-wrap: wrap; gap: 3px; }
+.perm-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+.perm-tag-bom { background: rgba(0,204,102,0.15); color: #00CC66; }
+.perm-tag-admin { background: rgba(255,50,50,0.15); color: #FF5555; }
+.perm-tag-machine { background: rgba(0,98,204,0.15); color: #4A9FFF; }
+.perm-tag-soum { background: rgba(255,152,0,0.15); color: #FFB74D; }
+.perm-tag-share { background: rgba(156,39,176,0.15); color: #CE93D8; }
+
 /* Permission table */
 .admin-perm-table td, .admin-perm-table th { text-align: center; }
 .admin-perm-table td:first-child, .admin-perm-table th:first-child { text-align: left; }
@@ -298,7 +315,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-top: 20vh;
     gap: 1rem;
     opacity: 0;
     transition: opacity 0.6s ease-in;
@@ -309,7 +327,7 @@
     position: absolute;
     top: -50%; left: -50%;
     width: 200%; height: 200%;
-    background: linear-gradient(45deg, transparent 30%, rgba(255,102,0,0.06) 50%, transparent 70%);
+    background: linear-gradient(45deg, transparent 30%, rgba(8,85,145,0.08) 50%, transparent 70%);
     animation: overlayShine 2.5s ease-in-out;
 }
 @keyframes overlayShine {
@@ -333,7 +351,7 @@
 }
 .welcome-overlay .welcome-name {
     font-weight: 900;
-    background: linear-gradient(90deg, #FF6600, #FF9933, #FF6600);
+    background: linear-gradient(90deg, #085591, #0A9FFF, #085591);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -356,15 +374,15 @@
     text-transform: uppercase;
     letter-spacing: 3px;
     padding: 6px 24px;
-    border: 1px solid rgba(255,102,0,0.3);
+    border: 1px solid rgba(8,85,145,0.4);
     border-radius: 20px;
-    background: rgba(255,102,0,0.08);
+    background: rgba(8,85,145,0.12);
     animation: textSlideUp 1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .welcome-overlay .welcome-line {
     width: 60px;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #FF6600, transparent);
+    background: linear-gradient(90deg, transparent, #085591, transparent);
     animation: lineExpand 1.2s ease-out;
 }
 @keyframes lineExpand {

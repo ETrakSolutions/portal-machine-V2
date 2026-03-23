@@ -254,11 +254,20 @@ function renderUsers() {
         var roleLabel = ROLES[user.role] ? ROLES[user.role].label : user.role;
         var isSuperAdmin = user.email && user.email.toLowerCase() === SUPER_ADMIN;
         var tr = document.createElement('tr');
+        var perms = ROLES[user.role] || {};
+        var permTags = '';
+        if (perms.modifBom) permTags += '<span class="perm-tag perm-tag-bom">BOM</span>';
+        if (perms.modifAccounts) permTags += '<span class="perm-tag perm-tag-admin">Admin</span>';
+        if (perms.machineAccess) permTags += '<span class="perm-tag perm-tag-machine">Machine</span>';
+        if (perms.soumissionAccess) permTags += '<span class="perm-tag perm-tag-soum">Soumission</span>';
+        if (perms.shareAccess) permTags += '<span class="perm-tag perm-tag-share">Partage</span>';
+        if (!permTags) permTags = '<span style="color:#555;">—</span>';
         tr.innerHTML =
-            '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER ADMIN</span>' : '') + '</td>' +
+            '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
+            '<td>' + (user.email || '<span style="color:#555;">—</span>') + '</td>' +
             '<td>' + user.username + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
-            '<td class="' + (user.active !== false ? 'admin-active-yes' : 'admin-active-no') + '">' + (user.active !== false ? '\u2713 Oui' : '\u2717 Non') + '</td>' +
+            '<td class="perm-tags">' + permTags + '</td>' +
             '<td>' + (isSuperAdmin ? '' : '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>') + '</td>';
         tbody.appendChild(tr);
     });
