@@ -122,6 +122,71 @@ function showWelcome(name, role) {
     }, 3000);
 }
 
+// ---- CHANGE PASSWORD MODAL ----
+function showChangePasswordModal(user) {
+    var existing = document.getElementById('change-pwd-modal');
+    if (existing) existing.remove();
+
+    var modal = document.createElement('div');
+    modal.id = 'change-pwd-modal';
+    modal.className = 'login-modal';
+    modal.style.display = 'flex';
+    modal.innerHTML =
+        '<div class="login-modal-content" style="max-width:380px;">' +
+        '<h3>Changement de mot de passe requis</h3>' +
+        '<p style="color:#999;font-size:0.8rem;margin-bottom:1rem;">Bienvenue <strong style="color:#00CC66;">' + user.name + '</strong> ! Veuillez choisir un nouveau mot de passe.</p>' +
+        '<input type="password" id="change-pwd-new" class="login-input" placeholder="Nouveau mot de passe" autocomplete="new-password">' +
+        '<input type="password" id="change-pwd-confirm" class="login-input" placeholder="Confirmer le mot de passe" autocomplete="new-password">' +
+        '<button type="button" id="change-pwd-submit" class="login-submit">Enregistrer</button>' +
+        '<p id="change-pwd-error" class="login-error" style="display:none;"></p>' +
+        '</div>';
+
+    document.body.appendChild(modal);
+
+    document.getElementById('change-pwd-submit').addEventListener('click', function() {
+        var newPwd = document.getElementById('change-pwd-new').value.trim();
+        var confirmPwd = document.getElementById('change-pwd-confirm').value.trim();
+        var errorEl = document.getElementById('change-pwd-error');
+
+        if (!newPwd || newPwd.length < 4) {
+            errorEl.textContent = 'Le mot de passe doit contenir au moins 4 caracteres.';
+            errorEl.style.display = 'block';
+            return;
+        }
+        if (newPwd === '0000') {
+            errorEl.textContent = 'Veuillez choisir un mot de passe different de 0000.';
+            errorEl.style.display = 'block';
+            return;
+        }
+        if (newPwd !== confirmPwd) {
+            errorEl.textContent = 'Les mots de passe ne correspondent pas.';
+            errorEl.style.display = 'block';
+            return;
+        }
+
+        // Update password in USERS array and remove mustChangePassword flag
+        var idx = USERS.findIndex(function(u) { return u.username === user.username; });
+        if (idx !== -1) {
+            USERS[idx].password = newPwd;
+            delete USERS[idx].mustChangePassword;
+            saveUsers();
+        }
+
+        modal.remove();
+
+        // Complete login
+        currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
+        localStorage.setItem('portal_user', JSON.stringify(currentUser));
+        showWelcome(user.name, getUserPermissions(user.role).label || user.role);
+    });
+
+    document.getElementById('change-pwd-confirm').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') { e.preventDefault(); document.getElementById('change-pwd-submit').click(); }
+    });
+
+    document.getElementById('change-pwd-new').focus();
+}
+
 // ---- TOAST ----
 function showToast(msg) {
     var existing = document.querySelector('.admin-toast');
@@ -480,10 +545,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 return (matchUser || matchEmail) && u.password === password && u.active !== false;
             });
             if (user) {
-                currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
-                localStorage.setItem('portal_user', JSON.stringify(currentUser));
-                loginModal.style.display = 'none';
-                showWelcome(user.name, getUserPermissions(user.role).label || user.role);
+                if (user.mustChangePassword) {
+                    // Show change password modal
+                    loginModal.style.display = 'none';
+                    showChangePasswordModal(user);
+                } else {
+                    currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
+                    localStorage.setItem('portal_user', JSON.stringify(currentUser));
+                    loginModal.style.display = 'none';
+                    showWelcome(user.name, getUserPermissions(user.role).label || user.role);
+                }
             } else {
                 loginError.textContent = 'Utilisateur ou mot de passe invalide';
                 loginError.style.display = 'block';
@@ -607,20 +678,13 @@ document.addEventListener('DOMContentLoaded', function() {
             var name = document.getElementById('admin-new-name').value.trim();
             var email = document.getElementById('admin-new-email').value.trim();
             var username = document.getElementById('admin-new-username').value.trim();
-            var password = document.getElementById('admin-new-password').value.trim();
-            var passwordConfirm = document.getElementById('admin-new-password-confirm').value.trim();
             var role = document.getElementById('admin-new-role').value;
             var errorEl = document.getElementById('admin-add-user-error');
 
-            // Reset error
             if (errorEl) errorEl.style.display = 'none';
 
-            if (!name || !username || !password) {
-                if (errorEl) { errorEl.textContent = 'Veuillez remplir tous les champs obligatoires.'; errorEl.style.display = 'block'; }
-                return;
-            }
-            if (password !== passwordConfirm) {
-                if (errorEl) { errorEl.textContent = 'Les mots de passe ne correspondent pas.'; errorEl.style.display = 'block'; }
+            if (!name || !username) {
+                if (errorEl) { errorEl.textContent = 'Veuillez remplir le nom et le nom d\'utilisateur.'; errorEl.style.display = 'block'; }
                 return;
             }
             var exists = USERS.find(function(u) { return u.username.toLowerCase() === username.toLowerCase(); });
@@ -628,15 +692,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (errorEl) { errorEl.textContent = 'Ce nom d\'utilisateur existe deja.'; errorEl.style.display = 'block'; }
                 return;
             }
-            USERS.push({ username: username.toLowerCase(), email: email || '', password: password, role: role, name: name, active: true });
+            USERS.push({ username: username.toLowerCase(), email: email || '', password: '0000', role: role, name: name, active: true, mustChangePassword: true });
             saveUsers();
             renderUsers();
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
             document.getElementById('admin-new-username').value = '';
-            document.getElementById('admin-new-password').value = '';
-            document.getElementById('admin-new-password-confirm').value = '';
-            showToast('Utilisateur "' + name + '" ajoute');
+            showToast('Utilisateur "' + name + '" ajoute (mdp temporaire: 0000)');
         });
     }
 
@@ -668,7 +730,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             var subject = 'Portail e-Trak — Acces au portail';
-            var body = 'Bonjour,\n\nVoici le lien pour acceder au Portail e-Trak :\n\nhttps://etraksolutions.github.io/portal-machine/\n\nPortail e-Trak — e-Trak Technology Solutions';
+            var body = 'Bonjour,\n\nVous avez ete invite a acceder au Portail e-Trak.\nCliquez sur le lien ci-dessous pour vous connecter :\n\nhttps://etraksolutions.github.io/portal-machine/\n\nVous aurez besoin de vos identifiants (courriel et mot de passe) pour vous connecter.\n\nPortail e-Trak — e-Trak Technology Solutions';
             window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
             emailInput.value = '';
         });

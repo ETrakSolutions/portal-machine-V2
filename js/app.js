@@ -656,6 +656,18 @@ function loadUsers() {
                 } catch(e) {}
             }
             renderUserList();
+            // Re-validate session with fresh user list
+            var sess = localStorage.getItem('portal_user');
+            if (sess && !currentUser) {
+                try {
+                    var p = JSON.parse(sess);
+                    var v = AUTHORIZED_USERS.find(function(u) { return u.username.toLowerCase() === (p.username || '').toLowerCase(); });
+                    if (v) {
+                        currentUser = { username: v.username, name: v.name, role: v.role, permissions: getUserPermissions(v.role) };
+                        updateLoginUI();
+                    }
+                } catch(e) {}
+            }
         })
         .catch(function() { renderUserList(); });
 }
