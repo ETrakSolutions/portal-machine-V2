@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
-    <link rel="stylesheet" href="css/style.css?v=60">
-    <link rel="stylesheet" href="css/admin.css?v=60">
+    <link rel="stylesheet" href="css/style.css?v=61">
+    <link rel="stylesheet" href="css/admin.css?v=61">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -59,10 +59,15 @@
                 <div class="hub-tile-label">Demande de soumission</div>
                 <div class="hub-tile-desc">Soumettre une demande de kit machine</div>
             </a>
+            <a href="#vente" id="hub-tile-vente" class="hub-tile hub-tile-vente" style="display:none;">
+
+                <div class="hub-tile-label">Vente</div>
+                <div class="hub-tile-desc">Gestion des comptes utilisateurs</div>
+            </a>
             <a href="#admin" id="hub-tile-admin" class="hub-tile hub-tile-admin" style="display:none;">
 
                 <div class="hub-tile-label">Administrateur</div>
-                <div class="hub-tile-desc">Gestion utilisateurs et courriels</div>
+                <div class="hub-tile-desc">Courriels et permissions</div>
             </a>
         </div>
 
@@ -71,38 +76,12 @@
             <p>Connectez-vous pour acceder aux applications e-Trak.</p>
         </div>
 
-        <!-- ADMIN CONTENT (hidden by default, shown when admin clicks Administration) -->
-        <div id="admin-content" style="display:none;">
+        <!-- VENTE CONTENT (hidden by default, shown when vente/admin clicks Vente) -->
+        <div id="vente-content" style="display:none;">
             <div class="admin-section-header">
-                <button id="admin-back-to-hub" class="admin-back">&larr; Retour</button>
-                <h2 class="admin-section-title">Administration</h2>
+                <button id="vente-back-to-hub" class="admin-back">&larr; Retour</button>
+                <h2 class="admin-section-title">Vente</h2>
             </div>
-
-            <!-- Courriels vente interne -->
-            <section class="admin-card">
-                <div class="admin-card-header">
-                    <h2>&#128176; Courriels vente interne</h2>
-                    <p class="admin-card-desc">Adresses qui recoivent les demandes de soumission depuis le formulaire.</p>
-                </div>
-                <div id="admin-sales-email-list" class="admin-list"></div>
-                <div class="admin-add-row">
-                    <input type="email" id="admin-add-sales-email" class="admin-input" placeholder="vente@exemple.com">
-                    <button id="admin-add-sales-email-btn" class="admin-btn-add">+ Ajouter</button>
-                </div>
-            </section>
-
-            <!-- Courriels kit machine -->
-            <section class="admin-card">
-                <div class="admin-card-header">
-                    <h2>&#128295; Courriels demande de kit machine</h2>
-                    <p class="admin-card-desc">Adresses qui recoivent les demandes de configuration kit machine.</p>
-                </div>
-                <div id="admin-kit-email-list" class="admin-list"></div>
-                <div class="admin-add-row">
-                    <input type="email" id="admin-add-kit-email" class="admin-input" placeholder="kit@exemple.com">
-                    <button id="admin-add-kit-email-btn" class="admin-btn-add">+ Ajouter</button>
-                </div>
-            </section>
 
             <!-- Utilisateurs -->
             <section class="admin-card">
@@ -153,6 +132,40 @@
                     <p class="admin-card-desc" style="margin-top:0.5rem;color:#999;font-size:0.75rem;">Mot de passe temporaire : <strong style="color:#FF8C00;">0000</strong> — l'utilisateur devra le changer a sa premiere connexion.</p>
                     <p id="admin-add-user-error" class="login-error" style="display:none;"></p>
                     <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide">+ Ajouter l'utilisateur</button>
+                </div>
+            </section>
+        </div>
+
+        <!-- ADMIN CONTENT (hidden by default, shown when admin clicks Administration) -->
+        <div id="admin-content" style="display:none;">
+            <div class="admin-section-header">
+                <button id="admin-back-to-hub" class="admin-back">&larr; Retour</button>
+                <h2 class="admin-section-title">Administration</h2>
+            </div>
+
+            <!-- Courriels vente interne -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128176; Courriels vente interne</h2>
+                    <p class="admin-card-desc">Adresses qui recoivent les demandes de soumission depuis le formulaire.</p>
+                </div>
+                <div id="admin-sales-email-list" class="admin-list"></div>
+                <div class="admin-add-row">
+                    <input type="email" id="admin-add-sales-email" class="admin-input" placeholder="vente@exemple.com">
+                    <button id="admin-add-sales-email-btn" class="admin-btn-add">+ Ajouter</button>
+                </div>
+            </section>
+
+            <!-- Courriels kit machine -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128295; Courriels demande de kit machine</h2>
+                    <p class="admin-card-desc">Adresses qui recoivent les demandes de configuration kit machine.</p>
+                </div>
+                <div id="admin-kit-email-list" class="admin-list"></div>
+                <div class="admin-add-row">
+                    <input type="email" id="admin-add-kit-email" class="admin-input" placeholder="kit@exemple.com">
+                    <button id="admin-add-kit-email-btn" class="admin-btn-add">+ Ajouter</button>
                 </div>
             </section>
 
@@ -218,6 +231,6 @@
         </div>
     </footer>
 
-    <script src="js/admin.js?v=60"></script>
+    <script src="js/admin.js?v=61"></script>
 </body>
 </html>

@@ -57,6 +57,10 @@ function updateHubUI() {
         if (tileSoumission) {
             tileSoumission.style.display = currentUser.permissions.soumissionAccess ? 'block' : 'none';
         }
+        var tileVente = document.getElementById('hub-tile-vente');
+        if (tileVente) {
+            tileVente.style.display = currentUser.permissions.createAccount ? 'block' : 'none';
+        }
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
         }
@@ -73,15 +77,27 @@ function updateHubUI() {
     }
 }
 
+function showVenteSection() {
+    document.getElementById('hub-nav').style.display = 'none';
+    var venteContent = document.getElementById('vente-content');
+    if (venteContent) venteContent.style.display = 'block';
+    document.querySelector('.admin-hero').style.display = 'none';
+    loadUsers();
+}
+
+function hideVenteSection() {
+    var venteContent = document.getElementById('vente-content');
+    if (venteContent) venteContent.style.display = 'none';
+    document.getElementById('hub-nav').style.display = 'grid';
+    document.querySelector('.admin-hero').style.display = 'block';
+}
+
 function showAdminSection() {
     document.getElementById('hub-nav').style.display = 'none';
     document.getElementById('admin-content').style.display = 'block';
     document.querySelector('.admin-hero').style.display = 'none';
-    loadEmails();
     loadSalesEmails();
     loadKitEmails();
-    loadUsers();
-    // Users loaded
 }
 
 function hideAdminSection() {
@@ -589,6 +605,23 @@ document.addEventListener('DOMContentLoaded', function() {
                     updateHubUI();
                 }, 1000);
             }, 3000);
+        });
+    }
+
+    // VENTE TILE — show vente section inline
+    var tileVente = document.getElementById('hub-tile-vente');
+    if (tileVente) {
+        tileVente.addEventListener('click', function(e) {
+            e.preventDefault();
+            showVenteSection();
+        });
+    }
+
+    // BACK TO HUB from vente
+    var venteBackBtn = document.getElementById('vente-back-to-hub');
+    if (venteBackBtn) {
+        venteBackBtn.addEventListener('click', function() {
+            hideVenteSection();
         });
     }
 
