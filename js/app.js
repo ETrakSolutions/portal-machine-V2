@@ -316,6 +316,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Voltage machine (V/type)' && value.includes('12V')) {
             html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
+        } else if (key === 'Section telescopique' && value === 'Oui') {
+            html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
         } else {
             html += `<tr><td>${key}</td><td>${value}</td></tr>`;
         }
