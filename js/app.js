@@ -7,13 +7,12 @@ let machinesData = {};
 
 // ---- ROLE PERMISSIONS ----
 const ROLES = {
-    administrateur: { modifBom: true, createAccount: true, modifAccounts: true, shareAccess: true, machineAccess: true, soumissionAccess: true, label: 'Administrateur' },
-    vendeur_etrak:  { modifBom: false, createAccount: false, modifAccounts: false, shareAccess: true, machineAccess: true, soumissionAccess: true, label: 'Vendeur e-Trak' },
-    distributeur:   { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: false, soumissionAccess: true, label: 'Distributeur' },
-    dealer:         { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: false, soumissionAccess: true, label: 'Dealer' },
-    technicien:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: true, soumissionAccess: false, label: 'Technicien' },
-    vente_interne:  { modifBom: false, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: true, soumissionAccess: true, label: 'Vente interne' },
-    ingenierie:     { modifBom: true, createAccount: true, modifAccounts: false, shareAccess: false, machineAccess: true, soumissionAccess: false, label: 'Ingenierie' }
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Vente interne' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, label: 'Technicien' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, label: 'Ingenierie' }
 };
 
 // ---- LOGIN SYSTEM ----
