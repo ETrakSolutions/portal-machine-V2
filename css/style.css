@@ -705,6 +705,158 @@ main {
     display: inline-block;
 }
 
+/* ---- KIT EDIT MODE ---- */
+.kit-edit-btn {
+    background: none;
+    border: 1px solid #0062CC;
+    color: #3B82F6;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    transition: all 0.2s;
+}
+.kit-edit-btn:hover { background: #0062CC; color: #fff; }
+.kit-edit-btn.active { background: #0062CC; color: #fff; }
+
+.kit-edit-mode tbody tr { background: rgba(0,98,204,0.05); }
+.kit-edit-mode tbody tr:hover { background: rgba(0,98,204,0.12); }
+
+.kit-status-select {
+    background: var(--bg-input, #1a2332);
+    color: #fff;
+    border: 1px solid #3B82F6;
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
+.kit-status-select option[value="red"] { color: #FF4444; }
+.kit-status-select option[value="yellow"] { color: #FFFF00; }
+.kit-status-select option[value="na"] { color: #666; }
+
+.kit-delete-row-btn {
+    background: none;
+    border: none;
+    color: #FF4444;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+    padding: 0 4px;
+}
+.kit-delete-row-btn:hover { color: #FF0000; }
+
+.kit-edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.kit-edit-btns { display: flex; gap: 0.5rem; }
+
+.kit-save-btn {
+    background: #00CC66;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.kit-save-btn:hover { background: #00AA55; }
+
+.kit-cancel-btn {
+    background: none;
+    border: 1px solid #555;
+    color: #999;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+.kit-cancel-btn:hover { color: #FF4444; border-color: #FF4444; }
+
+.kit-add-row-btn {
+    background: none;
+    border: 1px solid #0062CC;
+    color: #3B82F6;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+.kit-add-row-btn:hover { background: #0062CC; color: #fff; }
+
+.kit-add-row-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(0,98,204,0.08);
+    border: 1px dashed rgba(59,130,246,0.3);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.kit-new-input {
+    flex: 1;
+    min-width: 120px;
+    padding: 6px 10px;
+    background: var(--bg-input, #1a2332);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.kit-new-add-btn {
+    background: #0062CC;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+.kit-new-add-btn:hover { background: #004A99; }
+
+.kit-toast {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #00CC66;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    animation: toastIn 0.3s ease-out;
+    z-index: 100;
+}
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@media (max-width: 600px) {
+    .kit-add-row-form { flex-direction: column; }
+    .kit-new-input { width: 100%; }
+    .kit-edit-actions { flex-direction: column; gap: 0.75rem; }
+    .kit-add-row-btn { width: 100%; text-align: center; }
+}
+
 /* ---- NOTES SECTION ---- */
 .notes-section {
     background: linear-gradient(145deg, #2A2A2A, #222222);

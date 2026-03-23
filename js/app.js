@@ -509,6 +509,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             }
         }
         updateKitCheckboxes();
+        // Load overrides from DB (applied on top of hardcoded defaults)
+        loadKitOverride(fab, modele, annee);
     } else {
         kitSection.style.display = 'none';
     }
@@ -590,6 +592,349 @@ function saveNotes() {
     .catch(() => {
         notesStatus.textContent = 'Sauvegarde locale seulement (hors-ligne)';
     });
+}
+
+// ---- KIT OVERRIDE SYSTEM ----
+var currentKitOverrideKey = '';
+var currentKitOverrides = null;
+var kitEditMode = false;
+
+function getKitOverrideKey(fab, modele, annee) {
+    return 'kit_override_' + fab + '_' + modele + '_' + annee;
+}
+
+function loadKitOverride(fab, modele, annee) {
+    currentKitOverrideKey = getKitOverrideKey(fab, modele, annee);
+    currentKitOverrides = null;
+    fetch(API_URL + '?action=get&key=' + encodeURIComponent(currentKitOverrideKey))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try {
+                    currentKitOverrides = JSON.parse(data.value);
+                    applyKitOverrides(currentKitOverrides);
+                } catch(e) {}
+            }
+        })
+        .catch(function() {
+            // Try localStorage fallback
+            var local = localStorage.getItem(currentKitOverrideKey);
+            if (local) {
+                try {
+                    currentKitOverrides = JSON.parse(local);
+                    applyKitOverrides(currentKitOverrides);
+                } catch(e) {}
+            }
+        });
+}
+
+function applyKitOverrides(overrides) {
+    if (!overrides) return;
+    // Apply status overrides to existing rows
+    if (overrides.rows) {
+        Object.keys(overrides.rows).forEach(function(kitId) {
+            var status = overrides.rows[kitId]; // 'red', 'yellow', 'na'
+            var row = document.querySelector('tr[data-kit="' + kitId + '"]');
+            if (!row) {
+                // Try finding by radio name
+                var radio = document.querySelector('input[name="kit-' + kitId + '"]');
+                if (radio) row = radio.closest('tr');
+            }
+            if (!row) return;
+            var statusCell = row.querySelector('.kit-status-cell');
+            if (!statusCell) return;
+            var radioName = 'kit-' + kitId;
+            // Find existing radio name from the row
+            var existingRadio = row.querySelector('input[type="radio"]');
+            if (existingRadio) radioName = existingRadio.name;
+
+            if (status === 'red') {
+                statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                var redRadio = statusCell.querySelector('.radio-red');
+                if (redRadio) redRadio.checked = true;
+                row.style.display = '';
+            } else if (status === 'yellow') {
+                statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                var yellowRadio = statusCell.querySelector('.radio-yellow');
+                if (yellowRadio) yellowRadio.checked = true;
+                row.style.display = '';
+            } else if (status === 'na') {
+                statusCell.innerHTML = '<span class="kit-na">N/A</span>';
+            }
+        });
+    }
+    // Add custom rows
+    if (overrides.customRows && overrides.customRows.length > 0) {
+        var tbody = document.querySelector('.kit-table tbody');
+        if (!tbody) return;
+        // Remove existing custom rows
+        tbody.querySelectorAll('tr[data-custom="true"]').forEach(function(r) { r.remove(); });
+        overrides.customRows.forEach(function(custom) {
+            var tr = document.createElement('tr');
+            tr.setAttribute('data-custom', 'true');
+            tr.setAttribute('data-custom-id', custom.id);
+            var statusHtml = '';
+            if (custom.status === 'red') {
+                statusHtml = '<input type="radio" name="kit-custom-' + custom.id + '" value="oui" class="radio-red" checked><input type="radio" name="kit-custom-' + custom.id + '" value="non" class="radio-yellow">';
+            } else if (custom.status === 'yellow') {
+                statusHtml = '<input type="radio" name="kit-custom-' + custom.id + '" value="oui" class="radio-red"><input type="radio" name="kit-custom-' + custom.id + '" value="non" class="radio-yellow" checked>';
+            } else {
+                statusHtml = '<span class="kit-na">N/A</span>';
+            }
+            tr.innerHTML =
+                '<td>' + custom.label + '</td>' +
+                '<td class="kit-code">' + custom.code + '</td>' +
+                '<td class="kit-status-cell">' + statusHtml + '</td>' +
+                '<td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>';
+            tbody.appendChild(tr);
+        });
+    }
+    updateKitCheckboxes();
+}
+
+function saveKitOverride(overrideData) {
+    if (!currentKitOverrideKey) return;
+    var json = JSON.stringify(overrideData);
+    localStorage.setItem(currentKitOverrideKey, json);
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: currentKitOverrideKey, value: json, pin: '1400' })
+    }).catch(function() {});
+}
+
+function collectCurrentKitState() {
+    var rows = {};
+    document.querySelectorAll('.kit-table tbody tr:not([data-custom="true"])').forEach(function(tr) {
+        var radio = tr.querySelector('input[type="radio"]');
+        var kitId = tr.getAttribute('data-kit');
+        if (!kitId && radio) {
+            kitId = radio.name.replace('kit-', '');
+        }
+        if (!kitId) return;
+        var na = tr.querySelector('.kit-na');
+        if (na) {
+            rows[kitId] = 'na';
+        } else {
+            var red = tr.querySelector('.radio-red');
+            var yellow = tr.querySelector('.radio-yellow');
+            if (red && red.checked) rows[kitId] = 'red';
+            else if (yellow && yellow.checked) rows[kitId] = 'yellow';
+            else rows[kitId] = 'na';
+        }
+    });
+    var customRows = [];
+    document.querySelectorAll('.kit-table tbody tr[data-custom="true"]').forEach(function(tr) {
+        var customId = tr.getAttribute('data-custom-id');
+        var label = tr.cells[0] ? tr.cells[0].textContent : '';
+        var code = tr.cells[1] ? tr.cells[1].textContent : '';
+        var na = tr.querySelector('.kit-na');
+        var status = 'na';
+        if (!na) {
+            var red = tr.querySelector('.radio-red');
+            var yellow = tr.querySelector('.radio-yellow');
+            if (red && red.checked) status = 'red';
+            else if (yellow && yellow.checked) status = 'yellow';
+        }
+        customRows.push({ id: customId, label: label, code: code, status: status });
+    });
+    return { rows: rows, customRows: customRows };
+}
+
+function enterKitEditMode() {
+    kitEditMode = true;
+    var kitTable = document.querySelector('.kit-table');
+    if (kitTable) kitTable.classList.add('kit-edit-mode');
+
+    // Transform each status cell into a dropdown
+    document.querySelectorAll('.kit-table tbody tr').forEach(function(tr) {
+        var statusCell = tr.querySelector('.kit-status-cell');
+        if (!statusCell) return;
+
+        var currentStatus = 'na';
+        var red = statusCell.querySelector('.radio-red');
+        var yellow = statusCell.querySelector('.radio-yellow');
+        var na = statusCell.querySelector('.kit-na');
+        if (red && red.checked) currentStatus = 'red';
+        else if (yellow && yellow.checked) currentStatus = 'yellow';
+        else if (na) currentStatus = 'na';
+        else if (red || yellow) currentStatus = 'yellow'; // radios exist but none checked
+
+        var select = document.createElement('select');
+        select.className = 'kit-status-select';
+        select.innerHTML =
+            '<option value="red"' + (currentStatus === 'red' ? ' selected' : '') + '>Obligatoire</option>' +
+            '<option value="yellow"' + (currentStatus === 'yellow' ? ' selected' : '') + '>Optionnel</option>' +
+            '<option value="na"' + (currentStatus === 'na' ? ' selected' : '') + '>N/A</option>';
+        statusCell.innerHTML = '';
+        statusCell.appendChild(select);
+
+        // Add delete button for custom rows
+        var isCustom = tr.getAttribute('data-custom') === 'true';
+        if (isCustom) {
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className = 'kit-delete-row-btn';
+            deleteBtn.textContent = '\u2715';
+            deleteBtn.title = 'Supprimer cette option';
+            deleteBtn.addEventListener('click', function() { tr.remove(); });
+            tr.cells[0].appendChild(deleteBtn);
+        }
+    });
+
+    // Add action bar
+    var kitSection = document.getElementById('kit-machine-section');
+    if (!kitSection) return;
+
+    // Remove existing action bars
+    var existing = kitSection.querySelector('.kit-edit-actions');
+    if (existing) existing.remove();
+
+    var actions = document.createElement('div');
+    actions.className = 'kit-edit-actions';
+    actions.innerHTML =
+        '<button id="kit-add-row-btn" class="kit-add-row-btn">+ Ajouter une option</button>' +
+        '<div class="kit-edit-btns">' +
+        '<button id="kit-save-btn" class="kit-save-btn">Sauvegarder</button>' +
+        '<button id="kit-cancel-btn" class="kit-cancel-btn">Annuler</button>' +
+        '</div>';
+    kitSection.appendChild(actions);
+
+    // Add row form (hidden by default)
+    var addForm = document.createElement('div');
+    addForm.id = 'kit-add-form';
+    addForm.className = 'kit-add-row-form';
+    addForm.style.display = 'none';
+    addForm.innerHTML =
+        '<input type="text" id="kit-new-label" class="kit-new-input" placeholder="Nom de l\'option">' +
+        '<input type="text" id="kit-new-code" class="kit-new-input" placeholder="Code produit (ex: 1500-XXXX)">' +
+        '<select id="kit-new-status" class="kit-status-select">' +
+        '<option value="red">Obligatoire</option>' +
+        '<option value="yellow" selected>Optionnel</option>' +
+        '</select>' +
+        '<button id="kit-new-add" class="kit-new-add-btn">Ajouter</button>';
+    kitSection.insertBefore(addForm, actions);
+
+    // Event listeners
+    document.getElementById('kit-add-row-btn').addEventListener('click', function() {
+        var form = document.getElementById('kit-add-form');
+        form.style.display = form.style.display === 'none' ? 'flex' : 'none';
+    });
+
+    document.getElementById('kit-new-add').addEventListener('click', function() {
+        var label = document.getElementById('kit-new-label').value.trim();
+        var code = document.getElementById('kit-new-code').value.trim();
+        var status = document.getElementById('kit-new-status').value;
+        if (!label) return;
+        var customId = 'custom_' + Date.now();
+        var tbody = document.querySelector('.kit-table tbody');
+        var tr = document.createElement('tr');
+        tr.setAttribute('data-custom', 'true');
+        tr.setAttribute('data-custom-id', customId);
+        var select = '<select class="kit-status-select">' +
+            '<option value="red"' + (status === 'red' ? ' selected' : '') + '>Obligatoire</option>' +
+            '<option value="yellow"' + (status === 'yellow' ? ' selected' : '') + '>Optionnel</option>' +
+            '<option value="na">N/A</option></select>';
+        tr.innerHTML =
+            '<td>' + label + '<button class="kit-delete-row-btn" title="Supprimer">\u2715</button></td>' +
+            '<td class="kit-code">' + code + '</td>' +
+            '<td class="kit-status-cell">' + select + '</td>' +
+            '<td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>';
+        tbody.appendChild(tr);
+        tr.querySelector('.kit-delete-row-btn').addEventListener('click', function() { tr.remove(); });
+        document.getElementById('kit-new-label').value = '';
+        document.getElementById('kit-new-code').value = '';
+    });
+
+    document.getElementById('kit-save-btn').addEventListener('click', function() {
+        saveKitEditMode();
+    });
+
+    document.getElementById('kit-cancel-btn').addEventListener('click', function() {
+        exitKitEditMode(false);
+    });
+
+    // Show edit button as active
+    var editBtn = document.getElementById('kit-edit-btn');
+    if (editBtn) editBtn.classList.add('active');
+}
+
+function saveKitEditMode() {
+    // Collect state from dropdowns
+    var rows = {};
+    document.querySelectorAll('.kit-table tbody tr:not([data-custom="true"])').forEach(function(tr) {
+        var select = tr.querySelector('.kit-status-select');
+        var kitId = tr.getAttribute('data-kit');
+        if (!kitId) {
+            var radio = tr.querySelector('input[type="radio"]');
+            if (radio) kitId = radio.name.replace('kit-', '');
+        }
+        // If no kitId found from data-kit or radio, try to find from the original radios name
+        if (!kitId) {
+            // Use a simple index-based ID
+            var idx = Array.from(tr.parentNode.children).indexOf(tr);
+            kitId = 'row_' + idx;
+        }
+        if (select) {
+            rows[kitId] = select.value;
+        }
+    });
+    var customRows = [];
+    document.querySelectorAll('.kit-table tbody tr[data-custom="true"]').forEach(function(tr) {
+        var customId = tr.getAttribute('data-custom-id');
+        var label = tr.cells[0] ? tr.cells[0].textContent.replace('\u2715', '').trim() : '';
+        var code = tr.cells[1] ? tr.cells[1].textContent : '';
+        var select = tr.querySelector('.kit-status-select');
+        var status = select ? select.value : 'na';
+        customRows.push({ id: customId, label: label, code: code, status: status });
+    });
+
+    var overrideData = { rows: rows, customRows: customRows };
+    currentKitOverrides = overrideData;
+    saveKitOverride(overrideData);
+
+    exitKitEditMode(true);
+    showKitToast('Configuration kit sauvegardee');
+}
+
+function exitKitEditMode(applyChanges) {
+    kitEditMode = false;
+    var kitTable = document.querySelector('.kit-table');
+    if (kitTable) kitTable.classList.remove('kit-edit-mode');
+
+    // Remove action bar and add form
+    var kitSection = document.getElementById('kit-machine-section');
+    if (kitSection) {
+        var actions = kitSection.querySelector('.kit-edit-actions');
+        if (actions) actions.remove();
+        var addForm = document.getElementById('kit-add-form');
+        if (addForm) addForm.remove();
+    }
+
+    // Re-trigger the model display to reset + re-apply overrides
+    if (selectModele && selectModele.value) {
+        var type = selectType.value;
+        var fab = selectFabricant.value;
+        var annee = selectAnnee.value;
+        var modele = selectModele.value;
+        if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
+            // Re-run the full display pipeline
+            selectModele.dispatchEvent(new Event('change'));
+        }
+    }
+
+    var editBtn = document.getElementById('kit-edit-btn');
+    if (editBtn) editBtn.classList.remove('active');
+}
+
+function showKitToast(msg) {
+    var existing = document.querySelector('.kit-toast');
+    if (existing) existing.remove();
+    var toast = document.createElement('div');
+    toast.className = 'kit-toast';
+    toast.textContent = msg;
+    var kitSection = document.getElementById('kit-machine-section');
+    if (kitSection) kitSection.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 2500);
 }
 
 // ---- EMAIL MANAGEMENT ----
@@ -950,6 +1295,9 @@ function lockKit() {
     if (kitLockBtn) kitLockBtn.innerHTML = '&#128274;';
     if (kitLockBtn) kitLockBtn.classList.remove('unlocked');
     lockNotes();
+    // Hide edit button
+    var editBtn = document.getElementById('kit-edit-btn');
+    if (editBtn) editBtn.style.display = 'none';
 }
 
 function unlockKit() {
@@ -959,6 +1307,11 @@ function unlockKit() {
     if (kitLockBtn) kitLockBtn.innerHTML = '&#128275;';
     if (kitLockBtn) kitLockBtn.classList.add('unlocked');
     unlockNotes();
+    // Show edit button for admin/super admin
+    var editBtn = document.getElementById('kit-edit-btn');
+    if (editBtn && currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
+        editBtn.style.display = 'inline-block';
+    }
 }
 
 if (kitLockBtn) {
@@ -974,6 +1327,18 @@ if (kitLockBtn) {
             }
         }
     });
+}
+
+// Kit edit button listener — use onclick (addEventListener fails on some reflows)
+var kitEditBtn = document.getElementById('kit-edit-btn');
+if (kitEditBtn) {
+    kitEditBtn.onclick = function() {
+        if (kitEditMode) {
+            exitKitEditMode(false);
+        } else {
+            enterKitEditMode();
+        }
+    };
 }
 
 // Apply lock by default on page load

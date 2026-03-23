@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=43">
+    <link rel="stylesheet" href="css/style.css?v=49">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -103,6 +103,7 @@
                         <p class="kit-subtitle" id="kit-machine-desc"></p>
                         <div class="kit-lock">
                             <button id="kit-lock-btn" class="kit-lock-btn" title="Deverrouiller pour modifier">&#128274;</button>
+                            <button id="kit-edit-btn" class="kit-edit-btn" style="display:none;" title="Modifier les jetons" onclick="if(kitEditMode){exitKitEditMode(false)}else{enterKitEditMode()}">&#9998; Modifier</button>
                         </div>
                     </div>
                 </div>
@@ -120,25 +121,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr data-kit="cabine">
                             <td>Machine <strong>avec cabine</strong> (kit de base)</td>
                             <td class="kit-code">1500-0000</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-cabine" value="avec" class="radio-red"><input type="radio" name="kit-cabine" value="sans" class="radio-yellow"></td>
                             <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
-                        <tr>
+                        <tr data-kit="sans-cabine">
                             <td>Machine <strong>sans cabine</strong> (kit de base) <span class="kit-special">*** Cas speciaux seulement</span></td>
                             <td class="kit-code">1500-0003</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow"></td>
                             <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
-                        <tr>
+                        <tr data-kit="hauteur">
                             <td>Option <strong>Hauteur</strong></td>
                             <td class="kit-code">1500-0001</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-hauteur" value="oui" class="radio-red"><input type="radio" name="kit-hauteur" value="non" class="radio-yellow"></td>
                             <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
-                        <tr>
+                        <tr data-kit="rotation">
                             <td>Option <strong>Rotation</strong></td>
                             <td class="kit-code">1500-0002</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-rotation" value="oui" class="radio-red"><input type="radio" name="kit-rotation" value="non" class="radio-yellow"></td>
@@ -150,13 +151,13 @@
                             <td class="kit-status-cell"><input type="radio" name="kit-cremaillere" value="oui" class="radio-red"><input type="radio" name="kit-cremaillere" value="non" class="radio-yellow"></td>
                             <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
-                        <tr>
+                        <tr data-kit="mini">
                             <td>Option <strong>mini excavatrice</strong></td>
                             <td class="kit-code">1500-0004-install</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-mini" value="oui" class="radio-red"><input type="radio" name="kit-mini" value="non" class="radio-yellow"></td>
                             <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
-                        <tr>
+                        <tr data-kit="gc">
                             <td>Boite <strong>(GC)</strong></td>
                             <td class="kit-code">1000-0070</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow"></td>
@@ -168,7 +169,7 @@
                             <td class="kit-status-cell"><input type="radio" name="kit-swing" value="oui" class="radio-red"><input type="radio" name="kit-swing" value="non" class="radio-yellow"></td>
                             <td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>
                         </tr>
-                        <tr>
+                        <tr data-kit="drain">
                             <td>Drain <strong>hydraulique</strong></td>
                             <td class="kit-code">1500-0009</td>
                             <td class="kit-status-cell"><input type="radio" name="kit-drain" value="oui" class="radio-red"><input type="radio" name="kit-drain" value="non" class="radio-yellow"></td>
@@ -221,6 +222,6 @@
     </footer>
 
 
-    <script src="js/app.js?v=43"></script>
+    <script src="js/app.js?v=49"></script>
 </body>
 </html>
