@@ -104,7 +104,9 @@ function showWelcome(name, role) {
         '<div class="welcome-name">' + name + '</div>' +
         '<div class="welcome-role">' + roleLabel + '</div>' +
         '<div class="welcome-line"></div>';
-    document.body.appendChild(overlay);
+    var mainEl = document.querySelector('main.admin-main');
+    if (mainEl) { mainEl.style.position = 'relative'; mainEl.appendChild(overlay); }
+    else document.body.appendChild(overlay);
 
     requestAnimationFrame(function() {
         overlay.classList.add('welcome-visible');
@@ -514,7 +516,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 '<div class="welcome-text">Au revoir</div>' +
                 '<div class="welcome-name">' + userName + '</div>' +
                 '<div class="welcome-line"></div>';
-            document.body.appendChild(overlay);
+            var mainEl = document.querySelector('main.admin-main');
+            if (mainEl) { mainEl.style.position = 'relative'; mainEl.appendChild(overlay); }
+            else document.body.appendChild(overlay);
             requestAnimationFrame(function() { overlay.classList.add('welcome-visible'); });
 
             // Fade out after 3s then disconnect

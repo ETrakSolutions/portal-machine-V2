@@ -308,7 +308,7 @@
 
 /* Welcome overlay — fullscreen centered WOW */
 .welcome-overlay {
-    position: fixed;
+    position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
     background: radial-gradient(ellipse at center, #2a2a2a 0%, #1a1a1a 60%, #0d0d0d 100%);
     z-index: 10000;
