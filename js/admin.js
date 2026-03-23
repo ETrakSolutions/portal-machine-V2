@@ -307,17 +307,28 @@ function renderUsers() {
         if (perms.soumissionAccess) permTags += '<span class="perm-tag perm-tag-soum">Soumission</span>';
         if (perms.shareAccess) permTags += '<span class="perm-tag perm-tag-share">Partage</span>';
         if (!permTags) permTags = '<span style="color:#555;">—</span>';
+        tr.style.cursor = 'pointer';
+        tr.dataset.idx = i;
         tr.innerHTML =
             '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
-            '<td>' + (user.email || '<span style="color:#555;">—</span>') + '</td>' +
+            '<td>' + (user.email || '<span style="color:#555;">\u2014</span>') + '</td>' +
             '<td>' + user.username + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
             '<td class="perm-tags">' + permTags + '</td>' +
             '<td>' + (isSuperAdmin ? '' : '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>') + '</td>';
         tbody.appendChild(tr);
     });
+    // Click row to edit user
+    tbody.querySelectorAll('tr').forEach(function(tr) {
+        tr.addEventListener('click', function(e) {
+            if (e.target.classList.contains('admin-delete-btn')) return;
+            var idx = parseInt(this.dataset.idx);
+            openEditUserModal(idx);
+        });
+    });
     tbody.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function(e) {
+            e.stopPropagation();
             var idx = parseInt(this.dataset.idx);
             var user = USERS[idx];
             if (user.email && user.email.toLowerCase() === SUPER_ADMIN) {
@@ -374,6 +385,77 @@ function renderAccountsByRole() {
         html += '</tbody></table></div>';
         section.innerHTML = html;
         container.appendChild(section);
+    });
+}
+
+// ---- EDIT USER MODAL ----
+function openEditUserModal(idx) {
+    var user = USERS[idx];
+    if (!user) return;
+    var SUPER_ADMIN = 'robin@gryb.ca';
+    var isSuperAdmin = user.email && user.email.toLowerCase() === SUPER_ADMIN;
+
+    // Remove existing modal
+    var existing = document.getElementById('edit-user-modal');
+    if (existing) existing.remove();
+
+    var roleOptions = '';
+    Object.keys(ROLES).forEach(function(key) {
+        roleOptions += '<option value="' + key + '"' + (user.role === key ? ' selected' : '') + '>' + ROLES[key].label + '</option>';
+    });
+
+    var modal = document.createElement('div');
+    modal.id = 'edit-user-modal';
+    modal.className = 'login-modal';
+    modal.style.display = 'flex';
+    modal.innerHTML =
+        '<div class="login-modal-content" style="max-width:420px;">' +
+        '<button class="login-close" id="edit-user-close">&times;</button>' +
+        '<h3>Modifier l\'utilisateur</h3>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Nom complet</label>' +
+        '<input type="text" id="edit-user-name" class="login-input" value="' + (user.name || '') + '"></div>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Adresse courriel</label>' +
+        '<input type="email" id="edit-user-email" class="login-input" value="' + (user.email || '') + '"></div>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Nom d\'utilisateur</label>' +
+        '<input type="text" id="edit-user-username" class="login-input" value="' + (user.username || '') + '"' + (isSuperAdmin ? ' readonly style="opacity:0.5;"' : '') + '></div>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Mot de passe</label>' +
+        '<input type="text" id="edit-user-password" class="login-input" value="' + (user.password || '') + '"></div>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Role</label>' +
+        '<select id="edit-user-role" class="login-input"' + (isSuperAdmin ? ' disabled style="opacity:0.5;"' : '') + '>' + roleOptions + '</select></div>' +
+        '<button type="button" id="edit-user-save" class="login-submit">Enregistrer</button>' +
+        '</div>';
+
+    document.body.appendChild(modal);
+
+    // Close
+    document.getElementById('edit-user-close').addEventListener('click', function() { modal.remove(); });
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+
+    // Save
+    document.getElementById('edit-user-save').addEventListener('click', function() {
+        var newName = document.getElementById('edit-user-name').value.trim();
+        var newEmail = document.getElementById('edit-user-email').value.trim();
+        var newUsername = document.getElementById('edit-user-username').value.trim();
+        var newPassword = document.getElementById('edit-user-password').value.trim();
+        var newRole = document.getElementById('edit-user-role').value;
+
+        if (!newName || !newUsername || !newPassword) {
+            alert('Nom, utilisateur et mot de passe sont obligatoires.');
+            return;
+        }
+
+        USERS[idx].name = newName;
+        USERS[idx].email = newEmail;
+        if (!isSuperAdmin) {
+            USERS[idx].username = newUsername.toLowerCase();
+            USERS[idx].role = newRole;
+        }
+        USERS[idx].password = newPassword;
+
+        saveUsers();
+        renderUsers();
+        modal.remove();
+        showToast('Utilisateur "' + newName + '" modifie');
     });
 }
 
