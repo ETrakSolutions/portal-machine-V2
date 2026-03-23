@@ -713,9 +713,24 @@ document.addEventListener('DOMContentLoaded', function() {
             USERS.push({ username: email.toLowerCase(), email: email.toLowerCase(), password: '0000', role: role, name: name, active: true, mustChangePassword: true });
             saveUsers();
             renderUsers();
+
+            // Send welcome email with credentials
+            var roleLabel = ROLES[role] ? ROLES[role].label : role;
+            var subject = 'Portail e-Trak — Votre compte a ete cree';
+            var body = 'Bonjour ' + name + ',\n\n' +
+                'Un compte a ete cree pour vous sur le Portail e-Trak.\n\n' +
+                'Voici vos informations de connexion :\n\n' +
+                'Adresse du portail : https://etraksolutions.github.io/portal-machine/\n' +
+                'Courriel : ' + email + '\n' +
+                'Mot de passe temporaire : 0000\n\n' +
+                'IMPORTANT : Vous devrez changer votre mot de passe lors de votre premiere connexion.\n\n' +
+                'Votre role : ' + roleLabel + '\n\n' +
+                'Portail e-Trak — e-Trak Technology Solutions';
+            window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
-            showToast('Utilisateur "' + name + '" ajoute (mdp temporaire: 0000)');
+            showToast('Utilisateur "' + name + '" ajoute — courriel de bienvenue ouvert');
         };
     }
 
