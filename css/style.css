@@ -1047,6 +1047,8 @@ footer {
     padding: 2.5rem;
     z-index: 1000;
     min-width: 320px;
+    max-width: 90vw;
+    box-sizing: border-box;
     animation: fadeIn 0.2s ease;
 }
 @keyframes fadeIn {
@@ -1068,12 +1070,14 @@ footer {
 }
 
 .qr-image {
-    width: 250px;
-    height: 250px;
+    max-width: 250px;
+    width: 100%;
+    height: auto;
     border-radius: var(--radius);
     border: 1px solid var(--border);
     background: var(--white);
     padding: 6px;
+    box-sizing: border-box;
 }
 
 .menu-qr-url {
