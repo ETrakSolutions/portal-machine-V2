@@ -382,7 +382,7 @@ function renderUsers() {
             '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
             '<td>' + (user.email || '<span style="color:#555;">\u2014</span>') + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
-            '<td>' + (isSuperAdmin ? '' : '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>') + '</td>';
+            '<td>' + (!isSuperAdmin && currentUser && currentUser.permissions && currentUser.permissions.modifAccounts ? '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>' : '') + '</td>';
         tbody.appendChild(tr);
     });
     // Click row to edit user
