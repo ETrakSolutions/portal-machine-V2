@@ -394,14 +394,12 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             const swingOblig = swingRow.querySelector('input[value="oui"]');
             const swingOption = swingRow.querySelector('input[value="non"]');
             if (swingValue === 'Oui') {
+                swingRow.style.display = '';
                 if (swingOption) swingOption.checked = true;
                 if (swingOblig) swingOblig.disabled = false;
                 if (swingOption) swingOption.disabled = false;
             } else {
-                const statusCell = swingRow.querySelector('.kit-status-cell');
-                if (statusCell) {
-                    statusCell.innerHTML = '<span class="kit-na">N/A</span>';
-                }
+                swingRow.style.display = 'none';
             }
         }
 
@@ -414,15 +412,14 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         if (miniTr) {
             const miniStatusCell = miniTr.querySelector('.kit-status-cell');
             if (poidsKg < 5000 && poidsKg > 0) {
+                miniTr.style.display = '';
                 if (miniStatusCell && !miniStatusCell.querySelector('input')) {
                     miniStatusCell.innerHTML = '<input type="radio" name="kit-mini" value="oui" class="radio-red"><input type="radio" name="kit-mini" value="non" class="radio-yellow">';
                 }
                 var miniOblig = miniTr.querySelector('input[value="oui"]');
                 if (miniOblig) miniOblig.checked = true;
             } else {
-                if (miniStatusCell) {
-                    miniStatusCell.innerHTML = '<span class="kit-na">N/A</span>';
-                }
+                miniTr.style.display = 'none';
             }
         }
 
@@ -432,10 +429,9 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         if (sansCabineTr) {
             var sansCabineStatus = sansCabineTr.querySelector('.kit-status-cell');
             if (poidsKg >= 5000 || poidsKg === 0) {
-                if (sansCabineStatus) {
-                    sansCabineStatus.innerHTML = '<span class="kit-na">N/A</span>';
-                }
+                sansCabineTr.style.display = 'none';
             } else {
+                sansCabineTr.style.display = '';
                 if (sansCabineStatus && !sansCabineStatus.querySelector('input')) {
                     sansCabineStatus.innerHTML = '<input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow">';
                 }
