@@ -1276,7 +1276,8 @@ function toggleKitLock() {
         // Unlocked: enter edit mode (admin only)
         if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
             enterKitEditMode();
-            if (kitLockBtn) kitLockBtn.innerHTML = '&#9998;';
+            var btn = document.getElementById('kit-lock-btn');
+            if (btn) { btn.innerHTML = '&#9998;'; btn.classList.add('editing'); btn.title = 'Annuler les modifications'; }
         } else {
             lockKit();
         }
@@ -1334,19 +1335,19 @@ function updateKitCheckboxes() {
 
 function lockKit() {
     kitUnlocked = false;
-    const kitTable = document.querySelector('.kit-table');
+    var kitTable = document.querySelector('.kit-table');
+    var btn = document.getElementById('kit-lock-btn');
     if (kitTable) kitTable.classList.add('kit-locked');
-    if (kitLockBtn) kitLockBtn.innerHTML = '&#128274;';
-    if (kitLockBtn) kitLockBtn.classList.remove('unlocked');
+    if (btn) { btn.innerHTML = '&#128274;'; btn.classList.remove('unlocked', 'editing'); btn.title = 'Deverrouiller'; }
     lockNotes();
 }
 
 function unlockKit() {
     kitUnlocked = true;
-    const kitTable = document.querySelector('.kit-table');
+    var kitTable = document.querySelector('.kit-table');
+    var btn = document.getElementById('kit-lock-btn');
     if (kitTable) kitTable.classList.remove('kit-locked');
-    if (kitLockBtn) kitLockBtn.innerHTML = '&#128275;';
-    if (kitLockBtn) kitLockBtn.classList.add('unlocked');
+    if (btn) { btn.innerHTML = '&#128275;'; btn.classList.add('unlocked'); btn.classList.remove('editing'); btn.title = 'Cliquer pour modifier les jetons'; }
     unlockNotes();
 }
 

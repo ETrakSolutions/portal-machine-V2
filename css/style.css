@@ -505,6 +505,12 @@ main {
     border-color: #00CC00;
 }
 
+.kit-lock-btn.editing {
+    border-color: #3B82F6;
+    background: rgba(59,130,246,0.15);
+    color: #3B82F6;
+}
+
 .kit-pin-input {
     width: 60px;
     padding: 4px 8px;
