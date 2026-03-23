@@ -1269,9 +1269,19 @@ function toggleKitEdit() {
 }
 
 function toggleKitLock() {
-    if (kitUnlocked) {
-        lockKit();
+    if (kitEditMode) {
+        // In edit mode: cancel and go back to locked
+        exitKitEditMode(false);
+    } else if (kitUnlocked) {
+        // Unlocked: enter edit mode (admin only)
+        if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
+            enterKitEditMode();
+            if (kitLockBtn) kitLockBtn.innerHTML = '&#9998;';
+        } else {
+            lockKit();
+        }
     } else {
+        // Locked: unlock
         if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
             unlockKit();
         } else {
@@ -1329,9 +1339,6 @@ function lockKit() {
     if (kitLockBtn) kitLockBtn.innerHTML = '&#128274;';
     if (kitLockBtn) kitLockBtn.classList.remove('unlocked');
     lockNotes();
-    // Hide edit button
-    var editBtn = document.getElementById('kit-edit-btn');
-    if (editBtn) editBtn.style.display = 'none';
 }
 
 function unlockKit() {
@@ -1341,11 +1348,6 @@ function unlockKit() {
     if (kitLockBtn) kitLockBtn.innerHTML = '&#128275;';
     if (kitLockBtn) kitLockBtn.classList.add('unlocked');
     unlockNotes();
-    // Show edit button for admin/super admin
-    var editBtn = document.getElementById('kit-edit-btn');
-    if (editBtn && currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
-        editBtn.style.display = 'inline-block';
-    }
 }
 
 if (kitLockBtn) {
