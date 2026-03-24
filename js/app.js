@@ -105,11 +105,22 @@ selectAnnee.addEventListener('change', () => {
     const annee = selectAnnee.value;
     if (!annee) return;
 
-    const modeles = Object.keys(machinesData[type][fab][annee]).sort();
+    // Sort models by class order, then alphabetically
+    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'400':8};
+    var modelesData = machinesData[type][fab][annee];
+    var modeles = Object.keys(modelesData).sort(function(a, b) {
+        var ca = modelesData[a]['Classe machine'] || 'Standard';
+        var cb = modelesData[b]['Classe machine'] || 'Standard';
+        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 5;
+        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 5;
+        if (oa !== ob) return oa - ob;
+        return a.localeCompare(b);
+    });
     modeles.forEach(modele => {
         const opt = document.createElement('option');
         opt.value = modele;
-        opt.textContent = modele;
+        var classe = modelesData[modele]['Classe machine'] || '';
+        opt.textContent = modele + (classe ? ' [' + classe + ']' : '');
         selectModele.appendChild(opt);
     });
     // Add "Autre modele" option
