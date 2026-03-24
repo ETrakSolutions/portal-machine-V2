@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=117">
-    <link rel="stylesheet" href="css/admin.css?v=117">
+    <link rel="stylesheet" href="css/style.css?v=118">
+    <link rel="stylesheet" href="css/admin.css?v=118">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -574,11 +574,13 @@
 
         function loadType() {
             var typeVal = document.getElementById('db-type').value;
-            // Switch BOM codes based on type
+            // Switch BOM codes based on type — only Excavatrice and Pompe a Beton have BOM
             if (typeVal === 'Pompe a Beton') {
                 BOM_CODES = POMPE_BOM_CODES;
-            } else {
+            } else if (typeVal === 'Excavatrice') {
                 BOM_CODES = EXC_BOM_CODES;
+            } else {
+                BOM_CODES = []; // No BOM for other types
             }
             // Update BOM column headers dynamically
             var bomHeaders = document.querySelectorAll('#db-table thead th.bom-col');
