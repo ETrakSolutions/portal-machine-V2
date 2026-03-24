@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=75">
-    <link rel="stylesheet" href="css/admin.css?v=75">
+    <link rel="stylesheet" href="css/style.css?v=76">
+    <link rel="stylesheet" href="css/admin.css?v=76">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -135,6 +135,60 @@
             font-weight: 600;
         }
         .db-export-btn:hover { background: #004A99; }
+        /* BOM tokens */
+        .bom-token {
+            display: inline-block;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 0.65rem;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.15s;
+        }
+        .bom-token:hover { transform: scale(1.3); }
+        .bom-token.readonly { cursor: default; opacity: 0.7; }
+        .bom-token.readonly:hover { transform: none; }
+        .bom-r { background: #CC0000; color: #fff; }
+        .bom-j { background: #CCAA00; color: #000; }
+        .bom-na { background: #444; color: #888; font-size: 0.55rem; }
+        .db-table thead th.bom-col {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            padding: 8px 4px;
+            font-size: 0.55rem;
+            min-width: 30px;
+            max-width: 34px;
+            text-align: center;
+            cursor: default;
+        }
+        .db-table thead th.bom-col:hover { background: #1a2a3a; }
+        .db-legend {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.75rem;
+            color: #999;
+        }
+        .db-legend-item { display: flex; align-items: center; gap: 4px; }
+        .db-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00CC66;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 9999;
+            animation: toastFade 2s forwards;
+        }
+        @keyframes toastFade { 0%,70%{opacity:1} 100%{opacity:0} }
     </style>
 </head>
 <body>
@@ -176,6 +230,12 @@
                 </div>
             </div>
 
+            <div class="db-legend">
+                <span class="db-legend-item"><span class="bom-token bom-r">R</span> Obligatoire</span>
+                <span class="db-legend-item"><span class="bom-token bom-j">J</span> Optionnel</span>
+                <span class="db-legend-item"><span class="bom-token bom-na">-</span> N/A</span>
+                <span style="color:#555;">| Cliquer pour modifier (admin)</span>
+            </div>
             <div id="db-stats" class="db-stats"></div>
 
             <div class="db-table-wrap" style="max-height: 65vh; overflow-y: auto;">
@@ -192,6 +252,14 @@
                             <th data-col="voltage">Voltage <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="poids">Poids (kg/lbs) <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="classe">Classe <span class="sort-arrow">&#9650;</span></th>
+                            <th class="bom-col">0000 Cabine</th>
+                            <th class="bom-col">0001 Hauteur</th>
+                            <th class="bom-col">0002 Rotation</th>
+                            <th class="bom-col">0004 Mini</th>
+                            <th class="bom-col">0005 Multi</th>
+                            <th class="bom-col">0008 Swing</th>
+                            <th class="bom-col">0009 Drain</th>
+                            <th class="bom-col">0070 GC</th>
                         </tr>
                     </thead>
                     <tbody id="db-tbody"></tbody>
@@ -217,21 +285,82 @@
 
     <script>
     (function() {
-        var PAGE_SIZE = 100;
+        var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+        var PAGE_SIZE = 50;
         var currentPage = 0;
         var allData = [];
         var filtered = [];
         var sortCol = 'fab';
         var sortAsc = true;
+        var overridesCache = {};
 
-        // Check auth
-        // Roles with databaseAccess
+        var BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070'];
+        var BOM_NAMES = {
+            '0000': 'Cabine', '0001': 'Hauteur', '0002': 'Rotation', '0004': 'Mini exc',
+            '0005': 'Multi Axes', '0008': 'Swing boom', '0009': 'Drain hyd', '0070': 'Boite GC'
+        };
+
+        // Auth
         var DB_ROLES = { administrateur: true, ingenierie: true };
+        var EDIT_ROLES = { administrateur: true };
         var user = null;
         try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
         var hasAccess = user && user.role && DB_ROLES[user.role];
+        var canEdit = user && user.role && EDIT_ROLES[user.role];
         if (!hasAccess) {
             document.querySelector('main').innerHTML = '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">Acces non autorise. Connectez-vous avec un compte administrateur ou ingenierie.</p></section>';
+        }
+
+        function showToast(msg) {
+            var t = document.createElement('div');
+            t.className = 'db-toast';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(function() { t.remove(); }, 2200);
+        }
+
+        function bomKey(fab, modele, annee) {
+            return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+        }
+
+        function loadOverride(fab, modele, annee, callback) {
+            var key = bomKey(fab, modele, annee);
+            if (overridesCache[key] !== undefined) { callback(overridesCache[key]); return; }
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var val = null;
+                    if (data.value) { try { val = JSON.parse(data.value); } catch(e) {} }
+                    overridesCache[key] = val;
+                    callback(val);
+                })
+                .catch(function() { callback(null); });
+        }
+
+        function saveOverride(fab, modele, annee, overrides) {
+            var key = bomKey(fab, modele, annee);
+            overridesCache[key] = overrides;
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: '1400' })
+            }).then(function() { showToast('BOM sauvegarde'); }).catch(function() {});
+        }
+
+        function nextBomState(current) {
+            if (current === 'na' || !current) return 'j';
+            if (current === 'j') return 'r';
+            return 'na';
+        }
+
+        function bomTokenHtml(state, code, idx, editable) {
+            var cls = 'bom-token';
+            if (state === 'r') cls += ' bom-r';
+            else if (state === 'j') cls += ' bom-j';
+            else cls += ' bom-na';
+            if (!editable) cls += ' readonly';
+            var label = state === 'r' ? 'R' : state === 'j' ? 'J' : '-';
+            return '<span class="' + cls + '" data-code="' + code + '" data-idx="' + idx + '" title="' + BOM_NAMES[code] + '">' + label + '</span>';
         }
 
         // Load data
@@ -249,36 +378,32 @@
                         for (var modele in exc[fab][annee]) {
                             var s = exc[fab][annee][modele];
                             allData.push({
-                                fab: fab,
-                                modele: modele,
-                                annee: annee,
+                                fab: fab, modele: modele, annee: annee,
                                 puissance: s['Puissance moteur (kW / HP)'] || '',
                                 traction: s['Type de traction'] || '',
                                 boom: s['Type de boom'] || '',
                                 swing: s['Swing boom'] || '',
                                 voltage: s['Voltage machine (V/type)'] || '',
                                 poids: s['Poids operationnel (kg / lbs)'] || '',
-                                classe: s['Classe machine'] || ''
+                                classe: s['Classe machine'] || '',
+                                bom: {}
                             });
                         }
                     }
                 }
 
-                // Populate filters
                 var fabSelect = document.getElementById('db-fab');
                 Array.from(fabs).sort().forEach(function(f) {
                     var opt = document.createElement('option');
                     opt.value = f; opt.textContent = f;
                     fabSelect.appendChild(opt);
                 });
-
                 var yearSelect = document.getElementById('db-annee');
                 Array.from(years).sort().forEach(function(y) {
                     var opt = document.createElement('option');
                     opt.value = y; opt.textContent = y;
                     yearSelect.appendChild(opt);
                 });
-
                 applyFilters();
             });
 
@@ -294,7 +419,6 @@
                 return true;
             });
 
-            // Sort
             filtered.sort(function(a, b) {
                 var va = a[sortCol] || '';
                 var vb = b[sortCol] || '';
@@ -317,19 +441,50 @@
             for (var i = start; i < end; i++) {
                 var d = filtered[i];
                 var tr = document.createElement('tr');
-                var fields = ['fab', 'modele', 'annee', 'puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
-                fields.forEach(function(f) {
+                var specFields = ['fab', 'modele', 'annee', 'puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
+                specFields.forEach(function(f) {
                     var td = document.createElement('td');
                     var val = d[f] || '';
-                    if (val === 'A completer') {
-                        td.className = 'incomplete';
-                        td.textContent = 'A completer';
-                    } else {
-                        td.textContent = val;
-                    }
+                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
+                    else { td.textContent = val; }
                     tr.appendChild(td);
                 });
+
+                // BOM columns
+                var dataIdx = allData.indexOf(d);
+                BOM_CODES.forEach(function(code) {
+                    var td = document.createElement('td');
+                    td.style.textAlign = 'center';
+                    td.style.padding = '4px';
+                    var state = (d.bom && d.bom[code]) || 'na';
+                    td.innerHTML = bomTokenHtml(state, code, dataIdx, canEdit);
+                    tr.appendChild(td);
+                });
+
                 tbody.appendChild(tr);
+            }
+
+            // Load overrides for visible rows
+            for (var i = start; i < end; i++) {
+                (function(idx) {
+                    var d = filtered[idx];
+                    loadOverride(d.fab, d.modele, d.annee, function(overrides) {
+                        if (!overrides) return;
+                        var globalIdx = allData.indexOf(d);
+                        d.bom = {};
+                        for (var code in overrides) {
+                            d.bom[code] = overrides[code];
+                        }
+                        // Update visible tokens
+                        var tokens = tbody.querySelectorAll('[data-idx="' + globalIdx + '"]');
+                        tokens.forEach(function(token) {
+                            var c = token.dataset.code;
+                            var st = d.bom[c] || 'na';
+                            token.className = 'bom-token' + (st === 'r' ? ' bom-r' : st === 'j' ? ' bom-j' : ' bom-na') + (canEdit ? '' : ' readonly');
+                            token.textContent = st === 'r' ? 'R' : st === 'j' ? 'J' : '-';
+                        });
+                    });
+                })(i);
             }
 
             // Stats
@@ -341,11 +496,33 @@
                 (incomplete > 0 ? ' | <span style="color:#FF8C00;">' + incomplete + ' incomplets</span>' : '') +
                 ' | Page ' + (currentPage + 1) + ' / ' + Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
-            // Pagination
             document.getElementById('db-prev').disabled = currentPage === 0;
             document.getElementById('db-next').disabled = end >= filtered.length;
             document.getElementById('db-page-info').textContent = (start + 1) + ' - ' + end + ' sur ' + filtered.length;
         }
+
+        // Click on BOM token
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var token = e.target.closest('.bom-token');
+            if (!token || !canEdit || token.classList.contains('readonly')) return;
+
+            var idx = parseInt(token.dataset.idx);
+            var code = token.dataset.code;
+            var d = allData[idx];
+            if (!d) return;
+
+            if (!d.bom) d.bom = {};
+            var current = d.bom[code] || 'na';
+            var next = nextBomState(current);
+            d.bom[code] = next;
+
+            // Update token visually
+            token.className = 'bom-token' + (next === 'r' ? ' bom-r' : next === 'j' ? ' bom-j' : ' bom-na');
+            token.textContent = next === 'r' ? 'R' : next === 'j' ? 'J' : '-';
+
+            // Save to API
+            saveOverride(d.fab, d.modele, d.annee, d.bom);
+        });
 
         // Events
         document.getElementById('db-fab').addEventListener('change', applyFilters);
@@ -354,25 +531,27 @@
         document.getElementById('db-prev').addEventListener('click', function() { currentPage--; renderPage(); });
         document.getElementById('db-next').addEventListener('click', function() { currentPage++; renderPage(); });
 
-        // Sort
-        document.querySelectorAll('.db-table thead th').forEach(function(th) {
+        // Sort (only on spec columns, not BOM)
+        document.querySelectorAll('.db-table thead th[data-col]').forEach(function(th) {
             th.addEventListener('click', function() {
                 var col = this.dataset.col;
                 if (sortCol === col) { sortAsc = !sortAsc; }
                 else { sortCol = col; sortAsc = true; }
                 document.querySelectorAll('.db-table thead th').forEach(function(t) { t.classList.remove('sorted'); });
                 this.classList.add('sorted');
-                this.querySelector('.sort-arrow').textContent = sortAsc ? '\u25B2' : '\u25BC';
+                var arrow = this.querySelector('.sort-arrow');
+                if (arrow) arrow.textContent = sortAsc ? '\u25B2' : '\u25BC';
                 applyFilters();
             });
         });
 
         // Export CSV
         document.getElementById('db-export').addEventListener('click', function() {
-            var csv = 'Fabricant,Modele,Annee,Puissance,Traction,Type boom,Swing,Voltage,Poids,Classe\n';
+            var csv = 'Fabricant,Modele,Annee,Puissance,Traction,Type boom,Swing,Voltage,Poids,Classe,Cabine,Hauteur,Rotation,Mini,Multi,Swing BOM,Drain,GC\n';
             filtered.forEach(function(d) {
-                csv += [d.fab, d.modele, d.annee, d.puissance, d.traction, d.boom, d.swing, d.voltage, d.poids, d.classe]
-                    .map(function(v) { return '"' + (v || '').replace(/"/g, '""') + '"'; }).join(',') + '\n';
+                var row = [d.fab, d.modele, d.annee, d.puissance, d.traction, d.boom, d.swing, d.voltage, d.poids, d.classe];
+                BOM_CODES.forEach(function(c) { row.push((d.bom && d.bom[c]) || '-'); });
+                csv += row.map(function(v) { return '"' + (v || '').replace(/"/g, '""') + '"'; }).join(',') + '\n';
             });
             var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
             var link = document.createElement('a');
