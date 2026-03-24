@@ -419,7 +419,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             '0005': 'j',
             '0008': hasSwing ? 'j' : 'na',
             '0009': isDrain ? 'r' : 'na',
-            '0070': 'na'
+            '0070': 'na',
+            '0304': modelUpper === 'TB216' ? 'r' : 'na'
         };
 
         // Harnais
@@ -445,7 +446,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         var KIT_MAP = {
             'cabine': '0000', 'sans-cabine': '0004', 'hauteur': '0001', 'rotation': '0002',
             'mini': '0004', 'gc': '0070', 'swing': '0008', 'drain': '0009',
-            'multi': '0005', 'cremaillere': 'na'
+            'multi': '0005', 'cremaillere': '0304'
         };
 
         function applyBomToKit(bom) {
