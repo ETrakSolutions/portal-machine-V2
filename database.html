@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=121">
-    <link rel="stylesheet" href="css/admin.css?v=121">
+    <link rel="stylesheet" href="css/style.css?v=122">
+    <link rel="stylesheet" href="css/admin.css?v=122">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -532,25 +532,18 @@
             var isStationnaire = typePompe.toLowerCase().indexOf('stationnaire') >= 0;
             var isRemorquee = typePompe.toLowerCase().indexOf('remorqu') >= 0;
 
-            // 0200 Avec coffre — obligatoire pour automotrices
-            bom['0200'] = isStationnaire ? 'na' : 'r';
-            // 0203 Sans coffre — optionnel (alternative au coffre)
-            bom['0203'] = isStationnaire ? 'na' : 'j';
-            // 0201 Hauteur — optionnel pour toutes pompes
-            bom['0201'] = 'j';
-            // 0202 Rotation — optionnel pour toutes pompes
-            bom['0202'] = 'j';
-            // Sections: obligatoire celle qui correspond, N/A les autres
-            var sec = parseInt(nbSections) || 0;
-            bom['0204'] = (sec === 4) ? 'r' : (isStationnaire || sec > 0 ? 'na' : 'j');
-            bom['0205'] = (sec === 5) ? 'r' : (isStationnaire || sec > 0 ? 'na' : 'j');
-            bom['0206'] = (sec === 6) ? 'r' : (isStationnaire || sec > 0 ? 'na' : 'j');
-            // 0207 Rotation cylindre — optionnel pour automotrices
-            bom['0207'] = isStationnaire ? 'na' : 'j';
-            // 0208 Inclinometre — optionnel
-            bom['0208'] = isStationnaire ? 'na' : 'j';
-            // 0209 Reel 15M — optionnel
-            bom['0209'] = isStationnaire ? 'na' : 'j';
+            // Tout N/A par defaut sauf Hauteur et Rotation (jaune)
+            // Admin peut modifier manuellement les autres
+            bom['0200'] = 'na';
+            bom['0203'] = 'na';
+            bom['0201'] = 'j'; // Hauteur
+            bom['0202'] = 'j'; // Rotation
+            bom['0204'] = 'na';
+            bom['0205'] = 'na';
+            bom['0206'] = 'na';
+            bom['0207'] = 'na';
+            bom['0208'] = 'na';
+            bom['0209'] = 'na';
 
             return bom;
         }
