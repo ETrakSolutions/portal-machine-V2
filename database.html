@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=96">
-    <link rel="stylesheet" href="css/admin.css?v=96">
+    <link rel="stylesheet" href="css/style.css?v=97">
+    <link rel="stylesheet" href="css/admin.css?v=97">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -468,12 +468,12 @@
             // R1/R8: Swing boom = jaune si oui, N/A si non
             bom['0008'] = hasSwing ? 'j' : 'na';
 
-            // R7: Drain — rouge si modele commence par un prefixe de la liste, sinon jaune
+            // R7: Drain — rouge si modele dans la liste, N/A sinon (pas une option)
             var modUpper = d.modele.toUpperCase();
             var isDrain = DRAIN_PREFIXES.some(function(prefix) {
                 return modUpper.indexOf(prefix.toUpperCase()) === 0;
             });
-            bom['0009'] = isDrain ? 'r' : 'j';
+            bom['0009'] = isDrain ? 'r' : 'na';
 
             // Boite GC — jaune seulement pour Caterpillar, na sinon
             var fabUpper = d.fab.toUpperCase();
