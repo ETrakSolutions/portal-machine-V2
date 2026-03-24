@@ -225,9 +225,12 @@
         var sortAsc = true;
 
         // Check auth
+        // Roles with databaseAccess
+        var DB_ROLES = { administrateur: true, ingenierie: true };
         var user = null;
         try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
-        if (!user || !(user.permissions && user.permissions.databaseAccess)) {
+        var hasAccess = user && user.role && DB_ROLES[user.role];
+        if (!hasAccess) {
             document.querySelector('main').innerHTML = '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">Acces non autorise. Connectez-vous avec un compte administrateur ou ingenierie.</p></section>';
         }
 
