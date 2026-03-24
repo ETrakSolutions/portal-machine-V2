@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=86">
-    <link rel="stylesheet" href="css/admin.css?v=86">
+    <link rel="stylesheet" href="css/style.css?v=87">
+    <link rel="stylesheet" href="css/admin.css?v=87">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -415,17 +415,31 @@
         }
 
         // R7 — Machines specifiques drain obligatoire (1500-0009)
-        var DRAIN_MODELS = ['CX80C','CX220E','CX170E','145 D SR','CX210D','CX245D SR','CX350D','CX490D','CX300E','CX145C',
-            '315FL','440','450','320LU','308',
-            'DX190W-5','DX235',
-            'ZX210LC-8','EX200LC-5','ZX130-6','ZX190LC-7H','ZX350LC-6','ZX490LC-6','ZX50U-5N',
-            '135C','350','410','490D','330X','200CLC','130P-TIER',
-            'PC78US',
-            'R920 K LC','R 920 K LC',
-            '145X4 LC','145X4','170X4S','145X4D7','245X4','245X4LC','190','170X4','350X4',
-            'TB210','TW65C2HS',
-            'EC160BLC','235','EC160CL',
-            'EZ36'];
+        // R7 — Drain obligatoire: prefixes de modeles (match si le modele COMMENCE par le prefixe)
+        var DRAIN_PREFIXES = [
+            // Case — base model prefixes
+            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX490','145 D',
+            // Caterpillar
+            '308','315','320','440','450',
+            // Doosan/Develon
+            'DX190','DX235',
+            // Hitachi
+            'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U',
+            // John Deere
+            '135','200CLC','330X','350','410','490D','130P',
+            // Komatsu
+            'PC78',
+            // Liebherr
+            'R 920 K','R920',
+            // Link-Belt
+            '145X4','170X4','190','245X4','350X4',
+            // Takeuchi
+            'TB210','TW65',
+            // Volvo
+            'EC160','235',
+            // Wacker Neuson
+            'EZ36'
+        ];
 
         function computeDefaultBom(d) {
             var bom = {};
@@ -455,9 +469,10 @@
             // R1/R8: Swing boom = jaune si oui, N/A si non
             bom['0008'] = hasSwing ? 'j' : 'na';
 
-            // R7: Drain — rouge si modele dans la liste, sinon jaune
-            var isDrain = DRAIN_MODELS.some(function(m) {
-                return d.modele.toUpperCase().indexOf(m.toUpperCase()) >= 0;
+            // R7: Drain — rouge si modele commence par un prefixe de la liste, sinon jaune
+            var modUpper = d.modele.toUpperCase();
+            var isDrain = DRAIN_PREFIXES.some(function(prefix) {
+                return modUpper.indexOf(prefix.toUpperCase()) === 0;
             });
             bom['0009'] = isDrain ? 'r' : 'j';
 
