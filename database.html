@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=83">
-    <link rel="stylesheet" href="css/admin.css?v=83">
+    <link rel="stylesheet" href="css/style.css?v=84">
+    <link rel="stylesheet" href="css/admin.css?v=84">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -310,6 +310,7 @@
                             <th class="bom-col">Swing</th>
                             <th class="bom-col">Drain</th>
                             <th class="bom-col">GC</th>
+                            <th class="bom-col">Harnais</th>
                             <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
                         </tr>
                     </thead>
@@ -348,7 +349,10 @@
         var BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070'];
         var BOM_NAMES = {
             '0000': 'Cabine', '0001': 'Hauteur', '0002': 'Rotation', '0004': 'Mini exc',
-            '0005': 'Multi Axes', '0008': 'Swing boom', '0009': 'Drain hyd', '0070': 'Boite GC'
+            '0005': 'Multi Axes', '0008': 'Swing boom', '0009': 'Drain hyd', '0070': 'Boite GC',
+            'H0031': 'Harnais Hitachi-5/6 JD', 'H0032': 'Harnais Komatsu', 'H0033': 'Harnais Doosan',
+            'H0034': 'Harnais Volvo', 'H0041': 'Harnais Link-Belt/Case', 'H0121': 'Harnais Hitachi-7',
+            'H0043': 'Harnais Generique'
         };
 
         // Auth
@@ -448,6 +452,26 @@
             // Boite GC — toujours optionnel
             bom['0070'] = 'j';
 
+            // Harnais de coupure — selon fabricant
+            var fabUpper = d.fab.toUpperCase();
+            if (fabUpper === 'HITACHI') {
+                var is7 = d.modele.indexOf('-7') >= 0;
+                var is5or6 = d.modele.indexOf('-5') >= 0 || d.modele.indexOf('-6') >= 0;
+                d.harnais = (is7 && !is5or6) ? 'H0121' : 'H0031';
+            } else if (fabUpper === 'JOHN DEERE') {
+                d.harnais = 'H0031';
+            } else if (fabUpper === 'KOMATSU') {
+                d.harnais = 'H0032';
+            } else if (fabUpper.indexOf('DOOSAN') >= 0 || fabUpper.indexOf('DEVELON') >= 0) {
+                d.harnais = 'H0033';
+            } else if (fabUpper.indexOf('VOLVO') >= 0) {
+                d.harnais = 'H0034';
+            } else if (fabUpper.indexOf('LINK') >= 0 || fabUpper === 'CASE') {
+                d.harnais = 'H0041';
+            } else {
+                d.harnais = 'H0043';
+            }
+
             return bom;
         }
 
@@ -482,7 +506,7 @@
                         for (var modele in exc[fab][annee]) {
                             var s = exc[fab][annee][modele];
                             allData.push({
-                                fab: fab, modele: modele, annee: annee,
+                                fab: fab, modele: modele, annee: annee, harnais: '',
                                 puissance: s['Puissance moteur (kW / HP)'] || '',
                                 traction: s['Type de traction'] || '',
                                 boom: s['Type de boom'] || '',
@@ -567,6 +591,21 @@
                     td.innerHTML = bomTokenHtml(state, code, dataIdx, canEdit);
                     tr.appendChild(td);
                 });
+
+                // Harnais column
+                var tdHarnais = document.createElement('td');
+                tdHarnais.style.textAlign = 'center';
+                tdHarnais.style.padding = '4px';
+                tdHarnais.style.fontSize = '0.65rem';
+                tdHarnais.style.fontWeight = '700';
+                var harnaisCode = d.harnais || '';
+                var HARNAIS_LABELS = {
+                    'H0031': 'Hit5/6-JD', 'H0032': 'Komatsu', 'H0033': 'Doosan',
+                    'H0034': 'Volvo', 'H0041': 'LB-Case', 'H0121': 'Hit-7', 'H0043': 'Generic'
+                };
+                tdHarnais.textContent = HARNAIS_LABELS[harnaisCode] || harnaisCode || '-';
+                tdHarnais.style.color = harnaisCode ? '#00CC66' : '#555';
+                tr.appendChild(tdHarnais);
 
                 // Delete button (admin only)
                 var tdDel = document.createElement('td');
@@ -708,10 +747,11 @@
 
         // Export CSV
         document.getElementById('db-export').addEventListener('click', function() {
-            var csv = 'Fabricant,Modele,Annee,Puissance,Traction,Type boom,Swing,Voltage,Poids,Classe,Cabine,Hauteur,Rotation,Mini,Multi,Swing BOM,Drain,GC\n';
+            var csv = 'Fabricant,Modele,Annee,Puissance,Traction,Type boom,Swing,Voltage,Poids,Classe,Cabine,Hauteur,Rotation,Mini,Multi,Swing BOM,Drain,GC,Harnais\n';
             filtered.forEach(function(d) {
                 var row = [d.fab, d.modele, d.annee, d.puissance, d.traction, d.boom, d.swing, d.voltage, d.poids, d.classe];
                 BOM_CODES.forEach(function(c) { row.push((d.bom && d.bom[c]) || '-'); });
+                row.push(d.harnais || '-');
                 csv += row.map(function(v) { return '"' + (v || '').replace(/"/g, '""') + '"'; }).join(',') + '\n';
             });
             var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
