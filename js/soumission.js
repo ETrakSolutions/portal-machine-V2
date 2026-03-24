@@ -21,6 +21,21 @@ var saved = localStorage.getItem('portal_user');
 if (saved) {
     try { currentUser = JSON.parse(saved); } catch(e) {}
 }
+// Load full user profile from API (to get vendeurEmail)
+fetch(API_URL + '?action=get&key=authorized_users_v2')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.value && currentUser) {
+            try {
+                var users = JSON.parse(data.value);
+                var fullUser = users.find(function(u) { return u.email && currentUser.username && u.email.toLowerCase() === currentUser.username.toLowerCase(); });
+                if (fullUser && fullUser.vendeurEmail) {
+                    currentUser.vendeurEmail = fullUser.vendeurEmail;
+                }
+            } catch(e) {}
+        }
+    })
+    .catch(function() {});
 
 // Load emails
 fetch(API_URL + '?action=get&key=sales_emails')
@@ -270,10 +285,16 @@ if (submitBtn) {
         });
 
         var comment = (document.getElementById('soumission-comment').value || '').trim();
-        var vendeurSelect = document.getElementById('soumission-vendeur');
-        var vendeurEmail = vendeurSelect ? vendeurSelect.value : '';
-        var vendeurName = vendeurSelect && vendeurSelect.selectedIndex > 0 ? vendeurSelect.options[vendeurSelect.selectedIndex].textContent : '';
         var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
+        // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
+        var vendeurEmail = '';
+        var vendeurName = '';
+        if (currentUser && currentUser.vendeurEmail) {
+            vendeurEmail = currentUser.vendeurEmail;
+            // Find vendeur name from vendeurs list
+            var v = vendeursList.find(function(vv) { return vv.email === vendeurEmail; });
+            vendeurName = v ? v.name : vendeurEmail;
+        }
 
         if (salesEmails.length === 0) {
             alert('Aucun courriel vente interne configure. Contactez l\'administrateur.');

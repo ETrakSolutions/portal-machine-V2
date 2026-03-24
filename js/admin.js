@@ -941,13 +941,44 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // ADD USER — use global function (addEventListener timing issues)
+    // Show/hide vendeur dropdown based on role
+    var roleSelect = document.getElementById('admin-new-role');
+    var vendeurGroup = document.getElementById('admin-vendeur-group');
+    function updateVendeurVisibility() {
+        var role = roleSelect ? roleSelect.value : '';
+        var needsVendeur = (role === 'dealer' || role === 'distributeur');
+        if (vendeurGroup) vendeurGroup.style.display = needsVendeur ? '' : 'none';
+        // Populate vendeur dropdown
+        if (needsVendeur) {
+            var vendeurSel = document.getElementById('admin-new-vendeur');
+            if (vendeurSel) {
+                var current = vendeurSel.value;
+                vendeurSel.innerHTML = '<option value="">-- Aucun --</option>';
+                vendeurs.forEach(function(v) {
+                    var opt = document.createElement('option');
+                    opt.value = v.email;
+                    opt.textContent = v.name + ' (' + v.email + ')';
+                    vendeurSel.appendChild(opt);
+                });
+                vendeurSel.value = current;
+            }
+        }
+    }
+    if (roleSelect) roleSelect.addEventListener('change', updateVendeurVisibility);
+    updateVendeurVisibility();
+
+    // ADD USER
     var addUserBtn = document.getElementById('admin-add-user-btn');
     if (addUserBtn) {
         addUserBtn.onclick = function() {
             var name = document.getElementById('admin-new-name').value.trim();
             var email = document.getElementById('admin-new-email').value.trim();
             var role = document.getElementById('admin-new-role').value;
+            var vendeurEmail = '';
+            if (role === 'dealer' || role === 'distributeur') {
+                var vendeurSel = document.getElementById('admin-new-vendeur');
+                vendeurEmail = vendeurSel ? vendeurSel.value : '';
+            }
             var errorEl = document.getElementById('admin-add-user-error');
 
             if (errorEl) errorEl.style.display = 'none';
@@ -961,7 +992,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (errorEl) { errorEl.textContent = 'Cette adresse courriel existe deja.'; errorEl.style.display = 'block'; }
                 return;
             }
-            USERS.push({ username: email.toLowerCase(), email: email.toLowerCase(), password: '0000', role: role, name: name, active: true, mustChangePassword: true });
+            var newUser = { username: email.toLowerCase(), email: email.toLowerCase(), password: '0000', role: role, name: name, active: true, mustChangePassword: true };
+            if (vendeurEmail) newUser.vendeurEmail = vendeurEmail;
+            USERS.push(newUser);
             saveUsers();
             renderUsers();
 

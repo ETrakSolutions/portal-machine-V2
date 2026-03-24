@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
-    <link rel="stylesheet" href="css/style.css?v=112">
-    <link rel="stylesheet" href="css/admin.css?v=112">
+    <link rel="stylesheet" href="css/style.css?v=113">
+    <link rel="stylesheet" href="css/admin.css?v=113">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -128,6 +128,12 @@
                                 <option value="administrateur">Administrateur</option>
                             </select>
                         </div>
+                        <div class="admin-form-group" id="admin-vendeur-group" style="display:none;">
+                            <label>Vendeur associe</label>
+                            <select id="admin-new-vendeur" class="admin-input">
+                                <option value="">-- Aucun --</option>
+                            </select>
+                        </div>
                     </div>
                     <p class="admin-card-desc" style="margin-top:0.5rem;color:#999;font-size:0.75rem;">Mot de passe temporaire : <strong style="color:#FF8C00;">0000</strong> — l'utilisateur devra le changer a sa premiere connexion.</p>
                     <p id="admin-add-user-error" class="login-error" style="display:none;"></p>
@@ -244,6 +250,6 @@
         </div>
     </footer>
 
-    <script src="js/admin.js?v=112"></script>
+    <script src="js/admin.js?v=113"></script>
 </body>
 </html>
