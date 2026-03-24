@@ -384,77 +384,10 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
 
         loadNotes(fab, modele, annee);
         if (typeof lockKit === 'function') lockKit();
-        const cabineOui = document.querySelector('input[name="kit-cabine"][value="avec"]');
-        if (cabineOui) cabineOui.checked = true;
-        const hauteurOption = document.querySelector('input[name="kit-hauteur"][value="non"]');
-        if (hauteurOption) hauteurOption.checked = true;
-        const rotationOption = document.querySelector('input[name="kit-rotation"][value="non"]');
-        if (rotationOption) rotationOption.checked = true;
 
-        // Reset swing boom row radios
-        const swingRowReset = document.querySelector('tr[data-kit="swing"]');
-        if (swingRowReset) {
-            const statusCell = swingRowReset.querySelector('.kit-status-cell');
-            if (statusCell) {
-                statusCell.innerHTML = '<input type="radio" name="kit-swing" value="oui" class="radio-red"><input type="radio" name="kit-swing" value="non" class="radio-yellow">';
-            }
-        }
-
-        // Swing boom kit logic
-        const swingRow = document.querySelector('tr[data-kit="swing"]');
-        if (swingRow) {
-            const swingValue = specs['Swing boom'] || 'Non';
-            const swingOblig = swingRow.querySelector('input[value="oui"]');
-            const swingOption = swingRow.querySelector('input[value="non"]');
-            if (swingValue === 'Oui') {
-                swingRow.style.display = '';
-                if (swingOption) swingOption.checked = true;
-                if (swingOblig) swingOblig.disabled = false;
-                if (swingOption) swingOption.disabled = false;
-            } else {
-                swingRow.style.display = 'none';
-            }
-        }
-
-        // Mini excavatrice logic
-        const poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
-        const poidsMatch = poidsStr.match(/^(\d+)/);
-        const poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 99999;
-        const miniRow = document.querySelector('input[name="kit-mini"]');
-        const miniTr = miniRow ? miniRow.closest('tr') : null;
-        if (miniTr) {
-            const miniStatusCell = miniTr.querySelector('.kit-status-cell');
-            if (poidsKg < 5000 && poidsKg > 0) {
-                miniTr.style.display = '';
-                if (miniStatusCell && !miniStatusCell.querySelector('input')) {
-                    miniStatusCell.innerHTML = '<input type="radio" name="kit-mini" value="oui" class="radio-red"><input type="radio" name="kit-mini" value="non" class="radio-yellow">';
-                }
-                var miniOblig = miniTr.querySelector('input[value="oui"]');
-                if (miniOblig) miniOblig.checked = true;
-            } else {
-                miniTr.style.display = 'none';
-            }
-        }
-
-        // Machine sans cabine logic
-        var sansCabineRadio = document.querySelector('input[name="kit-sans-cabine"]');
-        var sansCabineTr = sansCabineRadio ? sansCabineRadio.closest('tr') : null;
-        if (sansCabineTr) {
-            var sansCabineStatus = sansCabineTr.querySelector('.kit-status-cell');
-            if (poidsKg >= 5000 || poidsKg === 0) {
-                sansCabineTr.style.display = 'none';
-            } else {
-                sansCabineTr.style.display = '';
-                if (sansCabineStatus && !sansCabineStatus.querySelector('input')) {
-                    sansCabineStatus.innerHTML = '<input type="radio" name="kit-sans-cabine" value="oui" class="radio-red"><input type="radio" name="kit-sans-cabine" value="non" class="radio-yellow">';
-                }
-            }
-        }
-
-        // Drain hydraulique logic — match par prefixe (synchro avec database.html)
-        const drainOblig = document.querySelector('input[name="kit-drain"][value="oui"]');
-        const drainOption = document.querySelector('input[name="kit-drain"][value="non"]');
-        const drainPrefixes = [
+        // ---- BD = MAITRE: compute defaults then load overrides ----
+        // Same computeDefaultBom as database.html
+        var DRAIN_PREFIXES = [
             'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX490','145 D',
             '308','315','320','440','450',
             'DX190','DX235',
@@ -467,95 +400,104 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             'EC160','EC330','EC360','EC550','235',
             'EZ36'
         ];
-        const modelUpper = modele.toUpperCase();
-        const isDrainOblig = drainPrefixes.some(p => modelUpper.indexOf(p.toUpperCase()) === 0);
-        var drainTr = drainOblig ? drainOblig.closest('tr') : null;
-        if (isDrainOblig) {
-            if (drainTr) {
-                drainTr.style.display = '';
-                var drainStatus = drainTr.querySelector('.kit-status-cell');
-                if (drainStatus && !drainStatus.querySelector('input')) {
-                    drainStatus.innerHTML = '<input type="radio" name="kit-drain" value="oui" class="radio-red"><input type="radio" name="kit-drain" value="non" class="radio-yellow">';
-                }
-                var drOblig = drainTr.querySelector('input[value="oui"]');
-                if (drOblig) drOblig.checked = true;
-            }
-        } else {
-            if (!drainTr) {
-                drainTr = document.querySelector('input[name="kit-drain"]');
-                if (drainTr) drainTr = drainTr.closest('tr');
-            }
-            if (drainTr) drainTr.style.display = 'none';
-        }
 
-        // Boite GC logic
-        var gcRadio = document.querySelector('input[name="kit-gc"]');
-        var gcTr = gcRadio ? gcRadio.closest('tr') : null;
-        if (gcTr) {
-            if (fab === 'Caterpillar') {
-                gcTr.style.display = '';
-                var gcStatus = gcTr.querySelector('.kit-status-cell');
-                if (gcStatus && !gcStatus.querySelector('input')) {
-                    gcStatus.innerHTML = '<input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow">';
-                }
-                var gcOption = gcTr.querySelector('input[value="non"]');
-                if (gcOption) gcOption.checked = true;
-            } else {
-                gcTr.style.display = 'none';
-            }
-        }
+        var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
+        var poidsMatch = poidsStr.match(/(\d[\d\s]*)/);
+        var poidsKg = poidsMatch ? parseInt(poidsMatch[1].replace(/\s/g, '')) : 0;
+        var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
+        var isMini = poidsKg > 0 && poidsKg < 5000;
+        var fabUp = fab.toUpperCase();
+        var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
+        var modelUpper = modele.toUpperCase();
+        var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
 
-        // Rotation cremaillere logic
-        const cremRow = document.querySelector('tr[data-kit="cremaillere"]');
-        if (cremRow) {
-            if (modelUpper === 'TB216') {
-                cremRow.style.display = '';
-                const cremOblig = cremRow.querySelector('input[value="oui"]');
-                if (cremOblig) cremOblig.checked = true;
-            } else {
-                cremRow.style.display = 'none';
-                const cremOblig = cremRow.querySelector('input[value="oui"]');
-                const cremOption = cremRow.querySelector('input[value="non"]');
-                if (cremOblig) cremOblig.checked = false;
-                if (cremOption) cremOption.checked = false;
-            }
-        }
+        var bomDefaults = {
+            '0000': 'r',
+            '0001': 'j',
+            '0002': 'j',
+            '0004': isMini ? 'r' : 'na',
+            '0005': 'j',
+            '0008': hasSwing ? 'j' : 'na',
+            '0009': isDrain ? 'r' : 'na',
+            '0070': isCat ? 'j' : 'na'
+        };
 
-        // Multi Axes row
-        // Multi Axes — jaune (optionnel) pour toutes les excavatrices
-        const multiRow = document.querySelector('tr[data-kit="multi"]');
-        if (multiRow) {
-            multiRow.style.display = '';
-            const multiYellow = multiRow.querySelector('input.radio-yellow');
-            if (multiYellow) {
-                multiYellow.checked = true;
-                multiYellow.classList.remove('radio-yellow-pulse');
-            }
-        }
-        // Harnais de coupure — selon fabricant
+        // Harnais
+        var hCode = 'Z03B-0043'; var hName = 'Generique';
+        if (fabUp === 'HITACHI') {
+            var is7 = modele.indexOf('-7') >= 0;
+            var is5or6 = modele.indexOf('-5') >= 0 || modele.indexOf('-6') >= 0;
+            if (is7 && !is5or6) { hCode = 'Z03B-0121'; hName = 'Hitachi -7'; }
+            else { hCode = 'Z03B-0031'; hName = 'Hitachi -5/-6'; }
+        } else if (fabUp === 'JOHN DEERE') { hCode = 'Z03B-0031'; hName = 'Hitachi/JD'; }
+        else if (fabUp === 'KOMATSU') { hCode = 'Z03B-0032'; hName = 'Komatsu'; }
+        else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Doosan'; }
+        else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Volvo'; }
+        else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Link-Belt/Case'; }
+        else if (isCat) { hCode = 'Z03B-0080'; hName = 'Caterpillar'; }
+
         var harnaisLabel = document.getElementById('kit-harnais-label');
-        var harnaisCode = document.getElementById('kit-harnais-code');
-        if (harnaisLabel && harnaisCode) {
-            var fabUp = fab.toUpperCase();
-            var hCode = 'Z03B-0043'; var hName = 'Generique';
-            if (fabUp === 'HITACHI') {
-                var is7 = modele.indexOf('-7') >= 0;
-                var is5or6 = modele.indexOf('-5') >= 0 || modele.indexOf('-6') >= 0;
-                if (is7 && !is5or6) { hCode = 'Z03B-0121'; hName = 'Hitachi -7'; }
-                else { hCode = 'Z03B-0031'; hName = 'Hitachi -5/-6'; }
-            } else if (fabUp === 'JOHN DEERE') { hCode = 'Z03B-0031'; hName = 'Hitachi/JD'; }
-            else if (fabUp === 'KOMATSU') { hCode = 'Z03B-0032'; hName = 'Komatsu'; }
-            else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Doosan'; }
-            else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Volvo'; }
-            else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Link-Belt/Case'; }
-            else if (fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT') { hCode = 'Z03B-0080'; hName = 'Caterpillar'; }
-            harnaisCode.textContent = hCode;
-            harnaisLabel.textContent = hName;
+        var harnaisCodeEl = document.getElementById('kit-harnais-code');
+        if (harnaisLabel) harnaisLabel.textContent = hName;
+        if (harnaisCodeEl) harnaisCodeEl.textContent = hCode;
+
+        // Apply BOM defaults to kit table rows
+        var KIT_MAP = {
+            'cabine': '0000', 'sans-cabine': '0004', 'hauteur': '0001', 'rotation': '0002',
+            'mini': '0004', 'gc': '0070', 'swing': '0008', 'drain': '0009',
+            'multi': '0005', 'cremaillere': 'na'
+        };
+
+        function applyBomToKit(bom) {
+            // For each kit row, check its BOM code and show/hide + set color
+            document.querySelectorAll('.kit-table tbody tr[data-kit]').forEach(function(tr) {
+                var kit = tr.dataset.kit;
+                var code = KIT_MAP[kit];
+                if (!code || code === 'na') { tr.style.display = 'none'; return; }
+                var state = bom[code] || 'na';
+                if (state === 'na') {
+                    tr.style.display = 'none';
+                } else {
+                    tr.style.display = '';
+                    var statusCell = tr.querySelector('.kit-status-cell');
+                    if (statusCell) {
+                        // Ensure radios exist
+                        var radioName = statusCell.querySelector('input[type="radio"]');
+                        if (!radioName) {
+                            var name = 'kit-' + kit;
+                            statusCell.innerHTML = '<input type="radio" name="' + name + '" value="oui" class="radio-red"><input type="radio" name="' + name + '" value="non" class="radio-yellow">';
+                        }
+                        var red = statusCell.querySelector('.radio-red');
+                        var yellow = statusCell.querySelector('.radio-yellow');
+                        if (state === 'r' && red) { red.checked = true; if (yellow) yellow.checked = false; }
+                        else if (state === 'j' && yellow) { yellow.checked = true; if (red) red.checked = false; }
+                    }
+                }
+            });
+            // Harnais row always visible
+            var harnaisTr = document.querySelector('tr[data-kit="harnais"]');
+            if (harnaisTr) harnaisTr.style.display = '';
         }
 
-        updateKitCheckboxes();
-        // Load overrides from DB (applied on top of hardcoded defaults)
-        loadKitOverride(fab, modele, annee);
+        // Apply defaults first
+        applyBomToKit(bomDefaults);
+
+        // Then load overrides from API (BD is master)
+        loadKitOverride(fab, modele, annee, function(overrides) {
+            if (overrides) {
+                // Merge overrides on top of defaults
+                for (var code in overrides) {
+                    if (overrides[code]) bomDefaults[code] = overrides[code];
+                }
+                applyBomToKit(bomDefaults);
+                // Update harnais if override exists
+                if (overrides.harnais) {
+                    var HARNAIS_LABELS = {'H0031':'Hit5/6-JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'LB-Case','H0080':'Cat','H0100':'Cat(ECU)','H0121':'Hit-7','H0043':'Generic'};
+                    if (harnaisCodeEl) harnaisCodeEl.textContent = 'Z03B-' + overrides.harnais.replace('H','');
+                    if (harnaisLabel) harnaisLabel.textContent = HARNAIS_LABELS[overrides.harnais] || overrides.harnais;
+                }
+            }
+        });
     } else {
         kitSection.style.display = 'none';
     }
@@ -732,7 +674,7 @@ function getKitOverrideKey(fab, modele, annee) {
     return 'kit_override_' + fab + '_' + modele + '_' + annee;
 }
 
-function loadKitOverride(fab, modele, annee) {
+function loadKitOverride(fab, modele, annee, callback) {
     currentKitOverrideKey = getKitOverrideKey(fab, modele, annee);
     currentKitOverrides = null;
     fetch(API_URL + '?action=get&key=' + encodeURIComponent(currentKitOverrideKey))
@@ -741,18 +683,23 @@ function loadKitOverride(fab, modele, annee) {
             if (data.value) {
                 try {
                     currentKitOverrides = JSON.parse(data.value);
-                    applyKitOverrides(currentKitOverrides);
-                } catch(e) {}
+                    if (callback) callback(currentKitOverrides);
+                    else applyKitOverrides(currentKitOverrides);
+                } catch(e) { if (callback) callback(null); }
+            } else {
+                if (callback) callback(null);
             }
         })
         .catch(function() {
-            // Try localStorage fallback
             var local = localStorage.getItem(currentKitOverrideKey);
             if (local) {
                 try {
                     currentKitOverrides = JSON.parse(local);
-                    applyKitOverrides(currentKitOverrides);
-                } catch(e) {}
+                    if (callback) callback(currentKitOverrides);
+                    else applyKitOverrides(currentKitOverrides);
+                } catch(e) { if (callback) callback(null); }
+            } else {
+                if (callback) callback(null);
             }
         });
 }
