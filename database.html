@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=82">
-    <link rel="stylesheet" href="css/admin.css?v=82">
+    <link rel="stylesheet" href="css/style.css?v=83">
+    <link rel="stylesheet" href="css/admin.css?v=83">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -423,10 +423,8 @@
             var isMini = poids > 0 && poids < 5000;
             var isStandard = poids >= 5000;
 
-            // R2: Cabine >= 5T = rouge, R3: Mini < 5T = jaune
-            if (isStandard) bom['0000'] = 'r';
-            else if (isMini) bom['0000'] = 'j';
-            else bom['0000'] = 'j'; // default jaune si poids inconnu
+            // Cabine obligatoire pour toutes les machines
+            bom['0000'] = 'r';
 
             // R4: Hauteur et Rotation toujours optionnel
             bom['0001'] = 'j';
