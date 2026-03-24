@@ -508,18 +508,14 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         }
 
         // Multi Axes row
+        // Multi Axes — jaune (optionnel) pour toutes les excavatrices
         const multiRow = document.querySelector('tr[data-kit="multi"]');
         if (multiRow) {
-            const typeBras = specs['Type de boom'] || '';
+            multiRow.style.display = '';
             const multiYellow = multiRow.querySelector('input.radio-yellow');
-            if (typeBras.includes('2 parties')) {
-                if (multiYellow) multiYellow.classList.add('radio-yellow-pulse');
-            } else {
-                if (multiYellow) multiYellow.classList.remove('radio-yellow-pulse');
-                const multiOblig = multiRow.querySelector('input[value="oui"]');
-                const multiOption = multiRow.querySelector('input[value="non"]');
-                if (multiOblig) multiOblig.checked = false;
-                if (multiOption) multiOption.checked = false;
+            if (multiYellow) {
+                multiYellow.checked = true;
+                multiYellow.classList.remove('radio-yellow-pulse');
             }
         }
         // Harnais de coupure — selon fabricant
