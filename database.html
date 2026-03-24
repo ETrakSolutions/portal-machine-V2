@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=108">
-    <link rel="stylesheet" href="css/admin.css?v=108">
+    <link rel="stylesheet" href="css/style.css?v=114">
+    <link rel="stylesheet" href="css/admin.css?v=114">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -481,7 +481,8 @@
 
             // Boite GC — jaune seulement pour Caterpillar, na sinon
             var fabUpper = d.fab.toUpperCase();
-            bom['0070'] = (fabUpper.indexOf('CATERPILLAR') >= 0 || fabUpper === 'CAT') ? 'j' : 'na';
+            // Boite GC — na par defaut, admin remettra manuellement
+            bom['0070'] = 'na';
 
             // Harnais de coupure — selon fabricant (fabUpper deja defini)
             if (fabUpper === 'HITACHI') {

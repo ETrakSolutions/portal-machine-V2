@@ -419,7 +419,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             '0005': 'j',
             '0008': hasSwing ? 'j' : 'na',
             '0009': isDrain ? 'r' : 'na',
-            '0070': isCat ? 'j' : 'na'
+            '0070': 'na'
         };
 
         // Harnais
