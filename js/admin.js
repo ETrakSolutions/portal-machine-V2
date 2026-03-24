@@ -45,7 +45,17 @@ function updateHubUI() {
     if (currentUser) {
         if (loginBtn) loginBtn.style.display = 'none';
         if (userBar) userBar.style.display = 'flex';
-        if (userName) userName.textContent = '\u2713 ' + currentUser.name;
+        if (userName) {
+            if (currentUser.isGuest) {
+                var guestExpiry = localStorage.getItem('portal_guest_expiry');
+                var mins = guestExpiry ? Math.max(0, Math.round((parseInt(guestExpiry) - Date.now()) / 60000)) : 0;
+                userName.textContent = '\u23f0 Invite (' + mins + ' min restantes)';
+                userName.style.color = '#FF8C00';
+            } else {
+                userName.textContent = '\u2713 ' + currentUser.name;
+                userName.style.color = '';
+            }
+        }
         if (userRole) userRole.textContent = ROLES[currentUser.role] ? ROLES[currentUser.role].label : currentUser.role;
         if (hubNav) hubNav.style.display = 'grid';
         if (hubEmpty) hubEmpty.style.display = 'none';
@@ -69,9 +79,9 @@ function updateHubUI() {
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
         }
-        // Show hamburger (QR + share) only for super admin, admin, vendeur e-Trak
+        // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
-            hamburgerWrap.style.display = currentUser.permissions.shareAccess ? '' : 'none';
+            hamburgerWrap.style.display = '';
         }
     } else {
         if (loginBtn) loginBtn.style.display = '';
@@ -573,14 +583,42 @@ document.addEventListener('DOMContentLoaded', function() {
         updateHubUI();
     });
 
+    // Check for guest access via URL param ?guest=1
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('guest') === '1') {
+        var guestExpiry = localStorage.getItem('portal_guest_expiry');
+        var now = Date.now();
+        if (!guestExpiry || now > parseInt(guestExpiry)) {
+            // Set new 1-hour guest session
+            localStorage.setItem('portal_guest_expiry', String(now + 3600000)); // 1 hour
+        }
+        // Create guest dealer session
+        var guestUser = { username: 'guest', name: 'Invite', role: 'dealer', permissions: getUserPermissions('dealer'), isGuest: true };
+        localStorage.setItem('portal_user', JSON.stringify(guestUser));
+        // Remove ?guest=1 from URL
+        window.history.replaceState({}, '', window.location.pathname);
+    }
+
     // Restore session
     var saved = localStorage.getItem('portal_user');
     if (saved) {
         try {
             var parsed = JSON.parse(saved);
             if (parsed && parsed.username) {
-                currentUser = parsed;
-                currentUser.permissions = getUserPermissions(currentUser.role);
+                // Check guest expiry
+                if (parsed.isGuest) {
+                    var guestExpiry = localStorage.getItem('portal_guest_expiry');
+                    if (guestExpiry && Date.now() > parseInt(guestExpiry)) {
+                        // Guest session expired
+                        localStorage.removeItem('portal_user');
+                        localStorage.removeItem('portal_guest_expiry');
+                        parsed = null;
+                    }
+                }
+                if (parsed) {
+                    currentUser = parsed;
+                    currentUser.permissions = getUserPermissions(currentUser.role);
+                }
             }
         } catch(e) {}
     }
@@ -853,7 +891,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             var subject = 'Portail e-Trak — Acces au portail';
-            var body = 'Bonjour,\n\nVous avez ete invite a acceder au Portail e-Trak.\nCliquez sur le lien ci-dessous pour vous connecter :\n\nhttps://etraksolutions.github.io/portal-machine/\n\nVous aurez besoin de vos identifiants (courriel et mot de passe) pour vous connecter.\n\nPortail e-Trak — e-Trak Technology Solutions';
+            var body = 'Bonjour,\n\nVous avez ete invite a acceder au Portail e-Trak.\nCliquez sur le lien ci-dessous :\n\nhttps://etraksolutions.github.io/portal-machine/?guest=1\n\nCe lien vous donne un acces temporaire (1 heure) en tant qu\'invite.\nPour un acces permanent, demandez la creation d\'un compte.\n\nPortail e-Trak — e-Trak Technology Solutions';
             window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
             emailInput.value = '';
         });
