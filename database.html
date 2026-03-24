@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=78">
-    <link rel="stylesheet" href="css/admin.css?v=78">
+    <link rel="stylesheet" href="css/style.css?v=79">
+    <link rel="stylesheet" href="css/admin.css?v=79">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -49,10 +49,20 @@
         .db-stats strong {
             color: #00CC66;
         }
+        .db-scroll-top {
+            overflow-x: auto;
+            border: 1px solid var(--border, #2a3a4a);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+        }
+        .db-scroll-top-inner {
+            height: 1px;
+        }
         .db-table-wrap {
             overflow-x: auto;
-            border-radius: 8px;
+            border-radius: 0 0 8px 8px;
             border: 1px solid var(--border, #2a3a4a);
+            border-top: none;
         }
         .db-table {
             width: 100%;
@@ -238,7 +248,8 @@
             </div>
             <div id="db-stats" class="db-stats"></div>
 
-            <div class="db-table-wrap" style="max-height: 65vh; overflow-y: auto;">
+            <div class="db-scroll-top" id="db-scroll-top"><div class="db-scroll-top-inner" id="db-scroll-top-inner"></div></div>
+            <div class="db-table-wrap" id="db-table-wrap" style="max-height: 65vh; overflow-y: auto;">
                 <table class="db-table" id="db-table">
                     <thead>
                         <tr>
@@ -603,6 +614,22 @@
                 applyFilters();
             });
         });
+
+        // Sync top scrollbar with table
+        var scrollTop = document.getElementById('db-scroll-top');
+        var tableWrap = document.getElementById('db-table-wrap');
+        var scrollInner = document.getElementById('db-scroll-top-inner');
+        function syncScrollWidth() {
+            var tbl = document.getElementById('db-table');
+            if (tbl) scrollInner.style.width = tbl.scrollWidth + 'px';
+        }
+        scrollTop.addEventListener('scroll', function() { tableWrap.scrollLeft = scrollTop.scrollLeft; });
+        tableWrap.addEventListener('scroll', function() { scrollTop.scrollLeft = tableWrap.scrollLeft; });
+        var origRender = renderPage;
+        var _renderWrap = renderPage;
+        // After each render, sync scroll width
+        var _origRenderPage = renderPage;
+        renderPage = function() { _origRenderPage(); setTimeout(syncScrollWidth, 50); };
 
         // Export CSV
         document.getElementById('db-export').addEventListener('click', function() {
