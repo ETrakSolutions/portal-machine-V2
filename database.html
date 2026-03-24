@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=76">
-    <link rel="stylesheet" href="css/admin.css?v=76">
+    <link rel="stylesheet" href="css/style.css?v=77">
+    <link rel="stylesheet" href="css/admin.css?v=77">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -347,6 +347,61 @@
             }).then(function() { showToast('BOM sauvegarde'); }).catch(function() {});
         }
 
+        // R7 — Machines specifiques drain obligatoire (1500-0009)
+        var DRAIN_MODELS = ['CX80C','CX220E','CX170E','145 D SR','CX210D','CX245D SR','CX350D','CX490D','CX300E','CX145C',
+            '315FL','440','450','320LU','308',
+            'DX190W-5','DX235',
+            'ZX210LC-8','EX200LC-5','ZX130-6','ZX190LC-7H','ZX350LC-6','ZX490LC-6','ZX50U-5N',
+            '135C','350','410','490D','330X','200CLC','130P-TIER',
+            'PC78US',
+            'R920 K LC','R 920 K LC',
+            '145X4 LC','145X4','170X4S','145X4D7','245X4','245X4LC','190','170X4','350X4',
+            'TB210','TW65C2HS',
+            'EC160BLC','235','EC160CL',
+            'EZ36'];
+
+        function computeDefaultBom(d) {
+            var bom = {};
+            var poids = 0;
+            var poidsStr = d.poids || '';
+            var match = poidsStr.match(/(\d[\d\s]*)/);
+            if (match) poids = parseInt(match[1].replace(/\s/g, ''));
+
+            var hasSwing = (d.swing || '').toLowerCase() === 'oui';
+            var hasBoom2 = (d.boom || '').toLowerCase().indexOf('2 partie') >= 0;
+            var isMini = poids > 0 && poids < 5000;
+            var isStandard = poids >= 5000;
+
+            // R2: Cabine >= 5T = rouge, R3: Mini < 5T = jaune
+            if (isStandard) bom['0000'] = 'r';
+            else if (isMini) bom['0000'] = 'j';
+            else bom['0000'] = 'j'; // default jaune si poids inconnu
+
+            // R4: Hauteur et Rotation toujours optionnel
+            bom['0001'] = 'j';
+            bom['0002'] = 'j';
+
+            // R5: Mini < 5T = rouge, sinon N/A
+            bom['0004'] = isMini ? 'r' : 'na';
+
+            // R6: Boom 2 parties = jaune multi
+            bom['0005'] = hasBoom2 ? 'j' : 'na';
+
+            // R1/R8: Swing boom = jaune si oui, N/A si non
+            bom['0008'] = hasSwing ? 'j' : 'na';
+
+            // R7: Drain — rouge si modele dans la liste, sinon jaune
+            var isDrain = DRAIN_MODELS.some(function(m) {
+                return d.modele.toUpperCase().indexOf(m.toUpperCase()) >= 0;
+            });
+            bom['0009'] = isDrain ? 'r' : 'j';
+
+            // Boite GC — toujours optionnel
+            bom['0070'] = 'j';
+
+            return bom;
+        }
+
         function nextBomState(current) {
             if (current === 'na' || !current) return 'j';
             if (current === 'j') return 'r';
@@ -450,8 +505,11 @@
                     tr.appendChild(td);
                 });
 
-                // BOM columns
+                // BOM columns — use defaults if no override
                 var dataIdx = allData.indexOf(d);
+                if (!d.bom || Object.keys(d.bom).length === 0) {
+                    d.bom = computeDefaultBom(d);
+                }
                 BOM_CODES.forEach(function(code) {
                     var td = document.createElement('td');
                     td.style.textAlign = 'center';
@@ -471,7 +529,8 @@
                     loadOverride(d.fab, d.modele, d.annee, function(overrides) {
                         if (!overrides) return;
                         var globalIdx = allData.indexOf(d);
-                        d.bom = {};
+                        // Merge overrides on top of defaults
+                        if (!d.bom || Object.keys(d.bom).length === 0) d.bom = computeDefaultBom(d);
                         for (var code in overrides) {
                             d.bom[code] = overrides[code];
                         }
