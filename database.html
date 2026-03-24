@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=85">
-    <link rel="stylesheet" href="css/admin.css?v=85">
+    <link rel="stylesheet" href="css/style.css?v=86">
+    <link rel="stylesheet" href="css/admin.css?v=86">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -363,8 +363,8 @@
             '0000': 'Cabine', '0001': 'Hauteur', '0002': 'Rotation', '0004': 'Mini exc',
             '0005': 'Multi Axes', '0008': 'Swing boom', '0009': 'Drain hyd', '0070': 'Boite GC',
             'H0031': 'Harnais Hitachi-5/6 JD', 'H0032': 'Harnais Komatsu', 'H0033': 'Harnais Doosan',
-            'H0034': 'Harnais Volvo', 'H0041': 'Harnais Link-Belt/Case', 'H0121': 'Harnais Hitachi-7',
-            'H0043': 'Harnais Generique'
+            'H0034': 'Harnais Volvo', 'H0041': 'Harnais Link-Belt/Case', 'H0080': 'Harnais Cat',
+            'H0100': 'Harnais Cat (ECU)', 'H0121': 'Harnais Hitachi-7', 'H0043': 'Harnais Generique'
         };
 
         // Auth
@@ -480,6 +480,8 @@
                 d.harnais = 'H0034';
             } else if (fabUpper.indexOf('LINK') >= 0 || fabUpper === 'CASE') {
                 d.harnais = 'H0041';
+            } else if (fabUpper.indexOf('CATERPILLAR') >= 0 || fabUpper === 'CAT') {
+                d.harnais = 'H0080';
             } else {
                 d.harnais = 'H0043';
             }
@@ -616,6 +618,8 @@
                     {v: 'H0033', l: '0033 Doosan'},
                     {v: 'H0034', l: '0034 Volvo'},
                     {v: 'H0041', l: '0041 LB-Case'},
+                    {v: 'H0080', l: '0080 Cat'},
+                    {v: 'H0100', l: '0100 Cat (ECU)'},
                     {v: 'H0121', l: '0121 Hit-7'},
                     {v: 'H0043', l: '0043 Generic'}
                 ];
@@ -632,7 +636,7 @@
                     });
                     tdHarnais.appendChild(sel);
                 } else {
-                    var HARNAIS_LABELS = {'H0031':'Hit5/6-JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'LB-Case','H0121':'Hit-7','H0043':'Generic'};
+                    var HARNAIS_LABELS = {'H0031':'Hit5/6-JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'LB-Case','H0080':'Cat','H0100':'Cat(ECU)','H0121':'Hit-7','H0043':'Generic'};
                     tdHarnais.style.fontSize = '0.65rem';
                     tdHarnais.style.fontWeight = '700';
                     tdHarnais.style.color = harnaisCode ? '#00CC66' : '#555';
