@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=107">
-    <link rel="stylesheet" href="css/admin.css?v=107">
+    <link rel="stylesheet" href="css/style.css?v=108">
+    <link rel="stylesheet" href="css/admin.css?v=108">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -635,8 +635,8 @@
                     tr.appendChild(td);
                 });
 
-                // BOM columns right after modele
-                if (!d.bom || Object.keys(d.bom).length === 0) {
+                // BOM columns right after modele — seulement pour Excavatrice
+                if (d._type === 'Excavatrice' && (!d.bom || Object.keys(d.bom).length === 0)) {
                     d.bom = computeDefaultBom(d);
                 }
                 BOM_CODES.forEach(function(code) {
@@ -648,11 +648,11 @@
                     tr.appendChild(td);
                 });
 
-                // Harnais column — right after BOM tokens
+                // Harnais column — seulement pour Excavatrice
                 var tdHarnais = document.createElement('td');
                 tdHarnais.style.textAlign = 'center';
                 tdHarnais.style.padding = '2px';
-                var harnaisCode = d.harnais || '';
+                var harnaisCode = (d._type === 'Excavatrice') ? (d.harnais || '') : '';
                 var HARNAIS_OPTIONS = [
                     {v: '', l: '-'},
                     {v: 'H0031', l: '0031 Hit5/6-JD'},
