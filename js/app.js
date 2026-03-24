@@ -528,6 +528,27 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 if (multiOption) multiOption.checked = false;
             }
         }
+        // Harnais de coupure — selon fabricant
+        var harnaisLabel = document.getElementById('kit-harnais-label');
+        var harnaisCode = document.getElementById('kit-harnais-code');
+        if (harnaisLabel && harnaisCode) {
+            var fabUp = fab.toUpperCase();
+            var hCode = 'Z03B-0043'; var hName = 'Generique';
+            if (fabUp === 'HITACHI') {
+                var is7 = modele.indexOf('-7') >= 0;
+                var is5or6 = modele.indexOf('-5') >= 0 || modele.indexOf('-6') >= 0;
+                if (is7 && !is5or6) { hCode = 'Z03B-0121'; hName = 'Hitachi -7'; }
+                else { hCode = 'Z03B-0031'; hName = 'Hitachi -5/-6'; }
+            } else if (fabUp === 'JOHN DEERE') { hCode = 'Z03B-0031'; hName = 'Hitachi/JD'; }
+            else if (fabUp === 'KOMATSU') { hCode = 'Z03B-0032'; hName = 'Komatsu'; }
+            else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Doosan'; }
+            else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Volvo'; }
+            else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Link-Belt/Case'; }
+            else if (fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT') { hCode = 'Z03B-0080'; hName = 'Caterpillar'; }
+            harnaisCode.textContent = hCode;
+            harnaisLabel.textContent = hName;
+        }
+
         updateKitCheckboxes();
         // Load overrides from DB (applied on top of hardcoded defaults)
         loadKitOverride(fab, modele, annee);
