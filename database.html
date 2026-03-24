@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=84">
-    <link rel="stylesheet" href="css/admin.css?v=84">
+    <link rel="stylesheet" href="css/style.css?v=85">
+    <link rel="stylesheet" href="css/admin.css?v=85">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -238,6 +238,18 @@
             opacity: 0.4;
         }
         .db-delete-btn:hover { opacity: 1; background: rgba(255,68,68,0.15); }
+        .db-harnais-select {
+            background: #1a2332;
+            border: 1px solid #2a3a4a;
+            border-radius: 4px;
+            color: #00CC66;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 4px;
+            cursor: pointer;
+            max-width: 110px;
+        }
+        .db-harnais-select:focus { border-color: #0062CC; outline: none; }
     </style>
 </head>
 <body>
@@ -592,19 +604,40 @@
                     tr.appendChild(td);
                 });
 
-                // Harnais column
+                // Harnais column — dropdown for admin, label for others
                 var tdHarnais = document.createElement('td');
                 tdHarnais.style.textAlign = 'center';
-                tdHarnais.style.padding = '4px';
-                tdHarnais.style.fontSize = '0.65rem';
-                tdHarnais.style.fontWeight = '700';
+                tdHarnais.style.padding = '2px';
                 var harnaisCode = d.harnais || '';
-                var HARNAIS_LABELS = {
-                    'H0031': 'Hit5/6-JD', 'H0032': 'Komatsu', 'H0033': 'Doosan',
-                    'H0034': 'Volvo', 'H0041': 'LB-Case', 'H0121': 'Hit-7', 'H0043': 'Generic'
-                };
-                tdHarnais.textContent = HARNAIS_LABELS[harnaisCode] || harnaisCode || '-';
-                tdHarnais.style.color = harnaisCode ? '#00CC66' : '#555';
+                var HARNAIS_OPTIONS = [
+                    {v: '', l: '-'},
+                    {v: 'H0031', l: '0031 Hit5/6-JD'},
+                    {v: 'H0032', l: '0032 Komatsu'},
+                    {v: 'H0033', l: '0033 Doosan'},
+                    {v: 'H0034', l: '0034 Volvo'},
+                    {v: 'H0041', l: '0041 LB-Case'},
+                    {v: 'H0121', l: '0121 Hit-7'},
+                    {v: 'H0043', l: '0043 Generic'}
+                ];
+                if (canEdit) {
+                    var sel = document.createElement('select');
+                    sel.className = 'db-harnais-select';
+                    sel.dataset.idx = dataIdx;
+                    HARNAIS_OPTIONS.forEach(function(o) {
+                        var opt = document.createElement('option');
+                        opt.value = o.v;
+                        opt.textContent = o.l;
+                        if (o.v === harnaisCode) opt.selected = true;
+                        sel.appendChild(opt);
+                    });
+                    tdHarnais.appendChild(sel);
+                } else {
+                    var HARNAIS_LABELS = {'H0031':'Hit5/6-JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'LB-Case','H0121':'Hit-7','H0043':'Generic'};
+                    tdHarnais.style.fontSize = '0.65rem';
+                    tdHarnais.style.fontWeight = '700';
+                    tdHarnais.style.color = harnaisCode ? '#00CC66' : '#555';
+                    tdHarnais.textContent = HARNAIS_LABELS[harnaisCode] || '-';
+                }
                 tr.appendChild(tdHarnais);
 
                 // Delete button (admin only)
@@ -661,6 +694,20 @@
             document.getElementById('db-next').disabled = end >= filtered.length;
             document.getElementById('db-page-info').textContent = (start + 1) + ' - ' + end + ' sur ' + filtered.length;
         }
+
+        // Change harnais dropdown
+        document.getElementById('db-tbody').addEventListener('change', function(e) {
+            var sel = e.target.closest('.db-harnais-select');
+            if (!sel || !canEdit) return;
+            var idx = parseInt(sel.dataset.idx);
+            var d = allData[idx];
+            if (!d) return;
+            d.harnais = sel.value;
+            // Save harnais in the BOM override
+            if (!d.bom) d.bom = {};
+            d.bom['harnais'] = sel.value;
+            saveOverride(d.fab, d.modele, d.annee, d.bom);
+        });
 
         // Click on Delete button
         document.getElementById('db-tbody').addEventListener('click', function(e) {
