@@ -100,6 +100,7 @@ function showAdminSection() {
     document.getElementById('hub-nav').style.display = 'none';
     document.getElementById('admin-content').style.display = 'block';
     document.querySelector('.admin-hero').style.display = 'none';
+    loadUsers();
     loadSalesEmails();
     loadKitEmails();
 }
