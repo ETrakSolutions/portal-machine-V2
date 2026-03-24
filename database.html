@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=106">
-    <link rel="stylesheet" href="css/admin.css?v=106">
+    <link rel="stylesheet" href="css/style.css?v=107">
+    <link rel="stylesheet" href="css/admin.css?v=107">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -271,10 +271,7 @@
             <div class="db-controls">
                 <div class="db-control-group">
                     <label>Type</label>
-                    <select id="db-type">
-                        <option value="Excavatrice">Excavatrice</option>
-                        <option value="Pompe a Beton">Pompe a Beton</option>
-                    </select>
+                    <select id="db-type"></select>
                 </div>
                 <div class="db-control-group">
                     <label>Fabricant</label>
@@ -532,6 +529,15 @@
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 fullData = data;
+                // Populate type dropdown dynamically from JSON keys
+                var typeSelect = document.getElementById('db-type');
+                typeSelect.innerHTML = '';
+                Object.keys(fullData).sort().forEach(function(t) {
+                    var opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    typeSelect.appendChild(opt);
+                });
                 loadType();
             });
 
