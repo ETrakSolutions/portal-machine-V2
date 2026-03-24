@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=95">
-    <link rel="stylesheet" href="css/admin.css?v=95">
+    <link rel="stylesheet" href="css/style.css?v=96">
+    <link rel="stylesheet" href="css/admin.css?v=96">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -462,8 +462,8 @@
             // R5: Mini < 5T = rouge, sinon N/A
             bom['0004'] = isMini ? 'r' : 'na';
 
-            // R6: Boom 2 parties = jaune multi
-            bom['0005'] = hasBoom2 ? 'j' : 'na';
+            // R4: Multi Axes — jaune pour TOUTES les excavatrices
+            bom['0005'] = 'j';
 
             // R1/R8: Swing boom = jaune si oui, N/A si non
             bom['0008'] = hasSwing ? 'j' : 'na';
@@ -475,11 +475,11 @@
             });
             bom['0009'] = isDrain ? 'r' : 'j';
 
-            // Boite GC — toujours optionnel
-            bom['0070'] = 'j';
-
-            // Harnais de coupure — selon fabricant
+            // Boite GC — jaune seulement pour Caterpillar, na sinon
             var fabUpper = d.fab.toUpperCase();
+            bom['0070'] = (fabUpper.indexOf('CATERPILLAR') >= 0 || fabUpper === 'CAT') ? 'j' : 'na';
+
+            // Harnais de coupure — selon fabricant (fabUpper deja defini)
             if (fabUpper === 'HITACHI') {
                 var is7 = d.modele.indexOf('-7') >= 0;
                 var is5or6 = d.modele.indexOf('-5') >= 0 || d.modele.indexOf('-6') >= 0;
