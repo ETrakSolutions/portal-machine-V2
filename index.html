@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
-    <link rel="stylesheet" href="css/style.css?v=98">
-    <link rel="stylesheet" href="css/admin.css?v=98">
+    <link rel="stylesheet" href="css/style.css?v=99">
+    <link rel="stylesheet" href="css/admin.css?v=99">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -161,14 +161,14 @@
                 </div>
             </section>
 
-            <!-- Permissions -->
+            <!-- Permissions (editable) -->
             <section class="admin-card">
                 <div class="admin-card-header">
                     <h2>&#128272; Permissions par role</h2>
-                    <p class="admin-card-desc">Reference des permissions accordees a chaque role.</p>
+                    <p class="admin-card-desc">Cliquer pour modifier les permissions. Les changements sont sauvegardes automatiquement.</p>
                 </div>
                 <div class="admin-table-wrap">
-                    <table class="admin-table admin-perm-table">
+                    <table class="admin-table admin-perm-table" id="admin-perm-table">
                         <thead>
                             <tr>
                                 <th>Role</th>
@@ -180,17 +180,10 @@
                                 <th style="text-align:center;">Notes</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr><td>Administrateur</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td></tr>
-                            <tr><td>Vente interne</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td></tr>
-                            <tr><td>Technicien</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td></tr>
-                            <tr><td>Distributeur</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td></tr>
-                            <tr><td>Dealer</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td></tr>
-                            <tr><td>Ingenierie</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-no">&#10007;</td><td class="perm-yes">&#10003;</td></tr>
-                        </tbody>
+                        <tbody id="admin-perm-tbody"></tbody>
                     </table>
                 </div>
-                <p class="admin-card-desc" style="margin-top:1rem;color:#FF8C00;font-size:0.75rem;">Seuls les comptes Administrateur peuvent supprimer des comptes utilisateurs.</p>
+                <p class="admin-card-desc" style="margin-top:1rem;color:#FF8C00;font-size:0.75rem;">Seuls les comptes Administrateur peuvent supprimer des comptes utilisateurs. Les permissions Administrateur ne peuvent pas etre modifiees.</p>
             </section>
 
         </div>
@@ -224,6 +217,6 @@
         </div>
     </footer>
 
-    <script src="js/admin.js?v=98"></script>
+    <script src="js/admin.js?v=99"></script>
 </body>
 </html>

@@ -103,6 +103,85 @@ function showAdminSection() {
     loadUsers();
     loadSalesEmails();
     loadKitEmails();
+    renderPermTable();
+}
+
+// ---- PERMISSIONS TABLE (editable) ----
+var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes'];
+var PERM_LABELS = {'createAccount':'Gestion compte','modifBom':'Modif. BOM','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes'};
+
+function renderPermTable() {
+    var tbody = document.getElementById('admin-perm-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    var roleKeys = Object.keys(ROLES);
+    roleKeys.forEach(function(roleKey) {
+        var role = ROLES[roleKey];
+        var tr = document.createElement('tr');
+        var tdName = document.createElement('td');
+        tdName.innerHTML = '<strong>' + role.label + '</strong>';
+        tr.appendChild(tdName);
+
+        PERM_KEYS.forEach(function(perm) {
+            var td = document.createElement('td');
+            td.style.textAlign = 'center';
+            var isOn = role[perm];
+            var isAdmin = roleKey === 'administrateur';
+
+            if (isAdmin) {
+                // Admin permissions are always on and not editable
+                td.className = 'perm-yes';
+                td.textContent = '\u2713';
+                td.style.opacity = '0.6';
+            } else {
+                td.className = isOn ? 'perm-yes' : 'perm-no';
+                td.textContent = isOn ? '\u2713' : '\u2717';
+                td.style.cursor = 'pointer';
+                td.dataset.role = roleKey;
+                td.dataset.perm = perm;
+                td.addEventListener('click', function() {
+                    var r = this.dataset.role;
+                    var p = this.dataset.perm;
+                    ROLES[r][p] = !ROLES[r][p];
+                    saveRoles();
+                    renderPermTable();
+                    showToast('Permission modifiee');
+                });
+            }
+            tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+    });
+}
+
+function saveRoles() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'roles_permissions', value: JSON.stringify(ROLES), pin: '1400' })
+    }).catch(function() {});
+}
+
+function loadRoles(callback) {
+    fetch(API_URL + '?action=get&key=roles_permissions')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try {
+                    var saved = JSON.parse(data.value);
+                    // Merge saved permissions into ROLES (keep structure, update values)
+                    for (var roleKey in saved) {
+                        if (ROLES[roleKey]) {
+                            for (var perm in saved[roleKey]) {
+                                if (perm !== 'label') ROLES[roleKey][perm] = saved[roleKey][perm];
+                            }
+                        }
+                    }
+                } catch(e) {}
+            }
+            if (callback) callback();
+        })
+        .catch(function() { if (callback) callback(); });
 }
 
 function hideAdminSection() {
@@ -487,6 +566,12 @@ function openEditUserModal(idx) {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', function() {
+    // Load saved permissions from API
+    loadRoles(function() {
+        // Restore session after roles are loaded
+        updateHubUI();
+    });
+
     // Restore session
     var saved = localStorage.getItem('portal_user');
     if (saved) {
