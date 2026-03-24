@@ -473,27 +473,21 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 drainTr = document.querySelector('input[name="kit-drain"]');
                 if (drainTr) drainTr = drainTr.closest('tr');
             }
-            if (drainTr) {
-                var drainStatusCell = drainTr.querySelector('.kit-status-cell');
-                if (drainStatusCell) {
-                    drainStatusCell.innerHTML = '<span class="kit-na">N/A</span>';
-                }
-            }
+            if (drainTr) drainTr.style.display = 'none';
         }
 
         // Boite GC logic
         var gcRadio = document.querySelector('input[name="kit-gc"]');
         var gcTr = gcRadio ? gcRadio.closest('tr') : null;
         if (gcTr) {
-            var gcStatus = gcTr.querySelector('.kit-status-cell');
             if (fab === 'Caterpillar') {
+                gcTr.style.display = '';
+                var gcStatus = gcTr.querySelector('.kit-status-cell');
                 if (gcStatus && !gcStatus.querySelector('input')) {
                     gcStatus.innerHTML = '<input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow">';
                 }
             } else {
-                if (gcStatus) {
-                    gcStatus.innerHTML = '<span class="kit-na">N/A</span>';
-                }
+                gcTr.style.display = 'none';
             }
         }
 
