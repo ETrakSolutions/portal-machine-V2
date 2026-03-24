@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=116">
-    <link rel="stylesheet" href="css/admin.css?v=116">
+    <link rel="stylesheet" href="css/style.css?v=117">
+    <link rel="stylesheet" href="css/admin.css?v=117">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -310,15 +310,7 @@
                         <tr>
                             <th data-col="fab">Fabricant <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="modele">Modele <span class="sort-arrow">&#9650;</span></th>
-                            <th class="bom-col">Cabine</th>
-                            <th class="bom-col">Hauteur</th>
-                            <th class="bom-col">Rotation</th>
-                            <th class="bom-col">Mini</th>
-                            <th class="bom-col">Multi</th>
-                            <th class="bom-col">Swing</th>
-                            <th class="bom-col">Drain</th>
-                            <th class="bom-col">GC</th>
-                            <th class="bom-col">Harnais</th>
+                            <!-- BOM columns generated dynamically by loadType() -->
                             <th data-col="puissance">Puissance (kW/HP) <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="traction">Traction <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="boom">Type boom <span class="sort-arrow">&#9650;</span></th>
@@ -361,10 +353,15 @@
         var sortAsc = true;
         var overridesCache = {};
 
-        var BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070'];
+        var EXC_BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070'];
+        var POMPE_BOM_CODES = ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
+        var BOM_CODES = EXC_BOM_CODES; // default, updated on type change
         var BOM_NAMES = {
             '0000': 'Cabine', '0001': 'Hauteur', '0002': 'Rotation', '0004': 'Mini exc',
             '0005': 'Multi Axes', '0008': 'Swing boom', '0009': 'Drain hyd', '0070': 'Boite GC',
+            '0200': 'Avec coffre', '0203': 'Sans coffre', '0201': 'Hauteur', '0202': 'Rotation',
+            '0204': '4 sections', '0205': '5 sections', '0206': '6 sections',
+            '0207': 'Rot. cylindre', '0208': 'Inclinometre', '0209': 'Reel 15M',
             'H0031': 'Harnais Hitachi-5/6 JD', 'H0032': 'Harnais Komatsu', 'H0033': 'Harnais Doosan',
             'H0034': 'Harnais Volvo', 'H0041': 'Harnais Link-Belt/Case', 'H0080': 'Harnais Cat',
             'H0100': 'Harnais Cat (ECU)', 'H0121': 'Harnais Hitachi-7', 'H0043': 'Harnais Generique'
@@ -511,6 +508,36 @@
             return bom;
         }
 
+        function computeDefaultBomPompe(d) {
+            var bom = {};
+            var typePompe = d._spec_Type || '';
+            var nbSections = d._spec_Nombre_de_sections || d['_spec_Nombre de sections'] || '';
+            var isStationnaire = typePompe.toLowerCase().indexOf('stationnaire') >= 0;
+            var isRemorquee = typePompe.toLowerCase().indexOf('remorqu') >= 0;
+
+            // 0200 Avec coffre — obligatoire pour automotrices
+            bom['0200'] = isStationnaire ? 'na' : 'red';
+            // 0203 Sans coffre — optionnel (alternative au coffre)
+            bom['0203'] = isStationnaire ? 'na' : 'yellow';
+            // 0201 Hauteur — optionnel pour toutes pompes avec fleche
+            bom['0201'] = isStationnaire ? 'na' : 'yellow';
+            // 0202 Rotation — optionnel pour toutes pompes avec fleche
+            bom['0202'] = isStationnaire ? 'na' : 'yellow';
+            // Sections: obligatoire celle qui correspond, N/A les autres
+            var sec = parseInt(nbSections) || 0;
+            bom['0204'] = (sec === 4) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
+            bom['0205'] = (sec === 5) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
+            bom['0206'] = (sec === 6) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
+            // 0207 Rotation cylindre — optionnel pour automotrices
+            bom['0207'] = isStationnaire ? 'na' : 'yellow';
+            // 0208 Inclinometre — optionnel
+            bom['0208'] = isStationnaire ? 'na' : 'yellow';
+            // 0209 Reel 15M — optionnel
+            bom['0209'] = isStationnaire ? 'na' : 'yellow';
+
+            return bom;
+        }
+
         function nextBomState(current) {
             if (current === 'na' || !current) return 'j';
             if (current === 'j') return 'r';
@@ -547,6 +574,43 @@
 
         function loadType() {
             var typeVal = document.getElementById('db-type').value;
+            // Switch BOM codes based on type
+            if (typeVal === 'Pompe a Beton') {
+                BOM_CODES = POMPE_BOM_CODES;
+            } else {
+                BOM_CODES = EXC_BOM_CODES;
+            }
+            // Update BOM column headers dynamically
+            var bomHeaders = document.querySelectorAll('#db-table thead th.bom-col');
+            bomHeaders.forEach(function(th) { th.remove(); });
+            var harnaisHeader = document.querySelector('#db-table thead th[data-col="harnais"]');
+            if (harnaisHeader) harnaisHeader.remove();
+            var headerRow = document.querySelector('#db-table thead tr');
+            var classeHeader = headerRow.querySelector('th[data-col="classe"]');
+            BOM_CODES.forEach(function(code) {
+                var th = document.createElement('th');
+                th.className = 'bom-col';
+                th.textContent = BOM_NAMES[code] || code;
+                if (classeHeader && classeHeader.nextSibling) {
+                    headerRow.insertBefore(th, classeHeader.nextSibling);
+                    classeHeader = th; // chain after each new one
+                } else {
+                    headerRow.appendChild(th);
+                }
+            });
+            // Add harnais header for excavatrice only
+            if (typeVal === 'Excavatrice') {
+                var thH = document.createElement('th');
+                thH.className = 'bom-col';
+                thH.dataset.col = 'harnais';
+                thH.textContent = 'Harnais';
+                if (classeHeader && classeHeader.nextSibling) {
+                    headerRow.insertBefore(thH, classeHeader.nextSibling);
+                } else {
+                    headerRow.appendChild(thH);
+                }
+            }
+
             var section = fullData[typeVal] || {};
             allData = [];
             var fabs = new Set();
@@ -647,9 +711,13 @@
                     tr.appendChild(td);
                 });
 
-                // BOM columns right after modele — seulement pour Excavatrice
-                if (d._type === 'Excavatrice' && (!d.bom || Object.keys(d.bom).length === 0)) {
-                    d.bom = computeDefaultBom(d);
+                // BOM columns — compute defaults per type
+                if (!d.bom || Object.keys(d.bom).length === 0) {
+                    if (d._type === 'Excavatrice') {
+                        d.bom = computeDefaultBom(d);
+                    } else if (d._type === 'Pompe a Beton') {
+                        d.bom = computeDefaultBomPompe(d);
+                    }
                 }
                 BOM_CODES.forEach(function(code) {
                     var td = document.createElement('td');
@@ -661,10 +729,11 @@
                 });
 
                 // Harnais column — seulement pour Excavatrice
+                if (d._type === 'Excavatrice') {
                 var tdHarnais = document.createElement('td');
                 tdHarnais.style.textAlign = 'center';
                 tdHarnais.style.padding = '2px';
-                var harnaisCode = (d._type === 'Excavatrice') ? (d.harnais || '') : '';
+                var harnaisCode = d.harnais || '';
                 var HARNAIS_OPTIONS = [
                     {v: '', l: '-'},
                     {v: 'H0031', l: '0031 Hit5/6-JD'},
@@ -697,6 +766,7 @@
                     tdHarnais.textContent = HARNAIS_LABELS[harnaisCode] || '-';
                 }
                 tr.appendChild(tdHarnais);
+                } // end if Excavatrice harnais
 
                 // Spec fields after BOM+Harnais
                 var specFields = ['puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
@@ -733,7 +803,10 @@
                         if (!overrides) return;
                         var globalIdx = allData.indexOf(d);
                         // Merge overrides on top of defaults
-                        if (!d.bom || Object.keys(d.bom).length === 0) d.bom = computeDefaultBom(d);
+                        if (!d.bom || Object.keys(d.bom).length === 0) {
+                            if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
+                            else d.bom = computeDefaultBom(d);
+                        }
                         for (var code in overrides) {
                             d.bom[code] = overrides[code];
                         }
