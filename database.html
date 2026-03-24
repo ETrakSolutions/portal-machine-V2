@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=124">
-    <link rel="stylesheet" href="css/admin.css?v=124">
+    <link rel="stylesheet" href="css/style.css?v=130">
+    <link rel="stylesheet" href="css/admin.css?v=130">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -250,6 +250,18 @@
             max-width: 110px;
         }
         .db-harnais-select:focus { border-color: #0062CC; outline: none; }
+        .db-note-input {
+            background: var(--bg-input, #1a2332);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: #ccc;
+            font-size: 0.65rem;
+            padding: 3px 6px;
+            width: 120px;
+            min-width: 80px;
+        }
+        .db-note-input:focus { border-color: #0062CC; outline: none; color: #fff; }
+        .db-note-input.note-saved { border-color: #00CC66; }
     </style>
 </head>
 <body>
@@ -631,6 +643,12 @@
                 });
                 headerRow.appendChild(th);
             });
+            // Add Notes (API) column
+            var thNotes = document.createElement('th');
+            thNotes.textContent = 'Notes';
+            thNotes.style.minWidth = '130px';
+            headerRow.appendChild(thNotes);
+
             // Add DEL column
             var thDel = document.createElement('th');
             thDel.style.cssText = 'width:30px;min-width:30px;text-align:center;font-size:0.6rem;';
@@ -825,6 +843,20 @@
                     tr.appendChild(td);
                 });
 
+                // Notes column (API-synced with Portail Machine)
+                var tdNotes = document.createElement('td');
+                tdNotes.style.padding = '2px';
+                var noteInput = document.createElement('input');
+                noteInput.type = 'text';
+                noteInput.className = 'db-note-input';
+                noteInput.placeholder = '...';
+                noteInput.dataset.fab = d.fab;
+                noteInput.dataset.modele = d.modele;
+                noteInput.dataset.annee = d.annee;
+                noteInput.dataset.noteKey = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
+                tdNotes.appendChild(noteInput);
+                tr.appendChild(tdNotes);
+
                 // Delete button (admin only)
                 var tdDel = document.createElement('td');
                 tdDel.style.textAlign = 'center';
@@ -881,6 +913,21 @@
             document.getElementById('db-prev').disabled = currentPage === 0;
             document.getElementById('db-next').disabled = end >= filtered.length;
             document.getElementById('db-page-info').textContent = (start + 1) + ' - ' + end + ' sur ' + filtered.length;
+
+            // Lazy-load notes for visible rows
+            var noteInputs = tbody.querySelectorAll('.db-note-input');
+            noteInputs.forEach(function(input) {
+                var noteKey = input.dataset.noteKey;
+                fetch(API_URL + '?action=get&key=' + encodeURIComponent(noteKey))
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data.value) input.value = data.value;
+                    })
+                    .catch(function() {
+                        var local = localStorage.getItem(noteKey);
+                        if (local) input.value = local;
+                    });
+            });
         }
 
         // Change harnais dropdown
@@ -895,6 +942,30 @@
             if (!d.bom) d.bom = {};
             d.bom['harnais'] = sel.value;
             saveOverride(d.fab, d.modele, d.annee, d.bom);
+        });
+
+        // Save notes on blur (onchange/onblur)
+        document.getElementById('db-tbody').addEventListener('focusout', function(e) {
+            var input = e.target.closest('.db-note-input');
+            if (!input) return;
+            var noteKey = input.dataset.noteKey;
+            var val = input.value.trim();
+            // Save locally first
+            localStorage.setItem(noteKey, val);
+            // Save to API
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ key: noteKey, value: val, pin: '1400' })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    input.classList.add('note-saved');
+                    setTimeout(function() { input.classList.remove('note-saved'); }, 1500);
+                }
+            })
+            .catch(function() {});
         });
 
         // Click on Delete button
