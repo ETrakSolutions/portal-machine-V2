@@ -472,6 +472,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         var drainTr = drainOblig ? drainOblig.closest('tr') : null;
         if (isDrainOblig) {
             if (drainTr) {
+                drainTr.style.display = '';
                 var drainStatus = drainTr.querySelector('.kit-status-cell');
                 if (drainStatus && !drainStatus.querySelector('input')) {
                     drainStatus.innerHTML = '<input type="radio" name="kit-drain" value="oui" class="radio-red"><input type="radio" name="kit-drain" value="non" class="radio-yellow">';
@@ -497,6 +498,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 if (gcStatus && !gcStatus.querySelector('input')) {
                     gcStatus.innerHTML = '<input type="radio" name="kit-gc" value="oui" class="radio-red"><input type="radio" name="kit-gc" value="non" class="radio-yellow">';
                 }
+                var gcOption = gcTr.querySelector('input[value="non"]');
+                if (gcOption) gcOption.checked = true;
             } else {
                 gcTr.style.display = 'none';
             }
