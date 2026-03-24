@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=122">
-    <link rel="stylesheet" href="css/admin.css?v=122">
+    <link rel="stylesheet" href="css/style.css?v=123">
+    <link rel="stylesheet" href="css/admin.css?v=123">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -538,9 +538,11 @@
             bom['0203'] = 'na';
             bom['0201'] = 'j'; // Hauteur
             bom['0202'] = 'j'; // Rotation
-            bom['0204'] = 'na';
-            bom['0205'] = 'na';
-            bom['0206'] = 'na';
+            // Sections: rouge si correspond au nb sections de la machine
+            var sec = parseInt(nbSections) || 0;
+            bom['0204'] = (sec === 4) ? 'r' : 'na';
+            bom['0205'] = (sec === 5) ? 'r' : 'na';
+            bom['0206'] = (sec === 6) ? 'r' : 'na';
             bom['0207'] = 'na';
             bom['0208'] = 'na';
             bom['0209'] = 'na';
