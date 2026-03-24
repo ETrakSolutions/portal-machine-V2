@@ -503,7 +503,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         kitSection.style.display = 'none';
     }
 
-    // Show kit pompe section for Pompe a Beton
+    // Show kit pompe section for Pompe a Beton (BD = MAITRE)
     var kitPompeSection = document.getElementById('kit-pompe-section');
     if (kitPompeSection) {
         if (type === 'Pompe a Beton') {
@@ -511,77 +511,67 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             var kitPompeDesc = document.getElementById('kit-pompe-desc');
             if (kitPompeDesc) kitPompeDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
 
-            // Auto-select section option based on Nombre de sections
+            // Compute defaults same as database.html computeDefaultBomPompe
             var nbSections = specs['Nombre de sections'] || '';
-            var sec4 = kitPompeSection.querySelector('tr[data-kit="pompe-4sec"]');
-            var sec5 = kitPompeSection.querySelector('tr[data-kit="pompe-5sec"]');
-            var sec6 = kitPompeSection.querySelector('tr[data-kit="pompe-6sec"]');
+            var sec = parseInt(nbSections) || 0;
+            var pompeBomDefaults = {
+                '0200': 'na',
+                '0203': 'na',
+                '0201': 'j', // Hauteur
+                '0202': 'j', // Rotation
+                '0204': (sec >= 4) ? 'r' : 'na',
+                '0205': (sec >= 5) ? 'r' : 'na',
+                '0206': (sec >= 6) ? 'r' : 'na',
+                '0207': 'na',
+                '0208': 'na',
+                '0209': 'na'
+            };
 
-            // Show all section rows, set the matching one to red
-            [sec4, sec5, sec6].forEach(function(row) {
-                if (row) {
-                    row.style.display = '';
-                    var red = row.querySelector('.radio-red');
-                    var yellow = row.querySelector('.radio-yellow');
-                    if (red) red.checked = false;
-                    if (yellow) yellow.checked = false;
+            // Map pompe kit rows to BOM codes
+            var POMPE_KIT_MAP = {
+                'pompe-coffre': '0200', 'pompe-sans-coffre': '0203',
+                'pompe-hauteur': '0201', 'pompe-rotation': '0202',
+                'pompe-4sec': '0204', 'pompe-5sec': '0205', 'pompe-6sec': '0206',
+                'pompe-rot-cylindre': '0207', 'pompe-inclinometre': '0208', 'pompe-reel': '0209'
+            };
+
+            function applyBomToPompeKit(bom) {
+                kitPompeSection.querySelectorAll('tbody tr[data-kit]').forEach(function(tr) {
+                    var kit = tr.dataset.kit;
+                    var code = POMPE_KIT_MAP[kit];
+                    if (!code) return;
+                    var state = bom[code] || 'na';
+                    if (state === 'na') {
+                        tr.style.display = 'none';
+                    } else {
+                        tr.style.display = '';
+                        var statusCell = tr.querySelector('.kit-status-cell');
+                        if (statusCell) {
+                            var red = statusCell.querySelector('.radio-red');
+                            var yellow = statusCell.querySelector('.radio-yellow');
+                            if (red) red.checked = false;
+                            if (yellow) yellow.checked = false;
+                            if (state === 'r' && red) red.checked = true;
+                            else if (state === 'j' && yellow) yellow.checked = true;
+                        }
+                    }
+                });
+            }
+
+            // Apply defaults first
+            applyBomToPompeKit(pompeBomDefaults);
+
+            // Then load overrides from API (BD is master)
+            loadKitOverride(fab, modele, annee, function(overrides) {
+                if (overrides) {
+                    for (var code in overrides) {
+                        if (overrides[code]) pompeBomDefaults[code] = overrides[code];
+                    }
+                    applyBomToPompeKit(pompeBomDefaults);
                 }
             });
 
-            if (nbSections === '4' && sec4) {
-                var red = sec4.querySelector('.radio-red');
-                if (red) red.checked = true;
-                if (sec5) sec5.style.display = 'none';
-                if (sec6) sec6.style.display = 'none';
-            } else if (nbSections === '5' && sec5) {
-                var red = sec5.querySelector('.radio-red');
-                if (red) red.checked = true;
-                if (sec4) sec4.style.display = 'none';
-                if (sec6) sec6.style.display = 'none';
-            } else if (nbSections === '6' && sec6) {
-                var red = sec6.querySelector('.radio-red');
-                if (red) red.checked = true;
-                if (sec4) sec4.style.display = 'none';
-                if (sec5) sec5.style.display = 'none';
-            } else if (nbSections === 'N/A') {
-                // Stationary - hide all section options
-                if (sec4) sec4.style.display = 'none';
-                if (sec5) sec5.style.display = 'none';
-                if (sec6) sec6.style.display = 'none';
-            }
-
-            // Set default BOM: coffre = red, hauteur = yellow, rotation = yellow
-            var coffre = kitPompeSection.querySelector('tr[data-kit="pompe-coffre"] .radio-red');
-            if (coffre) coffre.checked = true;
-            var hauteur = kitPompeSection.querySelector('tr[data-kit="pompe-hauteur"] .radio-yellow');
-            if (hauteur) hauteur.checked = true;
-            var rotation = kitPompeSection.querySelector('tr[data-kit="pompe-rotation"] .radio-yellow');
-            if (rotation) rotation.checked = true;
-            var inclinometre = kitPompeSection.querySelector('tr[data-kit="pompe-inclinometre"] .radio-yellow');
-            if (inclinometre) inclinometre.checked = true;
-            var reel = kitPompeSection.querySelector('tr[data-kit="pompe-reel"] .radio-yellow');
-            if (reel) reel.checked = true;
-
-            // Hide sans-coffre for stationary (they always have a coffre)
-            var sansCoffre = kitPompeSection.querySelector('tr[data-kit="pompe-sans-coffre"]');
-            var typePompe = specs['Type'] || '';
-            if (typePompe.includes('Stationnaire') && sansCoffre) {
-                sansCoffre.style.display = 'none';
-            } else if (sansCoffre) {
-                sansCoffre.style.display = '';
-            }
-
-            // Hide rotation cylindre for stationary
-            var rotCyl = kitPompeSection.querySelector('tr[data-kit="pompe-rot-cylindre"]');
-            if (typePompe.includes('Stationnaire') && rotCyl) {
-                rotCyl.style.display = 'none';
-            } else if (rotCyl) {
-                rotCyl.style.display = '';
-            }
-
-            updateKitCheckboxes();
             loadNotes(fab, modele, annee);
-            loadKitOverride(fab, modele, annee);
         } else {
             kitPompeSection.style.display = 'none';
         }
