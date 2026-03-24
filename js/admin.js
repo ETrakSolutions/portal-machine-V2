@@ -5,12 +5,12 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
 
 const ROLES = {
-    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, label: 'Administrateur' },
-    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Vente interne' },
-    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, label: 'Technicien' },
-    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Distributeur' },
-    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Dealer' },
-    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, label: 'Ingenierie' }
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, label: 'Vente interne' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, label: 'Technicien' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, label: 'Ingenierie' }
 };
 
 const DEFAULT_USERS = [
@@ -60,6 +60,10 @@ function updateHubUI() {
         var tileVente = document.getElementById('hub-tile-vente');
         if (tileVente) {
             tileVente.style.display = currentUser.permissions.createAccount ? 'block' : 'none';
+        }
+        var tileDatabase = document.getElementById('hub-tile-database');
+        if (tileDatabase) {
+            tileDatabase.style.display = currentUser.permissions.databaseAccess ? 'block' : 'none';
         }
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';

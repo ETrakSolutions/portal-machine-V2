@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Base de donnees</title>
+    <link rel="stylesheet" href="css/style.css?v=69">
+    <link rel="stylesheet" href="css/admin.css?v=69">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .db-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            align-items: flex-end;
+        }
+        .db-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .db-control-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+        }
+        .db-control-group select,
+        .db-control-group input {
+            padding: 8px 12px;
+            background: var(--bg-input, #1a2332);
+            border: 1px solid var(--border, #2a3a4a);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.85rem;
+            min-width: 160px;
+        }
+        .db-search {
+            min-width: 250px !important;
+        }
+        .db-stats {
+            color: #999;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .db-stats strong {
+            color: #00CC66;
+        }
+        .db-table-wrap {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border, #2a3a4a);
+        }
+        .db-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .db-table thead th {
+            background: #1a2a3a;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .db-table thead th:hover {
+            background: #243a4f;
+        }
+        .db-table thead th .sort-arrow {
+            margin-left: 4px;
+            opacity: 0.3;
+        }
+        .db-table thead th.sorted .sort-arrow {
+            opacity: 1;
+            color: #00CC66;
+        }
+        .db-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .db-table tbody tr:hover {
+            background: rgba(0,100,200,0.1);
+        }
+        .db-table tbody td {
+            padding: 8px 12px;
+            color: #ccc;
+            white-space: nowrap;
+        }
+        .db-table tbody td:first-child {
+            font-weight: 600;
+            color: #fff;
+        }
+        .db-table .incomplete {
+            color: #FF8C00;
+            font-style: italic;
+        }
+        .db-pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .db-pagination button {
+            padding: 6px 14px;
+            background: var(--bg-input, #1a2332);
+            border: 1px solid var(--border, #2a3a4a);
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .db-pagination button:hover { border-color: #0062CC; }
+        .db-pagination button:disabled { opacity: 0.3; cursor: default; }
+        .db-pagination .page-info { color: #999; font-size: 0.8rem; }
+        .db-export-btn {
+            padding: 8px 16px;
+            background: #0062CC;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .db-export-btn:hover { background: #004A99; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Retour au Portail e-Trak">&larr; Portail</a>
+            <div class="logo-section">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="selector-section">
+            <div class="intro-row">
+                <span class="section-title">Base de donnees Excavatrice</span>
+            </div>
+
+            <div class="db-controls">
+                <div class="db-control-group">
+                    <label>Fabricant</label>
+                    <select id="db-fab">
+                        <option value="">Tous</option>
+                    </select>
+                </div>
+                <div class="db-control-group">
+                    <label>Annee</label>
+                    <select id="db-annee">
+                        <option value="">Toutes</option>
+                    </select>
+                </div>
+                <div class="db-control-group">
+                    <label>Recherche</label>
+                    <input type="text" id="db-search" class="db-search" placeholder="Rechercher un modele...">
+                </div>
+                <div class="db-control-group">
+                    <label>&nbsp;</label>
+                    <button id="db-export" class="db-export-btn">&#128196; Exporter CSV</button>
+                </div>
+            </div>
+
+            <div id="db-stats" class="db-stats"></div>
+
+            <div class="db-table-wrap" style="max-height: 65vh; overflow-y: auto;">
+                <table class="db-table" id="db-table">
+                    <thead>
+                        <tr>
+                            <th data-col="fab">Fabricant <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="modele">Modele <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="annee">Annee <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="puissance">Puissance (kW/HP) <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="traction">Traction <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="boom">Type boom <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="swing">Swing <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="voltage">Voltage <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="poids">Poids (kg/lbs) <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="classe">Classe <span class="sort-arrow">&#9650;</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="db-tbody"></tbody>
+                </table>
+            </div>
+
+            <div class="db-pagination">
+                <button id="db-prev" disabled>&larr; Precedent</button>
+                <span id="db-page-info" class="page-info"></span>
+                <button id="db-next">Suivant &rarr;</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
+            </div>
+            <p class="footer-copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
+        </div>
+    </footer>
+
+    <script>
+    (function() {
+        var PAGE_SIZE = 100;
+        var currentPage = 0;
+        var allData = [];
+        var filtered = [];
+        var sortCol = 'fab';
+        var sortAsc = true;
+
+        // Check auth
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+        if (!user || !(user.permissions && user.permissions.databaseAccess)) {
+            document.querySelector('main').innerHTML = '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">Acces non autorise. Connectez-vous avec un compte administrateur ou ingenierie.</p></section>';
+        }
+
+        // Load data
+        fetch('data/machines.json')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var exc = data['Excavatrice'] || {};
+                var fabs = new Set();
+                var years = new Set();
+
+                for (var fab in exc) {
+                    fabs.add(fab);
+                    for (var annee in exc[fab]) {
+                        years.add(annee);
+                        for (var modele in exc[fab][annee]) {
+                            var s = exc[fab][annee][modele];
+                            allData.push({
+                                fab: fab,
+                                modele: modele,
+                                annee: annee,
+                                puissance: s['Puissance moteur (kW / HP)'] || '',
+                                traction: s['Type de traction'] || '',
+                                boom: s['Type de boom'] || '',
+                                swing: s['Swing boom'] || '',
+                                voltage: s['Voltage machine (V/type)'] || '',
+                                poids: s['Poids operationnel (kg / lbs)'] || '',
+                                classe: s['Classe machine'] || ''
+                            });
+                        }
+                    }
+                }
+
+                // Populate filters
+                var fabSelect = document.getElementById('db-fab');
+                Array.from(fabs).sort().forEach(function(f) {
+                    var opt = document.createElement('option');
+                    opt.value = f; opt.textContent = f;
+                    fabSelect.appendChild(opt);
+                });
+
+                var yearSelect = document.getElementById('db-annee');
+                Array.from(years).sort().forEach(function(y) {
+                    var opt = document.createElement('option');
+                    opt.value = y; opt.textContent = y;
+                    yearSelect.appendChild(opt);
+                });
+
+                applyFilters();
+            });
+
+        function applyFilters() {
+            var fab = document.getElementById('db-fab').value;
+            var annee = document.getElementById('db-annee').value;
+            var search = document.getElementById('db-search').value.toLowerCase().trim();
+
+            filtered = allData.filter(function(d) {
+                if (fab && d.fab !== fab) return false;
+                if (annee && d.annee !== annee) return false;
+                if (search && d.modele.toLowerCase().indexOf(search) === -1 && d.fab.toLowerCase().indexOf(search) === -1) return false;
+                return true;
+            });
+
+            // Sort
+            filtered.sort(function(a, b) {
+                var va = a[sortCol] || '';
+                var vb = b[sortCol] || '';
+                if (sortCol === 'annee') { va = parseInt(va) || 0; vb = parseInt(vb) || 0; }
+                if (va < vb) return sortAsc ? -1 : 1;
+                if (va > vb) return sortAsc ? 1 : -1;
+                return 0;
+            });
+
+            currentPage = 0;
+            renderPage();
+        }
+
+        function renderPage() {
+            var tbody = document.getElementById('db-tbody');
+            tbody.innerHTML = '';
+            var start = currentPage * PAGE_SIZE;
+            var end = Math.min(start + PAGE_SIZE, filtered.length);
+
+            for (var i = start; i < end; i++) {
+                var d = filtered[i];
+                var tr = document.createElement('tr');
+                var fields = ['fab', 'modele', 'annee', 'puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
+                fields.forEach(function(f) {
+                    var td = document.createElement('td');
+                    var val = d[f] || '';
+                    if (val === 'A completer') {
+                        td.className = 'incomplete';
+                        td.textContent = 'A completer';
+                    } else {
+                        td.textContent = val;
+                    }
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            }
+
+            // Stats
+            var incomplete = filtered.filter(function(d) {
+                return d.puissance === 'A completer' || d.poids === 'A completer' || !d.puissance || !d.poids;
+            }).length;
+            document.getElementById('db-stats').innerHTML =
+                '<strong>' + filtered.length + '</strong> resultats' +
+                (incomplete > 0 ? ' | <span style="color:#FF8C00;">' + incomplete + ' incomplets</span>' : '') +
+                ' | Page ' + (currentPage + 1) + ' / ' + Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
+            // Pagination
+            document.getElementById('db-prev').disabled = currentPage === 0;
+            document.getElementById('db-next').disabled = end >= filtered.length;
+            document.getElementById('db-page-info').textContent = (start + 1) + ' - ' + end + ' sur ' + filtered.length;
+        }
+
+        // Events
+        document.getElementById('db-fab').addEventListener('change', applyFilters);
+        document.getElementById('db-annee').addEventListener('change', applyFilters);
+        document.getElementById('db-search').addEventListener('input', applyFilters);
+        document.getElementById('db-prev').addEventListener('click', function() { currentPage--; renderPage(); });
+        document.getElementById('db-next').addEventListener('click', function() { currentPage++; renderPage(); });
+
+        // Sort
+        document.querySelectorAll('.db-table thead th').forEach(function(th) {
+            th.addEventListener('click', function() {
+                var col = this.dataset.col;
+                if (sortCol === col) { sortAsc = !sortAsc; }
+                else { sortCol = col; sortAsc = true; }
+                document.querySelectorAll('.db-table thead th').forEach(function(t) { t.classList.remove('sorted'); });
+                this.classList.add('sorted');
+                this.querySelector('.sort-arrow').textContent = sortAsc ? '\u25B2' : '\u25BC';
+                applyFilters();
+            });
+        });
+
+        // Export CSV
+        document.getElementById('db-export').addEventListener('click', function() {
+            var csv = 'Fabricant,Modele,Annee,Puissance,Traction,Type boom,Swing,Voltage,Poids,Classe\n';
+            filtered.forEach(function(d) {
+                csv += [d.fab, d.modele, d.annee, d.puissance, d.traction, d.boom, d.swing, d.voltage, d.poids, d.classe]
+                    .map(function(v) { return '"' + (v || '').replace(/"/g, '""') + '"'; }).join(',') + '\n';
+            });
+            var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'excavatrice_bd_' + new Date().toISOString().slice(0, 10) + '.csv';
+            link.click();
+        });
+    })();
+    </script>
+</body>
+</html>
