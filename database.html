@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=103">
-    <link rel="stylesheet" href="css/admin.css?v=103">
+    <link rel="stylesheet" href="css/style.css?v=106">
+    <link rel="stylesheet" href="css/admin.css?v=106">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -265,10 +265,17 @@
     <main>
         <section class="selector-section">
             <div class="intro-row">
-                <span class="section-title">Base de donnees Excavatrice</span>
+                <span class="section-title">Base de donnees Machine</span>
             </div>
 
             <div class="db-controls">
+                <div class="db-control-group">
+                    <label>Type</label>
+                    <select id="db-type">
+                        <option value="Excavatrice">Excavatrice</option>
+                        <option value="Pompe a Beton">Pompe a Beton</option>
+                    </select>
+                </div>
                 <div class="db-control-group">
                     <label>Fabricant</label>
                     <select id="db-fab">
@@ -520,48 +527,65 @@
         }
 
         // Load data
+        var fullData = null;
         fetch('data/machines.json')
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                var exc = data['Excavatrice'] || {};
-                var fabs = new Set();
-                var years = new Set();
+                fullData = data;
+                loadType();
+            });
 
-                for (var fab in exc) {
-                    fabs.add(fab);
-                    for (var annee in exc[fab]) {
-                        years.add(annee);
-                        for (var modele in exc[fab][annee]) {
-                            var s = exc[fab][annee][modele];
-                            allData.push({
-                                fab: fab, modele: modele, annee: annee, harnais: '',
-                                puissance: s['Puissance moteur (kW / HP)'] || '',
-                                traction: s['Type de traction'] || '',
-                                boom: s['Type de boom'] || '',
-                                swing: s['Swing boom'] || '',
-                                voltage: s['Voltage machine (V/type)'] || '',
-                                poids: s['Poids operationnel (kg / lbs)'] || '',
-                                classe: s['Classe machine'] || '',
-                                bom: {}
-                            });
-                        }
+        function loadType() {
+            var typeVal = document.getElementById('db-type').value;
+            var section = fullData[typeVal] || {};
+            allData = [];
+            var fabs = new Set();
+            var years = new Set();
+
+            for (var fab in section) {
+                fabs.add(fab);
+                for (var annee in section[fab]) {
+                    years.add(annee);
+                    for (var modele in section[fab][annee]) {
+                        var s = section[fab][annee][modele];
+                        var entry = { fab: fab, modele: modele, annee: annee, harnais: '', bom: {}, _type: typeVal };
+                        // Map all spec fields dynamically
+                        for (var key in s) { entry['_spec_' + key] = s[key]; }
+                        // Standard excavatrice fields
+                        entry.puissance = s['Puissance moteur (kW / HP)'] || '';
+                        entry.traction = s['Type de traction'] || '';
+                        entry.boom = s['Type de boom'] || '';
+                        entry.swing = s['Swing boom'] || '';
+                        entry.voltage = s['Voltage machine (V/type)'] || '';
+                        entry.poids = s['Poids operationnel (kg / lbs)'] || '';
+                        entry.classe = s['Classe machine'] || '';
+                        allData.push(entry);
                     }
                 }
+            }
 
-                var fabSelect = document.getElementById('db-fab');
-                Array.from(fabs).sort().forEach(function(f) {
-                    var opt = document.createElement('option');
-                    opt.value = f; opt.textContent = f;
-                    fabSelect.appendChild(opt);
-                });
-                var yearSelect = document.getElementById('db-annee');
-                Array.from(years).sort().forEach(function(y) {
-                    var opt = document.createElement('option');
-                    opt.value = y; opt.textContent = y;
-                    yearSelect.appendChild(opt);
-                });
-                applyFilters();
+            // Update fab filter
+            var fabSelect = document.getElementById('db-fab');
+            fabSelect.innerHTML = '<option value="">Tous</option>';
+            Array.from(fabs).sort().forEach(function(f) {
+                var opt = document.createElement('option');
+                opt.value = f; opt.textContent = f;
+                fabSelect.appendChild(opt);
             });
+            // Update year filter
+            var yearSelect = document.getElementById('db-annee');
+            yearSelect.innerHTML = '<option value="">Toutes</option>';
+            Array.from(years).sort().forEach(function(y) {
+                var opt = document.createElement('option');
+                opt.value = y; opt.textContent = y;
+                yearSelect.appendChild(opt);
+            });
+            overridesCache = {};
+            applyFilters();
+        }
+
+        // Type changed
+        document.getElementById('db-type').addEventListener('change', loadType);
 
         function applyFilters() {
             var fab = document.getElementById('db-fab').value;
