@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=94">
-    <link rel="stylesheet" href="css/admin.css?v=94">
+    <link rel="stylesheet" href="css/style.css?v=95">
+    <link rel="stylesheet" href="css/admin.css?v=95">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -618,17 +618,7 @@
                     tr.appendChild(td);
                 });
 
-                // Then remaining spec fields
-                var specFields = ['puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
-                specFields.forEach(function(f) {
-                    var td = document.createElement('td');
-                    var val = d[f] || '';
-                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
-                    else { td.textContent = val; }
-                    tr.appendChild(td);
-                });
-
-                // Harnais column — dropdown for admin, label for others
+                // Harnais column — right after BOM tokens
                 var tdHarnais = document.createElement('td');
                 tdHarnais.style.textAlign = 'center';
                 tdHarnais.style.padding = '2px';
@@ -665,6 +655,16 @@
                     tdHarnais.textContent = HARNAIS_LABELS[harnaisCode] || '-';
                 }
                 tr.appendChild(tdHarnais);
+
+                // Spec fields after BOM+Harnais
+                var specFields = ['puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
+                specFields.forEach(function(f) {
+                    var td = document.createElement('td');
+                    var val = d[f] || '';
+                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
+                    else { td.textContent = val; }
+                    tr.appendChild(td);
+                });
 
                 // Delete button (admin only)
                 var tdDel = document.createElement('td');
