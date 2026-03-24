@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=79">
-    <link rel="stylesheet" href="css/admin.css?v=79">
+    <link rel="stylesheet" href="css/style.css?v=80">
+    <link rel="stylesheet" href="css/admin.css?v=80">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -110,6 +110,29 @@
         .db-table tbody td:first-child {
             font-weight: 600;
             color: #fff;
+        }
+        /* Freeze first 2 columns */
+        .db-table thead th:nth-child(1),
+        .db-table tbody td:nth-child(1) {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background: #1a2a3a;
+        }
+        .db-table thead th:nth-child(2),
+        .db-table tbody td:nth-child(2) {
+            position: sticky;
+            left: 100px;
+            z-index: 5;
+            background: #1a2a3a;
+        }
+        .db-table thead th:nth-child(1),
+        .db-table thead th:nth-child(2) {
+            z-index: 15;
+        }
+        .db-table tbody tr:hover td:nth-child(1),
+        .db-table tbody tr:hover td:nth-child(2) {
+            background: #1e3450;
         }
         .db-table .incomplete {
             color: #FF8C00;
