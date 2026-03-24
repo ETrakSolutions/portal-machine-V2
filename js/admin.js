@@ -114,6 +114,7 @@ function showAdminSection() {
     loadUsers();
     loadSalesEmails();
     loadKitEmails();
+    loadNotesEmails();
     renderPermTable();
 }
 
@@ -432,6 +433,48 @@ function renderKitEmails() {
             saveKitEmails();
             renderKitEmails();
             showToast('Courriel kit supprime');
+        });
+    });
+}
+
+// ---- NOTES EMAILS ----
+let notesEmails = [];
+
+function loadNotesEmails() {
+    fetch(API_URL + '?action=get&key=notes_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) { try { notesEmails = JSON.parse(data.value); } catch(e) {} }
+            renderNotesEmails();
+        })
+        .catch(function() { renderNotesEmails(); });
+}
+
+function saveNotesEmails() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'notes_emails', value: JSON.stringify(notesEmails), pin: '1400' })
+    }).catch(function() {});
+}
+
+function renderNotesEmails() {
+    var list = document.getElementById('admin-notes-email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    notesEmails.forEach(function(email, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            notesEmails.splice(idx, 1);
+            saveNotesEmails();
+            renderNotesEmails();
+            showToast('Courriel notes supprime');
         });
     });
 }
@@ -815,6 +858,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderKitEmails();
                 input.value = '';
                 showToast('Courriel kit ajoute');
+            }
+        };
+    }
+
+    // ADD NOTES EMAIL
+    var addNotesEmailBtn = document.getElementById('admin-add-notes-email-btn');
+    if (addNotesEmailBtn) {
+        addNotesEmailBtn.onclick = function() {
+            var input = document.getElementById('admin-add-notes-email');
+            var email = input.value.trim();
+            if (email && email.includes('@')) {
+                notesEmails.push(email);
+                saveNotesEmails();
+                renderNotesEmails();
+                input.value = '';
+                showToast('Courriel notes ajoute');
             }
         };
     }

@@ -640,7 +640,19 @@ function saveNotes() {
     const notesStatus = document.getElementById('notes-status');
     if (!notesTextarea || !currentNoteKey) return;
 
-    localStorage.setItem(currentNoteKey, notesTextarea.value);
+    var noteContent = notesTextarea.value;
+    localStorage.setItem(currentNoteKey, noteContent);
+
+    // Get current machine info
+    var fab = selectFabricant ? selectFabricant.value : '';
+    var modele = selectModele ? selectModele.value : '';
+    var annee = selectAnnee ? selectAnnee.value : '';
+    var typeM = selectType ? selectType.value : '';
+    var user = null;
+    try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+    var userName = user ? user.name : 'Inconnu';
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('fr-CA') + ' ' + now.toLocaleTimeString('fr-CA');
 
     notesStatus.textContent = 'Enregistrement...';
     fetch(API_URL, {
@@ -648,7 +660,7 @@ function saveNotes() {
         headers: {'Content-Type': 'text/plain'},
         body: JSON.stringify({
             key: currentNoteKey,
-            value: notesTextarea.value,
+            value: noteContent,
             pin: '1400'
         })
     })
@@ -656,6 +668,32 @@ function saveNotes() {
     .then(data => {
         if (data.success) {
             notesStatus.textContent = 'Enregistre avec succes!';
+            // Send email notification to notes emails
+            if (noteContent.trim()) {
+                fetch(API_URL + '?action=get&key=notes_emails')
+                    .then(function(r) { return r.json(); })
+                    .then(function(emailData) {
+                        var emails = [];
+                        if (emailData.value) { try { emails = JSON.parse(emailData.value); } catch(e) {} }
+                        if (emails.length > 0) {
+                            var subject = 'Note Portail e-Trak — ' + fab + ' ' + modele + ' (' + annee + ')';
+                            var body = 'Nouvelle note enregistree sur le Portail e-Trak\n\n' +
+                                '=== DETAILS ===\n' +
+                                'Type: ' + typeM + '\n' +
+                                'Fabricant: ' + fab + '\n' +
+                                'Modele: ' + modele + '\n' +
+                                'Annee: ' + annee + '\n' +
+                                'Ecrite par: ' + userName + '\n' +
+                                'Date/Heure: ' + dateStr + '\n\n' +
+                                '=== CONTENU DE LA NOTE ===\n' +
+                                noteContent + '\n\n' +
+                                '---\n' +
+                                'Portail e-Trak — e-Trak Technology Solutions';
+                            window.location.href = 'mailto:' + emails.join(',') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+                        }
+                    })
+                    .catch(function() {});
+            }
         } else {
             notesStatus.textContent = 'Erreur: ' + (data.error || 'inconnue');
         }
