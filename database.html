@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=88">
-    <link rel="stylesheet" href="css/admin.css?v=88">
+    <link rel="stylesheet" href="css/style.css?v=94">
+    <link rel="stylesheet" href="css/admin.css?v=94">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -306,14 +306,6 @@
                         <tr>
                             <th data-col="fab">Fabricant <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="modele">Modele <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="annee">Annee <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="puissance">Puissance (kW/HP) <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="traction">Traction <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="boom">Type boom <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="swing">Swing <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="voltage">Voltage <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="poids">Poids (kg/lbs) <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="classe">Classe <span class="sort-arrow">&#9650;</span></th>
                             <th class="bom-col">Cabine</th>
                             <th class="bom-col">Hauteur</th>
                             <th class="bom-col">Rotation</th>
@@ -323,6 +315,13 @@
                             <th class="bom-col">Drain</th>
                             <th class="bom-col">GC</th>
                             <th class="bom-col">Harnais</th>
+                            <th data-col="puissance">Puissance (kW/HP) <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="traction">Traction <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="boom">Type boom <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="swing">Swing <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="voltage">Voltage <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="poids">Poids (kg/lbs) <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="classe">Classe <span class="sort-arrow">&#9650;</span></th>
                             <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
                         </tr>
                     </thead>
@@ -598,17 +597,15 @@
             for (var i = start; i < end; i++) {
                 var d = filtered[i];
                 var tr = document.createElement('tr');
-                var specFields = ['fab', 'modele', 'annee', 'puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
-                specFields.forEach(function(f) {
+                // Fab + Modele first
+                var dataIdx = allData.indexOf(d);
+                ['fab', 'modele'].forEach(function(f) {
                     var td = document.createElement('td');
-                    var val = d[f] || '';
-                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
-                    else { td.textContent = val; }
+                    td.textContent = d[f] || '';
                     tr.appendChild(td);
                 });
 
-                // BOM columns — use defaults if no override
-                var dataIdx = allData.indexOf(d);
+                // BOM columns right after modele
                 if (!d.bom || Object.keys(d.bom).length === 0) {
                     d.bom = computeDefaultBom(d);
                 }
@@ -618,6 +615,16 @@
                     td.style.padding = '4px';
                     var state = (d.bom && d.bom[code]) || 'na';
                     td.innerHTML = bomTokenHtml(state, code, dataIdx, canEdit);
+                    tr.appendChild(td);
+                });
+
+                // Then remaining spec fields
+                var specFields = ['puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
+                specFields.forEach(function(f) {
+                    var td = document.createElement('td');
+                    var val = d[f] || '';
+                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
+                    else { td.textContent = val; }
                     tr.appendChild(td);
                 });
 
