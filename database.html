@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=120">
-    <link rel="stylesheet" href="css/admin.css?v=120">
+    <link rel="stylesheet" href="css/style.css?v=121">
+    <link rel="stylesheet" href="css/admin.css?v=121">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -533,24 +533,24 @@
             var isRemorquee = typePompe.toLowerCase().indexOf('remorqu') >= 0;
 
             // 0200 Avec coffre — obligatoire pour automotrices
-            bom['0200'] = isStationnaire ? 'na' : 'red';
+            bom['0200'] = isStationnaire ? 'na' : 'r';
             // 0203 Sans coffre — optionnel (alternative au coffre)
-            bom['0203'] = isStationnaire ? 'na' : 'yellow';
+            bom['0203'] = isStationnaire ? 'na' : 'j';
             // 0201 Hauteur — optionnel pour toutes pompes
-            bom['0201'] = 'yellow';
+            bom['0201'] = 'j';
             // 0202 Rotation — optionnel pour toutes pompes
-            bom['0202'] = 'yellow';
+            bom['0202'] = 'j';
             // Sections: obligatoire celle qui correspond, N/A les autres
             var sec = parseInt(nbSections) || 0;
-            bom['0204'] = (sec === 4) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
-            bom['0205'] = (sec === 5) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
-            bom['0206'] = (sec === 6) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
+            bom['0204'] = (sec === 4) ? 'r' : (isStationnaire || sec > 0 ? 'na' : 'j');
+            bom['0205'] = (sec === 5) ? 'r' : (isStationnaire || sec > 0 ? 'na' : 'j');
+            bom['0206'] = (sec === 6) ? 'r' : (isStationnaire || sec > 0 ? 'na' : 'j');
             // 0207 Rotation cylindre — optionnel pour automotrices
-            bom['0207'] = isStationnaire ? 'na' : 'yellow';
+            bom['0207'] = isStationnaire ? 'na' : 'j';
             // 0208 Inclinometre — optionnel
-            bom['0208'] = isStationnaire ? 'na' : 'yellow';
+            bom['0208'] = isStationnaire ? 'na' : 'j';
             // 0209 Reel 15M — optionnel
-            bom['0209'] = isStationnaire ? 'na' : 'yellow';
+            bom['0209'] = isStationnaire ? 'na' : 'j';
 
             return bom;
         }
