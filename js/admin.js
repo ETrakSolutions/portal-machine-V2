@@ -5,6 +5,7 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
 
 const ROLES = {
+    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, label: 'Super Admin' },
     administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, label: 'Administrateur' },
     vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, label: 'Vente interne' },
     technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, label: 'Technicien' },
@@ -14,7 +15,7 @@ const ROLES = {
 };
 
 const DEFAULT_USERS = [
-    { username: 'administrateur', email: 'robin@gryb.ca', password: '1400', role: 'administrateur', name: 'Robin Gagnon', active: true },
+    { username: 'administrateur', email: 'robin@gryb.ca', password: '1400', role: 'super_admin', name: 'Robin Gagnon', active: true },
     { username: 'jacquot', email: 'jacquot@gryb.ca', password: '1234', role: 'administrateur', name: 'Jacquot', active: true }
 ];
 
@@ -126,10 +127,10 @@ function renderPermTable() {
             var td = document.createElement('td');
             td.style.textAlign = 'center';
             var isOn = role[perm];
-            var isAdmin = roleKey === 'administrateur';
+            var isSuperAdmin = roleKey === 'super_admin';
 
-            if (isAdmin) {
-                // Admin permissions are always on and not editable
+            if (isSuperAdmin) {
+                // Super Admin permissions are always on and not editable
                 td.className = 'perm-yes';
                 td.textContent = '\u2713';
                 td.style.opacity = '0.6';

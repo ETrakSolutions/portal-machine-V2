@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=97">
-    <link rel="stylesheet" href="css/admin.css?v=97">
+    <link rel="stylesheet" href="css/style.css?v=103">
+    <link rel="stylesheet" href="css/admin.css?v=103">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -367,8 +367,8 @@
         };
 
         // Auth
-        var DB_ROLES = { administrateur: true, ingenierie: true };
-        var EDIT_ROLES = { administrateur: true };
+        var DB_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
+        var EDIT_ROLES = { super_admin: true, administrateur: true };
         var user = null;
         try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
         var hasAccess = user && user.role && DB_ROLES[user.role];
