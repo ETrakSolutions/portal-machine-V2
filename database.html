@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=115">
-    <link rel="stylesheet" href="css/admin.css?v=115">
+    <link rel="stylesheet" href="css/style.css?v=116">
+    <link rel="stylesheet" href="css/admin.css?v=116">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -357,7 +357,7 @@
         var currentPage = 0;
         var allData = [];
         var filtered = [];
-        var sortCol = 'fab';
+        var sortCol = 'classe';
         var sortAsc = true;
         var overridesCache = {};
 
@@ -609,13 +609,21 @@
                 return true;
             });
 
+            var classeOrder = {'Mini':0,'Compact':1,'120':2,'200':3,'270':4,'300':5,'400':6,'500':7,'700-800':8,'1000+':9};
             filtered.sort(function(a, b) {
                 var va = a[sortCol] || '';
                 var vb = b[sortCol] || '';
                 if (sortCol === 'annee') { va = parseInt(va) || 0; vb = parseInt(vb) || 0; }
+                else if (sortCol === 'classe') {
+                    va = classeOrder[va] !== undefined ? classeOrder[va] : 99;
+                    vb = classeOrder[vb] !== undefined ? classeOrder[vb] : 99;
+                }
                 if (va < vb) return sortAsc ? -1 : 1;
                 if (va > vb) return sortAsc ? 1 : -1;
-                return 0;
+                // Secondary sort: fab then modele
+                if (a.fab < b.fab) return -1;
+                if (a.fab > b.fab) return 1;
+                return a.modele.localeCompare(b.modele);
             });
 
             currentPage = 0;
