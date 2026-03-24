@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=119">
-    <link rel="stylesheet" href="css/admin.css?v=119">
+    <link rel="stylesheet" href="css/style.css?v=120">
+    <link rel="stylesheet" href="css/admin.css?v=120">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -536,10 +536,10 @@
             bom['0200'] = isStationnaire ? 'na' : 'red';
             // 0203 Sans coffre — optionnel (alternative au coffre)
             bom['0203'] = isStationnaire ? 'na' : 'yellow';
-            // 0201 Hauteur — optionnel pour toutes pompes avec fleche
-            bom['0201'] = isStationnaire ? 'na' : 'yellow';
-            // 0202 Rotation — optionnel pour toutes pompes avec fleche
-            bom['0202'] = isStationnaire ? 'na' : 'yellow';
+            // 0201 Hauteur — optionnel pour toutes pompes
+            bom['0201'] = 'yellow';
+            // 0202 Rotation — optionnel pour toutes pompes
+            bom['0202'] = 'yellow';
             // Sections: obligatoire celle qui correspond, N/A les autres
             var sec = parseInt(nbSections) || 0;
             bom['0204'] = (sec === 4) ? 'red' : (isStationnaire || sec > 0 ? 'na' : 'yellow');
