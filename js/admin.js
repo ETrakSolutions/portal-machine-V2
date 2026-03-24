@@ -108,7 +108,7 @@ function showAdminSection() {
 
 // ---- PERMISSIONS TABLE (editable) ----
 var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes'];
-var PERM_LABELS = {'createAccount':'Acces Administrateur','modifBom':'Modif. BOM','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes'};
+var PERM_LABELS = {'createAccount':'Acces Administrateur','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes'};
 
 function renderPermTable() {
     var tbody = document.getElementById('admin-perm-tbody');
