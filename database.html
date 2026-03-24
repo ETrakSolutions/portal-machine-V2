@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=118">
-    <link rel="stylesheet" href="css/admin.css?v=118">
+    <link rel="stylesheet" href="css/style.css?v=119">
+    <link rel="stylesheet" href="css/admin.css?v=119">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -310,14 +310,7 @@
                         <tr>
                             <th data-col="fab">Fabricant <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="modele">Modele <span class="sort-arrow">&#9650;</span></th>
-                            <!-- BOM columns generated dynamically by loadType() -->
-                            <th data-col="puissance">Puissance (kW/HP) <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="traction">Traction <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="boom">Type boom <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="swing">Swing <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="voltage">Voltage <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="poids">Poids (kg/lbs) <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="classe">Classe <span class="sort-arrow">&#9650;</span></th>
+                            <!-- BOM + Spec columns generated dynamically by loadType() -->
                             <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
                         </tr>
                     </thead>
@@ -366,6 +359,30 @@
             'H0034': 'Harnais Volvo', 'H0041': 'Harnais Link-Belt/Case', 'H0080': 'Harnais Cat',
             'H0100': 'Harnais Cat (ECU)', 'H0121': 'Harnais Hitachi-7', 'H0043': 'Harnais Generique'
         };
+
+        // Spec columns per machine type: {key: label}
+        var SPEC_COLS = {
+            'Excavatrice': [
+                {key: 'puissance', label: 'Puissance (kW/HP)'},
+                {key: 'traction', label: 'Traction'},
+                {key: 'boom', label: 'Type boom'},
+                {key: 'swing', label: 'Swing'},
+                {key: 'voltage', label: 'Voltage'},
+                {key: 'poids', label: 'Poids (kg/lbs)'},
+                {key: 'classe', label: 'Classe'}
+            ],
+            'Pompe a Beton': [
+                {key: 'type_pompe', label: 'Type'},
+                {key: 'nb_sections', label: 'Nb sections'},
+                {key: 'pliage', label: 'Pliage'},
+                {key: 'voltage', label: 'Voltage'},
+                {key: 'rotation', label: 'Rotation'},
+                {key: 'console', label: 'Console'},
+                {key: 'estop', label: 'E-stop'},
+                {key: 'notes', label: 'Notes'}
+            ]
+        };
+        var currentSpecCols = SPEC_COLS['Excavatrice'];
 
         // Auth
         var DB_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
@@ -582,36 +599,76 @@
             } else {
                 BOM_CODES = []; // No BOM for other types
             }
-            // Update BOM column headers dynamically
-            var bomHeaders = document.querySelectorAll('#db-table thead th.bom-col');
-            bomHeaders.forEach(function(th) { th.remove(); });
-            var harnaisHeader = document.querySelector('#db-table thead th[data-col="harnais"]');
-            if (harnaisHeader) harnaisHeader.remove();
+            // Set spec columns for this type
+            currentSpecCols = SPEC_COLS[typeVal] || SPEC_COLS['Excavatrice'];
+
+            // Rebuild all dynamic headers (remove old BOM + spec + DEL columns, keep fab+modele)
             var headerRow = document.querySelector('#db-table thead tr');
-            var classeHeader = headerRow.querySelector('th[data-col="classe"]');
+            // Remove everything except fab and modele headers
+            while (headerRow.children.length > 2) {
+                headerRow.removeChild(headerRow.lastChild);
+            }
+            // Add BOM columns
             BOM_CODES.forEach(function(code) {
                 var th = document.createElement('th');
                 th.className = 'bom-col';
                 th.textContent = BOM_NAMES[code] || code;
-                if (classeHeader && classeHeader.nextSibling) {
-                    headerRow.insertBefore(th, classeHeader.nextSibling);
-                    classeHeader = th; // chain after each new one
-                } else {
-                    headerRow.appendChild(th);
-                }
+                headerRow.appendChild(th);
             });
-            // Add harnais header for excavatrice only
+            // Add harnais for excavatrice
             if (typeVal === 'Excavatrice') {
                 var thH = document.createElement('th');
                 thH.className = 'bom-col';
                 thH.dataset.col = 'harnais';
                 thH.textContent = 'Harnais';
-                if (classeHeader && classeHeader.nextSibling) {
-                    headerRow.insertBefore(thH, classeHeader.nextSibling);
-                } else {
-                    headerRow.appendChild(thH);
-                }
+                headerRow.appendChild(thH);
             }
+            // Add spec columns
+            currentSpecCols.forEach(function(col) {
+                var th = document.createElement('th');
+                th.dataset.col = col.key;
+                th.innerHTML = col.label + ' <span class="sort-arrow">&#9650;</span>';
+                th.style.cursor = 'pointer';
+                th.addEventListener('click', function() {
+                    if (sortCol === col.key) { sortAsc = !sortAsc; }
+                    else { sortCol = col.key; sortAsc = true; }
+                    applyFilters();
+                });
+                headerRow.appendChild(th);
+            });
+            // Add DEL column
+            var thDel = document.createElement('th');
+            thDel.style.cssText = 'width:30px;min-width:30px;text-align:center;font-size:0.6rem;';
+            thDel.textContent = 'DEL';
+            headerRow.appendChild(thDel);
+
+            // Spec field mapping per type
+            var SPEC_MAP = {
+                'Excavatrice': function(s) {
+                    return {
+                        puissance: s['Puissance moteur (kW / HP)'] || '',
+                        traction: s['Type de traction'] || '',
+                        boom: s['Type de boom'] || '',
+                        swing: s['Swing boom'] || '',
+                        voltage: s['Voltage machine (V/type)'] || '',
+                        poids: s['Poids operationnel (kg / lbs)'] || '',
+                        classe: s['Classe machine'] || ''
+                    };
+                },
+                'Pompe a Beton': function(s) {
+                    return {
+                        type_pompe: s['Type'] || '',
+                        nb_sections: s['Nombre de sections'] || '',
+                        pliage: s['Type de pliage'] || '',
+                        voltage: s['Voltage machine (V/type)'] || '',
+                        rotation: s['Type de rotation'] || '',
+                        console: s['Console operateur'] || '',
+                        estop: s['E-stop'] || '',
+                        notes: s['Notes'] || ''
+                    };
+                }
+            };
+            var mapFn = SPEC_MAP[typeVal] || function(s) { return {}; };
 
             var section = fullData[typeVal] || {};
             allData = [];
@@ -625,16 +682,9 @@
                     for (var modele in section[fab][annee]) {
                         var s = section[fab][annee][modele];
                         var entry = { fab: fab, modele: modele, annee: annee, harnais: '', bom: {}, _type: typeVal };
-                        // Map all spec fields dynamically
                         for (var key in s) { entry['_spec_' + key] = s[key]; }
-                        // Standard excavatrice fields
-                        entry.puissance = s['Puissance moteur (kW / HP)'] || '';
-                        entry.traction = s['Type de traction'] || '';
-                        entry.boom = s['Type de boom'] || '';
-                        entry.swing = s['Swing boom'] || '';
-                        entry.voltage = s['Voltage machine (V/type)'] || '';
-                        entry.poids = s['Poids operationnel (kg / lbs)'] || '';
-                        entry.classe = s['Classe machine'] || '';
+                        var mapped = mapFn(s);
+                        for (var mk in mapped) { entry[mk] = mapped[mk]; }
                         allData.push(entry);
                     }
                 }
@@ -770,9 +820,9 @@
                 tr.appendChild(tdHarnais);
                 } // end if Excavatrice harnais
 
-                // Spec fields after BOM+Harnais
-                var specFields = ['puissance', 'traction', 'boom', 'swing', 'voltage', 'poids', 'classe'];
-                specFields.forEach(function(f) {
+                // Spec fields after BOM+Harnais — dynamic per type
+                currentSpecCols.forEach(function(col) {
+                    var f = col.key;
                     var td = document.createElement('td');
                     var val = d[f] || '';
                     if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
