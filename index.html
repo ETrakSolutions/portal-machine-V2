@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
-    <link rel="stylesheet" href="css/style.css?v=111">
-    <link rel="stylesheet" href="css/admin.css?v=111">
+    <link rel="stylesheet" href="css/style.css?v=112">
+    <link rel="stylesheet" href="css/admin.css?v=112">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -135,6 +135,20 @@
                 </div>
             </section>
 
+            <!-- Vendeurs -->
+            <section class="admin-card">
+                <div class="admin-card-header">
+                    <h2>&#128188; Vendeurs</h2>
+                    <p class="admin-card-desc">Liste des vendeurs associes aux demandes de soumission. Les dealers/distributeurs choisiront leur vendeur.</p>
+                </div>
+                <div id="admin-vendeurs-list" class="admin-list"></div>
+                <div class="admin-add-row" style="flex-wrap:wrap;gap:0.5rem;">
+                    <input type="text" id="admin-add-vendeur-name" class="admin-input" placeholder="Nom du vendeur" style="flex:1;min-width:140px;">
+                    <input type="email" id="admin-add-vendeur-email" class="admin-input" placeholder="courriel@vendeur.com" style="flex:1;min-width:180px;">
+                    <button id="admin-add-vendeur-btn" class="admin-btn-add">+ Ajouter</button>
+                </div>
+            </section>
+
             <!-- Courriels vente interne -->
             <section class="admin-card">
                 <div class="admin-card-header">
@@ -230,6 +244,6 @@
         </div>
     </footer>
 
-    <script src="js/admin.js?v=111"></script>
+    <script src="js/admin.js?v=112"></script>
 </body>
 </html>

@@ -6,6 +6,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFv
 let salesEmails = [];
 let machinesData = {};
 let currentUser = null;
+let vendeursList = [];
 
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
@@ -27,6 +28,25 @@ fetch(API_URL + '?action=get&key=sales_emails')
     .then(function(data) {
         if (data.value) {
             try { salesEmails = JSON.parse(data.value); } catch(e) {}
+        }
+    })
+    .catch(function() {});
+
+// Load vendeurs list
+fetch(API_URL + '?action=get&key=vendeurs_list')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.value) {
+            try { vendeursList = JSON.parse(data.value); } catch(e) {}
+        }
+        var sel = document.getElementById('soumission-vendeur');
+        if (sel) {
+            vendeursList.forEach(function(v) {
+                var opt = document.createElement('option');
+                opt.value = v.email;
+                opt.textContent = v.name;
+                sel.appendChild(opt);
+            });
         }
     })
     .catch(function() {});
@@ -250,6 +270,9 @@ if (submitBtn) {
         });
 
         var comment = (document.getElementById('soumission-comment').value || '').trim();
+        var vendeurSelect = document.getElementById('soumission-vendeur');
+        var vendeurEmail = vendeurSelect ? vendeurSelect.value : '';
+        var vendeurName = vendeurSelect && vendeurSelect.selectedIndex > 0 ? vendeurSelect.options[vendeurSelect.selectedIndex].textContent : '';
         var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
 
         if (salesEmails.length === 0) {
@@ -295,12 +318,20 @@ if (submitBtn) {
             body += '\nCommentaire:\n  ' + comment + '\n';
         }
 
+        if (vendeurName) {
+            body += '\nVendeur associe : ' + vendeurName + ' (' + vendeurEmail + ')\n';
+        }
+
         body += '\n--------------------------------\n' +
             'Demande par : ' + userName + '\n' +
             'Portail e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine/';
 
-        window.location.href = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        var mailUrl = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        if (vendeurEmail) {
+            mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
+        }
+        window.location.href = mailUrl;
     });
 }
 

@@ -112,6 +112,7 @@ function showAdminSection() {
     document.getElementById('admin-content').style.display = 'block';
     document.querySelector('.admin-hero').style.display = 'none';
     loadUsers();
+    loadVendeurs();
     loadSalesEmails();
     loadKitEmails();
     loadNotesEmails();
@@ -433,6 +434,49 @@ function renderKitEmails() {
             saveKitEmails();
             renderKitEmails();
             showToast('Courriel kit supprime');
+        });
+    });
+}
+
+// ---- VENDEURS ----
+let vendeurs = [];
+
+function loadVendeurs(callback) {
+    fetch(API_URL + '?action=get&key=vendeurs_list')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) { try { vendeurs = JSON.parse(data.value); } catch(e) {} }
+            renderVendeurs();
+            if (callback) callback();
+        })
+        .catch(function() { renderVendeurs(); if (callback) callback(); });
+}
+
+function saveVendeurs() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'vendeurs_list', value: JSON.stringify(vendeurs), pin: '1400' })
+    }).catch(function() {});
+}
+
+function renderVendeurs() {
+    var list = document.getElementById('admin-vendeurs-list');
+    if (!list) return;
+    list.innerHTML = '';
+    vendeurs.forEach(function(v, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span><strong>' + v.name + '</strong> &mdash; ' + v.email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            vendeurs.splice(idx, 1);
+            saveVendeurs();
+            renderVendeurs();
+            showToast('Vendeur supprime');
         });
     });
 }
@@ -812,6 +856,25 @@ document.addEventListener('DOMContentLoaded', function() {
         backBtn.addEventListener('click', function() {
             hideAdminSection();
         });
+    }
+
+    // ADD VENDEUR
+    var addVendeurBtn = document.getElementById('admin-add-vendeur-btn');
+    if (addVendeurBtn) {
+        addVendeurBtn.onclick = function() {
+            var nameInput = document.getElementById('admin-add-vendeur-name');
+            var emailInput = document.getElementById('admin-add-vendeur-email');
+            var name = nameInput.value.trim();
+            var email = emailInput.value.trim();
+            if (name && email && email.includes('@')) {
+                vendeurs.push({ name: name, email: email });
+                saveVendeurs();
+                renderVendeurs();
+                nameInput.value = '';
+                emailInput.value = '';
+                showToast('Vendeur "' + name + '" ajoute');
+            }
+        };
     }
 
     // ADD EMAIL
