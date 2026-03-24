@@ -440,24 +440,24 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             }
         }
 
-        // Drain hydraulique logic
+        // Drain hydraulique logic — match par prefixe (synchro avec database.html)
         const drainOblig = document.querySelector('input[name="kit-drain"][value="oui"]');
         const drainOption = document.querySelector('input[name="kit-drain"][value="non"]');
-        const drainModels = [
-            'CX80C','CX80','CX220E','CX170E','145 D SR','CX210D','CX245D SR','CX350D','CX490D','CX300E','CX145C',
-            '315FL','440','450','320LU','308',
-            'DX190W-5','DX235',
-            '145X4 LC','145 X4','145X4','145X4D7','170X4S','170X4','170x4s','190','245X4','245X4LC','350X4',
-            'ZX210LC-8','EX200LC-5','ZX130-6','ZX190LC-7H','ZX350LC-6','ZX490LC-6','ZX50U-5N',
-            '135C','350','410','490D','330X','200CLC','130P-TIER',
-            'PC78US',
-            'R920 K LC',
-            'TB210','TW65C2HS',
-            'EC160BLC','235','EC160CL',
+        const drainPrefixes = [
+            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX490','145 D',
+            '308','315','320','440','450',
+            'DX190','DX235',
+            'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
+            '135','200CLC','245 P','245P','330X','350','410','490D','130P',
+            'PC78',
+            'R 920 K','R920',
+            '145X4','170X4','190','245X4','350X4','490X4',
+            'TB210','TW65',
+            'EC160','EC330','EC360','EC550','235',
             'EZ36'
         ];
         const modelUpper = modele.toUpperCase();
-        const isDrainOblig = drainModels.some(m => m.toUpperCase() === modelUpper);
+        const isDrainOblig = drainPrefixes.some(p => modelUpper.indexOf(p.toUpperCase()) === 0);
         var drainTr = drainOblig ? drainOblig.closest('tr') : null;
         if (isDrainOblig) {
             if (drainTr) {
