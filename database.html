@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=80">
-    <link rel="stylesheet" href="css/admin.css?v=80">
+    <link rel="stylesheet" href="css/style.css?v=81">
+    <link rel="stylesheet" href="css/admin.css?v=81">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -222,6 +222,17 @@
             animation: toastFade 2s forwards;
         }
         @keyframes toastFade { 0%,70%{opacity:1} 100%{opacity:0} }
+        .db-delete-btn {
+            background: none;
+            border: none;
+            color: #FF4444;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0.4;
+        }
+        .db-delete-btn:hover { opacity: 1; background: rgba(255,68,68,0.15); }
     </style>
 </head>
 <body>
@@ -294,6 +305,7 @@
                             <th class="bom-col">Swing</th>
                             <th class="bom-col">Drain</th>
                             <th class="bom-col">GC</th>
+                            <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
                         </tr>
                     </thead>
                     <tbody id="db-tbody"></tbody>
@@ -553,6 +565,20 @@
                     tr.appendChild(td);
                 });
 
+                // Delete button (admin only)
+                var tdDel = document.createElement('td');
+                tdDel.style.textAlign = 'center';
+                tdDel.style.padding = '4px';
+                if (canEdit) {
+                    var btn = document.createElement('button');
+                    btn.className = 'db-delete-btn';
+                    btn.dataset.idx = dataIdx;
+                    btn.textContent = '\u2715';
+                    btn.title = 'Supprimer ' + d.fab + ' ' + d.modele + ' (' + d.annee + ')';
+                    tdDel.appendChild(btn);
+                }
+                tr.appendChild(tdDel);
+
                 tbody.appendChild(tr);
             }
 
@@ -593,6 +619,29 @@
             document.getElementById('db-next').disabled = end >= filtered.length;
             document.getElementById('db-page-info').textContent = (start + 1) + ' - ' + end + ' sur ' + filtered.length;
         }
+
+        // Click on Delete button
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var btn = e.target.closest('.db-delete-btn');
+            if (!btn || !canEdit) return;
+            var idx = parseInt(btn.dataset.idx);
+            var d = allData[idx];
+            if (!d) return;
+            if (!confirm('Supprimer ' + d.fab + ' ' + d.modele + ' (' + d.annee + ') ?\n\nCette action est irreversible.')) return;
+
+            // Mark as deleted in API
+            var delKey = 'deleted_' + d.fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.annee;
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: delKey, value: 'deleted', pin: '1400' })
+            }).catch(function() {});
+
+            // Remove from local data
+            allData.splice(idx, 1);
+            applyFilters();
+            showToast(d.fab + ' ' + d.modele + ' (' + d.annee + ') supprime');
+        });
 
         // Click on BOM token
         document.getElementById('db-tbody').addEventListener('click', function(e) {
