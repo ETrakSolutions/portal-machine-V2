@@ -278,19 +278,37 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
-        // Collect toggle box states
+        // Collect toggle box states (use same logic as summary)
         var optionsOn = [];
         var optionsOff = [];
+
+        var _limBox = document.getElementById('toggle-limiteur');
+        var _limActive = _limBox && _limBox.classList.contains('active');
+        var _limDetail = _limActive ? _limBox.querySelector('.toggle-status').textContent : '';
+        var _hasLimSub = _limActive && (_limDetail !== 'OFF');
+        var _idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+        var _idcActive = _idcBox && _idcBox.classList.contains('active');
+
+        // Combined Limiteur + IDC
+        if (_limActive && _idcActive && _hasLimSub) {
+            optionsOn.push('Limiteur de portee + IDC: ' + _limDetail);
+        } else if (_limActive && _hasLimSub) {
+            optionsOn.push('Limiteur de portee: ' + _limDetail);
+        } else if (_limActive) {
+            optionsOff.push('Limiteur de portee');
+        }
+        if (_idcActive && !(_limActive && _hasLimSub)) {
+            optionsOn.push('IDC Complet');
+        }
+        if (!_idcActive) optionsOff.push('Indicateur de charge');
+        if (!_limActive) optionsOff.push('Limiteur de portee');
+
         document.querySelectorAll('.toggle-box').forEach(function(box) {
+            if (box.id === 'toggle-limiteur') return;
+            if (box.dataset.option === 'Indicateur de charge') return;
             var name = box.dataset.option;
             if (box.classList.contains('active')) {
-                // For Limiteur de portee, include the sub-option detail
-                if (box.id === 'toggle-limiteur') {
-                    var status = box.querySelector('.toggle-status');
-                    optionsOn.push(name + ': ' + status.textContent);
-                } else {
                     optionsOn.push(name);
-                }
             } else {
                 optionsOff.push(name);
             }
@@ -394,18 +412,38 @@ function updateSelectedSummary() {
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
     if (!wrap || !list) return;
+
+    var limBox = document.getElementById('toggle-limiteur');
+    var limActive = limBox && limBox.classList.contains('active');
+    var limDetail = limActive ? limBox.querySelector('.toggle-status').textContent : '';
+    var hasLimSub = limActive && (limDetail !== 'OFF'); // Hauteur, Rotation, or Multi-axe
+
+    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+    var idcActive = idcBox && idcBox.classList.contains('active');
+
     var items = [];
+
+    // Limiteur + IDC combined logic
+    if (limActive && idcActive && hasLimSub) {
+        // IDC en ajout au limiteur
+        items.push('Limiteur de portee + IDC: ' + limDetail);
+    } else if (limActive && hasLimSub) {
+        items.push('Limiteur de portee: ' + limDetail);
+    } else if (idcActive && !hasLimSub) {
+        items.push('IDC Complet');
+    } else if (idcActive && limActive) {
+        items.push('IDC Complet');
+    }
+
+    // Other toggles (skip limiteur and IDC, already handled)
     document.querySelectorAll('.toggle-box').forEach(function(box) {
+        if (box.id === 'toggle-limiteur') return;
+        if (box.dataset.option === 'Indicateur de charge') return;
         if (box.classList.contains('active')) {
-            var name = box.dataset.option;
-            if (box.id === 'toggle-limiteur') {
-                var detail = box.querySelector('.toggle-status').textContent;
-                items.push(name + ': ' + detail);
-            } else {
-                items.push(name);
-            }
+            items.push(box.dataset.option);
         }
     });
+
     if (items.length > 0) {
         list.innerHTML = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
         wrap.style.display = 'block';
