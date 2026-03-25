@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=136">
-    <link rel="stylesheet" href="css/admin.css?v=136">
+    <link rel="stylesheet" href="css/style.css?v=137">
+    <link rel="stylesheet" href="css/admin.css?v=137">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -1016,9 +1016,14 @@
                 var tr = document.createElement('tr');
                 // Fab + Modele first
                 var dataIdx = allData.indexOf(d);
+                var searchActive = document.getElementById('db-search').value.trim() !== '';
                 ['fab', 'modele'].forEach(function(f) {
                     var td = document.createElement('td');
-                    td.textContent = d[f] || '';
+                    if (f === 'modele' && searchActive) {
+                        td.textContent = d.modele + ' (' + d.annee + ')';
+                    } else {
+                        td.textContent = d[f] || '';
+                    }
                     if (f === 'fab' && fabFilter) td.style.display = 'none';
                     tr.appendChild(td);
                 });
