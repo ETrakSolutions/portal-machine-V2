@@ -104,6 +104,13 @@
 .sub-option-excl {
     border-color: #555;
 }
+.sub-note {
+    width: 100%;
+    font-size: 0.7rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 2px;
+}
 
 @media (max-width: 600px) {
     .toggle-grid { grid-template-columns: 1fr; }
