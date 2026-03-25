@@ -1158,6 +1158,8 @@
                         for (var code in overrides) {
                             d.bom[code] = overrides[code];
                         }
+                        // Drain hyd (0009) ne peut JAMAIS etre jaune
+                        if (d.bom['0009'] === 'j') d.bom['0009'] = 'r';
                         // Update visible tokens
                         var tokens = tbody.querySelectorAll('[data-idx="' + globalIdx + '"]');
                         tokens.forEach(function(token) {

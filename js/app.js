@@ -547,6 +547,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 for (var code in overrides) {
                     if (overrides[code]) bomDefaults[code] = overrides[code];
                 }
+                // Drain hyd (0009) ne peut JAMAIS etre jaune — rouge ou na seulement
+                if (bomDefaults['0009'] === 'j') bomDefaults['0009'] = 'r';
                 applyBomToKit(bomDefaults);
                 // Update harnais if override exists
                 if (overrides.harnais) {
