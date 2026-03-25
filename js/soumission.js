@@ -534,13 +534,27 @@ function getCode(name) {
     return OPTION_CODES[name] || '';
 }
 
-// Format item with code for display
-function fmtItem(name) {
-    var code = getCode(name);
-    return code ? name + ' — ' + code : name;
+// Format item: code before description
+function fmtItem(code, desc) {
+    return code ? code + ' — ' + desc : desc;
 }
 
-// Update selected options summary list — each choice gets its own line with codes
+// Individual code mappings (one code per item)
+var INDIVIDUAL_CODES = {
+    'Limiteur Hauteur': [{code: '1500-0001', desc: 'Limiteur Hauteur'}],
+    'Limiteur Rotation': [{code: '1500-0002', desc: 'Limiteur Rotation'}],
+    'Limiteur Multi-axe': [{code: '1500-0005', desc: 'Limiteur Multi-axe'}],
+    'IDC': [{code: '1000-0400', desc: 'IDC Complet'}],
+    'IDC ajout': [{code: '1000-0004', desc: 'IDC en ajout au limiteur'}],
+    'Base limiteur': [{code: '1500-0000', desc: 'Base limiteur'}],
+    'Systeme de creusage 2D': [{code: '1100-0007', desc: 'Systeme de creusage 2D'}],
+    'Camera Recul': [{code: '1300-0001', desc: 'Camera de recul'}],
+    'Camera Recul + capteur': [{code: '1300-0012', desc: 'Camera recul + capteur proximite'}],
+    'Camera Quad': [{code: '1300-0003', desc: 'Camera Quad'}],
+    'Camera 360': [{code: '1300-0004', desc: 'Camera 360 (4 cameras)'}]
+};
+
+// Update selected options summary list — each code on its own line
 function updateSelectedSummary() {
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
@@ -548,37 +562,37 @@ function updateSelectedSummary() {
 
     var items = [];
 
-    // Limiteur + IDC combined logic
+    // Limiteur + IDC logic
     var haut = document.getElementById('lim-hauteur');
     var rot = document.getElementById('lim-rotation');
     var multi = document.getElementById('lim-multi');
     var hasH = haut && haut.checked;
     var hasR = rot && rot.checked;
     var hasM = multi && multi.checked;
+    var anyLim = hasH || hasR || hasM;
 
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
     var hasIDC = idcBox && idcBox.classList.contains('active');
 
-    var limPart = '';
-    if (hasM) limPart = 'Limiteur Multi-axe';
-    else if (hasH && hasR) limPart = 'Limiteur Hauteur + Rotation';
-    else if (hasH) limPart = 'Limiteur Hauteur';
-    else if (hasR) limPart = 'Limiteur Rotation';
+    // Base limiteur (needed for Hauteur/Rotation, not Multi-axe)
+    if ((hasH || hasR) && !hasM) {
+        items.push(fmtItem('1500-0000', 'Base limiteur'));
+    }
+    if (hasH && !hasM) items.push(fmtItem('1500-0001', 'Limiteur Hauteur'));
+    if (hasR && !hasM) items.push(fmtItem('1500-0002', 'Limiteur Rotation'));
+    if (hasM) items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
 
-    if (limPart && hasIDC) {
-        // Combined Limiteur + IDC
-        var comboKey = limPart + ' / IDC';
-        items.push(fmtItem(comboKey));
-    } else if (limPart) {
-        items.push(fmtItem(limPart));
+    // IDC
+    if (hasIDC && anyLim) {
+        items.push(fmtItem('1000-0004', 'IDC en ajout au limiteur'));
     } else if (hasIDC) {
-        items.push(fmtItem('IDC'));
+        items.push(fmtItem('1000-0400', 'IDC Complet'));
     }
 
     // Guide de creusage → Systeme de creusage 2D
     var creusBox = document.querySelector('[data-option="Guide de creusage"]');
     if (creusBox && creusBox.classList.contains('active')) {
-        items.push(fmtItem('Systeme de creusage 2D'));
+        items.push(fmtItem('1100-0007', 'Systeme de creusage 2D'));
     }
 
     // Camera with sub-option
@@ -586,10 +600,13 @@ function updateSelectedSummary() {
     if (camBox && camBox.classList.contains('active')) {
         var camRadio = camBox.querySelector('input[name="camera-type"]:checked');
         if (camRadio) {
-            var camName = 'Camera ' + camRadio.value;
-            items.push(fmtItem(camName));
-        } else {
-            items.push('Camera');
+            var camKey = 'Camera ' + camRadio.value;
+            var camData = INDIVIDUAL_CODES[camKey];
+            if (camData) {
+                items.push(fmtItem(camData[0].code, camData[0].desc));
+            } else {
+                items.push(camRadio.value);
+            }
         }
     }
 
