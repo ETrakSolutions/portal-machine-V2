@@ -278,34 +278,29 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
-        // Collect toggle box states (use same logic as summary)
+        // Collect toggle box states (use same combined logic as summary)
         var optionsOn = [];
         var optionsOff = [];
 
-        var _limBox = document.getElementById('toggle-limiteur');
-        var _limActive = _limBox && _limBox.classList.contains('active');
-        var _limDetail = _limActive ? _limBox.querySelector('.toggle-status').textContent : '';
-        var _hasLimSub = _limActive && (_limDetail !== 'OFF');
-        var _idcBox = document.querySelector('[data-option="Indicateur de charge"]');
-        var _idcActive = _idcBox && _idcBox.classList.contains('active');
+        // Combined Limiteur/IDC/Creusage line for email
+        var _combined = buildLimIdcCreusageText();
+        if (_combined) optionsOn.push(_combined);
 
-        // Combined Limiteur + IDC
-        if (_limActive && _idcActive && _hasLimSub) {
-            optionsOn.push('Limiteur de portee + IDC: ' + _limDetail);
-        } else if (_limActive && _hasLimSub) {
-            optionsOn.push('Limiteur de portee: ' + _limDetail);
-        } else if (_limActive) {
-            optionsOff.push('Limiteur de portee');
-        }
-        if (_idcActive && !(_limActive && _hasLimSub)) {
-            optionsOn.push('IDC Complet');
-        }
-        if (!_idcActive) optionsOff.push('Indicateur de charge');
-        if (!_limActive) optionsOff.push('Limiteur de portee');
+        // Track OFF states for excluded items
+        var _haut = document.getElementById('lim-hauteur');
+        var _rot = document.getElementById('lim-rotation');
+        var _multi = document.getElementById('lim-multi');
+        var _anyLim = (_haut && _haut.checked) || (_rot && _rot.checked) || (_multi && _multi.checked);
+        var _idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+        var _creusBox = document.querySelector('[data-option="Guide de creusage"]');
+        if (!_anyLim) optionsOff.push('Limiteur de portee');
+        if (!(_idcBox && _idcBox.classList.contains('active'))) optionsOff.push('Indicateur de charge');
+        if (!(_creusBox && _creusBox.classList.contains('active'))) optionsOff.push('Guide de creusage');
 
         document.querySelectorAll('.toggle-box').forEach(function(box) {
             if (box.id === 'toggle-limiteur') return;
             if (box.dataset.option === 'Indicateur de charge') return;
+            if (box.dataset.option === 'Guide de creusage') return;
             var name = box.dataset.option;
             if (box.classList.contains('active')) {
                     optionsOn.push(name);
@@ -407,38 +402,61 @@ if (submitBtn) {
     });
 }
 
+// Build combined text for Limiteur/IDC/Creusage based on truth table
+function buildLimIdcCreusageText() {
+    // Read limiteur sub-options
+    var haut = document.getElementById('lim-hauteur');
+    var rot = document.getElementById('lim-rotation');
+    var multi = document.getElementById('lim-multi');
+    var hasH = haut && haut.checked;
+    var hasR = rot && rot.checked;
+    var hasM = multi && multi.checked;
+
+    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+    var hasIDC = idcBox && idcBox.classList.contains('active');
+
+    var creusBox = document.querySelector('[data-option="Guide de creusage"]');
+    var hasCR = creusBox && creusBox.classList.contains('active');
+
+    // Build limiteur part
+    var limPart = '';
+    if (hasM) {
+        limPart = 'Limiteur Multi-axe';
+    } else if (hasH && hasR) {
+        limPart = 'Limiteur Hauteur + Rotation';
+    } else if (hasH) {
+        limPart = 'Limiteur Hauteur';
+    } else if (hasR) {
+        limPart = 'Limiteur Rotation';
+    }
+
+    // Assemble parts with " / " separator
+    var parts = [];
+    if (limPart) parts.push(limPart);
+    if (hasIDC && !limPart) parts.push('IDC');
+    if (hasIDC && limPart) parts.push('IDC');
+    if (hasCR) parts.push('Systeme de creusage 2D');
+
+    return parts.join(' / ');
+}
+
 // Update selected options summary list
 function updateSelectedSummary() {
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
     if (!wrap || !list) return;
 
-    var limBox = document.getElementById('toggle-limiteur');
-    var limActive = limBox && limBox.classList.contains('active');
-    var limDetail = limActive ? limBox.querySelector('.toggle-status').textContent : '';
-    var hasLimSub = limActive && (limDetail !== 'OFF'); // Hauteur, Rotation, or Multi-axe
-
-    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
-    var idcActive = idcBox && idcBox.classList.contains('active');
-
     var items = [];
 
-    // Limiteur + IDC combined logic
-    if (limActive && idcActive && hasLimSub) {
-        // IDC en ajout au limiteur
-        items.push('Limiteur de portee + IDC: ' + limDetail);
-    } else if (limActive && hasLimSub) {
-        items.push('Limiteur de portee: ' + limDetail);
-    } else if (idcActive && !hasLimSub) {
-        items.push('IDC Complet');
-    } else if (idcActive && limActive) {
-        items.push('IDC Complet');
-    }
+    // Combined Limiteur/IDC/Creusage line
+    var combined = buildLimIdcCreusageText();
+    if (combined) items.push(combined);
 
-    // Other toggles (skip limiteur and IDC, already handled)
+    // Other toggles (skip limiteur, IDC, creusage — already handled)
     document.querySelectorAll('.toggle-box').forEach(function(box) {
         if (box.id === 'toggle-limiteur') return;
         if (box.dataset.option === 'Indicateur de charge') return;
+        if (box.dataset.option === 'Guide de creusage') return;
         if (box.classList.contains('active')) {
             items.push(box.dataset.option);
         }
