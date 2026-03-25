@@ -712,18 +712,30 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
     });
 })();
 
-// Camera sub-options logic (radio buttons)
+// Camera sub-options logic (exclusive checkboxes — one at a time, but can uncheck)
 (function() {
     var camBox = document.getElementById('toggle-camera');
     if (!camBox) return;
-    var radios = camBox.querySelectorAll('input[name="camera-type"]');
+    var cbs = camBox.querySelectorAll('input[name="camera-type"]');
     var status = camBox.querySelector('.toggle-status');
 
-    radios.forEach(function(radio) {
-        radio.addEventListener('change', function() {
+    cbs.forEach(function(cb) {
+        cb.addEventListener('change', function() {
             if (this.checked) {
+                // Uncheck others (exclusive)
+                cbs.forEach(function(other) {
+                    if (other !== cb) other.checked = false;
+                });
                 camBox.classList.add('active');
                 status.textContent = this.value;
+            } else {
+                // Unchecked — if nothing else checked, deactivate
+                var anyChecked = false;
+                cbs.forEach(function(c) { if (c.checked) anyChecked = true; });
+                if (!anyChecked) {
+                    camBox.classList.remove('active');
+                    status.textContent = 'OFF';
+                }
             }
             updateSelectedSummary();
         });
