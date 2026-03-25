@@ -169,10 +169,14 @@ function showOptions() {
     optionsSection.style.display = 'block';
     emptyState.style.display = 'none';
 
-    // Update options header with machine info
+    // Update options title and description with machine info
+    var titleEl = document.getElementById('options-title');
+    if (titleEl) {
+        titleEl.textContent = 'Options pour ' + fab + ' ' + modele + ' (' + annee + ')';
+    }
     var descEl = document.getElementById('options-machine-desc');
     if (descEl) {
-        descEl.textContent = fab + ' ' + modele + ' (' + annee + ') — ' + type;
+        descEl.textContent = 'Selectionnez les produits souhaites pour cette machine.';
     }
 
     var infoEl = document.getElementById('soumission-machine-info');
@@ -187,16 +191,6 @@ function showOptions() {
     });
     var textarea = document.getElementById('soumission-comment');
     if (textarea) textarea.value = '';
-
-    // Hide Balance for Excavatrice (not applicable)
-    var balanceBox = document.querySelector('[data-option="Balance"]');
-    if (balanceBox) {
-        balanceBox.style.display = (type === 'Excavatrice') ? 'none' : '';
-        if (type === 'Excavatrice') {
-            balanceBox.classList.remove('active');
-            balanceBox.querySelector('.toggle-status').textContent = 'OFF';
-        }
-    }
 
     // Load notes for this model
     loadNotesForModel(fab, modele, annee);
