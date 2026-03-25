@@ -383,6 +383,31 @@ if (submitBtn) {
     });
 }
 
+// Update selected options summary list
+function updateSelectedSummary() {
+    var wrap = document.getElementById('selected-options-summary');
+    var list = document.getElementById('selected-options-list');
+    if (!wrap || !list) return;
+    var items = [];
+    document.querySelectorAll('.toggle-box').forEach(function(box) {
+        if (box.classList.contains('active')) {
+            var name = box.dataset.option;
+            if (box.id === 'toggle-limiteur') {
+                var detail = box.querySelector('.toggle-status').textContent;
+                items.push(name + ': ' + detail);
+            } else {
+                items.push(name);
+            }
+        }
+    });
+    if (items.length > 0) {
+        list.innerHTML = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
+        wrap.style.display = 'block';
+    } else {
+        wrap.style.display = 'none';
+    }
+}
+
 // Toggle boxes click handler
 document.querySelectorAll('.toggle-box').forEach(function(box) {
     // Limiteur de portee has sub-options — special handler
@@ -401,6 +426,7 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
             } else {
                 status.textContent = 'OFF';
             }
+            updateSelectedSummary();
         });
     }
 });
@@ -429,6 +455,7 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
             limBox.classList.remove('active');
             status.textContent = 'OFF';
         }
+        updateSelectedSummary();
     }
 
     // Multi-axe is exclusive with Hauteur/Rotation
