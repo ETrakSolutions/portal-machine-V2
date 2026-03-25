@@ -104,6 +104,37 @@
 .sub-option-excl {
     border-color: #555;
 }
+/* Selected options summary */
+.selected-options-summary {
+    margin: 1rem 0;
+    padding: 12px 16px;
+    background: rgba(0, 204, 102, 0.06);
+    border: 1px solid rgba(0, 204, 102, 0.2);
+    border-radius: 8px;
+}
+.selected-options-summary h4 {
+    color: #00CC66;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 8px 0;
+}
+.selected-options-summary ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.selected-options-summary li {
+    color: #ddd;
+    font-size: 0.85rem;
+    padding: 3px 0;
+}
+.selected-options-summary li::before {
+    content: "\2713  ";
+    color: #00CC66;
+    font-weight: bold;
+}
+
 .sub-note {
     width: 100%;
     font-size: 0.7rem;
