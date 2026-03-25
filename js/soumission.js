@@ -188,6 +188,16 @@ function showOptions() {
     var textarea = document.getElementById('soumission-comment');
     if (textarea) textarea.value = '';
 
+    // Hide Balance for Excavatrice (not applicable)
+    var balanceBox = document.querySelector('[data-option="Balance"]');
+    if (balanceBox) {
+        balanceBox.style.display = (type === 'Excavatrice') ? 'none' : '';
+        if (type === 'Excavatrice') {
+            balanceBox.classList.remove('active');
+            balanceBox.querySelector('.toggle-status').textContent = 'OFF';
+        }
+    }
+
     // Load notes for this model
     loadNotesForModel(fab, modele, annee);
 }
