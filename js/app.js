@@ -80,6 +80,43 @@ selectType.addEventListener('change', () => {
     btnReset.style.display = 'inline-block';
 });
 
+// Helper: populate modeles dropdown from fab data, optionally filtered by year
+function populateModeles(type, fab, anneeFilter) {
+    selectModele.innerHTML = '<option value="">-- Selectionnez --</option>';
+    var fabData = machinesData[type][fab];
+    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'400':8};
+    // Collect unique models across all years (or filtered year)
+    var modelSet = {};
+    var annees = anneeFilter ? [anneeFilter] : Object.keys(fabData);
+    annees.forEach(function(y) {
+        if (!fabData[y]) return;
+        Object.keys(fabData[y]).forEach(function(m) {
+            if (!modelSet[m]) modelSet[m] = fabData[y][m];
+        });
+    });
+    var modeles = Object.keys(modelSet).sort(function(a, b) {
+        var ca = modelSet[a]['Classe machine'] || 'Standard';
+        var cb = modelSet[b]['Classe machine'] || 'Standard';
+        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 5;
+        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 5;
+        if (oa !== ob) return oa - ob;
+        return a.localeCompare(b);
+    });
+    modeles.forEach(function(modele) {
+        var opt = document.createElement('option');
+        opt.value = modele;
+        var classe = modelSet[modele]['Classe machine'] || '';
+        opt.textContent = modele + (classe ? ' [' + classe + ']' : '');
+        selectModele.appendChild(opt);
+    });
+    var optAutre = document.createElement('option');
+    optAutre.value = '__OTHER__';
+    optAutre.textContent = '\u2295 Autre modele (pas dans la liste)';
+    optAutre.style.fontStyle = 'italic';
+    selectModele.appendChild(optAutre);
+    selectModele.disabled = false;
+}
+
 // Fabricant changed
 selectFabricant.addEventListener('change', () => {
     resetFrom('annee');
@@ -95,41 +132,20 @@ selectFabricant.addEventListener('change', () => {
         selectAnnee.appendChild(opt);
     });
     selectAnnee.disabled = false;
+
+    // Also populate modeles immediately (all years)
+    populateModeles(type, fab, null);
 });
 
-// Annee changed
+// Annee changed — filter modeles by year
 selectAnnee.addEventListener('change', () => {
-    resetFrom('modele');
     const type = selectType.value;
     const fab = selectFabricant.value;
     const annee = selectAnnee.value;
-    if (!annee) return;
-
-    // Sort models by class order, then alphabetically
-    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'400':8};
-    var modelesData = machinesData[type][fab][annee];
-    var modeles = Object.keys(modelesData).sort(function(a, b) {
-        var ca = modelesData[a]['Classe machine'] || 'Standard';
-        var cb = modelesData[b]['Classe machine'] || 'Standard';
-        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 5;
-        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 5;
-        if (oa !== ob) return oa - ob;
-        return a.localeCompare(b);
-    });
-    modeles.forEach(modele => {
-        const opt = document.createElement('option');
-        opt.value = modele;
-        var classe = modelesData[modele]['Classe machine'] || '';
-        opt.textContent = modele + (classe ? ' [' + classe + ']' : '');
-        selectModele.appendChild(opt);
-    });
-    // Add "Autre modele" option
-    const optAutre = document.createElement('option');
-    optAutre.value = '__OTHER__';
-    optAutre.textContent = '\u2295 Autre modele (pas dans la liste)';
-    optAutre.style.fontStyle = 'italic';
-    selectModele.appendChild(optAutre);
-    selectModele.disabled = false;
+    if (!fab) return;
+    selectModele.value = '';
+    hideResults();
+    populateModeles(type, fab, annee || null);
 });
 
 // Delete model
@@ -189,14 +205,27 @@ function updateGearDeleteButton() {
 selectModele.addEventListener('change', () => {
     const type = selectType.value;
     const fab = selectFabricant.value;
-    const annee = selectAnnee.value;
+    let annee = selectAnnee.value;
     const modele = selectModele.value;
     if (!modele) {
         hideResults();
         return;
     }
 
+    // If no year selected, find the most recent year that has this model
+    if (!annee) {
+        var allYears = Object.keys(machinesData[type][fab]).sort().reverse();
+        for (var i = 0; i < allYears.length; i++) {
+            if (machinesData[type][fab][allYears[i]][modele]) {
+                annee = allYears[i];
+                selectAnnee.value = annee;
+                break;
+            }
+        }
+    }
+
     if (modele === '__OTHER__') {
+        if (!annee) { alert('Selectionnez une annee pour creer un modele.'); return; }
         showCustomModelModal(type, fab, annee);
         return;
     }
