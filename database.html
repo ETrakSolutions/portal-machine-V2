@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=137">
-    <link rel="stylesheet" href="css/admin.css?v=137">
+    <link rel="stylesheet" href="css/style.css?v=138">
+    <link rel="stylesheet" href="css/admin.css?v=138">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -1158,10 +1158,17 @@
                         var tokens = tbody.querySelectorAll('[data-idx="' + globalIdx + '"]');
                         tokens.forEach(function(token) {
                             var c = token.dataset.code;
+                            if (!c) return; // skip non-bom elements like harnais select
                             var st = d.bom[c] || 'na';
                             token.className = 'bom-token' + (st === 'r' ? ' bom-r' : st === 'j' ? ' bom-j' : ' bom-na') + (canEdit ? '' : ' readonly');
                             token.textContent = st === 'r' ? 'R' : st === 'j' ? 'J' : '-';
                         });
+                        // Update harnais dropdown if override has it
+                        if (overrides.harnais) {
+                            d.harnais = overrides.harnais;
+                            var hSel = tbody.querySelector('.db-harnais-select[data-idx="' + globalIdx + '"]');
+                            if (hSel) hSel.value = overrides.harnais;
+                        }
                     });
                 })(i);
             }
