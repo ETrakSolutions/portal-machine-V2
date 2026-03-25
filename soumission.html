@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
-    <link rel="stylesheet" href="css/style.css?v=123">
-    <link rel="stylesheet" href="css/soumission.css?v=123">
+    <link rel="stylesheet" href="css/style.css?v=124">
+    <link rel="stylesheet" href="css/soumission.css?v=124">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -94,9 +94,13 @@
                     <span class="toggle-label">Indicateur de charge</span>
                     <span class="toggle-status">OFF</span>
                 </div>
-                <div class="toggle-box" data-option="Guide de creusage">
+                <div class="toggle-box toggle-has-sub" data-option="Guide de creusage" id="toggle-creusage">
                     <span class="toggle-label">Guide de creusage</span>
                     <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel" id="creusage-panel">
+                        <label class="sub-option"><input type="radio" name="creusage-type" id="creus-2d" value="2D"> Systeme de creusage 2D</label>
+                        <label class="sub-option"><input type="radio" name="creusage-type" id="creus-laser" value="Laser"> Reference laser</label>
+                    </div>
                 </div>
                 <div class="toggle-box toggle-has-sub" data-option="Camera" id="toggle-camera">
                     <span class="toggle-label">Camera</span>
@@ -151,6 +155,6 @@
         </div>
     </footer>
 
-    <script src="js/soumission.js?v=123"></script>
+    <script src="js/soumission.js?v=124"></script>
 </body>
 </html>
