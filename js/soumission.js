@@ -362,10 +362,15 @@ if (submitBtn) {
         if (!_anyLim) optionsOff.push('Limiteur de portee');
         if (!_hasIDC) optionsOff.push('Indicateur de charge');
 
-        // Creusage
-        var _creusBox = document.querySelector('[data-option="Guide de creusage"]');
+        // Creusage (2D or Reference laser)
+        var _creusBox = document.getElementById('toggle-creusage');
         if (_creusBox && _creusBox.classList.contains('active')) {
-            optionsOn.push('Systeme de creusage 2D (' + getCode('Systeme de creusage 2D') + ')');
+            var _creusRadio = _creusBox.querySelector('input[name="creusage-type"]:checked');
+            if (_creusRadio && _creusRadio.value === 'Laser') {
+                optionsOn.push('Reference laser (1000-0009)');
+            } else {
+                optionsOn.push('Systeme de creusage 2D (1100-0007)');
+            }
         } else {
             optionsOff.push('Guide de creusage');
         }
@@ -504,7 +509,7 @@ function buildLimIdcCreusageText() {
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
     var hasIDC = idcBox && idcBox.classList.contains('active');
 
-    var creusBox = document.querySelector('[data-option="Guide de creusage"]');
+    var creusBox = document.getElementById('toggle-creusage');
     var hasCR = creusBox && creusBox.classList.contains('active');
 
     // Build limiteur part
@@ -589,10 +594,15 @@ function updateSelectedSummary() {
         items.push(fmtItem('1000-0400', 'IDC Complet'));
     }
 
-    // Guide de creusage → Systeme de creusage 2D
-    var creusBox = document.querySelector('[data-option="Guide de creusage"]');
+    // Guide de creusage (2D or Reference laser)
+    var creusBox = document.getElementById('toggle-creusage');
     if (creusBox && creusBox.classList.contains('active')) {
-        items.push(fmtItem('1100-0007', 'Systeme de creusage 2D'));
+        var creusRadio = creusBox.querySelector('input[name="creusage-type"]:checked');
+        if (creusRadio && creusRadio.value === 'Laser') {
+            items.push(fmtItem('1000-0009', 'Reference laser'));
+        } else {
+            items.push(fmtItem('1100-0007', 'Systeme de creusage 2D'));
+        }
     }
 
     // Camera with sub-option
@@ -632,7 +642,7 @@ function updateSelectedSummary() {
 // Toggle boxes click handler
 document.querySelectorAll('.toggle-box').forEach(function(box) {
     // Limiteur and Camera have sub-options — special handler
-    if (box.id === 'toggle-limiteur' || box.id === 'toggle-camera') {
+    if (box.id === 'toggle-limiteur' || box.id === 'toggle-camera' || box.id === 'toggle-creusage') {
         box.addEventListener('click', function(e) {
             if (e.target.closest('.toggle-sub-panel')) return;
             this.classList.toggle('open');
@@ -724,6 +734,24 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
         radio.addEventListener('change', function() {
             if (this.checked) {
                 camBox.classList.add('active');
+                status.textContent = this.value;
+            }
+            updateSelectedSummary();
+        });
+    });
+})();
+
+// Guide de creusage sub-options logic (radio buttons)
+(function() {
+    var creusBox = document.getElementById('toggle-creusage');
+    if (!creusBox) return;
+    var radios = creusBox.querySelectorAll('input[name="creusage-type"]');
+    var status = creusBox.querySelector('.toggle-status');
+
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                creusBox.classList.add('active');
                 status.textContent = this.value;
             }
             updateSelectedSummary();
