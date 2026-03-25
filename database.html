@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=133">
-    <link rel="stylesheet" href="css/admin.css?v=133">
+    <link rel="stylesheet" href="css/style.css?v=134">
+    <link rel="stylesheet" href="css/admin.css?v=134">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -142,6 +142,11 @@
         .db-table tbody tr:hover td:nth-child(1),
         .db-table tbody tr:hover td:nth-child(2) {
             background: #1e3450;
+        }
+        /* When fab column is hidden, modele becomes the first sticky column */
+        .db-table.fab-hidden thead th:nth-child(2),
+        .db-table.fab-hidden tbody td:nth-child(2) {
+            left: 0;
         }
         .db-table .incomplete {
             color: #FF8C00;
@@ -982,6 +987,14 @@
             var start = currentPage * PAGE_SIZE;
             var end = Math.min(start + PAGE_SIZE, filtered.length);
 
+            // Hide fab column when a fabricant is selected in filter
+            var fabFilter = document.getElementById('db-fab').value;
+            var fabHeader = document.querySelector('#db-table thead th[data-col="fab"]');
+            var dbTable = document.getElementById('db-table');
+            if (fabHeader) fabHeader.style.display = fabFilter ? 'none' : '';
+            if (fabFilter) dbTable.classList.add('fab-hidden');
+            else dbTable.classList.remove('fab-hidden');
+
             for (var i = start; i < end; i++) {
                 var d = filtered[i];
                 var tr = document.createElement('tr');
@@ -990,6 +1003,7 @@
                 ['fab', 'modele'].forEach(function(f) {
                     var td = document.createElement('td');
                     td.textContent = d[f] || '';
+                    if (f === 'fab' && fabFilter) td.style.display = 'none';
                     tr.appendChild(td);
                 });
 
