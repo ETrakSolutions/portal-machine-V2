@@ -440,7 +440,7 @@ function buildLimIdcCreusageText() {
     return parts.join(' / ');
 }
 
-// Update selected options summary list
+// Update selected options summary list — each choice gets its own line
 function updateSelectedSummary() {
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
@@ -448,11 +448,30 @@ function updateSelectedSummary() {
 
     var items = [];
 
-    // Combined Limiteur/IDC/Creusage line
-    var combined = buildLimIdcCreusageText();
-    if (combined) items.push(combined);
+    // Limiteur sub-options (each on its own line)
+    var haut = document.getElementById('lim-hauteur');
+    var rot = document.getElementById('lim-rotation');
+    var multi = document.getElementById('lim-multi');
+    if (multi && multi.checked) {
+        items.push('Limiteur Multi-axe');
+    } else {
+        if (haut && haut.checked) items.push('Limiteur Hauteur');
+        if (rot && rot.checked) items.push('Limiteur Rotation');
+    }
 
-    // Other toggles (skip limiteur, IDC, creusage — already handled)
+    // IDC
+    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+    if (idcBox && idcBox.classList.contains('active')) {
+        items.push('IDC');
+    }
+
+    // Guide de creusage → Systeme de creusage 2D
+    var creusBox = document.querySelector('[data-option="Guide de creusage"]');
+    if (creusBox && creusBox.classList.contains('active')) {
+        items.push('Systeme de creusage 2D');
+    }
+
+    // Other toggles (Balance, Camera, etc.)
     document.querySelectorAll('.toggle-box').forEach(function(box) {
         if (box.id === 'toggle-limiteur') return;
         if (box.dataset.option === 'Indicateur de charge') return;
