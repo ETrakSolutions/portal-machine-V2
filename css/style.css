@@ -523,12 +523,12 @@ main {
     font-family: monospace;
 }
 
-/* Hide unchecked radios when locked — except pulsing ones */
-.kit-locked input[type="radio"]:not(:checked):not(.radio-yellow-pulse) {
+/* Hide unchecked radios — portail is read-only viewer */
+.kit-table input[type="radio"]:not(:checked):not(.radio-yellow-pulse) {
     display: none;
 }
 
-.kit-locked input[type="radio"]:checked {
+.kit-table input[type="radio"]:checked {
     pointer-events: none;
 }
 
