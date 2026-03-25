@@ -52,6 +52,59 @@
     color: #000;
 }
 
+/* Sub-panel for Limiteur de portee */
+.toggle-has-sub {
+    flex-wrap: wrap;
+}
+.toggle-sub-panel {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.toggle-has-sub.open .toggle-sub-panel {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.sub-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #ccc;
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    transition: all 0.2s;
+}
+.sub-option:hover {
+    border-color: #666;
+}
+.sub-option input[type="checkbox"] {
+    accent-color: #00CC66;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.sub-option input[type="checkbox"]:checked + span,
+.sub-option:has(input:checked) {
+    color: #fff;
+    border-color: #00CC66;
+}
+.sub-option input[type="checkbox"]:disabled {
+    opacity: 0.3;
+}
+.sub-option:has(input:disabled) {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+.sub-option-excl {
+    border-color: #555;
+}
+
 @media (max-width: 600px) {
     .toggle-grid { grid-template-columns: 1fr; }
     .toggle-box { padding: 16px; min-height: 48px; }
