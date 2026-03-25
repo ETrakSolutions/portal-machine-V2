@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=135">
-    <link rel="stylesheet" href="css/admin.css?v=135">
+    <link rel="stylesheet" href="css/style.css?v=136">
+    <link rel="stylesheet" href="css/admin.css?v=136">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -970,7 +970,8 @@
 
             filtered = allData.filter(function(d) {
                 if (fab && d.fab !== fab) return false;
-                if (annee && d.annee !== annee) return false;
+                // Skip year filter when search is active — show all years for matching models
+                if (annee && !search && d.annee !== annee) return false;
                 if (search && d.modele.toLowerCase().indexOf(search) === -1 && d.fab.toLowerCase().indexOf(search) === -1) return false;
                 return true;
             });
