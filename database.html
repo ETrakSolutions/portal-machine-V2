@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=132">
-    <link rel="stylesheet" href="css/admin.css?v=132">
+    <link rel="stylesheet" href="css/style.css?v=133">
+    <link rel="stylesheet" href="css/admin.css?v=133">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -302,6 +302,11 @@
             padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.7rem; color: #ccc;
         }
         .db-pc-popup .pc-list-item .pc-del { color: #FF4444; cursor: pointer; padding: 0 4px; }
+        .pc-allyears-label {
+            display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+            font-size: 0.7rem; color: #FF8C00; cursor: pointer; user-select: none;
+        }
+        .pc-allyears-label input { accent-color: #FF8C00; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -427,6 +432,34 @@
             }).then(function() { showToast('Codes produit sauvegardes'); }).catch(function() {});
         }
 
+        function saveProductCodesAllYears(fab, modele, codes) {
+            // Find all years for this fab+modele
+            var years = [];
+            allData.forEach(function(d) {
+                if (d.fab === fab && d.modele === modele && years.indexOf(d.annee) === -1) {
+                    years.push(d.annee);
+                }
+            });
+            var codeCopy = JSON.stringify(codes);
+            years.forEach(function(y) {
+                var key = pcKey(fab, modele, y);
+                productCodesCache[key] = JSON.parse(codeCopy);
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/plain'},
+                    body: JSON.stringify({ action: 'save', key: key, value: codeCopy, pin: '1400' })
+                }).catch(function() {});
+            });
+            showToast('Codes produit sauvegardes pour ' + years.length + ' annees');
+            // Update visible cells for other years
+            document.querySelectorAll('.db-pc-tags').forEach(function(tags) {
+                if (tags.dataset.fab === fab && tags.dataset.modele === modele) {
+                    var cell = tags.closest('.db-pc-cell');
+                    renderCellTags(cell, JSON.parse(codeCopy));
+                }
+            });
+        }
+
         var activePopup = null;
         function closePopup() {
             if (activePopup) { activePopup.remove(); activePopup = null; }
@@ -440,9 +473,20 @@
 
             var popup = document.createElement('div');
             popup.className = 'db-pc-popup';
+            // Count how many years exist for this fab+modele
+            var yearCount = 0;
+            var seenYears = {};
+            allData.forEach(function(d) {
+                if (d.fab === fab && d.modele === modele && !seenYears[d.annee]) {
+                    seenYears[d.annee] = true;
+                    yearCount++;
+                }
+            });
+
             popup.innerHTML =
                 '<button class="pc-close">&times;</button>' +
                 '<h4>Codes produit — ' + fab + ' ' + modele + ' (' + annee + ')</h4>' +
+                (yearCount > 1 ? '<label class="pc-allyears-label"><input type="checkbox" id="pc-allyears"> Appliquer a toutes les annees (' + yearCount + ' annees)</label>' : '') +
                 '<div class="pc-list" id="pc-list-active"></div>' +
                 '<div class="pc-row">' +
                     '<input class="pc-code" id="pc-new-code" placeholder="Code" maxlength="20">' +
@@ -471,14 +515,27 @@
             }
             renderList();
 
+            function isAllYears() {
+                var cb = popup.querySelector('#pc-allyears');
+                return cb && cb.checked;
+            }
+
+            function saveCodes() {
+                if (isAllYears()) {
+                    saveProductCodesAllYears(fab, modele, codes);
+                } else {
+                    saveProductCodes(fab, modele, annee, codes);
+                    renderCellTags(cell, codes);
+                }
+            }
+
             // Delete
             popup.addEventListener('click', function(e) {
                 var del = e.target.closest('.pc-del');
                 if (del) {
                     codes.splice(parseInt(del.dataset.i), 1);
-                    saveProductCodes(fab, modele, annee, codes);
+                    saveCodes();
                     renderList();
-                    renderCellTags(cell, codes);
                 }
                 if (e.target.closest('.pc-close')) closePopup();
             });
@@ -490,9 +547,8 @@
                 var qtyVal = parseInt(popup.querySelector('#pc-new-qty').value) || 1;
                 if (!codeVal) { popup.querySelector('#pc-new-code').focus(); return; }
                 codes.push({ code: codeVal, desc: descVal, qty: qtyVal });
-                saveProductCodes(fab, modele, annee, codes);
+                saveCodes();
                 renderList();
-                renderCellTags(cell, codes);
                 popup.querySelector('#pc-new-code').value = '';
                 popup.querySelector('#pc-new-desc').value = '';
                 popup.querySelector('#pc-new-qty').value = '1';
