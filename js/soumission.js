@@ -309,6 +309,18 @@ if (submitBtn) {
         }
         var kitItems = getKitSummary(type, fab, modele, specs);
 
+        // Load product codes then build email
+        var pcApiKey = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+        fetch(API_URL + '?action=get&key=' + encodeURIComponent(pcApiKey))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                var productCodes = [];
+                if (data.value) { try { productCodes = JSON.parse(data.value); } catch(e) {} }
+                sendEmail(productCodes);
+            })
+            .catch(function() { sendEmail([]); });
+
+        function sendEmail(productCodes) {
         var body =
             'Demande de soumission e-Trak\n' +
             '================================\n\n' +
@@ -327,6 +339,14 @@ if (submitBtn) {
             body += '\nKit Machine e-Trak:\n';
             kitItems.forEach(function(item) {
                 body += '  ' + item.code + ' — ' + item.name + ' (' + item.status + ')\n';
+            });
+        }
+
+        // Product codes
+        if (productCodes.length > 0) {
+            body += '\nCodes produit:\n';
+            productCodes.forEach(function(pc) {
+                body += '  ' + pc.code + ' \u2014 ' + (pc.desc || '') + ' (x' + (pc.qty || 1) + ')\n';
             });
         }
 
@@ -353,6 +373,7 @@ if (submitBtn) {
             mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
         }
         window.location.href = mailUrl;
+        } // end sendEmail
     });
 }
 

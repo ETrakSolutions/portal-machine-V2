@@ -357,6 +357,27 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
 
     resultsTableContainer.innerHTML = html;
 
+    // Load and display product codes for this machine
+    var pcApiKey = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+    fetch(API_URL + '?action=get&key=' + encodeURIComponent(pcApiKey))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var codes = [];
+            if (data.value) { try { codes = JSON.parse(data.value); } catch(e) {} }
+            if (codes.length > 0) {
+                var pcDiv = document.createElement('div');
+                pcDiv.className = 'product-codes-section';
+                pcDiv.innerHTML = '<h4 class="pc-title">Codes produit</h4>' +
+                    '<table class="specs-table pc-table"><thead><tr><th>Code</th><th>Description</th><th>Qte</th></tr></thead><tbody>' +
+                    codes.map(function(c) {
+                        return '<tr><td><strong>' + c.code + '</strong></td><td>' + (c.desc || '') + '</td><td>' + (c.qty || 1) + '</td></tr>';
+                    }).join('') +
+                    '</tbody></table>';
+                resultsTableContainer.appendChild(pcDiv);
+            }
+        })
+        .catch(function() {});
+
     resultsSection.style.display = 'block';
     emptyState.style.display = 'none';
 

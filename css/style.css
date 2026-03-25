@@ -1633,3 +1633,30 @@ footer {
     box-sizing: border-box;
 }
 .ud-admin-btn:hover { background: rgba(0, 98, 204, 0.3); color: #fff; }
+
+/* Product codes section in machine portal */
+.product-codes-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+.pc-title {
+    color: #FF8C00;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 0.5rem;
+}
+.pc-table thead th {
+    background: rgba(0,98,204,0.15);
+    color: #6CB4FF;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 6px 12px;
+}
+.pc-table tbody td {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}

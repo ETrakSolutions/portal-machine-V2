@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=130">
-    <link rel="stylesheet" href="css/admin.css?v=130">
+    <link rel="stylesheet" href="css/style.css?v=131">
+    <link rel="stylesheet" href="css/admin.css?v=131">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -262,6 +262,42 @@
         }
         .db-note-input:focus { border-color: #0062CC; outline: none; color: #fff; }
         .db-note-input.note-saved { border-color: #00CC66; }
+        /* Product codes */
+        .db-pc-cell { position: relative; min-width: 120px; }
+        .db-pc-tags { display: flex; flex-wrap: wrap; gap: 2px; cursor: pointer; min-height: 22px; }
+        .db-pc-tag {
+            display: inline-flex; align-items: center; gap: 2px;
+            background: rgba(0,98,204,0.2); color: #6CB4FF; border-radius: 3px;
+            font-size: 0.6rem; font-weight: 600; padding: 1px 5px; white-space: nowrap;
+        }
+        .db-pc-tag .pc-rm { cursor: pointer; color: #FF4444; font-weight: 800; margin-left: 2px; }
+        .db-pc-tag .pc-rm:hover { color: #FF8888; }
+        .db-pc-empty { color: #555; font-size: 0.6rem; cursor: pointer; }
+        .db-pc-popup {
+            position: fixed; z-index: 9999; background: #1a2332; border: 1px solid #0062CC;
+            border-radius: 8px; padding: 12px; min-width: 300px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .db-pc-popup h4 { margin: 0 0 8px; color: #fff; font-size: 0.8rem; }
+        .db-pc-popup .pc-row { display: flex; gap: 4px; margin-bottom: 6px; }
+        .db-pc-popup input { background: #0d1520; border: 1px solid #2a3a4a; border-radius: 4px; color: #fff; padding: 4px 8px; font-size: 0.75rem; }
+        .db-pc-popup input.pc-code { width: 90px; }
+        .db-pc-popup input.pc-desc { flex: 1; min-width: 100px; }
+        .db-pc-popup input.pc-qty { width: 40px; text-align: center; }
+        .db-pc-popup .pc-add-btn {
+            background: #00CC66; color: #000; border: none; border-radius: 4px;
+            padding: 4px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer;
+        }
+        .db-pc-popup .pc-add-btn:hover { background: #00AA55; }
+        .db-pc-popup .pc-close {
+            position: absolute; top: 6px; right: 10px; background: none; border: none;
+            color: #999; font-size: 1rem; cursor: pointer;
+        }
+        .db-pc-popup .pc-list { max-height: 150px; overflow-y: auto; margin-bottom: 8px; }
+        .db-pc-popup .pc-list-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.7rem; color: #ccc;
+        }
+        .db-pc-popup .pc-list-item .pc-del { color: #FF4444; cursor: pointer; padding: 0 4px; }
     </style>
 </head>
 <body>
@@ -357,6 +393,121 @@
         var sortCol = 'classe';
         var sortAsc = true;
         var overridesCache = {};
+        var productCodesCache = {};
+
+        function pcKey(fab, modele, annee) {
+            return 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+        }
+
+        function loadProductCodes(fab, modele, annee, callback) {
+            var key = pcKey(fab, modele, annee);
+            if (productCodesCache[key] !== undefined) { callback(productCodesCache[key]); return; }
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var val = [];
+                    if (data.value) { try { val = JSON.parse(data.value); } catch(e) {} }
+                    productCodesCache[key] = val;
+                    callback(val);
+                })
+                .catch(function() { callback([]); });
+        }
+
+        function saveProductCodes(fab, modele, annee, codes) {
+            var key = pcKey(fab, modele, annee);
+            productCodesCache[key] = codes;
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(codes), pin: '1400' })
+            }).then(function() { showToast('Codes produit sauvegardes'); }).catch(function() {});
+        }
+
+        var activePopup = null;
+        function closePopup() {
+            if (activePopup) { activePopup.remove(); activePopup = null; }
+        }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+
+        function openProductCodesPopup(fab, modele, annee, cell) {
+            closePopup();
+            var key = pcKey(fab, modele, annee);
+            var codes = productCodesCache[key] || [];
+
+            var popup = document.createElement('div');
+            popup.className = 'db-pc-popup';
+            popup.innerHTML =
+                '<button class="pc-close">&times;</button>' +
+                '<h4>Codes produit — ' + fab + ' ' + modele + ' (' + annee + ')</h4>' +
+                '<div class="pc-list" id="pc-list-active"></div>' +
+                '<div class="pc-row">' +
+                    '<input class="pc-code" id="pc-new-code" placeholder="Code" maxlength="20">' +
+                    '<input class="pc-desc" id="pc-new-desc" placeholder="Description">' +
+                    '<input class="pc-qty" id="pc-new-qty" type="number" min="1" value="1" placeholder="Qte">' +
+                    '<button class="pc-add-btn" id="pc-add-btn">+</button>' +
+                '</div>';
+
+            document.body.appendChild(popup);
+            activePopup = popup;
+
+            // Position near cell
+            var rect = cell.getBoundingClientRect();
+            popup.style.top = Math.min(rect.bottom + 4, window.innerHeight - popup.offsetHeight - 10) + 'px';
+            popup.style.left = Math.min(rect.left, window.innerWidth - popup.offsetWidth - 10) + 'px';
+
+            function renderList() {
+                var list = popup.querySelector('#pc-list-active');
+                if (!codes.length) {
+                    list.innerHTML = '<div style="color:#555;font-size:0.65rem;padding:4px;">Aucun code produit</div>';
+                    return;
+                }
+                list.innerHTML = codes.map(function(c, i) {
+                    return '<div class="pc-list-item"><span>' + c.code + ' — ' + c.desc + ' (x' + c.qty + ')</span><span class="pc-del" data-i="' + i + '">&times;</span></div>';
+                }).join('');
+            }
+            renderList();
+
+            // Delete
+            popup.addEventListener('click', function(e) {
+                var del = e.target.closest('.pc-del');
+                if (del) {
+                    codes.splice(parseInt(del.dataset.i), 1);
+                    saveProductCodes(fab, modele, annee, codes);
+                    renderList();
+                    renderCellTags(cell, codes);
+                }
+                if (e.target.closest('.pc-close')) closePopup();
+            });
+
+            // Add
+            popup.querySelector('#pc-add-btn').addEventListener('click', function() {
+                var codeVal = popup.querySelector('#pc-new-code').value.trim();
+                var descVal = popup.querySelector('#pc-new-desc').value.trim();
+                var qtyVal = parseInt(popup.querySelector('#pc-new-qty').value) || 1;
+                if (!codeVal) { popup.querySelector('#pc-new-code').focus(); return; }
+                codes.push({ code: codeVal, desc: descVal, qty: qtyVal });
+                saveProductCodes(fab, modele, annee, codes);
+                renderList();
+                renderCellTags(cell, codes);
+                popup.querySelector('#pc-new-code').value = '';
+                popup.querySelector('#pc-new-desc').value = '';
+                popup.querySelector('#pc-new-qty').value = '1';
+                popup.querySelector('#pc-new-code').focus();
+            });
+
+            popup.querySelector('#pc-new-code').focus();
+        }
+
+        function renderCellTags(cell, codes) {
+            var tags = cell.querySelector('.db-pc-tags');
+            if (!codes.length) {
+                tags.innerHTML = '<span class="db-pc-empty">+ Ajouter</span>';
+            } else {
+                tags.innerHTML = codes.map(function(c) {
+                    return '<span class="db-pc-tag">' + c.code + (c.qty > 1 ? ' x' + c.qty : '') + '</span>';
+                }).join('');
+            }
+        }
 
         var EXC_BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070'];
         var POMPE_BOM_CODES = ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
@@ -649,6 +800,12 @@
             thNotes.style.minWidth = '130px';
             headerRow.appendChild(thNotes);
 
+            // Add Codes produit column
+            var thPC = document.createElement('th');
+            thPC.textContent = 'Codes produit';
+            thPC.style.minWidth = '130px';
+            headerRow.appendChild(thPC);
+
             // Add DEL column
             var thDel = document.createElement('th');
             thDel.style.cssText = 'width:30px;min-width:30px;text-align:center;font-size:0.6rem;';
@@ -857,6 +1014,19 @@
                 tdNotes.appendChild(noteInput);
                 tr.appendChild(tdNotes);
 
+                // Product codes column
+                var tdPC = document.createElement('td');
+                tdPC.className = 'db-pc-cell';
+                tdPC.style.padding = '2px 4px';
+                var pcTagsDiv = document.createElement('div');
+                pcTagsDiv.className = 'db-pc-tags';
+                pcTagsDiv.innerHTML = '<span class="db-pc-empty">...</span>';
+                pcTagsDiv.dataset.fab = d.fab;
+                pcTagsDiv.dataset.modele = d.modele;
+                pcTagsDiv.dataset.annee = d.annee;
+                tdPC.appendChild(pcTagsDiv);
+                tr.appendChild(tdPC);
+
                 // Delete button (admin only)
                 var tdDel = document.createElement('td');
                 tdDel.style.textAlign = 'center';
@@ -928,6 +1098,18 @@
                         if (local) input.value = local;
                     });
             });
+
+            // Lazy-load product codes for visible rows
+            var pcCells = tbody.querySelectorAll('.db-pc-cell');
+            pcCells.forEach(function(cell) {
+                var tags = cell.querySelector('.db-pc-tags');
+                var fab = tags.dataset.fab;
+                var modele = tags.dataset.modele;
+                var annee = tags.dataset.annee;
+                loadProductCodes(fab, modele, annee, function(codes) {
+                    renderCellTags(cell, codes);
+                });
+            });
         }
 
         // Change harnais dropdown
@@ -966,6 +1148,17 @@
                 }
             })
             .catch(function() {});
+        });
+
+        // Click on product codes cell to open popup
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var tags = e.target.closest('.db-pc-tags');
+            if (!tags || !canEdit) return;
+            var fab = tags.dataset.fab;
+            var modele = tags.dataset.modele;
+            var annee = tags.dataset.annee;
+            var cell = tags.closest('.db-pc-cell');
+            openProductCodesPopup(fab, modele, annee, cell);
         });
 
         // Click on Delete button
