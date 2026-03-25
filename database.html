@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=134">
-    <link rel="stylesheet" href="css/admin.css?v=134">
+    <link rel="stylesheet" href="css/style.css?v=135">
+    <link rel="stylesheet" href="css/admin.css?v=135">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -446,23 +446,38 @@
                 }
             });
             var codeCopy = JSON.stringify(codes);
+            // Update cache + visible cells immediately
             years.forEach(function(y) {
-                var key = pcKey(fab, modele, y);
-                productCodesCache[key] = JSON.parse(codeCopy);
-                fetch(API_URL, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'text/plain'},
-                    body: JSON.stringify({ action: 'save', key: key, value: codeCopy, pin: '1400' })
-                }).catch(function() {});
+                productCodesCache[pcKey(fab, modele, y)] = JSON.parse(codeCopy);
             });
-            showToast('Codes produit sauvegardes pour ' + years.length + ' annees');
-            // Update visible cells for other years
             document.querySelectorAll('.db-pc-tags').forEach(function(tags) {
                 if (tags.dataset.fab === fab && tags.dataset.modele === modele) {
                     var cell = tags.closest('.db-pc-cell');
                     renderCellTags(cell, JSON.parse(codeCopy));
                 }
             });
+            // Save to API sequentially (Google Apps Script drops simultaneous calls)
+            var saved = 0;
+            function saveNext() {
+                if (saved >= years.length) {
+                    showToast('Codes produit sauvegardes pour ' + years.length + ' annees');
+                    return;
+                }
+                var y = years[saved];
+                var key = pcKey(fab, modele, y);
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/plain'},
+                    body: JSON.stringify({ action: 'save', key: key, value: codeCopy, pin: '1400' })
+                }).then(function() {
+                    saved++;
+                    saveNext();
+                }).catch(function() {
+                    saved++;
+                    saveNext();
+                });
+            }
+            saveNext();
         }
 
         var activePopup = null;
