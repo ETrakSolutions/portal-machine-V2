@@ -169,6 +169,12 @@ function showOptions() {
     optionsSection.style.display = 'block';
     emptyState.style.display = 'none';
 
+    // Update options header with machine info
+    var descEl = document.getElementById('options-machine-desc');
+    if (descEl) {
+        descEl.textContent = fab + ' ' + modele + ' (' + annee + ') — ' + type;
+    }
+
     var infoEl = document.getElementById('soumission-machine-info');
     if (infoEl) {
         infoEl.textContent = 'Machine : ' + fab + ' ' + modele + ' (' + annee + ') — ' + type;
