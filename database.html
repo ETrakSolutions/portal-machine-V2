@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=138">
-    <link rel="stylesheet" href="css/admin.css?v=138">
+    <link rel="stylesheet" href="css/style.css?v=139">
+    <link rel="stylesheet" href="css/admin.css?v=139">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -678,21 +678,25 @@
         // R7 — Drain obligatoire: prefixes de modeles (match si le modele COMMENCE par le prefixe)
         var DRAIN_PREFIXES = [
             // Case
-            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX490','145 D',
+            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
             // Caterpillar
-            '308','315','320','440','450',
+            '308','315','316','320','336','440','450','M318',
             // Doosan/Develon
-            'DX190','DX235',
+            'DX190','DX235','BX190',
             // Hitachi
             'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
+            // JCB
+            '245X',
             // John Deere
-            '135','200CLC','245 P','245P','330X','350','410','490D','130P',
+            '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
+            // Kobelco
+            'SK210',
             // Komatsu
-            'PC78',
+            'PC78','PC138','PC200','PC290',
             // Liebherr
-            'R 920 K','R920',
+            'R 920 K','R920','R 936','R936',
             // Link-Belt
-            '145X4','170X4','190','245X4','350X4','490X4',
+            '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
             // Takeuchi
             'TB210','TW65',
             // Volvo
