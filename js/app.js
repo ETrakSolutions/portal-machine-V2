@@ -433,7 +433,12 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         }
 
         loadNotes(fab, modele, annee);
-        if (typeof lockKit === 'function') lockKit();
+        // Auto-unlock kit if user has permission
+        if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
+            if (typeof unlockKit === 'function') unlockKit();
+        } else {
+            if (typeof lockKit === 'function') lockKit();
+        }
 
         // ---- BD = MAITRE: compute defaults then load overrides ----
         // Same computeDefaultBom as database.html
@@ -1530,5 +1535,9 @@ if (kitEditBtn) {
     };
 }
 
-// Apply lock by default on page load
-lockKit();
+// Auto-unlock if user has permission, otherwise lock
+if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
+    unlockKit();
+} else {
+    lockKit();
+}
