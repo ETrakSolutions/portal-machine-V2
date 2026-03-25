@@ -8,6 +8,29 @@ let machinesData = {};
 let currentUser = null;
 let vendeursList = [];
 
+// Codes produits par option/combinaison
+var OPTION_CODES = {
+    // Limiteur seul
+    'Limiteur Hauteur': '1500-0000 / 1500-0001',
+    'Limiteur Rotation': '1500-0000 / 1500-0002',
+    'Limiteur Hauteur + Rotation': '1500-0000 / 1500-0001 / 1500-0002',
+    'Limiteur Multi-axe': '1500-0005',
+    // IDC seul
+    'IDC': '1000-0400',
+    // Limiteur + IDC
+    'Limiteur Hauteur / IDC': '1500-0000 / 1500-0001 / 1000-0004',
+    'Limiteur Rotation / IDC': '1500-0000 / 1500-0002 / 1000-0004',
+    'Limiteur Hauteur + Rotation / IDC': '1500-0000 / 1500-0001 / 1500-0002 / 1000-0004',
+    'Limiteur Multi-axe / IDC': '1500-0005 / 1000-0004',
+    // Creusage
+    'Systeme de creusage 2D': '1100-0007',
+    // Camera
+    'Camera Recul': '1300-0001',
+    'Camera Recul + capteur': '1300-0012',
+    'Camera Quad': '1300-0003',
+    'Camera 360': '1300-0004'
+};
+
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
 const selectAnnee = document.getElementById('select-annee');
@@ -186,9 +209,16 @@ function showOptions() {
 
     // Reset all toggle boxes
     document.querySelectorAll('.toggle-box').forEach(function(box) {
-        box.classList.remove('active');
+        box.classList.remove('active', 'open');
         box.querySelector('.toggle-status').textContent = 'OFF';
     });
+    // Reset limiteur checkboxes
+    ['lim-hauteur', 'lim-rotation', 'lim-multi'].forEach(function(id) {
+        var cb = document.getElementById(id);
+        if (cb) { cb.checked = false; cb.disabled = false; }
+    });
+    // Reset camera radios
+    document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
     var textarea = document.getElementById('soumission-comment');
     if (textarea) textarea.value = '';
 
@@ -282,32 +312,70 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
-        // Collect toggle box states (use same combined logic as summary)
+        // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
         var optionsOff = [];
 
-        // Combined Limiteur/IDC/Creusage line for email
-        var _combined = buildLimIdcCreusageText();
-        if (_combined) optionsOn.push(_combined);
-
-        // Track OFF states for excluded items
+        // Limiteur + IDC combined
         var _haut = document.getElementById('lim-hauteur');
         var _rot = document.getElementById('lim-rotation');
         var _multi = document.getElementById('lim-multi');
-        var _anyLim = (_haut && _haut.checked) || (_rot && _rot.checked) || (_multi && _multi.checked);
-        var _idcBox = document.querySelector('[data-option="Indicateur de charge"]');
-        var _creusBox = document.querySelector('[data-option="Guide de creusage"]');
-        if (!_anyLim) optionsOff.push('Limiteur de portee');
-        if (!(_idcBox && _idcBox.classList.contains('active'))) optionsOff.push('Indicateur de charge');
-        if (!(_creusBox && _creusBox.classList.contains('active'))) optionsOff.push('Guide de creusage');
+        var _hasH = _haut && _haut.checked;
+        var _hasR = _rot && _rot.checked;
+        var _hasM = _multi && _multi.checked;
+        var _anyLim = _hasH || _hasR || _hasM;
 
+        var _idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+        var _hasIDC = _idcBox && _idcBox.classList.contains('active');
+
+        var _limPart = '';
+        if (_hasM) _limPart = 'Limiteur Multi-axe';
+        else if (_hasH && _hasR) _limPart = 'Limiteur Hauteur + Rotation';
+        else if (_hasH) _limPart = 'Limiteur Hauteur';
+        else if (_hasR) _limPart = 'Limiteur Rotation';
+
+        if (_limPart && _hasIDC) {
+            var _comboKey = _limPart + ' / IDC';
+            optionsOn.push(_comboKey + ' (' + getCode(_comboKey) + ')');
+        } else if (_limPart) {
+            optionsOn.push(_limPart + ' (' + getCode(_limPart) + ')');
+        } else if (_hasIDC) {
+            optionsOn.push('IDC (' + getCode('IDC') + ')');
+        }
+        if (!_anyLim) optionsOff.push('Limiteur de portee');
+        if (!_hasIDC) optionsOff.push('Indicateur de charge');
+
+        // Creusage
+        var _creusBox = document.querySelector('[data-option="Guide de creusage"]');
+        if (_creusBox && _creusBox.classList.contains('active')) {
+            optionsOn.push('Systeme de creusage 2D (' + getCode('Systeme de creusage 2D') + ')');
+        } else {
+            optionsOff.push('Guide de creusage');
+        }
+
+        // Camera
+        var _camBox = document.getElementById('toggle-camera');
+        if (_camBox && _camBox.classList.contains('active')) {
+            var _camRadio = _camBox.querySelector('input[name="camera-type"]:checked');
+            if (_camRadio) {
+                var _camName = 'Camera ' + _camRadio.value;
+                optionsOn.push(_camName + ' (' + getCode(_camName) + ')');
+            } else {
+                optionsOn.push('Camera');
+            }
+        } else {
+            optionsOff.push('Camera');
+        }
+
+        // Other toggles (skip handled ones)
         document.querySelectorAll('.toggle-box').forEach(function(box) {
             if (box.id === 'toggle-limiteur') return;
+            if (box.id === 'toggle-camera') return;
             if (box.dataset.option === 'Indicateur de charge') return;
             if (box.dataset.option === 'Guide de creusage') return;
             var name = box.dataset.option;
             if (box.classList.contains('active')) {
-                    optionsOn.push(name);
+                optionsOn.push(name);
             } else {
                 optionsOff.push(name);
             }
@@ -444,7 +512,18 @@ function buildLimIdcCreusageText() {
     return parts.join(' / ');
 }
 
-// Update selected options summary list — each choice gets its own line
+// Helper: get code for a named option
+function getCode(name) {
+    return OPTION_CODES[name] || '';
+}
+
+// Format item with code for display
+function fmtItem(name) {
+    var code = getCode(name);
+    return code ? name + ' — ' + code : name;
+}
+
+// Update selected options summary list — each choice gets its own line with codes
 function updateSelectedSummary() {
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
@@ -452,32 +531,55 @@ function updateSelectedSummary() {
 
     var items = [];
 
-    // Limiteur sub-options (each on its own line)
+    // Limiteur + IDC combined logic
     var haut = document.getElementById('lim-hauteur');
     var rot = document.getElementById('lim-rotation');
     var multi = document.getElementById('lim-multi');
-    if (multi && multi.checked) {
-        items.push('Limiteur Multi-axe');
-    } else {
-        if (haut && haut.checked) items.push('Limiteur Hauteur');
-        if (rot && rot.checked) items.push('Limiteur Rotation');
-    }
+    var hasH = haut && haut.checked;
+    var hasR = rot && rot.checked;
+    var hasM = multi && multi.checked;
 
-    // IDC
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
-    if (idcBox && idcBox.classList.contains('active')) {
-        items.push('IDC');
+    var hasIDC = idcBox && idcBox.classList.contains('active');
+
+    var limPart = '';
+    if (hasM) limPart = 'Limiteur Multi-axe';
+    else if (hasH && hasR) limPart = 'Limiteur Hauteur + Rotation';
+    else if (hasH) limPart = 'Limiteur Hauteur';
+    else if (hasR) limPart = 'Limiteur Rotation';
+
+    if (limPart && hasIDC) {
+        // Combined Limiteur + IDC
+        var comboKey = limPart + ' / IDC';
+        items.push(fmtItem(comboKey));
+    } else if (limPart) {
+        items.push(fmtItem(limPart));
+    } else if (hasIDC) {
+        items.push(fmtItem('IDC'));
     }
 
     // Guide de creusage → Systeme de creusage 2D
     var creusBox = document.querySelector('[data-option="Guide de creusage"]');
     if (creusBox && creusBox.classList.contains('active')) {
-        items.push('Systeme de creusage 2D');
+        items.push(fmtItem('Systeme de creusage 2D'));
     }
 
-    // Other toggles (Balance, Camera, etc.)
+    // Camera with sub-option
+    var camBox = document.getElementById('toggle-camera');
+    if (camBox && camBox.classList.contains('active')) {
+        var camRadio = camBox.querySelector('input[name="camera-type"]:checked');
+        if (camRadio) {
+            var camName = 'Camera ' + camRadio.value;
+            items.push(fmtItem(camName));
+        } else {
+            items.push('Camera');
+        }
+    }
+
+    // Other toggles (skip handled ones)
     document.querySelectorAll('.toggle-box').forEach(function(box) {
         if (box.id === 'toggle-limiteur') return;
+        if (box.id === 'toggle-camera') return;
         if (box.dataset.option === 'Indicateur de charge') return;
         if (box.dataset.option === 'Guide de creusage') return;
         if (box.classList.contains('active')) {
@@ -495,10 +597,9 @@ function updateSelectedSummary() {
 
 // Toggle boxes click handler
 document.querySelectorAll('.toggle-box').forEach(function(box) {
-    // Limiteur de portee has sub-options — special handler
-    if (box.id === 'toggle-limiteur') {
+    // Limiteur and Camera have sub-options — special handler
+    if (box.id === 'toggle-limiteur' || box.id === 'toggle-camera') {
         box.addEventListener('click', function(e) {
-            // Don't toggle if clicking inside the sub-panel checkboxes
             if (e.target.closest('.toggle-sub-panel')) return;
             this.classList.toggle('open');
         });
@@ -575,5 +676,23 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
             cbMulti.disabled = false;
         }
         updateLimiteur();
+    });
+})();
+
+// Camera sub-options logic (radio buttons)
+(function() {
+    var camBox = document.getElementById('toggle-camera');
+    if (!camBox) return;
+    var radios = camBox.querySelectorAll('input[name="camera-type"]');
+    var status = camBox.querySelector('.toggle-status');
+
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                camBox.classList.add('active');
+                status.textContent = this.value;
+            }
+            updateSelectedSummary();
+        });
     });
 })();
