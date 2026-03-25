@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=139">
-    <link rel="stylesheet" href="css/admin.css?v=139">
+    <link rel="stylesheet" href="css/style.css?v=140">
+    <link rel="stylesheet" href="css/admin.css?v=140">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -358,8 +358,8 @@
             </div>
 
             <div class="db-legend">
-                <span class="db-legend-item"><span class="bom-token bom-r">R</span> Obligatoire</span>
-                <span class="db-legend-item"><span class="bom-token bom-j">J</span> Optionnel</span>
+                <span class="db-legend-item"><span class="bom-token bom-r"></span> Obligatoire</span>
+                <span class="db-legend-item"><span class="bom-token bom-j"></span> Optionnel</span>
                 <span class="db-legend-item"><span class="bom-token bom-na">-</span> N/A</span>
                 <span style="color:#555;">| Cliquer pour modifier (admin)</span>
             </div>
@@ -809,7 +809,7 @@
             else if (state === 'j') cls += ' bom-j';
             else cls += ' bom-na';
             if (!editable) cls += ' readonly';
-            var label = state === 'r' ? 'R' : state === 'j' ? 'J' : '-';
+            var label = state === 'r' ? '' : state === 'j' ? '' : '-';
             return '<span class="' + cls + '" data-code="' + code + '" data-idx="' + idx + '" title="' + BOM_NAMES[code] + '">' + label + '</span>';
         }
 
@@ -1167,7 +1167,7 @@
                             if (!c) return; // skip non-bom elements like harnais select
                             var st = d.bom[c] || 'na';
                             token.className = 'bom-token' + (st === 'r' ? ' bom-r' : st === 'j' ? ' bom-j' : ' bom-na') + (canEdit ? '' : ' readonly');
-                            token.textContent = st === 'r' ? 'R' : st === 'j' ? 'J' : '-';
+                            token.textContent = st === 'r' ? '' : st === 'j' ? '' : '-';
                         });
                         // Update harnais dropdown if override has it
                         if (overrides.harnais) {
@@ -1309,7 +1309,7 @@
 
             // Update token visually
             token.className = 'bom-token' + (next === 'r' ? ' bom-r' : next === 'j' ? ' bom-j' : ' bom-na');
-            token.textContent = next === 'r' ? 'R' : next === 'j' ? 'J' : '-';
+            token.textContent = next === 'r' ? '' : next === 'j' ? '' : '-';
 
             // Save to API
             saveOverride(d.fab, d.modele, d.annee, d.bom);
