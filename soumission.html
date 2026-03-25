@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
-    <link rel="stylesheet" href="css/style.css?v=114">
-    <link rel="stylesheet" href="css/soumission.css?v=114">
+    <link rel="stylesheet" href="css/style.css?v=115">
+    <link rel="stylesheet" href="css/soumission.css?v=115">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -80,9 +80,14 @@
             </div>
 
             <div class="toggle-grid">
-                <div class="toggle-box" data-option="Limiteur de portee">
+                <div class="toggle-box toggle-has-sub" data-option="Limiteur de portee" id="toggle-limiteur">
                     <span class="toggle-label">Limiteur de portee</span>
                     <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel" id="limiteur-panel">
+                        <label class="sub-option"><input type="checkbox" id="lim-hauteur" value="Hauteur"> Hauteur</label>
+                        <label class="sub-option"><input type="checkbox" id="lim-rotation" value="Rotation"> Rotation</label>
+                        <label class="sub-option sub-option-excl"><input type="checkbox" id="lim-multi" value="Multi-axe"> Multi-axe</label>
+                    </div>
                 </div>
                 <div class="toggle-box" data-option="Indicateur de charge">
                     <span class="toggle-label">Indicateur de charge</span>
@@ -138,6 +143,6 @@
         </div>
     </footer>
 
-    <script src="js/soumission.js?v=114"></script>
+    <script src="js/soumission.js?v=115"></script>
 </body>
 </html>

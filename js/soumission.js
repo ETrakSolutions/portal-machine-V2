@@ -278,7 +278,13 @@ if (submitBtn) {
         document.querySelectorAll('.toggle-box').forEach(function(box) {
             var name = box.dataset.option;
             if (box.classList.contains('active')) {
-                optionsOn.push(name);
+                // For Limiteur de portee, include the sub-option detail
+                if (box.id === 'toggle-limiteur') {
+                    var status = box.querySelector('.toggle-status');
+                    optionsOn.push(name + ': ' + status.textContent);
+                } else {
+                    optionsOn.push(name);
+                }
             } else {
                 optionsOff.push(name);
             }
@@ -379,13 +385,83 @@ if (submitBtn) {
 
 // Toggle boxes click handler
 document.querySelectorAll('.toggle-box').forEach(function(box) {
-    box.addEventListener('click', function() {
-        this.classList.toggle('active');
-        var status = this.querySelector('.toggle-status');
-        if (this.classList.contains('active')) {
-            status.textContent = 'ON';
+    // Limiteur de portee has sub-options — special handler
+    if (box.id === 'toggle-limiteur') {
+        box.addEventListener('click', function(e) {
+            // Don't toggle if clicking inside the sub-panel checkboxes
+            if (e.target.closest('.toggle-sub-panel')) return;
+            this.classList.toggle('open');
+        });
+    } else {
+        box.addEventListener('click', function() {
+            this.classList.toggle('active');
+            var status = this.querySelector('.toggle-status');
+            if (this.classList.contains('active')) {
+                status.textContent = 'ON';
+            } else {
+                status.textContent = 'OFF';
+            }
+        });
+    }
+});
+
+// Limiteur de portee sub-options logic
+(function() {
+    var limBox = document.getElementById('toggle-limiteur');
+    if (!limBox) return;
+    var cbHauteur = document.getElementById('lim-hauteur');
+    var cbRotation = document.getElementById('lim-rotation');
+    var cbMulti = document.getElementById('lim-multi');
+    var status = limBox.querySelector('.toggle-status');
+
+    function updateLimiteur() {
+        var parts = [];
+        if (cbMulti.checked) {
+            parts.push('Multi-axe');
         } else {
+            if (cbHauteur.checked) parts.push('Hauteur');
+            if (cbRotation.checked) parts.push('Rotation');
+        }
+        if (parts.length > 0) {
+            limBox.classList.add('active');
+            status.textContent = parts.join(' + ');
+        } else {
+            limBox.classList.remove('active');
             status.textContent = 'OFF';
         }
+    }
+
+    // Multi-axe is exclusive with Hauteur/Rotation
+    cbMulti.addEventListener('change', function() {
+        if (this.checked) {
+            cbHauteur.checked = false;
+            cbRotation.checked = false;
+            cbHauteur.disabled = true;
+            cbRotation.disabled = true;
+        } else {
+            cbHauteur.disabled = false;
+            cbRotation.disabled = false;
+        }
+        updateLimiteur();
     });
-});
+
+    // Hauteur/Rotation disable Multi-axe
+    cbHauteur.addEventListener('change', function() {
+        if (this.checked || cbRotation.checked) {
+            cbMulti.checked = false;
+            cbMulti.disabled = true;
+        } else {
+            cbMulti.disabled = false;
+        }
+        updateLimiteur();
+    });
+    cbRotation.addEventListener('change', function() {
+        if (this.checked || cbHauteur.checked) {
+            cbMulti.checked = false;
+            cbMulti.disabled = true;
+        } else {
+            cbMulti.disabled = false;
+        }
+        updateLimiteur();
+    });
+})();
