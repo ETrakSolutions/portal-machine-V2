@@ -31,6 +31,23 @@ var OPTION_CODES = {
     'Camera 360': '1300-0004'
 };
 
+// Load option codes from API (override defaults)
+(function() {
+    fetch(API_URL + '?action=get&key=soumission_option_codes')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data && data.value) {
+                var arr = JSON.parse(data.value);
+                if (Array.isArray(arr)) {
+                    arr.forEach(function(item) {
+                        if (item.name && item.codes) OPTION_CODES[item.name] = item.codes;
+                    });
+                }
+            }
+        })
+        .catch(function() {}); // Keep defaults on error
+})();
+
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
 const selectAnnee = document.getElementById('select-annee');

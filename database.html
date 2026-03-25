@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
-    <link rel="stylesheet" href="css/style.css?v=143">
-    <link rel="stylesheet" href="css/admin.css?v=143">
+    <link rel="stylesheet" href="css/style.css?v=144">
+    <link rel="stylesheet" href="css/admin.css?v=144">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -384,6 +384,31 @@
                 <button id="db-prev" disabled>&larr; Precedent</button>
                 <span id="db-page-info" class="page-info"></span>
                 <button id="db-next">Suivant &rarr;</button>
+            </div>
+        </section>
+
+        <!-- Options Soumission Admin Section -->
+        <section class="selector-section" id="options-admin-section" style="display:none; margin-top:1.5rem;">
+            <div class="intro-row">
+                <span class="section-title">Options Soumission — Codes produits</span>
+                <button id="options-admin-toggle" class="db-export-btn" style="margin-left:auto;">&#9660; Afficher</button>
+            </div>
+            <div id="options-admin-body" style="display:none;">
+                <p style="color:#888;font-size:0.8rem;margin-bottom:0.8rem;">Modifier les codes produits associes a chaque option/combinaison de la page soumission.</p>
+                <table class="db-table" id="options-codes-table" style="font-size:0.8rem;">
+                    <thead>
+                        <tr>
+                            <th style="width:45%;">Combinaison</th>
+                            <th style="width:45%;">Codes produits</th>
+                            <th style="width:10%;text-align:center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="options-codes-tbody"></tbody>
+                </table>
+                <div style="margin-top:0.8rem;display:flex;gap:0.5rem;">
+                    <button id="options-codes-save" class="db-export-btn" style="background:#00CC66;">&#128190; Sauvegarder</button>
+                    <button id="options-codes-add" class="db-export-btn">+ Ajouter</button>
+                </div>
             </div>
         </section>
     </main>
@@ -1364,6 +1389,136 @@
             link.href = URL.createObjectURL(blob);
             link.download = 'excavatrice_bd_' + new Date().toISOString().slice(0, 10) + '.csv';
             link.click();
+        });
+    })();
+
+    // ============================================
+    // Options Soumission Admin — Codes produits
+    // ============================================
+    (function() {
+        var section = document.getElementById('options-admin-section');
+        var toggleBtn = document.getElementById('options-admin-toggle');
+        var body = document.getElementById('options-admin-body');
+        var tbody = document.getElementById('options-codes-tbody');
+        var saveBtn = document.getElementById('options-codes-save');
+        var addBtn = document.getElementById('options-codes-add');
+        if (!section) return;
+
+        // Show section only for admin users
+        var PIN = '1400';
+        var API_OPT = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+        var STORE_KEY = 'soumission_option_codes';
+
+        // Default codes (from Excel)
+        var DEFAULT_CODES = [
+            {name: 'Limiteur Hauteur', codes: '1500-0000 / 1500-0001'},
+            {name: 'Limiteur Rotation', codes: '1500-0000 / 1500-0002'},
+            {name: 'Limiteur Hauteur + Rotation', codes: '1500-0000 / 1500-0001 / 1500-0002'},
+            {name: 'Limiteur Multi-axe', codes: '1500-0005'},
+            {name: 'IDC', codes: '1000-0400'},
+            {name: 'Limiteur Hauteur / IDC', codes: '1500-0000 / 1500-0001 / 1000-0004'},
+            {name: 'Limiteur Rotation / IDC', codes: '1500-0000 / 1500-0002 / 1000-0004'},
+            {name: 'Limiteur Hauteur + Rotation / IDC', codes: '1500-0000 / 1500-0001 / 1500-0002 / 1000-0004'},
+            {name: 'Limiteur Multi-axe / IDC', codes: '1500-0005 / 1000-0004'},
+            {name: 'Systeme de creusage 2D', codes: '1100-0007'},
+            {name: 'Camera Recul', codes: '1300-0001'},
+            {name: 'Camera Recul + capteur', codes: '1300-0012'},
+            {name: 'Camera Quad', codes: '1300-0003'},
+            {name: 'Camera 360', codes: '1300-0004'}
+        ];
+
+        var optionCodes = [];
+
+        // Show section after auth check (reuse existing auth)
+        setTimeout(function() {
+            var user = null;
+            try { user = JSON.parse(sessionStorage.getItem('etrak_user')); } catch(e) {}
+            if (user && user.permissions && (user.permissions.modifBom || user.role === 'admin')) {
+                section.style.display = '';
+            }
+        }, 1500);
+
+        // Toggle
+        toggleBtn.addEventListener('click', function() {
+            if (body.style.display === 'none') {
+                body.style.display = '';
+                toggleBtn.innerHTML = '&#9650; Masquer';
+                loadOptionCodes();
+            } else {
+                body.style.display = 'none';
+                toggleBtn.innerHTML = '&#9660; Afficher';
+            }
+        });
+
+        function loadOptionCodes() {
+            fetch(API_OPT + '?action=get&key=' + STORE_KEY)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && data.value && Array.isArray(JSON.parse(data.value))) {
+                        optionCodes = JSON.parse(data.value);
+                    } else {
+                        optionCodes = DEFAULT_CODES.slice();
+                    }
+                    renderTable();
+                })
+                .catch(function() {
+                    optionCodes = DEFAULT_CODES.slice();
+                    renderTable();
+                });
+        }
+
+        function renderTable() {
+            tbody.innerHTML = '';
+            optionCodes.forEach(function(item, idx) {
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td><input type="text" value="' + (item.name || '') + '" style="width:100%;background:#1a1a2e;color:#fff;border:1px solid #333;padding:4px;font-size:0.8rem;"></td>' +
+                    '<td><input type="text" value="' + (item.codes || '') + '" style="width:100%;background:#1a1a2e;color:#fff;border:1px solid #333;padding:4px;font-size:0.8rem;"></td>' +
+                    '<td style="text-align:center;"><span class="db-del-btn" style="cursor:pointer;color:#FF4444;font-size:1.2rem;" data-idx="' + idx + '">&#10060;</span></td>';
+                tbody.appendChild(tr);
+            });
+            // Delete handlers
+            tbody.querySelectorAll('.db-del-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var i = parseInt(this.dataset.idx);
+                    optionCodes.splice(i, 1);
+                    renderTable();
+                });
+            });
+        }
+
+        // Add row
+        addBtn.addEventListener('click', function() {
+            optionCodes.push({name: '', codes: ''});
+            renderTable();
+            // Focus last name input
+            var inputs = tbody.querySelectorAll('tr:last-child input');
+            if (inputs[0]) inputs[0].focus();
+        });
+
+        // Save
+        saveBtn.addEventListener('click', function() {
+            // Read values from table
+            var rows = tbody.querySelectorAll('tr');
+            optionCodes = [];
+            rows.forEach(function(tr) {
+                var inputs = tr.querySelectorAll('input[type="text"]');
+                var name = inputs[0] ? inputs[0].value.trim() : '';
+                var codes = inputs[1] ? inputs[1].value.trim() : '';
+                if (name) optionCodes.push({name: name, codes: codes});
+            });
+
+            saveBtn.textContent = 'Sauvegarde...';
+            fetch(API_OPT, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'pin=' + PIN + '&key=' + STORE_KEY + '&value=' + encodeURIComponent(JSON.stringify(optionCodes))
+            }).then(function() {
+                saveBtn.innerHTML = '&#10004; Sauvegarde!';
+                setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
+            }).catch(function() {
+                saveBtn.textContent = 'Erreur!';
+                setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
+            });
         });
     })();
     </script>
