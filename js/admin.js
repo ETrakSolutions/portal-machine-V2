@@ -57,7 +57,11 @@ function updateHubUI() {
             }
         }
         if (userRole) userRole.textContent = ROLES[currentUser.role] ? ROLES[currentUser.role].label : currentUser.role;
-        if (hubNav) hubNav.style.display = 'grid';
+        // Don't show hub-nav if admin section is open
+        var adminOpen = document.getElementById('admin-content');
+        if (hubNav && !(adminOpen && adminOpen.style.display === 'block')) {
+            hubNav.style.display = 'grid';
+        }
         if (hubEmpty) hubEmpty.style.display = 'none';
         // Show tiles based on permissions
         var tileMachine = document.getElementById('hub-tile-machine');
