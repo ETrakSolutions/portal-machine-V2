@@ -1107,8 +1107,7 @@ if (saveTypesBtn) {
         saveTypesBtn.textContent = 'Sauvegarde...';
         fetch(API_URL, {
             method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'pin=' + PIN + '&key=soumission_allowed_types&value=' + encodeURIComponent(JSON.stringify(checked))
+            body: JSON.stringify({ action: 'save', key: 'soumission_allowed_types', value: JSON.stringify(checked), pin: '1400' })
         }).then(function() {
             saveTypesBtn.textContent = '✓ Sauvegarde!';
             setTimeout(function() { saveTypesBtn.textContent = 'Sauvegarder'; }, 2000);
