@@ -599,26 +599,23 @@ if (submitBtn) {
             .catch(function() { sendEmail([]); });
 
         function sendEmail(productCodes) {
-        // Build specs text — highlight special values
+        // Build specs text — only key fields, highlight special values
+        var EMAIL_SPEC_FIELDS = ['Type de traction', 'Type de boom', 'Swing boom', 'Voltage machine (V/type)'];
         var specsText = '';
-        if (specs && Object.keys(specs).length > 0) {
-            for (var sKey in specs) {
-                if (sKey === 'Image') continue;
-                var sVal = specs[sKey];
-                if (!sVal || sVal === 'A completer') continue;
-                // Highlight: Roue, Boom 2 parties, Swing Oui, 12V
-                var highlight = false;
-                if (sKey === 'Type de traction' && sVal === 'Roue') highlight = true;
-                if (sKey === 'Type de boom' && sVal.indexOf('2 parties') >= 0) highlight = true;
-                if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
-                if (sKey === 'Voltage machine (V/type)' && sVal.indexOf('12V') >= 0) highlight = true;
-                if (highlight) {
-                    specsText += '  ' + sKey + ' : *** ' + sVal.toUpperCase() + ' ***\n';
-                } else {
-                    specsText += '  ' + sKey + ' : ' + sVal + '\n';
-                }
+        EMAIL_SPEC_FIELDS.forEach(function(sKey) {
+            var sVal = specs[sKey];
+            if (!sVal || sVal === 'A completer') return;
+            var highlight = false;
+            if (sKey === 'Type de traction' && sVal === 'Roue') highlight = true;
+            if (sKey === 'Type de boom' && sVal.indexOf('2 parties') >= 0) highlight = true;
+            if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
+            if (sKey === 'Voltage machine (V/type)' && sVal.indexOf('12V') >= 0) highlight = true;
+            if (highlight) {
+                specsText += '  ' + sKey + ' : *** ' + sVal.toUpperCase() + ' ***\n';
+            } else {
+                specsText += '  ' + sKey + ' : ' + sVal + '\n';
             }
-        }
+        });
 
         var body =
             'Demande de soumission e-Trak\n' +
