@@ -406,6 +406,17 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
+        // Warn if no Hauteur or Rotation selected
+        var _hCheck = document.getElementById('lim-hauteur');
+        var _rCheck = document.getElementById('lim-rotation');
+        var _mCheck = document.getElementById('lim-multi');
+        var hasHauteurOrRotation = (_hCheck && _hCheck.checked) || (_rCheck && _rCheck.checked) || (_mCheck && _mCheck.checked);
+        if (!hasHauteurOrRotation) {
+            if (!confirm('Aucune option Hauteur ou Rotation n\'est selectionnee.\n\nVoulez-vous continuer sans limiteur?')) {
+                return;
+            }
+        }
+
         // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
         var optionsOff = [];
