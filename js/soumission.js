@@ -757,10 +757,13 @@ function updateSelectedSummary() {
         });
     }
 
-    // Product codes from BD (manually added)
+    // Product codes from BD (manually added) — skip if code already listed
     var pcItems = [];
+    var allListedSoFar = items.concat(obligItems);
     if (currentProductCodes && currentProductCodes.length > 0) {
         currentProductCodes.forEach(function(pc) {
+            var alreadyIn = allListedSoFar.some(function(i) { return i.indexOf(pc.code) !== -1; });
+            if (alreadyIn) return;
             var desc = pc.desc || '';
             var qty = pc.qty && pc.qty > 1 ? ' x' + pc.qty : '';
             pcItems.push(fmtItem(pc.code, desc + qty));
