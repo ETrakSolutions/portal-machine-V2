@@ -811,11 +811,12 @@ function updateSelectedSummary() {
     if (anyLim) {
         var kitAll = getKitAllItems();
         kitAll.forEach(function(item) {
+            // Skip 1500-0000 (base limiteur) when Multi-axe is selected — Multi-axe replaces it
+            if (item.code === '1500-0000' && limVal === 'Multi-axe') return;
             var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
             if (!alreadyListed && item.status === 'Obligatoire') {
                 obligItems.push(fmtItem(item.code, item.name));
             }
-            // Optionnel items not shown (user didn't select them)
         });
     }
 
