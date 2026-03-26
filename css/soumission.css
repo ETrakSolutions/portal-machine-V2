@@ -137,6 +137,13 @@
 .selected-options-summary li.oblig::before {
     color: #FF4444;
 }
+.selected-options-summary li.optional-kit {
+    color: #aaa;
+}
+.selected-options-summary li.optional-kit::before {
+    content: "\25CB  ";
+    color: #FFD54F;
+}
 .selected-options-summary li.pc-item::before {
     content: "\25CF  ";
     color: #4DA8FF;
