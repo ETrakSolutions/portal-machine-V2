@@ -571,42 +571,63 @@ if (submitBtn) {
             .catch(function() { sendEmail([]); });
 
         function sendEmail(productCodes) {
+        // Build specs text
+        var specsText = '';
+        if (specs && Object.keys(specs).length > 0) {
+            for (var sKey in specs) {
+                if (sKey === 'Image') continue;
+                var sVal = specs[sKey];
+                if (!sVal || sVal === 'A completer') continue;
+                specsText += '  ' + sKey + ' : ' + sVal + '\n';
+            }
+        }
+
         var body =
             'Demande de soumission e-Trak\n' +
-            '================================\n\n' +
-            'Machine:\n' +
+            '================================\n\n';
+
+        // Reference client + Notes (top of email)
+        if (refClient) {
+            body += 'Reference client: ' + refClient + '\n';
+        }
+        if (currentNotes && currentNotes.trim()) {
+            body += 'Notes machine: ' + currentNotes.trim() + '\n';
+        }
+        if (refClient || (currentNotes && currentNotes.trim())) {
+            body += '\n';
+        }
+
+        body += 'Machine:\n' +
             '  Type : ' + type + '\n' +
             '  Fabricant : ' + fab + '\n' +
             '  Modele : ' + modele + '\n' +
-            '  Annee : ' + annee + '\n\n' +
-            'Produits e-Trak demandes:\n' +
-            optionsOn.map(function(o) { return '  [ON]  ' + o; }).join('\n') +
-            (optionsOn.length && optionsOff.length ? '\n' : '') +
-            optionsOff.map(function(o) { return '  [OFF] ' + o; }).join('\n') + '\n';
+            '  Annee : ' + annee + '\n';
+
+        // Specs machine
+        if (specsText) {
+            body += '\nSpecifications:\n' + specsText;
+        }
+
+        // Produits demandes (ON only, no OFF)
+        if (optionsOn.length > 0) {
+            body += '\nProduits e-Trak demandes:\n';
+            optionsOn.forEach(function(o) { body += '  ' + o + '\n'; });
+        }
 
         // Kit Machine
         if (kitItems.length > 0) {
             body += '\nKit Machine e-Trak:\n';
             kitItems.forEach(function(item) {
-                body += '  ' + item.code + ' — ' + item.name + ' (' + item.status + ')\n';
+                body += '  ' + item.code + ' — ' + item.name + '\n';
             });
         }
 
-        // Product codes
+        // Product codes from BD
         if (productCodes.length > 0) {
-            body += '\nCodes produit:\n';
+            body += '\nCodes produit (BD):\n';
             productCodes.forEach(function(pc) {
                 body += '  ' + pc.code + ' \u2014 ' + (pc.desc || '') + ' (x' + (pc.qty || 1) + ')\n';
             });
-        }
-
-        // Notes
-        if (currentNotes && currentNotes.trim()) {
-            body += '\nNotes:\n  ' + currentNotes.trim() + '\n';
-        }
-
-        if (refClient) {
-            body += '\nReference client: ' + refClient + '\n';
         }
 
         if (comment) {
