@@ -360,9 +360,24 @@ function getKitSummary(type, fab, modele, specs) {
         kit.push({ code: '1500-0008', name: 'Gestion swing boom', status: 'Optionnel' });
     }
 
-    // 1500-0009 Drain hydraulique
-    var drainModels = ['CX80C','CX80','CX220E','CX170E','145 D SR','CX210D','CX245D SR','CX350D','CX490D','CX300E','CX145C','315FL','440','450','320LU','308','DX190W-5','DX235','145X4 LC','145 X4','145X4','145X4D7','170X4S','170X4','170x4s','190','245X4','245X4LC','350X4','ZX210LC-8','EX200LC-5','ZX130-6','ZX190LC-7H','ZX350LC-6','ZX490LC-6','ZX50U-5N','135C','350','410','490D','330X','200CLC','130P-TIER','PC78US','R920 K LC','TB210','TW65C2HS','EC160BLC','235','EC160CL','EZ36'];
-    if (drainModels.some(function(m) { return m.toUpperCase() === modelUpper; })) {
+    // 1500-0009 Drain hydraulique — same DRAIN_PREFIXES as app.js
+    var DRAIN_PREFIXES = [
+        'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
+        '308','315','316','320','336','440','450','M318',
+        'DX190','DX235','BX190',
+        'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
+        '245X',
+        '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
+        'SK210',
+        'PC78','PC138','PC200','PC290',
+        'R 920 K','R920','R 936','R936',
+        '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
+        'TB210','TW65',
+        'EC160','EC330','EC360','EC550','235',
+        'EZ36'
+    ];
+    var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
+    if (isDrain) {
         kit.push({ code: '1500-0009', name: 'Drain hydraulique', status: 'Obligatoire' });
     }
 
