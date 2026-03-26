@@ -514,6 +514,23 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
+        // Reference client obligatoire
+        var refClient = (document.getElementById('soumission-ref-client').value || '').trim();
+        if (!refClient) {
+            var refInput = document.getElementById('soumission-ref-client');
+            if (refInput) {
+                refInput.style.border = '2px solid #ff4444';
+                refInput.focus();
+                refInput.setAttribute('placeholder', '⚠ Reference client obligatoire');
+                refInput.addEventListener('input', function handler() {
+                    refInput.style.border = '';
+                    refInput.setAttribute('placeholder', 'Numero de PO, reference interne, nom du client...');
+                    refInput.removeEventListener('input', handler);
+                });
+            }
+            return;
+        }
+
         // No limiteur check — options obligatoires only shown when limiteur selected
 
         // Collect toggle box states with codes (same logic as summary)
