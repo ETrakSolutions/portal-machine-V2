@@ -149,6 +149,30 @@
     .toggle-label { font-size: 0.9rem; }
 }
 
+/* Specs table in soumission */
+.specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+.specs-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.specs-table td:first-child {
+    color: #999;
+    width: 45%;
+    font-size: 0.78rem;
+}
+.specs-table td:last-child {
+    color: #fff;
+    font-weight: 500;
+}
+.specs-table .flash-yellow {
+    color: #FFD54F;
+    font-weight: 700;
+}
+
 /* Kit Machine summary in soumission */
 .soumission-kit-header {
     margin: 1.25rem 0 0.5rem;
