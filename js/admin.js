@@ -121,6 +121,7 @@ function showAdminSection() {
     loadKitEmails();
     loadNotesEmails();
     renderPermTable();
+    loadAllowedTypes();
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
@@ -1056,3 +1057,64 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// ============================================
+// Types de machines autorisés pour Soumission
+// ============================================
+var ALL_MACHINE_TYPES = [
+    'Camion Girafe (Boom Truck)', 'Camion Vacuum', 'Excavatrice', 'Foreuse',
+    'Grue Mobile', 'Pompe a Beton', 'Retrocaveuse', 'Telehandler'
+];
+
+function loadAllowedTypes() {
+    var container = document.getElementById('admin-allowed-types');
+    if (!container) return;
+
+    fetch(API_URL + '?action=get&key=soumission_allowed_types')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var allowed = [];
+            if (data.value) { try { allowed = JSON.parse(data.value); } catch(e) {} }
+            renderTypeCheckboxes(container, allowed);
+        })
+        .catch(function() { renderTypeCheckboxes(container, []); });
+}
+
+function renderTypeCheckboxes(container, allowed) {
+    container.innerHTML = '';
+    ALL_MACHINE_TYPES.forEach(function(type) {
+        var label = document.createElement('label');
+        label.style.cssText = 'display:flex;align-items:center;gap:6px;padding:6px 12px;background:#1E1E1E;border:1px solid #333;border-radius:6px;color:#fff;font-size:0.85rem;cursor:pointer;';
+        var cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = type;
+        cb.checked = allowed.length === 0 || allowed.indexOf(type) >= 0; // all checked if no config
+        cb.style.accentColor = '#4DA8FF';
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(type));
+        container.appendChild(label);
+    });
+}
+
+var saveTypesBtn = document.getElementById('admin-save-types');
+if (saveTypesBtn) {
+    saveTypesBtn.addEventListener('click', function() {
+        var container = document.getElementById('admin-allowed-types');
+        var checked = [];
+        container.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
+            checked.push(cb.value);
+        });
+        saveTypesBtn.textContent = 'Sauvegarde...';
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'pin=' + PIN + '&key=soumission_allowed_types&value=' + encodeURIComponent(JSON.stringify(checked))
+        }).then(function() {
+            saveTypesBtn.textContent = '✓ Sauvegarde!';
+            setTimeout(function() { saveTypesBtn.textContent = 'Sauvegarder'; }, 2000);
+        }).catch(function() {
+            saveTypesBtn.textContent = 'Erreur!';
+            setTimeout(function() { saveTypesBtn.textContent = 'Sauvegarder'; }, 2000);
+        });
+    });
+}
