@@ -341,7 +341,8 @@ function renderSpecsTable(type, fab, annee, modele) {
 
     for (var key in specs) {
         var val = specs[key];
-        if (key === 'Image') continue; // skip image
+        if (key === 'Image') continue;
+        if (key === 'Classe machine') continue; // already computed above
         if (!val || val === 'A completer') continue;
 
         var highlight = false;
