@@ -379,23 +379,25 @@ function getKitSummary(type, fab, modele, specs) {
     ];
     var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
 
-    // Compute defaults (same as app.js)
+    // Compute defaults: present or na (BD is master via overrides)
     var bomDefaults = {
-        '0000': 'r',
-        '0001': 'j',
-        '0002': 'j',
-        '0004': isMini ? 'r' : 'na',
-        '0005': typeBras.includes('2 parties') ? 'j' : 'na',
-        '0008': hasSwing ? 'j' : 'na',
-        '0009': isDrain ? 'r' : 'na',
-        '0070': isCat ? 'j' : 'na',
-        '0304': modelUpper === 'TB216' ? 'r' : 'na'
+        '0000': true,
+        '0001': true,
+        '0002': true,
+        '0004': isMini,
+        '0005': typeBras.includes('2 parties'),
+        '0008': hasSwing,
+        '0009': isDrain,
+        '0070': isCat,
+        '0304': modelUpper === 'TB216'
     };
 
-    // Apply BOM overrides from API (BD is master)
+    // Apply BOM overrides from API (BD is master — any non-na value means present)
     if (currentBomOverrides) {
         for (var code in currentBomOverrides) {
-            if (currentBomOverrides[code]) bomDefaults[code] = currentBomOverrides[code];
+            var ov = currentBomOverrides[code];
+            if (ov === 'na') bomDefaults[code] = false;
+            else if (ov) bomDefaults[code] = true;
         }
     }
 
@@ -412,17 +414,16 @@ function getKitSummary(type, fab, modele, specs) {
         '0304': 'Option rotation cremaillere'
     };
 
-    // Build kit from BOM defaults (after overrides applied)
+    // Build kit — everything present is obligatoire
     var kit = [];
     var bomCodePrefix = {'0000':'1500-','0001':'1500-','0002':'1500-','0004':'1500-','0005':'1500-','0008':'1500-','0009':'1500-','0070':'1000-','0304':'1500-'};
     for (var bCode in bomDefaults) {
-        var status = bomDefaults[bCode];
-        if (status === 'na') continue;
+        if (!bomDefaults[bCode]) continue; // skip items not applicable
         var fullCode = (bomCodePrefix[bCode] || '1500-') + bCode;
         kit.push({
             code: fullCode,
             name: BOM_NAMES[bCode] || bCode,
-            status: status === 'r' ? 'Obligatoire' : 'Optionnel'
+            status: 'Obligatoire'
         });
     }
 
@@ -744,19 +745,14 @@ function updateSelectedSummary() {
         }
     });
 
-    // Add kit machine items (red=obligatoire, yellow=optionnel) — only when limiteur is selected
+    // Add kit machine obligatory items — only when limiteur is selected
     var obligItems = [];
-    var optionalItems = [];
     if (anyLim) {
         var kitAll = getKitAllItems();
         kitAll.forEach(function(item) {
             var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
             if (!alreadyListed) {
-                if (item.status === 'Obligatoire') {
-                    obligItems.push(fmtItem(item.code, item.name));
-                } else {
-                    optionalItems.push(fmtItem(item.code, item.name));
-                }
+                obligItems.push(fmtItem(item.code, item.name));
             }
         });
     }
@@ -774,14 +770,14 @@ function updateSelectedSummary() {
     // Notes from BD
     var noteHtml = '';
     if (currentNotes) {
-        noteHtml = '<li class="note-item">Note: ' + currentNotes + '</li>';
+        noteHtml = '<li class="oblig note-item">Note: ' + currentNotes + '</li>';
     }
 
     var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
         var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
         html += obligItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
-        html += pcItems.map(function(i) { return '<li class="pc-item">' + i + '</li>'; }).join('');
+        html += pcItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
         html += noteHtml;
         list.innerHTML = html;
         wrap.style.display = 'block';
