@@ -194,8 +194,11 @@
     font-weight: 500;
 }
 .specs-table .flash-yellow {
-    color: #FFD54F;
+    background: #FFD54F;
+    color: #000;
     font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
 }
 
 /* Kit Machine summary in soumission */
