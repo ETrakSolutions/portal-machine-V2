@@ -388,6 +388,22 @@ function getKitSummary(type, fab, modele, specs) {
         kit.push({ code: '1500-0005', name: 'Multi Axes complet', status: 'Optionnel' });
     }
 
+    // Harnais de coupure — obligatoire, code depend du fabricant
+    var fabUp = fab.toUpperCase();
+    var hCode = 'Z03B-0043'; var hName = 'Harnais Generique';
+    if (fabUp === 'HITACHI') {
+        var is7 = modele.indexOf('-7') >= 0;
+        var is5or6 = modele.indexOf('-5') >= 0 || modele.indexOf('-6') >= 0;
+        if (is7 && !is5or6) { hCode = 'Z03B-0121'; hName = 'Harnais Hitachi -7'; }
+        else { hCode = 'Z03B-0031'; hName = 'Harnais Hitachi -5/-6'; }
+    } else if (fabUp === 'JOHN DEERE') { hCode = 'Z03B-0031'; hName = 'Harnais Hitachi/JD'; }
+    else if (fabUp === 'KOMATSU') { hCode = 'Z03B-0032'; hName = 'Harnais Komatsu'; }
+    else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Harnais Doosan'; }
+    else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Harnais Volvo'; }
+    else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Harnais Link-Belt/Case'; }
+    else if (fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT') { hCode = 'Z03B-0080'; hName = 'Harnais Caterpillar'; }
+    kit.push({ code: hCode, name: hName, status: 'Obligatoire' });
+
     return kit;
 }
 
