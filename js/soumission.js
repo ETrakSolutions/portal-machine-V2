@@ -106,18 +106,31 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
     })
     .catch(function() {});
 
-// Load machines data
-fetch('data/machines.json')
-    .then(res => res.json())
-    .then(data => {
-        machinesData = data;
-        populateTypes();
+// Load allowed types then machines data
+var allowedTypes = null; // null = all types allowed
+
+fetch(API_URL + '?action=get&key=soumission_allowed_types')
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.value) { try { allowedTypes = JSON.parse(data.value); } catch(e) {} }
     })
-    .catch(err => console.error('Erreur chargement donnees:', err));
+    .catch(function() {})
+    .finally(function() {
+        // Load machines data after allowed types
+        fetch('data/machines.json')
+            .then(res => res.json())
+            .then(data => {
+                machinesData = data;
+                populateTypes();
+            })
+            .catch(err => console.error('Erreur chargement donnees:', err));
+    });
 
 function populateTypes() {
     const types = Object.keys(machinesData).sort();
     types.forEach(type => {
+        // Filter by allowed types (if configured)
+        if (allowedTypes && allowedTypes.length > 0 && allowedTypes.indexOf(type) === -1) return;
         const opt = document.createElement('option');
         opt.value = type;
         opt.textContent = type;
