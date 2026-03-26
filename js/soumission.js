@@ -206,6 +206,11 @@ function showOptions() {
     const annee = selectAnnee.value;
     const modele = selectModele.value;
 
+    // Show specs section
+    var specsSection = document.getElementById('specs-section');
+    if (specsSection) specsSection.style.display = 'block';
+    renderSpecsTable(type, fab, annee, modele);
+
     optionsSection.style.display = 'block';
     emptyState.style.display = 'none';
 
@@ -248,6 +253,58 @@ function showOptions() {
 
 // Load notes for model
 var currentNotes = '';
+// Render specs table for selected machine
+function renderSpecsTable(type, fab, annee, modele) {
+    var table = document.getElementById('soumission-specs-table');
+    var title = document.getElementById('specs-title');
+    if (!table) return;
+
+    var specs = {};
+    if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
+        specs = machinesData[type][fab][annee][modele];
+    }
+
+    if (title) title.textContent = fab + ' ' + modele + ' (' + annee + ')';
+
+    var html = '';
+    // Compute class
+    var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
+    var poidsMatch = poidsStr.match(/^(\d+)/);
+    var poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 0;
+    var classe = '';
+    if (poidsKg > 0) {
+        if (poidsKg < 2000) classe = 'Ultra-micro';
+        else if (poidsKg < 6000) classe = 'Mini';
+        else if (poidsKg < 10000) classe = 'Compact';
+        else if (poidsKg < 20000) classe = 'Standard';
+        else if (poidsKg < 35000) classe = 'Moyen';
+        else if (poidsKg < 50000) classe = 'Grand';
+        else if (poidsKg < 80000) classe = 'Tres grand';
+        else classe = 'Mega';
+    }
+    if (classe) html += '<tr><td>Classe machine</td><td><strong>' + classe + '</strong></td></tr>';
+
+    for (var key in specs) {
+        var val = specs[key];
+        if (key === 'Image') continue; // skip image
+        if (!val || val === 'A completer') continue;
+
+        var highlight = false;
+        if (key === 'Type de traction' && val === 'Roue') highlight = true;
+        if (key === 'Type de boom' && val.includes('2 parties')) highlight = true;
+        if (key === 'Swing boom' && val === 'Oui') highlight = true;
+        if (key === 'Voltage machine (V/type)' && val.includes('12V')) highlight = true;
+
+        if (highlight) {
+            html += '<tr><td>' + key + '</td><td><span class="flash-yellow">' + val + '</span></td></tr>';
+        } else {
+            html += '<tr><td>' + key + '</td><td>' + val + '</td></tr>';
+        }
+    }
+
+    table.innerHTML = html || '<tr><td colspan="2" style="color:#666;">Aucune specification disponible</td></tr>';
+}
+
 function loadNotesForModel(fab, modele, annee) {
     currentNotes = '';
     var key = 'notes_' + fab + '_' + modele + '_' + annee;
