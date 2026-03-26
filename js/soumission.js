@@ -134,11 +134,17 @@ function hasActiveOptions() {
     return !!(anyToggle || anyLim || anyCreus || anyCam);
 }
 
+// Show HTML modal for reset confirmation, call onConfirm if accepted
+function confirmReset(onConfirm) {
+    var modal = document.getElementById('modal-reset');
+    if (!modal) { onConfirm(); return; }
+    modal.style.display = 'flex';
+    document.getElementById('modal-reset-cancel').onclick = function() { modal.style.display = 'none'; };
+    document.getElementById('modal-reset-confirm').onclick = function() { modal.style.display = 'none'; onConfirm(); };
+}
+
 // Cascading selects
-selectType.addEventListener('change', () => {
-    if (hasActiveOptions() && !confirm('Des options sont selectionnees. Voulez-vous changer de machine et tout reinitialiser?')) {
-        return;
-    }
+function doTypeChange() {
     resetFrom('fabricant');
     const type = selectType.value;
     if (!type) return;
@@ -151,12 +157,12 @@ selectType.addEventListener('change', () => {
     });
     selectFabricant.disabled = false;
     btnReset.style.display = 'inline-block';
+}
+selectType.addEventListener('change', () => {
+    if (hasActiveOptions()) { confirmReset(doTypeChange); } else { doTypeChange(); }
 });
 
-selectFabricant.addEventListener('change', () => {
-    if (hasActiveOptions() && !confirm('Des options sont selectionnees. Voulez-vous changer de machine et tout reinitialiser?')) {
-        return;
-    }
+function doFabChange() {
     resetFrom('annee');
     const type = selectType.value;
     const fab = selectFabricant.value;
@@ -169,12 +175,12 @@ selectFabricant.addEventListener('change', () => {
         selectAnnee.appendChild(opt);
     });
     selectAnnee.disabled = false;
+}
+selectFabricant.addEventListener('change', () => {
+    if (hasActiveOptions()) { confirmReset(doFabChange); } else { doFabChange(); }
 });
 
-selectAnnee.addEventListener('change', () => {
-    if (hasActiveOptions() && !confirm('Des options sont selectionnees. Voulez-vous changer de machine et tout reinitialiser?')) {
-        return;
-    }
+function doAnneeChange() {
     resetFrom('modele');
     const type = selectType.value;
     const fab = selectFabricant.value;
@@ -188,18 +194,18 @@ selectAnnee.addEventListener('change', () => {
         selectModele.appendChild(opt);
     });
     selectModele.disabled = false;
+}
+selectAnnee.addEventListener('change', () => {
+    if (hasActiveOptions()) { confirmReset(doAnneeChange); } else { doAnneeChange(); }
 });
 
-selectModele.addEventListener('change', () => {
-    if (hasActiveOptions() && !confirm('Des options sont selectionnees. Voulez-vous changer de machine et tout reinitialiser?')) {
-        return;
-    }
+function doModeleChange() {
     const modele = selectModele.value;
-    if (!modele) {
-        hideOptions();
-        return;
-    }
+    if (!modele) { hideOptions(); return; }
     showOptions();
+}
+selectModele.addEventListener('change', () => {
+    if (hasActiveOptions()) { confirmReset(doModeleChange); } else { doModeleChange(); }
 });
 
 function resetFrom(level) {
