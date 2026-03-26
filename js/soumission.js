@@ -241,6 +241,9 @@ function showOptions() {
 
     // Load notes for this model
     loadNotesForModel(fab, modele, annee);
+
+    // Show kit obligatory items immediately
+    updateSelectedSummary();
 }
 
 // Load notes for model
@@ -613,10 +616,20 @@ function updateSelectedSummary() {
     document.querySelectorAll('.toggle-box').forEach(function(box) {
         if (box.id === 'toggle-limiteur') return;
         if (box.id === 'toggle-camera') return;
+        if (box.id === 'toggle-creusage') return;
         if (box.dataset.option === 'Indicateur de charge') return;
-        if (box.dataset.option === 'Guide de creusage') return;
         if (box.classList.contains('active')) {
             items.push(box.dataset.option);
+        }
+    });
+
+    // Add kit machine obligatory items (red tokens) — always shown
+    var kitOblig = getKitObligatoryItems();
+    kitOblig.forEach(function(item) {
+        // Skip codes already in the list (limiteur base, etc.)
+        var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
+        if (!alreadyListed) {
+            items.push(fmtItem(item.code, item.name));
         }
     });
 
@@ -626,6 +639,22 @@ function updateSelectedSummary() {
     } else {
         wrap.style.display = 'none';
     }
+}
+
+// Get kit machine obligatory items for current selection
+function getKitObligatoryItems() {
+    var type = selectType.value;
+    var fab = selectFabricant.value;
+    var annee = selectAnnee.value;
+    var modele = selectModele.value;
+    if (!type || !fab || !modele) return [];
+
+    var specs = {};
+    if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
+        specs = machinesData[type][fab][annee][modele];
+    }
+    var kit = getKitSummary(type, fab, modele, specs);
+    return kit.filter(function(item) { return item.status === 'Obligatoire'; });
 }
 
 // Toggle boxes click handler
