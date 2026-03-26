@@ -125,13 +125,13 @@ function populateTypes() {
     });
 }
 
-// Check if any options are active (toggled ON or sub-options checked)
+// Check if user has manually selected any options (not just auto-displayed obligatory items)
 function hasActiveOptions() {
-    var anyToggle = document.querySelector('.toggle-box.active');
     var anyLim = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+    var anyIDC = document.querySelector('[data-option="Indicateur de charge"].active');
     var anyCreus = document.querySelector('#toggle-creusage input:checked');
     var anyCam = document.querySelector('#toggle-camera input:checked');
-    return !!(anyToggle || anyLim || anyCreus || anyCam);
+    return !!(anyLim || anyIDC || anyCreus || anyCam);
 }
 
 // Show HTML modal for reset confirmation, call onConfirm if accepted
