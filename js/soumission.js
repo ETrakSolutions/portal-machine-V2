@@ -777,11 +777,10 @@ function updateSelectedSummary() {
         noteHtml = '<li class="note-item">Note: ' + currentNotes + '</li>';
     }
 
-    var allItems = items.length + obligItems.length + optionalItems.length + pcItems.length;
+    var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
         var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
         html += obligItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
-        html += optionalItems.map(function(i) { return '<li class="optional-kit">' + i + '</li>'; }).join('');
         html += pcItems.map(function(i) { return '<li class="pc-item">' + i + '</li>'; }).join('');
         html += noteHtml;
         list.innerHTML = html;
