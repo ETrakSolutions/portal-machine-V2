@@ -246,15 +246,50 @@ function showOptions() {
     var textarea = document.getElementById('soumission-comment');
     if (textarea) textarea.value = '';
 
-    // Load notes for this model
+    // Load BOM overrides, notes, and product codes for this machine
+    currentBomOverrides = null;
+    currentProductCodes = [];
+    loadBomOverrides(fab, modele, annee);
     loadNotesForModel(fab, modele, annee);
+    loadProductCodes(fab, modele, annee);
 
     // Show kit obligatory items immediately
     updateSelectedSummary();
 }
 
-// Load notes for model
+// BOM overrides, product codes, notes for current machine
+var currentBomOverrides = null;
+var currentProductCodes = [];
 var currentNotes = '';
+
+// Load BOM overrides from API
+function loadBomOverrides(fab, modele, annee) {
+    var key = 'kit_override_' + fab + '_' + modele + '_' + annee;
+    fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try { currentBomOverrides = JSON.parse(data.value); } catch(e) {}
+            }
+            updateSelectedSummary();
+        })
+        .catch(function() {});
+}
+
+// Load product codes from API (manually added in BD)
+function loadProductCodes(fab, modele, annee) {
+    var key = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+    fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try { currentProductCodes = JSON.parse(data.value); } catch(e) {}
+            }
+            updateSelectedSummary();
+        })
+        .catch(function() {});
+}
+
 // Render specs table for selected machine
 function renderSpecsTable(type, fab, annee, modele) {
     var table = document.getElementById('soumission-specs-table');
@@ -352,8 +387,16 @@ function getKitSummary(type, fab, modele, specs) {
         kit.push({ code: '1500-0004', name: 'Option mini excavatrice', status: 'Obligatoire' });
     }
 
-    // 1000-0070 Boite GC (Caterpillar only)
-    if (fab === 'Caterpillar') {
+    // 1000-0070 Boite GC — check BOM override for status
+    var gcStatus = 'na';
+    if (currentBomOverrides && currentBomOverrides['0070']) {
+        gcStatus = currentBomOverrides['0070'];
+    } else if (fab === 'Caterpillar') {
+        gcStatus = 'j'; // default optionnel for Cat
+    }
+    if (gcStatus === 'r') {
+        kit.push({ code: '1000-0070', name: 'Boite (GC)', status: 'Obligatoire' });
+    } else if (gcStatus === 'j') {
         kit.push({ code: '1000-0070', name: 'Boite (GC)', status: 'Optionnel' });
     }
 
@@ -736,9 +779,28 @@ function updateSelectedSummary() {
         });
     }
 
-    if (items.length > 0 || obligItems.length > 0) {
+    // Product codes from BD (manually added)
+    var pcItems = [];
+    if (currentProductCodes && currentProductCodes.length > 0) {
+        currentProductCodes.forEach(function(pc) {
+            var desc = pc.desc || '';
+            var qty = pc.qty && pc.qty > 1 ? ' x' + pc.qty : '';
+            pcItems.push(fmtItem(pc.code, desc + qty));
+        });
+    }
+
+    // Notes from BD
+    var noteHtml = '';
+    if (currentNotes) {
+        noteHtml = '<li class="note-item">Note: ' + currentNotes + '</li>';
+    }
+
+    var allItems = items.length + obligItems.length + pcItems.length;
+    if (allItems > 0 || currentNotes) {
         var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
         html += obligItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
+        html += pcItems.map(function(i) { return '<li class="pc-item">' + i + '</li>'; }).join('');
+        html += noteHtml;
         list.innerHTML = html;
         wrap.style.display = 'block';
     } else {

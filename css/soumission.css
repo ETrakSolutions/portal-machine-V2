@@ -137,6 +137,21 @@
 .selected-options-summary li.oblig::before {
     color: #FF4444;
 }
+.selected-options-summary li.pc-item::before {
+    content: "\25CF  ";
+    color: #4DA8FF;
+}
+.selected-options-summary li.note-item {
+    color: #999;
+    font-style: italic;
+    margin-top: 6px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 6px;
+}
+.selected-options-summary li.note-item::before {
+    content: "\270E  ";
+    color: #FFD54F;
+}
 
 .sub-note {
     width: 100%;
