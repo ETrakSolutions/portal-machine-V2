@@ -131,8 +131,11 @@
 }
 .selected-options-summary li::before {
     content: "\2713  ";
-    color: #4DA8FF;
+    color: #FFD54F;
     font-weight: bold;
+}
+.selected-options-summary li.oblig::before {
+    color: #FF4444;
 }
 
 .sub-note {

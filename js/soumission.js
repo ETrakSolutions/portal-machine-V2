@@ -696,19 +696,23 @@ function updateSelectedSummary() {
     });
 
     // Add kit machine obligatory items (red tokens) — always shown
+    var obligItems = [];
     var kitOblig = getKitObligatoryItems();
     kitOblig.forEach(function(item) {
         // Skip codes already in the list (limiteur base, etc.)
         var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
         if (!alreadyListed) {
-            items.push(fmtItem(item.code, item.name));
+            obligItems.push(fmtItem(item.code, item.name));
         }
     });
 
-    if (items.length > 0) {
-        list.innerHTML = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
+    if (items.length > 0 || obligItems.length > 0) {
+        var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
+        html += obligItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
+        list.innerHTML = html;
         wrap.style.display = 'block';
     } else {
+        list.innerHTML = '';
         wrap.style.display = 'none';
     }
 }
