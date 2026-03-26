@@ -506,7 +506,11 @@ if (submitBtn) {
         }
 
         if (salesEmails.length === 0) {
-            alert('Aucun courriel vente interne configure. Contactez l\'administrateur.');
+            alert('Les courriels de vente ne sont pas encore charges. Veuillez patienter quelques secondes et reessayer.');
+            // Retry loading
+            fetch(API_URL + '?action=get&key=sales_emails')
+                .then(function(r) { return r.json(); })
+                .then(function(data) { if (data.value) { try { salesEmails = JSON.parse(data.value); } catch(e) {} } });
             return;
         }
         var mailTo = salesEmails.join(',');
