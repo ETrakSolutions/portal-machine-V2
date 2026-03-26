@@ -767,14 +767,19 @@ function updateSelectedSummary() {
         }
     });
 
-    // Add kit machine obligatory items (red tokens) — only when limiteur is selected
+    // Add kit machine items (red=obligatoire, yellow=optionnel) — only when limiteur is selected
     var obligItems = [];
+    var optionalItems = [];
     if (anyLim) {
-        var kitOblig = getKitObligatoryItems();
-        kitOblig.forEach(function(item) {
+        var kitAll = getKitAllItems();
+        kitAll.forEach(function(item) {
             var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
             if (!alreadyListed) {
-                obligItems.push(fmtItem(item.code, item.name));
+                if (item.status === 'Obligatoire') {
+                    obligItems.push(fmtItem(item.code, item.name));
+                } else {
+                    optionalItems.push(fmtItem(item.code, item.name));
+                }
             }
         });
     }
@@ -795,10 +800,11 @@ function updateSelectedSummary() {
         noteHtml = '<li class="note-item">Note: ' + currentNotes + '</li>';
     }
 
-    var allItems = items.length + obligItems.length + pcItems.length;
+    var allItems = items.length + obligItems.length + optionalItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
         var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
         html += obligItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
+        html += optionalItems.map(function(i) { return '<li class="optional-kit">' + i + '</li>'; }).join('');
         html += pcItems.map(function(i) { return '<li class="pc-item">' + i + '</li>'; }).join('');
         html += noteHtml;
         list.innerHTML = html;
@@ -809,8 +815,8 @@ function updateSelectedSummary() {
     }
 }
 
-// Get kit machine obligatory items for current selection
-function getKitObligatoryItems() {
+// Get all kit machine items for current selection
+function getKitAllItems() {
     var type = selectType.value;
     var fab = selectFabricant.value;
     var annee = selectAnnee.value;
@@ -821,8 +827,7 @@ function getKitObligatoryItems() {
     if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
         specs = machinesData[type][fab][annee][modele];
     }
-    var kit = getKitSummary(type, fab, modele, specs);
-    return kit.filter(function(item) { return item.status === 'Obligatoire'; });
+    return getKitSummary(type, fab, modele, specs);
 }
 
 // Toggle boxes click handler
