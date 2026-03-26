@@ -1070,14 +1070,19 @@ function loadAllowedTypes() {
     var container = document.getElementById('admin-allowed-types');
     if (!container) return;
 
+    // Render immediately with all checked (default), then update from API
+    renderTypeCheckboxes(container, []);
+
     fetch(API_URL + '?action=get&key=soumission_allowed_types')
         .then(function(r) { return r.json(); })
         .then(function(data) {
-            var allowed = [];
-            if (data.value) { try { allowed = JSON.parse(data.value); } catch(e) {} }
-            renderTypeCheckboxes(container, allowed);
+            if (data.value) {
+                var allowed = [];
+                try { allowed = JSON.parse(data.value); } catch(e) {}
+                if (allowed.length > 0) renderTypeCheckboxes(container, allowed);
+            }
         })
-        .catch(function() { renderTypeCheckboxes(container, []); });
+        .catch(function() {}); // Keep default (all checked)
 }
 
 function renderTypeCheckboxes(container, allowed) {
