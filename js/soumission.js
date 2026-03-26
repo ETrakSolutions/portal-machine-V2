@@ -958,7 +958,17 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
     var cbLaser = document.getElementById('creus-laser');
     var status = creusBox.querySelector('.toggle-status');
 
+    // Laser only available when 2D is checked
+    if (cbLaser) cbLaser.disabled = true;
+
     function updateCreusage() {
+        // Laser requires 2D
+        if (cb2d && cbLaser) {
+            cbLaser.disabled = !cb2d.checked;
+            if (!cb2d.checked && cbLaser.checked) {
+                cbLaser.checked = false;
+            }
+        }
         var parts = [];
         if (cb2d && cb2d.checked) parts.push('2D');
         if (cbLaser && cbLaser.checked) parts.push('Laser');
