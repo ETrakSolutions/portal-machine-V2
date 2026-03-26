@@ -406,16 +406,25 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
-        // Warn if no Hauteur or Rotation selected
+        // Warn if no Hauteur or Rotation selected — show HTML modal
         var _hCheck = document.getElementById('lim-hauteur');
         var _rCheck = document.getElementById('lim-rotation');
         var _mCheck = document.getElementById('lim-multi');
         var hasHauteurOrRotation = (_hCheck && _hCheck.checked) || (_rCheck && _rCheck.checked) || (_mCheck && _mCheck.checked);
-        if (!hasHauteurOrRotation) {
-            if (!confirm('Aucune option Hauteur ou Rotation n\'est selectionnee.\n\nVoulez-vous continuer sans limiteur?')) {
-                return;
+        if (!hasHauteurOrRotation && submitBtn.dataset.skipLimCheck !== 'true') {
+            var modal = document.getElementById('modal-no-limiteur');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.getElementById('modal-cancel').onclick = function() { modal.style.display = 'none'; };
+                document.getElementById('modal-confirm').onclick = function() {
+                    modal.style.display = 'none';
+                    submitBtn.dataset.skipLimCheck = 'true';
+                    submitBtn.click();
+                };
             }
+            return;
         }
+        delete submitBtn.dataset.skipLimCheck;
 
         // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
