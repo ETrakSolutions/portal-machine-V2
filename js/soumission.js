@@ -355,57 +355,16 @@ function loadNotesForModel(fab, modele, annee) {
 function getKitSummary(type, fab, modele, specs) {
     if (type !== 'Excavatrice') return [];
 
-    var kit = [];
     var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
     var poidsMatch = poidsStr.match(/^(\d+)/);
     var poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 99999;
     var modelUpper = modele.toUpperCase();
-    var swingValue = specs['Swing boom'] || 'Non';
+    var fabUp = fab.toUpperCase();
+    var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
+    var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
+    var isMini = poidsKg > 0 && poidsKg < 5000;
     var typeBras = specs['Type de boom'] || '';
 
-    // 1500-0000 Avec cabine
-    kit.push({ code: '1500-0000', name: 'Machine avec cabine (kit de base)', status: 'Obligatoire' });
-
-    // 1500-0003 Sans cabine
-    if (poidsKg < 5000 && poidsKg > 0) {
-        kit.push({ code: '1500-0003', name: 'Machine sans cabine', status: 'Optionnel' });
-    }
-
-    // 1500-0001 Hauteur
-    kit.push({ code: '1500-0001', name: 'Option Hauteur', status: 'Optionnel' });
-
-    // 1500-0002 Rotation
-    kit.push({ code: '1500-0002', name: 'Option Rotation', status: 'Optionnel' });
-
-    // 1500-0304 Cremaillere (TB216 only)
-    if (modelUpper === 'TB216') {
-        kit.push({ code: '1500-0304', name: 'Option rotation cremaillere', status: 'Obligatoire' });
-    }
-
-    // 1500-0004 Mini excavatrice
-    if (poidsKg < 5000 && poidsKg > 0) {
-        kit.push({ code: '1500-0004', name: 'Option mini excavatrice', status: 'Obligatoire' });
-    }
-
-    // 1000-0070 Boite GC — check BOM override for status
-    var gcStatus = 'na';
-    if (currentBomOverrides && currentBomOverrides['0070']) {
-        gcStatus = currentBomOverrides['0070'];
-    } else if (fab === 'Caterpillar') {
-        gcStatus = 'j'; // default optionnel for Cat
-    }
-    if (gcStatus === 'r') {
-        kit.push({ code: '1000-0070', name: 'Boite (GC)', status: 'Obligatoire' });
-    } else if (gcStatus === 'j') {
-        kit.push({ code: '1000-0070', name: 'Boite (GC)', status: 'Optionnel' });
-    }
-
-    // 1500-0008 Swing boom
-    if (swingValue === 'Oui') {
-        kit.push({ code: '1500-0008', name: 'Gestion swing boom', status: 'Optionnel' });
-    }
-
-    // 1500-0009 Drain hydraulique — same DRAIN_PREFIXES as app.js
     var DRAIN_PREFIXES = [
         'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
         '308','315','316','320','336','440','450','M318',
@@ -422,17 +381,55 @@ function getKitSummary(type, fab, modele, specs) {
         'EZ36'
     ];
     var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
-    if (isDrain) {
-        kit.push({ code: '1500-0009', name: 'Drain hydraulique', status: 'Obligatoire' });
+
+    // Compute defaults (same as app.js)
+    var bomDefaults = {
+        '0000': 'r',
+        '0001': 'j',
+        '0002': 'j',
+        '0004': isMini ? 'r' : 'na',
+        '0005': typeBras.includes('2 parties') ? 'j' : 'na',
+        '0008': hasSwing ? 'j' : 'na',
+        '0009': isDrain ? 'r' : 'na',
+        '0070': isCat ? 'j' : 'na',
+        '0304': modelUpper === 'TB216' ? 'r' : 'na'
+    };
+
+    // Apply BOM overrides from API (BD is master)
+    if (currentBomOverrides) {
+        for (var code in currentBomOverrides) {
+            if (currentBomOverrides[code]) bomDefaults[code] = currentBomOverrides[code];
+        }
     }
 
-    // 1500-0005 Multi Axes
-    if (typeBras.includes('2 parties')) {
-        kit.push({ code: '1500-0005', name: 'Multi Axes complet', status: 'Optionnel' });
+    // BOM item names
+    var BOM_NAMES = {
+        '0000': 'Machine avec cabine (kit de base)',
+        '0001': 'Option Hauteur',
+        '0002': 'Option Rotation',
+        '0004': 'Option mini excavatrice',
+        '0005': 'Multi Axes complet',
+        '0008': 'Gestion swing boom',
+        '0009': 'Drain hydraulique',
+        '0070': 'Boite (GC)',
+        '0304': 'Option rotation cremaillere'
+    };
+
+    // Build kit from BOM defaults (after overrides applied)
+    var kit = [];
+    var bomCodePrefix = {'0000':'1500-','0001':'1500-','0002':'1500-','0004':'1500-','0005':'1500-','0008':'1500-','0009':'1500-','0070':'1000-','0304':'1500-'};
+    for (var bCode in bomDefaults) {
+        var status = bomDefaults[bCode];
+        if (status === 'na') continue;
+        var fullCode = (bomCodePrefix[bCode] || '1500-') + bCode;
+        kit.push({
+            code: fullCode,
+            name: BOM_NAMES[bCode] || bCode,
+            status: status === 'r' ? 'Obligatoire' : 'Optionnel'
+        });
     }
 
     // Harnais de coupure — obligatoire, code depend du fabricant
-    var fabUp = fab.toUpperCase();
     var hCode = 'Z03B-0043'; var hName = 'Harnais Generique';
     if (fabUp === 'HITACHI') {
         var is7 = modele.indexOf('-7') >= 0;
@@ -444,7 +441,15 @@ function getKitSummary(type, fab, modele, specs) {
     else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Harnais Doosan'; }
     else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Harnais Volvo'; }
     else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Harnais Link-Belt/Case'; }
-    else if (fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT') { hCode = 'Z03B-0080'; hName = 'Harnais Caterpillar'; }
+    else if (isCat) { hCode = 'Z03B-0080'; hName = 'Harnais Caterpillar'; }
+
+    // Check harnais override
+    if (currentBomOverrides && currentBomOverrides.harnais) {
+        var hOverride = currentBomOverrides.harnais;
+        hCode = 'Z03B-' + hOverride.replace('H','');
+        var HARNAIS_LABELS = {'H0031':'Hitachi/JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'Link-Belt/Case','H0080':'Caterpillar','H0100':'Cat(ECU)','H0121':'Hitachi-7','H0043':'Generique'};
+        hName = 'Harnais ' + (HARNAIS_LABELS[hOverride] || hOverride);
+    }
     kit.push({ code: hCode, name: hName, status: 'Obligatoire' });
 
     return kit;
