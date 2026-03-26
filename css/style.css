@@ -233,6 +233,7 @@ main {
 .selector-group select {
     appearance: none;
     -webkit-appearance: none;
+    color-scheme: dark;
     background: linear-gradient(180deg, #2E2E2E, #1A1A1A);
     border: 1px solid rgba(192,192,192,0.2);
     border-radius: var(--radius);
@@ -264,6 +265,11 @@ main {
     opacity: 0.35;
     cursor: not-allowed;
     color: #999999;
+}
+
+.selector-group select option {
+    background: #1A1A1A;
+    color: #fff;
 }
 
 .btn-reset {
