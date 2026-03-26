@@ -21,6 +21,7 @@
     font-style: normal;
 }
 
+html { color-scheme: dark; }
 :root {
     --bg-dark: #1A1A1A;
     --bg-card: #2A2A2A;
