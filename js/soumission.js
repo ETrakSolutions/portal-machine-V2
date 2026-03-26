@@ -406,25 +406,7 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
-        // Warn if no Hauteur or Rotation selected — show HTML modal
-        var _hCheck = document.getElementById('lim-hauteur');
-        var _rCheck = document.getElementById('lim-rotation');
-        var _mCheck = document.getElementById('lim-multi');
-        var hasHauteurOrRotation = (_hCheck && _hCheck.checked) || (_rCheck && _rCheck.checked) || (_mCheck && _mCheck.checked);
-        if (!hasHauteurOrRotation && submitBtn.dataset.skipLimCheck !== 'true') {
-            var modal = document.getElementById('modal-no-limiteur');
-            if (modal) {
-                modal.style.display = 'flex';
-                document.getElementById('modal-cancel').onclick = function() { modal.style.display = 'none'; };
-                document.getElementById('modal-confirm').onclick = function() {
-                    modal.style.display = 'none';
-                    submitBtn.dataset.skipLimCheck = 'true';
-                    submitBtn.click();
-                };
-            }
-            return;
-        }
-        delete submitBtn.dataset.skipLimCheck;
+        // No limiteur check — options obligatoires only shown when limiteur selected
 
         // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
@@ -722,16 +704,17 @@ function updateSelectedSummary() {
         }
     });
 
-    // Add kit machine obligatory items (red tokens) — always shown
+    // Add kit machine obligatory items (red tokens) — only when limiteur is selected
     var obligItems = [];
-    var kitOblig = getKitObligatoryItems();
-    kitOblig.forEach(function(item) {
-        // Skip codes already in the list (limiteur base, etc.)
-        var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
-        if (!alreadyListed) {
-            obligItems.push(fmtItem(item.code, item.name));
-        }
-    });
+    if (anyLim) {
+        var kitOblig = getKitObligatoryItems();
+        kitOblig.forEach(function(item) {
+            var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
+            if (!alreadyListed) {
+                obligItems.push(fmtItem(item.code, item.name));
+            }
+        });
+    }
 
     if (items.length > 0 || obligItems.length > 0) {
         var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
