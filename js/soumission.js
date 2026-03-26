@@ -442,16 +442,21 @@ function getKitSummary(type, fab, modele, specs) {
         '0304': 'Option rotation cremaillere'
     };
 
-    // Build kit — everything present is obligatoire
+    // Build kit — obligatoire or optionnel based on item type
+    // These codes are always obligatoire when present
+    var ALWAYS_OBLIG = {'0000':true, '0004':true, '0009':true, '0070':true, '0304':true};
+    // These codes are always optionnel (user choice)
+    // 0001=Hauteur, 0002=Rotation, 0005=Multi-axe, 0008=Swing boom
+
     var kit = [];
     var bomCodePrefix = {'0000':'1500-','0001':'1500-','0002':'1500-','0004':'1500-','0005':'1500-','0008':'1500-','0009':'1500-','0070':'1000-','0304':'1500-'};
     for (var bCode in bomDefaults) {
-        if (!bomDefaults[bCode]) continue; // skip items not applicable
+        if (!bomDefaults[bCode]) continue;
         var fullCode = (bomCodePrefix[bCode] || '1500-') + bCode;
         kit.push({
             code: fullCode,
             name: BOM_NAMES[bCode] || bCode,
-            status: 'Obligatoire'
+            status: ALWAYS_OBLIG[bCode] ? 'Obligatoire' : 'Optionnel'
         });
     }
 
@@ -801,15 +806,16 @@ function updateSelectedSummary() {
         }
     });
 
-    // Add kit machine obligatory items — only when limiteur is selected
+    // Add kit machine items — only when limiteur is selected
     var obligItems = [];
     if (anyLim) {
         var kitAll = getKitAllItems();
         kitAll.forEach(function(item) {
             var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
-            if (!alreadyListed) {
+            if (!alreadyListed && item.status === 'Obligatoire') {
                 obligItems.push(fmtItem(item.code, item.name));
             }
+            // Optionnel items not shown (user didn't select them)
         });
     }
 
