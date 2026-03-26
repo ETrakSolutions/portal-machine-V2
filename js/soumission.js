@@ -235,10 +235,7 @@ function showOptions() {
         box.querySelector('.toggle-status').textContent = 'OFF';
     });
     // Reset limiteur checkboxes
-    ['lim-hauteur', 'lim-rotation', 'lim-multi'].forEach(function(id) {
-        var cb = document.getElementById(id);
-        if (cb) { cb.checked = false; cb.disabled = false; }
-    });
+    document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
     var refInput = document.getElementById('soumission-ref-client');
@@ -476,31 +473,22 @@ if (submitBtn) {
         var optionsOn = [];
         var optionsOff = [];
 
-        // Limiteur + IDC combined
-        var _haut = document.getElementById('lim-hauteur');
-        var _rot = document.getElementById('lim-rotation');
-        var _multi = document.getElementById('lim-multi');
-        var _hasH = _haut && _haut.checked;
-        var _hasR = _rot && _rot.checked;
-        var _hasM = _multi && _multi.checked;
-        var _anyLim = _hasH || _hasR || _hasM;
+        // Limiteur (exclusive) + IDC combined
+        var _limChecked = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+        var _limVal = _limChecked ? _limChecked.value : '';
+        var _anyLim = !!_limVal;
 
         var _idcBox = document.querySelector('[data-option="Indicateur de charge"]');
         var _hasIDC = _idcBox && _idcBox.classList.contains('active');
 
-        var _limPart = '';
-        if (_hasM) _limPart = 'Limiteur Multi-axe';
-        else if (_hasH && _hasR) _limPart = 'Limiteur Hauteur + Rotation';
-        else if (_hasH) _limPart = 'Limiteur Hauteur';
-        else if (_hasR) _limPart = 'Limiteur Rotation';
+        var _limPart = _limVal ? 'Limiteur ' + _limVal : '';
 
         if (_limPart && _hasIDC) {
-            var _comboKey = _limPart + ' / IDC';
-            optionsOn.push(_comboKey + ' (' + getCode(_comboKey) + ')');
+            optionsOn.push(_limPart + ' / IDC');
         } else if (_limPart) {
-            optionsOn.push(_limPart + ' (' + getCode(_limPart) + ')');
+            optionsOn.push(_limPart);
         } else if (_hasIDC) {
-            optionsOn.push('IDC (' + getCode('IDC') + ')');
+            optionsOn.push('IDC Complet');
         }
         if (!_anyLim) optionsOff.push('Limiteur de portee');
         if (!_hasIDC) optionsOff.push('Indicateur de charge');
@@ -644,13 +632,8 @@ if (submitBtn) {
 
 // Build combined text for Limiteur/IDC/Creusage based on truth table
 function buildLimIdcCreusageText() {
-    // Read limiteur sub-options
-    var haut = document.getElementById('lim-hauteur');
-    var rot = document.getElementById('lim-rotation');
-    var multi = document.getElementById('lim-multi');
-    var hasH = haut && haut.checked;
-    var hasR = rot && rot.checked;
-    var hasM = multi && multi.checked;
+    var limChecked = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+    var limVal = limChecked ? limChecked.value : '';
 
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
     var hasIDC = idcBox && idcBox.classList.contains('active');
@@ -658,23 +641,9 @@ function buildLimIdcCreusageText() {
     var creusBox = document.getElementById('toggle-creusage');
     var hasCR = creusBox && creusBox.classList.contains('active');
 
-    // Build limiteur part
-    var limPart = '';
-    if (hasM) {
-        limPart = 'Limiteur Multi-axe';
-    } else if (hasH && hasR) {
-        limPart = 'Limiteur Hauteur + Rotation';
-    } else if (hasH) {
-        limPart = 'Limiteur Hauteur';
-    } else if (hasR) {
-        limPart = 'Limiteur Rotation';
-    }
-
-    // Assemble parts with " / " separator
     var parts = [];
-    if (limPart) parts.push(limPart);
-    if (hasIDC && !limPart) parts.push('IDC');
-    if (hasIDC && limPart) parts.push('IDC');
+    if (limVal) parts.push('Limiteur ' + limVal);
+    if (hasIDC) parts.push('IDC');
     if (hasCR) parts.push('Systeme de creusage 2D');
 
     return parts.join(' / ');
@@ -713,25 +682,28 @@ function updateSelectedSummary() {
 
     var items = [];
 
-    // Limiteur + IDC logic
-    var haut = document.getElementById('lim-hauteur');
-    var rot = document.getElementById('lim-rotation');
-    var multi = document.getElementById('lim-multi');
-    var hasH = haut && haut.checked;
-    var hasR = rot && rot.checked;
-    var hasM = multi && multi.checked;
-    var anyLim = hasH || hasR || hasM;
+    // Limiteur (exclusive checkbox) + IDC logic
+    var limChecked = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+    var limVal = limChecked ? limChecked.value : '';
+    var anyLim = !!limVal;
 
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
     var hasIDC = idcBox && idcBox.classList.contains('active');
 
-    // Base limiteur (needed for Hauteur/Rotation, not Multi-axe)
-    if ((hasH || hasR) && !hasM) {
+    // Limiteur codes based on selection
+    if (limVal === 'Hauteur') {
         items.push(fmtItem('1500-0000', 'Base limiteur'));
+        items.push(fmtItem('1500-0001', 'Limiteur Hauteur'));
+    } else if (limVal === 'Rotation') {
+        items.push(fmtItem('1500-0000', 'Base limiteur'));
+        items.push(fmtItem('1500-0002', 'Limiteur Rotation'));
+    } else if (limVal === 'Hauteur + Rotation') {
+        items.push(fmtItem('1500-0000', 'Base limiteur'));
+        items.push(fmtItem('1500-0001', 'Limiteur Hauteur'));
+        items.push(fmtItem('1500-0002', 'Limiteur Rotation'));
+    } else if (limVal === 'Multi-axe') {
+        items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
     }
-    if (hasH && !hasM) items.push(fmtItem('1500-0001', 'Limiteur Hauteur'));
-    if (hasR && !hasM) items.push(fmtItem('1500-0002', 'Limiteur Rotation'));
-    if (hasM) items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
 
     // IDC
     if (hasIDC && anyLim) {
@@ -857,65 +829,32 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
     }
 });
 
-// Limiteur de portee sub-options logic
+// Limiteur de portee sub-options logic (exclusive checkboxes — same as camera)
 (function() {
     var limBox = document.getElementById('toggle-limiteur');
     if (!limBox) return;
-    var cbHauteur = document.getElementById('lim-hauteur');
-    var cbRotation = document.getElementById('lim-rotation');
-    var cbMulti = document.getElementById('lim-multi');
+    var cbs = limBox.querySelectorAll('input[name="limiteur-type"]');
     var status = limBox.querySelector('.toggle-status');
 
-    function updateLimiteur() {
-        var parts = [];
-        if (cbMulti.checked) {
-            parts.push('Multi-axe');
-        } else {
-            if (cbHauteur.checked) parts.push('Hauteur');
-            if (cbRotation.checked) parts.push('Rotation');
-        }
-        if (parts.length > 0) {
-            limBox.classList.add('active');
-            status.textContent = parts.join(' + ');
-        } else {
-            limBox.classList.remove('active');
-            status.textContent = 'OFF';
-        }
-        updateSelectedSummary();
-    }
-
-    // Multi-axe is exclusive with Hauteur/Rotation
-    cbMulti.addEventListener('change', function() {
-        if (this.checked) {
-            cbHauteur.checked = false;
-            cbRotation.checked = false;
-            cbHauteur.disabled = true;
-            cbRotation.disabled = true;
-        } else {
-            cbHauteur.disabled = false;
-            cbRotation.disabled = false;
-        }
-        updateLimiteur();
-    });
-
-    // Hauteur/Rotation disable Multi-axe
-    cbHauteur.addEventListener('change', function() {
-        if (this.checked || cbRotation.checked) {
-            cbMulti.checked = false;
-            cbMulti.disabled = true;
-        } else {
-            cbMulti.disabled = false;
-        }
-        updateLimiteur();
-    });
-    cbRotation.addEventListener('change', function() {
-        if (this.checked || cbHauteur.checked) {
-            cbMulti.checked = false;
-            cbMulti.disabled = true;
-        } else {
-            cbMulti.disabled = false;
-        }
-        updateLimiteur();
+    cbs.forEach(function(cb) {
+        cb.addEventListener('change', function() {
+            if (this.checked) {
+                // Uncheck others (exclusive)
+                cbs.forEach(function(other) {
+                    if (other !== cb) other.checked = false;
+                });
+                limBox.classList.add('active');
+                status.textContent = this.value;
+            } else {
+                var anyChecked = false;
+                cbs.forEach(function(c) { if (c.checked) anyChecked = true; });
+                if (!anyChecked) {
+                    limBox.classList.remove('active');
+                    status.textContent = 'OFF';
+                }
+            }
+            updateSelectedSummary();
+        });
     });
 })();
 

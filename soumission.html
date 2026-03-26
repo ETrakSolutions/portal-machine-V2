@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
-    <link rel="stylesheet" href="css/style.css?v=141">
-    <link rel="stylesheet" href="css/soumission.css?v=141">
+    <link rel="stylesheet" href="css/style.css?v=142">
+    <link rel="stylesheet" href="css/soumission.css?v=142">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -92,9 +92,10 @@
                     <span class="toggle-label">Limiteur de portee</span>
                     <span class="toggle-status">OFF</span>
                     <div class="toggle-sub-panel" id="limiteur-panel">
-                        <label class="sub-option"><input type="checkbox" id="lim-hauteur" value="Hauteur"> Hauteur</label>
-                        <label class="sub-option"><input type="checkbox" id="lim-rotation" value="Rotation"> Rotation</label>
-                        <label class="sub-option sub-option-excl"><input type="checkbox" id="lim-multi" value="Multi-axe"> Multi-axe</label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-hauteur" value="Hauteur"> Hauteur</label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-rotation" value="Rotation"> Rotation</label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-hr" value="Hauteur + Rotation"> Hauteur + Rotation</label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-multi" value="Multi-axe"> Multi-axe</label>
                         <span class="sub-note">* Multi-axe inclut Hauteur et Rotation</span>
                     </div>
                 </div>
@@ -168,6 +169,6 @@
         </div>
     </footer>
 
-    <script src="js/soumission.js?v=141"></script>
+    <script src="js/soumission.js?v=142"></script>
 </body>
 </html>
