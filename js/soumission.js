@@ -873,7 +873,8 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
     // Limiteur and Camera have sub-options — special handler
     if (box.id === 'toggle-limiteur' || box.id === 'toggle-camera' || box.id === 'toggle-creusage') {
         box.addEventListener('click', function(e) {
-            if (e.target.closest('.toggle-sub-panel')) return;
+            // Don't toggle open/close when clicking inside sub-panel (checkboxes, labels)
+            if (e.target.closest('.toggle-sub-panel') || e.target.closest('.sub-option') || e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
             this.classList.toggle('open');
         });
     } else {
