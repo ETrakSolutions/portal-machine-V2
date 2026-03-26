@@ -241,6 +241,8 @@ function showOptions() {
     });
     // Reset camera radios
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
+    var refInput = document.getElementById('soumission-ref-client');
+    if (refInput) refInput.value = '';
     var textarea = document.getElementById('soumission-comment');
     if (textarea) textarea.value = '';
 
@@ -472,6 +474,7 @@ if (submitBtn) {
             }
         });
 
+        var refClient = (document.getElementById('soumission-ref-client').value || '').trim();
         var comment = (document.getElementById('soumission-comment').value || '').trim();
         var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
         // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
@@ -541,6 +544,10 @@ if (submitBtn) {
         // Notes
         if (currentNotes && currentNotes.trim()) {
             body += '\nNotes:\n  ' + currentNotes.trim() + '\n';
+        }
+
+        if (refClient) {
+            body += '\nReference client: ' + refClient + '\n';
         }
 
         if (comment) {

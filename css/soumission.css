@@ -325,6 +325,18 @@
     box-sizing: border-box;
 }
 .soumission-textarea:focus { outline: none; border-color: #0062CC; }
+.soumission-input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+.soumission-input:focus { outline: none; border-color: #0062CC; }
 
 /* Machine info */
 .options-info {
