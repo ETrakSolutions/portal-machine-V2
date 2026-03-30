@@ -45,7 +45,7 @@ const resultsTableContainer = document.getElementById('results-table-container')
 const emptyState = document.getElementById('empty-state');
 
 // Load data
-fetch('data/machines.json')
+fetch('data/machines.json?v=155')
     .then(res => res.json())
     .then(data => {
         machinesData = data;

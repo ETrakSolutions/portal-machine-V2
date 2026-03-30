@@ -838,7 +838,7 @@
 
         // Load data
         var fullData = null;
-        fetch('data/machines.json')
+        fetch('data/machines.json?v=155')
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 fullData = data;

@@ -117,7 +117,7 @@ fetch(API_URL + '?action=get&key=soumission_allowed_types')
     .catch(function() {})
     .finally(function() {
         // Load machines data after allowed types
-        fetch('data/machines.json')
+        fetch('data/machines.json?v=155')
             .then(res => res.json())
             .then(data => {
                 machinesData = data;
