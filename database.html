@@ -317,7 +317,7 @@
 <body>
     <header>
         <div class="header-content">
-            <a href="index.html" class="header-back" title="Retour au Portail e-Trak">&larr; Portail</a>
+            <a href="index.html" class="header-back" title="Retour au Portail e-Trak">&larr; <span data-i18n="common.portail">Portail</span></a>
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
@@ -327,40 +327,40 @@
     <main>
         <section class="selector-section">
             <div class="intro-row">
-                <span class="section-title">Base de donnees Machine</span>
+                <span class="section-title" data-i18n="db.title">Base de donnees Machine</span>
             </div>
 
             <div class="db-controls">
                 <div class="db-control-group">
-                    <label>Type</label>
+                    <label data-i18n="db.type">Type</label>
                     <select id="db-type"></select>
                 </div>
                 <div class="db-control-group">
-                    <label>Fabricant</label>
+                    <label data-i18n="db.fabricant">Fabricant</label>
                     <select id="db-fab">
-                        <option value="">Tous</option>
+                        <option value="" data-i18n="common.tous">Tous</option>
                     </select>
                 </div>
                 <div class="db-control-group">
-                    <label>Annee</label>
+                    <label data-i18n="db.annee">Annee</label>
                     <select id="db-annee">
-                        <option value="">Toutes</option>
+                        <option value="" data-i18n="common.toutes">Toutes</option>
                     </select>
                 </div>
                 <div class="db-control-group">
-                    <label>Recherche</label>
-                    <input type="text" id="db-search" class="db-search" placeholder="Rechercher un modele...">
+                    <label data-i18n="db.search">Recherche</label>
+                    <input type="text" id="db-search" class="db-search" data-i18n-placeholder="db.search_placeholder" placeholder="Rechercher un modele...">
                 </div>
                 <div class="db-control-group">
                     <label>&nbsp;</label>
-                    <button id="db-export" class="db-export-btn">&#128196; Exporter CSV</button>
+                    <button id="db-export" class="db-export-btn" data-i18n-html="db.export">&#128196; Exporter CSV</button>
                 </div>
             </div>
 
             <div class="db-legend">
-                <span class="db-legend-item"><span class="bom-token bom-r"></span> Obligatoire</span>
-                <span class="db-legend-item"><span class="bom-token bom-j"></span> Optionnel</span>
-                <span class="db-legend-item"><span class="bom-token bom-na">-</span> N/A</span>
+                <span class="db-legend-item"><span class="bom-token bom-r"></span> <span data-i18n="db.legend_obligatoire">Obligatoire</span></span>
+                <span class="db-legend-item"><span class="bom-token bom-j"></span> <span data-i18n="db.legend_optionnel">Optionnel</span></span>
+                <span class="db-legend-item"><span class="bom-token bom-na">-</span> <span data-i18n="db.legend_na">N/A</span></span>
                 <span style="color:#555;">| Cliquer pour modifier (admin)</span>
             </div>
             <div id="db-stats" class="db-stats"></div>
@@ -370,8 +370,8 @@
                 <table class="db-table" id="db-table">
                     <thead>
                         <tr>
-                            <th data-col="fab">Fabricant <span class="sort-arrow">&#9650;</span></th>
-                            <th data-col="modele">Modele <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="fab"><span data-i18n="db.th_fabricant">Fabricant</span> <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="modele"><span data-i18n="db.th_modele">Modele</span> <span class="sort-arrow">&#9650;</span></th>
                             <!-- BOM + Spec columns generated dynamically by loadType() -->
                             <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
                         </tr>
@@ -381,9 +381,9 @@
             </div>
 
             <div class="db-pagination">
-                <button id="db-prev" disabled>&larr; Precedent</button>
+                <button id="db-prev" disabled data-i18n="db.prev">&larr; Precedent</button>
                 <span id="db-page-info" class="page-info"></span>
-                <button id="db-next">Suivant &rarr;</button>
+                <button id="db-next" data-i18n="db.next">Suivant &rarr;</button>
             </div>
         </section>
 
@@ -418,10 +418,12 @@
             <div class="footer-brand">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
             </div>
-            <p class="footer-copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
+            <p class="footer-copy" data-i18n="common.footer_copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
         </div>
     </footer>
 
+    <script src="js/translations.js?v=165"></script>
+    <script src="js/i18n.js?v=165"></script>
     <script>
     (function() {
         var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';

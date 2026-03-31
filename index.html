@@ -16,21 +16,25 @@
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
+            <div class="lang-switch">
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
         </div>
     </header>
 
     <main class="admin-main">
         <!-- HERO -->
         <div class="admin-hero">
-            <h1 class="admin-hero-title">Portail e-Trak</h1>
+            <h1 class="admin-hero-title" data-i18n="hub.title">Portail e-Trak</h1>
             <div class="hub-login-area">
                 <!-- Not logged in -->
-                <button id="hub-login-btn" class="hub-login-btn">Connexion</button>
+                <button id="hub-login-btn" class="hub-login-btn" data-i18n="hub.connexion">Connexion</button>
                 <!-- Logged in -->
                 <div id="hub-user-bar" class="hub-user-bar" style="display:none;">
                     <span id="hub-user-name" class="hub-user-name"></span>
                     <span id="hub-user-role" class="hub-user-role"></span>
-                    <button id="hub-logout-btn" class="hub-logout-btn">Deconnexion</button>
+                    <button id="hub-logout-btn" class="hub-logout-btn" data-i18n="hub.deconnexion">Deconnexion</button>
                 </div>
             </div>
         </div>
@@ -39,10 +43,10 @@
         <div id="hub-login-modal" class="login-modal" style="display:none;">
             <div class="login-modal-content">
                 <button id="hub-login-close" class="login-close">&times;</button>
-                <h3>Connexion</h3>
-                <input type="email" id="hub-login-username" class="login-input" placeholder="Adresse courriel" autocomplete="email">
-                <input type="password" id="hub-login-password" class="login-input" placeholder="Mot de passe" autocomplete="current-password">
-                <button type="button" id="hub-login-submit" class="login-submit">Se connecter</button>
+                <h3 data-i18n="hub.login_title">Connexion</h3>
+                <input type="email" id="hub-login-username" class="login-input" data-i18n-placeholder="hub.login_email" placeholder="Adresse courriel" autocomplete="email">
+                <input type="password" id="hub-login-password" class="login-input" data-i18n-placeholder="hub.login_password" placeholder="Mot de passe" autocomplete="current-password">
+                <button type="button" id="hub-login-submit" class="login-submit" data-i18n="hub.login_submit">Se connecter</button>
                 <p id="hub-login-error" class="login-error" style="display:none;"></p>
             </div>
         </div>
@@ -51,51 +55,51 @@
         <div id="hub-nav" class="hub-nav" style="display:none;">
             <a href="machine.html" id="hub-tile-machine" class="hub-tile">
 
-                <div class="hub-tile-label">Portail Machine</div>
-                <div class="hub-tile-desc">Specifications et kits machines</div>
+                <div class="hub-tile-label" data-i18n="hub.tile_machine">Portail Machine</div>
+                <div class="hub-tile-desc" data-i18n="hub.tile_machine_desc">Specifications et kits machines</div>
             </a>
             <a href="soumission.html" id="hub-tile-soumission" class="hub-tile hub-tile-soumission">
 
-                <div class="hub-tile-label">Soumission</div>
-                <div class="hub-tile-desc">Demande de soumission</div>
+                <div class="hub-tile-label" data-i18n="hub.tile_soumission">Soumission</div>
+                <div class="hub-tile-desc" data-i18n="hub.tile_soumission_desc">Demande de soumission</div>
             </a>
             <a href="database.html" id="hub-tile-database" class="hub-tile hub-tile-database" style="display:none;">
 
-                <div class="hub-tile-label">Base de donnees</div>
-                <div class="hub-tile-desc">Consultation BD machines</div>
+                <div class="hub-tile-label" data-i18n="hub.tile_database">Base de donnees</div>
+                <div class="hub-tile-desc" data-i18n="hub.tile_database_desc">Consultation BD machines</div>
             </a>
             <a href="#admin" id="hub-tile-admin" class="hub-tile hub-tile-admin" style="display:none;">
 
-                <div class="hub-tile-label">Administrateur</div>
-                <div class="hub-tile-desc">Courriels et permissions</div>
+                <div class="hub-tile-label" data-i18n="hub.tile_admin">Administrateur</div>
+                <div class="hub-tile-desc" data-i18n="hub.tile_admin_desc">Courriels et permissions</div>
             </a>
         </div>
 
         <!-- NOT LOGGED IN STATE -->
         <div id="hub-empty" class="hub-empty">
-            <p>Connectez-vous pour acceder aux applications e-Trak.</p>
+            <p data-i18n="hub.empty">Connectez-vous pour acceder aux applications e-Trak.</p>
         </div>
 
         <!-- ADMIN CONTENT (hidden by default, shown when admin clicks Administration) -->
         <div id="admin-content" style="display:none;">
             <div class="admin-section-header">
-                <button id="admin-back-to-hub" class="admin-back">&larr; Retour</button>
-                <h2 class="admin-section-title">Administration</h2>
+                <button id="admin-back-to-hub" class="admin-back" data-i18n="admin.back">&larr; Retour</button>
+                <h2 class="admin-section-title" data-i18n="admin.title">Administration</h2>
             </div>
 
             <!-- Utilisateurs -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128101; Utilisateurs autorises</h2>
-                    <p class="admin-card-desc">Comptes pouvant se connecter au portail. Chaque compte a un role et des permissions.</p>
+                    <h2 data-i18n-html="admin.users_title">&#128101; Utilisateurs autorises</h2>
+                    <p class="admin-card-desc" data-i18n="admin.users_desc">Comptes pouvant se connecter au portail. Chaque compte a un role et des permissions.</p>
                 </div>
                 <div class="admin-table-wrap">
                     <table class="admin-table" id="admin-user-table">
                         <thead>
                             <tr>
-                                <th>Nom</th>
-                                <th>Courriel</th>
-                                <th>Role</th>
+                                <th data-i18n="admin.th_name">Nom</th>
+                                <th data-i18n="admin.th_email">Courriel</th>
+                                <th data-i18n="admin.th_role">Role</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -103,22 +107,22 @@
                     </table>
                 </div>
                 <div class="admin-card-header" style="margin-top:1.5rem;">
-                    <h3>Ajouter un utilisateur</h3>
+                    <h3 data-i18n="admin.add_user">Ajouter un utilisateur</h3>
                 </div>
                 <div class="admin-add-user-form">
                     <div class="admin-form-row">
                         <div class="admin-form-group">
-                            <label>Nom complet</label>
-                            <input type="text" id="admin-new-name" class="admin-input" placeholder="Jean Tremblay">
+                            <label data-i18n="admin.full_name">Nom complet</label>
+                            <input type="text" id="admin-new-name" class="admin-input" data-i18n-placeholder="admin.full_name_placeholder" placeholder="Jean Tremblay">
                         </div>
                         <div class="admin-form-group">
-                            <label>Adresse courriel</label>
-                            <input type="email" id="admin-new-email" class="admin-input" placeholder="jean@exemple.com">
+                            <label data-i18n="admin.email_label">Adresse courriel</label>
+                            <input type="email" id="admin-new-email" class="admin-input" data-i18n-placeholder="admin.email_placeholder" placeholder="jean@exemple.com">
                         </div>
                     </div>
                     <div class="admin-form-row">
                         <div class="admin-form-group">
-                            <label>Role</label>
+                            <label data-i18n="admin.role_label">Role</label>
                             <select id="admin-new-role" class="admin-input">
                                 <option value="technicien">Technicien</option>
                                 <option value="distributeur">Distributeur</option>
@@ -129,98 +133,98 @@
                             </select>
                         </div>
                         <div class="admin-form-group" id="admin-vendeur-group" style="display:none;">
-                            <label>Vendeur associe</label>
+                            <label data-i18n="admin.vendeur_label">Vendeur associe</label>
                             <select id="admin-new-vendeur" class="admin-input">
-                                <option value="">-- Aucun --</option>
+                                <option value="" data-i18n="admin.vendeur_none">-- Aucun --</option>
                             </select>
                         </div>
                     </div>
-                    <p class="admin-card-desc" style="margin-top:0.5rem;color:#999;font-size:0.75rem;">Mot de passe temporaire : <strong style="color:#FF8C00;">0000</strong> — l'utilisateur devra le changer a sa premiere connexion.</p>
+                    <p class="admin-card-desc" style="margin-top:0.5rem;color:#999;font-size:0.75rem;" data-i18n-html="admin.temp_password">Mot de passe temporaire : <strong style="color:#FF8C00;">0000</strong> — l'utilisateur devra le changer a sa premiere connexion.</p>
                     <p id="admin-add-user-error" class="login-error" style="display:none;"></p>
-                    <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide">+ Ajouter l'utilisateur</button>
+                    <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide" data-i18n="admin.add_user_btn">+ Ajouter l'utilisateur</button>
                 </div>
             </section>
 
             <!-- Vendeurs -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128188; Vendeurs</h2>
-                    <p class="admin-card-desc">Liste des vendeurs associes aux demandes de soumission. Les dealers/distributeurs choisiront leur vendeur.</p>
+                    <h2 data-i18n-html="admin.vendeurs_title">&#128188; Vendeurs</h2>
+                    <p class="admin-card-desc" data-i18n="admin.vendeurs_desc">Liste des vendeurs associes aux demandes de soumission. Les dealers/distributeurs choisiront leur vendeur.</p>
                 </div>
                 <div id="admin-vendeurs-list" class="admin-list"></div>
                 <div class="admin-add-row" style="flex-wrap:wrap;gap:0.5rem;">
-                    <input type="text" id="admin-add-vendeur-name" class="admin-input" placeholder="Nom du vendeur" style="flex:1;min-width:140px;">
-                    <input type="email" id="admin-add-vendeur-email" class="admin-input" placeholder="courriel@vendeur.com" style="flex:1;min-width:180px;">
-                    <button id="admin-add-vendeur-btn" class="admin-btn-add">+ Ajouter</button>
+                    <input type="text" id="admin-add-vendeur-name" class="admin-input" data-i18n-placeholder="admin.vendeur_name_placeholder" placeholder="Nom du vendeur" style="flex:1;min-width:140px;">
+                    <input type="email" id="admin-add-vendeur-email" class="admin-input" data-i18n-placeholder="admin.vendeur_email_placeholder" placeholder="courriel@vendeur.com" style="flex:1;min-width:180px;">
+                    <button id="admin-add-vendeur-btn" class="admin-btn-add" data-i18n="admin.add_btn">+ Ajouter</button>
                 </div>
             </section>
 
             <!-- Courriels vente interne -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128176; Courriels vente interne</h2>
-                    <p class="admin-card-desc">Adresses qui recoivent les demandes de soumission depuis le formulaire.</p>
+                    <h2 data-i18n-html="admin.sales_emails_title">&#128176; Courriels vente interne</h2>
+                    <p class="admin-card-desc" data-i18n="admin.sales_emails_desc">Adresses qui recoivent les demandes de soumission depuis le formulaire.</p>
                 </div>
                 <div id="admin-sales-email-list" class="admin-list"></div>
                 <div class="admin-add-row">
-                    <input type="email" id="admin-add-sales-email" class="admin-input" placeholder="vente@exemple.com">
-                    <button id="admin-add-sales-email-btn" class="admin-btn-add">+ Ajouter</button>
+                    <input type="email" id="admin-add-sales-email" class="admin-input" data-i18n-placeholder="admin.sales_email_placeholder" placeholder="vente@exemple.com">
+                    <button id="admin-add-sales-email-btn" class="admin-btn-add" data-i18n="admin.add_btn">+ Ajouter</button>
                 </div>
             </section>
 
             <!-- Courriels notes -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128221; Courriels notifications notes</h2>
-                    <p class="admin-card-desc">Adresses qui recoivent une notification quand une note est sauvegardee.</p>
+                    <h2 data-i18n-html="admin.notes_emails_title">&#128221; Courriels notifications notes</h2>
+                    <p class="admin-card-desc" data-i18n="admin.notes_emails_desc">Adresses qui recoivent une notification quand une note est sauvegardee.</p>
                 </div>
                 <div id="admin-notes-email-list" class="admin-list"></div>
                 <div class="admin-add-row">
-                    <input type="email" id="admin-add-notes-email" class="admin-input" placeholder="notes@exemple.com">
-                    <button id="admin-add-notes-email-btn" class="admin-btn-add">+ Ajouter</button>
+                    <input type="email" id="admin-add-notes-email" class="admin-input" data-i18n-placeholder="admin.notes_email_placeholder" placeholder="notes@exemple.com">
+                    <button id="admin-add-notes-email-btn" class="admin-btn-add" data-i18n="admin.add_btn">+ Ajouter</button>
                 </div>
             </section>
 
             <!-- Courriels kit machine -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128295; Courriels demande de kit machine</h2>
-                    <p class="admin-card-desc">Adresses qui recoivent les demandes de configuration kit machine.</p>
+                    <h2 data-i18n-html="admin.kit_emails_title">&#128295; Courriels demande de kit machine</h2>
+                    <p class="admin-card-desc" data-i18n="admin.kit_emails_desc">Adresses qui recoivent les demandes de configuration kit machine.</p>
                 </div>
                 <div id="admin-kit-email-list" class="admin-list"></div>
                 <div class="admin-add-row">
-                    <input type="email" id="admin-add-kit-email" class="admin-input" placeholder="kit@exemple.com">
-                    <button id="admin-add-kit-email-btn" class="admin-btn-add">+ Ajouter</button>
+                    <input type="email" id="admin-add-kit-email" class="admin-input" data-i18n-placeholder="admin.kit_email_placeholder" placeholder="kit@exemple.com">
+                    <button id="admin-add-kit-email-btn" class="admin-btn-add" data-i18n="admin.add_btn">+ Ajouter</button>
                 </div>
             </section>
 
             <!-- Types de machines pour Soumission -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128736; Types de machines (Soumission)</h2>
-                    <p class="admin-card-desc">Cocher les types de machines disponibles dans la page Soumission.</p>
+                    <h2 data-i18n-html="admin.types_title">&#128736; Types de machines (Soumission)</h2>
+                    <p class="admin-card-desc" data-i18n="admin.types_desc">Cocher les types de machines disponibles dans la page Soumission.</p>
                 </div>
                 <div id="admin-allowed-types" class="admin-allowed-types" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;"></div>
-                <button id="admin-save-types" class="admin-btn-add" style="background:#00CC66;">Sauvegarder</button>
+                <button id="admin-save-types" class="admin-btn-add" style="background:#00CC66;" data-i18n="common.sauvegarder">Sauvegarder</button>
             </section>
 
             <!-- Permissions (editable) -->
             <section class="admin-card">
                 <div class="admin-card-header">
-                    <h2>&#128272; Permissions par role</h2>
-                    <p class="admin-card-desc">Cliquer pour modifier les permissions. Les changements sont sauvegardes automatiquement.</p>
+                    <h2 data-i18n-html="admin.permissions_title">&#128272; Permissions par role</h2>
+                    <p class="admin-card-desc" data-i18n="admin.permissions_desc">Cliquer pour modifier les permissions. Les changements sont sauvegardes automatiquement.</p>
                 </div>
                 <div class="admin-table-wrap">
                     <table class="admin-table admin-perm-table" id="admin-perm-table">
                         <thead>
                             <tr>
-                                <th>Role</th>
-                                <th style="text-align:center;">Acces Admin</th>
-                                <th style="text-align:center;">Acces BD</th>
-                                <th style="text-align:center;">Kit machine</th>
-                                <th style="text-align:center;">Soumission</th>
-                                <th style="text-align:center;">Partage QR</th>
-                                <th style="text-align:center;">Notes</th>
+                                <th data-i18n="admin.perm_role">Role</th>
+                                <th style="text-align:center;" data-i18n="admin.perm_admin">Acces Admin</th>
+                                <th style="text-align:center;" data-i18n="admin.perm_bd">Acces BD</th>
+                                <th style="text-align:center;" data-i18n="admin.perm_kit">Kit machine</th>
+                                <th style="text-align:center;" data-i18n="admin.perm_soumission">Soumission</th>
+                                <th style="text-align:center;" data-i18n="admin.perm_qr">Partage QR</th>
+                                <th style="text-align:center;" data-i18n="admin.perm_notes">Notes</th>
                             </tr>
                         </thead>
                         <tbody id="admin-perm-tbody"></tbody>
@@ -242,24 +246,26 @@
                 </button>
                 <div id="hamburger-menu" class="hamburger-menu">
                     <div class="menu-qr">
-                        <p class="menu-qr-title">Acceder sur mobile</p>
+                        <p class="menu-qr-title" data-i18n="hub.mobile_access">Acceder sur mobile</p>
                         <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAXIAAAFyAQAAAADAX2ykAAADA0lEQVR4nO1cbYrbMBB9kg37M4YcYI9iX22P1BvER8kBCtbPgs2U+ZDt3YKclNJazTwWo6wei/DLzDzJ4w2EZzDGp+iA88uIB/Nf4fwy4uvxUzAMWALGbgk6NYYWIXRAnm/Puf6nEF+M3wJoZhmKrKGfFgRcvrfoaQmavfsbX9P1hOuPzj/UFywti5w6kF4Awhj2E+i/MdPvZxnx5PwwoCHJxhzYVN36jxBfmt8Qfbz/CHS7EEu78Gj+h+s5RnyA88r8Vq45TpdAWn/5p5+uM/p7OwMXJqS/sZ7o/D9+fxa1xxK/YUhvhH6y1BwGvo4y3/3u338G8Sk2nH+A1oJTkNgwJ4DG95md1qI7pX0V9vtfRjwZH0Q5VtET19pLvvQkRXibJaLb2dYfnV8G0QQQb3DVS4mMpnlD5rTUZPFHv59lxFPqC1OQP0qYspbEIktMazm+ePzWqW/Dks42Ymm3rEw6K18Bj9+68zM4Qq3MahEmddKWvV3fOvWleXfZZerbWn9Xp+X1t0J9Jy6zetlMlqVraP0Vfb3+1qkvzWus5pFpjozVWLt/rlBf2tlk+8iRzLCYzpq7vhXqO2XxPmdqnd32v+q0zrb+6PwySONSvfLeSeuuyJSWSuz5ud7zyYvsiixWZWR2Wp20wOO3Tn2xOuTNX8lcoyPf/9atb2MHknJ0tTuLxLb/XU+3zrb+6PzHzidp99RXA5Y0sCVd55zt+tbqr+bdTjjHL+z0Uiqx+6uq+Q131b2xtNx/xZ3QPRFJ/4a0PtMtef9zffqCdsiZenv+CzNZVpg9P1eo75SHYqKtiWP/VAH+/Pf/eH8hSX/7lQJSO0unu2DrxDrf+qPzH7g/QV8uyg2TYrfCoIdY3F3ZcZzfvf7W/n1rtKtd3jnTrliRm+uv98fW3T/Z7Mvs+ujIkH/n/qpOPlnrhm2NwpBa0AeXX31weLdIPuv6H0d8MX5rCVmQOn4/FBTkTRWgmQO/RMjt7i2N3XTC9UfnFxH8/zMUEcvTv8D5ZcSD+a9wPor4CeLFajlJb7F5AAAAAElFTkSuQmCC" alt="QR Code" class="qr-image">
                         <p class="menu-qr-url">etraksolutions.github.io/portal-machine/?guest=1</p>
-                        <p style="color:#FF8C00;font-size:0.65rem;margin-top:4px;">Acces invite (dealer) — expire apres 1 heure</p>
+                        <p style="color:#FF8C00;font-size:0.65rem;margin-top:4px;" data-i18n="hub.guest_access">Acces invite (dealer) — expire apres 1 heure</p>
                     </div>
                     <div class="menu-share">
-                        <p class="menu-share-title">Envoie URL par courriel</p>
+                        <p class="menu-share-title" data-i18n="hub.share_title">Envoie URL par courriel</p>
                         <div class="menu-share-row">
-                            <input type="email" id="share-email" class="share-email-input" placeholder="adresse@courriel.com">
-                            <button id="share-send-btn" class="share-send-btn">Envoyer</button>
+                            <input type="email" id="share-email" class="share-email-input" data-i18n-placeholder="hub.share_placeholder" placeholder="adresse@courriel.com">
+                            <button id="share-send-btn" class="share-send-btn" data-i18n="hub.share_send">Envoyer</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <p class="footer-copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
+            <p class="footer-copy" data-i18n="common.footer_copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
         </div>
     </footer>
 
-    <script src="js/admin.js?v=164"></script>
+    <script src="js/translations.js?v=165"></script>
+    <script src="js/i18n.js?v=165"></script>
+    <script src="js/admin.js?v=165"></script>
 </body>
 </html>

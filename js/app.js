@@ -58,7 +58,7 @@ function populateTypes() {
     types.forEach(type => {
         const opt = document.createElement('option');
         opt.value = type;
-        opt.textContent = type;
+        opt.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + type) : type;
         selectType.appendChild(opt);
     });
 }
@@ -82,7 +82,7 @@ selectType.addEventListener('change', () => {
 
 // Helper: populate modeles dropdown from fab data, optionally filtered by year
 function populateModeles(type, fab, anneeFilter) {
-    selectModele.innerHTML = '<option value="">-- Selectionnez --</option>';
+    selectModele.innerHTML = '<option value="">' + ((typeof i18n !== 'undefined') ? i18n.t('common.selectionnez') : '-- Selectionnez --') + '</option>';
     var fabData = machinesData[type][fab];
     var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'400':8};
     // Collect unique models across all years (or filtered year)
@@ -111,7 +111,7 @@ function populateModeles(type, fab, anneeFilter) {
     });
     var optAutre = document.createElement('option');
     optAutre.value = '__OTHER__';
-    optAutre.textContent = '\u2295 Autre modele (pas dans la liste)';
+    optAutre.textContent = (typeof i18n !== 'undefined') ? i18n.t('js.other_model') : '\u2295 Autre modele (pas dans la liste)';
     optAutre.style.fontStyle = 'italic';
     selectModele.appendChild(optAutre);
     selectModele.disabled = false;
@@ -225,7 +225,7 @@ selectModele.addEventListener('change', () => {
     }
 
     if (modele === '__OTHER__') {
-        if (!annee) { alert('Selectionnez une annee pour creer un modele.'); return; }
+        if (!annee) { alert((typeof i18n !== 'undefined') ? i18n.t('js.select_year') : 'Selectionnez une annee pour creer un modele.'); return; }
         showCustomModelModal(type, fab, annee);
         return;
     }
@@ -1381,7 +1381,11 @@ function resetFrom(level) {
     const startIdx = levels.indexOf(level);
 
     const selects = [selectFabricant, selectAnnee, selectModele];
-    const defaults = [
+    const defaults = (typeof i18n !== 'undefined') ? [
+        i18n.t('js.select_fab'),
+        i18n.t('js.select_ann'),
+        i18n.t('js.select_mod')
+    ] : [
         '-- Selectionnez un fabricant --',
         '-- Selectionnez une annee --',
         '-- Selectionnez un modele --'
@@ -1538,6 +1542,29 @@ if (kitEditBtn) {
         }
     };
 }
+
+// Re-translate dynamic dropdown content on language change
+window.addEventListener('langchange', function() {
+    // Re-translate type options
+    Array.from(selectType.options).forEach(function(opt) {
+        if (opt.value) opt.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + opt.value) : opt.value;
+    });
+    // Update placeholder text of disabled/empty selects
+    [selectFabricant, selectAnnee].forEach(function(sel) {
+        var first = sel.options[0];
+        if (first && first.value === '') {
+            var key = sel === selectFabricant ? 'js.select_fab' : 'js.select_ann';
+            first.textContent = (typeof i18n !== 'undefined') ? i18n.t(key) : first.textContent;
+        }
+    });
+    var firstMod = selectModele.options[0];
+    if (firstMod && firstMod.value === '') {
+        firstMod.textContent = (typeof i18n !== 'undefined') ? i18n.t('common.selectionnez') : firstMod.textContent;
+    }
+    // Re-translate "Other model" option
+    var otherOpt = selectModele.querySelector('option[value="__OTHER__"]');
+    if (otherOpt) otherOpt.textContent = (typeof i18n !== 'undefined') ? i18n.t('js.other_model') : otherOpt.textContent;
+});
 
 // Auto-unlock if user has permission, otherwise lock
 if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {

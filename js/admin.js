@@ -49,14 +49,17 @@ function updateHubUI() {
             if (currentUser.isGuest) {
                 var guestExpiry = localStorage.getItem('portal_guest_expiry');
                 var mins = guestExpiry ? Math.max(0, Math.round((parseInt(guestExpiry) - Date.now()) / 60000)) : 0;
-                userName.textContent = '\u23f0 Invite (' + mins + ' min restantes)';
+                userName.textContent = (typeof i18n !== 'undefined') ? i18n.t('hub.guest_timer', {mins: mins}) : '\u23f0 Invite (' + mins + ' min restantes)';
                 userName.style.color = '#FF8C00';
             } else {
                 userName.textContent = '\u2713 ' + currentUser.name;
                 userName.style.color = '';
             }
         }
-        if (userRole) userRole.textContent = ROLES[currentUser.role] ? ROLES[currentUser.role].label : currentUser.role;
+        if (userRole) {
+            var roleKey = currentUser.role;
+            userRole.textContent = (typeof i18n !== 'undefined') ? i18n.t('role.' + roleKey) : (ROLES[roleKey] ? ROLES[roleKey].label : roleKey);
+        }
         // Don't show hub-nav if admin section is open
         var adminOpen = document.getElementById('admin-content');
         if (hubNav && !(adminOpen && adminOpen.style.display === 'block')) {
@@ -779,7 +782,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     showWelcome(user.name, getUserPermissions(user.role).label || user.role);
                 }
             } else {
-                loginError.textContent = 'Utilisateur ou mot de passe invalide';
+                loginError.textContent = (typeof i18n !== 'undefined') ? i18n.t('hub.login_error') : 'Utilisateur ou mot de passe invalide';
                 loginError.style.display = 'block';
             }
         });
@@ -1109,16 +1112,24 @@ if (saveTypesBtn) {
         container.querySelectorAll('input[type="checkbox"]:checked').forEach(function(cb) {
             checked.push(cb.value);
         });
-        saveTypesBtn.textContent = 'Sauvegarde...';
+        saveTypesBtn.textContent = (typeof i18n !== 'undefined') ? i18n.t('admin.save_saving') : 'Sauvegarde...';
         fetch(API_URL, {
             method: 'POST',
             body: JSON.stringify({ action: 'save', key: 'soumission_allowed_types', value: JSON.stringify(checked), pin: '1400' })
         }).then(function() {
-            saveTypesBtn.textContent = '✓ Sauvegarde!';
-            setTimeout(function() { saveTypesBtn.textContent = 'Sauvegarder'; }, 2000);
+            saveTypesBtn.textContent = '\u2713 ' + ((typeof i18n !== 'undefined') ? i18n.t('admin.save_done') : 'Sauvegarde!');
+            setTimeout(function() { saveTypesBtn.textContent = (typeof i18n !== 'undefined') ? i18n.t('common.sauvegarder') : 'Sauvegarder'; }, 2000);
         }).catch(function() {
-            saveTypesBtn.textContent = 'Erreur!';
-            setTimeout(function() { saveTypesBtn.textContent = 'Sauvegarder'; }, 2000);
+            saveTypesBtn.textContent = (typeof i18n !== 'undefined') ? i18n.t('admin.save_error') : 'Erreur!';
+            setTimeout(function() { saveTypesBtn.textContent = (typeof i18n !== 'undefined') ? i18n.t('common.sauvegarder') : 'Sauvegarder'; }, 2000);
         });
     });
 }
+
+// ---- i18n: Re-translate on language change ----
+window.addEventListener('langchange', function() {
+    if (typeof i18n !== 'undefined') {
+        i18n.translatePage();
+        if (currentUser) updateHubUI();
+    }
+});
