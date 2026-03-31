@@ -1667,3 +1667,32 @@ footer {
     padding: 6px 12px;
     font-size: 0.85rem;
 }
+
+/* ---- LANGUAGE SWITCHER ---- */
+.lang-switch {
+    display: flex;
+    gap: 4px;
+    margin-left: auto;
+    align-items: center;
+}
+.lang-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.5);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+}
+.lang-btn:hover {
+    border-color: rgba(255,255,255,0.6);
+    color: #fff;
+}
+.lang-btn.active {
+    background: #FF8C00;
+    border-color: #FF8C00;
+    color: #fff;
+}

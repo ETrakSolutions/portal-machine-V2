@@ -133,7 +133,7 @@ function populateTypes() {
         if (allowedTypes && allowedTypes.length > 0 && allowedTypes.indexOf(type) === -1) return;
         const opt = document.createElement('option');
         opt.value = type;
-        opt.textContent = type;
+        opt.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + type) : type;
         selectType.appendChild(opt);
     });
 }
@@ -225,7 +225,8 @@ function resetFrom(level) {
     const levels = ['fabricant', 'annee', 'modele'];
     const startIdx = levels.indexOf(level);
     const selects = [selectFabricant, selectAnnee, selectModele];
-    const defaults = ['-- Selectionnez --', '-- Selectionnez --', '-- Selectionnez --'];
+    const sel_txt = (typeof i18n !== 'undefined') ? i18n.t('common.selectionnez') : '-- Selectionnez --';
+    const defaults = [sel_txt, sel_txt, sel_txt];
     for (let i = startIdx; i < levels.length; i++) {
         const sel = selects[i];
         sel.innerHTML = '<option value="">' + defaults[i] + '</option>';
@@ -1013,5 +1014,17 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
     }
 
     if (cb2d) cb2d.addEventListener('change', updateCreusage);
+
+// Re-translate dynamic dropdown content on language change
+window.addEventListener('langchange', function() {
+    Array.from(selectType.options).forEach(function(opt) {
+        if (opt.value) opt.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + opt.value) : opt.value;
+    });
+    var sel_txt = (typeof i18n !== 'undefined') ? i18n.t('common.selectionnez') : '-- Selectionnez --';
+    [selectFabricant, selectAnnee, selectModele].forEach(function(sel) {
+        var first = sel.options[0];
+        if (first && first.value === '') first.textContent = sel_txt;
+    });
+});
     if (cbLaser) cbLaser.addEventListener('change', updateCreusage);
 })();
