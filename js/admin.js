@@ -719,6 +719,7 @@ function openEditUserModal(idx) {
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Role</label>' +
         '<select id="edit-user-role" class="login-input"' + (isSuperAdmin ? ' disabled style="opacity:0.5;"' : '') + '>' + roleOptions + '</select></div>' +
         '<button type="button" id="edit-user-save" class="login-submit">Enregistrer</button>' +
+        '<button type="button" id="edit-user-resend" style="width:100%;margin-top:8px;background:transparent;border:1px solid #444;color:#aaa;padding:10px;border-radius:8px;cursor:pointer;font-size:0.88rem;">📧 Renvoyer les informations de connexion</button>' +
         '</div>';
 
     document.body.appendChild(modal);
@@ -751,6 +752,17 @@ function openEditUserModal(idx) {
         renderUsers();
         modal.remove();
         showToast('Utilisateur "' + newName + '" modifie');
+    });
+
+    // Resend credentials
+    document.getElementById('edit-user-resend').addEventListener('click', function() {
+        var currentName = document.getElementById('edit-user-name').value.trim() || user.name;
+        var currentEmail = document.getElementById('edit-user-email').value.trim() || user.email;
+        var currentPassword = document.getElementById('edit-user-password').value.trim() || user.password;
+        var currentRole = document.getElementById('edit-user-role').value;
+        var roleLabel = ROLES[currentRole] ? ROLES[currentRole].label : currentRole;
+        modal.remove();
+        showCredentialsPopup(currentName, currentEmail, currentPassword, roleLabel);
     });
 }
 
