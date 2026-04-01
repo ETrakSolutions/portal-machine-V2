@@ -686,7 +686,7 @@ function renderKitFlagBtn(type, fab, modele, annee, fc) {
 
     var wrap = document.createElement('span');
     wrap.id = 'kit-flag-btn-wrap';
-    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:5px;margin-left:10px;vertical-align:middle;';
+    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:5px;margin-left:10px;vertical-align:middle;transform:translateY(-3px);';
 
     var btn = document.createElement('button');
     btn.id = 'kit-flag-btn';
