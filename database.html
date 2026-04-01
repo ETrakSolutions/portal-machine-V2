@@ -411,6 +411,33 @@
                 </div>
             </div>
         </section>
+
+        <!-- Changelog BD -->
+        <section class="selector-section" id="changelog-section" style="display:none; margin-top:1.5rem;">
+            <div class="intro-row">
+                <span class="section-title">&#128221; Journal des modifications</span>
+                <button id="changelog-toggle" class="db-export-btn" style="margin-left:auto;">&#9660; Afficher</button>
+            </div>
+            <div id="changelog-body" style="display:none; margin-top:0.8rem;">
+                <div style="overflow-x:auto;">
+                    <table class="db-table" style="font-size:0.78rem; min-width:700px;">
+                        <thead>
+                            <tr>
+                                <th style="width:140px;">Date / Heure</th>
+                                <th style="width:120px;">Utilisateur</th>
+                                <th style="width:120px;">Type machine</th>
+                                <th style="width:100px;">Fabricant</th>
+                                <th style="width:140px;">Modele (Annee)</th>
+                                <th>Modification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="changelog-tbody">
+                            <tr><td colspan="6" style="text-align:center;color:#666;padding:1rem;">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -461,7 +488,11 @@
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(codes), pin: '1400' })
-            }).then(function() { showToast('Codes produit sauvegardes'); }).catch(function() {});
+            }).then(function() {
+                showToast('Codes produit sauvegardes');
+                var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
+                logChange('Codes produit modifies', machineType, fab, modele, annee);
+            }).catch(function() {});
         }
 
         function saveProductCodesAllYears(fab, modele, codes) {
@@ -671,6 +702,59 @@
             setTimeout(function() { t.remove(); }, 2200);
         }
 
+        var LOG_KEY = 'db_changelog';
+        var LOG_MAX = 200;
+
+        window.logChange = function logChange(nature, machineType, fab, modele, annee) {
+            var userName = (user && user.name) ? user.name : 'Inconnu';
+            var now = new Date();
+            var ts = now.toISOString().slice(0,19).replace('T',' ');
+            var entry = { ts: ts, user: userName, type: machineType || '', fab: fab, modele: modele, annee: annee, nature: nature };
+
+            // Load existing log, prepend entry, trim to max, save
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(LOG_KEY))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var log = [];
+                    if (data.value) { try { log = JSON.parse(data.value); } catch(e) {} }
+                    log.unshift(entry);
+                    if (log.length > LOG_MAX) log = log.slice(0, LOG_MAX);
+                    return fetch(API_URL, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'text/plain'},
+                        body: JSON.stringify({ action: 'save', key: LOG_KEY, value: JSON.stringify(log), pin: '1400' })
+                    });
+                })
+                .then(function() { if (window.renderChangelog) window.renderChangelog(); })
+                .catch(function() {});
+        }
+
+        window.renderChangelog = function renderChangelog() {
+            var tbody = document.getElementById('changelog-tbody');
+            if (!tbody) return;
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(LOG_KEY))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var log = [];
+                    if (data.value) { try { log = JSON.parse(data.value); } catch(e) {} }
+                    if (!log.length) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#666;padding:1rem;">Aucun changement enregistre.</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = log.map(function(e) {
+                        return '<tr>' +
+                            '<td style="white-space:nowrap;">' + e.ts + '</td>' +
+                            '<td>' + (e.user || '') + '</td>' +
+                            '<td>' + (e.type || '') + '</td>' +
+                            '<td>' + (e.fab || '') + '</td>' +
+                            '<td>' + (e.modele || '') + ' (' + (e.annee || '') + ')</td>' +
+                            '<td>' + (e.nature || '') + '</td>' +
+                        '</tr>';
+                    }).join('');
+                })
+                .catch(function() {});
+        }
+
         function bomKey(fab, modele, annee) {
             return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
         }
@@ -689,14 +773,18 @@
                 .catch(function() { callback(null); });
         }
 
-        function saveOverride(fab, modele, annee, overrides) {
+        function saveOverride(fab, modele, annee, overrides, nature) {
             var key = bomKey(fab, modele, annee);
             overridesCache[key] = overrides;
+            var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: '1400' })
-            }).then(function() { showToast('BOM sauvegarde'); }).catch(function() {});
+            }).then(function() {
+                showToast('BOM sauvegarde');
+                if (nature) logChange(nature, machineType, fab, modele, annee);
+            }).catch(function() {});
         }
 
         // R7 — Machines specifiques drain obligatoire (1500-0009)
@@ -1256,7 +1344,7 @@
             // Save harnais in the BOM override
             if (!d.bom) d.bom = {};
             d.bom['harnais'] = sel.value;
-            saveOverride(d.fab, d.modele, d.annee, d.bom);
+            saveOverride(d.fab, d.modele, d.annee, d.bom, 'Harnais \u2192 ' + sel.value);
         });
 
         // Save notes on blur (onchange/onblur)
@@ -1278,6 +1366,8 @@
                 if (data.success) {
                     input.classList.add('note-saved');
                     setTimeout(function() { input.classList.remove('note-saved'); }, 1500);
+                    var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
+                    logChange('Note modifiee', machineType, input.dataset.fab, input.dataset.modele, input.dataset.annee);
                 }
             })
             .catch(function() {});
@@ -1305,10 +1395,13 @@
 
             // Mark as deleted in API
             var delKey = 'deleted_' + d.fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.annee;
+            var delType = d._type || (document.getElementById('db-type') ? document.getElementById('db-type').value : '');
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: delKey, value: 'deleted', pin: '1400' })
+            }).then(function() {
+                logChange('Modele supprime', delType, d.fab, d.modele, d.annee);
             }).catch(function() {});
 
             // Remove from local data
@@ -1337,7 +1430,8 @@
             token.textContent = next === 'r' ? '' : next === 'j' ? '' : '-';
 
             // Save to API
-            saveOverride(d.fab, d.modele, d.annee, d.bom);
+            var stateLabel = next === 'r' ? 'Obligatoire' : next === 'j' ? 'Optionnel' : 'N/A';
+            saveOverride(d.fab, d.modele, d.annee, d.bom, 'BOM ' + code + ' \u2192 ' + stateLabel);
         });
 
         // Events
@@ -1521,6 +1615,32 @@
                 saveBtn.textContent = 'Erreur!';
                 setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
             });
+        });
+    })();
+
+    // ============================================
+    // Changelog BD
+    // ============================================
+    (function() {
+        var section = document.getElementById('changelog-section');
+        var toggleBtn = document.getElementById('changelog-toggle');
+        var body = document.getElementById('changelog-body');
+        if (!section) return;
+
+        // Show only for admin/ingenierie
+        setTimeout(function() {
+            var u = null;
+            try { u = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+            if (u && u.role && ['super_admin','administrateur','ingenierie'].indexOf(u.role) >= 0) {
+                section.style.display = '';
+            }
+        }, 500);
+
+        toggleBtn.addEventListener('click', function() {
+            var open = body.style.display !== 'none';
+            body.style.display = open ? 'none' : '';
+            toggleBtn.innerHTML = open ? '&#9660; Afficher' : '&#9650; Masquer';
+            if (!open) renderChangelog();
         });
     })();
     </script>
