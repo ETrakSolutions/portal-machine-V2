@@ -793,8 +793,9 @@
         }
 
         // ---- RED FLAG ----
-        var canFlag = user && user.permissions && user.permissions.flagBom;
-        var canResolve = user && user.permissions && user.permissions.flagBom;
+        var FLAG_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
+        var canFlag = user && (user.permissions && user.permissions.flagBom || FLAG_ROLES[user.role]);
+        var canResolve = canFlag;
         var flagsCache = {};
         var FLAGS_KEY = 'db_flags';
         var activeFlagPopup = null;
