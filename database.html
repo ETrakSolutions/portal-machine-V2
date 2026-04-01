@@ -395,9 +395,7 @@
                         <tr>
                             <th data-col="fab"><span data-i18n="db.th_fabricant">Fabricant</span> <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="modele"><span data-i18n="db.th_modele">Modele</span> <span class="sort-arrow">&#9650;</span></th>
-                            <!-- BOM + Spec columns generated dynamically by loadType() -->
-                            <th id="db-flag-th" style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">🚩</th>
-                            <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
+                            <!-- BOM + Spec + FLAG + DEL columns generated dynamically by loadType() -->
                         </tr>
                     </thead>
                     <tbody id="db-tbody"></tbody>
@@ -1189,6 +1187,13 @@
             thPC.textContent = 'Codes produit';
             thPC.style.minWidth = '130px';
             headerRow.appendChild(thPC);
+
+            // Add FLAG column
+            var thFlag = document.createElement('th');
+            thFlag.id = 'db-flag-th';
+            thFlag.style.cssText = 'width:30px;min-width:30px;text-align:center;font-size:0.9rem;';
+            thFlag.textContent = '\uD83D\uDEA9';
+            headerRow.appendChild(thFlag);
 
             // Add DEL column
             var thDel = document.createElement('th');
