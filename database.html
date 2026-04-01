@@ -271,6 +271,29 @@
         }
         .db-note-input:focus { border-color: #0062CC; outline: none; color: #fff; }
         .db-note-input.note-saved { border-color: #00CC66; }
+        /* Red flag */
+        .flagged-row { box-shadow: inset 3px 0 0 #FF4444; }
+        .flag-btn { background: transparent; border: none; cursor: pointer; font-size: 1rem; padding: 2px 4px; border-radius: 3px; transition: transform 0.15s; }
+        .flag-btn:hover { transform: scale(1.2); }
+        .flag-btn.active { filter: drop-shadow(0 0 4px #FF4444); }
+        .flag-btn:not(.active) { opacity: 0.2; }
+        .flag-btn:not(.active):hover { opacity: 0.7; }
+        .flag-popup { position: fixed; z-index: 9999; background: #1a2332; border: 1px solid #FF4444; border-radius: 8px; padding: 14px; min-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
+        .flag-popup h4 { margin: 0 0 8px; color: #FF8888; font-size: 0.85rem; }
+        .flag-popup .flag-meta { color: #aaa; font-size: 0.72rem; margin-bottom: 8px; }
+        .flag-popup textarea { width: 100%; box-sizing: border-box; background: #0f1824; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; padding: 6px; font-size: 0.75rem; resize: vertical; margin-bottom: 8px; }
+        .flag-popup .flag-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .flag-popup button { padding: 5px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
+        .flag-set-btn { background: #FF4444; color: #fff; }
+        .flag-set-btn:hover { background: #FF6666; }
+        .flag-resolve-btn { background: #00CC66; color: #fff; }
+        .flag-resolve-btn:hover { background: #00EE77; }
+        .flag-cancel-btn { background: rgba(255,255,255,0.1); color: #ccc; }
+        .flag-section-row { display: flex; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.78rem; }
+        .flag-section-row:last-child { border-bottom: none; }
+        .flag-badge { background: rgba(255,68,68,0.15); color: #FF8888; border-radius: 3px; padding: 2px 7px; font-size: 0.65rem; font-weight: 700; white-space: nowrap; }
+        .flag-note-text { color: #ccc; flex: 1; }
+        .flag-by { color: #888; font-size: 0.68rem; white-space: nowrap; }
         /* Product codes */
         .db-pc-cell { position: relative; min-width: 120px; }
         .db-pc-tags { display: flex; flex-wrap: wrap; gap: 2px; cursor: pointer; min-height: 22px; }
@@ -373,6 +396,7 @@
                             <th data-col="fab"><span data-i18n="db.th_fabricant">Fabricant</span> <span class="sort-arrow">&#9650;</span></th>
                             <th data-col="modele"><span data-i18n="db.th_modele">Modele</span> <span class="sort-arrow">&#9650;</span></th>
                             <!-- BOM + Spec columns generated dynamically by loadType() -->
+                            <th id="db-flag-th" style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">🚩</th>
                             <th style="width:30px;min-width:30px;text-align:center;font-size:0.6rem;">DEL</th>
                         </tr>
                     </thead>
@@ -409,6 +433,18 @@
                     <button id="options-codes-save" class="db-export-btn" style="background:#00CC66;">&#128190; Sauvegarder</button>
                     <button id="options-codes-add" class="db-export-btn">+ Ajouter</button>
                 </div>
+            </div>
+        </section>
+
+        <!-- Drapeaux actifs -->
+        <section class="selector-section" id="flags-section" style="display:none; margin-top:1.5rem;">
+            <div class="intro-row">
+                <span class="section-title">🚩 Drapeaux actifs</span>
+                <span id="flags-count-badge" style="background:rgba(255,68,68,0.2);color:#FF8888;border-radius:3px;padding:2px 8px;font-size:0.7rem;font-weight:700;margin-left:8px;"></span>
+                <button id="flags-toggle" class="db-export-btn" style="margin-left:auto;">&#9660; Afficher</button>
+            </div>
+            <div id="flags-body" style="display:none; margin-top:0.8rem;">
+                <div id="flags-list"><p style="color:#666;font-size:0.8rem;">Aucun drapeau actif.</p></div>
             </div>
         </section>
 
@@ -758,6 +794,153 @@
                 .catch(function() {});
         }
 
+        // ---- RED FLAG ----
+        var FLAG_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
+        var RESOLVE_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
+        var canFlag = user && user.role && FLAG_ROLES[user.role];
+        var canResolve = user && user.role && RESOLVE_ROLES[user.role];
+        var flagsCache = {};
+        var FLAGS_KEY = 'db_flags';
+        var activeFlagPopup = null;
+
+        function flagKey(type, fab, modele, annee) {
+            return [type, fab, modele, annee].join('|');
+        }
+
+        function loadFlags(callback) {
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(FLAGS_KEY))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    flagsCache = {};
+                    if (data.value) { try { flagsCache = JSON.parse(data.value); } catch(e) {} }
+                    if (callback) callback();
+                    renderFlagsSection();
+                    // Refresh flag icons on visible rows
+                    document.querySelectorAll('.flag-btn').forEach(function(btn) {
+                        var fk = btn.dataset.flagkey;
+                        var fi = flagsCache[fk];
+                        var active = fi && fi.active;
+                        btn.className = 'flag-btn' + (active ? ' active' : '');
+                        btn.textContent = active ? '\uD83D\uDEA9' : '\uD83C\uDFF3\uFE0F';
+                        btn.title = active ? 'Signale par ' + fi.flaggedBy + ' (' + fi.flaggedAt + ')\n' + (fi.note || '') : 'Signaler pour verification';
+                        var row = btn.closest('tr');
+                        if (row) { active ? row.classList.add('flagged-row') : row.classList.remove('flagged-row'); }
+                    });
+                })
+                .catch(function() { if (callback) callback(); });
+        }
+
+        function saveFlags(callback) {
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: FLAGS_KEY, value: JSON.stringify(flagsCache), pin: '1400' })
+            }).then(function() { if (callback) callback(); loadFlags(); })
+            .catch(function() {});
+        }
+
+        function setFlag(type, fab, modele, annee, note) {
+            var fk = flagKey(type, fab, modele, annee);
+            var userName = (user && user.name) ? user.name : 'Inconnu';
+            var ts = new Date().toISOString().slice(0,19).replace('T',' ');
+            flagsCache[fk] = { flaggedBy: userName, flaggedAt: ts, note: note || '', active: true };
+            saveFlags();
+            showToast('\uD83D\uDEA9 Drapeau pose sur ' + fab + ' ' + modele + ' (' + annee + ')');
+        }
+
+        function resolveFlag(type, fab, modele, annee) {
+            var fk = flagKey(type, fab, modele, annee);
+            if (flagsCache[fk]) {
+                var userName = (user && user.name) ? user.name : 'Inconnu';
+                flagsCache[fk].active = false;
+                flagsCache[fk].resolvedBy = userName;
+                flagsCache[fk].resolvedAt = new Date().toISOString().slice(0,19).replace('T',' ');
+            }
+            saveFlags();
+            showToast('\u2705 Drapeau resolu pour ' + fab + ' ' + modele + ' (' + annee + ')');
+        }
+
+        function closeFlagPopup() {
+            if (activeFlagPopup) { activeFlagPopup.remove(); activeFlagPopup = null; }
+        }
+
+        function openFlagPopup(type, fab, modele, annee, anchorEl) {
+            closeFlagPopup();
+            var fk = flagKey(type, fab, modele, annee);
+            var fi = flagsCache[fk];
+            var isActive = fi && fi.active;
+
+            var popup = document.createElement('div');
+            popup.className = 'flag-popup';
+            var title = isActive ? '\uD83D\uDEA9 Drapeau actif' : '\uD83C\uDFF3\uFE0F Signaler pour verification';
+            var meta = isActive ? 'Pose par <strong>' + fi.flaggedBy + '</strong> le ' + fi.flaggedAt : '';
+            popup.innerHTML =
+                '<button class="pc-close" style="float:right;">&times;</button>' +
+                '<h4>' + title + '</h4>' +
+                '<div class="flag-meta">' + meta + '</div>' +
+                '<textarea rows="3" id="flag-note-input" placeholder="Note (optionnel)...">' + (isActive ? (fi.note || '') : '') + '</textarea>' +
+                '<div class="flag-actions">' +
+                    (!isActive ? '<button class="flag-set-btn">\uD83D\uDEA9 Poser le drapeau</button>' : '') +
+                    (isActive && canResolve ? '<button class="flag-resolve-btn">\u2705 Marquer comme verifie</button>' : '') +
+                    '<button class="flag-cancel-btn">Annuler</button>' +
+                '</div>';
+
+            document.body.appendChild(popup);
+            activeFlagPopup = popup;
+
+            // Position near anchor
+            var rect = anchorEl.getBoundingClientRect();
+            var top = Math.min(rect.bottom + 6, window.innerHeight - 200);
+            var left = Math.max(0, Math.min(rect.left, window.innerWidth - 300));
+            popup.style.top = top + 'px';
+            popup.style.left = left + 'px';
+
+            popup.querySelector('.pc-close').onclick = closeFlagPopup;
+            popup.querySelector('.flag-cancel-btn').onclick = closeFlagPopup;
+            var setBtn = popup.querySelector('.flag-set-btn');
+            if (setBtn) setBtn.onclick = function() {
+                var note = document.getElementById('flag-note-input').value.trim();
+                closeFlagPopup();
+                setFlag(type, fab, modele, annee, note);
+            };
+            var resBtn = popup.querySelector('.flag-resolve-btn');
+            if (resBtn) resBtn.onclick = function() {
+                closeFlagPopup();
+                resolveFlag(type, fab, modele, annee);
+            };
+        }
+
+        window.renderFlagsSection = function renderFlagsSection() {
+            var list = document.getElementById('flags-list');
+            var badge = document.getElementById('flags-count-badge');
+            if (!list) return;
+            var active = Object.keys(flagsCache).filter(function(k) { return flagsCache[k] && flagsCache[k].active; });
+            if (badge) badge.textContent = active.length ? active.length + ' actif' + (active.length > 1 ? 's' : '') : '';
+            if (!active.length) {
+                list.innerHTML = '<p style="color:#666;font-size:0.8rem;padding:0.5rem 0;">Aucun drapeau actif.</p>';
+                return;
+            }
+            list.innerHTML = active.map(function(k) {
+                var parts = k.split('|');
+                var type = parts[0], fab = parts[1], modele = parts[2], annee = parts[3];
+                var fi = flagsCache[k];
+                return '<div class="flag-section-row">' +
+                    '<span class="flag-badge">' + (type || '') + '</span>' +
+                    '<span style="color:#fff;font-weight:600;">' + fab + ' ' + modele + ' (' + annee + ')</span>' +
+                    '<span class="flag-note-text">' + (fi.note || '<em style="color:#555;">Sans note</em>') + '</span>' +
+                    '<span class="flag-by">par ' + fi.flaggedBy + ' &mdash; ' + fi.flaggedAt + '</span>' +
+                    (canResolve ? '<button class="flag-resolve-btn" style="font-size:0.65rem;padding:3px 8px;" data-flagkey="' + k + '" data-fab="' + fab + '" data-modele="' + modele + '" data-annee="' + annee + '" data-type="' + type + '">\u2705 Resolu</button>' : '') +
+                '</div>';
+            }).join('');
+
+            // Resolve buttons in flags list
+            list.querySelectorAll('.flag-resolve-btn[data-flagkey]').forEach(function(btn) {
+                btn.onclick = function() {
+                    resolveFlag(btn.dataset.type, btn.dataset.fab, btn.dataset.modele, btn.dataset.annee);
+                };
+            });
+        };
+
         function bomKey(fab, modele, annee) {
             return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
         }
@@ -945,6 +1128,7 @@
                     typeSelect.appendChild(opt);
                 });
                 loadType();
+                loadFlags();
             });
 
         function loadType() {
@@ -1242,6 +1426,28 @@
                 tdPC.appendChild(pcTagsDiv);
                 tr.appendChild(tdPC);
 
+                // Flag button
+                var tdFlag = document.createElement('td');
+                tdFlag.style.textAlign = 'center';
+                tdFlag.style.padding = '2px';
+                if (canFlag) {
+                    var fk = flagKey(d._type, d.fab, d.modele, d.annee);
+                    var fi = flagsCache[fk];
+                    var isActive = fi && fi.active;
+                    var flagBtn = document.createElement('button');
+                    flagBtn.className = 'flag-btn' + (isActive ? ' active' : '');
+                    flagBtn.textContent = isActive ? '\uD83D\uDEA9' : '\uD83C\uDFF3\uFE0F';
+                    flagBtn.title = isActive ? 'Signale par ' + fi.flaggedBy + '\n' + (fi.note || '') : 'Signaler pour verification';
+                    flagBtn.dataset.flagkey = fk;
+                    flagBtn.dataset.fab = d.fab;
+                    flagBtn.dataset.modele = d.modele;
+                    flagBtn.dataset.annee = d.annee;
+                    flagBtn.dataset.type = d._type;
+                    if (isActive) tr.classList.add('flagged-row');
+                    tdFlag.appendChild(flagBtn);
+                }
+                tr.appendChild(tdFlag);
+
                 // Delete button (admin only)
                 var tdDel = document.createElement('td');
                 tdDel.style.textAlign = 'center';
@@ -1440,6 +1646,14 @@
             saveOverride(d.fab, d.modele, d.annee, d.bom, 'BOM ' + code + ' \u2192 ' + stateLabel, prevLabel);
         });
 
+        // Flag button click
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var btn = e.target.closest('.flag-btn');
+            if (!btn || !canFlag) return;
+            openFlagPopup(btn.dataset.type, btn.dataset.fab, btn.dataset.modele, btn.dataset.annee, btn);
+        });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFlagPopup(); });
+
         // Events
         document.getElementById('db-fab').addEventListener('change', applyFilters);
         document.getElementById('db-annee').addEventListener('change', applyFilters);
@@ -1621,6 +1835,32 @@
                 saveBtn.textContent = 'Erreur!';
                 setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
             });
+        });
+    })();
+
+    // ============================================
+    // Drapeaux actifs — init section + toggle
+    // ============================================
+    (function() {
+        var section = document.getElementById('flags-section');
+        var toggleBtn = document.getElementById('flags-toggle');
+        var body = document.getElementById('flags-body');
+        if (!section) return;
+
+        setTimeout(function() {
+            var u = null;
+            try { u = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+            if (u && u.role && ['super_admin','administrateur','ingenierie'].indexOf(u.role) >= 0) {
+                section.style.display = '';
+                // Load flags to show badge count
+                if (window.renderFlagsSection) window.renderFlagsSection();
+            }
+        }, 600);
+
+        toggleBtn.addEventListener('click', function() {
+            var open = body.style.display !== 'none';
+            body.style.display = open ? 'none' : '';
+            toggleBtn.innerHTML = open ? '&#9660; Afficher' : '&#9650; Masquer';
         });
     })();
 
