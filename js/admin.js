@@ -308,49 +308,86 @@ function showChangePasswordModal(user) {
 }
 
 // ---- CREDENTIALS POPUP ----
-function showCredentialsPopup(name, email, password, roleLabel, mailtoUrl) {
+function showCredentialsPopup(name, email, password, roleLabel, mailtoUrlFr) {
     var existing = document.getElementById('cred-popup-overlay');
     if (existing) existing.remove();
+
+    // Build FR and EN email content
+    var subjectFr = 'Portail e-Trak \u2014 Votre compte a \u00e9t\u00e9 cr\u00e9\u00e9';
+    var bodyFr = 'Bonjour ' + name + ',\n\n' +
+        'Un compte a \u00e9t\u00e9 cr\u00e9\u00e9 pour vous sur le Portail e-Trak.\n\n' +
+        'Voici vos informations de connexion :\n\n' +
+        'Adresse du portail : https://etraksolutions.github.io/portal-machine/\n' +
+        'Courriel : ' + email + '\n' +
+        'Mot de passe temporaire : ' + password + '\n\n' +
+        'IMPORTANT : Vous devrez changer votre mot de passe lors de votre premi\u00e8re connexion.\n\n' +
+        'Votre r\u00f4le : ' + roleLabel + '\n\n' +
+        'Portail e-Trak \u2014 e-Trak Technology Solutions';
+
+    var subjectEn = 'e-Trak Portal \u2014 Your account has been created';
+    var bodyEn = 'Hello ' + name + ',\n\n' +
+        'An account has been created for you on the e-Trak Portal.\n\n' +
+        'Here are your login credentials:\n\n' +
+        'Portal address: https://etraksolutions.github.io/portal-machine/\n' +
+        'Email: ' + email + '\n' +
+        'Temporary password: ' + password + '\n\n' +
+        'IMPORTANT: You will need to change your password on your first login.\n\n' +
+        'Your role: ' + roleLabel + '\n\n' +
+        'e-Trak Portal \u2014 e-Trak Technology Solutions';
+
+    var mailtoUrlEn = 'mailto:' + email + '?subject=' + encodeURIComponent(subjectEn) + '&body=' + encodeURIComponent(bodyEn);
+
+    var lang = 'fr'; // current language state
 
     var overlay = document.createElement('div');
     overlay.id = 'cred-popup-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
 
     var box = document.createElement('div');
-    box.style.cssText = 'background:#1e1e2e;border:1px solid #333;border-radius:12px;padding:28px 24px;max-width:420px;width:90%;color:#e0e0e0;font-family:inherit;';
+    box.style.cssText = 'background:#1e1e2e;border:1px solid #333;border-radius:12px;padding:28px 24px;max-width:430px;width:90%;color:#e0e0e0;font-family:inherit;';
 
-    box.innerHTML =
-        '<h3 style="margin:0 0 6px;color:#fff;font-size:1.1rem;">\u2705 Compte cr\u00e9\u00e9</h3>' +
-        '<p style="margin:0 0 18px;color:#aaa;font-size:0.85rem;">Transmettez ces informations \u00e0 l\'utilisateur.</p>' +
-        '<div style="background:#111;border-radius:8px;padding:14px 16px;font-size:0.88rem;line-height:1.9;">' +
-            '<div><span style="color:#888;">Nom&nbsp;&nbsp;</span><strong>' + name + '</strong></div>' +
-            '<div><span style="color:#888;">Courriel&nbsp;&nbsp;</span><strong>' + email + '</strong></div>' +
-            '<div><span style="color:#888;">Mot de passe&nbsp;&nbsp;</span><strong style="color:#f90;">' + password + '</strong> <span style="color:#555;font-size:0.75rem;">(temporaire)</span></div>' +
-            '<div><span style="color:#888;">R\u00f4le&nbsp;&nbsp;</span><strong>' + roleLabel + '</strong></div>' +
-            '<div><span style="color:#888;">Portail&nbsp;&nbsp;</span><a href="https://etraksolutions.github.io/portal-machine/" target="_blank" style="color:#4ea8de;">etraksolutions.github.io/portal-machine</a></div>' +
-        '</div>' +
-        '<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">' +
-            '<a href="' + mailtoUrl + '" style="flex:1;min-width:140px;background:#0d6efd;color:#fff;text-align:center;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:0.88rem;font-weight:600;">📧 Ouvrir dans mon courriel</a>' +
-            '<button id="cred-copy-btn" style="flex:1;min-width:120px;background:#333;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;font-weight:600;">📋 Copier</button>' +
-            '<button id="cred-close-btn" style="flex:1;min-width:80px;background:#222;color:#aaa;border:1px solid #444;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;">Fermer</button>' +
-        '</div>';
+    function render() {
+        var isFr = lang === 'fr';
+        box.innerHTML =
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
+                '<h3 style="margin:0;color:#fff;font-size:1.1rem;">\u2705 ' + (isFr ? 'Compte cr\u00e9\u00e9' : 'Account created') + '</h3>' +
+                '<div style="display:flex;gap:6px;">' +
+                    '<button id="cred-lang-fr" style="padding:3px 10px;border-radius:6px;border:1px solid ' + (isFr ? '#0d6efd' : '#444') + ';background:' + (isFr ? '#0d6efd' : 'transparent') + ';color:#fff;cursor:pointer;font-size:0.8rem;font-weight:600;">FR</button>' +
+                    '<button id="cred-lang-en" style="padding:3px 10px;border-radius:6px;border:1px solid ' + (!isFr ? '#0d6efd' : '#444') + ';background:' + (!isFr ? '#0d6efd' : 'transparent') + ';color:#fff;cursor:pointer;font-size:0.8rem;font-weight:600;">EN</button>' +
+                '</div>' +
+            '</div>' +
+            '<p style="margin:0 0 16px;color:#aaa;font-size:0.85rem;">' + (isFr ? 'Transmettez ces informations \u00e0 l\'utilisateur.' : 'Share these credentials with the user.') + '</p>' +
+            '<div style="background:#111;border-radius:8px;padding:14px 16px;font-size:0.88rem;line-height:1.9;">' +
+                '<div><span style="color:#888;">' + (isFr ? 'Nom' : 'Name') + '&nbsp;&nbsp;</span><strong>' + name + '</strong></div>' +
+                '<div><span style="color:#888;">' + (isFr ? 'Courriel' : 'Email') + '&nbsp;&nbsp;</span><strong>' + email + '</strong></div>' +
+                '<div><span style="color:#888;">' + (isFr ? 'Mot de passe' : 'Password') + '&nbsp;&nbsp;</span><strong style="color:#f90;">' + password + '</strong> <span style="color:#555;font-size:0.75rem;">(' + (isFr ? 'temporaire' : 'temporary') + ')</span></div>' +
+                '<div><span style="color:#888;">' + (isFr ? 'R\u00f4le' : 'Role') + '&nbsp;&nbsp;</span><strong>' + roleLabel + '</strong></div>' +
+                '<div><span style="color:#888;">Portal&nbsp;&nbsp;</span><a href="https://etraksolutions.github.io/portal-machine/" target="_blank" style="color:#4ea8de;">etraksolutions.github.io/portal-machine</a></div>' +
+            '</div>' +
+            '<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">' +
+                '<a id="cred-mailto-btn" href="' + (isFr ? mailtoUrlFr : mailtoUrlEn) + '" style="flex:1;min-width:140px;background:#0d6efd;color:#fff;text-align:center;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:0.88rem;font-weight:600;">\uD83D\uDCE7 ' + (isFr ? 'Ouvrir dans mon courriel' : 'Open in my email') + '</a>' +
+                '<button id="cred-copy-btn" style="flex:1;min-width:120px;background:#333;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;font-weight:600;">\uD83D\uDCCB ' + (isFr ? 'Copier' : 'Copy') + '</button>' +
+                '<button id="cred-close-btn" style="flex:1;min-width:80px;background:#222;color:#aaa;border:1px solid #444;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;">' + (isFr ? 'Fermer' : 'Close') + '</button>' +
+            '</div>';
+
+        var copyText = isFr
+            ? 'Portail e-Trak \u2014 Vos informations de connexion\n\nPortail : https://etraksolutions.github.io/portal-machine/\nCourriel : ' + email + '\nMot de passe temporaire : ' + password + '\nR\u00f4le : ' + roleLabel + '\n\nVous devrez changer votre mot de passe \u00e0 la premi\u00e8re connexion.'
+            : 'e-Trak Portal \u2014 Your login credentials\n\nPortal: https://etraksolutions.github.io/portal-machine/\nEmail: ' + email + '\nTemporary password: ' + password + '\nRole: ' + roleLabel + '\n\nYou will need to change your password on first login.';
+
+        document.getElementById('cred-lang-fr').addEventListener('click', function() { lang = 'fr'; render(); });
+        document.getElementById('cred-lang-en').addEventListener('click', function() { lang = 'en'; render(); });
+        document.getElementById('cred-copy-btn').addEventListener('click', function() {
+            navigator.clipboard.writeText(copyText).then(function() {
+                document.getElementById('cred-copy-btn').textContent = '\u2713 ' + (lang === 'fr' ? 'Copi\u00e9!' : 'Copied!');
+            });
+        });
+        document.getElementById('cred-close-btn').addEventListener('click', function() { overlay.remove(); });
+    }
 
     overlay.appendChild(box);
     document.body.appendChild(overlay);
+    render();
 
-    var copyText = 'Portail e-Trak \u2014 Vos informations de connexion\n\n' +
-        'Portail : https://etraksolutions.github.io/portal-machine/\n' +
-        'Courriel : ' + email + '\n' +
-        'Mot de passe temporaire : ' + password + '\n' +
-        'R\u00f4le : ' + roleLabel + '\n\n' +
-        'Vous devrez changer votre mot de passe \u00e0 la premi\u00e8re connexion.';
-
-    document.getElementById('cred-copy-btn').addEventListener('click', function() {
-        navigator.clipboard.writeText(copyText).then(function() {
-            document.getElementById('cred-copy-btn').textContent = '\u2713 Copi\u00e9!';
-        });
-    });
-    document.getElementById('cred-close-btn').addEventListener('click', function() { overlay.remove(); });
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
@@ -1055,18 +1092,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Show credentials popup + mailto button
             var roleLabel = ROLES[role] ? ROLES[role].label : role;
-            var subject = 'Portail e-Trak \u2014 Votre compte a ete cree';
-            var body = 'Bonjour ' + name + ',\n\n' +
-                'Un compte a ete cree pour vous sur le Portail e-Trak.\n\n' +
-                'Voici vos informations de connexion :\n\n' +
-                'Adresse du portail : https://etraksolutions.github.io/portal-machine/\n' +
-                'Courriel : ' + email + '\n' +
-                'Mot de passe temporaire : 0000\n\n' +
-                'IMPORTANT : Vous devrez changer votre mot de passe lors de votre premiere connexion.\n\n' +
-                'Votre role : ' + roleLabel + '\n\n' +
-                'Portail e-Trak \u2014 e-Trak Technology Solutions';
-            var mailtoUrl = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-            showCredentialsPopup(name, email, '0000', roleLabel, mailtoUrl);
+            showCredentialsPopup(name, email, '0000', roleLabel);
 
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
