@@ -1671,28 +1671,30 @@ footer {
 /* ---- LANGUAGE SWITCHER ---- */
 .lang-switch {
     display: flex;
-    gap: 4px;
+    gap: 2px;
     margin-left: auto;
     align-items: center;
+    background: rgba(0,0,0,0.25);
+    border-radius: 8px;
+    padding: 3px;
 }
 .lang-btn {
     background: transparent;
-    border: 1px solid rgba(255,255,255,0.3);
-    color: rgba(255,255,255,0.5);
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 0.7rem;
+    border: none;
+    color: rgba(255,255,255,0.45);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.72rem;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
+    transition: all 0.18s;
+    letter-spacing: 0.6px;
 }
 .lang-btn:hover {
-    border-color: rgba(255,255,255,0.6);
-    color: #fff;
+    color: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.08);
 }
 .lang-btn.active {
-    background: #FF8C00;
-    border-color: #FF8C00;
+    background: rgba(255,255,255,0.18);
     color: #fff;
 }
