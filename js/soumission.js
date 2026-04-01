@@ -106,25 +106,34 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
     })
     .catch(function() {});
 
-// Load allowed types then machines data
+// Load machines data immediately — don't wait for API
 var allowedTypes = null; // null = all types allowed
 
+fetch('data/machines.json?v=155')
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+        machinesData = data;
+        populateTypes(); // Show all types right away
+    })
+    .catch(function(err) { console.error('Erreur chargement donnees:', err); });
+
+// Load allowed types in parallel — re-filter if API returns restrictions
 fetch(API_URL + '?action=get&key=soumission_allowed_types')
     .then(function(r) { return r.json(); })
     .then(function(data) {
-        if (data.value) { try { allowedTypes = JSON.parse(data.value); } catch(e) {} }
+        if (data.value) {
+            try {
+                var parsed = JSON.parse(data.value);
+                if (parsed && parsed.length > 0) {
+                    allowedTypes = parsed;
+                    // Re-populate with filter applied
+                    while (selectType.options.length > 1) selectType.remove(1);
+                    populateTypes();
+                }
+            } catch(e) {}
+        }
     })
-    .catch(function() {})
-    .finally(function() {
-        // Load machines data after allowed types
-        fetch('data/machines.json?v=155')
-            .then(res => res.json())
-            .then(data => {
-                machinesData = data;
-                populateTypes();
-            })
-            .catch(err => console.error('Erreur chargement donnees:', err));
-    });
+    .catch(function() {});
 
 function populateTypes() {
     const types = Object.keys(machinesData).sort();
