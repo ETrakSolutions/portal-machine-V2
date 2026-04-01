@@ -428,6 +428,7 @@
                                 <th style="width:120px;">Type machine</th>
                                 <th style="width:100px;">Fabricant</th>
                                 <th style="width:140px;">Modele (Annee)</th>
+                                <th style="width:120px;">Avant</th>
                                 <th>Modification</th>
                             </tr>
                         </thead>
@@ -483,6 +484,7 @@
 
         function saveProductCodes(fab, modele, annee, codes) {
             var key = pcKey(fab, modele, annee);
+            var prevCodes = (productCodesCache[key] || []).map(function(c) { return c.code; }).join(', ') || '—';
             productCodesCache[key] = codes;
             fetch(API_URL, {
                 method: 'POST',
@@ -491,7 +493,7 @@
             }).then(function() {
                 showToast('Codes produit sauvegardes');
                 var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
-                logChange('Codes produit modifies', machineType, fab, modele, annee);
+                logChange('Codes produit modifies', machineType, fab, modele, annee, prevCodes);
             }).catch(function() {});
         }
 
@@ -705,11 +707,11 @@
         var LOG_KEY = 'db_changelog';
         var LOG_MAX = 200;
 
-        window.logChange = function logChange(nature, machineType, fab, modele, annee) {
+        window.logChange = function logChange(nature, machineType, fab, modele, annee, prevValue) {
             var userName = (user && user.name) ? user.name : 'Inconnu';
             var now = new Date();
             var ts = now.toISOString().slice(0,19).replace('T',' ');
-            var entry = { ts: ts, user: userName, type: machineType || '', fab: fab, modele: modele, annee: annee, nature: nature };
+            var entry = { ts: ts, user: userName, type: machineType || '', fab: fab, modele: modele, annee: annee, nature: nature, prev: prevValue || '—' };
 
             // Load existing log, prepend entry, trim to max, save
             fetch(API_URL + '?action=get&key=' + encodeURIComponent(LOG_KEY))
@@ -738,7 +740,7 @@
                     var log = [];
                     if (data.value) { try { log = JSON.parse(data.value); } catch(e) {} }
                     if (!log.length) {
-                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#666;padding:1rem;">Aucun changement enregistre.</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#666;padding:1rem;">Aucun changement enregistre.</td></tr>';
                         return;
                     }
                     tbody.innerHTML = log.map(function(e) {
@@ -748,6 +750,7 @@
                             '<td>' + (e.type || '') + '</td>' +
                             '<td>' + (e.fab || '') + '</td>' +
                             '<td>' + (e.modele || '') + ' (' + (e.annee || '') + ')</td>' +
+                            '<td style="color:#aaa;">' + (e.prev || '—') + '</td>' +
                             '<td>' + (e.nature || '') + '</td>' +
                         '</tr>';
                     }).join('');
@@ -773,7 +776,7 @@
                 .catch(function() { callback(null); });
         }
 
-        function saveOverride(fab, modele, annee, overrides, nature) {
+        function saveOverride(fab, modele, annee, overrides, nature, prevValue) {
             var key = bomKey(fab, modele, annee);
             overridesCache[key] = overrides;
             var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
@@ -783,7 +786,7 @@
                 body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: '1400' })
             }).then(function() {
                 showToast('BOM sauvegarde');
-                if (nature) logChange(nature, machineType, fab, modele, annee);
+                if (nature) logChange(nature, machineType, fab, modele, annee, prevValue);
             }).catch(function() {});
         }
 
@@ -1340,11 +1343,12 @@
             var idx = parseInt(sel.dataset.idx);
             var d = allData[idx];
             if (!d) return;
+            var prevHarnais = (d.bom && d.bom['harnais']) || d.harnais || '—';
             d.harnais = sel.value;
             // Save harnais in the BOM override
             if (!d.bom) d.bom = {};
             d.bom['harnais'] = sel.value;
-            saveOverride(d.fab, d.modele, d.annee, d.bom, 'Harnais \u2192 ' + sel.value);
+            saveOverride(d.fab, d.modele, d.annee, d.bom, 'Harnais \u2192 ' + sel.value, prevHarnais);
         });
 
         // Save notes on blur (onchange/onblur)
@@ -1353,6 +1357,7 @@
             if (!input) return;
             var noteKey = input.dataset.noteKey;
             var val = input.value.trim();
+            var prevNote = localStorage.getItem(noteKey) || '—';
             // Save locally first
             localStorage.setItem(noteKey, val);
             // Save to API
@@ -1367,7 +1372,7 @@
                     input.classList.add('note-saved');
                     setTimeout(function() { input.classList.remove('note-saved'); }, 1500);
                     var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
-                    logChange('Note modifiee', machineType, input.dataset.fab, input.dataset.modele, input.dataset.annee);
+                    logChange('Note modifiee', machineType, input.dataset.fab, input.dataset.modele, input.dataset.annee, prevNote);
                 }
             })
             .catch(function() {});
@@ -1430,8 +1435,9 @@
             token.textContent = next === 'r' ? '' : next === 'j' ? '' : '-';
 
             // Save to API
+            var prevLabel = current === 'r' ? 'Obligatoire' : current === 'j' ? 'Optionnel' : 'N/A';
             var stateLabel = next === 'r' ? 'Obligatoire' : next === 'j' ? 'Optionnel' : 'N/A';
-            saveOverride(d.fab, d.modele, d.annee, d.bom, 'BOM ' + code + ' \u2192 ' + stateLabel);
+            saveOverride(d.fab, d.modele, d.annee, d.bom, 'BOM ' + code + ' \u2192 ' + stateLabel, prevLabel);
         });
 
         // Events
