@@ -308,7 +308,7 @@ function showChangePasswordModal(user) {
 }
 
 // ---- CREDENTIALS POPUP ----
-function showCredentialsPopup(name, email, password, roleLabel, mailtoUrlFr) {
+function showCredentialsPopup(name, email, password, roleLabel) {
     var existing = document.getElementById('cred-popup-overlay');
     if (existing) existing.remove();
 
@@ -335,6 +335,7 @@ function showCredentialsPopup(name, email, password, roleLabel, mailtoUrlFr) {
         'Your role: ' + roleLabel + '\n\n' +
         'e-Trak Portal \u2014 e-Trak Technology Solutions';
 
+    var mailtoUrlFr = 'mailto:' + email + '?subject=' + encodeURIComponent(subjectFr) + '&body=' + encodeURIComponent(bodyFr);
     var mailtoUrlEn = 'mailto:' + email + '?subject=' + encodeURIComponent(subjectEn) + '&body=' + encodeURIComponent(bodyEn);
 
     var lang = 'fr'; // current language state
