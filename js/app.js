@@ -14,12 +14,13 @@ fetch('data/installed_machines.json')
 
 // ---- ROLE PERMISSIONS ----
 const ROLES = {
-    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, label: 'Administrateur' },
-    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Vente interne' },
-    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, label: 'Technicien' },
-    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Distributeur' },
-    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, label: 'Dealer' },
-    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, label: 'Ingenierie' }
+    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Super Admin' },
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Vente interne' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Technicien' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Ingenierie' }
 };
 
 // ---- LOGIN SYSTEM ----
@@ -433,6 +434,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         }
 
         loadNotes(fab, modele, annee);
+        loadKitFlag(type, fab, modele, annee);
         // Auto-unlock kit if user has permission
         if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
             if (typeof unlockKit === 'function') unlockKit();
@@ -646,6 +648,115 @@ function hideResults() {
     if (kitSection) kitSection.style.display = 'none';
     const notesSection = document.getElementById('notes-section');
     if (notesSection) notesSection.style.display = 'none';
+}
+
+// ---- KIT FLAG SYSTEM ----
+var KIT_FLAGS_KEY = 'db_flags';
+
+function kitFlagKey(type, fab, modele, annee) { return [type, fab, modele, annee].join('|'); }
+
+function loadKitFlag(type, fab, modele, annee) {
+    var canFlag = currentUser && (
+        (currentUser.permissions && currentUser.permissions.flagBom) ||
+        getUserPermissions(currentUser.role).flagBom
+    );
+    var existing = document.getElementById('kit-flag-btn-wrap');
+    if (existing) existing.remove();
+    if (!canFlag) return;
+    // Render immediately with empty cache (no flag), update when API responds
+    renderKitFlagBtn(type, fab, modele, annee, {});
+    fetch(API_URL + '?action=get&key=' + encodeURIComponent(KIT_FLAGS_KEY))
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var fc = {};
+            if (data.value) { try { fc = JSON.parse(data.value); } catch(e) {} }
+            renderKitFlagBtn(type, fab, modele, annee, fc);
+        })
+        .catch(function() {});
+}
+
+function renderKitFlagBtn(type, fab, modele, annee, fc) {
+    var fk = kitFlagKey(type, fab, modele, annee);
+    var fi = fc[fk];
+    var isActive = fi && fi.active;
+    var kitLockRow = document.querySelector('#kit-machine-section .kit-lock-row');
+    if (!kitLockRow) return;
+    var existing = document.getElementById('kit-flag-btn-wrap');
+    if (existing) existing.remove();
+
+    var wrap = document.createElement('span');
+    wrap.id = 'kit-flag-btn-wrap';
+    wrap.style.cssText = 'display:inline-flex;align-items:center;gap:5px;margin-left:10px;vertical-align:middle;';
+
+    var btn = document.createElement('button');
+    btn.id = 'kit-flag-btn';
+    btn.title = isActive ? 'D\u00e9faut signal\u00e9 \u2014 cliquer pour g\u00e9rer' : 'Signaler un d\u00e9faut BOM';
+    if (isActive) {
+        btn.innerHTML = '\uD83D\uDEA9 <span style="font-size:0.78rem;">V\u00e9rification requise</span>';
+        btn.style.cssText = 'background:#7f1d1d;border:1px solid #ef4444;color:#fca5a5;cursor:pointer;font-size:0.82rem;font-weight:700;padding:5px 12px;border-radius:7px;line-height:1.3;transition:all 0.15s;white-space:nowrap;';
+    } else {
+        btn.innerHTML = '\uD83C\uDFF3\uFE0F <span style="font-size:0.82rem;">Red Flag</span>';
+        btn.style.cssText = 'background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.55);cursor:pointer;font-size:0.82rem;font-weight:600;padding:5px 12px;border-radius:7px;line-height:1.3;transition:all 0.15s;white-space:nowrap;';
+        btn.addEventListener('mouseenter', function() { this.style.background='rgba(239,68,68,0.15)'; this.style.borderColor='rgba(239,68,68,0.5)'; this.style.color='#fca5a5'; });
+        btn.addEventListener('mouseleave', function() { this.style.background='rgba(255,255,255,0.07)'; this.style.borderColor='rgba(255,255,255,0.18)'; this.style.color='rgba(255,255,255,0.55)'; });
+    }
+    btn.addEventListener('click', function() { openKitFlagPopup(type, fab, modele, annee, fc); });
+    wrap.appendChild(btn);
+    kitLockRow.appendChild(wrap);
+}
+
+function openKitFlagPopup(type, fab, modele, annee, fc) {
+    var existing = document.getElementById('kit-flag-popup');
+    if (existing) { existing.remove(); return; }
+    var fk = kitFlagKey(type, fab, modele, annee);
+    var fi = fc[fk];
+    var isActive = fi && fi.active;
+
+    var overlay = document.createElement('div');
+    overlay.id = 'kit-flag-popup';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;display:flex;align-items:center;justify-content:center;';
+
+    var box = document.createElement('div');
+    box.style.cssText = 'background:#1e1e2e;border:1px solid #333;border-radius:12px;padding:22px 20px;max-width:360px;width:90%;color:#e0e0e0;font-family:inherit;';
+    box.innerHTML =
+        '<h4 style="margin:0 0 6px;color:#fff;font-size:1rem;">\uD83D\uDEA9 ' + (isActive ? 'Drapeau actif' : 'Signaler un d\u00e9faut BOM') + '</h4>' +
+        '<p style="color:#888;font-size:0.8rem;margin:0 0 14px;">' + fab + ' ' + modele + ' (' + annee + ')</p>' +
+        (isActive ? '<div style="background:#111;border-radius:6px;padding:10px 12px;font-size:0.82rem;margin-bottom:14px;color:#aaa;">' +
+            (fi.note ? '\u201C' + fi.note + '\u201D' : '<em style="color:#555;">Sans note</em>') +
+            '<br><span style="font-size:0.74rem;color:#555;">par ' + fi.flaggedBy + ' \u2014 ' + fi.flaggedAt + '</span></div>' : '') +
+        (!isActive ? '<textarea id="kit-flag-note" placeholder="Note (optionnel)..." style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#e0e0e0;border-radius:6px;padding:8px;font-size:0.82rem;resize:vertical;min-height:60px;margin-bottom:14px;font-family:inherit;"></textarea>' : '') +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+            (!isActive ? '<button id="kit-flag-set-btn" style="flex:1;background:#e53935;color:#fff;border:none;padding:9px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:0.85rem;">\uD83D\uDEA9 Poser le drapeau</button>' : '') +
+            (isActive ? '<button id="kit-flag-resolve-btn" style="flex:1;background:#2e7d32;color:#fff;border:none;padding:9px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:0.85rem;">\u2705 Marqu\u00e9 comme v\u00e9rifi\u00e9</button>' : '') +
+            '<button id="kit-flag-cancel-btn" style="background:#222;color:#aaa;border:1px solid #444;padding:9px 14px;border-radius:7px;cursor:pointer;font-size:0.85rem;">Annuler</button>' +
+        '</div>';
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    if (!isActive) {
+        document.getElementById('kit-flag-set-btn').addEventListener('click', function() {
+            fc[fk] = { flaggedBy: currentUser.name || currentUser.username, flaggedAt: new Date().toLocaleString('fr-CA'), note: document.getElementById('kit-flag-note').value.trim(), active: true };
+            saveKitFlagAndRefresh(type, fab, modele, annee, fc);
+            overlay.remove();
+        });
+    } else {
+        document.getElementById('kit-flag-resolve-btn').addEventListener('click', function() {
+            if (fc[fk]) fc[fk].active = false;
+            saveKitFlagAndRefresh(type, fab, modele, annee, fc);
+            overlay.remove();
+        });
+    }
+    document.getElementById('kit-flag-cancel-btn').addEventListener('click', function() { overlay.remove(); });
+    overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+}
+
+function saveKitFlagAndRefresh(type, fab, modele, annee, fc) {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: KIT_FLAGS_KEY, value: JSON.stringify(fc), pin: '1400' })
+    }).catch(function() {});
+    renderKitFlagBtn(type, fab, modele, annee, fc);
 }
 
 // ---- NOTES SYSTEM ----
