@@ -484,8 +484,8 @@
         </div>
     </footer>
 
-    <script src="js/translations.js?v=165"></script>
-    <script src="js/i18n.js?v=165"></script>
+    <script src="js/translations.js?v=166"></script>
+    <script src="js/i18n.js?v=166"></script>
     <script>
     (function() {
         var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
@@ -793,10 +793,8 @@
         }
 
         // ---- RED FLAG ----
-        var FLAG_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
-        var RESOLVE_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
-        var canFlag = user && user.role && FLAG_ROLES[user.role];
-        var canResolve = user && user.role && RESOLVE_ROLES[user.role];
+        var canFlag = user && user.permissions && user.permissions.flagBom;
+        var canResolve = user && user.permissions && user.permissions.flagBom;
         var flagsCache = {};
         var FLAGS_KEY = 'db_flags';
         var activeFlagPopup = null;
