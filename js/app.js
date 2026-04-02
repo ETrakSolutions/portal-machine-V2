@@ -424,14 +424,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         var isInstalled = installedMachines.some(function(m) {
             return m.modele.toUpperCase() === modele.toUpperCase();
         });
-        if (!isInstalled && installedMachines.length > 0) {
-            var banner = document.createElement('div');
-            banner.id = 'kit-not-installed';
-            banner.className = 'kit-not-installed';
-            banner.textContent = 'Machine jamais installee';
-            var kitHeader = kitSection.querySelector('.kit-header');
-            if (kitHeader) kitHeader.after(banner);
-        }
+        // Banner "Machine jamais installee" desactive
 
         loadNotes(fab, modele, annee);
         loadKitFlag(type, fab, modele, annee);
