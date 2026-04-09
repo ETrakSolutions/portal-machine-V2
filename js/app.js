@@ -863,7 +863,7 @@ var currentKitOverrides = null;
 var kitEditMode = false;
 
 function getKitOverrideKey(fab, modele, annee) {
-    return 'kit_override_' + fab + '_' + modele + '_' + annee;
+    return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
 }
 
 function loadKitOverride(fab, modele, annee, callback) {

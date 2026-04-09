@@ -284,6 +284,9 @@ function showOptions() {
         box.classList.remove('active', 'open');
         box.querySelector('.toggle-status').textContent = 'OFF';
     });
+    // Hide IDC lock valve warning on reset
+    var idcWarn = document.getElementById('idc-lockvalve-warning');
+    if (idcWarn) idcWarn.style.display = 'none';
     // Reset limiteur checkboxes
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
@@ -311,7 +314,7 @@ var currentNotes = '';
 
 // Load BOM overrides from API
 function loadBomOverrides(fab, modele, annee) {
-    var key = 'kit_override_' + fab + '_' + modele + '_' + annee;
+    var key = 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
     fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
         .then(function(r) { return r.json(); })
         .then(function(data) {
@@ -926,10 +929,25 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
             } else {
                 status.textContent = 'OFF';
             }
+            // Show/hide lock valve warning for IDC on Excavatrice
+            if (this.dataset.option === 'Indicateur de charge') {
+                updateIdcLockValveWarning();
+            }
             updateSelectedSummary();
         });
     }
 });
+
+// IDC Lock Valve warning — visible only when type=Excavatrice and IDC is ON
+function updateIdcLockValveWarning() {
+    var warning = document.getElementById('idc-lockvalve-warning');
+    if (!warning) return;
+    var type = selectType.value;
+    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+    var isExcavatrice = type === 'Excavatrice';
+    var isActive = idcBox && idcBox.classList.contains('active');
+    warning.style.display = (isExcavatrice && isActive) ? 'flex' : 'none';
+}
 
 // Limiteur de portee sub-options logic (exclusive checkboxes — same as camera)
 (function() {
