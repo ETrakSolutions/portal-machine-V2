@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# OS / Editors
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+
+# Generated previews / temp
+data/_preview*
+data/_b64_chunks*
+data/Portal_DB_Test_v[0-9]*.xlsx
+!data/Portal_DB_Test_v11.xlsx
+
+# Claude local config (per-user)
+.claude/settings.local.json
