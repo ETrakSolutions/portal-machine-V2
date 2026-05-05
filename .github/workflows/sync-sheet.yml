@@ -2,17 +2,15 @@ name: Sync Google Sheet to machines.json
 
 on:
   schedule:
-    # Toutes les 10 min. Note: cron GitHub Actions a un delai de scheduling (~3-5 min typique).
     - cron: '*/10 * * * *'
-  workflow_dispatch: # bouton "Run workflow" dans GitHub UI
+  workflow_dispatch:
 
-# Empeche execution concurrente (si une run prend trop de temps, on attend)
 concurrency:
   group: sync-sheet
   cancel-in-progress: false
 
 permissions:
-  contents: write # pour push le commit auto
+  contents: write
 
 jobs:
   sync:
@@ -27,12 +25,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
 
       - name: Install dependencies
         run: pip install gspread google-auth
 
-           - name: Write service account key
+      - name: Write service account key
         env:
           SA_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
         run: |
