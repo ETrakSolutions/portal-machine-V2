@@ -109,7 +109,7 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
 // Load machines data immediately — don't wait for API
 var allowedTypes = null; // null = all types allowed
 
-fetch('data/machines.json?v=155')
+fetch('data/machines.json?v=200')
     .then(function(res) { return res.json(); })
     .then(function(data) {
         machinesData = data;

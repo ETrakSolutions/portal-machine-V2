@@ -46,7 +46,7 @@ const resultsTableContainer = document.getElementById('results-table-container')
 const emptyState = document.getElementById('empty-state');
 
 // Load data
-fetch('data/machines.json?v=155')
+fetch('data/machines.json?v=200')
     .then(res => res.json())
     .then(data => {
         machinesData = data;
@@ -343,6 +343,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         html += `<tr><td>Classe machine</td><td><strong>${classMachine}</strong></td></tr>`;
     }
     for (const [key, value] of Object.entries(specs)) {
+        if (key.startsWith('_')) continue; // skip admin fields (_kit, _harnais, _actif, etc.)
         if (key === 'Image') {
             if (value && value.trim() !== '') {
                 html += `<tr><td>${key}</td><td><img src="${value}" alt="${fab} ${modele}" style="max-width:300px;max-height:200px;border-radius:6px;"></td></tr>`;
