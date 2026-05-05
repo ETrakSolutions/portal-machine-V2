@@ -32,11 +32,12 @@ jobs:
       - name: Install dependencies
         run: pip install gspread google-auth
 
-      - name: Write service account key
+           - name: Write service account key
+        env:
+          SA_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
         run: |
           mkdir -p /tmp/secrets
-          echo '${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}' > /tmp/secrets/sa.json
-          # Verification basique
+          printf '%s' "$SA_JSON" > /tmp/secrets/sa.json
           python -c "import json; d=json.load(open('/tmp/secrets/sa.json')); print('SA email:', d['client_email'])"
 
       - name: Run sync
