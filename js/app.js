@@ -6,6 +6,24 @@
 let machinesData = {};
 let installedMachines = [];
 
+// Helper: build the "Obligatoire / Optionnel" labeled radio pair for a kit row.
+// Keeps the radios for click-to-toggle but renders the colored words as the visual.
+function buildKitRadios(name, valRed, valYellow, opts) {
+    opts = opts || {};
+    var rc = opts.redChecked ? ' checked' : '';
+    var yc = opts.yellowChecked ? ' checked' : '';
+    return (
+        '<label class="kit-radio-label kit-radio-obligatoire">' +
+            '<input type="radio" name="' + name + '" value="' + valRed + '" class="radio-red"' + rc + '>' +
+            '<span class="kit-radio-text" data-i18n="common.obligatoire">Obligatoire</span>' +
+        '</label>' +
+        '<label class="kit-radio-label kit-radio-optionnel">' +
+            '<input type="radio" name="' + name + '" value="' + valYellow + '" class="radio-yellow"' + yc + '>' +
+            '<span class="kit-radio-text" data-i18n="common.optionnel">Optionnel</span>' +
+        '</label>'
+    );
+}
+
 // Load installed machines list
 fetch('data/installed_machines.json')
     .then(function(r) { return r.json(); })
@@ -519,7 +537,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                         var radioName = statusCell.querySelector('input[type="radio"]');
                         if (!radioName) {
                             var name = 'kit-' + kit;
-                            statusCell.innerHTML = '<input type="radio" name="' + name + '" value="oui" class="radio-red"><input type="radio" name="' + name + '" value="non" class="radio-yellow">';
+                            statusCell.innerHTML = buildKitRadios(name, 'oui', 'non');
                         }
                         var red = statusCell.querySelector('.radio-red');
                         var yellow = statusCell.querySelector('.radio-yellow');
@@ -920,7 +938,7 @@ function applyKitOverrides(overrides) {
             if (status === 'red') {
                 // Ensure radios exist
                 if (!statusCell.querySelector('.radio-red')) {
-                    statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                    statusCell.innerHTML = buildKitRadios(radioName, 'oui', 'non');
                 }
                 var redRadio = statusCell.querySelector('.radio-red');
                 var yellowRadio = statusCell.querySelector('.radio-yellow');
@@ -930,7 +948,7 @@ function applyKitOverrides(overrides) {
             } else if (status === 'yellow') {
                 // Ensure radios exist
                 if (!statusCell.querySelector('.radio-yellow')) {
-                    statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
+                    statusCell.innerHTML = buildKitRadios(radioName, 'oui', 'non');
                 }
                 var redR = statusCell.querySelector('.radio-red');
                 var yellowR = statusCell.querySelector('.radio-yellow');
@@ -954,9 +972,9 @@ function applyKitOverrides(overrides) {
             tr.setAttribute('data-custom-id', custom.id);
             var statusHtml = '';
             if (custom.status === 'red') {
-                statusHtml = '<input type="radio" name="kit-custom-' + custom.id + '" value="oui" class="radio-red" checked><input type="radio" name="kit-custom-' + custom.id + '" value="non" class="radio-yellow">';
+                statusHtml = buildKitRadios('kit-custom-' + custom.id, 'oui', 'non', { redChecked: true });
             } else if (custom.status === 'yellow') {
-                statusHtml = '<input type="radio" name="kit-custom-' + custom.id + '" value="oui" class="radio-red"><input type="radio" name="kit-custom-' + custom.id + '" value="non" class="radio-yellow" checked>';
+                statusHtml = buildKitRadios('kit-custom-' + custom.id, 'oui', 'non', { yellowChecked: true });
             } else {
                 statusHtml = '<span class="kit-na">N/A</span>';
             }

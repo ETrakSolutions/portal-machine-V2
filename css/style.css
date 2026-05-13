@@ -599,6 +599,38 @@ main {
     white-space: nowrap;
 }
 
+/* Word-based kit status labels (Obligatoire / Optionnel) */
+.kit-radio-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    margin: 0 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    user-select: none;
+    transition: background 0.15s, opacity 0.15s, box-shadow 0.15s;
+    opacity: 0.55;
+}
+.kit-radio-label:hover { opacity: 0.85; }
+.kit-radio-label:has(input:checked) { opacity: 1; }
+.kit-radio-obligatoire { color: #FF5555; background: rgba(255,50,50,0.08); }
+.kit-radio-obligatoire:has(input:checked) {
+    background: rgba(255,50,50,0.20);
+    box-shadow: 0 0 6px rgba(255,80,80,0.45);
+}
+.kit-radio-optionnel { color: #FFD700; background: rgba(255,200,0,0.08); }
+.kit-radio-optionnel:has(input:checked) {
+    background: rgba(255,200,0,0.22);
+    box-shadow: 0 0 6px rgba(255,210,0,0.45);
+}
+/* Hide the radio circle inside the label — the colored word IS the visual */
+.kit-radio-label input[type="radio"] { display: none; }
+
 /* Checkbox column */
 .kit-check-cell {
     text-align: center;
