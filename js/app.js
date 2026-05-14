@@ -100,7 +100,7 @@ const resultsTableContainer = document.getElementById('results-table-container')
 const emptyState = document.getElementById('empty-state');
 
 // Load data
-fetch('data/machines.json?v=200')
+fetch('data/machines.json?v=201')
     .then(res => res.json())
     .then(data => {
         machinesData = data;
@@ -124,7 +124,7 @@ selectType.addEventListener('change', () => {
     const type = selectType.value;
     if (!type) return;
 
-    const fabricants = Object.keys(machinesData[type]).sort();
+    const fabricants = Object.keys(machinesData[type]).filter(k => !k.startsWith('_')).sort();
     fabricants.forEach(fab => {
         const opt = document.createElement('option');
         opt.value = fab;
