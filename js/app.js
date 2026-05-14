@@ -6,6 +6,44 @@
 let machinesData = {};
 let installedMachines = [];
 
+// Injecte les descriptions Part Number (de _bom_labels dans machines.json)
+// comme sous-titre italique sous chaque ligne de kit visible.
+// bomLabels : { "0000 Cabine": { pn: "1500-0000", desc: "..." }, ... }
+// Idempotent — sans effet si bomLabels est vide/null.
+function applyBomLabelsToKitRows(bomLabels) {
+    if (!bomLabels || Object.keys(bomLabels).length === 0) return;
+    // Construit un index rapide : "0000" → { pn, desc }
+    var lookup = {};
+    Object.keys(bomLabels).forEach(function(key) {
+        var m = key.match(/^(\d{4})/);
+        if (m) lookup[m[1]] = bomLabels[key];
+    });
+    document.querySelectorAll('.kit-table tbody tr').forEach(function(tr) {
+        var codeCell = tr.querySelector('.kit-code');
+        if (!codeCell) return;
+        var rawCode = (codeCell.textContent || '').trim();
+        if (!rawCode) return;
+        var m4 = rawCode.match(/^(\d{4})/);
+        var entry = m4 ? lookup[m4[1]] : null;
+        if (!entry) return;
+        var displayText = (entry.desc || entry.pn || '').trim();
+        if (!displayText) return;
+        tr.title = displayText;
+        var firstTd = tr.querySelector('td');
+        if (!firstTd) return;
+        var existing = firstTd.querySelector('.kit-bom-desc');
+        if (existing) {
+            existing.textContent = displayText;
+        } else {
+            var span = document.createElement('span');
+            span.className = 'kit-bom-desc';
+            span.style.cssText = 'display:block;font-size:11px;color:#888;font-style:italic;margin-top:2px;';
+            span.textContent = displayText;
+            firstTd.appendChild(span);
+        }
+    });
+}
+
 // Helper: build the "Obligatoire / Optionnel" labeled radio pair for a kit row.
 // Keeps the radios for click-to-toggle but renders the colored words as the visual.
 function buildKitRadios(name, valRed, valYellow, opts) {
@@ -549,6 +587,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             // Harnais row always visible
             var harnaisTr = document.querySelector('tr[data-kit="harnais"]');
             if (harnaisTr) harnaisTr.style.display = '';
+            applyBomLabelsToKitRows(machinesData[type] ? machinesData[type]._bom_labels : null);
         }
 
         // Apply defaults first
@@ -609,6 +648,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             };
 
             function applyBomToPompeKit(bom) {
+                applyBomLabelsToKitRows(machinesData[type] ? machinesData[type]._bom_labels : null);
                 kitPompeSection.querySelectorAll('tbody tr[data-kit]').forEach(function(tr) {
                     var kit = tr.dataset.kit;
                     var code = POMPE_KIT_MAP[kit];
