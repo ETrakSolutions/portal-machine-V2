@@ -464,6 +464,12 @@ main {
     font-family: 'Courier New', monospace;
     font-weight: 600;
     color: #3B82F6;
+    white-space: nowrap;
+}
+
+.kit-desc {
+    color: #CBD5E1;
+    font-size: 0.85rem;
 }
 
 .kit-special {

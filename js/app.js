@@ -6,40 +6,38 @@
 let machinesData = {};
 let installedMachines = [];
 
-// Injecte les descriptions Part Number (de _bom_labels dans machines.json)
-// comme sous-titre italique sous chaque ligne de kit visible.
+// Peuple la colonne Description (.kit-desc) de chaque ligne de kit
+// à partir de _bom_labels dans machines.json.
 // bomLabels : { "0000 Cabine": { pn: "1500-0000", desc: "..." }, ... }
 // Idempotent — sans effet si bomLabels est vide/null.
 function applyBomLabelsToKitRows(bomLabels) {
     if (!bomLabels || Object.keys(bomLabels).length === 0) return;
-    // Construit un index rapide : "0000" → { pn, desc }
-    var lookup = {};
+    // Index par part number exact : "1500-0000" → entry
+    var lookupByPn = {};
+    // Index par suffixe 4 chiffres : "0000" → entry (depuis clé BOM "0000 Cabine")
+    var lookupBySuffix = {};
     Object.keys(bomLabels).forEach(function(key) {
+        var entry = bomLabels[key];
+        if (!entry) return;
+        if (entry.pn) lookupByPn[entry.pn] = entry;
         var m = key.match(/^(\d{4})/);
-        if (m) lookup[m[1]] = bomLabels[key];
+        if (m) lookupBySuffix[m[1]] = entry;
     });
     document.querySelectorAll('.kit-table tbody tr').forEach(function(tr) {
         var codeCell = tr.querySelector('.kit-code');
         if (!codeCell) return;
         var rawCode = (codeCell.textContent || '').trim();
         if (!rawCode) return;
-        var m4 = rawCode.match(/^(\d{4})/);
-        var entry = m4 ? lookup[m4[1]] : null;
-        if (!entry) return;
-        var displayText = (entry.desc || entry.pn || '').trim();
-        if (!displayText) return;
-        tr.title = displayText;
-        var firstTd = tr.querySelector('td');
-        if (!firstTd) return;
-        var existing = firstTd.querySelector('.kit-bom-desc');
-        if (existing) {
-            existing.textContent = displayText;
-        } else {
-            var span = document.createElement('span');
-            span.className = 'kit-bom-desc';
-            span.style.cssText = 'display:block;font-size:11px;color:#888;font-style:italic;margin-top:2px;';
-            span.textContent = displayText;
-            firstTd.appendChild(span);
+        // Tentative 1 : correspondance exacte par part number
+        var entry = lookupByPn[rawCode];
+        // Tentative 2 : correspondance par suffixe 4 chiffres après le tiret (ex: "0000" de "1500-0000")
+        if (!entry) {
+            var m = rawCode.match(/^\d{4}-(\d{4})/);
+            if (m) entry = lookupBySuffix[m[1]];
+        }
+        var descCell = tr.querySelector('.kit-desc');
+        if (descCell) {
+            descCell.textContent = entry ? (entry.desc || entry.pn || '') : '';
         }
     });
 }
