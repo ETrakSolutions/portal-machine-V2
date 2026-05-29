@@ -6,60 +6,6 @@
 let machinesData = {};
 let installedMachines = [];
 
-// Peuple la colonne Description (.kit-desc) de chaque ligne de kit
-// à partir de _bom_labels dans machines.json.
-// bomLabels : { "0000 Cabine": { pn: "1500-0000", desc: "..." }, ... }
-// Idempotent — sans effet si bomLabels est vide/null.
-function applyBomLabelsToKitRows(bomLabels) {
-    if (!bomLabels || Object.keys(bomLabels).length === 0) return;
-    // Index par part number exact : "1500-0000" → entry
-    var lookupByPn = {};
-    // Index par suffixe 4 chiffres : "0000" → entry (depuis clé BOM "0000 Cabine")
-    var lookupBySuffix = {};
-    Object.keys(bomLabels).forEach(function(key) {
-        var entry = bomLabels[key];
-        if (!entry) return;
-        if (entry.pn) lookupByPn[entry.pn] = entry;
-        var m = key.match(/^(\d{4})/);
-        if (m) lookupBySuffix[m[1]] = entry;
-    });
-    document.querySelectorAll('.kit-table tbody tr').forEach(function(tr) {
-        var codeCell = tr.querySelector('.kit-code');
-        if (!codeCell) return;
-        var rawCode = (codeCell.textContent || '').trim();
-        if (!rawCode) return;
-        // Tentative 1 : correspondance exacte par part number
-        var entry = lookupByPn[rawCode];
-        // Tentative 2 : correspondance par suffixe 4 chiffres après le tiret (ex: "0000" de "1500-0000")
-        if (!entry) {
-            var m = rawCode.match(/^\d{4}-(\d{4})/);
-            if (m) entry = lookupBySuffix[m[1]];
-        }
-        var descCell = tr.querySelector('.kit-desc');
-        if (descCell) {
-            descCell.textContent = entry ? (entry.desc || entry.pn || '') : '';
-        }
-    });
-}
-
-// Helper: build the "Obligatoire / Optionnel" labeled radio pair for a kit row.
-// Keeps the radios for click-to-toggle but renders the colored words as the visual.
-function buildKitRadios(name, valRed, valYellow, opts) {
-    opts = opts || {};
-    var rc = opts.redChecked ? ' checked' : '';
-    var yc = opts.yellowChecked ? ' checked' : '';
-    return (
-        '<label class="kit-radio-label kit-radio-obligatoire">' +
-            '<input type="radio" name="' + name + '" value="' + valRed + '" class="radio-red"' + rc + '>' +
-            '<span class="kit-radio-text" data-i18n="common.obligatoire">Obligatoire</span>' +
-        '</label>' +
-        '<label class="kit-radio-label kit-radio-optionnel">' +
-            '<input type="radio" name="' + name + '" value="' + valYellow + '" class="radio-yellow"' + yc + '>' +
-            '<span class="kit-radio-text" data-i18n="common.optionnel">Optionnel</span>' +
-        '</label>'
-    );
-}
-
 // Load installed machines list
 fetch('data/installed_machines.json')
     .then(function(r) { return r.json(); })
@@ -100,7 +46,7 @@ const resultsTableContainer = document.getElementById('results-table-container')
 const emptyState = document.getElementById('empty-state');
 
 // Load data
-fetch('data/machines.json?v=201')
+fetch('data/machines.json?v=155')
     .then(res => res.json())
     .then(data => {
         machinesData = data;
@@ -124,7 +70,7 @@ selectType.addEventListener('change', () => {
     const type = selectType.value;
     if (!type) return;
 
-    const fabricants = Object.keys(machinesData[type]).filter(k => !k.startsWith('_')).sort();
+    const fabricants = Object.keys(machinesData[type]).sort();
     fabricants.forEach(fab => {
         const opt = document.createElement('option');
         opt.value = fab;
@@ -373,6 +319,8 @@ function createCustomModel(type, fab, annee, customName) {
 
 
 function showResults(modele, type, fab, annee, specs, isCustom) {
+    // Memoriser pour redirection vers edit-machine.html depuis le bouton lock
+    window.__currentMachine = { type: type, fab: fab, modele: modele, annee: annee };
     resultsTitle.textContent = `${fab} ${modele} (${annee})`;
     resultsBadge.textContent = type;
 
@@ -397,25 +345,25 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         html += `<tr><td>Classe machine</td><td><strong>${classMachine}</strong></td></tr>`;
     }
     for (const [key, value] of Object.entries(specs)) {
-        if (key.startsWith('_')) continue; // skip admin fields (_kit, _harnais, _actif, etc.)
+        const dk = ` data-spec-key="${key.replace(/"/g,'&quot;')}"`;
         if (key === 'Image') {
             if (value && value.trim() !== '') {
-                html += `<tr><td>${key}</td><td><img src="${value}" alt="${fab} ${modele}" style="max-width:300px;max-height:200px;border-radius:6px;"></td></tr>`;
+                html += `<tr><td>${key}</td><td${dk}><img src="${value}" alt="${fab} ${modele}" style="max-width:300px;max-height:200px;border-radius:6px;"></td></tr>`;
             } else {
-                html += `<tr><td>${key}</td><td class="text-muted">Image non disponible</td></tr>`;
+                html += `<tr><td>${key}</td><td${dk} class="text-muted">Image non disponible</td></tr>`;
             }
         } else if (key === 'Type de traction' && value === 'Roue') {
-            html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Type de boom' && value.includes('2 parties')) {
-            html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Swing boom' && value === 'Oui') {
-            html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Voltage machine (V/type)' && value.includes('12V')) {
-            html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Section telescopique' && value === 'Oui') {
-            html += `<tr><td>${key}</td><td><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else {
-            html += `<tr><td>${key}</td><td>${value}</td></tr>`;
+            html += `<tr><td>${key}</td><td${dk}>${value}</td></tr>`;
         }
     }
     html += '</table>';
@@ -512,7 +460,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         var poidsMatch = poidsStr.match(/(\d[\d\s]*)/);
         var poidsKg = poidsMatch ? parseInt(poidsMatch[1].replace(/\s/g, '')) : 0;
         var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
-        var isMini = poidsKg > 0 && poidsKg < 5000;
+        var isMini = poidsKg > 0 && poidsKg <= 5000;
         var fabUp = fab.toUpperCase();
         var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
         var modelUpper = modele.toUpperCase();
@@ -524,7 +472,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             '0002': 'j',
             '0004': isMini ? 'r' : 'na',
             '0005': 'j',
-            '0008': hasSwing ? 'j' : 'na',
+            '0008': 'na', // Swing boom: N/A par defaut
             '0009': isDrain ? 'r' : 'na',
             '0070': 'na',
             '0304': modelUpper === 'TB216' ? 'r' : 'na'
@@ -573,7 +521,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                         var radioName = statusCell.querySelector('input[type="radio"]');
                         if (!radioName) {
                             var name = 'kit-' + kit;
-                            statusCell.innerHTML = buildKitRadios(name, 'oui', 'non');
+                            statusCell.innerHTML = '<input type="radio" name="' + name + '" value="oui" class="radio-red"><input type="radio" name="' + name + '" value="non" class="radio-yellow">';
                         }
                         var red = statusCell.querySelector('.radio-red');
                         var yellow = statusCell.querySelector('.radio-yellow');
@@ -585,7 +533,6 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             // Harnais row always visible
             var harnaisTr = document.querySelector('tr[data-kit="harnais"]');
             if (harnaisTr) harnaisTr.style.display = '';
-            applyBomLabelsToKitRows(machinesData[type] ? machinesData[type]._bom_labels : null);
         }
 
         // Apply defaults first
@@ -594,9 +541,14 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         // Then load overrides from API (BD is master)
         loadKitOverride(fab, modele, annee, function(overrides) {
             if (overrides) {
-                // Merge overrides on top of defaults
+                // Merge overrides on top of defaults (skip meta keys)
                 for (var code in overrides) {
+                    if (code === '_specs' || code === '_custom' || code === '_removed' || code === 'harnais') continue;
                     if (overrides[code]) bomDefaults[code] = overrides[code];
+                }
+                // Apply _removed: force codes to 'na' so applyBomToKit hides them
+                if (Array.isArray(overrides._removed)){
+                    overrides._removed.forEach(function(c){ bomDefaults[c] = 'na'; });
                 }
                 // Drain hyd (0009) ne peut JAMAIS etre jaune — rouge ou na seulement
                 if (bomDefaults['0009'] === 'j') bomDefaults['0009'] = 'r';
@@ -606,6 +558,19 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                     var HARNAIS_LABELS = {'H0031':'Hit5/6-JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'LB-Case','H0080':'Cat','H0100':'Cat(ECU)','H0121':'Hit-7','H0043':'Generic'};
                     if (harnaisCodeEl) harnaisCodeEl.textContent = 'Z03B-' + overrides.harnais.replace('H','');
                     if (harnaisLabel) harnaisLabel.textContent = HARNAIS_LABELS[overrides.harnais] || overrides.harnais;
+                }
+                // Apply custom rows (added in edit-machine.html via _custom)
+                if (Array.isArray(overrides._custom) && overrides._custom.length){
+                    applyKitOverrides({ customRows: (normalizeKitOverrides(overrides) || {}).customRows || [] });
+                }
+                // Apply specs overrides on the displayed specs
+                if (overrides._specs){
+                    Object.keys(overrides._specs).forEach(function(fullKey){
+                        var val = overrides._specs[fullKey];
+                        document.querySelectorAll('[data-spec-key="' + fullKey + '"]').forEach(function(el){
+                            el.textContent = val;
+                        });
+                    });
                 }
             }
         });
@@ -646,7 +611,6 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             };
 
             function applyBomToPompeKit(bom) {
-                applyBomLabelsToKitRows(machinesData[type] ? machinesData[type]._bom_labels : null);
                 kitPompeSection.querySelectorAll('tbody tr[data-kit]').forEach(function(tr) {
                     var kit = tr.dataset.kit;
                     var code = POMPE_KIT_MAP[kit];
@@ -676,9 +640,24 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             loadKitOverride(fab, modele, annee, function(overrides) {
                 if (overrides) {
                     for (var code in overrides) {
+                        if (code === '_specs' || code === '_custom' || code === '_removed' || code === 'harnais') continue;
                         if (overrides[code]) pompeBomDefaults[code] = overrides[code];
                     }
+                    if (Array.isArray(overrides._removed)){
+                        overrides._removed.forEach(function(c){ pompeBomDefaults[c] = 'na'; });
+                    }
                     applyBomToPompeKit(pompeBomDefaults);
+                    if (Array.isArray(overrides._custom) && overrides._custom.length){
+                        applyKitOverrides({ customRows: (normalizeKitOverrides(overrides) || {}).customRows || [] });
+                    }
+                    if (overrides._specs){
+                        Object.keys(overrides._specs).forEach(function(fullKey){
+                            var val = overrides._specs[fullKey];
+                            document.querySelectorAll('[data-spec-key="' + fullKey + '"]').forEach(function(el){
+                                el.textContent = val;
+                            });
+                        });
+                    }
                 }
             });
 
@@ -953,8 +932,75 @@ function loadKitOverride(fab, modele, annee, callback) {
         });
 }
 
+// Mapping code BOM (edit-machine.html / database.html) → kit id (machine.html)
+var KIT_CODE_TO_ID = {
+    // Excavatrice
+    '0000':'cabine','0001':'hauteur','0002':'rotation','0304':'cremaillere',
+    '0004':'mini','0070':'gc','0008':'swing','0009':'drain','0005':'multi',
+    '0003':'sans-cabine',
+    // Pompe a Beton
+    '0200':'pompe-coffre','0203':'pompe-sans-coffre','0201':'pompe-hauteur','0202':'pompe-rotation',
+    '0204':'pompe-4sec','0205':'pompe-5sec','0206':'pompe-6sec',
+    '0207':'pompe-rot-cylindre','0208':'pompe-inclinometre','0209':'pompe-reel'
+};
+var STATUS_R_J_TO_LEGACY = { 'r':'red', 'j':'yellow', 'na':'na' };
+
+// Convertit un override format edit-machine.html (codes plats + _custom, _removed, _specs)
+// vers le format legacy (rows, customRows) attendu par machine.html
+function normalizeKitOverrides(ov){
+    if (!ov) return null;
+    // Deja en format legacy ?
+    if (ov.rows || ov.customRows) return ov;
+    // Format edit-machine.html : convertir
+    var rows = {};
+    Object.keys(ov).forEach(function(k){
+        if (k === '_specs' || k === '_custom' || k === '_removed' || k === 'harnais') return;
+        var kitId = KIT_CODE_TO_ID[k];
+        if (kitId) rows[kitId] = STATUS_R_J_TO_LEGACY[ov[k]] || 'na';
+    });
+    var customRows = [];
+    if (Array.isArray(ov._custom)){
+        ov._custom.forEach(function(c){
+            customRows.push({
+                id: c.code,
+                label: c.desc || c.code,
+                code: c.pn || c.code,
+                status: STATUS_R_J_TO_LEGACY[c.status] || 'na'
+            });
+        });
+    }
+    return {
+        rows: rows,
+        customRows: customRows,
+        harnais: ov.harnais || null,
+        _removed: Array.isArray(ov._removed) ? ov._removed : [],
+        _specs: ov._specs || null
+    };
+}
+
 function applyKitOverrides(overrides) {
     if (!overrides) return;
+    overrides = normalizeKitOverrides(overrides);
+    // Cache les lignes du catalogue retirees pour cette machine
+    if (Array.isArray(overrides._removed)){
+        overrides._removed.forEach(function(code){
+            var kitId = KIT_CODE_TO_ID[code];
+            if (!kitId) return;
+            var row = document.querySelector('tr[data-kit="' + kitId + '"]');
+            if (row) row.style.display = 'none';
+        });
+    }
+    // Applique les overrides de specs (texte affiche dans le panneau specs)
+    if (overrides._specs){
+        Object.keys(overrides._specs).forEach(function(fullKey){
+            // Recherche d'un element [data-spec-key="..."] (s'il existe dans machine.html)
+            // ou par texte de label — best effort
+            var val = overrides._specs[fullKey];
+            document.querySelectorAll('[data-spec-key="' + fullKey + '"]').forEach(function(el){
+                el.textContent = val;
+            });
+        });
+    }
     // Apply status overrides to existing rows
     if (overrides.rows) {
         Object.keys(overrides.rows).forEach(function(kitId) {
@@ -976,7 +1022,7 @@ function applyKitOverrides(overrides) {
             if (status === 'red') {
                 // Ensure radios exist
                 if (!statusCell.querySelector('.radio-red')) {
-                    statusCell.innerHTML = buildKitRadios(radioName, 'oui', 'non');
+                    statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
                 }
                 var redRadio = statusCell.querySelector('.radio-red');
                 var yellowRadio = statusCell.querySelector('.radio-yellow');
@@ -986,7 +1032,7 @@ function applyKitOverrides(overrides) {
             } else if (status === 'yellow') {
                 // Ensure radios exist
                 if (!statusCell.querySelector('.radio-yellow')) {
-                    statusCell.innerHTML = buildKitRadios(radioName, 'oui', 'non');
+                    statusCell.innerHTML = '<input type="radio" name="' + radioName + '" value="oui" class="radio-red"><input type="radio" name="' + radioName + '" value="non" class="radio-yellow">';
                 }
                 var redR = statusCell.querySelector('.radio-red');
                 var yellowR = statusCell.querySelector('.radio-yellow');
@@ -1010,9 +1056,9 @@ function applyKitOverrides(overrides) {
             tr.setAttribute('data-custom-id', custom.id);
             var statusHtml = '';
             if (custom.status === 'red') {
-                statusHtml = buildKitRadios('kit-custom-' + custom.id, 'oui', 'non', { redChecked: true });
+                statusHtml = '<input type="radio" name="kit-custom-' + custom.id + '" value="oui" class="radio-red" checked><input type="radio" name="kit-custom-' + custom.id + '" value="non" class="radio-yellow">';
             } else if (custom.status === 'yellow') {
-                statusHtml = buildKitRadios('kit-custom-' + custom.id, 'oui', 'non', { yellowChecked: true });
+                statusHtml = '<input type="radio" name="kit-custom-' + custom.id + '" value="oui" class="radio-red"><input type="radio" name="kit-custom-' + custom.id + '" value="non" class="radio-yellow" checked>';
             } else {
                 statusHtml = '<span class="kit-na">N/A</span>';
             }
@@ -1568,22 +1614,24 @@ btnReset.addEventListener('click', () => {
     btnReset.style.display = 'none';
 });
 
-// Hamburger menu
+// Hamburger menu (only present on index.html — guard against null on other pages)
 const hamburgerBtn = document.getElementById('hamburger-btn');
 const hamburgerMenu = document.getElementById('hamburger-menu');
 
-hamburgerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    hamburgerBtn.classList.toggle('active');
-    hamburgerMenu.classList.toggle('open');
-});
+if (hamburgerBtn && hamburgerMenu) {
+    hamburgerBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hamburgerBtn.classList.toggle('active');
+        hamburgerMenu.classList.toggle('open');
+    });
 
-document.addEventListener('click', (e) => {
-    if (!hamburgerMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-        hamburgerBtn.classList.remove('active');
-        hamburgerMenu.classList.remove('open');
-    }
-});
+    document.addEventListener('click', (e) => {
+        if (!hamburgerMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+            hamburgerBtn.classList.remove('active');
+            hamburgerMenu.classList.remove('open');
+        }
+    });
+}
 
 // Kit lock/unlock — permission-based (no PIN needed)
 var kitLockBtn = document.getElementById('kit-lock-btn');
@@ -1598,23 +1646,19 @@ function toggleKitEdit() {
 }
 
 function toggleKitLock() {
-    if (kitEditMode) {
-        // In edit mode: confirm, save and lock
-        if (confirm('Sauvegarder les modifications?')) {
-            saveKitEditMode();
-        } else {
-            exitKitEditMode(false);
-        }
+    // L'edition du BOM se fait maintenant uniquement via edit-machine.html
+    // (lien depuis la base de donnees)
+    if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
+        var m = window.__currentMachine || {};
+        if (!m.type || !m.fab) { alert('Selectionnez d\'abord une machine.'); return; }
+        var url = 'edit-machine.html'
+            + '?type=' + encodeURIComponent(m.type)
+            + '&fab=' + encodeURIComponent(m.fab)
+            + '&year=' + encodeURIComponent(m.annee)
+            + '&model=' + encodeURIComponent(m.modele);
+        window.location.href = url;
     } else {
-        // Locked: unlock directly into edit mode (admin only)
-        if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
-            unlockKit();
-            enterKitEditMode();
-            var btn = document.getElementById('kit-lock-btn');
-            if (btn) { btn.innerHTML = '&#128275;'; btn.classList.add('editing'); btn.title = 'Sauvegarder et verrouiller'; }
-        } else {
-            alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
-        }
+        alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
     }
 }
 
@@ -1622,10 +1666,11 @@ function updateKitLockButton() {
     if (!kitLockBtn) return;
     if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
         kitLockBtn.classList.add('perm-unlock');
-        kitLockBtn.title = 'Cliquer pour deverrouiller';
+        kitLockBtn.title = 'Ouvrir la page d\'edition (BOM, harnais, specs, notes)';
+        kitLockBtn.innerHTML = '&#9881;&#65039;'; // gear icon
     } else {
         kitLockBtn.classList.remove('perm-unlock');
-        kitLockBtn.title = 'Connexion requise (role avec permission BOM)';
+        kitLockBtn.title = 'Edition BOM disponible via la base de donnees (admin requis)';
     }
 }
 

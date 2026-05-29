@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>e-Trak | Import CSV — BD Machines</title>
+<link rel="stylesheet" href="css/style.css?v=156">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  .import-wrap { max-width: 1400px; margin: 0 auto; padding: 1rem 1.5rem; }
+  .import-step { background: #1a2332; border: 1px solid #2a3a4a; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .import-step h3 { margin: 0 0 0.6rem; font-size: 0.95rem; color: #4FC3F7; display:flex; align-items:center; gap:0.5rem; }
+  .import-step h3 .step-num { background:#0062CC; color:#fff; width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.7rem; font-weight:800; }
+  .import-step.done h3 .step-num { background:#00CC66; }
+  .import-step.disabled { opacity: 0.4; pointer-events: none; }
+  .help-text { color: #999; font-size: 0.78rem; margin-bottom: 0.6rem; line-height: 1.4; }
+  .file-input { background:#0d1520; border:1px dashed #2a3a4a; border-radius:6px; padding:1rem; text-align:center; cursor:pointer; transition:border-color 0.2s; }
+  .file-input:hover { border-color:#0062CC; }
+  .file-input input { display:none; }
+  .file-info { font-size:0.75rem; color:#00CC66; margin-top:0.5rem; }
+  .btn { background:#0062CC; color:#fff; border:none; border-radius:6px; padding:8px 16px; font-size:0.82rem; font-weight:600; cursor:pointer; }
+  .btn:hover { background:#004A99; }
+  .btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .btn-danger { background:#CC0000; }
+  .btn-danger:hover { background:#990000; }
+  .btn-success { background:#00CC66; color:#000; }
+  .btn-success:hover { background:#00AA55; }
+  .summary { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:0.6rem; margin-bottom:0.8rem; }
+  .summary-card { background:#0d1520; padding:0.6rem 0.8rem; border-radius:6px; border-left:3px solid #444; }
+  .summary-card.add { border-color:#00CC66; }
+  .summary-card.mod { border-color:#FFB74D; }
+  .summary-card.del { border-color:#FF4444; }
+  .summary-card.skip { border-color:#888; }
+  .summary-card .n { font-size:1.4rem; font-weight:800; color:#fff; }
+  .summary-card .lbl { font-size:0.68rem; color:#999; text-transform:uppercase; letter-spacing:0.5px; }
+  .diff-table { width:100%; border-collapse:collapse; font-size:0.75rem; margin-top:0.5rem; }
+  .diff-table thead th { background:#0d1520; color:#fff; padding:6px 8px; text-align:left; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.4px; font-weight:700; position:sticky; top:0; }
+  .diff-table tbody td { padding:5px 8px; border-bottom:1px solid rgba(255,255,255,0.06); vertical-align:top; }
+  .diff-table tbody tr.add { background:rgba(0,204,102,0.05); }
+  .diff-table tbody tr.mod { background:rgba(255,183,77,0.05); }
+  .diff-table tbody tr.del { background:rgba(255,68,68,0.05); }
+  .diff-table .badge { font-size:0.62rem; padding:2px 8px; border-radius:3px; font-weight:700; text-transform:uppercase; }
+  .badge.add { background:rgba(0,204,102,0.2); color:#00CC66; }
+  .badge.mod { background:rgba(255,183,77,0.2); color:#FFB74D; }
+  .badge.del { background:rgba(255,68,68,0.2); color:#FF6666; }
+  .badge.skip { background:rgba(136,136,136,0.2); color:#aaa; }
+  .change-list { font-size:0.7rem; color:#ccc; line-height:1.5; }
+  .change-list .from { color:#FF8888; }
+  .change-list .to { color:#9FE9A0; }
+  .change-list .arrow { color:#666; padding:0 4px; }
+  .filter-bar { display:flex; gap:0.5rem; margin-bottom:0.5rem; flex-wrap:wrap; align-items:center; }
+  .filter-bar input, .filter-bar select { background:#0d1520; border:1px solid #2a3a4a; border-radius:4px; padding:5px 8px; color:#fff; font-size:0.75rem; }
+  .progress-bar { background:#0d1520; border:1px solid #2a3a4a; border-radius:6px; overflow:hidden; height:24px; position:relative; }
+  .progress-bar .fill { background:linear-gradient(90deg,#0062CC,#00CC66); height:100%; transition:width 0.3s; }
+  .progress-bar .label { position:absolute; left:0; top:0; right:0; bottom:0; display:flex; align-items:center; justify-content:center; font-size:0.75rem; color:#fff; font-weight:600; text-shadow:0 0 4px rgba(0,0,0,0.7); }
+  .log-area { background:#0a0e15; border:1px solid #1a2332; border-radius:4px; padding:0.5rem; font-family:'JetBrains Mono','Courier New',monospace; font-size:0.7rem; color:#9FE9A0; max-height:200px; overflow-y:auto; margin-top:0.5rem; }
+  .log-line.err { color:#FF6666; }
+  .log-line.warn { color:#FFB74D; }
+  .auth-error { background:rgba(255,68,68,0.15); color:#FF8888; padding:1rem; border-radius:6px; text-align:center; }
+  .scroll-wrap { max-height:60vh; overflow:auto; border:1px solid #2a3a4a; border-radius:6px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-content">
+    <a href="database.html" class="header-back">&larr; <span>Retour BD</span></a>
+    <div class="logo-section"><img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo"></div>
+  </div>
+</header>
+
+<main>
+<div class="import-wrap">
+  <h2 style="color:#fff;font-size:1.2rem;margin-bottom:0.8rem;">📥 Import CSV — Mise a jour massive de la BD</h2>
+  <div id="auth-error" class="auth-error" style="display:none;">Acces non autorise. Reserve aux administrateurs.</div>
+
+  <div id="main-content" style="display:none;">
+
+    <!-- ETAPE 1 : Upload -->
+    <div class="import-step" id="step1">
+      <h3><span class="step-num">1</span> Charger un fichier CSV</h3>
+      <div class="help-text">
+        Format attendu : meme structure que l'export CSV de la BD (premiere ligne = en-tetes). Colonnes reconnues : Fabricant, Modele, Annee, Cabine, Sans cabine, Mini exc, Drain hyd, Boite GC, Hauteur, Rotation, Multi Axes, Swing boom, Rot. cremaillere, Harnais, Notes, Drapeau actif, Drapeau note. Valeurs : <code>Obligatoire</code> / <code>Optionnel</code> / <code>N/A</code>.
+      </div>
+      <label class="file-input">
+        <input type="file" id="csv-input" accept=".csv,text/csv">
+        <div style="font-size:0.9rem;color:#4FC3F7;">📄 Clique pour choisir un fichier CSV</div>
+        <div class="file-info" id="file-info"></div>
+      </label>
+    </div>
+
+    <!-- ETAPE 2 : Diff Preview -->
+    <div class="import-step disabled" id="step2">
+      <h3><span class="step-num">2</span> Apercu des modifications (dry-run)</h3>
+      <div class="help-text">Verifie les changements avant d'appliquer. Aucune modification n'est encore envoyee a la BD.</div>
+      <div class="summary" id="diff-summary"></div>
+      <div class="filter-bar">
+        <input type="text" id="diff-search" placeholder="Rechercher fab/modele..." style="min-width:220px;">
+        <select id="diff-filter-type">
+          <option value="">Tous les changements</option>
+          <option value="add">Nouveaux (ajout d'override)</option>
+          <option value="mod">Modifies</option>
+          <option value="skip">Identiques (skipped)</option>
+        </select>
+        <span style="color:#666;font-size:0.72rem;margin-left:auto;" id="diff-count"></span>
+      </div>
+      <div class="scroll-wrap">
+        <table class="diff-table" id="diff-table">
+          <thead>
+            <tr>
+              <th style="width:60px;">Type</th>
+              <th style="width:120px;">Fabricant</th>
+              <th style="width:140px;">Modele</th>
+              <th style="width:70px;">Annee</th>
+              <th>Changements (Avant → Apres)</th>
+            </tr>
+          </thead>
+          <tbody id="diff-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ETAPE 3 : Confirmation + execution -->
+    <div class="import-step disabled" id="step3">
+      <h3><span class="step-num">3</span> Confirmation et execution</h3>
+      <div class="help-text">
+        ⚠️ Cette action ecrira les modifications dans la BD via l'API. Un snapshot complet de l'etat actuel sera sauvegarde avant les modifications (<code>snapshot_import_&lt;timestamp&gt;</code>) pour rollback possible.
+      </div>
+      <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;">
+        <label style="display:flex;align-items:center;gap:6px;color:#FFB74D;font-size:0.85rem;cursor:pointer;">
+          <input type="checkbox" id="confirm-check"> J'ai verifie l'apercu et je veux appliquer les modifications
+        </label>
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <button id="apply-btn" class="btn btn-success" disabled>📤 Appliquer les modifications</button>
+        <button id="cancel-btn" class="btn">Annuler / Recommencer</button>
+      </div>
+      <div id="apply-progress" style="display:none;margin-top:0.8rem;">
+        <div class="progress-bar"><div class="fill" id="prog-fill" style="width:0%;"></div><div class="label" id="prog-label">0 / 0</div></div>
+        <div class="log-area" id="apply-log"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</main>
+
+<footer><div class="footer-content"><p class="footer-copy">&copy; 2026 Portail e-Trak — Usage interne</p></div></footer>
+
+<script>
+(function() {
+  var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+  var PIN = '1400';
+
+  // Auth check
+  var user = null;
+  try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+  var ADMIN_ROLES = { super_admin: true, administrateur: true };
+  if (!user || !user.role || !ADMIN_ROLES[user.role]) {
+    document.getElementById('auth-error').style.display = '';
+    return;
+  }
+  document.getElementById('main-content').style.display = '';
+
+  // Mapping CSV header → BOM code (pour Excavatrice)
+  var HEADER_TO_BOM = {
+    'cabine': '0000',
+    'sans cabine': '0003',
+    'mini exc': '0004',
+    'mini': '0004',
+    'drain hyd': '0009',
+    'drain': '0009',
+    'boite gc': '0070',
+    'hauteur': '0001',
+    'rotation': '0002',
+    'multi axes': '0005',
+    'multi-axes': '0005',
+    'swing boom': '0008',
+    'rot. cremaillere': '0304',
+    'rotation cremaillere': '0304'
+  };
+  var STATE_NORMALIZE = {
+    'obligatoire': 'r', 'oblig': 'r', 'r': 'r', 'red': 'r', 'rouge': 'r', 'mandatory': 'r',
+    'optionnel': 'j', 'option': 'j', 'j': 'j', 'yellow': 'j', 'jaune': 'j', 'optional': 'j',
+    'n/a': 'na', 'na': 'na', '-': 'na', '': 'na', 'aucun': 'na'
+  };
+  var BOM_LABEL = {
+    '0000': 'Cabine', '0003': 'Sans cabine', '0004': 'Mini exc', '0009': 'Drain hyd', '0070': 'Boite GC',
+    '0001': 'Hauteur', '0002': 'Rotation', '0005': 'Multi Axes', '0008': 'Swing boom', '0304': 'Rot. cremaillere'
+  };
+
+  // State global
+  var fullData = null;        // machines.json content
+  var csvRows = [];           // parsed CSV
+  var diffEntries = [];       // [{type:'add|mod|skip|missing', d:{fab,modele,annee}, changes:[{code,from,to,fromLbl,toLbl}], newOverride:{}}]
+  var snapshotKey = '';       // defini au moment de l'application (cle du snapshot pre-import)
+  var DRAIN_PREFIXES = [
+    'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
+    '308','315','316','320','336','440','450','M318',
+    'DX190','DX235','BX190',
+    'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
+    '245X',
+    '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
+    'SK210','PC78','PC138','PC200','PC290',
+    'R 920 K','R920','R 936','R936',
+    '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
+    'TB210','TW65',
+    'EC160','EC330','EC360','EC550','235',
+    'EZ36'
+  ];
+
+  // Calcul des valeurs PAR DEFAUT (pour determiner si une valeur CSV est un override ou la valeur par defaut)
+  function computeDefaultBom(spec, fab, modele) {
+    var bom = {};
+    var poidsStr = spec['Poids operationnel (kg / lbs)'] || '';
+    var match = poidsStr.match(/(\d[\d\s]*)/);
+    var poids = match ? parseInt(match[1].replace(/\s/g, '')) : 0;
+    var isMini = poids > 0 && poids <= 5000;
+    var modUpper = (modele || '').toUpperCase();
+
+    bom['0000'] = 'r';
+    bom['0001'] = 'j';
+    bom['0002'] = 'j';
+    bom['0003'] = 'na';
+    bom['0004'] = isMini ? 'r' : 'na';
+    bom['0005'] = 'j';
+    bom['0008'] = 'na';
+    bom['0009'] = DRAIN_PREFIXES.some(function(p) { return modUpper.indexOf(p.toUpperCase()) === 0; }) ? 'r' : 'na';
+    bom['0070'] = 'na';
+    bom['0304'] = (modUpper === 'TB216') ? 'r' : 'na';
+    return bom;
+  }
+
+  // CSV parser (gere les guillemets et echappements)
+  function parseCSV(text) {
+    var rows = [];
+    var i = 0, n = text.length;
+    var row = [], cell = '', inQuotes = false;
+    while (i < n) {
+      var c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i+1] === '"') { cell += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        }
+        cell += c; i++;
+      } else {
+        if (c === '"') { inQuotes = true; i++; continue; }
+        if (c === ',') { row.push(cell); cell = ''; i++; continue; }
+        if (c === '\r') { i++; continue; }
+        if (c === '\n') { row.push(cell); rows.push(row); row = []; cell = ''; i++; continue; }
+        cell += c; i++;
+      }
+    }
+    if (cell.length || row.length) { row.push(cell); rows.push(row); }
+    // BOM
+    if (rows.length && rows[0].length && rows[0][0].charCodeAt(0) === 0xFEFF) {
+      rows[0][0] = rows[0][0].slice(1);
+    }
+    return rows;
+  }
+
+  // === ETAPE 1 : Upload CSV ===
+  var csvInput = document.getElementById('csv-input');
+  csvInput.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (!file) return;
+    var info = document.getElementById('file-info');
+    info.textContent = '⏳ Lecture de ' + file.name + ' (' + (file.size/1024).toFixed(1) + ' KB)...';
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var text = ev.target.result;
+      var rows = parseCSV(text);
+      if (rows.length < 2) { info.textContent = '❌ CSV vide ou invalide'; return; }
+      var headers = rows[0].map(function(h) { return h.trim(); });
+      csvRows = rows.slice(1).filter(function(r) { return r.some(function(c) { return c && c.trim(); }); })
+        .map(function(r) {
+          var obj = {};
+          headers.forEach(function(h, i) { obj[h] = (r[i] || '').trim(); });
+          return obj;
+        });
+      info.textContent = '✓ ' + csvRows.length + ' lignes chargees depuis ' + file.name;
+      document.getElementById('step1').classList.add('done');
+      // Charger machines.json puis calculer le diff
+      loadMachinesAndDiff();
+    };
+    reader.onerror = function() { info.textContent = '❌ Erreur lecture fichier'; };
+    reader.readAsText(file, 'utf-8');
+  });
+
+  function loadMachinesAndDiff() {
+    var info = document.getElementById('file-info');
+    info.textContent += ' — Chargement de la BD...';
+    fetch('data/machines.json?v=' + Date.now())
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        fullData = data;
+        info.textContent = '✓ ' + csvRows.length + ' lignes CSV vs BD ' + Object.keys(data).length + ' types';
+        computeDiff();
+      })
+      .catch(function(err) { info.textContent = '❌ Erreur BD: ' + err.message; });
+  }
+
+  // === ETAPE 2 : Diff preview ===
+  function bomKeyFor(fab, modele, annee) {
+    return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+  }
+
+  function loadOverrideAsync(fab, modele, annee) {
+    return fetch(API_URL + '?action=get&key=' + encodeURIComponent(bomKeyFor(fab, modele, annee)))
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (data && data.value) { try { return JSON.parse(data.value); } catch(e) { return null; } }
+        return null;
+      })
+      .catch(function() { return null; });
+  }
+
+  function stateLabel(s) { return s === 'r' ? 'Obligatoire' : s === 'j' ? 'Optionnel' : 'N/A'; }
+  function normalizeState(v) {
+    var k = (v || '').toLowerCase().trim();
+    if (k in STATE_NORMALIZE) return STATE_NORMALIZE[k];
+    return null;
+  }
+
+  function showDiff() {
+    var summary = { add: 0, mod: 0, skip: 0, missing: 0 };
+    diffEntries.forEach(function(e) { summary[e.type] = (summary[e.type] || 0) + 1; });
+    var s = document.getElementById('diff-summary');
+    s.innerHTML =
+      '<div class="summary-card mod"><div class="n">' + summary.mod + '</div><div class="lbl">Modifies</div></div>' +
+      '<div class="summary-card add"><div class="n">' + summary.add + '</div><div class="lbl">Nouveaux overrides</div></div>' +
+      '<div class="summary-card skip"><div class="n">' + summary.skip + '</div><div class="lbl">Identiques (ignores)</div></div>' +
+      '<div class="summary-card del"><div class="n">' + summary.missing + '</div><div class="lbl">Introuvables dans BD</div></div>';
+    renderDiffTable();
+    document.getElementById('step2').classList.remove('disabled');
+    document.getElementById('step2').classList.add('done');
+    document.getElementById('step3').classList.remove('disabled');
+  }
+
+  function renderDiffTable() {
+    var search = (document.getElementById('diff-search').value || '').toLowerCase().trim();
+    var typeFilter = document.getElementById('diff-filter-type').value;
+    var rows = diffEntries.filter(function(e) {
+      if (typeFilter && e.type !== typeFilter) return false;
+      if (search) {
+        var t = (e.d.fab + ' ' + e.d.modele).toLowerCase();
+        if (t.indexOf(search) === -1) return false;
+      }
+      return true;
+    });
+    document.getElementById('diff-count').textContent = rows.length + ' / ' + diffEntries.length + ' affichees';
+    var tbody = document.getElementById('diff-tbody');
+    tbody.innerHTML = rows.slice(0, 1000).map(function(e) {
+      var badge = '<span class="badge ' + e.type + '">' + ({add:'Nouveau', mod:'Modif', skip:'Idem', missing:'Introuvable'}[e.type] || e.type) + '</span>';
+      var changes = e.changes.length ? e.changes.map(function(c) {
+        return '<div>' + (BOM_LABEL[c.code] || c.field || c.code) +
+               ' <span class="from">' + (c.fromLbl || c.from || '—') + '</span>' +
+               '<span class="arrow">→</span>' +
+               '<span class="to">' + (c.toLbl || c.to || '—') + '</span></div>';
+      }).join('') : '<span style="color:#666;font-style:italic;">— aucun changement —</span>';
+      return '<tr class="' + e.type + '"><td>' + badge + '</td><td>' + e.d.fab + '</td><td>' + e.d.modele + '</td><td>' + e.d.annee + '</td><td><div class="change-list">' + changes + '</div></td></tr>';
+    }).join('');
+    if (rows.length > 1000) {
+      tbody.innerHTML += '<tr><td colspan="5" style="text-align:center;color:#666;padding:0.8rem;font-style:italic;">+ ' + (rows.length - 1000) + ' autres lignes (limite affichee a 1000)</td></tr>';
+    }
+  }
+
+  document.getElementById('diff-search').addEventListener('input', renderDiffTable);
+  document.getElementById('diff-filter-type').addEventListener('change', renderDiffTable);
+
+  function computeDiff() {
+    diffEntries = [];
+    var sample = csvRows[0] || {};
+    var headers = Object.keys(sample);
+    // Mapper les headers reconnus → code BOM
+    var headerMap = {}; // header -> code
+    headers.forEach(function(h) {
+      var key = h.toLowerCase().trim();
+      if (HEADER_TO_BOM[key]) headerMap[h] = HEADER_TO_BOM[key];
+    });
+    var recognizedCount = Object.keys(headerMap).length;
+    if (!recognizedCount) {
+      alert('⚠️ Aucune colonne BOM reconnue dans le CSV. Headers attendus : Cabine, Sans cabine, Mini exc, Drain hyd, Boite GC, Hauteur, Rotation, Multi Axes, Swing boom, Rot. cremaillere.');
+      return;
+    }
+
+    // On precharge les overrides actuels en parallele par batch
+    var todo = csvRows.slice();
+    var BATCH = 15;
+    var idx = 0, processed = 0;
+    var info = document.getElementById('file-info');
+
+    function processBatch() {
+      if (idx >= todo.length) { showDiff(); return; }
+      var batch = todo.slice(idx, idx + BATCH);
+      idx += BATCH;
+      Promise.all(batch.map(function(row) {
+        return processRow(row, headerMap);
+      })).then(function(entries) {
+        entries.forEach(function(e) { if (e) diffEntries.push(e); });
+        processed += batch.length;
+        info.textContent = '⏳ Analyse... ' + processed + ' / ' + todo.length + ' (overrides en cours)';
+        processBatch();
+      });
+    }
+    processBatch();
+  }
+
+  function processRow(row, headerMap) {
+    var fab = (row['Fabricant'] || '').trim();
+    var modele = (row['Modele'] || row['Modèle'] || '').trim();
+    var annee = (row['Annee'] || row['Année'] || '').trim();
+    if (!fab || !modele || !annee) return Promise.resolve(null);
+
+    // Trouver la machine dans la BD
+    var spec = null;
+    for (var typeKey in fullData) {
+      if (typeKey.startsWith('_')) continue;
+      if (fullData[typeKey][fab] && fullData[typeKey][fab][annee] && fullData[typeKey][fab][annee][modele]) {
+        spec = fullData[typeKey][fab][annee][modele];
+        break;
+      }
+    }
+    if (!spec) {
+      return Promise.resolve({
+        type: 'missing', d: { fab: fab, modele: modele, annee: annee },
+        changes: [{ field: 'Introuvable dans la BD', from: '', to: '' }]
+      });
+    }
+
+    var defaults = computeDefaultBom(spec, fab, modele);
+
+    // Charger override actuel
+    return loadOverrideAsync(fab, modele, annee).then(function(currentOv) {
+      currentOv = currentOv || {};
+      var changes = [];
+      var newOverride = {};
+
+      // Pour chaque header BOM reconnu, comparer
+      Object.keys(headerMap).forEach(function(h) {
+        var code = headerMap[h];
+        var csvVal = normalizeState(row[h]);
+        if (csvVal == null) return; // valeur vide ou invalide → ignorer cette cellule
+        // Etat actuel = override si existe, sinon default
+        var currentVal = (currentOv[code] != null) ? currentOv[code] : defaults[code];
+        if (csvVal !== currentVal) {
+          changes.push({ code: code, from: currentVal, to: csvVal, fromLbl: stateLabel(currentVal), toLbl: stateLabel(csvVal) });
+        }
+        // Si csvVal != default, on doit le mettre dans l'override
+        if (csvVal !== defaults[code]) {
+          newOverride[code] = csvVal;
+        }
+      });
+
+      // Harnais
+      var harnaisCsv = (row['Harnais'] || '').trim();
+      if (harnaisCsv) {
+        var harnaisNorm = harnaisCsv.replace(/^Z03B-/i, 'H');
+        if (currentOv.harnais && currentOv.harnais !== harnaisNorm) {
+          changes.push({ code: 'harnais', field: 'Harnais', from: currentOv.harnais, to: harnaisNorm, fromLbl: 'Z03B-' + currentOv.harnais.replace(/^H/, ''), toLbl: 'Z03B-' + harnaisNorm.replace(/^H/, '') });
+          newOverride.harnais = harnaisNorm;
+        }
+      }
+
+      // Preserver les meta keys de l'override actuel
+      if (Array.isArray(currentOv._removed) && currentOv._removed.length) newOverride._removed = currentOv._removed;
+      if (Array.isArray(currentOv._custom) && currentOv._custom.length) newOverride._custom = currentOv._custom;
+      if (currentOv._specs) newOverride._specs = currentOv._specs;
+
+      var type, isNewOverride = !Object.keys(currentOv).length;
+      if (changes.length === 0) type = 'skip';
+      else if (isNewOverride) type = 'add';
+      else type = 'mod';
+
+      return {
+        type: type, d: { fab: fab, modele: modele, annee: annee },
+        changes: changes, newOverride: newOverride, currentOverride: currentOv
+      };
+    });
+  }
+
+  // === ETAPE 3 : Apply ===
+  var confirmCheck = document.getElementById('confirm-check');
+  var applyBtn = document.getElementById('apply-btn');
+  confirmCheck.addEventListener('change', function() { applyBtn.disabled = !this.checked; });
+
+  document.getElementById('cancel-btn').addEventListener('click', function() {
+    if (!confirm('Recommencer ? Le CSV charge sera oublie.')) return;
+    location.reload();
+  });
+
+  function logLine(msg, cls) {
+    var area = document.getElementById('apply-log');
+    var div = document.createElement('div');
+    div.className = 'log-line' + (cls ? ' ' + cls : '');
+    div.textContent = '[' + new Date().toLocaleTimeString() + '] ' + msg;
+    area.appendChild(div);
+    area.scrollTop = area.scrollHeight;
+  }
+
+  applyBtn.addEventListener('click', function() {
+    if (applyBtn.disabled) return;
+    var toApply = diffEntries.filter(function(e) { return e.type === 'add' || e.type === 'mod'; });
+    if (!toApply.length) { alert('Aucune modification a appliquer.'); return; }
+
+    if (!confirm('⚠️ Appliquer ' + toApply.length + ' modification(s) ? Un snapshot sera sauvegarde avant.')) return;
+
+    applyBtn.disabled = true;
+    confirmCheck.disabled = true;
+    document.getElementById('apply-progress').style.display = '';
+    var progFill = document.getElementById('prog-fill');
+    var progLabel = document.getElementById('prog-label');
+    var total = toApply.length + 1; // +1 pour le snapshot
+    var done = 0;
+    function updateProg(label) {
+      done++;
+      progFill.style.width = (done * 100 / total).toFixed(1) + '%';
+      progLabel.textContent = label || (done + ' / ' + total);
+    }
+
+    // 1. Sauvegarder snapshot (assigne a la variable module pour acces dans applyChanges)
+    snapshotKey = 'snapshot_import_' + new Date().toISOString().slice(0,19).replace(/[:.]/g,'-');
+    var snapshot = toApply.map(function(e) {
+      return { fab: e.d.fab, modele: e.d.modele, annee: e.d.annee, before: e.currentOverride };
+    });
+
+    logLine('📦 Sauvegarde snapshot: ' + snapshotKey);
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'text/plain'},
+      body: JSON.stringify({ action: 'save', key: snapshotKey, value: JSON.stringify(snapshot), pin: PIN })
+    }).then(function() {
+      updateProg('Snapshot OK — debut de l\'application');
+      logLine('✓ Snapshot sauvegarde (' + snapshot.length + ' machines)');
+      return applyChanges(toApply, updateProg);
+    }).then(function(results) {
+      var ok = results.filter(function(r) { return r.ok; }).length;
+      var err = results.length - ok;
+      logLine('✅ Termine: ' + ok + ' OK, ' + err + ' erreurs', err ? 'warn' : '');
+      progLabel.textContent = '✅ Termine — ' + ok + ' OK / ' + err + ' erreurs';
+      if (err === 0) progFill.style.background = '#00CC66';
+    }).catch(function(err) {
+      logLine('❌ Erreur globale: ' + err.message, 'err');
+      progLabel.textContent = '❌ Erreur';
+    });
+  });
+
+  function applyChanges(entries, onStep) {
+    var BATCH = 5; // limites API Google Apps Script
+    var idx = 0;
+    var results = [];
+    return new Promise(function(resolve) {
+      function nextBatch() {
+        if (idx >= entries.length) { resolve(results); return; }
+        var batch = entries.slice(idx, idx + BATCH);
+        idx += BATCH;
+        Promise.all(batch.map(function(e) {
+          var key = bomKeyFor(e.d.fab, e.d.modele, e.d.annee);
+          // Si pas de modifications custom et que le nouvel override est vide → supprimer l'override (envoyer {})
+          return fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/plain'},
+            body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(e.newOverride), pin: PIN })
+          }).then(function(r) { return r.json(); })
+            .then(function(resp) {
+              var ok = !!(resp && (resp.success || resp.ok));
+              logLine((ok ? '✓ ' : '❌ ') + e.d.fab + ' ' + e.d.modele + ' (' + e.d.annee + ') — ' + e.changes.length + ' changement(s)', ok ? '' : 'err');
+              // Log dans le changelog principal
+              if (ok) {
+                var nature = 'Import CSV: ' + e.changes.map(function(c) {
+                  return (BOM_LABEL[c.code] || c.field || c.code) + ' ' + (c.fromLbl||c.from) + '→' + (c.toLbl||c.to);
+                }).join(', ').slice(0, 200);
+                fetch(API_URL + '?action=get&key=db_changelog')
+                  .then(function(r) { return r.json(); })
+                  .then(function(d) {
+                    var log = [];
+                    if (d.value) { try { log = JSON.parse(d.value); } catch(e2) {} }
+                    log.unshift({
+                      ts: new Date().toISOString().slice(0,19).replace('T',' '),
+                      user: user.name || 'Import', type: e._type || 'Excavatrice',
+                      fab: e.d.fab, modele: e.d.modele, annee: e.d.annee,
+                      nature: nature, prev: '(snapshot ' + snapshotKey + ')'
+                    });
+                    if (log.length > 500) log = log.slice(0, 500);
+                    return fetch(API_URL, {
+                      method: 'POST', headers: {'Content-Type':'text/plain'},
+                      body: JSON.stringify({ action: 'save', key: 'db_changelog', value: JSON.stringify(log), pin: PIN })
+                    });
+                  })
+                  .catch(function() {});
+              }
+              results.push({ ok: ok, entry: e });
+              onStep();
+            })
+            .catch(function(err) {
+              logLine('❌ ' + e.d.fab + ' ' + e.d.modele + ' — ' + err.message, 'err');
+              results.push({ ok: false, entry: e, error: err });
+              onStep();
+            });
+        })).then(function() {
+          // Pause entre batches pour ne pas saturer l'API
+          setTimeout(nextBatch, 200);
+        });
+      }
+      nextBatch();
+    });
+  }
+})();
+</script>
+</body>
+</html>

@@ -109,7 +109,7 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
 // Load machines data immediately — don't wait for API
 var allowedTypes = null; // null = all types allowed
 
-fetch('data/machines.json?v=200')
+fetch('data/machines.json?v=155')
     .then(function(res) { return res.json(); })
     .then(function(data) {
         machinesData = data;
@@ -197,25 +197,42 @@ function doFabChange() {
         selectAnnee.appendChild(opt);
     });
     selectAnnee.disabled = false;
+    // Peuple aussi les modeles (toutes annees confondues) — la cascade nouvelle
+    // permet de choisir Modele independamment de Annee
+    populateModeles(type, fab, null);
 }
 selectFabricant.addEventListener('change', () => {
     if (hasActiveOptions()) { confirmReset(doFabChange); } else { doFabChange(); }
 });
 
-function doAnneeChange() {
-    resetFrom('modele');
-    const type = selectType.value;
-    const fab = selectFabricant.value;
-    const annee = selectAnnee.value;
-    if (!annee) return;
-    const modeles = Object.keys(machinesData[type][fab][annee]).sort();
-    modeles.forEach(modele => {
+// Helper: peuple les modeles (filtre optionnellement par annee)
+function populateModeles(type, fab, anneeFilter) {
+    var sel_txt = (typeof i18n !== 'undefined') ? i18n.t('common.selectionnez') : '-- Selectionnez --';
+    selectModele.innerHTML = '<option value="">' + sel_txt + '</option>';
+    var modelesSet = {};
+    var years = Object.keys(machinesData[type][fab]);
+    if (anneeFilter) years = years.filter(function(y){ return y === anneeFilter; });
+    years.forEach(function(y) {
+        Object.keys(machinesData[type][fab][y]).forEach(function(m) { modelesSet[m] = true; });
+    });
+    Object.keys(modelesSet).sort().forEach(function(modele) {
         const opt = document.createElement('option');
         opt.value = modele;
         opt.textContent = modele;
         selectModele.appendChild(opt);
     });
     selectModele.disabled = false;
+}
+
+function doAnneeChange() {
+    // L'annee est maintenant un filtre optionnel — re-filtre les modeles
+    const type = selectType.value;
+    const fab = selectFabricant.value;
+    const annee = selectAnnee.value;
+    if (!fab) return;
+    selectModele.value = '';
+    hideOptions();
+    populateModeles(type, fab, annee || null);
 }
 selectAnnee.addEventListener('change', () => {
     if (hasActiveOptions()) { confirmReset(doAnneeChange); } else { doAnneeChange(); }
@@ -224,6 +241,20 @@ selectAnnee.addEventListener('change', () => {
 function doModeleChange() {
     const modele = selectModele.value;
     if (!modele) { hideOptions(); return; }
+    // Si pas d'annee selectionnee, auto-pick l'annee la plus recente qui a ce modele
+    const type = selectType.value;
+    const fab = selectFabricant.value;
+    let annee = selectAnnee.value;
+    if (!annee) {
+        var allYears = Object.keys(machinesData[type][fab]).sort().reverse();
+        for (var i = 0; i < allYears.length; i++) {
+            if (machinesData[type][fab][allYears[i]][modele]) {
+                annee = allYears[i];
+                selectAnnee.value = annee;
+                break;
+            }
+        }
+    }
     showOptions();
 }
 selectModele.addEventListener('change', () => {
@@ -322,6 +353,14 @@ function loadBomOverrides(fab, modele, annee) {
                 try { currentBomOverrides = JSON.parse(data.value); } catch(e) {}
             }
             updateSelectedSummary();
+            // Re-render specs if _specs override is present
+            if (currentBomOverrides && currentBomOverrides._specs) {
+                var type = selectType ? selectType.value : '';
+                var fab2 = selectFabricant ? selectFabricant.value : '';
+                var annee2 = selectAnnee ? selectAnnee.value : '';
+                var modele2 = selectModele ? selectModele.value : '';
+                if (type && fab2 && annee2 && modele2) renderSpecsTable(type, fab2, annee2, modele2);
+            }
         })
         .catch(function() {});
 }
@@ -348,7 +387,15 @@ function renderSpecsTable(type, fab, annee, modele) {
 
     var specs = {};
     if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
-        specs = machinesData[type][fab][annee][modele];
+        // shallow copy so we don't mutate machinesData when applying overrides
+        var base = machinesData[type][fab][annee][modele];
+        for (var k in base) specs[k] = base[k];
+    }
+    // Apply _specs override (edit-machine.html is master)
+    if (currentBomOverrides && currentBomOverrides._specs){
+        Object.keys(currentBomOverrides._specs).forEach(function(k){
+            specs[k] = currentBomOverrides._specs[k];
+        });
     }
 
     if (title) title.textContent = fab + ' ' + modele + ' (' + annee + ')';
@@ -413,7 +460,7 @@ function getKitSummary(type, fab, modele, specs) {
     var fabUp = fab.toUpperCase();
     var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
     var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
-    var isMini = poidsKg > 0 && poidsKg < 5000;
+    var isMini = poidsKg > 0 && poidsKg <= 5000;
     var typeBras = specs['Type de boom'] || '';
 
     var DRAIN_PREFIXES = [
@@ -440,7 +487,7 @@ function getKitSummary(type, fab, modele, specs) {
         '0002': true,
         '0004': isMini,
         '0005': typeBras.includes('2 parties'),
-        '0008': hasSwing,
+        '0008': false, // Swing boom: absent par defaut (admin doit l'activer via edit-machine)
         '0009': isDrain,
         '0070': isCat,
         '0304': modelUpper === 'TB216'
@@ -449,9 +496,14 @@ function getKitSummary(type, fab, modele, specs) {
     // Apply BOM overrides from API (BD is master — any non-na value means present)
     if (currentBomOverrides) {
         for (var code in currentBomOverrides) {
+            if (code === '_specs' || code === '_custom' || code === '_removed' || code === 'harnais') continue;
             var ov = currentBomOverrides[code];
             if (ov === 'na') bomDefaults[code] = false;
             else if (ov) bomDefaults[code] = true;
+        }
+        // _removed: force absent
+        if (Array.isArray(currentBomOverrides._removed)){
+            currentBomOverrides._removed.forEach(function(c){ bomDefaults[c] = false; });
         }
     }
 
@@ -508,6 +560,18 @@ function getKitSummary(type, fab, modele, specs) {
         hName = 'Harnais ' + (HARNAIS_LABELS[hOverride] || hOverride);
     }
     kit.push({ code: hCode, name: hName, status: 'Obligatoire' });
+
+    // Custom rows from edit-machine.html (_custom)
+    if (currentBomOverrides && Array.isArray(currentBomOverrides._custom)){
+        currentBomOverrides._custom.forEach(function(c){
+            if (c.status === 'na') return;
+            kit.push({
+                code: c.pn || c.code,
+                name: c.desc || c.code,
+                status: c.status === 'r' ? 'Obligatoire' : 'Optionnel'
+            });
+        });
+    }
 
     return kit;
 }

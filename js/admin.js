@@ -118,6 +118,12 @@ function showAdminSection() {
     document.getElementById('hub-nav').style.display = 'none';
     document.getElementById('admin-content').style.display = 'block';
     document.querySelector('.admin-hero').style.display = 'none';
+    // Affiche le bouton "Retour au hub" dans le header pour ressembler aux autres tuiles
+    var hb = document.getElementById('admin-header-back');
+    if (hb) {
+        hb.style.display = '';
+        hb.onclick = function(e) { e.preventDefault(); showHubSection(); };
+    }
     loadUsers();
     loadVendeurs();
     loadSalesEmails();
@@ -125,6 +131,14 @@ function showAdminSection() {
     loadNotesEmails();
     renderPermTable();
     loadAllowedTypes();
+}
+
+function showHubSection() {
+    document.getElementById('hub-nav').style.display = '';
+    document.getElementById('admin-content').style.display = 'none';
+    document.querySelector('.admin-hero').style.display = '';
+    var hb = document.getElementById('admin-header-back');
+    if (hb) hb.style.display = 'none';
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
@@ -209,6 +223,8 @@ function hideAdminSection() {
     document.getElementById('hub-nav').style.display = 'grid';
     document.getElementById('admin-content').style.display = 'none';
     document.querySelector('.admin-hero').style.display = 'block';
+    var hb = document.getElementById('admin-header-back');
+    if (hb) hb.style.display = 'none';
 }
 
 // ---- WELCOME OVERLAY ----
@@ -653,13 +669,17 @@ function renderUsers() {
         var tr = document.createElement('tr');
         tr.style.cursor = 'pointer';
         tr.dataset.idx = i;
+        // Voyant d'activite (sera mis a jour par loadActiveStatus apres render)
+        var dotHtml = '<span class="user-active-dot" data-email="' + (user.email || '').toLowerCase() + '" title="Statut inconnu" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#444;margin-right:8px;vertical-align:middle"></span>';
         tr.innerHTML =
-            '<td><strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
+            '<td>' + dotHtml + '<strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
             '<td>' + (user.email || '<span style="color:#555;">\u2014</span>') + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
             '<td>' + (!isSuperAdmin && currentUser && currentUser.permissions && currentUser.permissions.modifAccounts ? '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>' : '') + '</td>';
         tbody.appendChild(tr);
     });
+    // Charger les statuts d'activite (heartbeat) pour chaque user
+    loadUserActiveStatus();
     // Click row to edit user
     tbody.querySelectorAll('tr').forEach(function(tr) {
         tr.addEventListener('click', function(e) {
@@ -686,6 +706,80 @@ function renderUsers() {
         });
     });
 }
+
+// === Voyant d'activite : heartbeat + load ===
+// Charge le dernier timestamp d'activite pour chaque user et met a jour le voyant
+function loadUserActiveStatus() {
+    var PING_THRESHOLD_MS = 12 * 60 * 1000;     // 12 min (= 10 min interval + 2 min marge)
+    var ACTIVITY_THRESHOLD_MS = 3 * 60 * 1000;   // 3 min sans interaction = inactif
+    var now = Date.now();
+    function fmtAgo(ms) {
+        var s = Math.round(ms/1000);
+        if (s < 60) return s + 's';
+        var m = Math.round(s/60);
+        if (m < 60) return m + ' min';
+        var h = Math.round(m/60);
+        if (h < 24) return h + 'h';
+        return Math.round(h/24) + 'j';
+    }
+    document.querySelectorAll('.user-active-dot').forEach(function(dot) {
+        var email = dot.dataset.email;
+        if (!email) return;
+        var key = 'user_active_' + email.replace(/[^a-zA-Z0-9]/g, '_');
+        fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (!data.value) {
+                    dot.style.background = '#444';
+                    dot.style.boxShadow = 'none';
+                    dot.title = 'Jamais connecte';
+                    return;
+                }
+                // Nouveau format: JSON {lastPing, lastActivity}
+                // Ancien format: ISO timestamp (compatibilite)
+                var info;
+                try { info = JSON.parse(data.value); }
+                catch(e) { info = { lastPing: data.value, lastActivity: data.value }; }
+                if (!info || typeof info !== 'object') {
+                    info = { lastPing: data.value, lastActivity: data.value };
+                }
+                var pingTs = new Date(info.lastPing).getTime();
+                var activityTs = new Date(info.lastActivity || info.lastPing).getTime();
+                if (isNaN(pingTs)) { dot.style.background = '#444'; dot.title = 'Donnees invalides'; return; }
+
+                var pingDiff = now - pingTs;
+                var activityDiff = now - activityTs;
+
+                if (pingDiff > PING_THRESHOLD_MS) {
+                    // Pas de ping recent — deconnecte
+                    dot.style.background = '#444';
+                    dot.style.boxShadow = 'none';
+                    dot.title = 'Deconnecte (dernier ping il y a ' + fmtAgo(pingDiff) + ')';
+                } else if (activityDiff > ACTIVITY_THRESHOLD_MS) {
+                    // Ping recent mais pas d'activite — page ouverte mais inactif
+                    dot.style.background = '#FFB74D';
+                    dot.style.boxShadow = '0 0 6px rgba(255,183,77,0.6)';
+                    dot.title = 'Page ouverte mais inactif depuis ' + fmtAgo(activityDiff);
+                } else {
+                    // Actif maintenant
+                    dot.style.background = '#00CC66';
+                    dot.style.boxShadow = '0 0 6px rgba(0,204,102,0.7)';
+                    dot.title = 'Actif (interaction il y a ' + fmtAgo(activityDiff) + ')';
+                }
+            })
+            .catch(function() {});
+    });
+}
+
+// Demarre le heartbeat au chargement (defini dans le snippet global window.startUserHeartbeat)
+if (typeof window !== 'undefined' && typeof window.startUserHeartbeat === 'function') {
+    document.addEventListener('DOMContentLoaded', window.startUserHeartbeat);
+}
+
+// Refresh des voyants toutes les 30s quand on est dans la section admin
+setInterval(function() {
+    if (document.querySelectorAll('.user-active-dot').length > 0) loadUserActiveStatus();
+}, 30000);
 
 // ---- EDIT USER MODAL ----
 function openEditUserModal(idx) {

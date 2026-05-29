@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>e-Trak — Edition d'une machine</title>
+<style>
+:root{
+  --bg:#1A1A1A; --card:#2A2A2A; --card-hover:#333; --input:#1E1E1E;
+  --border:#3A3A3A; --accent:#0062CC; --accent-dim:#004A99;
+  --text:#F0F0F0; --text-2:#A0A0A0; --text-3:#666;
+  --rouge:#FF4444; --jaune:#FFB74D; --vert:#00CC66;
+  --radius:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter','Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:
+    linear-gradient(rgba(0,98,204,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,98,204,0.04) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+/* Header — coherent avec les autres pages du portail */
+header.top{
+  background:#085591;border-bottom:1px solid #0A6AAB;
+  padding:0 2rem;height:75px;display:flex;align-items:center;
+  position:sticky;top:0;z-index:100;
+}
+.header-content{
+  max-width:1200px;width:100%;margin:0 auto;display:flex;
+  align-items:center;justify-content:center;position:relative;
+}
+.header-back{
+  position:absolute;left:0;color:#fff;text-decoration:none;
+  font-size:0.8rem;font-weight:600;opacity:0.7;transition:all 0.2s;
+  line-height:1;display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border:1px solid rgba(255,255,255,0.2);border-radius:6px;
+}
+.header-back:hover{opacity:1;background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.4)}
+.logo-section{display:flex;align-items:center;justify-content:center}
+.header-logo{height:60px}
+.back-btn{
+  position:absolute;right:0;
+  background:rgba(255,255,255,0.1);color:#fff;padding:0.4rem 0.9rem;
+  border-radius:6px;text-decoration:none;font-size:0.85rem;font-weight:500;
+  border:1px solid rgba(255,255,255,0.2);transition:all 0.15s;
+}
+.back-btn:hover{background:rgba(255,255,255,0.2);border-color:#FFB74D;color:#FFB74D}
+main{max-width:1200px;margin:2rem auto;padding:0 1.5rem;display:grid;gap:1.5rem}
+
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.5rem;
+}
+.card-head{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;
+  border-bottom:1px solid var(--border);padding-bottom:0.75rem;margin-bottom:1rem;
+}
+.card-head h2{font-size:1.05rem;font-weight:600}
+.card-head .meta{color:var(--text-2);font-weight:400;margin-left:0.5rem}
+.head-actions{display:flex;gap:0.5rem;flex-shrink:0}
+
+select,input[type=text],input[type=number],textarea{
+  background:var(--input);color:var(--text);
+  border:1px solid var(--border);border-radius:6px;
+  padding:0.55rem 0.7rem;font-size:0.9rem;font-family:inherit;
+}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent)}
+
+/* BOM table */
+.bom-table{width:100%;border-collapse:collapse;margin-top:0.5rem}
+.bom-table th{
+  text-align:left;padding:0.6rem 0.75rem;font-size:0.75rem;
+  color:var(--text-2);text-transform:uppercase;letter-spacing:0.05em;
+  border-bottom:1px solid var(--border);
+}
+.bom-table td{padding:0.55rem 0.75rem;border-bottom:1px solid #232323;font-size:0.9rem}
+.bom-table tr:hover td{background:rgba(0,98,204,0.06)}
+.bom-table .pn{color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:0.82rem}
+.bom-table .code-tag{
+  color:var(--text-2);font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+  background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:3px;margin-right:0.4rem;
+}
+.bom-table select{padding:0.3rem 0.5rem;font-size:0.85rem;width:100%;max-width:200px}
+select.status-r{color:var(--rouge);border-color:var(--rouge)}
+select.status-j{color:var(--jaune);border-color:var(--jaune)}
+select.status-na{color:var(--text-3)}
+
+.row-changed td{background:rgba(0,98,204,0.12) !important}
+.row-changed td:first-child::before{
+  content:"●";color:var(--accent);margin-right:0.4rem;
+}
+.custom-row td{background:rgba(0,204,102,0.05) !important}
+.add-row td{background:rgba(255,183,77,0.08) !important}
+.row-del{
+  background:transparent;border:1px solid var(--border);color:var(--text-3);
+  padding:0.25rem 0.45rem;font-size:0.85rem;border-radius:4px;cursor:pointer;
+}
+.row-del:hover{background:rgba(255,68,68,0.15);border-color:var(--rouge);color:var(--rouge)}
+
+.scope-cell{
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.scope-cell input{display:none}
+.scope-cell span{
+  display:inline-block;width:36px;height:20px;background:#444;border-radius:10px;
+  position:relative;transition:background 0.15s;
+}
+.scope-cell span::after{
+  content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;
+  background:#fff;border-radius:50%;transition:left 0.15s;
+}
+.scope-cell input:checked + span{background:var(--jaune)}
+.scope-cell input:checked + span::after{left:18px}
+.scope-cell:hover span{box-shadow:0 0 0 3px rgba(255,183,77,0.2)}
+
+/* Specs grid */
+.specs{display:grid;grid-template-columns:repeat(2,1fr);gap:0.75rem 1.5rem}
+.spec{display:flex;justify-content:space-between;padding:0.5rem 0;
+  border-bottom:1px dashed #2f2f2f;font-size:0.88rem}
+.spec span:first-child{color:var(--text-2)}
+.spec span:last-child{color:var(--text);font-weight:500;text-align:right}
+
+/* Specs edit */
+.specs-edit{display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem 1.2rem}
+.spec-edit{
+  display:grid;grid-template-columns:1fr 1.2fr;align-items:center;gap:0.6rem;
+  padding:0.45rem 0;border-bottom:1px dashed #2f2f2f;font-size:0.88rem;
+}
+.spec-edit label{color:var(--text-2)}
+.spec-edit input{
+  background:var(--input);color:var(--text);border:1px solid var(--border);
+  border-radius:5px;padding:0.4rem 0.55rem;font-size:0.85rem;font-family:inherit;width:100%;
+}
+.spec-edit input:focus{outline:none;border-color:var(--accent)}
+.spec-edit.changed input{border-color:var(--accent);background:rgba(0,98,204,0.08)}
+@media (max-width:768px){.specs-edit{grid-template-columns:1fr}}
+
+/* Notes */
+.notes-area{width:100%;min-height:100px;resize:vertical}
+.notes-area.saved{border-color:var(--vert)}
+
+/* Buttons */
+.btn-row{display:flex;gap:0.75rem;margin-top:1.25rem;flex-wrap:wrap}
+button{
+  background:var(--accent);color:#fff;border:none;border-radius:6px;
+  padding:0.7rem 1.2rem;font-size:0.9rem;font-weight:600;cursor:pointer;
+  font-family:inherit;transition:all 0.15s;
+}
+button:hover{background:#0073EF}
+button.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+button.secondary:hover{background:var(--card-hover)}
+button.danger{background:transparent;border:1px solid var(--rouge);color:var(--rouge)}
+button.danger:hover{background:rgba(255,68,68,0.1)}
+button.warn{background:transparent;border:1px solid var(--jaune);color:var(--jaune)}
+button.warn:hover{background:rgba(255,183,77,0.1)}
+button.warn.active{background:var(--jaune);color:#000}
+button.warn.active:hover{background:#FFA02D}
+button:disabled{opacity:0.4;cursor:not-allowed}
+button.small{padding:0.4rem 0.8rem;font-size:0.82rem}
+
+/* Modal */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;
+  align-items:center;justify-content:center;z-index:1000;
+  backdrop-filter:blur(4px);
+  animation:fadeIn 0.18s ease-out;
+}
+.modal-bg.show{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.5rem;max-width:700px;width:90%;max-height:85vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+  animation:popIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-fancy{
+  background:linear-gradient(135deg,var(--card),#1F2730);
+  border:1px solid rgba(255,255,255,0.1);
+  border-top:3px solid var(--jaune);
+}
+.btn-primary-fancy, .btn-warn-fancy, .btn-cancel-fancy{
+  width:100%;padding:0.85rem 1.2rem;border-radius:8px;font-weight:600;
+  font-size:0.95rem;cursor:pointer;font-family:inherit;
+  transition:all 0.15s;border:1px solid transparent;
+}
+.btn-primary-fancy{
+  background:linear-gradient(135deg,var(--vert),#00AA55);color:#000;border-color:var(--vert);
+}
+.btn-primary-fancy:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,204,102,0.35)}
+.btn-warn-fancy{
+  background:transparent;color:var(--jaune);border-color:var(--jaune);
+}
+.btn-warn-fancy:hover{background:rgba(255,183,77,0.12);transform:translateY(-1px)}
+.btn-cancel-fancy{
+  background:transparent;color:var(--text-2);border-color:var(--border);
+}
+.btn-cancel-fancy:hover{background:var(--card-hover);color:var(--text)}
+.btn-danger-fancy{
+  background:linear-gradient(135deg,var(--rouge),#CC2222);color:#fff;
+  padding:0.6rem 1.2rem;border-radius:8px;font-weight:600;font-size:0.9rem;
+  cursor:pointer;border:none;transition:all 0.15s;
+}
+.btn-danger-fancy:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(255,68,68,0.35)}
+.modal h3{margin-bottom:1rem}
+.modal pre{
+  background:var(--input);padding:1rem;border-radius:6px;
+  font-size:0.78rem;overflow:auto;max-height:50vh;
+  color:#9FE9A0;font-family:'JetBrains Mono','Courier New',monospace;
+}
+.modal .info{background:rgba(0,98,204,0.1);padding:0.75rem;border-radius:6px;
+  font-size:0.85rem;color:var(--text-2);margin-bottom:1rem;border-left:3px solid var(--accent)}
+.modal label{display:block;font-size:0.85rem;color:var(--text-2);margin-bottom:0.4rem}
+.modal textarea,.modal input{width:100%}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:2rem;right:2rem;background:var(--vert);color:#000;
+  padding:0.75rem 1.25rem;border-radius:6px;font-weight:600;
+  box-shadow:0 4px 20px rgba(0,204,102,0.4);
+  transform:translateY(100px);opacity:0;transition:all 0.3s;z-index:2000;
+}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* Empty / loading */
+.empty,.loading{
+  padding:3rem 1rem;text-align:center;color:var(--text-3);
+  border:1px dashed var(--border);border-radius:var(--radius);
+}
+.empty .big{font-size:2.5rem;margin-bottom:0.5rem;opacity:0.5}
+
+/* Tabs */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:1.25rem;flex-wrap:wrap}
+.tab{
+  padding:0.75rem 1.25rem;background:transparent;color:var(--text-2);
+  border:none;border-bottom:2px solid transparent;cursor:pointer;
+  font-family:inherit;font-size:0.9rem;font-weight:500;border-radius:0;
+}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab:hover{color:var(--text)}
+
+.readonly-banner{
+  background:rgba(255,183,77,0.15);color:var(--jaune);padding:0.7rem 1rem;
+  border-left:3px solid var(--jaune);border-radius:4px;margin-bottom:1rem;font-size:0.9rem;
+}
+
+.flag-banner{
+  background:rgba(255,68,68,0.15);color:var(--rouge);padding:0.7rem 1rem;
+  border-left:3px solid var(--rouge);border-radius:4px;margin-bottom:1rem;font-size:0.9rem;
+  display:flex;justify-content:space-between;gap:1rem;align-items:center;
+}
+
+/* Tabs + Save sur la meme ligne, sticky en haut */
+.tabs.tabs-with-save{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;
+  position:sticky;top:75px;z-index:50;
+  background:linear-gradient(180deg,var(--card),rgba(42,42,42,0.97));
+  margin:0 -1.5rem 1.25rem -1.5rem;padding:0 1.5rem;
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(8px);
+}
+.tabs-buttons{display:flex;gap:0}
+.tabs-save-group{display:flex;gap:0.5rem;align-items:center;padding:0.4rem 0}
+.tabs-save-group #btn-save-top{
+  background:linear-gradient(135deg,var(--vert),#00AA55);color:#000;
+  padding:0.5rem 1rem;font-weight:700;border:none;border-radius:6px;
+  cursor:pointer;font-size:0.88rem;transition:all 0.15s;
+  box-shadow:0 2px 6px rgba(0,204,102,0.25);
+}
+.tabs-save-group #btn-save-top:hover:not(:disabled){
+  transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,204,102,0.4);
+}
+.tabs-save-group #btn-save-top:disabled{
+  background:#3a3a3a;color:#666;cursor:not-allowed;box-shadow:none;
+}
+.tabs-save-group #btn-reset-top{
+  background:transparent;color:var(--text-2);border:1px solid var(--border);
+  padding:0.5rem 0.9rem;border-radius:6px;cursor:pointer;font-size:0.82rem;
+}
+.tabs-save-group #btn-reset-top:hover:not(:disabled){background:var(--card-hover);color:var(--text)}
+.tabs-save-group #btn-reset-top:disabled{opacity:0.4;cursor:not-allowed}
+.scope-banner{
+  display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;
+  background:rgba(0,98,204,0.1);padding:0.75rem 1rem;border-radius:6px;
+  border-left:3px solid var(--accent);font-size:0.92rem;
+}
+.scope-banner.active{
+  background:rgba(255,183,77,0.18);border-left-color:var(--jaune);color:var(--text);
+}
+.scope-banner input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:var(--accent)}
+.scope-banner label{cursor:pointer;flex:1}
+.scope-banner .years-list{color:var(--text-2);font-size:0.82rem;display:block;margin-top:0.2rem}
+.scope-banner.active .years-list{color:var(--jaune)}
+
+.harnais-row{
+  display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;
+  padding:0.55rem 0.85rem;margin-bottom:0.85rem;
+  background:var(--input);border-radius:6px;border:1px solid var(--border);
+}
+.harnais-row label{
+  font-size:0.8rem;color:var(--text);font-weight:600;
+  text-transform:none;letter-spacing:0;margin:0;flex-shrink:0;
+}
+.harnais-row select{
+  background:var(--card);color:var(--text);border:1px solid var(--border);
+  border-radius:5px;padding:0.35rem 0.55rem;font-size:0.85rem;flex:1;min-width:220px;max-width:340px;
+}
+.harnais-row select:focus{outline:none;border-color:var(--accent)}
+.harnais-default{
+  color:var(--text-3);font-size:0.76rem;font-style:italic;
+}
+
+/* Codes produit */
+.pc-list{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1rem}
+.pc-item{
+  display:flex;justify-content:space-between;align-items:center;gap:0.6rem;
+  background:var(--input);padding:0.5rem 0.75rem;border-radius:6px;
+  border:1px solid var(--border);font-size:0.9rem;
+}
+.pc-item .pc-info{flex:1;display:flex;gap:0.7rem;align-items:center;flex-wrap:wrap}
+.pc-item .pc-code{color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:600}
+.pc-item .pc-desc{color:var(--text)}
+.pc-item .pc-qty{color:var(--text-2);font-size:0.82rem}
+.pc-item .pc-del{
+  color:var(--rouge);cursor:pointer;font-size:1.2rem;padding:0 0.4rem;
+  background:transparent;border:none;
+}
+.pc-empty{color:var(--text-3);font-style:italic;padding:0.5rem 0}
+.pc-add{
+  display:grid;grid-template-columns:120px 1fr 80px auto;gap:0.4rem;align-items:end;
+  background:var(--input);padding:0.75rem;border-radius:6px;border:1px dashed var(--border);
+}
+.pc-add label{display:block;font-size:0.7rem;color:var(--text-2);margin-bottom:0.25rem}
+.pc-allyears{display:flex;align-items:center;gap:0.5rem;margin-top:0.75rem;color:var(--text-2);font-size:0.85rem}
+
+@media (max-width:768px){
+  .specs{grid-template-columns:1fr}
+  .pc-add{grid-template-columns:1fr}
+}
+
+/* ===== Responsive : mobile-view (auto via JS OU force via bouton) ===== */
+body.mobile-view header.top{padding:0 1rem !important;height:60px !important}
+body.mobile-view .header-logo{height:44px !important}
+body.mobile-view .header-back{padding:4px 10px !important;font-size:0.72rem !important}
+body.mobile-view main{padding:0 0.6rem !important;margin:1rem auto !important;gap:1rem !important}
+body.mobile-view .card{padding:0.85rem !important;border-radius:6px !important}
+body.mobile-view .card-head{flex-direction:column;align-items:stretch;gap:0.6rem}
+body.mobile-view .card-head h2{font-size:0.95rem !important}
+body.mobile-view .tabs.tabs-with-save{
+  flex-direction:column;align-items:stretch !important;gap:0.5rem;
+  margin:0 -0.85rem 1rem -0.85rem !important;padding:0 0.85rem !important;
+  top:60px !important;
+}
+body.mobile-view .tabs-buttons{width:100%;display:flex}
+body.mobile-view .tab{flex:1;padding:0.6rem 0.5rem !important;font-size:0.82rem !important;text-align:center}
+body.mobile-view .tabs-save-group{width:100%;justify-content:space-between}
+body.mobile-view .tabs-save-group button{flex:1}
+body.mobile-view .specs-edit{grid-template-columns:1fr !important;gap:0.25rem !important}
+body.mobile-view .spec-edit{grid-template-columns:1fr !important;gap:0.25rem !important;padding:0.35rem 0 !important}
+body.mobile-view .spec-edit label{font-size:0.72rem}
+body.mobile-view .btn-row{flex-direction:column}
+body.mobile-view .btn-row button{width:100%}
+body.mobile-view .bom-table{font-size:0.74rem}
+body.mobile-view .bom-table th,body.mobile-view .bom-table td{padding:0.4rem 0.45rem;font-size:0.78rem}
+body.mobile-view .harnais-row{flex-direction:column;align-items:stretch}
+body.mobile-view .harnais-row select{max-width:none}
+body.narrow-view .header-back span{display:none}
+
+/* Toggle button */
+.view-toggle{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);color:#fff;
+  padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.74rem;font-weight:600;
+  font-family:inherit;display:inline-flex;align-items:center;gap:4px;
+}
+.view-toggle:hover{background:rgba(255,255,255,0.12)}
+.view-toggle.active{background:var(--jaune);color:#000;border-color:var(--jaune)}
+
+/* Forced mobile preview frame */
+body.force-mobile{background:#0a0d12}
+body.force-mobile main,body.force-mobile header.top{
+  width:100% !important;
+  max-width:414px !important;
+  margin-left:auto !important;margin-right:auto !important;
+  box-sizing:border-box !important;
+}
+body.force-mobile header.top{
+  border-radius:18px 18px 0 0;
+  box-shadow:0 0 0 6px #1c1f24,0 8px 28px rgba(0,0,0,0.55);
+}
+body.force-mobile main{
+  min-height:calc(100vh - 80px);
+  border-radius:0 0 18px 18px;
+  box-shadow:0 0 0 6px #1c1f24,0 8px 28px rgba(0,0,0,0.55);
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="header-content">
+    <a href="database.html" class="header-back" title="Page precedente" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span>Retour</span></a>
+    <div class="logo-section">
+      <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+    </div>
+    <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire" style="position:absolute;right:0;">&#128241; Apercu mobile</button>
+  </div>
+</header>
+
+<script src="js/heartbeat.js?v=3"></script>
+    <script src="js/version-check.js?v=1"></script>
+
+<main id="root">
+  <div class="loading">Chargement...</div>
+</main>
+
+<!-- Save preview modal -->
+<div class="modal-bg" id="modal-save">
+  <div class="modal modal-fancy" style="max-width:480px">
+    <div class="modal-header-icon" style="text-align:center;font-size:2.5rem;margin-bottom:0.5rem">💾</div>
+    <h3 style="text-align:center;margin-bottom:0.75rem">Confirmer la sauvegarde</h3>
+    <div class="info" id="modal-save-info"></div>
+    <pre id="modal-save-content" style="display:none"></pre>
+    <div class="btn-row" style="justify-content:flex-end;gap:0.6rem;margin-top:1rem">
+      <button class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem" onclick="document.getElementById('modal-save').classList.remove('show')">Annuler</button>
+      <button class="btn-primary-fancy" style="width:auto;padding:0.6rem 1.2rem" onclick="commitChanges()">Confirmer la sauvegarde</button>
+    </div>
+  </div>
+</div>
+
+<!-- Red flag modal -->
+<div class="modal-bg" id="modal-flag">
+  <div class="modal">
+    <h3 id="flag-modal-title">Drapeau</h3>
+    <div id="flag-modal-meta" style="color:var(--text-2);font-size:0.85rem;margin-bottom:1rem"></div>
+    <label>Note (optionnel)</label>
+    <textarea id="flag-note" rows="3" placeholder="Decrire le probleme..."></textarea>
+    <div class="btn-row" style="justify-content:flex-end">
+      <button class="secondary" onclick="document.getElementById('modal-flag').classList.remove('show')">Annuler</button>
+      <button class="warn" id="flag-set-btn">Poser le drapeau</button>
+      <button class="secondary" id="flag-resolve-btn" style="display:none">Marquer verifie</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete confirm modal -->
+<div class="modal-bg" id="modal-delete">
+  <div class="modal" style="max-width:500px">
+    <h3 style="color:var(--rouge)">Confirmer la suppression</h3>
+    <div class="info" style="border-left-color:var(--rouge);background:rgba(255,68,68,0.08);color:var(--text)">
+      Cette action supprime <strong id="del-modele-name"></strong> de la base de donnees.
+      <br><br><strong>Annee : <span id="del-annee-name"></span> seulement</strong>. Les autres annees du modele restent.
+      <br><br>Cette action est <strong>irreversible</strong>.
+    </div>
+    <div class="btn-row" style="justify-content:flex-end">
+      <button class="secondary" onclick="document.getElementById('modal-delete').classList.remove('show')">Annuler</button>
+      <button class="danger" id="del-confirm-btn">Supprimer definitivement</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete-line modal (suppression d'une ligne BOM avec choix de portee) -->
+<div class="modal-bg" id="modal-del-line">
+  <div class="modal modal-fancy" style="max-width:460px">
+    <div class="modal-header-icon" style="text-align:center;font-size:2.5rem;margin-bottom:0.5rem">🗑</div>
+    <h3 style="text-align:center;margin-bottom:0.5rem">Retirer cette ligne ?</h3>
+    <p id="del-line-detail" style="color:var(--text-2);text-align:center;margin-bottom:1rem;font-size:0.92rem">
+      <strong id="del-line-name">Code</strong> sera retire du Kit BOM.
+    </p>
+    <label id="del-line-allyears-label" style="display:none;align-items:center;gap:0.6rem;background:var(--input);padding:0.7rem 0.9rem;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-bottom:1rem;font-size:0.9rem">
+      <input type="checkbox" id="del-line-allyears" style="width:18px;height:18px;accent-color:var(--jaune);cursor:pointer">
+      <span>Appliquer a TOUTES les annees du modele (<span id="del-line-year-count">0</span> annees)</span>
+    </label>
+    <div class="btn-row" style="display:flex;gap:0.6rem;justify-content:flex-end">
+      <button id="del-line-cancel" class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem">Annuler</button>
+      <button id="del-line-confirm" class="btn-danger-fancy">Retirer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Unsaved-changes modal (intercepte la navigation interne avec des modifs non sauvees) -->
+<div class="modal-bg" id="modal-unsaved">
+  <div class="modal modal-fancy" style="max-width:480px">
+    <div class="modal-header-icon" style="text-align:center;font-size:2.5rem;margin-bottom:0.5rem">⚠️</div>
+    <h3 style="text-align:center;margin-bottom:0.5rem">Modifications non sauvegardees</h3>
+    <p style="color:var(--text-2);text-align:center;margin-bottom:1.5rem;font-size:0.92rem">
+      Vous avez <strong id="unsaved-count" style="color:var(--jaune)">0</strong> modification(s) non sauvegardee(s).<br>
+      Que voulez-vous faire ?
+    </p>
+    <div class="btn-row" style="display:flex;flex-direction:column;gap:0.5rem">
+      <button id="unsaved-save-leave" class="btn-primary-fancy">💾 Sauvegarder puis quitter</button>
+      <button id="unsaved-leave" class="btn-warn-fancy">🚪 Quitter sans sauvegarder</button>
+      <button id="unsaved-cancel" class="btn-cancel-fancy">↩ Rester sur la page</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Sauvegarde</div>
+
+<script>
+(function(){
+  var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+  var PIN = '1400';
+
+  var EXC_BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070','0304'];
+  var POMPE_BOM_CODES = ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
+
+  var BOM_NAMES = {
+    '0000':'Cabine','0001':'Hauteur','0002':'Rotation','0004':'Mini exc',
+    '0005':'Multi Axes','0008':'Swing boom','0009':'Drain hyd','0070':'Boite GC',
+    '0304':'Rotation cremaillere',
+    '0200':'Avec coffre','0203':'Sans coffre','0201':'Hauteur','0202':'Rotation',
+    '0204':'4 sections','0205':'5 sections','0206':'6 sections',
+    '0207':'Rot. cylindre','0208':'Inclinometre','0209':'Reel 15M'
+  };
+  var BOM_PN = {
+    '0000':'1500-0000','0001':'1500-0001','0002':'1500-0002',
+    '0004':'1500-0004-install','0005':'1500-0005',
+    '0008':'1500-0008','0009':'1500-0009',
+    '0070':'1000-0070','0304':'1500-0304',
+    '0200':'1500-0200','0203':'1500-0203','0201':'1500-0201','0202':'1500-0202',
+    '0204':'1500-0204','0205':'1500-0205','0206':'1500-0206',
+    '0207':'1500-0207','0208':'1500-0208','0209':'1500-0209'
+  };
+
+  var HARNAIS_OPTIONS = [
+    {v:'',  l:'(aucun)'},
+    {v:'H0031', l:'0031 — Hitachi-5/6 / John Deere'},
+    {v:'H0032', l:'0032 — Komatsu'},
+    {v:'H0033', l:'0033 — Doosan/Develon'},
+    {v:'H0034', l:'0034 — Volvo'},
+    {v:'H0041', l:'0041 — Link-Belt / Case'},
+    {v:'H0080', l:'0080 — Caterpillar'},
+    {v:'H0100', l:'0100 — Caterpillar (ECU)'},
+    {v:'H0121', l:'0121 — Hitachi-7'},
+    {v:'H0043', l:'0043 — Generique'}
+  ];
+
+  var DRAIN_PREFIXES = [
+    'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
+    '308','315','316','320','336','440','450','M318',
+    'DX190','DX235','BX190',
+    'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
+    '245X',
+    '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
+    'SK210',
+    'PC78','PC138','PC200','PC290',
+    'R 920 K','R920','R 936','R936',
+    '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
+    'TB210','TW65',
+    'EC160','EC330','EC360','EC550','235',
+    'EZ36'
+  ];
+
+  // Auth
+  var DB_ROLES = { super_admin:true, administrateur:true, ingenierie:true };
+  var EDIT_ROLES = { super_admin:true, administrateur:true };
+  var FLAG_ROLES = { super_admin:true, administrateur:true, ingenierie:true };
+  var user = null;
+  try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e){}
+  var hasAccess = user && user.role && DB_ROLES[user.role];
+  var canEdit = user && user.role && EDIT_ROLES[user.role];
+  var canFlag = user && (user.permissions && user.permissions.flagBom || FLAG_ROLES[user.role]);
+  var canDelete = user && user.role === 'super_admin';
+
+  var qs = new URLSearchParams(location.search);
+  var TYPE = qs.get('type') || '';
+  var FAB  = qs.get('fab')  || '';
+  var YEAR = qs.get('year') || '';
+  var MODEL= qs.get('model')|| '';
+
+  if (!hasAccess){
+    document.getElementById('root').innerHTML =
+      '<div class="empty"><div class="big">&#128274;</div><div>Acces non autorise.</div></div>';
+    return;
+  }
+  if (!TYPE || !FAB || !YEAR || !MODEL){
+    document.getElementById('root').innerHTML =
+      '<div class="empty"><div class="big">!</div><div>Parametres manquants.</div></div>';
+    return;
+  }
+
+  // State
+  var MACHINE = null;
+  var BOM_CODES = [];
+  var BOM_DEFAULTS = {}, BOM_INITIAL = {}, BOM_CURRENT = {};
+  var HARNAIS_DEFAULT = '', HARNAIS_INITIAL = '', HARNAIS_CURRENT = '';
+  var NOTES_INITIAL = '', NOTES_CURRENT = '';
+  var FLAG = null;     // { active, flaggedBy, flaggedAt, note, resolvedBy, resolvedAt }
+  var PRODUCT_CODES = [];   // [{code, desc, qty}]
+  var ALL_YEARS_FOR_MODEL = [];  // for "apply to all years" checkbox
+  var REMOVED_INITIAL = [], REMOVED_CURRENT = [];   // codes catalogue masques pour cette machine
+  var CUSTOM_INITIAL = [], CUSTOM_CURRENT = [];     // lignes custom: [{code, pn, desc, status}]
+  var ADDING_LINE = false;                          // true quand le formulaire d'ajout est ouvert
+  var SCOPE_ALL_CODES = {};                          // {code: true} — codes dont le changement s'applique a toutes les annees
+  var OTHER_OVERRIDES = {};                          // {year: overrideObj} — overrides des autres annees (pour merge sur save)
+  var SPECS_BASE = {};                               // specs originales depuis machines.json
+  var SPECS_INITIAL = {};                            // specs apres override API charge
+  var SPECS_CURRENT = {};                            // specs en cours d'edition
+
+  function bomKey(yr){ return 'kit_override_' + FAB.replace(/[^a-zA-Z0-9]/g,'_') + '_' + MODEL.replace(/[^a-zA-Z0-9]/g,'_') + '_' + (yr||YEAR); }
+  function notesKey(yr){ return 'notes_' + FAB + '_' + MODEL + '_' + (yr||YEAR); }
+  function specsKey(yr){ return 'specs_override_' + FAB.replace(/[^a-zA-Z0-9]/g,'_') + '_' + MODEL.replace(/[^a-zA-Z0-9]/g,'_') + '_' + (yr||YEAR); }
+  function pcKey(year){ return 'product_codes_' + FAB.replace(/[^a-zA-Z0-9]/g,'_') + '_' + MODEL.replace(/[^a-zA-Z0-9]/g,'_') + '_' + (year||YEAR); }
+  function flagKey(){ return [TYPE, FAB, MODEL, YEAR].join('|'); }
+  function deletedKey(){ return 'deleted_' + FAB.replace(/[^a-zA-Z0-9]/g,'_') + '_' + MODEL.replace(/[^a-zA-Z0-9]/g,'_') + '_' + YEAR; }
+
+  function stateLabel(s){ return s==='r'?'Obligatoire':s==='j'?'Optionnel':'N/A'; }
+  function showToast(msg, color){
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = color || 'var(--vert)';
+    t.classList.add('show');
+    setTimeout(function(){ t.classList.remove('show'); }, 2000);
+  }
+
+  function parseWeight(d){
+    var s = d['Poids operationnel (kg / lbs)'] || '';
+    var m = s.match(/(\d[\d\s]*)/);
+    return m ? parseInt(m[1].replace(/\s/g,'')) : 0;
+  }
+
+  function computeDefaultsExc(d){
+    var bom = {};
+    var poids = parseWeight(d);
+    var hasSwing = (d['Swing boom']||'').toLowerCase()==='oui';
+    var isMini = poids > 0 && poids <= 5000;
+    var modUpper = MODEL.toUpperCase();
+    var fabUpper = FAB.toUpperCase();
+
+    bom['0000']='r'; bom['0001']='j'; bom['0002']='j';
+    bom['0004'] = isMini ? 'r' : 'na';
+    bom['0005']='j';
+    bom['0008'] = 'na'; // Swing boom: N/A par defaut, admin l'active manuellement si besoin
+    var isDrain = DRAIN_PREFIXES.some(function(p){ return modUpper.indexOf(p.toUpperCase()) === 0; });
+    bom['0009'] = isDrain ? 'r' : 'na';
+    bom['0070']='na';
+    bom['0304'] = (modUpper === 'TB216') ? 'r' : 'na';
+
+    var harn = 'H0043';
+    if (fabUpper === 'HITACHI'){
+      var is7 = MODEL.indexOf('-7') >= 0;
+      var is5or6 = MODEL.indexOf('-5') >= 0 || MODEL.indexOf('-6') >= 0;
+      harn = (is7 && !is5or6) ? 'H0121' : 'H0031';
+    } else if (fabUpper === 'JOHN DEERE') harn = 'H0031';
+    else if (fabUpper === 'KOMATSU') harn = 'H0032';
+    else if (fabUpper.indexOf('DOOSAN') >= 0 || fabUpper.indexOf('DEVELON') >= 0) harn = 'H0033';
+    else if (fabUpper.indexOf('VOLVO') >= 0) harn = 'H0034';
+    else if (fabUpper.indexOf('LINK') >= 0 || fabUpper === 'CASE') harn = 'H0041';
+    else if (fabUpper.indexOf('CATERPILLAR') >= 0 || fabUpper === 'CAT') harn = 'H0080';
+    return { bom:bom, harnais:harn };
+  }
+
+  function computeDefaultsPompe(d){
+    var bom = {};
+    var nbSections = d['Nombre de sections'] || '';
+    bom['0200']='na'; bom['0203']='na'; bom['0201']='j'; bom['0202']='j';
+    var sec = parseInt(nbSections) || 0;
+    bom['0204'] = (sec >= 4) ? 'r' : 'na';
+    bom['0205'] = (sec >= 5) ? 'r' : 'na';
+    bom['0206'] = (sec >= 6) ? 'r' : 'na';
+    bom['0207']='na'; bom['0208']='na'; bom['0209']='na';
+    return { bom:bom, harnais:'' };
+  }
+
+  // Legacy format (old machine.html) → modern format normalization
+  var KIT_ID_TO_CODE = {
+    'cabine':'0000','sans-cabine':'0003','hauteur':'0001','rotation':'0002',
+    'cremaillere':'0304','mini':'0004','gc':'0070','swing':'0008','drain':'0009','multi':'0005',
+    'pompe-coffre':'0200','pompe-sans-coffre':'0203','pompe-hauteur':'0201','pompe-rotation':'0202',
+    'pompe-4sec':'0204','pompe-5sec':'0205','pompe-6sec':'0206',
+    'pompe-rot-cylindre':'0207','pompe-inclinometre':'0208','pompe-reel':'0209'
+  };
+  var STATUS_LEGACY_TO_RJN = { 'red':'r', 'yellow':'j', 'na':'na' };
+
+  function normalizeOverride(ov){
+    if (!ov || typeof ov !== 'object') return ov;
+    if (!ov.rows && !ov.customRows) return ov;
+    var out = {};
+    if (ov.rows){
+      Object.keys(ov.rows).forEach(function(kitId){
+        var code = KIT_ID_TO_CODE[kitId];
+        if (code) out[code] = STATUS_LEGACY_TO_RJN[ov.rows[kitId]] || 'na';
+      });
+    }
+    if (Array.isArray(ov.customRows)){
+      out._custom = ov.customRows.map(function(c){
+        return { code:c.id||c.code, pn:c.code||'', desc:c.label||'', status: STATUS_LEGACY_TO_RJN[c.status] || 'na' };
+      });
+    }
+    if (ov.harnais) out.harnais = ov.harnais;
+    return out;
+  }
+
+  // ===== API =====
+  function apiGet(key){
+    return fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+      .then(function(r){return r.json()})
+      .then(function(data){
+        if (!data.value) return null;
+        try {
+          var parsed = JSON.parse(data.value);
+          // Only normalize kit_override_* keys (those that may have legacy format)
+          if (key.indexOf('kit_override_') === 0) return normalizeOverride(parsed);
+          return parsed;
+        } catch(e){ return data.value; }
+      })
+      .catch(function(){ return null; });
+  }
+
+  function apiSave(key, value){
+    return fetch(API_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify({action:'save', key:key, value: (typeof value === 'string' ? value : JSON.stringify(value)), pin:PIN})
+    });
+  }
+
+  function logChange(nature, prev){
+    var LOG_KEY = 'db_changelog';
+    var userName = (user && user.name) ? user.name : 'Inconnu';
+    var ts = new Date().toISOString().slice(0,19).replace('T',' ');
+    var entry = { ts:ts, user:userName, type:TYPE, fab:FAB, modele:MODEL, annee:YEAR, nature:nature, prev:prev||'—' };
+    apiGet('db_changelog').then(function(log){
+      log = Array.isArray(log) ? log : [];
+      log.unshift(entry);
+      log = log.slice(0, 200);
+      return apiSave(LOG_KEY, log);
+    });
+  }
+
+  // ===== Diff / commit (BOM + harnais + notes) =====
+  function arrSame(a, b){
+    if (!Array.isArray(a) || !Array.isArray(b)) return a === b;
+    if (a.length !== b.length) return false;
+    var sa = JSON.stringify(a.slice().sort());
+    var sb = JSON.stringify(b.slice().sort());
+    return sa === sb;
+  }
+  function customSame(a, b){
+    if (a.length !== b.length) return false;
+    return JSON.stringify(a) === JSON.stringify(b);
+  }
+
+  function countChanges(){
+    var n = 0;
+    BOM_CODES.forEach(function(c){ if (BOM_CURRENT[c] !== BOM_INITIAL[c]) n++; });
+    if (HARNAIS_CURRENT !== HARNAIS_INITIAL) n++;
+    if (NOTES_CURRENT !== NOTES_INITIAL) n++;
+    if (!arrSame(REMOVED_CURRENT, REMOVED_INITIAL)) n++;
+    if (!customSame(CUSTOM_CURRENT, CUSTOM_INITIAL)) n++;
+    Object.keys(SPECS_CURRENT).forEach(function(k){
+      if (SPECS_CURRENT[k] !== SPECS_INITIAL[k]) n++;
+    });
+    // Chaque code en mode "Toutes annees" = 1 modification a propager
+    Object.keys(SCOPE_ALL_CODES).forEach(function(k){
+      if (SCOPE_ALL_CODES[k]) n++;
+    });
+    return n;
+  }
+
+  // Modal custom pour navigation INTERNE (clic sur un lien de la page)
+  // Permet 'Sauvegarder puis quitter' / 'Quitter sans sauvegarder' / 'Rester'
+  var __pendingNavUrl = null;
+  var __bypassUnload = false;
+
+  function showUnsavedModal(destinationUrl) {
+    var modal = document.getElementById('modal-unsaved');
+    if (!modal) return false;
+    document.getElementById('unsaved-count').textContent = countChanges();
+    __pendingNavUrl = destinationUrl;
+    modal.classList.add('show');
+    return true;
+  }
+  function hideUnsavedModal() {
+    var modal = document.getElementById('modal-unsaved');
+    if (modal) modal.classList.remove('show');
+    __pendingNavUrl = null;
+  }
+  function doPendingNav() {
+    var dest = __pendingNavUrl;
+    __pendingNavUrl = null;
+    __bypassUnload = true; // empeche le beforeunload natif
+    if (dest === '__BACK__') history.back();
+    else if (dest) location.href = dest;
+  }
+
+  // beforeunload natif: utilise SEULEMENT pour fermeture d'onglet/navigateur
+  // (les navigateurs ne permettent pas un modal custom dans ce cas — seulement le popup natif)
+  // Pour la navigation interne (liens), c'est le modal custom #modal-unsaved qui prend le relais.
+  window.addEventListener('beforeunload', function(e) {
+    if (__bypassUnload) return;
+    // Si une navigation interne est en cours via le modal custom, ne pas afficher le natif
+    if (document.getElementById('modal-unsaved') && document.getElementById('modal-unsaved').classList.contains('show')) return;
+    if (countChanges() > 0) {
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    }
+  });
+
+  // Intercepte les clics sur les liens INTERNES
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a[href]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (!href || href === '#' || href.startsWith('javascript:')) return;
+    if (countChanges() === 0) return; // laisser passer
+    e.preventDefault();
+    e.stopPropagation();
+    var willGoBack = link.onclick && /history\.back/.test(String(link.onclick));
+    showUnsavedModal(willGoBack ? '__BACK__' : link.href);
+  }, true);
+
+  // Wire up modal buttons
+  function attachUnsavedHandlers() {
+    var saveBtn = document.getElementById('unsaved-save-leave');
+    var leaveBtn = document.getElementById('unsaved-leave');
+    var cancelBtn = document.getElementById('unsaved-cancel');
+    if (saveBtn) saveBtn.onclick = function() {
+      hideUnsavedModal();
+      // Marque la nav en attente, declenche le save direct (sans preview)
+      __bypassUnload = true;
+      var dest = __pendingNavUrl;
+      // Patch: au prochain "Sauvegarde complete" toast, naviguer
+      var origToast = window.showToast || null;
+      // commitChanges fait deja le save complet + ferme modal-save (qui n'est pas ouvert ici)
+      // On surveille la fin via Promise.all interne — pas facile a hooker.
+      // Solution: appeler commitChanges et naviguer apres un delai raisonnable.
+      try { commitChanges(); } catch(e){}
+      setTimeout(function() {
+        if (dest === '__BACK__') history.back();
+        else if (dest) location.href = dest;
+      }, 1800);
+    };
+    if (leaveBtn) leaveBtn.onclick = function() { doPendingNav(); };
+    if (cancelBtn) cancelBtn.onclick = function() { hideUnsavedModal(); };
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachUnsavedHandlers);
+  } else {
+    attachUnsavedHandlers();
+  }
+
+  function buildOverridePayload(){
+    var payload = {};
+    BOM_CODES.forEach(function(c){
+      if (BOM_CURRENT[c] != null && BOM_CURRENT[c] !== BOM_DEFAULTS[c]) payload[c] = BOM_CURRENT[c];
+    });
+    if (HARNAIS_CURRENT && HARNAIS_CURRENT !== HARNAIS_DEFAULT) payload.harnais = HARNAIS_CURRENT;
+    if (REMOVED_CURRENT.length > 0) payload._removed = REMOVED_CURRENT.slice();
+    if (CUSTOM_CURRENT.length > 0) payload._custom = CUSTOM_CURRENT.slice();
+    // Specs override (only the diffs from machines.json base)
+    var specsDiff = {};
+    Object.keys(SPECS_CURRENT).forEach(function(k){
+      if (SPECS_CURRENT[k] !== SPECS_BASE[k]) specsDiff[k] = SPECS_CURRENT[k];
+    });
+    if (Object.keys(specsDiff).length > 0) payload._specs = specsDiff;
+    return payload;
+  }
+
+  function previewChanges(){
+    var changes = { machine: TYPE + ' > ' + FAB + ' > ' + YEAR + ' > ' + MODEL, bom_changes:{}, harnais_change:null, notes_change:null, lignes_retirees:null, lignes_ajoutees:null, specs_changes:{} };
+    if (!arrSame(REMOVED_CURRENT, REMOVED_INITIAL)) changes.lignes_retirees = { from: REMOVED_INITIAL, to: REMOVED_CURRENT };
+    if (!customSame(CUSTOM_CURRENT, CUSTOM_INITIAL)) changes.lignes_ajoutees = { from: CUSTOM_INITIAL, to: CUSTOM_CURRENT };
+    Object.keys(SPECS_CURRENT).forEach(function(k){
+      if (SPECS_CURRENT[k] !== SPECS_INITIAL[k]){
+        changes.specs_changes[k] = { from: SPECS_INITIAL[k]||'(vide)', to: SPECS_CURRENT[k]||'(vide)' };
+      }
+    });
+    BOM_CODES.forEach(function(c){
+      if (BOM_CURRENT[c] !== BOM_INITIAL[c]){
+        changes.bom_changes[c + ' ' + (BOM_NAMES[c]||'')] = { from: stateLabel(BOM_INITIAL[c]), to: stateLabel(BOM_CURRENT[c]) };
+      }
+    });
+    if (HARNAIS_CURRENT !== HARNAIS_INITIAL){
+      changes.harnais_change = { from: HARNAIS_INITIAL||'(aucun)', to: HARNAIS_CURRENT||'(aucun)' };
+    }
+    if (NOTES_CURRENT !== NOTES_INITIAL){
+      changes.notes_change = { from: NOTES_INITIAL ? NOTES_INITIAL.slice(0,60)+(NOTES_INITIAL.length>60?'...':'') : '(vide)',
+                               to:   NOTES_CURRENT ? NOTES_CURRENT.slice(0,60)+(NOTES_CURRENT.length>60?'...':'') : '(vide)' };
+    }
+    var scopedCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){ return SCOPE_ALL_CODES[k]; }).length;
+    var scope = scopedCount > 0
+      ? ' &mdash; <strong>' + scopedCount + ' code(s)</strong> aussi appliques aux ' + (ALL_YEARS_FOR_MODEL.length - 1) + ' autres annees'
+      : ' sur <strong>annee ' + YEAR + '</strong> seulement';
+    document.getElementById('modal-save-info').innerHTML =
+      '<strong>' + countChanges() + ' modification(s)</strong>' + scope + '.';
+    document.getElementById('modal-save-content').textContent = JSON.stringify(changes, null, 2);
+    document.getElementById('modal-save').classList.add('show');
+  }
+
+  window.commitChanges = function(){
+    var promises = [];
+    var bomChanged = false, harnaisChanged = HARNAIS_CURRENT !== HARNAIS_INITIAL;
+    var removedChanged = !arrSame(REMOVED_CURRENT, REMOVED_INITIAL);
+    var customChanged = !customSame(CUSTOM_CURRENT, CUSTOM_INITIAL);
+    BOM_CODES.forEach(function(c){ if (BOM_CURRENT[c] !== BOM_INITIAL[c]) bomChanged = true; });
+
+    var scopedCodes = Object.keys(SCOPE_ALL_CODES).filter(function(k){ return SCOPE_ALL_CODES[k]; });
+
+    // 1) Current year: save full override (all changes apply to this year)
+    //    Aussi sauvegarder si seul SCOPE est actif (assure que l'override de cette annee est aussi a jour)
+    if (bomChanged || harnaisChanged || removedChanged || customChanged || scopedCodes.length > 0){
+      promises.push(apiSave(bomKey(), buildOverridePayload()));
+    }
+
+    // 2) Other years: pour chaque code en mode "Toutes annees", propager la VALEUR ACTUELLE
+    //    (qu'elle ait change cette annee ou non) vers les autres annees
+    if (scopedCodes.length > 0 && ALL_YEARS_FOR_MODEL.length > 1){
+      ALL_YEARS_FOR_MODEL.filter(function(y){ return y !== YEAR; }).forEach(function(yr){
+        // Deep clone to avoid mutating cached OTHER_OVERRIDES
+        var ov = JSON.parse(JSON.stringify(OTHER_OVERRIDES[yr] || {}));
+        scopedCodes.forEach(function(code){
+          // Cas special: harnais
+          if (code === '__harnais__'){
+            if (HARNAIS_CURRENT && HARNAIS_CURRENT !== HARNAIS_DEFAULT) ov.harnais = HARNAIS_CURRENT;
+            else delete ov.harnais;
+            return;
+          }
+          // Standard BOM code: propager la valeur actuelle (BOM_CURRENT[code])
+          if (BOM_CODES.indexOf(code) >= 0){
+            if (BOM_CURRENT[code] === BOM_DEFAULTS[code]) delete ov[code];
+            else ov[code] = BOM_CURRENT[code];
+          }
+          // Removed standard code
+          var wasRemoved = REMOVED_INITIAL.indexOf(code) >= 0;
+          var isRemoved = REMOVED_CURRENT.indexOf(code) >= 0;
+          if (wasRemoved !== isRemoved){
+            ov._removed = ov._removed || [];
+            if (isRemoved && ov._removed.indexOf(code) < 0) ov._removed.push(code);
+            else if (!isRemoved) ov._removed = ov._removed.filter(function(c){ return c !== code; });
+            if (ov._removed.length === 0) delete ov._removed;
+          }
+          // Custom row (add/update/remove by code)
+          var customNow = CUSTOM_CURRENT.find(function(r){ return r.code === code; });
+          var customBefore = CUSTOM_INITIAL.find(function(r){ return r.code === code; });
+          if (customNow && JSON.stringify(customNow) !== JSON.stringify(customBefore)){
+            ov._custom = ov._custom || [];
+            var idx = ov._custom.findIndex(function(r){ return r.code === code; });
+            if (idx >= 0) ov._custom[idx] = Object.assign({}, customNow);
+            else ov._custom.push(Object.assign({}, customNow));
+          }
+          if (!customNow && customBefore){
+            ov._custom = (ov._custom || []).filter(function(r){ return r.code !== code; });
+            if (ov._custom.length === 0) delete ov._custom;
+          }
+        });
+        OTHER_OVERRIDES[yr] = ov;
+        promises.push(apiSave(bomKey(yr), ov));
+      });
+    }
+
+    // 3) Logging
+    var scopeSuffix = scopedCodes.length > 0 ? ' [+' + (ALL_YEARS_FOR_MODEL.length - 1) + ' autres annees pour ' + scopedCodes.length + ' code(s)]' : '';
+    BOM_CODES.forEach(function(c){
+      if (BOM_CURRENT[c] !== BOM_INITIAL[c]){
+        var sfx = SCOPE_ALL_CODES[c] ? scopeSuffix : '';
+        logChange('BOM ' + c + ' → ' + stateLabel(BOM_CURRENT[c]) + sfx, stateLabel(BOM_INITIAL[c]));
+      }
+    });
+    if (harnaisChanged) logChange('Harnais → ' + (HARNAIS_CURRENT||'(aucun)'), HARNAIS_INITIAL||'(aucun)');
+    if (removedChanged){
+      var added = REMOVED_CURRENT.filter(function(c){return REMOVED_INITIAL.indexOf(c)<0;});
+      var restored = REMOVED_INITIAL.filter(function(c){return REMOVED_CURRENT.indexOf(c)<0;});
+      if (added.length) logChange('Lignes retirees : ' + added.join(', '), '—');
+      if (restored.length) logChange('Lignes restaurees : ' + restored.join(', '), '—');
+    }
+    if (customChanged){
+      logChange('Lignes custom : ' + CUSTOM_CURRENT.length + ' ligne(s)', CUSTOM_INITIAL.length + ' ligne(s)');
+    }
+
+    // 4) Notes (current year only — harnais and notes don't have per-row scope)
+    if (NOTES_CURRENT !== NOTES_INITIAL){
+      promises.push(apiSave(notesKey(), NOTES_CURRENT).then(function(){
+        logChange('Note modifiee', NOTES_INITIAL ? NOTES_INITIAL.slice(0,60) : '(vide)');
+      }));
+    }
+
+    // 5) Specs override — stocke maintenant dans kit_override_*._specs (deja inclus dans buildOverridePayload)
+    var specsChanged = false;
+    Object.keys(SPECS_CURRENT).forEach(function(k){
+      if (SPECS_CURRENT[k] !== SPECS_INITIAL[k]){
+        specsChanged = true;
+        logChange('Spec "' + k + '" → ' + SPECS_CURRENT[k], SPECS_INITIAL[k] || '(vide)');
+      }
+    });
+    if (specsChanged && !(bomChanged || harnaisChanged || removedChanged || customChanged)){
+      // Si seulement les specs ont change, il faut quand meme sauvegarder le kit_override_ (qui contient les specs)
+      promises.push(apiSave(bomKey(), buildOverridePayload()));
+    }
+    if (!promises.length){ document.getElementById('modal-save').classList.remove('show'); return; }
+
+    Promise.all(promises).then(function(){
+      BOM_CODES.forEach(function(c){ BOM_INITIAL[c] = BOM_CURRENT[c]; });
+      HARNAIS_INITIAL = HARNAIS_CURRENT;
+      NOTES_INITIAL = NOTES_CURRENT;
+      REMOVED_INITIAL = REMOVED_CURRENT.slice();
+      CUSTOM_INITIAL = CUSTOM_CURRENT.map(function(r){ return Object.assign({}, r); });
+      Object.keys(SPECS_CURRENT).forEach(function(k){ SPECS_INITIAL[k] = SPECS_CURRENT[k]; });
+      SCOPE_ALL_CODES = {};
+      document.getElementById('modal-save').classList.remove('show');
+      showToast('Sauvegarde complete');
+      render();
+    }).catch(function(){ showToast('Erreur de sauvegarde', 'var(--rouge)'); });
+  };
+
+  function resetAll(){
+    BOM_CODES.forEach(function(c){ BOM_CURRENT[c] = BOM_INITIAL[c]; });
+    HARNAIS_CURRENT = HARNAIS_INITIAL;
+    NOTES_CURRENT = NOTES_INITIAL;
+    REMOVED_CURRENT = REMOVED_INITIAL.slice();
+    CUSTOM_CURRENT = CUSTOM_INITIAL.map(function(r){ return Object.assign({}, r); });
+    Object.keys(SPECS_INITIAL).forEach(function(k){ SPECS_CURRENT[k] = SPECS_INITIAL[k]; });
+    SCOPE_ALL_CODES = {};
+    ADDING_LINE = false;
+    render();
+  }
+
+  // ===== Flag =====
+  window.openFlagModal = function(){
+    var isActive = FLAG && FLAG.active;
+    document.getElementById('flag-modal-title').textContent = isActive ? 'Drapeau actif' : 'Signaler pour verification';
+    document.getElementById('flag-modal-meta').innerHTML = isActive
+      ? 'Pose par <strong>' + (FLAG.flaggedBy||'?') + '</strong> le ' + (FLAG.flaggedAt||'?')
+      : '';
+    document.getElementById('flag-note').value = (isActive && FLAG.note) ? FLAG.note : '';
+    document.getElementById('flag-set-btn').style.display = isActive ? 'none' : '';
+    document.getElementById('flag-set-btn').textContent = 'Poser le drapeau';
+    document.getElementById('flag-resolve-btn').style.display = (isActive && canFlag) ? '' : 'none';
+    document.getElementById('modal-flag').classList.add('show');
+  };
+
+  function setFlag(){
+    var note = document.getElementById('flag-note').value.trim();
+    var userName = (user && user.name) ? user.name : 'Inconnu';
+    var ts = new Date().toISOString().slice(0,19).replace('T',' ');
+    return apiGet('db_flags').then(function(cache){
+      cache = cache || {};
+      cache[flagKey()] = { flaggedBy:userName, flaggedAt:ts, note:note, active:true };
+      return apiSave('db_flags', cache);
+    }).then(function(){
+      FLAG = { flaggedBy:userName, flaggedAt:ts, note:note, active:true };
+      logChange('Drapeau pose', note || '—');
+      document.getElementById('modal-flag').classList.remove('show');
+      showToast('Drapeau pose');
+      render();
+    });
+  }
+
+  function resolveFlag(){
+    var userName = (user && user.name) ? user.name : 'Inconnu';
+    var ts = new Date().toISOString().slice(0,19).replace('T',' ');
+    return apiGet('db_flags').then(function(cache){
+      cache = cache || {};
+      var fk = flagKey();
+      if (cache[fk]){
+        cache[fk].active = false;
+        cache[fk].resolvedBy = userName;
+        cache[fk].resolvedAt = ts;
+      }
+      return apiSave('db_flags', cache);
+    }).then(function(){
+      if (FLAG){ FLAG.active = false; FLAG.resolvedBy = userName; FLAG.resolvedAt = ts; }
+      logChange('Drapeau resolu', '—');
+      document.getElementById('modal-flag').classList.remove('show');
+      showToast('Drapeau resolu');
+      render();
+    });
+  }
+
+  // ===== Codes produit =====
+  function renderProductCodes(){
+    var container = document.getElementById('pc-list');
+    if (!container) return;
+    if (!PRODUCT_CODES.length){
+      container.innerHTML = '<div class="pc-empty">Aucun code produit enregistre.</div>';
+      return;
+    }
+    container.innerHTML = PRODUCT_CODES.map(function(c, i){
+      return '<div class="pc-item">' +
+        '<div class="pc-info">' +
+          '<span class="pc-code">' + (c.code||'') + '</span>' +
+          '<span class="pc-desc">' + (c.desc||'') + '</span>' +
+          '<span class="pc-qty">x' + (c.qty||1) + '</span>' +
+        '</div>' +
+        (canEdit ? '<button class="pc-del" data-i="' + i + '" title="Supprimer">&times;</button>' : '') +
+      '</div>';
+    }).join('');
+    container.querySelectorAll('.pc-del').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var i = parseInt(btn.dataset.i);
+        var removed = PRODUCT_CODES[i];
+        PRODUCT_CODES.splice(i, 1);
+        saveProductCodes('Code produit supprime', (removed.code + ' ' + (removed.desc||'')).trim());
+        renderProductCodes();
+      });
+    });
+  }
+
+  function saveProductCodes(nature, prev){
+    var applyAll = document.getElementById('pc-allyears');
+    var doAll = applyAll && applyAll.checked;
+    var ops = [];
+    if (doAll && ALL_YEARS_FOR_MODEL.length > 1){
+      ALL_YEARS_FOR_MODEL.forEach(function(y){
+        ops.push(apiSave(pcKey(y), PRODUCT_CODES));
+      });
+    } else {
+      ops.push(apiSave(pcKey(), PRODUCT_CODES));
+    }
+    return Promise.all(ops).then(function(){
+      logChange(nature || 'Codes produit modifies', prev);
+      showToast('Codes produit sauvegardes');
+    }).catch(function(){ showToast('Erreur', 'var(--rouge)'); });
+  }
+
+  // ===== Delete =====
+  window.openDeleteModal = function(){
+    document.getElementById('del-modele-name').textContent = FAB + ' ' + MODEL;
+    document.getElementById('del-annee-name').textContent = YEAR;
+    document.getElementById('modal-delete').classList.add('show');
+  };
+
+  function doDelete(){
+    return apiSave(deletedKey(), 'deleted').then(function(){
+      logChange('Modele supprime', '—');
+      document.getElementById('modal-delete').classList.remove('show');
+      showToast(FAB + ' ' + MODEL + ' (' + YEAR + ') supprime');
+      setTimeout(function(){ location.href = 'database.html'; }, 800);
+    }).catch(function(){ showToast('Erreur', 'var(--rouge)'); });
+  }
+
+  // ===== Render =====
+  function render(){
+    var hasBom = BOM_CODES.length > 0;
+    var hasHarnais = TYPE === 'Excavatrice';
+    var dirtyCount = countChanges();
+    var isFlagged = FLAG && FLAG.active;
+
+    var bomRows = '';
+    if (hasBom){
+      // Harnais — premiere ligne, meme format que les autres BOM
+      if (hasHarnais){
+        var hCur = HARNAIS_CURRENT || '';
+        var hInit = HARNAIS_INITIAL || '';
+        var hChanged = hCur !== hInit;
+        var hPN = hCur ? 'Z03B-' + hCur.replace(/^H/, '') : 'Z03B-—';
+        var hLabelObj = HARNAIS_OPTIONS.find(function(o){return o.v===hCur;}) || {l:'(aucun)'};
+        var hOpts = HARNAIS_OPTIONS.map(function(o){
+          return '<option value="' + o.v + '"' + (o.v===hCur?' selected':'') + '>' + o.l + '</option>';
+        }).join('');
+        bomRows += '<tr class="harnais-bom-row ' + (hChanged?'row-changed':'') + '">' +
+          '<td class="pn">' + hPN + '</td>' +
+          '<td>Harnais de coupure</td>' +
+          '<td>' +
+            '<select id="harnais-sel" class="harnais-bom-select"' + (canEdit?'':' disabled') + '>' + hOpts + '</select>' +
+          '</td>' +
+          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="__harnais__"' + (SCOPE_ALL_CODES['__harnais__']?' checked':'') + '><span></span></label></td>' : '') +
+          '<td></td>' +  // pas de bouton supprimer pour harnais
+        '</tr>';
+      }
+
+      // Standard catalog codes (not in REMOVED_CURRENT)
+      BOM_CODES.forEach(function(code){
+        if (REMOVED_CURRENT.indexOf(code) >= 0) return;
+        var current = BOM_CURRENT[code] || 'na';
+        var initial = BOM_INITIAL[code] || 'na';
+        var changed = current !== initial;
+        var desc = BOM_NAMES[code] || '(sans nom)';
+        var pn = BOM_PN[code] || '';
+
+        bomRows += '<tr class="' + (changed?'row-changed':'') + '">' +
+          '<td class="pn">' + (pn || '—') + '</td>' +
+          '<td>' + desc + '</td>' +
+          '<td>' +
+            '<select class="status-' + current + '" data-code="' + code + '"' + (canEdit?'':' disabled') + '>' +
+              '<option value="r"' + (current==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
+              '<option value="j"' + (current==='j'?' selected':'') + '>🟡 Optionnel</option>' +
+              '<option value="na"' + (current==='na'?' selected':'') + '>⚫ N/A</option>' +
+            '</select>' +
+          '</td>' +
+          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + code + '"' + (SCOPE_ALL_CODES[code]?' checked':'') + '><span></span></label></td>' : '') +
+          (canEdit ? '<td style="text-align:center;width:48px"><button class="row-del" data-code="' + code + '" data-kind="std" title="Retirer cette ligne pour cette machine">🗑</button></td>' : '<td></td>') +
+        '</tr>';
+      });
+
+      // Custom rows
+      CUSTOM_CURRENT.forEach(function(row, idx){
+        var status = row.status || 'na';
+        bomRows += '<tr class="custom-row">' +
+          '<td class="pn">' + (row.pn || '—') + '</td>' +
+          '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') + '</td>' +
+          '<td>' +
+            '<select class="status-' + status + '" data-custom="' + idx + '"' + (canEdit?'':' disabled') + '>' +
+              '<option value="r"' + (status==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
+              '<option value="j"' + (status==='j'?' selected':'') + '>🟡 Optionnel</option>' +
+              '<option value="na"' + (status==='na'?' selected':'') + '>⚫ N/A</option>' +
+            '</select>' +
+          '</td>' +
+          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + (row.code||'') + '"' + (SCOPE_ALL_CODES[row.code]?' checked':'') + '><span></span></label></td>' : '') +
+          (canEdit ? '<td style="text-align:center;width:48px"><button class="row-del" data-custom="' + idx + '" data-kind="custom" title="Supprimer cette ligne custom">🗑</button></td>' : '<td></td>') +
+        '</tr>';
+      });
+
+      // Add line form (inline) — Code (sera affiche en Part Number) + Description
+      if (canEdit && ADDING_LINE){
+        bomRows += '<tr class="add-row">' +
+          '<td>' +
+            '<input type="text" id="add-code" placeholder="Code" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
+          '</td>' +
+          '<td>' +
+            '<input type="text" id="add-desc" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
+          '</td>' +
+          '<td>' +
+            '<select id="add-status" style="padding:0.3rem 0.5rem;font-size:0.85rem;width:100%">' +
+              '<option value="r">🔴 Obligatoire</option>' +
+              '<option value="j" selected>🟡 Optionnel</option>' +
+              '<option value="na">⚫ N/A</option>' +
+            '</select>' +
+          '</td>' +
+          '<td style="text-align:center;white-space:nowrap">' +
+            '<button id="add-confirm" class="small" style="padding:0.3rem 0.55rem">✓</button> ' +
+            '<button id="add-cancel" class="secondary small" style="padding:0.3rem 0.55rem">✗</button>' +
+          '</td>' +
+        '</tr>';
+      }
+    }
+
+    // (Le harnais est maintenant integre comme premiere ligne du tableau BOM — voir plus haut)
+
+    var specRows = '';
+    var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; });
+    specKeys.forEach(function(k){
+      var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';
+      var changed = SPECS_CURRENT[k] !== SPECS_INITIAL[k];
+      var safeId = 'spec-' + k.replace(/[^a-zA-Z0-9]/g,'_');
+      specRows += '<div class="spec-edit' + (changed?' changed':'') + '">' +
+        '<label for="' + safeId + '">' + k + '</label>' +
+        '<input id="' + safeId + '" type="text" data-spec-key="' + k.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '"' + (canEdit?'':' disabled') + '>' +
+      '</div>';
+    });
+
+    var actions = '';
+    if (canFlag){
+      actions += '<button class="warn ' + (isFlagged?'active':'') + ' small" onclick="openFlagModal()">' + (isFlagged ? '🚩 Drapeau actif' : '🏳️ Signaler') + '</button>';
+    }
+    if (canDelete){
+      actions += '<button class="danger small" onclick="openDeleteModal()">🗑️ Supprimer</button>';
+    }
+
+    // Type icon
+    var typeIcons = {
+      'Excavatrice':'⛏️','Pompe a Beton':'🏗️','Camion Girafe (Boom Truck)':'🚛',
+      'Telehandler':'🦒','Camion Vacuum':'💨','Retrocaveuse':'🔧',
+      'Foreuse':'⚙️','Grue Mobile':'🏗️'
+    };
+    var typeIcon = typeIcons[TYPE] || '🏭';
+
+    // Status stats (BOM + custom)
+    var cntR=0, cntJ=0, cntNA=0;
+    BOM_CODES.forEach(function(c){
+      if (REMOVED_CURRENT.indexOf(c) >= 0) return;
+      var s = BOM_CURRENT[c] || 'na';
+      if (s==='r') cntR++; else if (s==='j') cntJ++; else cntNA++;
+    });
+    CUSTOM_CURRENT.forEach(function(r){
+      var s = r.status || 'na';
+      if (s==='r') cntR++; else if (s==='j') cntJ++; else cntNA++;
+    });
+
+    // Side specs (top 6)
+    var topSpecKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; });
+    var sideSpecsHtml = topSpecKeys.map(function(k){
+      return '<div class="row"><span class="k">' + k.replace(/\(.*$/,'').trim() + '</span><span class="v">' + (MACHINE[k] || '—') + '</span></div>';
+    }).join('');
+
+    var readonlyBanner = canEdit ? '' :
+      '<div class="readonly-banner">Mode lecture seule. Connectez-vous comme administrateur pour editer.</div>';
+
+    var flagBanner = isFlagged
+      ? '<div class="flag-banner"><div>🚩 <strong>Drapeau actif</strong> — Pose par ' + (FLAG.flaggedBy||'?') + ' le ' + (FLAG.flaggedAt||'?') +
+        (FLAG.note ? '<br><span style="color:var(--text);margin-left:1.5rem">"' + FLAG.note + '"</span>' : '') +
+        '</div>' + (canFlag ? '<button class="secondary small" onclick="openFlagModal()">Voir / Resoudre</button>' : '') + '</div>'
+      : '';
+
+    var yearCount = ALL_YEARS_FOR_MODEL.length;
+
+    var scopeCountForTop = Object.keys(SCOPE_ALL_CODES).filter(function(k){return SCOPE_ALL_CODES[k];}).length;
+    var saveButtonsInline = canEdit ?
+      '<div class="tabs-save-group">' +
+        '<button id="btn-save-top" ' + (dirtyCount===0?'disabled':'') + '>💾 Sauvegarder (' + dirtyCount + ' chgmt)' + (scopeCountForTop > 0 ? ' [' + scopeCountForTop + ' multi-an]' : '') + '</button>' +
+        '<button class="secondary" id="btn-reset-top" ' + (dirtyCount===0?'disabled':'') + '>Annuler</button>' +
+      '</div>' : '';
+
+    document.getElementById('root').innerHTML =
+      '<div class="card">' +
+        '<div class="card-head">' +
+          '<h2>' + FAB + ' ' + MODEL + ' <span class="meta">(' + YEAR + ' &middot; ' + TYPE + ')</span></h2>' +
+          '<div class="head-actions">' + actions + '</div>' +
+        '</div>' +
+        readonlyBanner + flagBanner +
+        '<div class="tabs tabs-with-save">' +
+          '<div class="tabs-buttons">' +
+            '<button class="tab active" data-tab="bom">Kit BOM</button>' +
+            '<button class="tab" data-tab="specs">Specifications</button>' +
+          '</div>' +
+          saveButtonsInline +
+        '</div>' +
+
+        '<div id="tab-bom">' +
+          (hasBom
+            ? '<table class="bom-table">' +
+                '<thead><tr><th style="width:130px">Part Number</th><th>Description</th><th style="width:200px">Statut</th>' +
+                (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<th style="width:100px;text-align:center" title="Appliquer ce changement aux autres annees">Toutes annees</th>' : '') +
+                (canEdit ? '<th style="width:48px"></th>' : '') + '</tr></thead>' +
+                '<tbody>' + bomRows + '</tbody>' +
+              '</table>' +
+              (canEdit && !ADDING_LINE ? '<button class="secondary small" id="add-line-btn" style="margin-top:0.75rem">+ Ajouter une ligne</button>' : '') +
+              (REMOVED_CURRENT.length > 0
+                ? '<div style="margin-top:0.75rem;color:var(--text-3);font-size:0.78rem">Lignes retirees : ' + REMOVED_CURRENT.join(', ') +
+                  (canEdit ? ' <button class="secondary small" id="restore-all" style="margin-left:0.5rem;padding:0.25rem 0.6rem;font-size:0.75rem">Restaurer tout</button>' : '') +
+                  '</div>'
+                : '')
+            : '<p style="color:var(--text-3);padding:1rem 0">Aucun code BOM defini pour ce type de machine.</p>') +
+          '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
+            '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Notes sur ce modele</label>' +
+            '<textarea id="notes-area" class="notes-area"' + (canEdit?'':' readonly') + '>' + (NOTES_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
+          '</div>' +
+          (canEdit ? (
+            (function(){
+              var scopeCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){return SCOPE_ALL_CODES[k];}).length;
+              return '<div class="btn-row">' +
+                '<button id="btn-save" ' + (dirtyCount===0?'disabled':'') + '>💾 Sauvegarder (' + dirtyCount + ' chgmt)' + (scopeCount > 0 ? ' [' + scopeCount + ' multi-an]' : '') + '</button>' +
+                '<button class="secondary" id="btn-reset" ' + (dirtyCount===0?'disabled':'') + '>Annuler les changements</button>' +
+              '</div>';
+            })()
+          ) : '') +
+        '</div>' +
+
+        '<div id="tab-specs" style="display:none">' +
+          '<div class="specs-edit">' + specRows + '</div>' +
+        '</div>' +
+
+      '</div>';
+
+    // Tabs
+    document.querySelectorAll('.tab').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        var t = btn.dataset.tab;
+        document.getElementById('tab-bom').style.display = t==='bom'?'block':'none';
+        document.getElementById('tab-specs').style.display = t==='specs'?'block':'none';
+      });
+    });
+
+    // BOM selects (standard codes)
+    if (canEdit){
+      document.querySelectorAll('.bom-table select[data-code]').forEach(function(sel){
+        sel.addEventListener('change', function(){
+          BOM_CURRENT[sel.dataset.code] = sel.value;
+          render();
+        });
+      });
+      // BOM selects (custom rows)
+      document.querySelectorAll('.bom-table select[data-custom]').forEach(function(sel){
+        sel.addEventListener('change', function(){
+          var idx = parseInt(sel.dataset.custom);
+          if (CUSTOM_CURRENT[idx]) CUSTOM_CURRENT[idx].status = sel.value;
+          render();
+        });
+      });
+      // Delete row buttons — ouvre le modal custom centre avec checkbox portee
+      document.querySelectorAll('.row-del').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var kind = btn.dataset.kind;
+          var code = btn.dataset.code; // pour std
+          var customIdx = btn.dataset.custom; // pour custom
+
+          // Nom affiche dans le modal
+          var displayName = '';
+          if (kind === 'std' && code){
+            displayName = (BOM_NAMES[code] || code) + ' (' + (BOM_PN[code] || code) + ')';
+          } else if (kind === 'custom' && customIdx != null){
+            var c = CUSTOM_CURRENT[parseInt(customIdx)];
+            displayName = c ? ((c.desc || '') + ' (' + (c.pn || c.code) + ')') : 'cette ligne';
+          }
+          document.getElementById('del-line-name').textContent = displayName || 'cette ligne';
+
+          // Affiche la case 'toutes annees' uniquement si modele multi-annees
+          var nYears = ALL_YEARS_FOR_MODEL.length;
+          var label = document.getElementById('del-line-allyears-label');
+          var cb = document.getElementById('del-line-allyears');
+          if (nYears > 1) {
+            label.style.display = 'flex';
+            document.getElementById('del-line-year-count').textContent = nYears;
+            cb.checked = false;
+          } else {
+            label.style.display = 'none';
+            cb.checked = false;
+          }
+
+          // Configure le bouton Confirmer pour cette suppression
+          var confirmBtn = document.getElementById('del-line-confirm');
+          var cancelBtn = document.getElementById('del-line-cancel');
+          var modal = document.getElementById('modal-del-line');
+
+          function close(){ modal.classList.remove('show'); confirmBtn.onclick = null; cancelBtn.onclick = null; }
+
+          confirmBtn.onclick = function(){
+            var applyAllYears = cb.checked;
+            if (kind === 'std' && code){
+              if (REMOVED_CURRENT.indexOf(code) < 0) REMOVED_CURRENT.push(code);
+              if (applyAllYears) SCOPE_ALL_CODES[code] = true;
+            } else if (kind === 'custom' && customIdx != null){
+              var idx = parseInt(customIdx);
+              var customCode = CUSTOM_CURRENT[idx] ? CUSTOM_CURRENT[idx].code : null;
+              CUSTOM_CURRENT.splice(idx, 1);
+              if (applyAllYears && customCode) SCOPE_ALL_CODES[customCode] = true;
+            }
+            close();
+            render();
+          };
+          cancelBtn.onclick = close;
+
+          modal.classList.add('show');
+        });
+      });
+      // Add line button
+      var addBtn = document.getElementById('add-line-btn');
+      if (addBtn) addBtn.addEventListener('click', function(){ ADDING_LINE = true; render(); });
+      var addConfirm = document.getElementById('add-confirm');
+      if (addConfirm) addConfirm.addEventListener('click', function(){
+        var code = (document.getElementById('add-code').value||'').trim();
+        var desc = (document.getElementById('add-desc').value||'').trim();
+        var status = document.getElementById('add-status').value;
+        if (!code){ document.getElementById('add-code').focus(); return; }
+        // pn = code (le Code saisi sert aussi de Part Number affiche)
+        CUSTOM_CURRENT.push({code:code, desc:desc, pn:code, status:status});
+        ADDING_LINE = false;
+        render();
+      });
+      var addCancel = document.getElementById('add-cancel');
+      if (addCancel) addCancel.addEventListener('click', function(){ ADDING_LINE = false; render(); });
+      var restoreAll = document.getElementById('restore-all');
+      if (restoreAll) restoreAll.addEventListener('click', function(){ REMOVED_CURRENT = []; render(); });
+      var hsel = document.getElementById('harnais-sel');
+      if (hsel) hsel.addEventListener('change', function(){ HARNAIS_CURRENT = hsel.value; render(); });
+      var notesArea = document.getElementById('notes-area');
+      if (notesArea){
+        notesArea.addEventListener('input', function(){
+          NOTES_CURRENT = notesArea.value;
+          updateSaveButtons();
+        });
+      }
+      // Helper: met a jour les boutons Save/Reset (haut + bas)
+      function updateSaveButtons() {
+        var dc = countChanges();
+        var scopeCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){return SCOPE_ALL_CODES[k];}).length;
+        var label = '💾 Sauvegarder (' + dc + ' chgmt)' + (scopeCount > 0 ? ' [' + scopeCount + ' multi-an]' : '');
+        ['btn-save', 'btn-save-top'].forEach(function(id){
+          var b = document.getElementById(id);
+          if (b){ b.disabled = dc===0; b.innerHTML = label; }
+        });
+        ['btn-reset', 'btn-reset-top'].forEach(function(id){
+          var b = document.getElementById(id);
+          if (b) b.disabled = dc===0;
+        });
+      }
+      window.__updateSaveButtons = updateSaveButtons;
+      var saveBtn = document.getElementById('btn-save');
+      if (saveBtn) saveBtn.addEventListener('click', previewChanges);
+      var resetBtn = document.getElementById('btn-reset');
+      if (resetBtn) resetBtn.addEventListener('click', resetAll);
+      // Boutons sticky en haut (mêmes actions)
+      var saveBtnTop = document.getElementById('btn-save-top');
+      if (saveBtnTop) saveBtnTop.addEventListener('click', previewChanges);
+      var resetBtnTop = document.getElementById('btn-reset-top');
+      if (resetBtnTop) resetBtnTop.addEventListener('click', resetAll);
+      // Specs editing
+      document.querySelectorAll('input[data-spec-key]').forEach(function(inp){
+        inp.addEventListener('input', function(){
+          var k = inp.dataset.specKey;
+          SPECS_CURRENT[k] = inp.value;
+          if (window.__updateSaveButtons) window.__updateSaveButtons();
+          var changed = SPECS_CURRENT[k] !== SPECS_INITIAL[k];
+          var parent = inp.parentNode;
+          if (parent){ if (changed) parent.classList.add('changed'); else parent.classList.remove('changed'); }
+        });
+      });
+
+      // Per-row "Toutes annees" checkboxes
+      document.querySelectorAll('input[data-scope]').forEach(function(cb){
+        cb.addEventListener('change', function(){
+          var code = cb.dataset.scope;
+          if (cb.checked) SCOPE_ALL_CODES[code] = true;
+          else delete SCOPE_ALL_CODES[code];
+          if (window.__updateSaveButtons) window.__updateSaveButtons();
+        });
+      });
+
+      // Product codes add
+      var pcAddBtn = document.getElementById('pc-add-btn');
+      if (pcAddBtn){
+        pcAddBtn.addEventListener('click', function(){
+          var code = (document.getElementById('pc-new-code').value || '').trim();
+          var desc = (document.getElementById('pc-new-desc').value || '').trim();
+          var qty = parseInt(document.getElementById('pc-new-qty').value) || 1;
+          if (!code){ document.getElementById('pc-new-code').focus(); return; }
+          PRODUCT_CODES.push({code:code, desc:desc, qty:qty});
+          document.getElementById('pc-new-code').value = '';
+          document.getElementById('pc-new-desc').value = '';
+          document.getElementById('pc-new-qty').value = '1';
+          saveProductCodes('Code produit ajoute', (code + ' ' + desc).trim());
+          renderProductCodes();
+        });
+      }
+    }
+
+    renderProductCodes();
+
+    // Flag modal buttons
+    var flagSetBtn = document.getElementById('flag-set-btn');
+    if (flagSetBtn) flagSetBtn.onclick = setFlag;
+    var flagResBtn = document.getElementById('flag-resolve-btn');
+    if (flagResBtn) flagResBtn.onclick = resolveFlag;
+
+    // Delete confirm
+    var delBtn = document.getElementById('del-confirm-btn');
+    if (delBtn) delBtn.onclick = doDelete;
+  }
+
+  // ===== Boot =====
+  fetch('data/machines.json')
+    .then(function(r){return r.json()})
+    .then(function(data){
+      try{ MACHINE = data[TYPE][FAB][YEAR][MODEL]; }catch(e){}
+      if (!MACHINE){
+        document.getElementById('root').innerHTML =
+          '<div class="empty"><div class="big">!</div><div>Machine introuvable : ' + TYPE + ' / ' + FAB + ' / ' + YEAR + ' / ' + MODEL + '</div></div>';
+        return;
+      }
+
+      // Find all years for this fab+modele (for "all years" checkbox)
+      try {
+        ALL_YEARS_FOR_MODEL = Object.keys(data[TYPE][FAB]).filter(function(y){
+          return data[TYPE][FAB][y] && data[TYPE][FAB][y][MODEL];
+        });
+      } catch(e){ ALL_YEARS_FOR_MODEL = [YEAR]; }
+
+      if (TYPE === 'Excavatrice') BOM_CODES = EXC_BOM_CODES;
+      else if (TYPE === 'Pompe a Beton') BOM_CODES = POMPE_BOM_CODES;
+      else BOM_CODES = [];
+
+      var d;
+      if (TYPE === 'Excavatrice') d = computeDefaultsExc(MACHINE);
+      else if (TYPE === 'Pompe a Beton') d = computeDefaultsPompe(MACHINE);
+      else d = { bom:{}, harnais:'' };
+      BOM_DEFAULTS = d.bom;
+      HARNAIS_DEFAULT = d.harnais;
+      BOM_CODES.forEach(function(c){ BOM_INITIAL[c] = BOM_DEFAULTS[c] || 'na'; });
+      HARNAIS_INITIAL = HARNAIS_DEFAULT;
+
+      // Also fetch overrides for OTHER years (for per-row "toutes annees" merge)
+      var otherYears = ALL_YEARS_FOR_MODEL.filter(function(y){ return y !== YEAR; });
+      var otherFetches = otherYears.map(function(y){
+        return apiGet(bomKey(y)).then(function(ov){ OTHER_OVERRIDES[y] = ov || {}; });
+      });
+
+      Promise.all(otherFetches.concat([
+        apiGet(bomKey()),
+        apiGet(notesKey()),
+        apiGet('db_flags'),
+        apiGet(pcKey())
+      ])).then(function(results){
+        results = results.slice(otherFetches.length);
+        var ov = results[0];
+        var notes = results[1];
+        var flags = results[2];
+        var pc = results[3];
+        // _specs lives inside the kit_override_ payload now
+        var specsOv = (ov && ov._specs) || null;
+
+        // Init specs base + overrides
+        Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; }).forEach(function(k){
+          SPECS_BASE[k] = MACHINE[k] || '';
+          SPECS_INITIAL[k] = (specsOv && specsOv[k] != null) ? specsOv[k] : SPECS_BASE[k];
+          SPECS_CURRENT[k] = SPECS_INITIAL[k];
+        });
+
+        if (ov){
+          Object.keys(ov).forEach(function(k){
+            if (k === 'harnais') HARNAIS_INITIAL = ov.harnais;
+            else if (k === '_removed' && Array.isArray(ov._removed)) REMOVED_INITIAL = ov._removed.slice();
+            else if (k === '_custom' && Array.isArray(ov._custom)) CUSTOM_INITIAL = ov._custom.slice();
+            else if (BOM_CODES.indexOf(k) >= 0) BOM_INITIAL[k] = ov[k];
+          });
+        }
+        BOM_CODES.forEach(function(c){ BOM_CURRENT[c] = BOM_INITIAL[c]; });
+        HARNAIS_CURRENT = HARNAIS_INITIAL;
+        REMOVED_CURRENT = REMOVED_INITIAL.slice();
+        CUSTOM_CURRENT = CUSTOM_INITIAL.map(function(r){ return Object.assign({}, r); });
+        NOTES_INITIAL = (typeof notes === 'string') ? notes : (notes || '');
+        NOTES_CURRENT = NOTES_INITIAL;
+        FLAG = (flags && flags[flagKey()]) || null;
+        PRODUCT_CODES = Array.isArray(pc) ? pc : [];
+        render();
+      });
+    })
+    .catch(function(){
+      document.getElementById('root').innerHTML =
+        '<div class="empty"><div class="big">!</div><div>Impossible de charger data/machines.json</div></div>';
+    });
+})();
+</script>
+
+<!-- View-mode toggle (responsive auto + force-mobile button) -->
+<script>
+(function(){
+    var VIEW_KEY = 'portal_view_mobile_forced';
+    function syncViewMode() {
+        var body = document.body;
+        var forced = body.classList.contains('force-mobile');
+        var w = window.innerWidth;
+        body.classList.toggle('mobile-view', forced || w <= 768);
+        body.classList.toggle('narrow-view', forced || w <= 480);
+    }
+    function applyForcedView(on) {
+        var body = document.body;
+        body.classList.toggle('force-mobile', on);
+        var btn = document.getElementById('view-mobile-toggle');
+        if (btn) {
+            btn.classList.toggle('active', on);
+            btn.innerHTML = on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile';
+        }
+        try { localStorage.setItem(VIEW_KEY, on ? '1' : '0'); } catch(e){}
+        syncViewMode();
+    }
+    var btn = document.getElementById('view-mobile-toggle');
+    if (btn) btn.addEventListener('click', function(){
+        applyForcedView(!document.body.classList.contains('force-mobile'));
+    });
+    window.addEventListener('resize', syncViewMode);
+    try { applyForcedView(localStorage.getItem(VIEW_KEY) === '1'); }
+    catch(e) { syncViewMode(); }
+})();
+</script>
+    <script src="js/capture-tool.js?v=1"></script>
+</body>
+</html>

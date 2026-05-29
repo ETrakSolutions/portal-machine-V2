@@ -1,0 +1,917 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>e-Trak | Base de donnees Grues Mobiles</title>
+<link rel="stylesheet" href="css/style.css?v=156">
+<link rel="stylesheet" href="css/admin.css?v=156">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* Reuse exactly the same db-* styles as database.html */
+.selector-section { max-width: 100% !important; padding: 0.5rem 1.5rem !important; }
+.db-controls {
+    display: flex; flex-wrap: wrap;
+    gap: 0.5rem; margin-bottom: 0.75rem; align-items: flex-end;
+}
+.db-control-group { display: flex; flex-direction: column; gap: 0.25rem; }
+.db-control-group label {
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px; color: #999;
+}
+.db-control-group select, .db-control-group input {
+    padding: 8px 12px; background: var(--bg-input, #1a2332);
+    border: 1px solid var(--border, #2a3a4a); border-radius: 6px;
+    color: #fff; font-size: 0.85rem; min-width: 160px;
+}
+.db-search { min-width: 250px !important; }
+.db-stats { color: #999; font-size: 0.8rem; margin-bottom: 1rem; }
+.db-stats strong { color: #00CC66; }
+.db-table-wrap {
+    overflow: auto; border-radius: 8px;
+    border: 1px solid var(--border, #2a3a4a);
+    max-height: 75vh;
+}
+.db-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.db-table thead th {
+    background: #1a2a3a; color: #fff;
+    padding: 10px 12px; text-align: left;
+    font-weight: 700; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    position: sticky; top: 0; z-index: 10;
+    cursor: pointer; user-select: none;
+    white-space: nowrap;
+}
+.db-table thead th:hover { background: #243a4f; }
+.db-table thead th .sort-arrow { margin-left: 4px; opacity: 0.3; }
+.db-table thead th.sorted .sort-arrow { opacity: 1; color: #00CC66; }
+.db-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+.db-table tbody tr:hover { background: rgba(0,100,200,0.1); }
+.db-table tbody td { padding: 8px 12px; color: #ccc; white-space: nowrap; font-size: 0.8rem; }
+.db-fixed-col {
+    padding: 4px 6px !important;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.db-modele-year {
+    color: #888;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 0.2rem;
+}
+.db-note-dot {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    cursor: help;
+    transition: all 0.2s;
+}
+.db-note-dot.has-note {
+    background: #00CC66;
+    border-color: #00CC66;
+    box-shadow: 0 0 6px rgba(0,204,102,0.6);
+}
+.flag-btn {
+    background: transparent; border: none; cursor: pointer;
+    font-size: 1rem; padding: 2px 4px; border-radius: 3px;
+    opacity: 0.2; transition: transform 0.15s;
+}
+.flag-btn:hover { opacity: 0.7; transform: scale(1.2); }
+.db-table tbody td:first-child { font-weight: 600; color: #fff; }
+.db-table thead th:nth-child(1), .db-table tbody td:nth-child(1) {
+    position: sticky; left: 0; z-index: 5; background: #1a2a3a;
+}
+.db-table thead th:nth-child(2), .db-table tbody td:nth-child(2) {
+    position: sticky; left: 110px; z-index: 5; background: #1a2a3a;
+}
+.db-table thead th:nth-child(1), .db-table thead th:nth-child(2) { z-index: 15; }
+.db-table tbody tr:hover td:nth-child(1), .db-table tbody tr:hover td:nth-child(2) {
+    background: #1e3450;
+}
+.db-export-btn {
+    padding: 8px 16px; background: #0062CC; color: #fff;
+    border: none; border-radius: 6px; cursor: pointer;
+    font-size: 0.8rem; font-weight: 600;
+}
+.db-export-btn:hover { background: #004A99; }
+.db-modele-link {
+    color: #4FC3F7; font-weight: 600;
+    border-bottom: 1px dashed rgba(79,195,247,0.4);
+}
+.db-modele-link:hover { color: #FFB74D; border-bottom-color: #FFB74D; }
+.intro-row {
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;
+}
+.section-title {
+    font-size: 1.15rem; font-weight: 700; color: var(--text-primary);
+}
+.preview-badge {
+    background: #FFB74D; color: #1a1a1a;
+    font-size: 0.6rem; font-weight: 800;
+    padding: 3px 8px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 1px;
+}
+.preview-sub { color: #888; font-size: 0.8rem; margin-left: auto; }
+/* Chips */
+.chip { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 0.66rem; font-weight: 700; border: 1px solid #444; }
+.chip.AT { color: #4DA8FF; border-color: #4DA8FF55; background: #4DA8FF15; }
+.chip.RT { color: #FFD600; border-color: #FFD60055; background: #FFD60015; }
+.chip.TM { color: #FF8A4D; border-color: #FF8A4D55; background: #FF8A4D15; }
+.chip.CT { color: #B45CFF; border-color: #B45CFF55; background: #B45CFF15; }
+.chip.CL { color: #FF6B9D; border-color: #FF6B9D55; background: #FF6B9D15; }
+.chip.IN { color: #00CC66; border-color: #00CC6655; background: #00CC6615; }
+.chip.MI { color: #FFB347; border-color: #FFB34755; background: #FFB34715; }
+.mode-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: rgba(77,168,255,0.1); color: #4DA8FF; border: 1px solid rgba(77,168,255,0.3); }
+.mode-tag.telematik { background: rgba(180,92,255,0.1); color: #B45CFF; border-color: rgba(180,92,255,0.3); }
+.mode-tag.twin { background: rgba(255,138,77,0.1); color: #FF8A4D; border-color: rgba(255,138,77,0.3); }
+.mode-tag.mega { background: rgba(0,204,102,0.1); color: #00CC66; border-color: rgba(0,204,102,0.3); }
+.mode-tag.na { background: rgba(120,120,120,0.1); color: #888; border-color: rgba(120,120,120,0.3); }
+.status-actif { color: #00CC66; font-weight: 600; }
+.status-remplace { color: #FF6B6B; }
+.status-discontinue { color: #888; font-style: italic; }
+.status-limite { color: #FFD600; font-size: 0.74rem; }
+
+/* ===== Responsive : mobile-view (auto via JS OU force via bouton) ===== */
+body.mobile-view header { padding: 0 1rem !important; height: 60px !important; }
+body.mobile-view .header-logo { height: 44px !important; }
+body.mobile-view .header-back { padding: 4px 10px !important; font-size: 0.72rem !important; }
+body.mobile-view main { padding: 0.75rem 0.5rem !important; }
+body.mobile-view .selector-section { padding: 0.5rem 0.75rem !important; border-radius: 6px !important; }
+body.mobile-view .intro-row { gap: 0.5rem !important; margin-bottom: 0.75rem !important; }
+body.mobile-view .section-title { font-size: 0.95rem !important; }
+body.mobile-view .preview-sub { display: none; }
+body.mobile-view .db-controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.5rem !important;
+}
+body.mobile-view .db-controls .db-control-group { min-width: 0 !important; }
+body.mobile-view .db-controls .db-control-group:has(#db-search),
+body.mobile-view .db-controls .db-control-group:has(#db-export) { grid-column: 1 / -1; }
+body.mobile-view .db-control-group select,
+body.mobile-view .db-control-group input { min-width: 0 !important; width: 100% !important; }
+body.mobile-view .db-search { min-width: 0 !important; }
+body.mobile-view .db-table { font-size: 0.74rem !important; }
+body.mobile-view .db-table thead th { font-size: 0.6rem !important; padding: 5px 5px !important; height: 38px !important; }
+body.mobile-view .db-table tbody td { padding: 5px 6px !important; font-size: 0.72rem !important; }
+/* Hide Fabricant column on mobile, show it inline under Modele */
+body.mobile-view .db-table thead th:nth-child(1),
+body.mobile-view .db-table tbody td:nth-child(1) { display: none; }
+body.mobile-view .db-table thead th:nth-child(2),
+body.mobile-view .db-table tbody td:nth-child(2) {
+    left: 0 !important; position: sticky;
+    width: 110px !important; min-width: 110px !important; max-width: 110px !important;
+    white-space: normal !important;
+}
+body.mobile-view .db-fab-mobile {
+    display: block; font-size: 0.6rem; color: #9ca8b5;
+    font-weight: 500; margin-top: 2px; line-height: 1.1;
+}
+.db-fab-mobile { display: none; }
+body.mobile-view .db-table-wrap { -webkit-overflow-scrolling: touch; max-height: 70vh !important; }
+body.mobile-view #edit-view .card { padding: 0.85rem !important; border-radius: 6px !important; }
+body.mobile-view #edit-view .card-head { flex-direction: column; align-items: stretch; gap: 0.6rem; }
+body.mobile-view #edit-view .card-head h2 { font-size: 0.92rem !important; }
+body.mobile-view #edit-view .tabs.tabs-with-save {
+    flex-direction: column; align-items: stretch !important; gap: 0.5rem;
+    margin: 0 -0.85rem 1rem -0.85rem !important; padding: 0 0.85rem !important;
+}
+body.mobile-view #edit-view .tabs-buttons { width: 100%; }
+body.mobile-view #edit-view .tab { flex: 1; padding: 0.6rem 0.5rem !important; font-size: 0.82rem !important; text-align: center; }
+body.mobile-view #edit-view .tabs-save-group { width: 100%; justify-content: space-between; }
+body.mobile-view #edit-view .tabs-save-group button { flex: 1; }
+body.mobile-view #edit-view .spec-edit { grid-template-columns: 1fr !important; gap: 0.25rem !important; padding: 0.35rem 0 !important; }
+body.mobile-view #edit-view .spec-edit label { font-size: 0.72rem; }
+body.mobile-view #edit-view .btn-row { flex-direction: column; }
+body.mobile-view #edit-view .btn-row button { width: 100%; }
+
+body.narrow-view .db-controls { grid-template-columns: 1fr !important; }
+body.narrow-view .db-controls .db-control-group:has(#db-search),
+body.narrow-view .db-controls .db-control-group:has(#db-export) { grid-column: 1; }
+body.narrow-view .header-back span { display: none; }
+body.narrow-view .preview-badge { font-size: 0.55rem; padding: 2px 6px; }
+
+/* Toggle button for forced mobile preview */
+.view-toggle {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    padding: 5px 10px; border-radius: 6px;
+    cursor: pointer; font-size: 0.74rem; font-weight: 600;
+    font-family: inherit;
+    display: inline-flex; align-items: center; gap: 4px;
+}
+.view-toggle:hover { background: rgba(255,255,255,0.12); }
+.view-toggle.active { background: #FFB74D; color: #000; border-color: #FFB74D; }
+
+/* Mobile preview frame â€” affichage simule d'un cellulaire */
+body.force-mobile { background: #000; }
+body.force-mobile main, body.force-mobile header, body.force-mobile .accent-bar {
+    max-width: 414px; margin-left: auto; margin-right: auto;
+    box-shadow: 0 0 0 1px #444, 0 0 20px rgba(0,0,0,0.7);
+}
+body.force-mobile header { border-radius: 14px 14px 0 0; }
+body.force-mobile main { min-height: calc(100vh - 80px); border-radius: 0 0 14px 14px; }
+.db-modele-link { cursor: pointer; }
+/* ===== EDIT VIEW (style: edit-machine.html des excavatrices) ===== */
+#edit-view { display: none; }
+#edit-view.open { display: block; }
+#edit-view .card {
+    background: #2A2A2A; border: 1px solid #3A3A3A;
+    border-radius: 8px; padding: 1.5rem;
+}
+#edit-view .card-head {
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+    border-bottom: 1px solid #3A3A3A; padding-bottom: 0.75rem; margin-bottom: 1rem;
+}
+#edit-view .card-head h2 { font-size: 1.05rem; font-weight: 600; color: #F0F0F0; }
+#edit-view .card-head .meta { color: #A0A0A0; font-weight: 400; margin-left: 0.5rem; }
+#edit-view .head-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+#edit-view .tabs {
+    display: flex; gap: 0; border-bottom: 1px solid #3A3A3A;
+    margin-bottom: 1.25rem; flex-wrap: wrap;
+}
+#edit-view .tabs.tabs-with-save {
+    justify-content: space-between; align-items: center;
+    background: linear-gradient(180deg,#2A2A2A,rgba(42,42,42,0.97));
+    margin: 0 -1.5rem 1.25rem -1.5rem; padding: 0 1.5rem;
+}
+#edit-view .tabs-buttons { display: flex; gap: 0; }
+#edit-view .tab {
+    padding: 0.75rem 1.25rem; background: transparent; color: #A0A0A0;
+    border: none; border-bottom: 2px solid transparent; cursor: pointer;
+    font-family: inherit; font-size: 0.9rem; font-weight: 500; border-radius: 0;
+}
+#edit-view .tab.active { color: #0062CC; border-bottom-color: #0062CC; }
+#edit-view .tab:hover { color: #F0F0F0; }
+#edit-view .tabs-save-group { display: flex; gap: 0.5rem; align-items: center; padding: 0.4rem 0; }
+#edit-view #btn-save-top {
+    background: linear-gradient(135deg,#00CC66,#00AA55); color: #000;
+    padding: 0.5rem 1rem; font-weight: 700; border: none; border-radius: 6px;
+    cursor: pointer; font-size: 0.88rem;
+    box-shadow: 0 2px 6px rgba(0,204,102,0.25);
+}
+#edit-view #btn-save-top:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,204,102,0.4); }
+#edit-view #btn-save-top:disabled { background: #3a3a3a; color: #666; cursor: not-allowed; box-shadow: none; }
+#edit-view #btn-reset-top {
+    background: transparent; color: #A0A0A0; border: 1px solid #3A3A3A;
+    padding: 0.5rem 0.9rem; border-radius: 6px; cursor: pointer; font-size: 0.82rem;
+}
+#edit-view #btn-reset-top:hover:not(:disabled) { background: #333; color: #F0F0F0; }
+#edit-view .specs-edit {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem 1.2rem;
+}
+@media (max-width:768px) { #edit-view .specs-edit { grid-template-columns: 1fr; } }
+#edit-view .spec-edit {
+    display: grid; grid-template-columns: 1fr 1.2fr; align-items: center; gap: 0.6rem;
+    padding: 0.45rem 0; border-bottom: 1px dashed #2f2f2f; font-size: 0.88rem;
+}
+#edit-view .spec-edit label { color: #A0A0A0; }
+#edit-view .spec-edit input, #edit-view .spec-edit select {
+    background: #1E1E1E; color: #F0F0F0; border: 1px solid #3A3A3A;
+    border-radius: 5px; padding: 0.4rem 0.55rem; font-size: 0.85rem;
+    font-family: inherit; width: 100%;
+}
+#edit-view .spec-edit input:focus, #edit-view .spec-edit select:focus { outline: none; border-color: #0062CC; }
+#edit-view .spec-edit.changed input, #edit-view .spec-edit.changed select {
+    border-color: #0062CC; background: rgba(0,98,204,0.08);
+}
+#edit-view .notes-area {
+    width: 100%; min-height: 100px; resize: vertical;
+    background: #1E1E1E; color: #F0F0F0; border: 1px solid #3A3A3A;
+    border-radius: 6px; padding: 0.55rem 0.7rem; font-size: 0.9rem; font-family: inherit;
+}
+#edit-view .notes-area:focus { outline: none; border-color: #0062CC; }
+#edit-view .btn-row { display: flex; gap: 0.75rem; margin-top: 1.25rem; flex-wrap: wrap; }
+#edit-view .btn-row button {
+    background: #0062CC; color: #fff; border: none; border-radius: 6px;
+    padding: 0.7rem 1.2rem; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    font-family: inherit; transition: all 0.15s;
+}
+#edit-view .btn-row button:hover:not(:disabled) { background: #0073EF; }
+#edit-view .btn-row button.secondary {
+    background: transparent; border: 1px solid #3A3A3A; color: #F0F0F0;
+}
+#edit-view .btn-row button.secondary:hover { background: #333; }
+#edit-view .btn-row button:disabled { opacity: 0.4; cursor: not-allowed; }
+#edit-view .notes-label {
+    display: block; font-size: 0.75rem; color: #A0A0A0;
+    margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.edited-badge {
+    background: #FFB74D; color: #000;
+    font-size: 0.55rem; font-weight: 800;
+    padding: 1px 5px; border-radius: 3px;
+    margin-left: 6px; vertical-align: middle;
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+.db-toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+    background: #00CC66; color: #001a0a;
+    padding: 10px 22px; border-radius: 22px;
+    font-size: 0.82rem; font-weight: 700;
+    z-index: 10001; box-shadow: 0 6px 20px rgba(0,0,0,0.5);
+    animation: toastFade 2.4s forwards;
+}
+@keyframes toastFade { 0%,75% { opacity:1 } 100% { opacity:0 } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <a href="index.html" class="header-back" title="Page precedente">&larr; <span>Retour</span></a>
+    <div class="logo-section">
+      <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+    </div>
+  </div>
+</header>
+<div class="accent-bar"></div>
+
+<main>
+  <section class="selector-section" id="db-view">
+
+    <div class="intro-row">
+      <span class="section-title">Base de donnees Grues Mobiles</span>
+      <span class="preview-badge" style="background:#00CC66;color:#001a0a">Beta</span>
+      <span class="preview-sub">Amerique du Nord &middot; 2015 - 2026</span>
+      <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire" style="margin-left:auto;">&#128241; Apercu mobile</button>
+    </div>
+
+    <div class="db-controls">
+      <div class="db-control-group">
+        <label>Type</label>
+        <select id="db-type"><option value="">Tous</option></select>
+      </div>
+      <div class="db-control-group">
+        <label>Fabricant</label>
+        <select id="db-fab"><option value="">Tous</option></select>
+      </div>
+      <div class="db-control-group">
+        <label>Annee</label>
+        <select id="db-annee"><option value="">Toutes</option></select>
+      </div>
+      <div class="db-control-group">
+        <label>Recherche</label>
+        <input type="text" id="db-search" class="db-search" placeholder="Rechercher un modele...">
+      </div>
+      <div class="db-control-group">
+        <label>&nbsp;</label>
+        <button id="db-export" class="db-export-btn">&#128196; Exporter CSV</button>
+      </div>
+    </div>
+
+    <div id="db-stats" class="db-stats"></div>
+
+    <div class="db-table-wrap">
+      <table class="db-table" id="db-table">
+        <thead>
+          <tr id="hdr-row"></tr>
+        </thead>
+        <tbody id="db-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Edit view (sibling of db-view, swapped in/out) -->
+  <section id="edit-view">
+  <div class="card">
+    <div class="card-head">
+      <h2 id="ev-title">Editer la machine</h2>
+      <div class="head-actions">
+        <button class="secondary" id="ev-back" style="background:transparent;border:1px solid #3A3A3A;color:#F0F0F0;border-radius:6px;padding:0.5rem 0.9rem;cursor:pointer;font-size:0.82rem;font-family:inherit;">&larr; Retour BD</button>
+      </div>
+    </div>
+    <div class="tabs tabs-with-save">
+      <div class="tabs-buttons">
+        <button class="tab active" data-tab="specs">Specifications</button>
+        <button class="tab" data-tab="notes">Notes</button>
+      </div>
+      <div class="tabs-save-group">
+        <button id="btn-reset-top" disabled>Annuler chgmt</button>
+        <button id="btn-save-top" disabled>&#128190; Sauvegarder</button>
+      </div>
+    </div>
+
+    <div id="tab-specs">
+      <div class="specs-edit" id="specs-edit-grid"></div>
+    </div>
+
+    <div id="tab-notes" style="display:none">
+      <label class="notes-label">Notes sur ce modele</label>
+      <textarea id="ev-notes" class="notes-area"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button id="btn-save" disabled>&#128190; Sauvegarder</button>
+      <button class="secondary" id="btn-reset" disabled>Annuler les changements</button>
+    </div>
+  </div>
+</section>
+
+<datalist id="ed-types"></datalist>
+<datalist id="ed-modes"></datalist>
+<datalist id="ed-statuts"></datalist>
+</main>
+
+<script>
+const ORIGINAL = [{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK3050-2","Capacite max (US t)":"60","Capacite max (t metrique)":"50","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK3055","Capacite max (US t)":"60","Capacite max (t metrique)":"55","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK3060L","Capacite max (US t)":"60","Capacite max (t metrique)":"55","Longueur max boom (pi)":"157","Longueur max boom (m)":"48","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Boom rallonge"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK4080-1","Capacite max (US t)":"90","Capacite max (t metrique)":"80","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK4080-2","Capacite max (US t)":"90","Capacite max (t metrique)":"80","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2023","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK4090","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK4100L-1","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2017","Annee fin":"2021","Statut":"Remplace","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Remplace par 4100L-2"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK4100L-2","Capacite max (US t)":"120","Capacite max (t metrique)":"100","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2021","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK4100L-2S","Capacite max (US t)":"120","Capacite max (t metrique)":"100","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2023","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Version compacte"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5095","Capacite max (US t)":"110","Capacite max (t metrique)":"95","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2013","Annee fin":"2014","Statut":"Remplace","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5120-1","Capacite max (US t)":"120","Capacite max (t metrique)":"110","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5150L-1","Capacite max (US t)":"175","Capacite max (t metrique)":"150","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5150XL-1","Capacite max (US t)":"175","Capacite max (t metrique)":"150","Longueur max boom (pi)":"225","Longueur max boom (m)":"68.7","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Extra long boom"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5165-2","Capacite max (US t)":"190","Capacite max (t metrique)":"165","Longueur max boom (pi)":"213","Longueur max boom (m)":"65","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5200-1","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2014","Annee fin":"2020","Statut":"Remplace","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5220XL","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"256","Longueur max boom (m)":"78","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5250L-1","Capacite max (US t)":"300","Capacite max (t metrique)":"250","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK5250XL-1","Capacite max (US t)":"300","Capacite max (t metrique)":"250","Longueur max boom (pi)":"256","Longueur max boom (m)":"78","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK6300L-1","Capacite max (US t)":"350","Capacite max (t metrique)":"300","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK6400","Capacite max (US t)":"450","Capacite max (t metrique)":"400","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK6400-1","Capacite max (US t)":"450","Capacite max (t metrique)":"400","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK7450","Capacite max (US t)":"500","Capacite max (t metrique)":"450","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"GMK7550","Capacite max (US t)":"550","Capacite max (t metrique)":"500","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2007","Annee fin":"2018","Statut":"Remplace","Sections boom":"7","Mode extension":"Single-cyl. pinning (MEGAFORM)","Notes":"Remplace par GMK7450"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT530E-2","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"92","Longueur max boom (m)":"28","Annee intro":"2014","Annee fin":"2017","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT540E","Capacite max (US t)":"40","Capacite max (t metrique)":"36","Longueur max boom (pi)":"102","Longueur max boom (m)":"31","Annee intro":"2014","Annee fin":"2017","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT550E","Capacite max (US t)":"50","Capacite max (t metrique)":"45","Longueur max boom (pi)":"115","Longueur max boom (m)":"35","Annee intro":"2014","Annee fin":"2017","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT765E-2","Capacite max (US t)":"65","Capacite max (t metrique)":"60","Longueur max boom (pi)":"105","Longueur max boom (m)":"32","Annee intro":"2014","Annee fin":"2017","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT880E","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2012","Annee fin":"2018","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT890E","Capacite max (US t)":"90","Capacite max (t metrique)":"82","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2015","Annee fin":"2019","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT9130E-2","Capacite max (US t)":"130","Capacite max (t metrique)":"115","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2015","Annee fin":"2019","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT9150E","Capacite max (US t)":"150","Capacite max (t metrique)":"135","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"2019","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT655","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"108","Longueur max boom (m)":"33","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT655L","Capacite max (US t)":"60","Capacite max (t metrique)":"55","Longueur max boom (pi)":"141","Longueur max boom (m)":"43","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Long boom"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT780","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2017","Annee fin":"2022","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT880","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT8100","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2017","Annee fin":"2022","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT8100-1","Capacite max (US t)":"100","Capacite max (t metrique)":"100","Longueur max boom (pi)":"156","Longueur max boom (m)":"47.5","Annee intro":"2022","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT8120","Capacite max (US t)":"120","Capacite max (t metrique)":"110","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2017","Annee fin":"2022","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT8120-2","Capacite max (US t)":"130","Capacite max (t metrique)":"115","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2022","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"GRT9165","Capacite max (US t)":"165","Capacite max (t metrique)":"150","Longueur max boom (pi)":"205","Longueur max boom (m)":"62.5","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Truck-Mounted","Modele":"TMS800E","Capacite max (US t)":"90","Capacite max (t metrique)":"82","Longueur max boom (pi)":"134","Longueur max boom (m)":"41","Annee intro":"2018","Annee fin":"2020","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Truck-Mounted","Modele":"TMS9000-2","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2015","Annee fin":"2020","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Truck-Mounted","Modele":"TMS9000E","Capacite max (US t)":"115","Capacite max (t metrique)":"105","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2020","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Industriel","Modele":"YB4409","Capacite max (US t)":"9","Capacite max (t metrique)":"8","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Pick \u0026 carry"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Industriel","Modele":"YB5520","Capacite max (US t)":"22","Capacite max (t metrique)":"20","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Pick \u0026 carry"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Industriel","Modele":"YB7715","Capacite max (US t)":"15","Capacite max (t metrique)":"14","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Pick \u0026 carry"},{"Fabricant":"Grove (Manitowoc)","Pays origine":"USA","Type de grue":"Industriel","Modele":"YB7732","Capacite max (US t)":"33","Capacite max (t metrique)":"30","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"2018","Statut":"Remplace","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"All-Terrain","Modele":"175|AT","Capacite max (US t)":"175","Capacite max (t metrique)":"160","Longueur max boom (pi)":"220","Longueur max boom (m)":"67","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Premier AT Link-Belt depuis 10 ans"},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-8050 II","Capacite max (US t)":"50","Capacite max (t metrique)":"45","Longueur max boom (pi)":"112","Longueur max boom (m)":"34","Annee intro":"2012","Annee fin":"2018","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-8065 II","Capacite max (US t)":"65","Capacite max (t metrique)":"60","Longueur max boom (pi)":"110","Longueur max boom (m)":"33","Annee intro":"2014","Annee fin":"2018","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-8080 II","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2014","Annee fin":"2018","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-8090-2","Capacite max (US t)":"90","Capacite max (t metrique)":"82","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"2019","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-80100 II","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"2019","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-80130 II","Capacite max (US t)":"130","Capacite max (t metrique)":"115","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2015","Annee fin":"2020","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RTC-80150 II","Capacite max (US t)":"150","Capacite max (t metrique)":"135","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"2020","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"55|RT","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"110","Longueur max boom (m)":"33","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"65|RT","Capacite max (US t)":"65","Capacite max (t metrique)":"60","Longueur max boom (pi)":"110","Longueur max boom (m)":"33","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"70|RT","Capacite max (US t)":"70","Capacite max (t metrique)":"64","Longueur max boom (pi)":"110","Longueur max boom (m)":"33","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"75|RT","Capacite max (US t)":"75","Capacite max (t metrique)":"68","Longueur max boom (pi)":"115","Longueur max boom (m)":"35","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"80|RT","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"90|RT","Capacite max (US t)":"90","Capacite max (t metrique)":"82","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"100|RT","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"110|RT","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2021","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"120|RT","Capacite max (US t)":"120","Capacite max (t metrique)":"110","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2022","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"130|RT","Capacite max (US t)":"130","Capacite max (t metrique)":"120","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2022","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"150|RT","Capacite max (US t)":"150","Capacite max (t metrique)":"135","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2020","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"160|RT","Capacite max (US t)":"160","Capacite max (t metrique)":"145","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2022","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"175|RT","Capacite max (US t)":"175","Capacite max (t metrique)":"160","Longueur max boom (pi)":"205","Longueur max boom (m)":"62.5","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Truck-Mounted","Modele":"HTC-86100","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2012","Annee fin":"2015","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Truck-Mounted","Modele":"HTC-86110","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Truck-Mounted","Modele":"HTC-3140LB","Capacite max (US t)":"140","Capacite max (t metrique)":"127","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"TCC-500","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"110","Longueur max boom (m)":"34","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"TCC-750","Capacite max (US t)":"75","Capacite max (t metrique)":"68","Longueur max boom (pi)":"120","Longueur max boom (m)":"36","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"TCC-1100","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2015","Annee fin":"2018","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"TCC-1200","Capacite max (US t)":"120","Capacite max (t metrique)":"110","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"TCC-1400","Capacite max (US t)":"140","Capacite max (t metrique)":"127","Longueur max boom (pi)":"185","Longueur max boom (m)":"56","Annee intro":"2016","Annee fin":"2021","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"TCC-2500","Capacite max (US t)":"250","Capacite max (t metrique)":"227","Longueur max boom (pi)":"220","Longueur max boom (m)":"67","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"100|TC","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler telescopique","Modele":"140|TC","Capacite max (US t)":"140","Capacite max (t metrique)":"127","Longueur max boom (pi)":"185","Longueur max boom (m)":"56","Annee intro":"2021","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"138 HSL","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"175","Longueur max boom (m)":"53","Annee intro":"2012","Annee fin":"2014","Statut":"Remplace","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"218 HSL","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"240","Longueur max boom (m)":"73","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"248 HYLAB","Capacite max (US t)":"200","Capacite max (t metrique)":"180","Longueur max boom (pi)":"240","Longueur max boom (m)":"73","Annee intro":"2012","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"298 Series 2","Capacite max (US t)":"250","Capacite max (t metrique)":"227","Longueur max boom (pi)":"300","Longueur max boom (m)":"91","Annee intro":"2020","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"298|TC","Capacite max (US t)":"250","Capacite max (t metrique)":"227","Longueur max boom (pi)":"300","Longueur max boom (m)":"91","Annee intro":"2022","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Telescopique boom add-on"},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"348 Series 2","Capacite max (US t)":"300","Capacite max (t metrique)":"272","Longueur max boom (pi)":"330","Longueur max boom (m)":"100","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Link-Belt","Pays origine":"USA","Type de grue":"Crawler treillis","Modele":"568 Series 2","Capacite max (US t)":"600","Capacite max (t metrique)":"544","Longueur max boom (pi)":"430","Longueur max boom (m)":"130","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 45 City","Capacite max (US t)":"45","Capacite max (t metrique)":"41","Longueur max boom (pi)":"105","Longueur max boom (m)":"32","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Ex-Demag (compact)"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 80-4","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 100-4L","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 130-5","Capacite max (US t)":"130","Capacite max (t metrique)":"120","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 160-5","Capacite max (US t)":"160","Capacite max (t metrique)":"145","Longueur max boom (pi)":"223","Longueur max boom (m)":"68","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Single-cyl. pinning (TWIN)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 220-5","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"223","Longueur max boom (m)":"68","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 250-5","Capacite max (US t)":"250","Capacite max (t metrique)":"227","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 300-6","Capacite max (US t)":"300","Capacite max (t metrique)":"272","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 350-6","Capacite max (US t)":"350","Capacite max (t metrique)":"317","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"6","Mode extension":"Single-cyl. pinning (TWIN)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 500-8","Capacite max (US t)":"500","Capacite max (t metrique)":"453","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"AC 700-9","Capacite max (US t)":"700","Capacite max (t metrique)":"635","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"7","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 60G-3","Capacite max (US t)":"70","Capacite max (t metrique)":"60","Longueur max boom (pi)":"131","Longueur max boom (m)":"40","Annee intro":"2014","Annee fin":"2018","Statut":"Remplace","Sections boom":"5-6","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Remplace par AC"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 70G-4","Capacite max (US t)":"80","Capacite max (t metrique)":"70","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2014","Annee fin":"2018","Statut":"Remplace","Sections boom":"5-6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 90G-4","Capacite max (US t)":"105","Capacite max (t metrique)":"90","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2015","Annee fin":"2019","Statut":"Remplace","Sections boom":"5-6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 100G-4","Capacite max (US t)":"120","Capacite max (t metrique)":"100","Longueur max boom (pi)":"167","Longueur max boom (m)":"51","Annee intro":"2017","Annee fin":"2019","Statut":"Remplace","Sections boom":"5-6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 130G-5","Capacite max (US t)":"155","Capacite max (t metrique)":"130","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"2018","Statut":"Remplace","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 220G-5","Capacite max (US t)":"240","Capacite max (t metrique)":"220","Longueur max boom (pi)":"213","Longueur max boom (m)":"65","Annee intro":"2014","Annee fin":"2019","Statut":"Remplace","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"All-Terrain","Modele":"ATF 400G-6","Capacite max (US t)":"500","Capacite max (t metrique)":"400","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"2019","Statut":"Remplace","Sections boom":"7","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-150XL-3","Capacite max (US t)":"15","Capacite max (t metrique)":"13","Longueur max boom (pi)":"85","Longueur max boom (m)":"26","Annee intro":"2014","Annee fin":"2017","Statut":"Remplace","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-160XL-3","Capacite max (US t)":"16","Capacite max (t metrique)":"15","Longueur max boom (pi)":"85","Longueur max boom (m)":"26","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-300EX-3","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"102","Longueur max boom (m)":"31","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-300EX-4","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"102","Longueur max boom (m)":"31","Annee intro":"2020","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-550XL-3","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"108","Longueur max boom (m)":"33","Annee intro":"2016","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-700EX-3","Capacite max (US t)":"70","Capacite max (t metrique)":"63","Longueur max boom (pi)":"118","Longueur max boom (m)":"36","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-800EX-4","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"128","Longueur max boom (m)":"39","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-1000XL-4","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-1300XL-4","Capacite max (US t)":"130","Capacite max (t metrique)":"120","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-1600XL-4","Capacite max (US t)":"160","Capacite max (t metrique)":"145","Longueur max boom (pi)":"205","Longueur max boom (m)":"63","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-2000XL-3","Capacite max (US t)":"200","Capacite max (t metrique)":"180","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Rough-Terrain","Modele":"GR-2700XL","Capacite max (US t)":"270","Capacite max (t metrique)":"245","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-350","Capacite max (US t)":"35","Capacite max (t metrique)":"32","Longueur max boom (pi)":"102","Longueur max boom (m)":"31","Annee intro":"2014","Annee fin":"2016","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Tadano Mantis"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-600","Capacite max (US t)":"60","Capacite max (t metrique)":"55","Longueur max boom (pi)":"105","Longueur max boom (m)":"32","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Tadano Mantis"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-800","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"2016","Statut":"Remplace","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-1200","Capacite max (US t)":"120","Capacite max (t metrique)":"110","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-1600","Capacite max (US t)":"160","Capacite max (t metrique)":"145","Longueur max boom (pi)":"173","Longueur max boom (m)":"53","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-1800EX","Capacite max (US t)":"180","Capacite max (t metrique)":"163","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-2000","Capacite max (US t)":"200","Capacite max (t metrique)":"180","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler telescopique","Modele":"GTC-2200","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"203","Longueur max boom (m)":"62","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CC 2800-1","Capacite max (US t)":"660","Capacite max (t metrique)":"600","Longueur max boom (pi)":"276","Longueur max boom (m)":"84","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CC 3800-1","Capacite max (US t)":"715","Capacite max (t metrique)":"650","Longueur max boom (pi)":"334","Longueur max boom (m)":"102","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CC 6800-1","Capacite max (US t)":"1250","Capacite max (t metrique)":"1135","Longueur max boom (pi)":"433","Longueur max boom (m)":"132","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CC 8800-1","Capacite max (US t)":"1600","Capacite max (t metrique)":"1450","Longueur max boom (pi)":"433","Longueur max boom (m)":"132","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Ex-Demag"},{"Fabricant":"Tadano","Pays origine":"Japon","Type de grue":"Truck Crane","Modele":"HK 40","Capacite max (US t)":"44","Capacite max (t metrique)":"40","Longueur max boom (pi)":"105","Longueur max boom (m)":"32","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Camion-grue compact"},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1040-2.1","Capacite max (US t)":"50","Capacite max (t metrique)":"40","Longueur max boom (pi)":"115","Longueur max boom (m)":"35","Annee intro":"2008","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1050-3.1","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1060-3.1","Capacite max (US t)":"65","Capacite max (t metrique)":"60","Longueur max boom (pi)":"157","Longueur max boom (m)":"48","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1070-4.2","Capacite max (US t)":"80","Capacite max (t metrique)":"70","Longueur max boom (pi)":"164","Longueur max boom (m)":"50","Annee intro":"2014","Annee fin":"2024","Statut":"Remplace","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1090-4.2","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1100-4.2","Capacite max (US t)":"120","Capacite max (t metrique)":"110","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1110-5.2","Capacite max (US t)":"130","Capacite max (t metrique)":"120","Longueur max boom (pi)":"203","Longueur max boom (m)":"62","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1130-5.1","Capacite max (US t)":"130","Capacite max (t metrique)":"120","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1150-5.3","Capacite max (US t)":"175","Capacite max (t metrique)":"150","Longueur max boom (pi)":"217","Longueur max boom (m)":"66","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1160-5.2","Capacite max (US t)":"200","Capacite max (t metrique)":"180","Longueur max boom (pi)":"203","Longueur max boom (m)":"62","Annee intro":"2015","Annee fin":"2024","Statut":"Remplace","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1170-4.2","Capacite max (US t)":"200","Capacite max (t metrique)":"180","Longueur max boom (pi)":"203","Longueur max boom (m)":"62","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1230-5.1","Capacite max (US t)":"250","Capacite max (t metrique)":"230","Longueur max boom (pi)":"246","Longueur max boom (m)":"75","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1250-5.1","Capacite max (US t)":"275","Capacite max (t metrique)":"250","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1300-6.2","Capacite max (US t)":"330","Capacite max (t metrique)":"300","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1350-6.1","Capacite max (US t)":"400","Capacite max (t metrique)":"350","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2012","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1400-7.1","Capacite max (US t)":"450","Capacite max (t metrique)":"400","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2008","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1450-8.1","Capacite max (US t)":"500","Capacite max (t metrique)":"450","Longueur max boom (pi)":"279","Longueur max boom (m)":"85","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1500-8.1","Capacite max (US t)":"600","Capacite max (t metrique)":"500","Longueur max boom (pi)":"276","Longueur max boom (m)":"84","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1650-8.1","Capacite max (US t)":"800","Capacite max (t metrique)":"700","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1750-9.1","Capacite max (US t)":"900","Capacite max (t metrique)":"750","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2012","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 1800-9.1","Capacite max (US t)":"900","Capacite max (t metrique)":"800","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"All-Terrain","Modele":"LTM 11200-9.1","Capacite max (US t)":"1320","Capacite max (t metrique)":"1200","Longueur max boom (pi)":"328","Longueur max boom (m)":"100","Annee intro":"2008","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":"Plus grande AT au monde"},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Rough-Terrain","Modele":"LRT 1090-2.1","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5-6","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Rough-Terrain","Modele":"LRT 1100-2.1","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"164","Longueur max boom (m)":"50","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5-6","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler telescopique","Modele":"LTR 1100","Capacite max (US t)":"100","Capacite max (t metrique)":"100","Longueur max boom (pi)":"171","Longueur max boom (m)":"52","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler telescopique","Modele":"LTR 1220","Capacite max (US t)":"220","Capacite max (t metrique)":"220","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler telescopique","Modele":"LTR 1500","Capacite max (US t)":"500","Capacite max (t metrique)":"500","Longueur max boom (pi)":"276","Longueur max boom (m)":"84","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"6-7","Mode extension":"Telematik (single-cyl. pinning)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1160","Capacite max (US t)":"180","Capacite max (t metrique)":"180","Longueur max boom (pi)":"325","Longueur max boom (m)":"99","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1250","Capacite max (US t)":"250","Capacite max (t metrique)":"250","Longueur max boom (pi)":"299","Longueur max boom (m)":"91","Annee intro":"2008","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1300 SX","Capacite max (US t)":"300","Capacite max (t metrique)":"300","Longueur max boom (pi)":"345","Longueur max boom (m)":"105","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1500","Capacite max (US t)":"500","Capacite max (t metrique)":"500","Longueur max boom (pi)":"472","Longueur max boom (m)":"144","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1600/2","Capacite max (US t)":"600","Capacite max (t metrique)":"600","Longueur max boom (pi)":"551","Longueur max boom (m)":"168","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1700-1.0","Capacite max (US t)":"700","Capacite max (t metrique)":"700","Longueur max boom (pi)":"551","Longueur max boom (m)":"168","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1750/2","Capacite max (US t)":"750","Capacite max (t metrique)":"750","Longueur max boom (pi)":"505","Longueur max boom (m)":"154","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 1800-1.0","Capacite max (US t)":"800","Capacite max (t metrique)":"800","Longueur max boom (pi)":"571","Longueur max boom (m)":"174","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 11000","Capacite max (US t)":"1000","Capacite max (t metrique)":"1000","Longueur max boom (pi)":"541","Longueur max boom (m)":"165","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 12500-1.0","Capacite max (US t)":"2500","Capacite max (t metrique)":"2500","Longueur max boom (pi)":"571","Longueur max boom (m)":"174","Annee intro":"2024","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Liebherr","Pays origine":"Allemagne/Autriche","Type de grue":"Crawler treillis","Modele":"LR 13000","Capacite max (US t)":"3000","Capacite max (t metrique)":"3000","Longueur max boom (pi)":"801","Longueur max boom (m)":"244","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Plus grande crawler au monde"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"All-Terrain","Modele":"Demag AC 200-1","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"220","Longueur max boom (m)":"67","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"7","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Vendu a Tadano 2019"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"All-Terrain","Modele":"Demag AC 250-1","Capacite max (US t)":"250","Capacite max (t metrique)":"220","Longueur max boom (pi)":"230","Longueur max boom (m)":"70","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"7","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Vendu a Tadano 2019"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"All-Terrain","Modele":"Demag AC 350-6","Capacite max (US t)":"350","Capacite max (t metrique)":"300","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"7","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Devenu Tadano AC 300-6"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"All-Terrain","Modele":"Demag AC 700","Capacite max (US t)":"700","Capacite max (t metrique)":"600","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"7","Mode extension":"Single-cyl. pinning (TWIN)","Notes":"Devenu Tadano AC 700-9"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex RT 230","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"88","Longueur max boom (m)":"27","Annee intro":"2010","Annee fin":"2017","Statut":"Discontinue","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Production cessee ~2017"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex RT 345","Capacite max (US t)":"45","Capacite max (t metrique)":"40","Longueur max boom (pi)":"98","Longueur max boom (m)":"30","Annee intro":"2010","Annee fin":"2017","Statut":"Discontinue","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex RT 555-2","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"108","Longueur max boom (m)":"33","Annee intro":"2012","Annee fin":"2017","Statut":"Discontinue","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex RT 670","Capacite max (US t)":"70","Capacite max (t metrique)":"63","Longueur max boom (pi)":"110","Longueur max boom (m)":"33","Annee intro":"2015","Annee fin":"2019","Statut":"Discontinue","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Production cessee ~2019"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex RT 780","Capacite max (US t)":"80","Capacite max (t metrique)":"73","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex RT 1045","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex Challenger 3160","Capacite max (US t)":"66","Capacite max (t metrique)":"60","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Rough-Terrain","Modele":"Terex Challenger 3180","Capacite max (US t)":"88","Capacite max (t metrique)":"80","Longueur max boom (pi)":"164","Longueur max boom (m)":"50","Annee intro":"2014","Annee fin":"2019","Statut":"Discontinue","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Crawler treillis","Modele":"Demag CC 2800-1","Capacite max (US t)":"660","Capacite max (t metrique)":"600","Longueur max boom (pi)":"276","Longueur max boom (m)":"84","Annee intro":"2010","Annee fin":"2019","Statut":"Discontinue","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Vendu a Tadano 2019"},{"Fabricant":"Terex","Pays origine":"USA/All.","Type de grue":"Crawler treillis","Modele":"Demag CC 8800-1","Capacite max (US t)":"1760","Capacite max (t metrique)":"1600","Longueur max boom (pi)":"433","Longueur max boom (m)":"132","Annee intro":"2010","Annee fin":"2019","Statut":"Discontinue","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Vendu a Tadano 2019"},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE600G","Capacite max (US t)":"66","Capacite max (t metrique)":"60","Longueur max boom (pi)":"164","Longueur max boom (m)":"50","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE700G","Capacite max (US t)":"77","Capacite max (t metrique)":"70","Longueur max boom (pi)":"174","Longueur max boom (m)":"53","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE800G","Capacite max (US t)":"88","Capacite max (t metrique)":"80","Longueur max boom (pi)":"174","Longueur max boom (m)":"53","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE900G","Capacite max (US t)":"99","Capacite max (t metrique)":"90","Longueur max boom (pi)":"200","Longueur max boom (m)":"61","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CK850G","Capacite max (US t)":"94","Capacite max (t metrique)":"85","Longueur max boom (pi)":"200","Longueur max boom (m)":"61","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE1100G","Capacite max (US t)":"121","Capacite max (t metrique)":"110","Longueur max boom (pi)":"220","Longueur max boom (m)":"67","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CK1100G-2","Capacite max (US t)":"121","Capacite max (t metrique)":"110","Longueur max boom (pi)":"249","Longueur max boom (m)":"76","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE1350G","Capacite max (US t)":"149","Capacite max (t metrique)":"135","Longueur max boom (pi)":"262","Longueur max boom (m)":"80","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CK1600G","Capacite max (US t)":"176","Capacite max (t metrique)":"160","Longueur max boom (pi)":"299","Longueur max boom (m)":"91","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE1800G","Capacite max (US t)":"198","Capacite max (t metrique)":"180","Longueur max boom (pi)":"289","Longueur max boom (m)":"88","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CK2750G-2","Capacite max (US t)":"303","Capacite max (t metrique)":"275","Longueur max boom (pi)":"328","Longueur max boom (m)":"100","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CK3000G","Capacite max (US t)":"330","Capacite max (t metrique)":"300","Longueur max boom (pi)":"299","Longueur max boom (m)":"91","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CKE2500G","Capacite max (US t)":"275","Capacite max (t metrique)":"250","Longueur max boom (pi)":"322","Longueur max boom (m)":"98","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Kobelco","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"CK7000G","Capacite max (US t)":"848","Capacite max (t metrique)":"770","Longueur max boom (pi)":"400","Longueur max boom (m)":"122","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sumitomo (HSC)","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"SCX700-3","Capacite max (US t)":"77","Capacite max (t metrique)":"70","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Anciennement Hitachi-Sumitomo"},{"Fabricant":"Sumitomo (HSC)","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"SCX900-3","Capacite max (US t)":"99","Capacite max (t metrique)":"90","Longueur max boom (pi)":"217","Longueur max boom (m)":"66","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sumitomo (HSC)","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"SCX1500-3","Capacite max (US t)":"165","Capacite max (t metrique)":"150","Longueur max boom (pi)":"249","Longueur max boom (m)":"76","Annee intro":"2016","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sumitomo (HSC)","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"SCX2000A-3","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"295","Longueur max boom (m)":"90","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sumitomo (HSC)","Pays origine":"Japon","Type de grue":"Crawler treillis","Modele":"SCX2800A-3","Capacite max (US t)":"303","Capacite max (t metrique)":"275","Longueur max boom (pi)":"328","Longueur max boom (m)":"100","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"SCC500A","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"164","Longueur max boom (m)":"50","Annee intro":"2015","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":"Presence NA limitee"},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"SCC650","Capacite max (US t)":"72","Capacite max (t metrique)":"65","Longueur max boom (pi)":"184","Longueur max boom (m)":"56","Annee intro":"2016","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"SCC800TB","Capacite max (US t)":"88","Capacite max (t metrique)":"80","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"SCC1000","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2015","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"SCC1500","Capacite max (US t)":"165","Capacite max (t metrique)":"150","Longueur max boom (pi)":"246","Longueur max boom (m)":"75","Annee intro":"2016","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"SCC2500A","Capacite max (US t)":"275","Capacite max (t metrique)":"250","Longueur max boom (pi)":"299","Longueur max boom (m)":"91","Annee intro":"2018","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"All-Terrain","Modele":"SAC2200","Capacite max (US t)":"220","Capacite max (t metrique)":"200","Longueur max boom (pi)":"213","Longueur max boom (m)":"65","Annee intro":"2018","Annee fin":"","Statut":"Actif limite NA","Sections boom":"6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Rough-Terrain","Modele":"SRC550","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"108","Longueur max boom (m)":"33","Annee intro":"2018","Annee fin":"","Statut":"Actif limite NA","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Sany","Pays origine":"Chine","Type de grue":"Rough-Terrain","Modele":"SRC1000","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2019","Annee fin":"","Statut":"Actif limite NA","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"XCMG","Pays origine":"Chine","Type de grue":"Rough-Terrain","Modele":"RT55","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"108","Longueur max boom (m)":"33","Annee intro":"2017","Annee fin":"","Statut":"Actif limite NA","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"XCMG","Pays origine":"Chine","Type de grue":"Rough-Terrain","Modele":"RT75","Capacite max (US t)":"75","Capacite max (t metrique)":"68","Longueur max boom (pi)":"125","Longueur max boom (m)":"38","Annee intro":"2018","Annee fin":"","Statut":"Actif limite NA","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"XCMG","Pays origine":"Chine","Type de grue":"Rough-Terrain","Modele":"RT100","Capacite max (US t)":"100","Capacite max (t metrique)":"90","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2018","Annee fin":"","Statut":"Actif limite NA","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"XCMG","Pays origine":"Chine","Type de grue":"All-Terrain","Modele":"XCA60","Capacite max (US t)":"66","Capacite max (t metrique)":"60","Longueur max boom (pi)":"154","Longueur max boom (m)":"47","Annee intro":"2018","Annee fin":"","Statut":"Actif limite NA","Sections boom":"5-6","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"XCMG","Pays origine":"Chine","Type de grue":"All-Terrain","Modele":"XCA130","Capacite max (US t)":"143","Capacite max (t metrique)":"130","Longueur max boom (pi)":"197","Longueur max boom (m)":"60","Annee intro":"2019","Annee fin":"","Statut":"Actif limite NA","Sections boom":"6-7","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"XCMG","Pays origine":"Chine","Type de grue":"Crawler treillis","Modele":"XGC180","Capacite max (US t)":"198","Capacite max (t metrique)":"180","Longueur max boom (pi)":"312","Longueur max boom (m)":"95","Annee intro":"2020","Annee fin":"","Statut":"Actif limite NA","Sections boom":"N/A","Mode extension":"N/A (treillis fixe)","Notes":""},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-20-1A","Capacite max (US t)":"1","Capacite max (t metrique)":"1","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-35-2C","Capacite max (US t)":"3.5","Capacite max (t metrique)":"3","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-80-3J","Capacite max (US t)":"8","Capacite max (t metrique)":"7","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-200-3H","Capacite max (US t)":"15","Capacite max (t metrique)":"14","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-400-3G","Capacite max (US t)":"18","Capacite max (t metrique)":"16","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-880-3D","Capacite max (US t)":"40","Capacite max (t metrique)":"36","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Industriel","Modele":"IC-880-3E","Capacite max (US t)":"40","Capacite max (t metrique)":"36","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck"},{"Fabricant":"Broderson","Pays origine":"USA","Type de grue":"Rough-Terrain","Modele":"RT-300-2B","Capacite max (US t)":"27","Capacite max (t metrique)":"24","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Shuttlelift","Pays origine":"USA","Type de grue":"Industriel","Modele":"CD3380","Capacite max (US t)":"38","Capacite max (t metrique)":"34","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":"Carry deck/gantry"},{"Fabricant":"Shuttlelift","Pays origine":"USA","Type de grue":"Industriel","Modele":"CD4400","Capacite max (US t)":"44","Capacite max (t metrique)":"40","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Shuttlelift","Pays origine":"USA","Type de grue":"Industriel","Modele":"CD5500","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Shuttlelift","Pays origine":"USA","Type de grue":"Industriel","Modele":"CD7745","Capacite max (US t)":"110","Capacite max (t metrique)":"100","Longueur max boom (pi)":"0","Longueur max boom (m)":"0","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"3-4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"1768","Capacite max (US t)":"17","Capacite max (t metrique)":"15","Longueur max boom (pi)":"68","Longueur max boom (m)":"21","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"22101S","Capacite max (US t)":"22","Capacite max (t metrique)":"20","Longueur max boom (pi)":"101","Longueur max boom (m)":"31","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"26101C","Capacite max (US t)":"26","Capacite max (t metrique)":"24","Longueur max boom (pi)":"101","Longueur max boom (m)":"31","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"28101S","Capacite max (US t)":"28","Capacite max (t metrique)":"25","Longueur max boom (pi)":"101","Longueur max boom (m)":"31","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"30100C","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"100","Longueur max boom (m)":"30","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"30102C","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"102","Longueur max boom (m)":"31","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"30112S","Capacite max (US t)":"30","Capacite max (t metrique)":"27","Longueur max boom (pi)":"112","Longueur max boom (m)":"34","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"35124C","Capacite max (US t)":"35","Capacite max (t metrique)":"32","Longueur max boom (pi)":"124","Longueur max boom (m)":"38","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"40124SHL","Capacite max (US t)":"40","Capacite max (t metrique)":"36","Longueur max boom (pi)":"124","Longueur max boom (m)":"38","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"40142S","Capacite max (US t)":"40","Capacite max (t metrique)":"36","Longueur max boom (pi)":"142","Longueur max boom (m)":"43","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"50128S","Capacite max (US t)":"50","Capacite max (t metrique)":"45","Longueur max boom (pi)":"128","Longueur max boom (m)":"39","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"50155S","Capacite max (US t)":"50","Capacite max (t metrique)":"45","Longueur max boom (pi)":"155","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TC50155HL","Capacite max (US t)":"50","Capacite max (t metrique)":"45","Longueur max boom (pi)":"155","Longueur max boom (m)":"47","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TC50155S","Capacite max (US t)":"50","Capacite max (t metrique)":"45","Longueur max boom (pi)":"155","Longueur max boom (m)":"47","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TC55142S","Capacite max (US t)":"55","Capacite max (t metrique)":"50","Longueur max boom (pi)":"142","Longueur max boom (m)":"43","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TC60155","Capacite max (US t)":"60","Capacite max (t metrique)":"54","Longueur max boom (pi)":"155","Longueur max boom (m)":"47","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TC65149","Capacite max (US t)":"65","Capacite max (t metrique)":"59","Longueur max boom (pi)":"149","Longueur max boom (m)":"45","Annee intro":"2016","Annee fin":"","Statut":"Actif","Sections boom":"5","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TC700","Capacite max (US t)":"40","Capacite max (t metrique)":"36","Longueur max boom (pi)":"127","Longueur max boom (m)":"39","Annee intro":"2014","Annee fin":"","Statut":"Remplace","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"TM200","Capacite max (US t)":"20","Capacite max (t metrique)":"18","Longueur max boom (pi)":"108","Longueur max boom (m)":"33","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4-5","Mode extension":"Proportionnel (cable + cyl.)","Notes":"Articule"},{"Fabricant":"Manitex","Pays origine":"USA","Type de grue":"Truck-Mounted (Boom Truck)","Modele":"1970C","Capacite max (US t)":"19","Capacite max (t metrique)":"17","Longueur max boom (pi)":"70","Longueur max boom (m)":"21","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel (cable + cyl.)","Notes":""},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 25E","Capacite max (US t)":"2.7","Capacite max (t metrique)":"2.5","Longueur max boom (pi)":"13","Longueur max boom (m)":"4","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Marque Valla acquise Manitex"},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 50E","Capacite max (US t)":"5.5","Capacite max (t metrique)":"5","Longueur max boom (pi)":"16","Longueur max boom (m)":"5","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Valla"},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 90E","Capacite max (US t)":"10","Capacite max (t metrique)":"9","Longueur max boom (pi)":"18","Longueur max boom (m)":"5.5","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Valla"},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 120E","Capacite max (US t)":"13","Capacite max (t metrique)":"12","Longueur max boom (pi)":"20","Longueur max boom (m)":"6","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Valla"},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 200E","Capacite max (US t)":"22","Capacite max (t metrique)":"20","Longueur max boom (pi)":"25","Longueur max boom (m)":"7.5","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Valla"},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 330E","Capacite max (US t)":"36","Capacite max (t metrique)":"33","Longueur max boom (pi)":"30","Longueur max boom (m)":"9","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Valla"},{"Fabricant":"Manitex","Pays origine":"Italie","Type de grue":"Mini (Pick \u0026 Carry)","Modele":"Valla 525TLR","Capacite max (US t)":"58","Capacite max (t metrique)":"52","Longueur max boom (pi)":"36","Longueur max boom (m)":"11","Annee intro":"2020","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Valla rough terrain"},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC104CRM","Capacite max (US t)":"1","Capacite max (t metrique)":"0.8","Longueur max boom (pi)":"18.5","Longueur max boom (m)":"5.6","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Mini crawler spider"},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC174CRM","Capacite max (US t)":"1.7","Capacite max (t metrique)":"1.6","Longueur max boom (pi)":"26","Longueur max boom (m)":"7.9","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC285C-3","Capacite max (US t)":"2.9","Capacite max (t metrique)":"2.7","Longueur max boom (pi)":"26","Longueur max boom (m)":"7.9","Annee intro":"2010","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC305C-3","Capacite max (US t)":"3","Capacite max (t metrique)":"2.8","Longueur max boom (pi)":"29","Longueur max boom (m)":"8.7","Annee intro":"2015","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC305CRM-E","Capacite max (US t)":"3","Capacite max (t metrique)":"2.8","Longueur max boom (pi)":"29","Longueur max boom (m)":"8.7","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Version electrique"},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC405C-3","Capacite max (US t)":"4","Capacite max (t metrique)":"3.8","Longueur max boom (pi)":"32","Longueur max boom (m)":"9.8","Annee intro":"2017","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC405CRM-E","Capacite max (US t)":"4","Capacite max (t metrique)":"3.8","Longueur max boom (pi)":"32","Longueur max boom (m)":"9.8","Annee intro":"2019","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Electrique"},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC815C","Capacite max (US t)":"8","Capacite max (t metrique)":"7.3","Longueur max boom (pi)":"50","Longueur max boom (m)":"15.1","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Spider)","Modele":"MC1351C","Capacite max (US t)":"13","Capacite max (t metrique)":"12","Longueur max boom (pi)":"67","Longueur max boom (m)":"20.4","Annee intro":"2016","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini (Wheeled)","Modele":"LC785M5","Capacite max (US t)":"3","Capacite max (t metrique)":"2.8","Longueur max boom (pi)":"29","Longueur max boom (m)":"8.7","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini (Wheeled)","Modele":"LC1385M5","Capacite max (US t)":"5","Capacite max (t metrique)":"4.6","Longueur max boom (pi)":"36","Longueur max boom (m)":"11","Annee intro":"2016","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Compact)","Modele":"CC423S-1","Capacite max (US t)":"2.6","Capacite max (t metrique)":"2.4","Longueur max boom (pi)":"20","Longueur max boom (m)":"6","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Compact)","Modele":"CC1485S-1","Capacite max (US t)":"4","Capacite max (t metrique)":"3.8","Longueur max boom (pi)":"26","Longueur max boom (m)":"7.9","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Mini-Crawler (Compact)","Modele":"CC1908S-1","Capacite max (US t)":"8","Capacite max (t metrique)":"7.3","Longueur max boom (pi)":"39","Longueur max boom (m)":"11.9","Annee intro":"2018","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":""},{"Fabricant":"Maeda","Pays origine":"Japon","Type de grue":"Truck-Mounted (Mini)","Modele":"MK1033A","Capacite max (US t)":"3","Capacite max (t metrique)":"2.8","Longueur max boom (pi)":"33","Longueur max boom (m)":"10","Annee intro":"2014","Annee fin":"","Statut":"Actif","Sections boom":"4","Mode extension":"Proportionnel","Notes":"Sur camion compact"}];
+const EDIT_STORAGE_KEY = 'grues_edits_v1';
+
+function loadEdits() {
+  try { return JSON.parse(localStorage.getItem(EDIT_STORAGE_KEY) || '{}'); }
+  catch(e) { return {}; }
+}
+function saveEdits(edits) {
+  localStorage.setItem(EDIT_STORAGE_KEY, JSON.stringify(edits));
+}
+function rowId(r) {
+  // Stable identifier: original Fabricant + Modele + Annee intro
+  return (r._origFab || r['Fabricant']) + '||' + (r._origMod || r['Modele']) + '||' + (r._origYear || r['Annee intro']);
+}
+let EDITS = loadEdits();
+
+function applyEdits() {
+  const merged = ORIGINAL.map(r => {
+    const o = Object.assign({}, r);
+    o._origFab = r['Fabricant'];
+    o._origMod = r['Modele'];
+    o._origYear = r['Annee intro'];
+    const id = rowId(o);
+    if (EDITS[id]) {
+      Object.assign(o, EDITS[id]);
+      o._edited = true;
+    }
+    return o;
+  });
+  return merged;
+}
+// Expand each model into one row per year sold (intro..fin or current year)
+const PORTAL_MIN_YEAR = 2015;
+const PORTAL_MAX_YEAR = 2026;
+function expandByYear(models) {
+  const out = [];
+  models.forEach(m => {
+    const intro = parseInt(m['Annee intro']||'0', 10);
+    const finRaw = (m['Annee fin']||'').toString().trim();
+    let fin = finRaw ? parseInt(finRaw, 10) : PORTAL_MAX_YEAR;
+    if (!intro) { out.push(Object.assign({}, m, {Annee:''})); return; }
+    const y1 = Math.max(intro, PORTAL_MIN_YEAR);
+    const y2 = Math.min(fin || PORTAL_MAX_YEAR, PORTAL_MAX_YEAR);
+    if (y1 > y2) {
+      out.push(Object.assign({}, m, {Annee:String(intro)}));
+      return;
+    }
+    for (let y = y1; y <= y2; y++) {
+      out.push(Object.assign({}, m, {Annee:String(y)}));
+    }
+  });
+  return out;
+}
+let DATA = expandByYear(applyEdits());
+
+const COLS = [
+  {key:'Fabricant', label:'Fabricant', w:'110px'},
+  {key:'Modele', label:'Modele', w:'130px'},
+  {key:'__notes__', label:'Notes', w:'50px', center:true},
+  {key:'__flag__', label:'ðŸš©', w:'30px', center:true},
+  {key:'__capacite__', label:'Capacite (US t / mt)', sortBy:'Capacite max (US t)', w:'140px'},
+  {key:'__boom__', label:'Boom max (pi / m)', sortBy:'Longueur max boom (pi)', w:'130px'},
+  {key:'Sections boom', label:'Sections', w:'70px'},
+  {key:'Mode extension', label:'Mode extension', w:'200px'}
+];
+let sortKey = 'Fabricant', sortAsc = true;
+
+function typeChip(t) {
+  if (!t) return '';
+  if (t.indexOf('All-Terrain')===0) return '<span class="chip AT">AT</span>';
+  if (t.indexOf('Rough-Terrain')===0) return '<span class="chip RT">RT</span>';
+  if (t.indexOf('Truck-Mounted')===0) return '<span class="chip TM">'+(t.indexOf('Boom')!==-1?'BT':'TM')+'</span>';
+  if (t.indexOf('Crawler telescopique')===0) return '<span class="chip CT">CT</span>';
+  if (t.indexOf('Crawler treillis')===0) return '<span class="chip CL">CL</span>';
+  if (t.indexOf('Industriel')===0) return '<span class="chip IN">IND</span>';
+  if (t.indexOf('Mini')===0) return '<span class="chip MI">MINI</span>';
+  if (t.indexOf('Truck Crane')===0) return '<span class="chip TM">TC</span>';
+  return t;
+}
+function statusCls(s) {
+  if (!s) return '';
+  if (s.indexOf('Actif limite')!==-1) return 'status-limite';
+  if (s.indexOf('Actif')===0) return 'status-actif';
+  if (s.indexOf('Remplace')===0) return 'status-remplace';
+  if (s.indexOf('Discontinue')===0) return 'status-discontinue';
+  return '';
+}
+function modeTag(m) {
+  if (!m) return '';
+  if (m.indexOf('N/A')===0) return '<span class="mode-tag na">N/A treillis</span>';
+  if (m.indexOf('Telematik')!==-1) return '<span class="mode-tag telematik">Telematik</span>';
+  if (m.indexOf('TWIN')!==-1) return '<span class="mode-tag twin">Twin pinning</span>';
+  if (m.indexOf('MEGAFORM')!==-1) return '<span class="mode-tag mega">MEGAFORM</span>';
+  if (m.indexOf('Proportionnel')===0) return '<span class="mode-tag">Proportionnel</span>';
+  return m;
+}
+function uniq(arr) { return [...new Set(arr)].filter(x=>x && x.trim()).sort(); }
+
+function buildFilters() {
+  const f = (id, key) => {
+    const sel = document.getElementById(id);
+    uniq(DATA.map(r=>r[key])).forEach(v=>{
+      const o = document.createElement('option');
+      o.value = v; o.textContent = v; sel.appendChild(o);
+    });
+  };
+  f('db-type','Type de grue');
+  f('db-fab','Fabricant');
+  const years = uniq(DATA.map(r=>r['Annee'])).reverse();
+  const ya = document.getElementById('db-annee');
+  years.forEach(v=>{
+    const o = document.createElement('option');
+    o.value = v; o.textContent = v; ya.appendChild(o);
+  });
+}
+
+function buildHeader() {
+  const hr = document.getElementById('hdr-row');
+  hr.innerHTML = '';
+  COLS.forEach(c=>{
+    const th = document.createElement('th');
+    if (c.w) { th.style.width = c.w; th.style.minWidth = c.w; th.style.maxWidth = c.w; }
+    if (c.center) th.style.textAlign = 'center';
+    th.innerHTML = c.label + ' <span class="sort-arrow">&#9650;</span>';
+    th.onclick = ()=>{
+      const sk = c.sortBy || c.key;
+      if (sortKey===sk) sortAsc=!sortAsc; else { sortKey=sk; sortAsc=true; }
+      [...hr.children].forEach(x=>{ x.classList.remove('sorted'); x.querySelector('.sort-arrow').innerHTML='&#9650;'; });
+      th.classList.add('sorted');
+      th.querySelector('.sort-arrow').innerHTML = sortAsc ? '&#9650;' : '&#9660;';
+      render();
+    };
+    hr.appendChild(th);
+  });
+}
+
+function render() {
+  const typ = document.getElementById('db-type').value;
+  const fab = document.getElementById('db-fab').value;
+  const yr  = document.getElementById('db-annee').value;
+  const s   = document.getElementById('db-search').value.toLowerCase();
+
+  let rows = DATA.filter(r=>{
+    if (typ && r['Type de grue']!==typ) return false;
+    if (fab && r['Fabricant']!==fab) return false;
+    if (yr && String(r['Annee'])!==yr) return false;
+    if (s) {
+      const blob = Object.values(r).join(' ').toLowerCase();
+      if (blob.indexOf(s) === -1) return false;
+    }
+    return true;
+  });
+
+  if (sortKey) {
+    rows.sort((a,b)=>{
+      const A=a[sortKey]||'', B=b[sortKey]||'';
+      const nA=parseFloat(A), nB=parseFloat(B);
+      const isNum = !isNaN(nA) && !isNaN(nB) && A!=='' && B!=='';
+      const cmp = isNum ? (nA-nB) : String(A).localeCompare(String(B));
+      return sortAsc ? cmp : -cmp;
+    });
+  }
+
+  const tb = document.getElementById('db-tbody');
+  tb.innerHTML = '';
+  if (rows.length === 0) {
+    tb.innerHTML = '<tr><td colspan="'+COLS.length+'" style="padding:30px;text-align:center;color:#666;">Aucun modele ne correspond aux filtres.</td></tr>';
+  } else {
+    const frag = document.createDocumentFragment();
+    rows.forEach(r=>{
+      const tr = document.createElement('tr');
+      COLS.forEach(c=>{
+        const td = document.createElement('td');
+        let v = r[c.key]||'';
+        if (c.key==='__capacite__') {
+          const us = r['Capacite max (US t)']||'';
+          const mt = r['Capacite max (t metrique)']||'';
+          if (!us && !mt) td.textContent = 'â€”';
+          else td.innerHTML = '<span style="color:#fff;font-weight:600">'+us+'</span> <span style="color:#888">/</span> <span style="color:#bbb">'+mt+'</span>';
+        }
+        else if (c.key==='__boom__') {
+          const pi = r['Longueur max boom (pi)']||'';
+          const m  = r['Longueur max boom (m)']||'';
+          const isZero = (pi==='0' || pi==='0.0') && (m==='0' || m==='0.0');
+          if (isZero || (!pi && !m)) td.textContent = 'â€”';
+          else td.innerHTML = '<span style="color:#fff;font-weight:600">'+pi+'</span> <span style="color:#888">/</span> <span style="color:#bbb">'+m+'</span>';
+        }
+        else if (c.key==='Modele') {
+          td.className = 'db-fixed-col';
+          const link = document.createElement('a');
+          link.className = 'db-modele-link';
+          link.href = 'javascript:void(0)';
+          link.textContent = v;
+          link.title = 'Editer ' + (r['Fabricant']||'') + ' ' + v + ' (' + (r['Annee']||'') + ')';
+          link.onclick = (e) => { e.preventDefault(); openEditView(r); };
+          td.appendChild(link);
+          const yearSpan = document.createElement('span');
+          yearSpan.className = 'db-modele-year';
+          yearSpan.textContent = ' ' + (r['Annee']||'');
+          td.appendChild(yearSpan);
+          if (r._edited) {
+            const b = document.createElement('span');
+            b.className = 'edited-badge'; b.textContent = 'Edite';
+            td.appendChild(b);
+          }
+          // Fabricant inline for mobile (hidden by CSS on desktop)
+          const fabSub = document.createElement('div');
+          fabSub.className = 'db-fab-mobile';
+          fabSub.textContent = r['Fabricant'] || '';
+          td.appendChild(fabSub);
+        }
+        else if (c.key==='Fabricant') {
+          td.className = 'db-fixed-col';
+          td.textContent = v;
+        }
+        else if (c.key==='__notes__') {
+          const dot = document.createElement('span');
+          dot.className = 'db-note-dot' + ((r['Notes']||'').trim() ? ' has-note' : '');
+          dot.title = (r['Notes']||'').trim() || 'Aucune note';
+          td.style.textAlign = 'center';
+          td.appendChild(dot);
+        }
+        else if (c.key==='__flag__') {
+          td.style.textAlign = 'center';
+          td.style.fontSize = '0.9rem';
+          const btn = document.createElement('button');
+          btn.className = 'flag-btn';
+          btn.textContent = 'ðŸš©';
+          btn.title = 'Drapeau (a venir)';
+          td.appendChild(btn);
+        }
+        else if (c.key==='Type de grue') { td.innerHTML = typeChip(v); td.title = v; }
+        else td.textContent = v;
+        tr.appendChild(td);
+      });
+      frag.appendChild(tr);
+    });
+    tb.appendChild(frag);
+  }
+  document.getElementById('db-stats').innerHTML = '<strong>'+rows.length+'</strong> modeles affiches sur <strong>'+DATA.length+'</strong>';
+}
+
+// ---- Edit view (same look as edit-machine.html des excavatrices) ----
+let currentEditRow = null;
+let editDraft = {};      // Pending changes for current row
+const SPEC_FIELDS = [
+  {key:'Fabricant',                  label:'Fabricant',          type:'text'},
+  {key:'Modele',                     label:'Modele',             type:'text'},
+  {key:'Annee intro',                label:'Annee debut',        type:'number'},
+  {key:'Annee fin',                  label:'Annee fin (vide=actif)', type:'number'},
+  {key:'Pays origine',               label:'Pays origine',       type:'text'},
+  {key:'Type de grue',               label:'Type de grue',       type:'text', list:'ed-types'},
+  {key:'Capacite max (US t)',        label:'Capacite (US t)',    type:'number', step:'0.1'},
+  {key:'Capacite max (t metrique)',  label:'Capacite (t metrique)', type:'number', step:'0.1'},
+  {key:'Longueur max boom (pi)',     label:'Boom max (pi)',      type:'number', step:'0.1'},
+  {key:'Longueur max boom (m)',      label:'Boom max (m)',       type:'number', step:'0.1'},
+  {key:'Sections boom',              label:'Sections boom',      type:'text'},
+  {key:'Mode extension',             label:'Mode extension',     type:'text', list:'ed-modes'},
+  {key:'Statut',                     label:'Statut',             type:'text', list:'ed-statuts'}
+];
+
+function populateDatalists() {
+  const dl = (id, key) => {
+    const el = document.getElementById(id);
+    el.innerHTML = '';
+    uniq(ORIGINAL.map(r=>r[key])).forEach(v=>{
+      const o = document.createElement('option'); o.value = v; el.appendChild(o);
+    });
+  };
+  dl('ed-types','Type de grue');
+  dl('ed-modes','Mode extension');
+  dl('ed-statuts','Statut');
+}
+
+function getOriginalFor(row) {
+  return ORIGINAL.find(o => o['Fabricant']===row._origFab && o['Modele']===row._origMod && o['Annee intro']===row._origYear) || row;
+}
+
+function buildSpecsGrid(row) {
+  const grid = document.getElementById('specs-edit-grid');
+  grid.innerHTML = '';
+  const orig = getOriginalFor(row);
+  SPEC_FIELDS.forEach(f => {
+    const wrap = document.createElement('div');
+    wrap.className = 'spec-edit';
+    wrap.dataset.key = f.key;
+    const lab = document.createElement('label');
+    lab.textContent = f.label;
+    const inp = document.createElement('input');
+    inp.type = f.type;
+    if (f.step) inp.step = f.step;
+    if (f.list) inp.setAttribute('list', f.list);
+    inp.value = row[f.key] != null ? row[f.key] : '';
+    inp.dataset.original = orig[f.key] != null ? orig[f.key] : '';
+    inp.addEventListener('input', () => {
+      editDraft[f.key] = inp.value;
+      const changed = String(inp.value) !== String(inp.dataset.original);
+      wrap.classList.toggle('changed', changed);
+      refreshDirty();
+    });
+    wrap.appendChild(lab);
+    wrap.appendChild(inp);
+    if (String(inp.value) !== String(inp.dataset.original)) wrap.classList.add('changed');
+    grid.appendChild(wrap);
+  });
+}
+
+function refreshDirty() {
+  const orig = getOriginalFor(currentEditRow);
+  const notes = document.getElementById('ev-notes').value;
+  let n = 0;
+  if (String(notes) !== String(orig['Notes']||'')) n++;
+  SPEC_FIELDS.forEach(f => {
+    const v = editDraft[f.key];
+    if (v !== undefined && String(v) !== String(orig[f.key]||'')) n++;
+  });
+  const dis = n === 0;
+  ['btn-save','btn-save-top','btn-reset','btn-reset-top'].forEach(id => {
+    document.getElementById(id).disabled = dis;
+  });
+  document.getElementById('btn-save').innerHTML = '&#128190; Sauvegarder' + (n>0?' ('+n+' chgmt)':'');
+  document.getElementById('btn-save-top').innerHTML = '&#128190; Sauvegarder' + (n>0?' ('+n+')':'');
+}
+
+function openEditView(r) {
+  currentEditRow = r;
+  editDraft = {};
+  const title = 'Editer : ' + r['Fabricant'] + ' ' + r['Modele'];
+  const meta = ' <span class="meta">(' + (r['Annee intro']||'') + ' &middot; ' + (r['Type de grue']||'') + ')</span>';
+  document.getElementById('ev-title').innerHTML = title + meta;
+  buildSpecsGrid(r);
+  document.getElementById('ev-notes').value = r['Notes'] || '';
+  document.getElementById('ev-notes').oninput = () => refreshDirty();
+  // Switch view
+  document.getElementById('db-view').style.display = 'none';
+  document.getElementById('edit-view').classList.add('open');
+  // Activate Specs tab by default
+  document.querySelectorAll('#edit-view .tab').forEach(t => t.classList.toggle('active', t.dataset.tab==='specs'));
+  document.getElementById('tab-specs').style.display = 'block';
+  document.getElementById('tab-notes').style.display = 'none';
+  refreshDirty();
+  window.scrollTo(0,0);
+}
+
+function closeEditView() {
+  document.getElementById('edit-view').classList.remove('open');
+  document.getElementById('db-view').style.display = '';
+  currentEditRow = null; editDraft = {};
+}
+
+function saveEditView() {
+  if (!currentEditRow) return;
+  const id = rowId(currentEditRow);
+  const orig = getOriginalFor(currentEditRow);
+  const patch = {};
+  SPEC_FIELDS.forEach(f => {
+    const v = editDraft[f.key];
+    if (v !== undefined && String(v) !== String(orig[f.key]||'')) patch[f.key] = v;
+  });
+  const notesVal = document.getElementById('ev-notes').value;
+  if (String(notesVal) !== String(orig['Notes']||'')) patch['Notes'] = notesVal;
+  if (Object.keys(patch).length === 0) { closeEditView(); return; }
+  EDITS[id] = Object.assign(EDITS[id] || {}, patch);
+  saveEdits(EDITS);
+  DATA = expandByYear(applyEdits());
+  rebuildFilters();
+  render();
+  closeEditView();
+  showToast('Modifications sauvegardees (' + Object.keys(EDITS).length + ' machine(s) editee(s))');
+}
+
+function resetEditDraft() {
+  if (!currentEditRow) return;
+  editDraft = {};
+  buildSpecsGrid(currentEditRow);
+  const orig = getOriginalFor(currentEditRow);
+  document.getElementById('ev-notes').value = orig['Notes'] || '';
+  refreshDirty();
+}
+
+function showToast(msg) {
+  const old = document.querySelector('.db-toast'); if (old) old.remove();
+  const t = document.createElement('div'); t.className = 'db-toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 2400);
+}
+
+document.getElementById('ev-back').onclick = closeEditView;
+document.getElementById('btn-save').onclick = saveEditView;
+document.getElementById('btn-save-top').onclick = saveEditView;
+document.getElementById('btn-reset').onclick = resetEditDraft;
+document.getElementById('btn-reset-top').onclick = resetEditDraft;
+
+// Tab switching
+document.querySelectorAll('#edit-view .tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#edit-view .tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.tab;
+    document.getElementById('tab-specs').style.display = t==='specs' ? 'block' : 'none';
+    document.getElementById('tab-notes').style.display = t==='notes' ? 'block' : 'none';
+  });
+});
+
+document.addEventListener('keydown', (e)=>{
+  if (e.key === 'Escape' && document.getElementById('edit-view').classList.contains('open')) closeEditView();
+});
+
+function rebuildFilters() {
+  ['db-type','db-fab'].forEach(id=>{
+    const sel = document.getElementById(id);
+    const cur = sel.value;
+    sel.innerHTML = '<option value="">Tous</option>';
+    sel.dataset.preserve = cur;
+  });
+  const ya = document.getElementById('db-annee');
+  const curYa = ya.value;
+  ya.innerHTML = '<option value="">Toutes</option>';
+  ya.dataset.preserve = curYa;
+  const f = (id, key) => {
+    const sel = document.getElementById(id);
+    uniq(DATA.map(r=>r[key])).forEach(v=>{
+      const o = document.createElement('option');
+      o.value = v; o.textContent = v; sel.appendChild(o);
+    });
+    if (sel.dataset.preserve) sel.value = sel.dataset.preserve;
+  };
+  f('db-type','Type de grue');
+  f('db-fab','Fabricant');
+  const years = uniq(DATA.map(r=>r['Annee'])).reverse();
+  years.forEach(v=>{
+    const o = document.createElement('option');
+    o.value = v; o.textContent = v; ya.appendChild(o);
+  });
+  if (ya.dataset.preserve) ya.value = ya.dataset.preserve;
+}
+
+document.getElementById('db-export').onclick = ()=>{
+  const typ = document.getElementById('db-type').value;
+  const fab = document.getElementById('db-fab').value;
+  const yr  = document.getElementById('db-annee').value;
+  const s   = document.getElementById('db-search').value.toLowerCase();
+  let rows = DATA.filter(r=>{
+    if (typ && r['Type de grue']!==typ) return false;
+    if (fab && r['Fabricant']!==fab) return false;
+    if (yr && String(r['Annee'])!==yr) return false;
+    if (s) { const blob = Object.values(r).join(' ').toLowerCase(); if (blob.indexOf(s)===-1) return false; }
+    return true;
+  });
+  const headers = COLS.map(c=>c.key);
+  const csv = [headers.join(';')].concat(rows.map(r=>headers.map(h=>(r[h]||'').toString().replace(/;/g,',')).join(';'))).join('\r\n');
+  const blob = new Blob(['ï»¿'+csv], {type:'text/csv;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Grues_Mobiles_export.csv';
+  a.click();
+};
+
+buildFilters();
+populateDatalists();
+buildHeader();
+['db-type','db-fab','db-annee','db-search'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', render);
+  document.getElementById(id).addEventListener('change', render);
+});
+render();
+
+// ---- View-mode toggle: auto responsive + force-mobile button ----
+const VIEW_KEY = 'grues_view_mobile_forced';
+function syncViewMode() {
+  const body = document.body;
+  const forced = body.classList.contains('force-mobile');
+  const w = window.innerWidth;
+  body.classList.toggle('mobile-view', forced || w <= 768);
+  body.classList.toggle('narrow-view', forced || w <= 480);
+}
+const viewBtn = document.getElementById('view-mobile-toggle');
+function applyForcedView(on) {
+  const body = document.body;
+  body.classList.toggle('force-mobile', on);
+  viewBtn.classList.toggle('active', on);
+  viewBtn.innerHTML = on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile';
+  localStorage.setItem(VIEW_KEY, on ? '1' : '0');
+  syncViewMode();
+}
+viewBtn.addEventListener('click', ()=> applyForcedView(!document.body.classList.contains('force-mobile')));
+window.addEventListener('resize', syncViewMode);
+applyForcedView(localStorage.getItem(VIEW_KEY) === '1');
+</script>
+    <script src="js/capture-tool.js?v=1"></script>
+</body>
+</html>
+
