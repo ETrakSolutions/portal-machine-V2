@@ -343,7 +343,9 @@ button.small{padding:0.4rem 0.8rem;font-size:0.82rem}
 /* ===== Responsive : mobile-view (auto via JS OU force via bouton) ===== */
 body.mobile-view header.top{padding:0 1rem !important;height:60px !important}
 body.mobile-view .header-logo{height:44px !important}
-body.mobile-view .header-back{padding:4px 10px !important;font-size:0.72rem !important}
+/* Aligne sur database.html : sur mobile, le bouton Retour devient une petite tuile avec juste le caractere "fleche gauche" */
+body.mobile-view .header-back{font-size:0 !important;padding:6px 8px !important;border:none !important;gap:0 !important}
+body.mobile-view .header-back::before{content:'\2190';font-size:1.2rem;line-height:1}
 body.mobile-view main{padding:0 0.6rem !important;margin:1rem auto !important;gap:1rem !important}
 body.mobile-view .card{padding:0.85rem !important;border-radius:6px !important}
 body.mobile-view .card-head{flex-direction:column;align-items:stretch;gap:0.6rem}
