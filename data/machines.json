@@ -211987,17 +211987,6 @@
           }
         }
       }
-    },
-    "ZZ_TEST_CLAUDE": {
-      "2099": {
-        "PROBE": {
-          "Image": "",
-          "_bom": {
-            "0009": "r",
-            "harnais": "H0080"
-          }
-        }
-      }
     }
   },
   "Pompe a Beton": {
