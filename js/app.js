@@ -226,30 +226,29 @@ function updateGearDeleteButton() {
 selectModele.addEventListener('change', () => {
     const type = selectType.value;
     const fab = selectFabricant.value;
-    let annee = selectAnnee.value;
     const modele = selectModele.value;
     if (!modele) {
         hideResults();
         return;
     }
 
-    // If no year selected, find the most recent year that has this model
-    if (!annee) {
-        var allYears = Object.keys(machinesData[type][fab]).sort().reverse();
-        for (var i = 0; i < allYears.length; i++) {
-            if (machinesData[type][fab][allYears[i]][modele]) {
-                annee = allYears[i];
-                selectAnnee.value = annee;
-                break;
-            }
-        }
-    }
-
     if (modele === '__OTHER__') {
+        let annee = selectAnnee.value;
         if (!annee) { alert((typeof i18n !== 'undefined') ? i18n.t('js.select_year') : 'Selectionnez une annee pour creer un modele.'); return; }
         showCustomModelModal(type, fab, annee);
         return;
     }
+
+    // N'afficher dans le menu Annee QUE les annees ou ce modele existe
+    var modelYears = Object.keys(machinesData[type][fab]).filter(function(y){
+        return machinesData[type][fab][y] && machinesData[type][fab][y][modele];
+    }).sort().reverse();
+    var annee = selectAnnee.value;
+    if (modelYears.indexOf(annee) < 0) annee = modelYears[0];  // annee courante invalide -> plus recente dispo
+    selectAnnee.innerHTML = '';
+    modelYears.forEach(function(y){ var o = document.createElement('option'); o.value = y; o.textContent = y; selectAnnee.appendChild(o); });
+    selectAnnee.value = annee;
+    selectAnnee.disabled = false;
 
     const specs = machinesData[type][fab][annee][modele];
     showResults(modele, type, fab, annee, specs);

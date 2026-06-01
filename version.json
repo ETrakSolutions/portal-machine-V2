@@ -1,1 +1,1 @@
-{"v": "2026-06-01T16:40:00Z", "note": "Soumission: choisir l'annee ne reinitialise plus le modele s'il existe pour cette annee"}
+{"v": "2026-06-01T17:05:00Z", "note": "Menu Annee: n'affiche que les annees ou le modele choisi existe (machine + soumission)"}
