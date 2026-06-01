@@ -847,19 +847,17 @@ body.force-mobile main{
     var cancelBtn = document.getElementById('unsaved-cancel');
     if (saveBtn) saveBtn.onclick = function() {
       hideUnsavedModal();
-      // Marque la nav en attente, declenche le save direct (sans preview)
       __bypassUnload = true;
       var dest = __pendingNavUrl;
-      // Patch: au prochain "Sauvegarde complete" toast, naviguer
-      var origToast = window.showToast || null;
-      // commitChanges fait deja le save complet + ferme modal-save (qui n'est pas ouvert ici)
-      // On surveille la fin via Promise.all interne — pas facile a hooker.
-      // Solution: appeler commitChanges et naviguer apres un delai raisonnable.
-      try { commitChanges(); } catch(e){}
-      setTimeout(function() {
+      showToast('⏳ Sauvegarde en cours…');
+      // Attend la VRAIE fin de la sauvegarde (promesse) avant de naviguer.
+      var p;
+      try { p = commitChanges(); } catch(e){ p = Promise.resolve(false); }
+      Promise.resolve(p).then(function(ok){
+        if (ok === false){ __bypassUnload = false; return; }   // echec : on reste sur la page
         if (dest === '__BACK__') history.back();
         else if (dest) location.href = dest;
-      }, 1800);
+      });
     };
     if (leaveBtn) leaveBtn.onclick = function() { doPendingNav(); };
     if (cancelBtn) cancelBtn.onclick = function() { hideUnsavedModal(); };
@@ -1017,10 +1015,10 @@ body.force-mobile main{
       // Si seulement les specs ont change, il faut quand meme sauvegarder le _bom (qui contient les specs)
       promises.push(saveBomOverride(YEAR, buildOverridePayload()));
     }
-    if (!promises.length){ document.getElementById('modal-save').classList.remove('show'); return; }
+    if (!promises.length){ document.getElementById('modal-save').classList.remove('show'); return Promise.resolve(true); }
 
     setSavingState(true);
-    Promise.all(promises).then(function(){
+    return Promise.all(promises).then(function(){
       BOM_CODES.forEach(function(c){ BOM_INITIAL[c] = BOM_CURRENT[c]; });
       HARNAIS_INITIAL = HARNAIS_CURRENT;
       NOTES_INITIAL = NOTES_CURRENT;
@@ -1032,7 +1030,8 @@ body.force-mobile main{
       document.getElementById('modal-save').classList.remove('show');
       showToast('Sauvegarde complete');
       render();
-    }).catch(function(){ setSavingState(false); showToast('Erreur de sauvegarde', 'var(--rouge)'); });
+      return true;
+    }).catch(function(){ setSavingState(false); showToast('Erreur de sauvegarde', 'var(--rouge)'); return false; });
   };
 
   // Indicateur visuel pendant l'ecriture (~6 s vers overrides.json) — sablier qui tourne
