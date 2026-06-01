@@ -1035,8 +1035,15 @@ body.force-mobile main{
     }).catch(function(){ setSavingState(false); showToast('Erreur de sauvegarde', 'var(--rouge)'); });
   };
 
-  // Indicateur visuel pendant l'ecriture (~6 s vers overrides.json)
+  // Indicateur visuel pendant l'ecriture (~6 s vers overrides.json) — sablier qui tourne
   function setSavingState(on){
+    if (on && !document.getElementById('etrak-spin-style')){
+      var st = document.createElement('style');
+      st.id = 'etrak-spin-style';
+      st.textContent = '@keyframes etrak-spin{to{transform:rotate(360deg)}} .etrak-spin{display:inline-block;animation:etrak-spin 1.1s linear infinite}';
+      document.head.appendChild(st);
+    }
+    var spin = '<span class="etrak-spin">⏳</span>';
     var btn = document.getElementById('save-confirm-btn');
     var cancel = document.getElementById('save-cancel-btn');
     var info = document.getElementById('modal-save-info');
@@ -1044,10 +1051,10 @@ body.force-mobile main{
       btn.disabled = on;
       btn.style.opacity = on ? '0.7' : '';
       btn.style.cursor = on ? 'wait' : '';
-      btn.textContent = on ? '⏳ Sauvegarde en cours…' : 'Confirmer la sauvegarde';
+      btn.innerHTML = on ? (spin + ' Sauvegarde en cours…') : 'Confirmer la sauvegarde';
     }
     if (cancel) cancel.disabled = on;
-    if (on && info) info.innerHTML += '<div id="save-spinner-note" style="margin-top:0.6rem;color:#888;font-size:0.85rem">⏳ Écriture dans la base en ligne, patiente quelques secondes…</div>';
+    if (on && info) info.innerHTML += '<div id="save-spinner-note" style="margin-top:0.6rem;color:#888;font-size:0.85rem">' + spin + ' Écriture dans la base en ligne, patiente quelques secondes…</div>';
     else { var sn = document.getElementById('save-spinner-note'); if (sn) sn.remove(); }
   }
 
