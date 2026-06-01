@@ -182,7 +182,7 @@ function doTypeChange() {
     resetFrom('fabricant');
     const type = selectType.value;
     if (!type) return;
-    const fabricants = Object.keys(machinesData[type]).sort();
+    const fabricants = Object.keys(machinesData[type]).filter(f => f.charAt(0) !== '_').sort();
     fabricants.forEach(fab => {
         const opt = document.createElement('option');
         opt.value = fab;

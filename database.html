@@ -1639,6 +1639,7 @@
                 var mapFn = SPEC_MAP[currentType] || function(s) { return {}; };
                 var section = fullData[currentType] || {};
                 for (var fab in section) {
+                    if (fab.charAt(0) === '_') continue;  // skip cles meta (ex: _bom_labels)
                     fabs.add(fab);
                     for (var annee in section[fab]) {
                         years.add(annee);
