@@ -10,8 +10,21 @@
  */
 (function() {
   var VERSION_URL = 'version.json';
-  var CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 min
+  var CHECK_INTERVAL_MS = 60 * 1000; // 1 min
   var INITIAL_VERSION = null;
+
+  // Rechargement qui CONTOURNE le cache : on ajoute un parametre anti-cache unique
+  // a l'URL (en preservant les parametres existants type/fab/year/model) -> nouvelle
+  // URL = cache miss garanti, le navigateur refetch la page HTML fraiche.
+  function forceReload() {
+    try {
+      var u = new URL(window.location.href);
+      u.searchParams.set('_cb', Date.now());
+      window.location.replace(u.toString());
+    } catch (e) {
+      window.location.reload();
+    }
+  }
 
   function fetchVersion() {
     // Cache-bust avec timestamp pour TOUJOURS avoir la derniere
@@ -39,7 +52,7 @@
       'padding:0.4rem 0.7rem;border-radius:6px;cursor:pointer;font-size:0.85rem">Plus tard</button>';
     document.body.appendChild(bar);
     document.getElementById('__update_reload__').onclick = function() {
-      location.reload();
+      forceReload();
     };
     document.getElementById('__update_dismiss__').onclick = function() {
       bar.remove();
