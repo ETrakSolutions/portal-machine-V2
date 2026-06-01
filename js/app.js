@@ -150,15 +150,23 @@ selectFabricant.addEventListener('change', () => {
     populateModeles(type, fab, null);
 });
 
-// Annee changed — filter modeles by year
+// Annee changed — filter modeles by year, mais GARDER le modele courant s'il existe pour cette annee
 selectAnnee.addEventListener('change', () => {
     const type = selectType.value;
     const fab = selectFabricant.value;
     const annee = selectAnnee.value;
     if (!fab) return;
-    selectModele.value = '';
-    hideResults();
+    const prevModele = selectModele.value;
     populateModeles(type, fab, annee || null);
+    // Si le modele precedent est toujours disponible pour cette annee, on le conserve et on reaffiche la fiche
+    if (prevModele && prevModele !== '__OTHER__' &&
+        selectModele.querySelector('option[value="' + CSS.escape(prevModele) + '"]')) {
+        selectModele.value = prevModele;
+        selectModele.dispatchEvent(new Event('change'));
+    } else {
+        selectModele.value = '';
+        hideResults();
+    }
 });
 
 // Delete model

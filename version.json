@@ -1,1 +1,1 @@
-{"v": "2026-06-01T14:55:00Z", "note": "Fix reset Journal: URL en dur (API_URL hors scope) -> la reinitialisation fonctionne"}
+{"v": "2026-06-01T15:20:00Z", "note": "machine.html: selectionner l'annee ne reinitialise plus le modele s'il existe pour cette annee"}
