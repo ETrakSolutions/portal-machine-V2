@@ -1,1 +1,1 @@
-{"v": "2026-06-01T14:30:00Z", "note": "Journal: appui long 5s sur le bouton => reinitialiser l'historique"}
+{"v": "2026-06-01T14:55:00Z", "note": "Fix reset Journal: URL en dur (API_URL hors scope) -> la reinitialisation fonctionne"}

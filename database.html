@@ -2661,6 +2661,8 @@
 
         // ===== Appui long 5 s sur "Journal" => reinitialiser l'historique (db_changelog) =====
         (function(){
+            // URL en dur : API_URL n'est pas accessible dans le scope de cet IIFE
+            var RESET_API = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
             var st = document.createElement('style');
             st.textContent =
               '@keyframes etrak-holdfill{from{box-shadow:inset 0 0 0 0 rgba(211,47,47,0.55)}to{box-shadow:inset 0 0 0 60px rgba(211,47,47,0.55)}}' +
@@ -2677,7 +2679,7 @@
                     longPressed = true;            // empeche le clic-toggle qui suit
                     iconBtn.classList.remove('holding');
                     if (confirm('Reinitialiser TOUT l\'historique des modifications ?\n\nCette action est irreversible.')) {
-                        fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain'},
+                        fetch(RESET_API, { method:'POST', headers:{'Content-Type':'text/plain'},
                             body: JSON.stringify({ action:'save', key:'db_changelog', value:'[]', pin:'1400' }) })
                         .then(function(){
                             if (window.renderChangelog) window.renderChangelog();
