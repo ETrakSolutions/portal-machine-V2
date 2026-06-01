@@ -1345,7 +1345,6 @@
           "Poids operationnel (kg / lbs)": "1080 kg / 2381 lbs",
           "Classe machine": "Mini",
           "Test Robin": "",
-          "_harnais": "Z03B-0080 - Caterpillar",
           "_source_bom": "Defaut",
           "_note_tech_texte": "",
           "_note_tech_auteur": "",
@@ -1366,7 +1365,7 @@
             "RES-5 Reserve 5": ""
           },
           "_bom": {
-            "0004": "r",
+            "0008": "j",
             "_removed": [
               "0070"
             ]
