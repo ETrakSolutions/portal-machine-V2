@@ -846,9 +846,9 @@ body.force-mobile main{
     var leaveBtn = document.getElementById('unsaved-leave');
     var cancelBtn = document.getElementById('unsaved-cancel');
     if (saveBtn) saveBtn.onclick = function() {
+      var dest = __pendingNavUrl;          // CAPTURER avant hideUnsavedModal() qui remet a null
       hideUnsavedModal();
       __bypassUnload = true;
-      var dest = __pendingNavUrl;
       showSavingOverlay('Sauvegarde en cours…');
       // Attend la VRAIE fin de la sauvegarde (promesse) avant de naviguer.
       var p;
@@ -857,6 +857,7 @@ body.force-mobile main{
         if (ok === false){ hideSavingOverlay(); __bypassUnload = false; return; }   // echec : on reste sur la page
         if (dest === '__BACK__') history.back();
         else if (dest) location.href = dest;
+        else { hideSavingOverlay(); __bypassUnload = false; }   // securite : pas de destination -> on masque quand meme
       });
     };
     if (leaveBtn) leaveBtn.onclick = function() { doPendingNav(); };
