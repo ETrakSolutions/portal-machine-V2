@@ -46,10 +46,22 @@ const resultsTableContainer = document.getElementById('results-table-container')
 const emptyState = document.getElementById('empty-state');
 
 // Load data
-fetch('data/machines.json?v=155')
-    .then(res => res.json())
-    .then(data => {
-        machinesData = data;
+// Option B : machines.json (specs de base) + overrides.json (_bom/_notes), fusionnes en memoire.
+function applyOverrides(machines, ov) {
+    if (!ov) return machines;
+    for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
+        var o = ov[t][f][y][m];
+        var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
+        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+    }}}}
+    return machines;
+}
+Promise.all([
+    fetch('data/machines.json?v=157').then(res => res.json()),
+    fetch('data/overrides.json?t=' + Date.now()).then(res => res.json()).catch(() => ({}))
+])
+    .then(res => {
+        machinesData = applyOverrides(res[0], res[1]);
         populateTypes();
     })
     .catch(err => console.error('Erreur chargement donnees:', err));
@@ -429,7 +441,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         });
         // Banner "Machine jamais installee" desactive
 
-        loadNotes(fab, modele, annee);
+        loadNotes(type, fab, modele, annee);
         loadKitFlag(type, fab, modele, annee);
         // Auto-unlock kit if user has permission
         if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
@@ -538,8 +550,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         // Apply defaults first
         applyBomToKit(bomDefaults);
 
-        // Then load overrides from API (BD is master)
-        loadKitOverride(fab, modele, annee, function(overrides) {
+        // Then load overrides (BD is master : lus depuis machines.json)
+        loadKitOverride(type, fab, modele, annee, function(overrides) {
             if (overrides) {
                 // Merge overrides on top of defaults (skip meta keys)
                 for (var code in overrides) {
@@ -636,8 +648,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             // Apply defaults first
             applyBomToPompeKit(pompeBomDefaults);
 
-            // Then load overrides from API (BD is master)
-            loadKitOverride(fab, modele, annee, function(overrides) {
+            // Then load overrides (BD is master : lus depuis machines.json)
+            loadKitOverride(type, fab, modele, annee, function(overrides) {
                 if (overrides) {
                     for (var code in overrides) {
                         if (code === '_specs' || code === '_custom' || code === '_removed' || code === 'harnais') continue;
@@ -661,7 +673,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 }
             });
 
-            loadNotes(fab, modele, annee);
+            loadNotes(type, fab, modele, annee);
         } else {
             kitPompeSection.style.display = 'none';
         }
@@ -796,7 +808,7 @@ function getNotesKey(fab, modele, annee) {
     return 'notes_' + fab + '_' + modele + '_' + annee;
 }
 
-function loadNotes(fab, modele, annee) {
+function loadNotes(type, fab, modele, annee) {
     const notesSection = document.getElementById('notes-section');
     const notesTextarea = document.getElementById('notes-textarea');
     const notesSaveBtn = document.getElementById('notes-save-btn');
@@ -804,22 +816,15 @@ function loadNotes(fab, modele, annee) {
     if (!notesSection) return;
 
     currentNoteKey = getNotesKey(fab, modele, annee);
-    notesTextarea.value = '';
     notesTextarea.readOnly = false;
     notesSaveBtn.style.display = 'inline-block';
-    notesStatus.textContent = 'Chargement...';
+    notesStatus.textContent = '';
     notesSection.style.display = 'block';
 
-    fetch(API_URL + '?action=get&key=' + encodeURIComponent(currentNoteKey))
-        .then(r => r.json())
-        .then(data => {
-            notesTextarea.value = data.value || '';
-            notesStatus.textContent = '';
-        })
-        .catch(() => {
-            notesTextarea.value = localStorage.getItem(currentNoteKey) || '';
-            notesStatus.textContent = '';
-        });
+    // BD = MAITRE : la note est lue directement dans machines.json (entry._notes)
+    var entry = null;
+    try { entry = machinesData[type][fab][annee][modele]; } catch(e) { entry = null; }
+    notesTextarea.value = (entry && typeof entry._notes === 'string') ? entry._notes : '';
 }
 
 function unlockNotes() {}
@@ -845,18 +850,21 @@ function saveNotes() {
     var dateStr = now.toLocaleDateString('fr-CA') + ' ' + now.toLocaleTimeString('fr-CA');
 
     notesStatus.textContent = 'Enregistrement...';
+    // Met a jour la copie en memoire (BD = maitre)
+    try { machinesData[typeM][fab][annee][modele]._notes = noteContent; } catch(e) {}
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
         body: JSON.stringify({
-            key: currentNoteKey,
-            value: noteContent,
+            action: 'updateMachineNotes',
+            type: typeM, fab: fab, modele: modele, annee: annee,
+            notes: noteContent,
             pin: '1400'
         })
     })
     .then(r => r.json())
     .then(data => {
-        if (data.success) {
+        if (data.ok) {
             notesStatus.textContent = 'Enregistre avec succes!';
             // Send email notification to notes emails
             if (noteContent.trim()) {
@@ -902,34 +910,21 @@ function getKitOverrideKey(fab, modele, annee) {
     return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
 }
 
-function loadKitOverride(fab, modele, annee, callback) {
+// Coordonnees de la machine actuellement affichee (pour les saves vers machines.json)
+var currentKitType = '', currentKitFab = '', currentKitModele = '', currentKitAnnee = '';
+
+// BD = MAITRE : l'override BOM est lu directement dans machines.json (entry._bom),
+// plus depuis les Script Properties. Normalise en format plat pour les callbacks.
+function loadKitOverride(type, fab, modele, annee, callback) {
+    currentKitType = type; currentKitFab = fab; currentKitModele = modele; currentKitAnnee = annee;
     currentKitOverrideKey = getKitOverrideKey(fab, modele, annee);
     currentKitOverrides = null;
-    fetch(API_URL + '?action=get&key=' + encodeURIComponent(currentKitOverrideKey))
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            if (data.value) {
-                try {
-                    currentKitOverrides = JSON.parse(data.value);
-                    if (callback) callback(currentKitOverrides);
-                    else applyKitOverrides(currentKitOverrides);
-                } catch(e) { if (callback) callback(null); }
-            } else {
-                if (callback) callback(null);
-            }
-        })
-        .catch(function() {
-            var local = localStorage.getItem(currentKitOverrideKey);
-            if (local) {
-                try {
-                    currentKitOverrides = JSON.parse(local);
-                    if (callback) callback(currentKitOverrides);
-                    else applyKitOverrides(currentKitOverrides);
-                } catch(e) { if (callback) callback(null); }
-            } else {
-                if (callback) callback(null);
-            }
-        });
+    var entry = null;
+    try { entry = machinesData[type][fab][annee][modele]; } catch(e) { entry = null; }
+    var ov = (entry && entry._bom) ? toFlatOverride(entry._bom) : null;
+    currentKitOverrides = ov;
+    if (callback) callback(ov);
+    else if (ov) applyKitOverrides(ov);
 }
 
 // Mapping code BOM (edit-machine.html / database.html) → kit id (machine.html)
@@ -976,6 +971,29 @@ function normalizeKitOverrides(ov){
         _removed: Array.isArray(ov._removed) ? ov._removed : [],
         _specs: ov._specs || null
     };
+}
+
+// Convertit n'importe quel format d'override (legacy {rows,customRows} OU plat)
+// vers le format plat {code:'r'/'j'/'na', _custom, _removed, _specs, harnais},
+// identique a normalizeOverride() de edit-machine.html.
+function toFlatOverride(ov) {
+    if (!ov || typeof ov !== 'object') return ov || null;
+    if (!ov.rows && !ov.customRows) return ov; // deja en format plat
+    var ID_TO_CODE = {};
+    Object.keys(KIT_CODE_TO_ID).forEach(function(c) { ID_TO_CODE[KIT_CODE_TO_ID[c]] = c; });
+    var LEG = { red: 'r', yellow: 'j', na: 'na' };
+    var out = {};
+    if (ov.rows) Object.keys(ov.rows).forEach(function(kid) {
+        var c = ID_TO_CODE[kid];
+        if (c) out[c] = LEG[ov.rows[kid]] || 'na';
+    });
+    if (Array.isArray(ov.customRows)) out._custom = ov.customRows.map(function(c) {
+        return { code: c.id || c.code, pn: c.code || '', desc: c.label || '', status: LEG[c.status] || 'na' };
+    });
+    if (ov.harnais) out.harnais = ov.harnais;
+    if (Array.isArray(ov._removed)) out._removed = ov._removed.slice();
+    if (ov._specs) out._specs = ov._specs;
+    return out;
 }
 
 function applyKitOverrides(overrides) {
@@ -1074,13 +1092,32 @@ function applyKitOverrides(overrides) {
 }
 
 function saveKitOverride(overrideData) {
-    if (!currentKitOverrideKey) return;
-    var json = JSON.stringify(overrideData);
-    localStorage.setItem(currentKitOverrideKey, json);
+    if (!currentKitType || !currentKitFab || !currentKitModele || !currentKitAnnee) return;
+
+    // Entree courante + override existant (pose eventuellement par edit-machine.html)
+    var entry = null;
+    try { entry = machinesData[currentKitType][currentKitFab][currentKitAnnee][currentKitModele]; } catch(e) { entry = null; }
+    var prev = (entry && entry._bom) ? entry._bom : {};
+
+    // Convertit l'override de l'editeur inline (legacy) en format plat, puis preserve
+    // les champs riches que cet editeur ne gere pas (specs, lignes retirees, harnais).
+    var flat = toFlatOverride(overrideData) || {};
+    if (prev._specs && !flat._specs) flat._specs = prev._specs;
+    if (prev._removed && !flat._removed) flat._removed = prev._removed;
+    if (prev.harnais && !flat.harnais) flat.harnais = prev.harnais;
+
+    currentKitOverrides = flat;
+    try { localStorage.setItem(getKitOverrideKey(currentKitFab, currentKitModele, currentKitAnnee), JSON.stringify(flat)); } catch(e) {}
+    try { machinesData[currentKitType][currentKitFab][currentKitAnnee][currentKitModele]._bom = flat; } catch(e) {}
+
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: currentKitOverrideKey, value: json, pin: '1400' })
+        body: JSON.stringify({
+            action: 'updateMachineBom',
+            type: currentKitType, fab: currentKitFab, modele: currentKitModele, annee: currentKitAnnee,
+            bomOverride: flat, harnais: (flat.harnais || ''), pin: '1400'
+        })
     }).catch(function() {});
 }
 

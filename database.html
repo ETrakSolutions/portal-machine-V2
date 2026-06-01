@@ -1216,19 +1216,16 @@
             return out;
         }
 
-        function loadOverride(fab, modele, annee, callback) {
+        // BD = MAITRE : l'override BOM est lu directement dans machines.json (entry._bom),
+        // en memoire (fullData), plus depuis les Script Properties.
+        function loadOverride(type, fab, modele, annee, callback) {
             var key = bomKey(fab, modele, annee);
             if (overridesCache[key] !== undefined) { callback(overridesCache[key]); return; }
-            fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
-                .then(function(r) { return r.json(); })
-                .then(function(data) {
-                    var val = null;
-                    if (data.value) { try { val = JSON.parse(data.value); } catch(e) {} }
-                    val = normalizeOverride(val);
-                    overridesCache[key] = val;
-                    callback(val);
-                })
-                .catch(function() { callback(null); });
+            var entry = null;
+            try { entry = fullData[type][fab][annee][modele]; } catch(e) { entry = null; }
+            var val = (entry && entry._bom) ? normalizeOverride(entry._bom) : null;
+            overridesCache[key] = val;
+            callback(val);
         }
 
         function saveOverride(fab, modele, annee, overrides, nature, prevValue) {
@@ -1388,10 +1385,22 @@
 
         // Load data
         var fullData = null;
-        fetch('data/machines.json?v=155')
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                fullData = data;
+        // Option B : machines.json (specs de base) + overrides.json (_bom/_notes), fusionnes en memoire.
+        function applyOverrides(machines, ov) {
+            if (!ov) return machines;
+            for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
+                var o = ov[t][f][y][m];
+                var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
+                if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+            }}}}
+            return machines;
+        }
+        Promise.all([
+            fetch('data/machines.json?v=157').then(function(r) { return r.json(); }),
+            fetch('data/overrides.json?t=' + Date.now()).then(function(r) { return r.json(); }).catch(function(){ return {}; })
+        ])
+            .then(function(res) {
+                fullData = applyOverrides(res[0], res[1]);
                 // Populate type dropdown — placeholder vide par defaut, puis types
                 var typeSelect = document.getElementById('db-type');
                 typeSelect.innerHTML = '';
@@ -1858,6 +1867,7 @@
                 }
                 var noteDot = document.createElement('span');
                 noteDot.className = 'db-note-dot';
+                noteDot.dataset.type = d._type;
                 noteDot.dataset.fab = d.fab;
                 noteDot.dataset.modele = d.modele;
                 noteDot.dataset.annee = d.annee;
@@ -1915,7 +1925,7 @@
             for (var i = start; i < end; i++) {
                 (function(idx) {
                     var d = filtered[idx];
-                    loadOverride(d.fab, d.modele, d.annee, function(overrides) {
+                    loadOverride(d._type, d.fab, d.modele, d.annee, function(overrides) {
                         if (!overrides) return;
                         var globalIdx = allData.indexOf(d);
                         // Merge overrides on top of defaults
@@ -2037,31 +2047,19 @@
             // Lazy-load notes for visible rows — set indicator state + preview text
             var noteDots = tbody.querySelectorAll('.db-note-dot');
             noteDots.forEach(function(dot) {
-                var noteKey = dot.dataset.noteKey;
                 var previewEl = dot.nextElementSibling; // .db-note-preview if present
-                fetch(API_URL + '?action=get&key=' + encodeURIComponent(noteKey))
-                    .then(function(r) { return r.json(); })
-                    .then(function(data) {
-                        if (data.value && data.value.trim()) {
-                            dot.classList.add('has-note');
-                            dot.title = data.value;
-                            if (previewEl && previewEl.classList.contains('db-note-preview')) {
-                                previewEl.textContent = data.value.slice(0, 80);
-                                previewEl.style.color = '#bbb';
-                            }
-                        }
-                    })
-                    .catch(function() {
-                        var local = localStorage.getItem(noteKey);
-                        if (local && local.trim()) {
-                            dot.classList.add('has-note');
-                            dot.title = local;
-                            if (previewEl && previewEl.classList.contains('db-note-preview')) {
-                                previewEl.textContent = local.slice(0, 80);
-                                previewEl.style.color = '#bbb';
-                            }
-                        }
-                    });
+                // BD = MAITRE : la note est lue directement dans machines.json (entry._notes)
+                var entry = null;
+                try { entry = fullData[dot.dataset.type][dot.dataset.fab][dot.dataset.annee][dot.dataset.modele]; } catch(e) { entry = null; }
+                var note = (entry && typeof entry._notes === 'string') ? entry._notes : '';
+                if (note && note.trim()) {
+                    dot.classList.add('has-note');
+                    dot.title = note;
+                    if (previewEl && previewEl.classList.contains('db-note-preview')) {
+                        previewEl.textContent = note.slice(0, 80);
+                        previewEl.style.color = '#bbb';
+                    }
+                }
             });
 
             // Lazy-load product codes for visible rows
@@ -2311,7 +2309,7 @@
                     idx += BATCH;
                     Promise.all(batch.map(function(d) {
                         return new Promise(function(res) {
-                            loadOverride(d.fab, d.modele, d.annee, function() { res(); });
+                            loadOverride(d._type, d.fab, d.modele, d.annee, function() { res(); });
                         });
                     })).then(function() {
                         done += batch.length;
@@ -2324,32 +2322,16 @@
         }
 
         function ensureAllNotesLoaded(rows, onProgress) {
-            var todo = rows.filter(function(d) {
+            // BD = MAITRE : les notes sont lues directement dans machines.json (entry._notes), en memoire.
+            rows.forEach(function(d) {
                 var k = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
-                return notesCache[k] === undefined;
+                if (notesCache[k] !== undefined) return;
+                var entry = null;
+                try { entry = fullData[d._type][d.fab][d.annee][d.modele]; } catch(e) { entry = null; }
+                notesCache[k] = (entry && typeof entry._notes === 'string') ? entry._notes : '';
             });
-            if (!todo.length) return Promise.resolve();
-            var BATCH = 10;
-            var idx = 0, done = 0, total = todo.length;
-            return new Promise(function(resolve) {
-                function nextBatch() {
-                    if (idx >= todo.length) { resolve(); return; }
-                    var batch = todo.slice(idx, idx + BATCH);
-                    idx += BATCH;
-                    Promise.all(batch.map(function(d) {
-                        var k = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
-                        return fetch(API_URL + '?action=get&key=' + encodeURIComponent(k))
-                            .then(function(r) { return r.json(); })
-                            .then(function(data) { notesCache[k] = (data && data.value) || ''; })
-                            .catch(function() { notesCache[k] = ''; });
-                    })).then(function() {
-                        done += batch.length;
-                        if (onProgress) onProgress(done, total);
-                        nextBatch();
-                    });
-                }
-                nextBatch();
-            });
+            if (onProgress) onProgress(rows.length, rows.length);
+            return Promise.resolve();
         }
         var notesCache = {};
 

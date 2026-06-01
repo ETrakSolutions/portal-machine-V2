@@ -109,10 +109,22 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
 // Load machines data immediately — don't wait for API
 var allowedTypes = null; // null = all types allowed
 
-fetch('data/machines.json?v=155')
-    .then(function(res) { return res.json(); })
-    .then(function(data) {
-        machinesData = data;
+// Option B : machines.json (specs de base) + overrides.json (_bom/_notes), fusionnes en memoire.
+function applyOverrides(machines, ov) {
+    if (!ov) return machines;
+    for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
+        var o = ov[t][f][y][m];
+        var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
+        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+    }}}}
+    return machines;
+}
+Promise.all([
+    fetch('data/machines.json?v=157').then(function(res) { return res.json(); }),
+    fetch('data/overrides.json?t=' + Date.now()).then(function(res) { return res.json(); }).catch(function(){ return {}; })
+])
+    .then(function(res) {
+        machinesData = applyOverrides(res[0], res[1]);
         populateTypes(); // Show all types right away
     })
     .catch(function(err) { console.error('Erreur chargement donnees:', err); });
@@ -343,26 +355,21 @@ var currentBomOverrides = null;
 var currentProductCodes = [];
 var currentNotes = '';
 
-// Load BOM overrides from API
+// Load BOM overrides — BD = MAITRE : lus directement dans machines.json (entry._bom)
 function loadBomOverrides(fab, modele, annee) {
-    var key = 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
-    fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            if (data.value) {
-                try { currentBomOverrides = JSON.parse(data.value); } catch(e) {}
-            }
-            updateSelectedSummary();
-            // Re-render specs if _specs override is present
-            if (currentBomOverrides && currentBomOverrides._specs) {
-                var type = selectType ? selectType.value : '';
-                var fab2 = selectFabricant ? selectFabricant.value : '';
-                var annee2 = selectAnnee ? selectAnnee.value : '';
-                var modele2 = selectModele ? selectModele.value : '';
-                if (type && fab2 && annee2 && modele2) renderSpecsTable(type, fab2, annee2, modele2);
-            }
-        })
-        .catch(function() {});
+    var type = selectType ? selectType.value : '';
+    currentBomOverrides = null;
+    var entry = null;
+    try { entry = machinesData[type][fab][annee][modele]; } catch(e) { entry = null; }
+    if (entry && entry._bom) currentBomOverrides = entry._bom;
+    updateSelectedSummary();
+    // Re-render specs if _specs override is present
+    if (currentBomOverrides && currentBomOverrides._specs) {
+        var fab2 = selectFabricant ? selectFabricant.value : '';
+        var annee2 = selectAnnee ? selectAnnee.value : '';
+        var modele2 = selectModele ? selectModele.value : '';
+        if (type && fab2 && annee2 && modele2) renderSpecsTable(type, fab2, annee2, modele2);
+    }
 }
 
 // Load product codes from API (manually added in BD)
@@ -441,12 +448,12 @@ function renderSpecsTable(type, fab, annee, modele) {
 }
 
 function loadNotesForModel(fab, modele, annee) {
+    // BD = MAITRE : la note est lue directement dans machines.json (entry._notes)
     currentNotes = '';
-    var key = 'notes_' + fab + '_' + modele + '_' + annee;
-    fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
-        .then(function(r) { return r.json(); })
-        .then(function(data) { currentNotes = data.value || ''; })
-        .catch(function() { currentNotes = localStorage.getItem(key) || ''; });
+    var type = selectType ? selectType.value : '';
+    var entry = null;
+    try { entry = machinesData[type][fab][annee][modele]; } catch(e) { entry = null; }
+    currentNotes = (entry && typeof entry._notes === 'string') ? entry._notes : '';
 }
 
 // Determine kit machine options based on specs (same logic as app.js)

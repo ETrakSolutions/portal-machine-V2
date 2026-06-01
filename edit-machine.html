@@ -711,11 +711,37 @@ body.force-mobile main{
       .catch(function(){ return null; });
   }
 
+  // apiSave : cles auxiliaires (db_flags, db_changelog, product_codes_) -> Script Properties (legacy)
   function apiSave(key, value){
     return fetch(API_URL, {
       method:'POST', headers:{'Content-Type':'text/plain'},
       body: JSON.stringify({action:'save', key:key, value: (typeof value === 'string' ? value : JSON.stringify(value)), pin:PIN})
     });
+  }
+
+  // ===== Saves machine -> data/machines.json (GitHub via Apps Script) =====
+  // Le BOM (override complet : codes + harnais + _removed + _custom + _specs), les notes
+  // et la suppression sont ecrits directement dans machines.json, plus dans Script Properties.
+  function apiMachine(action, extra){
+    var body = Object.assign({ action:action, type:TYPE, fab:FAB, modele:MODEL, pin:PIN }, extra);
+    return fetch(API_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify(body)
+    });
+  }
+  function saveBomOverride(annee, payload){
+    payload = payload || {};
+    return apiMachine('updateMachineBom', {
+      annee: annee || YEAR,
+      bomOverride: payload,
+      harnais: payload.harnais || ''   // '' => le backend retire entry._harnais
+    });
+  }
+  function saveNotes(notes){
+    return apiMachine('updateMachineNotes', { annee: YEAR, notes: notes || '' });
+  }
+  function deleteMachineEntry(){
+    return apiMachine('deleteMachine', { annee: YEAR });
   }
 
   function logChange(nature, prev){
@@ -904,7 +930,7 @@ body.force-mobile main{
     // 1) Current year: save full override (all changes apply to this year)
     //    Aussi sauvegarder si seul SCOPE est actif (assure que l'override de cette annee est aussi a jour)
     if (bomChanged || harnaisChanged || removedChanged || customChanged || scopedCodes.length > 0){
-      promises.push(apiSave(bomKey(), buildOverridePayload()));
+      promises.push(saveBomOverride(YEAR, buildOverridePayload()));
     }
 
     // 2) Other years: pour chaque code en mode "Toutes annees", propager la VALEUR ACTUELLE
@@ -949,7 +975,7 @@ body.force-mobile main{
           }
         });
         OTHER_OVERRIDES[yr] = ov;
-        promises.push(apiSave(bomKey(yr), ov));
+        promises.push(saveBomOverride(yr, ov));
       });
     }
 
@@ -974,7 +1000,7 @@ body.force-mobile main{
 
     // 4) Notes (current year only — harnais and notes don't have per-row scope)
     if (NOTES_CURRENT !== NOTES_INITIAL){
-      promises.push(apiSave(notesKey(), NOTES_CURRENT).then(function(){
+      promises.push(saveNotes(NOTES_CURRENT).then(function(){
         logChange('Note modifiee', NOTES_INITIAL ? NOTES_INITIAL.slice(0,60) : '(vide)');
       }));
     }
@@ -988,8 +1014,8 @@ body.force-mobile main{
       }
     });
     if (specsChanged && !(bomChanged || harnaisChanged || removedChanged || customChanged)){
-      // Si seulement les specs ont change, il faut quand meme sauvegarder le kit_override_ (qui contient les specs)
-      promises.push(apiSave(bomKey(), buildOverridePayload()));
+      // Si seulement les specs ont change, il faut quand meme sauvegarder le _bom (qui contient les specs)
+      promises.push(saveBomOverride(YEAR, buildOverridePayload()));
     }
     if (!promises.length){ document.getElementById('modal-save').classList.remove('show'); return; }
 
@@ -1125,7 +1151,7 @@ body.force-mobile main{
   };
 
   function doDelete(){
-    return apiSave(deletedKey(), 'deleted').then(function(){
+    return deleteMachineEntry().then(function(){
       logChange('Modele supprime', '—');
       document.getElementById('modal-delete').classList.remove('show');
       showToast(FAB + ' ' + MODEL + ' (' + YEAR + ') supprime');
@@ -1534,9 +1560,22 @@ body.force-mobile main{
   }
 
   // ===== Boot =====
-  fetch('data/machines.json')
-    .then(function(r){return r.json()})
-    .then(function(data){
+  // Option B : machines.json (specs de base) + overrides.json (_bom/_notes), fusionnes en memoire.
+  function applyOverrides(machines, ov){
+    if (!ov) return machines;
+    for (var t in ov){ for (var f in ov[t]){ for (var y in ov[t][f]){ for (var m in ov[t][f][y]){
+      var o = ov[t][f][y][m];
+      var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
+      if (e && o){ if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+    }}}}
+    return machines;
+  }
+  Promise.all([
+    fetch('data/machines.json').then(function(r){return r.json()}),
+    fetch('data/overrides.json?t=' + Date.now()).then(function(r){return r.json()}).catch(function(){return {};})
+  ])
+    .then(function(res){
+      var data = applyOverrides(res[0], res[1]);
       try{ MACHINE = data[TYPE][FAB][YEAR][MODEL]; }catch(e){}
       if (!MACHINE){
         document.getElementById('root').innerHTML =
@@ -1564,24 +1603,26 @@ body.force-mobile main{
       BOM_CODES.forEach(function(c){ BOM_INITIAL[c] = BOM_DEFAULTS[c] || 'na'; });
       HARNAIS_INITIAL = HARNAIS_DEFAULT;
 
-      // Also fetch overrides for OTHER years (for per-row "toutes annees" merge)
+      // Overrides des AUTRES annees : lus directement depuis machines.json (entry._bom)
       var otherYears = ALL_YEARS_FOR_MODEL.filter(function(y){ return y !== YEAR; });
-      var otherFetches = otherYears.map(function(y){
-        return apiGet(bomKey(y)).then(function(ov){ OTHER_OVERRIDES[y] = ov || {}; });
+      otherYears.forEach(function(y){
+        var oentry = null;
+        try { oentry = data[TYPE][FAB][y][MODEL]; } catch(e){ oentry = null; }
+        OTHER_OVERRIDES[y] = (oentry && normalizeOverride(oentry._bom)) || {};
       });
 
-      Promise.all(otherFetches.concat([
-        apiGet(bomKey()),
-        apiGet(notesKey()),
+      // BOM override + notes : lus depuis machines.json (entry._bom / entry._notes)
+      // Drapeaux + codes produit : restent en Script Properties (cles auxiliaires)
+      var ov = MACHINE._bom ? normalizeOverride(MACHINE._bom) : null;
+      var notes = (typeof MACHINE._notes === 'string') ? MACHINE._notes : '';
+
+      Promise.all([
         apiGet('db_flags'),
         apiGet(pcKey())
-      ])).then(function(results){
-        results = results.slice(otherFetches.length);
-        var ov = results[0];
-        var notes = results[1];
-        var flags = results[2];
-        var pc = results[3];
-        // _specs lives inside the kit_override_ payload now
+      ]).then(function(results){
+        var flags = results[0];
+        var pc = results[1];
+        // _specs vit a l'interieur du payload _bom
         var specsOv = (ov && ov._specs) || null;
 
         // Init specs base + overrides
