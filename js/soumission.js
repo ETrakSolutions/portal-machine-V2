@@ -237,14 +237,21 @@ function populateModeles(type, fab, anneeFilter) {
 }
 
 function doAnneeChange() {
-    // L'annee est maintenant un filtre optionnel — re-filtre les modeles
+    // L'annee est un filtre optionnel — re-filtre les modeles, mais GARDE le modele courant s'il existe pour cette annee
     const type = selectType.value;
     const fab = selectFabricant.value;
     const annee = selectAnnee.value;
     if (!fab) return;
-    selectModele.value = '';
-    hideOptions();
+    const prevModele = selectModele.value;
     populateModeles(type, fab, annee || null);
+    if (prevModele && prevModele !== '__OTHER__' &&
+        selectModele.querySelector('option[value="' + CSS.escape(prevModele) + '"]')) {
+        selectModele.value = prevModele;
+        doModeleChange();   // reaffiche les options pour la nouvelle annee
+    } else {
+        selectModele.value = '';
+        hideOptions();
+    }
 }
 selectAnnee.addEventListener('change', () => {
     if (hasActiveOptions()) { confirmReset(doAnneeChange); } else { doAnneeChange(); }
