@@ -64,7 +64,8 @@
             height: 1px;
         }
         .db-table-wrap {
-            overflow-x: auto;
+            overflow: auto;                      /* defilement H + V DANS le conteneur */
+            max-height: calc(100vh - 230px);     /* hauteur limitee -> l'en-tete sticky reste visible */
             border-radius: 0 0 8px 8px;
             border: 1px solid var(--border, #2a3a4a);
             border-top: none;
