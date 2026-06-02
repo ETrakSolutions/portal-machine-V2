@@ -738,6 +738,14 @@ body.force-mobile main{
       harnais: payload.harnais || ''   // '' => le backend retire entry._harnais
     });
   }
+  // Ecrit le _bom de PLUSIEURS annees en UNE transaction (pour "Appliquer a toutes les annees")
+  // items = [{annee, bomOverride}, ...]  -> evite les conflits d'ecritures paralleles sur overrides.json
+  function saveBomOverrideBulk(items){
+    return fetch(API_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify({ action:'updateMachineBomBulk', type:TYPE, fab:FAB, modele:MODEL, items:items, pin:PIN })
+    });
+  }
   function saveNotes(notes){
     return apiMachine('updateMachineNotes', { annee: YEAR, notes: notes || '' });
   }
@@ -927,10 +935,14 @@ body.force-mobile main{
 
     var scopedCodes = Object.keys(SCOPE_ALL_CODES).filter(function(k){ return SCOPE_ALL_CODES[k]; });
 
+    // Les ecritures BOM (annee courante + annees "Toutes annees") sont collectees ici
+    // puis envoyees en UNE seule requete (bulk) pour eviter les conflits sur overrides.json.
+    var bomItems = [];
+
     // 1) Current year: save full override (all changes apply to this year)
     //    Aussi sauvegarder si seul SCOPE est actif (assure que l'override de cette annee est aussi a jour)
     if (bomChanged || harnaisChanged || removedChanged || customChanged || scopedCodes.length > 0){
-      promises.push(saveBomOverride(YEAR, buildOverridePayload()));
+      bomItems.push({ annee: YEAR, bomOverride: buildOverridePayload() });
     }
 
     // 2) Other years: pour chaque code en mode "Toutes annees", propager la VALEUR ACTUELLE
@@ -975,7 +987,7 @@ body.force-mobile main{
           }
         });
         OTHER_OVERRIDES[yr] = ov;
-        promises.push(saveBomOverride(yr, ov));
+        bomItems.push({ annee: yr, bomOverride: ov });
       });
     }
 
@@ -1013,9 +1025,16 @@ body.force-mobile main{
         logChange('Spec "' + k + '" → ' + SPECS_CURRENT[k], SPECS_INITIAL[k] || '(vide)');
       }
     });
-    if (specsChanged && !(bomChanged || harnaisChanged || removedChanged || customChanged)){
+    if (specsChanged && !bomItems.some(function(it){ return it.annee === YEAR; })){
       // Si seulement les specs ont change, il faut quand meme sauvegarder le _bom (qui contient les specs)
-      promises.push(saveBomOverride(YEAR, buildOverridePayload()));
+      bomItems.push({ annee: YEAR, bomOverride: buildOverridePayload() });
+    }
+
+    // Dispatch des ecritures BOM : 1 seule requete (bulk si plusieurs annees -> atomique, pas de conflit)
+    if (bomItems.length === 1){
+      promises.push(saveBomOverride(bomItems[0].annee, bomItems[0].bomOverride));
+    } else if (bomItems.length > 1){
+      promises.push(saveBomOverrideBulk(bomItems));
     }
     if (!promises.length){ document.getElementById('modal-save').classList.remove('show'); return Promise.resolve(true); }
 

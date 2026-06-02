@@ -1,1 +1,1 @@
-{"v": "2026-06-02T15:30:00Z", "note": "Auto-rafraichissement transparent des donnees (overrides) toutes les ~20s, sans reload manuel"}
+{"v": "2026-06-02T17:00:00Z", "note": "Fix Appliquer-a-toutes-les-annees: ecriture atomique (bulk) au lieu de N ecritures paralleles"}
