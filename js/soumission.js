@@ -505,13 +505,15 @@ function getKitSummary(type, fab, modele, specs) {
         '0304': modelUpper === 'TB216'
     };
 
+    // Etat reel par code (pour distinguer 'à vérifier')
+    var bomState = {};
     // Apply BOM overrides from API (BD is master — any non-na value means present)
     if (currentBomOverrides) {
         for (var code in currentBomOverrides) {
             if (code === '_specs' || code === '_custom' || code === '_removed' || code === 'harnais') continue;
             var ov = currentBomOverrides[code];
             if (ov === 'na') bomDefaults[code] = false;
-            else if (ov) bomDefaults[code] = true;
+            else if (ov) { bomDefaults[code] = true; bomState[code] = ov; }
         }
         // _removed: force absent
         if (Array.isArray(currentBomOverrides._removed)){
@@ -546,7 +548,7 @@ function getKitSummary(type, fab, modele, specs) {
         kit.push({
             code: fullCode,
             name: BOM_NAMES[bCode] || bCode,
-            status: ALWAYS_OBLIG[bCode] ? 'Obligatoire' : 'Optionnel'
+            status: bomState[bCode] === 'v' ? 'À vérifier' : (ALWAYS_OBLIG[bCode] ? 'Obligatoire' : 'Optionnel')
         });
     }
 

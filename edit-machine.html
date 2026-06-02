@@ -85,6 +85,7 @@ select:focus,input:focus,textarea:focus{outline:none;border-color:var(--accent)}
 .bom-table select{padding:0.3rem 0.5rem;font-size:0.85rem;width:100%;max-width:200px}
 select.status-r{color:var(--rouge);border-color:var(--rouge)}
 select.status-j{color:var(--jaune);border-color:var(--jaune)}
+select.status-v{color:#E07B00;border-color:#E07B00}
 select.status-na{color:var(--text-3)}
 
 .row-changed td{background:rgba(0,98,204,0.12) !important}
@@ -608,7 +609,7 @@ body.force-mobile main{
   function flagKey(){ return [TYPE, FAB, MODEL, YEAR].join('|'); }
   function deletedKey(){ return 'deleted_' + FAB.replace(/[^a-zA-Z0-9]/g,'_') + '_' + MODEL.replace(/[^a-zA-Z0-9]/g,'_') + '_' + YEAR; }
 
-  function stateLabel(s){ return s==='r'?'Obligatoire':s==='j'?'Optionnel':'N/A'; }
+  function stateLabel(s){ return s==='r'?'Obligatoire':s==='j'?'Optionnel':s==='v'?'À vérifier':'N/A'; }
   function showToast(msg, color){
     var t = document.getElementById('toast');
     t.textContent = msg;
@@ -1254,6 +1255,7 @@ body.force-mobile main{
             '<select class="status-' + current + '" data-code="' + code + '"' + (canEdit?'':' disabled') + '>' +
               '<option value="r"' + (current==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
               '<option value="j"' + (current==='j'?' selected':'') + '>🟡 Optionnel</option>' +
+              '<option value="v"' + (current==='v'?' selected':'') + '>🟠 À vérifier</option>' +
               '<option value="na"' + (current==='na'?' selected':'') + '>⚫ N/A</option>' +
             '</select>' +
           '</td>' +

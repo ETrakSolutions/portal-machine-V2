@@ -536,16 +536,21 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                     tr.style.display = '';
                     var statusCell = tr.querySelector('.kit-status-cell');
                     if (statusCell) {
-                        // Ensure radios exist
-                        var radioName = statusCell.querySelector('input[type="radio"]');
-                        if (!radioName) {
-                            var name = 'kit-' + kit;
-                            statusCell.innerHTML = '<input type="radio" name="' + name + '" value="oui" class="radio-red"><input type="radio" name="' + name + '" value="non" class="radio-yellow">';
+                        if (state === 'v') {
+                            // A verifier : badge orange distinct (ni obligatoire ni optionnel)
+                            statusCell.innerHTML = '<span class="kit-verif-badge" style="display:inline-block;padding:2px 8px;border-radius:10px;background:#FFF1DC;color:#B25E00;border:1px solid #E07B00;font-size:0.72rem;font-weight:600;white-space:nowrap">&#128992; À vérifier</span>';
+                        } else {
+                            // Ensure radios exist
+                            var radioName = statusCell.querySelector('input[type="radio"]');
+                            if (!radioName) {
+                                var name = 'kit-' + kit;
+                                statusCell.innerHTML = '<input type="radio" name="' + name + '" value="oui" class="radio-red"><input type="radio" name="' + name + '" value="non" class="radio-yellow">';
+                            }
+                            var red = statusCell.querySelector('.radio-red');
+                            var yellow = statusCell.querySelector('.radio-yellow');
+                            if (state === 'r' && red) { red.checked = true; if (yellow) yellow.checked = false; }
+                            else if (state === 'j' && yellow) { yellow.checked = true; if (red) red.checked = false; }
                         }
-                        var red = statusCell.querySelector('.radio-red');
-                        var yellow = statusCell.querySelector('.radio-yellow');
-                        if (state === 'r' && red) { red.checked = true; if (yellow) yellow.checked = false; }
-                        else if (state === 'j' && yellow) { yellow.checked = true; if (red) red.checked = false; }
                     }
                 }
             });

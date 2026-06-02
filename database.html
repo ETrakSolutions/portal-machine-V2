@@ -204,6 +204,7 @@
         .bom-token.readonly:hover { transform: none; }
         .bom-r { background: #FF2D2D; box-shadow: 0 0 6px #FF2D2D80; }
         .bom-j { background: #FFD600; box-shadow: 0 0 6px #FFD60080; }
+        .bom-v { background: #FF8C00; box-shadow: 0 0 6px #FF8C0080; color: #fff; font-size: 0.55rem; }
         .bom-na { background: #555; color: #999; font-size: 0.45rem; }
         .db-table thead th.bom-col {
             writing-mode: vertical-rl;
@@ -577,6 +578,7 @@
             <div class="db-legend" id="db-legend">
                 <span class="db-legend-item"><span class="bom-token bom-r"></span> <span data-i18n="db.legend_obligatoire">Obligatoire</span></span>
                 <span class="db-legend-item"><span class="bom-token bom-j"></span> <span data-i18n="db.legend_optionnel">Optionnel</span></span>
+                <span class="db-legend-item"><span class="bom-token bom-v">?</span> À vérifier</span>
                 <span class="db-legend-item"><span class="bom-token bom-na">-</span> <span data-i18n="db.legend_na">N/A</span></span>
                 <span style="color:#555;">| Edition via la page d'edition (cliquer sur le modele)</span>
             </div>
@@ -905,14 +907,19 @@
         // ou personnalisee (_custom) est marquee OBLIGATOIRE dans la page d'edition. Sinon na.
         function computeAutreState(d) {
             var hasRouge = false;
+            var hasVerif = false;
             var details = [];
             var bom = d.bom || {};
             var removed = Array.isArray(d._removed) ? d._removed : [];
             EXC_AUTRE_HIDDEN_CODES.forEach(function(c) {
                 if (removed.indexOf(c) >= 0) return;
-                if ((bom[c] || 'na') === 'r') {
+                var st = bom[c] || 'na';
+                if (st === 'r') {
                     hasRouge = true;
                     details.push((BOM_NAMES[c] || c) + ' : Obligatoire');
+                } else if (st === 'v') {
+                    hasVerif = true;
+                    details.push((BOM_NAMES[c] || c) + ' : À vérifier');
                 }
             });
             if (Array.isArray(d._custom)) {
@@ -920,10 +927,13 @@
                     if (cr.status === 'r') {
                         hasRouge = true;
                         details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : Obligatoire');
+                    } else if (cr.status === 'v') {
+                        hasVerif = true;
+                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : À vérifier');
                     }
                 });
             }
-            return { state: hasRouge ? 'r' : 'na', details: details };
+            return { state: hasRouge ? 'r' : hasVerif ? 'v' : 'na', details: details };
         }
 
         // Spec columns per machine type: {key: label}
@@ -1370,6 +1380,7 @@
         function nextBomState(current) {
             if (current === 'na' || !current) return 'j';
             if (current === 'j') return 'r';
+            if (current === 'r') return 'v';
             return 'na';
         }
 
@@ -1377,9 +1388,10 @@
             var cls = 'bom-token';
             if (state === 'r') cls += ' bom-r';
             else if (state === 'j') cls += ' bom-j';
+            else if (state === 'v') cls += ' bom-v';
             else cls += ' bom-na';
             if (!editable) cls += ' readonly';
-            var label = state === 'r' ? '' : state === 'j' ? '' : '-';
+            var label = state === 'r' ? '' : state === 'j' ? '' : state === 'v' ? '?' : '-';
             return '<span class="' + cls + '" data-code="' + code + '" data-idx="' + idx + '" title="' + BOM_NAMES[code] + '">' + label + '</span>';
         }
 
@@ -1701,7 +1713,7 @@
             });
 
             var classeOrder = {'Mini':0,'Compact':1,'120':2,'200':3,'270':4,'300':5,'400':6,'500':7,'700-800':8,'1000+':9};
-            var bomStateOrder = {'r':0,'j':1,'na':2};
+            var bomStateOrder = {'r':0,'j':1,'v':2,'na':3};
             filtered.sort(function(a, b) {
                 var va, vb;
                 if (sortCol && sortCol.indexOf('bom_') === 0) {
@@ -1816,7 +1828,7 @@
                     td.style.padding = '4px';
                     if (code === '_AUTRE') {
                         var info = computeAutreState(d);
-                        var cls = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : ' bom-na');
+                        var cls = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
                         var label = info.state === 'na' ? '-' : '';
                         var title = info.details.length ? info.details.join('\n') : 'Aucune autre option';
                         td.innerHTML = '<span class="' + cls + '" data-code="_AUTRE" data-idx="' + dataIdx + '" title="' + title.replace(/"/g, '&quot;') + '">' + label + '</span>';
@@ -1975,7 +1987,7 @@
                             if (!c) return;
                             if (c === '_AUTRE') {
                                 var info = computeAutreState(d);
-                                token.className = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : ' bom-na');
+                                token.className = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
                                 token.textContent = info.state === 'na' ? '-' : '';
                                 token.title = info.details.length ? info.details.join('\n') : 'Aucune autre option';
                                 return;
@@ -1988,7 +2000,7 @@
                                 return;
                             }
                             var st = d.bom[c] || 'na';
-                            token.className = 'bom-token' + (st === 'r' ? ' bom-r' : st === 'j' ? ' bom-j' : ' bom-na') + (canEdit ? '' : ' readonly');
+                            token.className = 'bom-token' + (st === 'r' ? ' bom-r' : st === 'j' ? ' bom-j' : st === 'v' ? ' bom-v' : ' bom-na') + (canEdit ? '' : ' readonly');
                             token.textContent = st === 'r' ? '' : st === 'j' ? '' : '-';
                         });
                         // Re-apply spec cells (specs columns are at fixed positions after BOM+harnais)
@@ -2193,7 +2205,7 @@
             d.bom[code] = next;
 
             // Update token visually
-            token.className = 'bom-token' + (next === 'r' ? ' bom-r' : next === 'j' ? ' bom-j' : ' bom-na');
+            token.className = 'bom-token' + (next === 'r' ? ' bom-r' : next === 'j' ? ' bom-j' : next === 'v' ? ' bom-v' : ' bom-na');
             token.textContent = next === 'r' ? '' : next === 'j' ? '' : '-';
 
             // Save to API
@@ -2292,7 +2304,7 @@
         // Export CSV \u2014 version enrichie avec tous les codes BOM + Autre + Custom + Notes + Drapeau.
         // Precharge les overrides manquants en parallele avec progress avant generation.
         function stateLabel(s) {
-            return s === 'r' ? 'Obligatoire' : s === 'j' ? 'Optionnel' : s === 'na' ? 'N/A' : (s || 'N/A');
+            return s === 'r' ? 'Obligatoire' : s === 'j' ? 'Optionnel' : s === 'v' ? 'À vérifier' : s === 'na' ? 'N/A' : (s || 'N/A');
         }
 
         function ensureAllOverridesLoaded(rows, onProgress) {
