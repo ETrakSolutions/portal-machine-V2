@@ -1,8 +1,8 @@
 /**
  * Rafraichissement transparent des donnees editables (data/overrides.json).
  *
- * Toutes les ~20 s, revalide overrides.json (requete conditionnelle 'no-cache' :
- * un 304 leger si rien n'a change, le fichier complet seulement s'il a change).
+ * Toutes les ~20 s, recharge overrides.json avec une URL unique (?t=) pour contourner
+ * le cache CDN de GitHub Pages (la revalidation 'no-cache' n'y est pas fiable).
  * Si le contenu a change depuis le dernier chargement, appelle
  * window.__onOverridesChanged(ov) — chaque page decide comment se mettre a jour
  * sans perturber une saisie/edition en cours.
@@ -16,7 +16,9 @@
   var lastJson = null;
 
   function tick() {
-    fetch('data/overrides.json', { cache: 'no-cache' })
+    // URL unique (?t=) pour contourner le CDN GitHub Pages : 'cache:no-cache' (revalidation)
+    // n'est PAS fiable ici — le CDN sert parfois une reponse perimee. Une URL unique force le frais.
+    fetch('data/overrides.json?t=' + Date.now())
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (ov) {
         if (!ov) return;

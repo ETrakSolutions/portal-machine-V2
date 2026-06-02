@@ -1,1 +1,1 @@
-{"v": "2026-06-02T17:00:00Z", "note": "Fix Appliquer-a-toutes-les-annees: ecriture atomique (bulk) au lieu de N ecritures paralleles"}
+{"v": "2026-06-02T18:00:00Z", "note": "Fix auto-refresh: URL anti-cache unique (le CDN GitHub Pages servait du perime a la revalidation)"}
