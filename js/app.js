@@ -57,7 +57,7 @@ function applyOverrides(machines, ov) {
     return machines;
 }
 Promise.all([
-    fetch('data/machines.json?v=157').then(res => res.json()),
+    fetch('data/machines.json?v=158').then(res => res.json()),
     fetch('data/overrides.json?t=' + Date.now()).then(res => res.json()).catch(() => ({}))
 ])
     .then(res => {
@@ -364,6 +364,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         html += `<tr><td>Classe machine</td><td><strong>${classMachine}</strong></td></tr>`;
     }
     for (const [key, value] of Object.entries(specs)) {
+        if (key.charAt(0) === '_' || key === 'Flag') continue;  // cacher les cles meta (_note_tech_*, _actif, _bom, etc.)
         const dk = ` data-spec-key="${key.replace(/"/g,'&quot;')}"`;
         if (key === 'Image') {
             if (value && value.trim() !== '') {

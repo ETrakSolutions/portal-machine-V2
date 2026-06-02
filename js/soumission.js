@@ -120,7 +120,7 @@ function applyOverrides(machines, ov) {
     return machines;
 }
 Promise.all([
-    fetch('data/machines.json?v=157').then(function(res) { return res.json(); }),
+    fetch('data/machines.json?v=158').then(function(res) { return res.json(); }),
     fetch('data/overrides.json?t=' + Date.now()).then(function(res) { return res.json(); }).catch(function(){ return {}; })
 ])
     .then(function(res) {
@@ -432,6 +432,7 @@ function renderSpecsTable(type, fab, annee, modele) {
 
     for (var key in specs) {
         var val = specs[key];
+        if (key.charAt(0) === '_' || key === 'Flag') continue; // cacher les cles meta (_note_tech_*, _actif, _bom...)
         if (key === 'Image') continue;
         if (key === 'Classe machine') continue; // already computed above
         if (!val || val === 'A completer') continue;

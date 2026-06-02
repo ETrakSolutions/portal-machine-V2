@@ -1408,7 +1408,7 @@
             return machines;
         }
         Promise.all([
-            fetch('data/machines.json?v=157').then(function(r) { return r.json(); }),
+            fetch('data/machines.json?v=158').then(function(r) { return r.json(); }),
             fetch('data/overrides.json?t=' + Date.now()).then(function(r) { return r.json(); }).catch(function(){ return {}; })
         ])
             .then(function(res) {
