@@ -129,6 +129,23 @@ Promise.all([
     })
     .catch(function(err) { console.error('Erreur chargement donnees:', err); });
 
+// Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change.
+// Met a jour les donnees + l'override de la machine selectionnee SANS toucher au formulaire (options en cours).
+window.__onOverridesChanged = function(ov) {
+    applyOverrides(machinesData, ov);
+    var t = selectType && selectType.value, f = selectFabricant && selectFabricant.value,
+        a = selectAnnee && selectAnnee.value, m = selectModele && selectModele.value;
+    if (t && f && a && m) {
+        try {
+            var e = machinesData[t] && machinesData[t][f] && machinesData[t][f][a] && machinesData[t][f][a][m];
+            var o = (ov[t] && ov[t][f] && ov[t][f][a] && ov[t][f][a][m]) || {};
+            if (e) { if (o._bom !== undefined) e._bom = o._bom; else delete e._bom;
+                     if (o._notes !== undefined) e._notes = o._notes; else delete e._notes; }
+        } catch (err) {}
+        try { loadBomOverrides(f, m, a); loadNotesForModel(f, m, a); } catch (e) {}  // rafraichit kit/notes, pas le formulaire
+    }
+};
+
 // Load allowed types in parallel — re-filter if API returns restrictions
 fetch(API_URL + '?action=get&key=soumission_allowed_types')
     .then(function(r) { return r.json(); })

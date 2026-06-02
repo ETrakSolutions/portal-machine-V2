@@ -1463,6 +1463,17 @@
                 loadFlags();
             });
 
+        // Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change.
+        // Re-fusionne les overrides dans la BD en memoire et re-rend la grille en preservant le defilement.
+        window.__onOverridesChanged = function(ov) {
+            if (!fullData) return;
+            applyOverrides(fullData, ov);
+            overridesCache = {};            // forcer la relecture des overrides
+            var sy = window.scrollY;
+            try { if (document.getElementById('db-type').value) applyFilters(); } catch(e){}
+            try { window.scrollTo(0, sy); } catch(e){}
+        };
+
         // Sauvegarder l'etat courant pour pouvoir le restaurer apres back/forward
         function saveDbState() {
             try {
@@ -2782,6 +2793,7 @@
     })();
     </script>
     <script src="js/capture-tool.js?v=1"></script>
+    <script src="js/data-refresh.js?v=1"></script>
 
 </body>
 </html>

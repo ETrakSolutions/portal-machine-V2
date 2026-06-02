@@ -66,6 +66,23 @@ Promise.all([
     })
     .catch(err => console.error('Erreur chargement donnees:', err));
 
+// Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change
+window.__onOverridesChanged = function(ov) {
+    applyOverrides(machinesData, ov);
+    if (typeof kitEditMode !== 'undefined' && kitEditMode) return; // ne pas perturber une edition kit en cours
+    var t = selectType && selectType.value, f = selectFabricant && selectFabricant.value,
+        a = selectAnnee && selectAnnee.value, m = selectModele && selectModele.value;
+    if (t && f && a && m && m !== '__OTHER__') {
+        try {
+            var e = machinesData[t] && machinesData[t][f] && machinesData[t][f][a] && machinesData[t][f][a][m];
+            var o = (ov[t] && ov[t][f] && ov[t][f][a] && ov[t][f][a][m]) || {};
+            if (e) { if (o._bom !== undefined) e._bom = o._bom; else delete e._bom;
+                     if (o._notes !== undefined) e._notes = o._notes; else delete e._notes; }
+        } catch (err) {}
+        try { selectModele.dispatchEvent(new Event('change')); } catch (e) {}  // re-affiche la fiche/kit a jour
+    }
+};
+
 function populateTypes() {
     const types = Object.keys(machinesData).sort();
     types.forEach(type => {
