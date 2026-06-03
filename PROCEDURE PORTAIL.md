@@ -8,29 +8,41 @@ Ce document decrit l'etat actuel du projet, son architecture et les procedures p
 
 **Portail Machine** est un outil web interne pour consulter les specifications techniques de machines (excavatrices, grues, foreuses, etc.) et configurer les kits e-Trak associes.
 
-- **Repo GitHub** : `ETrakSolutions/portal-machine`
-- **Deploiement** : GitHub Pages — `etraksolutions.github.io/portal-machine/`
+- **Repo GitHub** : `ETrakSolutions/portal-machine-V2` (V2 = banc d'essai ; V1 `portal-machine` reste l'outil en place, intact)
+- **Deploiement** : GitHub Pages — `etraksolutions.github.io/portal-machine-V2/`
 - **Stack** : HTML/CSS/JS vanilla (aucun framework)
-- **Backend** : Google Apps Script pour la persistance (notes, emails, suppressions)
+- **Backend** : Google Apps Script (`apps-script/Api.gs`) qui ecrit directement sur GitHub via l'API Contents (notes, BOM, suppressions). Voir section 4.3.
+- **8 types de machines** : Excavatrice, Pompe a Beton, Grue Mobile, Camion Girafe (Boom Truck), Telehandler, Foreuse, Camion Vacuum, Retrocaveuse.
 
 ---
 
 ## 2. Structure des fichiers
 
 ```
-portal-machine/
-├── index.html              # Page principale (UI complete)
-├── js/app.js               # Logique applicative (~750 lignes)
-├── css/style.css           # Styles (~980 lignes)
+portal-machine-V2/
+├── index.html              # Hub / page d'accueil (connexion)
+├── database.html           # Base de donnees (lecture seule) — gabarit canonique
+├── edit-machine.html       # Edition d'une machine (BOM, notes, specs)
+├── machine.html            # Fiche machine + Kit
+├── soumission.html         # Soumission / demande de kit
+├── js/
+│   ├── app.js              # Logique fiche machine + kit
+│   ├── soumission.js       # Logique soumission
+│   ├── overrides-loader.js # Charge les overrides decoupes par type (voir 4.4)
+│   ├── data-refresh.js     # Rafraichissement transparent (~20 s)
+│   └── ...                 # i18n, translations, heartbeat, version-check...
+├── css/style.css           # Styles
 ├── data/
-│   ├── machines.json       # Base de donnees machines (~1.5 MB)
-│   └── shared-data.json    # Donnees partagees
-├── assets/
-│   ├── logo-white.png
-│   └── fonts/              # Polices Acumin Pro
-├── .claude/launch.json     # Config serveur dev
-└── PROCEDURE.md            # Ce fichier
+│   ├── machines.json       # Specs de base, 8 types (~12 MB) — rarement ecrit
+│   └── overrides/          # BOM + notes editables, UN fichier par type :
+│       ├── excavatrice.json        (~300 KB)
+│       ├── pompe-a-beton.json
+│       ├── grue-mobile.json
+│       └── ... (8 fichiers, voir slugs en 4.4)
+├── scripts/split_overrides_by_type.py  # Migration : split overrides.json -> par type
+└── PROCEDURE PORTAIL.md    # Ce fichier
 ```
+> Note transition : `data/overrides.json` (fichier unique d'origine) est conserve quelque temps comme repli. Le loader lit les fichiers par type + ce repli ; il sera retire une fois le backend par-type confirme stable.
 
 ---
 
@@ -75,41 +87,59 @@ Textarea pour notes specifiques a chaque combinaison fabricant/modele/annee
   "Excavatrice": {
     "Caterpillar": {
       "2020": {
-        "320": {
-          "Image": "",
-          "Puissance moteur (kW / HP)": "121 kW / 162 HP",
-          "Type de traction": "Chenille",
-          ...
-        }
+        "320": { "Image": "", "Puissance moteur (kW / HP)": "121 kW / 162 HP", ... }
       }
     }
   }
 }
 ```
-Hierarchie : Type → Fabricant → Annee → Modele → Specs
+Hierarchie : Type → Fabricant → Annee → Modele → Specs.
+`machines.json` ne contient QUE les specs de base (8 types, ~12 MB). Les donnees editables (`_bom`, `_notes`) ne sont PAS ici : elles vivent dans les fichiers overrides (4.2).
 
-### 4.2 API Google Apps Script
+### 4.2 Overrides editables — decoupes par type
+Le BOM (kit e-Trak) et les notes sont stockes a part, dans **un fichier par type** sous `data/overrides/<slug>.json`. Structure miroir : `{ "<Type>": { fab: { annee: { modele: { _bom, _notes } } } } }`.
+
+Pourquoi par type : reste loin du plafond 1 Mo de l'API Contents (chaque fichier <=~320 KB, plein), ecritures isolees (editer une grue ne touche pas `excavatrice.json`), sauvegardes plus rapides.
+
+**Table CANONIQUE type → slug** (identique dans `js/overrides-loader.js`, `apps-script/Api.gs` `OV_TYPE_SLUGS`, et `scripts/split_overrides_by_type.py`) :
+
+| Type | Fichier |
+|------|---------|
+| Excavatrice | `data/overrides/excavatrice.json` |
+| Pompe a Beton | `data/overrides/pompe-a-beton.json` |
+| Grue Mobile | `data/overrides/grue-mobile.json` |
+| Camion Girafe (Boom Truck) | `data/overrides/camion-girafe.json` |
+| Telehandler | `data/overrides/telehandler.json` |
+| Foreuse | `data/overrides/foreuse.json` |
+| Camion Vacuum | `data/overrides/camion-vacuum.json` |
+| Retrocaveuse | `data/overrides/retrocaveuse.json` |
+
+**Lecture** : `js/overrides-loader.js` expose `window.loadMergedOverrides()` qui fetch les 8 fichiers + le repli `data/overrides.json`, fusionne en un seul objet, puis `applyOverrides()` greffe `_bom`/`_notes` sur `machines.json` en memoire. Utilise par app.js, soumission.js, database.html, edit-machine.html et data-refresh.js.
+
+### 4.3 API Google Apps Script (Option B)
 ```
 URL : https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec
 ```
+Backend = `apps-script/Api.gs` (ne PAS garder l'ancien `Code.gs` dans le projet). Il ecrit directement sur GitHub via l'API Contents (~6 s), en **compact** (`JSON.stringify(data)`), avec retry sur conflit de SHA (verrou optimiste). Les ecritures BOM/notes/suppression ciblent le fichier `data/overrides/<slug>.json` du type concerne (route par `_ovFilePath(type)`).
 
-| Action | Methode | Cle | Usage |
-|--------|---------|-----|-------|
-| Lire | GET | `?action=get&key=X` | Notes, emails |
-| Ecrire | POST | `{action:'save', key, value, pin:'1400'}` | Notes, emails, suppressions |
-| Modele custom | POST | `{action:'saveModel', modelKey, specs}` | Sauvegarder un modele cree |
+| Action | Usage |
+|--------|-------|
+| `get` / `list` (GET) | Notes legacy, emails, drapeaux (Script Properties) |
+| `updateMachineBom` / `updateMachineBomBulk` | Ecrit `_bom` dans `overrides/<type>.json` |
+| `updateMachineNotes` | Ecrit `_notes` dans `overrides/<type>.json` |
+| `deleteMachine` | Retire l'override + la machine de machines.json |
 
-### 4.3 Protection NIP
-- **PIN unique** : `1400` (variable `KIT_PIN` dans app.js)
-- 3 zones protegees : Kit machine, Emails, Suppression de modele
-- Le menu engrenage protege les emails ET la suppression (meme NIP)
+**Redeploiement** : apres toute modif d'`Api.gs`, console Apps Script (compte `etrak.portail@gmail.com`) → Deploy → Manage deployments → Edit → New version. L'URL ne change pas.
 
-### 4.4 Cache busting
-Les fichiers CSS et JS sont charges avec un parametre de version :
-- `css/style.css?v=31`
-- `js/app.js?v=32`
+### 4.4 Protection NIP
+- **PIN** : `1400`
+- Zones protegees : Kit machine, Emails, Suppression de modele.
 
-**Important** : Incrementer ces numeros dans `index.html` apres chaque modification pour forcer le rechargement sur GitHub Pages.
+### 4.5 Cache busting
+Les fichiers CSS et JS sont charges avec un parametre de version (`?v=XX`).
+- Actuels : `css/style.css?v=172`, `js/app.js?v=191`, `js/soumission.js?v=191`, `js/data-refresh.js?v=3`, `js/overrides-loader.js?v=1`.
+
+**Important** : incrementer ces numeros dans la page HTML concernee apres chaque modif CSS/JS pour forcer le rechargement sur GitHub Pages (et mobile).
 
 ---
 
@@ -144,12 +174,25 @@ Ou via Claude Code : `preview_start` avec la config `.claude/launch.json`
 
 - **OneDrive** : Le repo est dans un dossier OneDrive. Les outils Edit/Write de Claude Code peuvent etre bloques sur certains fichiers. Utiliser des scripts Python comme alternative si necessaire.
 - **Pas de Node.js** : L'environnement n'a pas Node.js installe. Utiliser Python pour le serveur HTTP.
-- **machines.json est gros** (~1.5 MB) : Ne pas le lire en entier inutilement.
+- **machines.json est gros** (~12 MB) : Ne pas le lire en entier inutilement (parser en script plutot). Les overrides par type, eux, sont petits.
 - **Responsive** : Tester sur mobile (breakpoints a 600px et 900px).
 
 ---
 
 ## 7. Historique des changements recents
+
+### 2026-06-03 — Overrides decoupes par type + ecriture compacte
+- **Probleme** : `data/overrides.json` (fichier unique) ecrit en indente = 892 KB pour 296 KB de donnees reelles, approche du plafond 1 Mo de l'API Contents ; toute sauvegarde reecrit tout le fichier.
+- **Solution** : 1 fichier overrides par type (`data/overrides/<slug>.json`) + ecriture backend en compact.
+- **Detail** :
+  - `scripts/split_overrides_by_type.py` : split sans perte (verifie : fusion == original ; excavatrices intactes).
+  - `js/overrides-loader.js` : `loadMergedOverrides()` fusionne les 8 fichiers + repli legacy (rollout sans casse).
+  - `Api.gs` : ecriture compacte (`JSON.stringify(data)`) + routage par type (`OV_TYPE_SLUGS`, `_ovFilePath`, `ohReadFile/Write/UpdateJson(type)`).
+  - **Frontend DEPLOYE** (commit f240791), verifie live (machine.html lit 5875 BOM exc + 6 pompes). **Reste : redeployer Api.gs** (console Apps Script) pour activer l'ecriture par type.
+- **Bonus** : editer un type ne peut plus toucher le fichier d'un autre (excavatrices structurellement protegees).
+
+### 2026-06-03 — Fix header mobile
+- Logo qui empietait sur le toggle FR/EN sur cellulaire → media queries 600px + 360px (logo retreci, boutons resserres). Cache `style.css?v=172`.
 
 ### Mars 2026 — Suppression de modele dans le menu engrenage
 - **Probleme** : La suppression dependait du kit machine (kitUnlocked) → ne fonctionnait que pour les Excavatrices
@@ -162,4 +205,4 @@ Ou via Claude Code : `preview_start` avec la config `.claude/launch.json`
 
 ---
 
-*Derniere mise a jour : 2026-03-19*
+*Derniere mise a jour : 2026-06-03*
