@@ -72,6 +72,7 @@
                     Telecharge le contenu de chaque fichier en Excel (.xlsx) avec <b>filtres automatiques</b> (AutoFilter) pour une vue d'ensemble rapide.<br>
                     Drapeaux BOM affiches par un <b>point de couleur</b> : <span style="color:#FF0000;font-size:1.1rem;vertical-align:middle;">●</span> <b>rouge</b> = obligatoire &nbsp;
                     <span style="color:#E6C000;font-size:1.1rem;vertical-align:middle;">●</span> <b>jaune</b> = option/recommande &nbsp;
+                    <span style="color:#E07B00;font-size:1.1rem;vertical-align:middle;">●</span> <b>orange</b> = a verifier &nbsp;
                     <span style="color:#B0B0B0;font-size:1.1rem;vertical-align:middle;">●</span> <b>gris</b> = non applicable.<br>
                     Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur de police</b> pour isoler les options.
                 </p>
@@ -174,6 +175,7 @@
             var low = String(v).toLowerCase();
             if (low === 'r') return 'FFFF0000';   // rouge = obligatoire
             if (low === 'j') return 'FFFFFF00';   // jaune = option
+            if (low === 'v') return 'FFE07B00';   // orange = a verifier
             if (low === 'na') return 'FFD9D9D9';  // gris = non applicable
             return null;
         }
@@ -245,6 +247,7 @@
                 { text: 'Legende :  ', font: { bold: true } },
                 { text: '●', font: { color: { argb: 'FFFF0000' }, bold: true } }, { text: ' obligatoire     ' },
                 { text: '●', font: { color: { argb: 'FFE6C000' }, bold: true } }, { text: ' option / recommande     ' },
+                { text: '●', font: { color: { argb: 'FFE07B00' }, bold: true } }, { text: ' a verifier     ' },
                 { text: '●', font: { color: { argb: 'FFB0B0B0' }, bold: true } }, { text: ' non applicable' }
             ] };
         }
