@@ -417,7 +417,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             '- Annee : ' + annee + '\n\n' +
             'Merci de selectionner les options necessaires (Obligatoire / Option) pour cette machine.\n\n' +
             'Portail Machine e-Trak\n' +
-            'https://etraksolutions.github.io/portal-machine/'
+            'https://etraksolutions.github.io/portal-machine-V2/'
         );
         html += '<div class="kit-request-box">' +
             '<p class="kit-request-text">\u26A0 Ce modele n\'est pas dans la base de donnees. Les specifications sont a completer.</p>' +
@@ -1586,7 +1586,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Demande par: ' + currentUser.username + '\n\n' +
                 'Options selectionnees:\n' +
                 options.map(function(o) { return '  - ' + o; }).join('\n') +
-                '\n\nPortail Machine e-Trak\nhttps://etraksolutions.github.io/portal-machine/';
+                '\n\nPortail Machine e-Trak\nhttps://etraksolutions.github.io/portal-machine-V2/';
 
             window.location.href = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         });
