@@ -1698,3 +1698,15 @@ footer {
     background: rgba(255,255,255,0.18);
     color: #fff;
 }
+
+/* Mobile : le logo centre ne doit pas empieter sur le toggle FR/EN */
+@media (max-width: 600px) {
+    .header-content { padding: 0 0.5rem; }
+    .header-logo { height: 38px; }
+    .lang-switch { padding: 2px; gap: 1px; }
+    .lang-btn { padding: 4px 8px; font-size: 0.66rem; letter-spacing: 0.4px; }
+}
+@media (max-width: 360px) {
+    .header-logo { height: 30px; }
+    .lang-btn { padding: 4px 6px; font-size: 0.62rem; letter-spacing: 0.2px; }
+}
