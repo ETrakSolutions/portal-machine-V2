@@ -58,8 +58,8 @@
             <!-- Acces refuse -->
             <div id="exp-denied" style="display:none; text-align:center; padding:3rem 1rem;">
                 <div style="font-size:2.5rem;">&#128274;</div>
-                <h2 style="color:#fff;">Acces reserve au Super Admin</h2>
-                <p style="color:#999;">Cette section n'est accessible qu'au Super Admin.</p>
+                <h2 style="color:#fff;">Acces reserve aux administrateurs</h2>
+                <p style="color:#999;">Cette section est reservee au Super Admin et aux Administrateurs.</p>
                 <a href="index.html" class="exp-btn" style="display:inline-block; text-decoration:none; margin-top:1rem;">Retour au hub</a>
             </div>
 
@@ -110,10 +110,11 @@
     (function () {
         'use strict';
 
-        // ---- Auth : Super Admin uniquement ----
+        // ---- Auth : Super Admin + Administrateur ----
+        var EXPORT_ROLES = { super_admin: true, administrateur: true };
         var user = null;
         try { user = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
-        if (!user || user.role !== 'super_admin') {
+        if (!user || !EXPORT_ROLES[user.role]) {
             document.getElementById('exp-denied').style.display = 'block';
             return;
         }
