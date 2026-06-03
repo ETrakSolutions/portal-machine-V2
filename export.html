@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Export</title>
+    <link rel="stylesheet" href="css/style.css?v=173">
+    <link rel="stylesheet" href="css/admin.css?v=164">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- SheetJS : generation .xlsx avec AutoFilter, cote client -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        .exp-wrap { max-width: 900px; margin: 0 auto; padding: 1rem; }
+        .exp-legend { font-size: 0.8rem; color: var(--text-secondary, #aaa); margin: 0.5rem 0 1.5rem; }
+        .exp-legend b { color: #fff; }
+        .exp-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+        .exp-row {
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+            background: linear-gradient(145deg, #2A2A2A, #222);
+            border: 1px solid rgba(192,192,192,0.22); border-radius: 12px; padding: 0.85rem 1.1rem;
+        }
+        .exp-row-info { min-width: 0; }
+        .exp-row-title { color: #fff; font-weight: 700; font-size: 0.95rem; }
+        .exp-row-sub { color: var(--text-secondary, #999); font-size: 0.75rem; margin-top: 2px; }
+        .exp-btn {
+            background: #FF8C00; color: #1a1a1a; border: none; border-radius: 8px;
+            padding: 8px 16px; font-weight: 700; font-size: 0.8rem; cursor: pointer; white-space: nowrap;
+            transition: filter 0.15s;
+        }
+        .exp-btn:hover { filter: brightness(1.08); }
+        .exp-btn:disabled { background: #555; color: #999; cursor: not-allowed; }
+        .exp-btn.alt { background: rgba(255,255,255,0.12); color: #fff; }
+        .exp-section-title { color: #fff; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+            text-transform: uppercase; margin: 1.6rem 0 0.6rem; opacity: 0.7; }
+        .exp-loading { color: var(--text-secondary, #aaa); padding: 2rem; text-align: center; }
+        .exp-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: #1a1a1a; color: #fff; border: 1px solid rgba(255,255,255,0.2);
+            padding: 10px 18px; border-radius: 10px; font-size: 0.85rem; z-index: 9999; display: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Retour au hub">&larr; Retour</a>
+            <div class="logo-section">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+            </div>
+            <div class="lang-switch" style="position:absolute;right:0;">
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="exp-wrap">
+            <!-- Acces refuse -->
+            <div id="exp-denied" style="display:none; text-align:center; padding:3rem 1rem;">
+                <div style="font-size:2.5rem;">&#128274;</div>
+                <h2 style="color:#fff;">Acces reserve au Super Admin</h2>
+                <p style="color:#999;">Cette section n'est accessible qu'au Super Admin.</p>
+                <a href="index.html" class="exp-btn" style="display:inline-block; text-decoration:none; margin-top:1rem;">Retour au hub</a>
+            </div>
+
+            <!-- Contenu -->
+            <div id="exp-root" style="display:none;">
+                <div class="admin-hero" style="padding-bottom:0.5rem;">
+                    <h1 class="admin-hero-title">Export BOM</h1>
+                </div>
+                <p class="exp-legend">
+                    Telecharge le contenu de chaque fichier en Excel (.xlsx) avec <b>filtres automatiques</b> (AutoFilter) pour une vue d'ensemble rapide.<br>
+                    Legende des drapeaux BOM : <b>R</b> = obligatoire (rouge) &nbsp; <b>J</b> = option/recommande (jaune) &nbsp; <b>NA</b> = non applicable.
+                </p>
+
+                <div id="exp-loading" class="exp-loading">Chargement des donnees&hellip;</div>
+
+                <div id="exp-content" style="display:none;">
+                    <div class="exp-section-title">BOM par type de machine</div>
+                    <div id="exp-bom-grid" class="exp-grid"></div>
+
+                    <div class="exp-section-title">Combine</div>
+                    <div class="exp-grid">
+                        <div class="exp-row">
+                            <div class="exp-row-info">
+                                <div class="exp-row-title">Tous les BOM (un onglet par type)</div>
+                                <div class="exp-row-sub">Un seul classeur Excel, 8 onglets filtrables.</div>
+                            </div>
+                            <button class="exp-btn" id="exp-all-bom">Exporter</button>
+                        </div>
+                        <div class="exp-row">
+                            <div class="exp-row-info">
+                                <div class="exp-row-title">Specifications de toutes les machines</div>
+                                <div class="exp-row-sub">machines.json — un onglet de specs par type.</div>
+                            </div>
+                            <button class="exp-btn alt" id="exp-all-specs">Exporter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="exp-toast" class="exp-toast"></div>
+
+    <script src="js/translations.js?v=167"></script>
+    <script src="js/i18n.js?v=166"></script>
+    <script src="js/overrides-loader.js?v=1"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        // ---- Auth : Super Admin uniquement ----
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
+        if (!user || user.role !== 'super_admin') {
+            document.getElementById('exp-denied').style.display = 'block';
+            return;
+        }
+        document.getElementById('exp-root').style.display = 'block';
+
+        // Ordre canonique des types (= slugs du loader)
+        var TYPE_ORDER = [
+            'Excavatrice', 'Pompe a Beton', 'Grue Mobile', 'Camion Girafe (Boom Truck)',
+            'Telehandler', 'Foreuse', 'Camion Vacuum', 'Retrocaveuse'
+        ];
+        var SLUGS = window.ETRAK_TYPE_SLUGS || {};
+
+        var MACHINES = {};   // machines.json (specs + _bom_labels)
+        var OVERRIDES = {};  // overrides fusionnes (_bom / _notes)
+
+        function toast(msg) {
+            var t = document.getElementById('exp-toast');
+            t.textContent = msg; t.style.display = 'block';
+            clearTimeout(t._timer); t._timer = setTimeout(function () { t.style.display = 'none'; }, 2600);
+        }
+
+        // Map code BOM -> libelle lisible, depuis _bom_labels du type.
+        // _bom_labels a des cles type "0000 Cabine" ; le _bom utilise le code "0000".
+        function labelMap(typeName) {
+            var map = {};
+            var labels = MACHINES[typeName] && MACHINES[typeName]._bom_labels;
+            if (labels) {
+                for (var k in labels) {
+                    var code = k.split(' ')[0];
+                    var pn = labels[k] && labels[k].pn ? ' [' + labels[k].pn + ']' : '';
+                    map[code] = k + pn;
+                }
+            }
+            return map;
+        }
+
+        function normVal(v) {
+            if (v === null || v === undefined) return '';
+            if (typeof v === 'object') return JSON.stringify(v);
+            var s = String(v);
+            var low = s.toLowerCase();
+            if (low === 'r') return 'R';
+            if (low === 'j') return 'J';
+            if (low === 'na') return 'NA';
+            return s;
+        }
+
+        // Construit un tableau (array of arrays) du BOM d'un type.
+        function bomAoa(typeName) {
+            var node = OVERRIDES[typeName] || {};
+            var rows = [], codeSet = {};
+            for (var fab in node) for (var an in node[fab]) for (var mod in node[fab][an]) {
+                var e = node[fab][an][mod];
+                if (!e || (e._bom === undefined && e._notes === undefined)) continue;
+                var bom = e._bom || {};
+                for (var c in bom) codeSet[c] = true;
+                rows.push({ fab: fab, an: an, mod: mod, bom: bom, notes: e._notes || '' });
+            }
+            var codes = Object.keys(codeSet).sort();
+            var lm = labelMap(typeName);
+            var header = ['Type', 'Fabricant', 'Annee', 'Modele'];
+            codes.forEach(function (c) { header.push(lm[c] || c); });
+            header.push('Notes');
+            var aoa = [header];
+            rows.sort(function (a, b) {
+                return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an);
+            });
+            rows.forEach(function (r) {
+                var line = [typeName, r.fab, r.an, r.mod];
+                codes.forEach(function (c) { line.push(normVal(r.bom[c])); });
+                line.push(r.notes);
+                aoa.push(line);
+            });
+            return aoa;
+        }
+
+        function specsAoa(typeName) {
+            var node = MACHINES[typeName] || {};
+            var rows = [], keySet = {};
+            for (var fab in node) {
+                if (fab === '_bom_labels') continue;
+                for (var an in node[fab]) for (var mod in node[fab][an]) {
+                    var e = node[fab][an][mod];
+                    if (!e || typeof e !== 'object') continue;
+                    var specs = {};
+                    for (var k in e) { if (k.charAt(0) !== '_' && k !== 'Image' && k !== 'Flag') { specs[k] = e[k]; keySet[k] = true; } }
+                    rows.push({ fab: fab, an: an, mod: mod, specs: specs });
+                }
+            }
+            var keys = Object.keys(keySet);
+            var header = ['Type', 'Fabricant', 'Annee', 'Modele'].concat(keys);
+            var aoa = [header];
+            rows.sort(function (a, b) { return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an); });
+            rows.forEach(function (r) {
+                var line = [typeName, r.fab, r.an, r.mod];
+                keys.forEach(function (k) { line.push(normVal(r.specs[k])); });
+                aoa.push(line);
+            });
+            return aoa;
+        }
+
+        function makeSheet(aoa) {
+            var ws = XLSX.utils.aoa_to_sheet(aoa);
+            var nCols = aoa[0].length, nRows = aoa.length;
+            ws['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: Math.max(0, nRows - 1), c: nCols - 1 } }) };
+            ws['!cols'] = aoa[0].map(function (h, i) {
+                var w = String(h).length;
+                for (var r = 1; r < Math.min(nRows, 200); r++) { var v = aoa[r][i]; if (v != null) w = Math.max(w, String(v).length); }
+                return { wch: Math.min(45, Math.max(8, w + 2)) };
+            });
+            return ws;
+        }
+
+        function safeName(s) { return s.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 28) || 'Sheet'; }
+
+        function countBom(typeName) {
+            var node = OVERRIDES[typeName] || {}, n = 0;
+            for (var fab in node) for (var an in node[fab]) for (var mod in node[fab][an]) {
+                var e = node[fab][an][mod];
+                if (e && (e._bom !== undefined || e._notes !== undefined)) n++;
+            }
+            return n;
+        }
+
+        function downloadType(typeName) {
+            var aoa = bomAoa(typeName);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, makeSheet(aoa), safeName(typeName));
+            XLSX.writeFile(wb, 'BOM_' + (SLUGS[typeName] || safeName(typeName)) + '.xlsx');
+            toast('Export ' + typeName + ' (' + (aoa.length - 1) + ' lignes)');
+        }
+
+        function downloadAllBom() {
+            var wb = XLSX.utils.book_new();
+            TYPE_ORDER.forEach(function (t) { XLSX.utils.book_append_sheet(wb, makeSheet(bomAoa(t)), safeName(t)); });
+            XLSX.writeFile(wb, 'BOM_tous_types.xlsx');
+            toast('Export combine BOM (8 onglets)');
+        }
+
+        function downloadAllSpecs() {
+            var wb = XLSX.utils.book_new();
+            TYPE_ORDER.forEach(function (t) { XLSX.utils.book_append_sheet(wb, makeSheet(specsAoa(t)), safeName(t)); });
+            XLSX.writeFile(wb, 'Specifications_machines.xlsx');
+            toast('Export specifications (8 onglets)');
+        }
+
+        function buildMenu() {
+            var grid = document.getElementById('exp-bom-grid');
+            grid.innerHTML = '';
+            TYPE_ORDER.forEach(function (t) {
+                var n = countBom(t);
+                var row = document.createElement('div');
+                row.className = 'exp-row';
+                var info = document.createElement('div');
+                info.className = 'exp-row-info';
+                info.innerHTML = '<div class="exp-row-title">' + t + '</div>' +
+                    '<div class="exp-row-sub">overrides/' + (SLUGS[t] || '?') + '.json &middot; ' + n + ' machine(s) avec BOM/notes</div>';
+                var btn = document.createElement('button');
+                btn.className = 'exp-btn';
+                btn.textContent = 'Exporter';
+                if (n === 0) { btn.disabled = true; btn.textContent = 'Vide'; }
+                btn.addEventListener('click', function () { downloadType(t); });
+                row.appendChild(info); row.appendChild(btn);
+                grid.appendChild(row);
+            });
+            document.getElementById('exp-all-bom').addEventListener('click', downloadAllBom);
+            document.getElementById('exp-all-specs').addEventListener('click', downloadAllSpecs);
+            document.getElementById('exp-loading').style.display = 'none';
+            document.getElementById('exp-content').style.display = 'block';
+        }
+
+        // ---- Chargement ----
+        Promise.all([
+            fetch('data/machines.json?v=158').then(function (r) { return r.json(); }),
+            window.loadMergedOverrides()
+        ]).then(function (res) {
+            MACHINES = res[0] || {};
+            OVERRIDES = res[1] || {};
+            buildMenu();
+        }).catch(function (err) {
+            document.getElementById('exp-loading').textContent = 'Erreur de chargement des donnees.';
+            console.error(err);
+        });
+    })();
+    </script>
+</body>
+</html>

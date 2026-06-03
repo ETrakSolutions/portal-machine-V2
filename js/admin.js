@@ -86,6 +86,11 @@ function updateHubUI() {
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
         }
+        // Tuile Export : Super Admin uniquement
+        var tileExport = document.getElementById('hub-tile-export');
+        if (tileExport) {
+            tileExport.style.display = (currentUser.role === 'super_admin') ? 'block' : 'none';
+        }
         // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
             hamburgerWrap.style.display = '';
