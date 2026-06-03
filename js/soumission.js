@@ -659,7 +659,7 @@ if (submitBtn) {
         // Creusage (checkboxes — can select both)
         var _creus2d = document.getElementById('creus-2d');
         var _creusLaser = document.getElementById('creus-laser');
-        if (_creus2d && _creus2d.checked) { optionsOn.push('Systeme de creusage 2D (1100-0007)'); accessoires.push({ code: '1100-0007', name: 'Systeme de creusage 2D' }); }
+        if (_creus2d && _creus2d.checked) { var _c2d = creusage2dCode(); optionsOn.push('Systeme de creusage 2D (' + _c2d + ')'); accessoires.push({ code: _c2d, name: 'Systeme de creusage 2D' }); }
         if (_creusLaser && _creusLaser.checked) { optionsOn.push('Reference laser (1000-0009)'); accessoires.push({ code: '1000-0009', name: 'Reference laser' }); }
         if (!(_creus2d && _creus2d.checked) && !(_creusLaser && _creusLaser.checked)) optionsOff.push('Guide de creusage');
 
@@ -862,6 +862,15 @@ function fmtItem(code, desc) {
     return code ? code + ' — ' + desc : desc;
 }
 
+// Code du creusage 2D selon le limiteur de portee — REGLE FIXE excavatrice (non-overridable) :
+//   Limiteur Hauteur / Hauteur+Rotation / Multi-axe -> 1000-0007 (creusage 2D integre au limiteur)
+//   sinon (aucun limiteur, ou Rotation seule)        -> 1100-0007 (creusage 2D autonome)
+function creusage2dCode() {
+    var c = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+    var v = c ? c.value : '';
+    return (v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Multi-axe') ? '1000-0007' : '1100-0007';
+}
+
 // Individual code mappings (one code per item)
 var INDIVIDUAL_CODES = {
     'Limiteur Hauteur': [{code: '1500-0001', desc: 'Limiteur Hauteur'}],
@@ -919,7 +928,7 @@ function updateSelectedSummary() {
     // Guide de creusage (checkboxes — can select both)
     var creus2d = document.getElementById('creus-2d');
     var creusLaser = document.getElementById('creus-laser');
-    if (creus2d && creus2d.checked) items.push(fmtItem('1100-0007', 'Systeme de creusage 2D'));
+    if (creus2d && creus2d.checked) items.push(fmtItem(creusage2dCode(), 'Systeme de creusage 2D'));
     if (creusLaser && creusLaser.checked) items.push(fmtItem('1000-0009', 'Reference laser'));
 
     // Camera with sub-option
