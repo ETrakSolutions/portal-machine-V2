@@ -202,33 +202,79 @@
             return '⚠ ' + (flag.note || '(sans note)') + ' — ' + (flag.flaggedBy || '?') + (flag.flaggedAt ? ' (' + flag.flaggedAt + ')' : '');
         }
 
-        // Construit le BOM d'un type : { aoa, fills, redCells }.
-        // Colonnes : Type, Fab, Annee, Modele, [options en points colores], Items custom, Notes, Drapeau.
-        function bomAoa(typeName) {
-            var node = OVERRIDES[typeName] || {};
-            var rows = [], codeSet = {}, seen = {};
-            function rowKey(f, m, y) { return f + '|' + m + '|' + y; }
-            for (var fab in node) for (var an in node[fab]) for (var mod in node[fab][an]) {
-                var e = node[fab][an][mod];
-                if (!e || (e._bom === undefined && e._notes === undefined)) continue;
-                var bom = e._bom || {};
-                for (var c in bom) { if (isOptionCode(c)) codeSet[c] = true; }
-                rows.push({ fab: fab, an: an, mod: mod, bom: bom, notes: e._notes || '' });
-                seen[rowKey(fab, mod, an)] = true;
+        // ====== Regles de defaut du portail (memes que app.js / database.html) ======
+        // L'etat AFFICHE = defauts calcules + overrides par-dessus. L'export doit refleter
+        // ce qui est visible dans la BD, que le point vienne d'un defaut code ou d'une saisie.
+        var DRAIN_PREFIXES = [
+            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
+            '308','315','316','320','336','440','450','M318',
+            'DX190','DX235','BX190',
+            'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
+            '245X',
+            '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
+            'SK210',
+            'PC78','PC138','PC200','PC290',
+            'R 920 K','R920','R 936','R936',
+            '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
+            'TB210','TW65',
+            'EC160','EC330','EC360','EC550','235',
+            'EZ36'
+        ];
+        var EXC_CODES = ['0000', '0001', '0002', '0004', '0005', '0008', '0009', '0070', '0304'];
+        var POMPE_CODES = ['0200', '0203', '0201', '0202', '0204', '0205', '0206', '0207', '0208', '0209'];
+
+        function typeCodes(typeName) {
+            if (typeName === 'Excavatrice') return EXC_CODES;
+            if (typeName === 'Pompe a Beton') return POMPE_CODES;
+            return [];
+        }
+
+        // Etat affiche par code (r/j/v/na) = defaut + override + _removed
+        function computeState(typeName, modele, specs, bom) {
+            bom = bom || {};
+            var st = {};
+            var modelUpper = String(modele).toUpperCase();
+            if (typeName === 'Excavatrice') {
+                var ps = String(specs['Poids operationnel (kg / lbs)'] || '').match(/(\d[\d\s]*)/);
+                var poidsKg = ps ? parseInt(ps[1].replace(/\s/g, '')) : 0;
+                var isMini = poidsKg > 0 && poidsKg <= 5000;
+                var isDrain = DRAIN_PREFIXES.some(function (p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
+                st = { '0000': 'r', '0001': 'j', '0002': 'j', '0004': isMini ? 'r' : 'na', '0005': 'j',
+                       '0008': 'na', '0009': isDrain ? 'r' : 'na', '0070': 'na', '0304': modelUpper === 'TB216' ? 'r' : 'na' };
+            } else if (typeName === 'Pompe a Beton') {
+                var sec = parseInt(specs['Nombre de sections']) || 0;
+                st = { '0200': 'na', '0203': 'na', '0201': 'j', '0202': 'j',
+                       '0204': sec >= 4 ? 'r' : 'na', '0205': sec >= 5 ? 'r' : 'na', '0206': sec >= 6 ? 'r' : 'na',
+                       '0207': 'na', '0208': 'na', '0209': 'na' };
             }
-            // Ajoute les machines AVEC un drapeau actif mais absentes des overrides (sinon le warning serait perdu)
-            for (var fk in FLAGS) {
-                var fobj = FLAGS[fk];
-                if (!fobj || !fobj.active) continue;
-                var p = fk.split('|');   // TYPE|FAB|MODEL|ANNEE
-                if (p[0] !== typeName) continue;
-                if (!seen[rowKey(p[1], p[2], p[3])]) {
-                    rows.push({ fab: p[1], an: p[3], mod: p[2], bom: {}, notes: '' });
-                    seen[rowKey(p[1], p[2], p[3])] = true;
+            for (var c in bom) { if (isOptionCode(c) && bom[c]) st[c] = bom[c]; }   // override par-dessus
+            if (Array.isArray(bom._removed)) bom._removed.forEach(function (c) { st[c] = 'na'; });
+            if (typeName === 'Excavatrice' && st['0009'] === 'j') st['0009'] = 'r';  // drain jamais jaune
+            return st;
+        }
+
+        // Construit le BOM d'un type : { aoa, fills, redCells }.
+        // Iteration sur TOUTES les machines (machines.json) -> etat affiche calcule comme le portail.
+        function bomAoa(typeName) {
+            var mNode = MACHINES[typeName] || {};
+            var ovNode = OVERRIDES[typeName] || {};
+            var codes = typeCodes(typeName);
+            var lm = labelMap(typeName);
+            var rows = [];
+            for (var fab in mNode) {
+                if (fab === '_bom_labels') continue;
+                for (var an in mNode[fab]) for (var mod in mNode[fab][an]) {
+                    var entry = mNode[fab][an][mod];
+                    if (!entry || typeof entry !== 'object') continue;
+                    var ovEntry = (ovNode[fab] && ovNode[fab][an] && ovNode[fab][an][mod]) || {};
+                    var bom = ovEntry._bom || {};
+                    rows.push({
+                        fab: fab, an: an, mod: mod,
+                        state: computeState(typeName, mod, entry, bom),
+                        bom: bom, notes: ovEntry._notes || ''
+                    });
                 }
             }
-            var codes = Object.keys(codeSet).sort();
-            var lm = labelMap(typeName);
             var header = ['Type', 'Fabricant', 'Annee', 'Modele'];
             codes.forEach(function (c) { header.push(lm[c] || c); });
             var cCustom = header.push('Items custom') - 1;
@@ -240,10 +286,9 @@
                 var rowIdx = aoa.length;
                 var line = [typeName, r.fab, r.an, r.mod];
                 codes.forEach(function (c, ci) {
-                    var raw = r.bom[c];
-                    var rgb = colorFor(raw);
+                    var rgb = colorFor(r.state[c]);
                     if (rgb) { line.push('●'); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }
-                    else { line.push(normVal(raw)); }
+                    else { line.push(''); }
                 });
                 line[cCustom] = customText(r.bom);
                 line[cNotes] = r.notes;
@@ -347,10 +392,12 @@
         function safeName(s) { return s.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 28) || 'Sheet'; }
 
         function countBom(typeName) {
-            var node = OVERRIDES[typeName] || {}, n = 0;
-            for (var fab in node) for (var an in node[fab]) for (var mod in node[fab][an]) {
-                var e = node[fab][an][mod];
-                if (e && (e._bom !== undefined || e._notes !== undefined)) n++;
+            var node = MACHINES[typeName] || {}, n = 0;
+            for (var fab in node) { if (fab === '_bom_labels') continue;
+                for (var an in node[fab]) for (var mod in node[fab][an]) {
+                    var e = node[fab][an][mod];
+                    if (e && typeof e === 'object') n++;
+                }
             }
             return n;
         }
@@ -386,8 +433,9 @@
                 row.className = 'exp-row';
                 var info = document.createElement('div');
                 info.className = 'exp-row-info';
+                var hasKit = (typeCodes(t).length > 0);
                 info.innerHTML = '<div class="exp-row-title">' + t + '</div>' +
-                    '<div class="exp-row-sub">overrides/' + (SLUGS[t] || '?') + '.json &middot; ' + n + ' machine(s) avec BOM/notes</div>';
+                    '<div class="exp-row-sub">' + n + ' machine(s)' + (hasKit ? ' &middot; kit BOM' : ' &middot; sans kit (notes/drapeaux seulement)') + '</div>';
                 var btn = document.createElement('button');
                 btn.className = 'exp-btn';
                 btn.textContent = 'Exporter';
