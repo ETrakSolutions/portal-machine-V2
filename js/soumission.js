@@ -493,21 +493,8 @@ function getKitSummary(type, fab, modele, specs) {
     var isMini = poidsKg > 0 && poidsKg <= 5000;
     var typeBras = specs['Type de boom'] || '';
 
-    var DRAIN_PREFIXES = [
-        'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
-        '308','315','316','320','336','440','450','M318',
-        'DX190','DX235','BX190',
-        'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
-        '245X',
-        '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
-        'SK210',
-        'PC78','PC138','PC200','PC290',
-        'R 920 K','R920','R 936','R936',
-        '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
-        'TB210','TW65',
-        'EC160','EC330','EC360','EC550','235',
-        'EZ36'
-    ];
+    // Liste DRAIN : source unique = js/kit-rules.js
+    var DRAIN_PREFIXES = (window.KitRules && window.KitRules.DRAIN_PREFIXES) || [];
     var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
 
     // Compute defaults: present or na (BD is master via overrides)

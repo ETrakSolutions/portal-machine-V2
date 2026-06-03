@@ -686,6 +686,7 @@
     <script src="js/heartbeat.js?v=3"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=1"></script>
+    <script src="js/kit-rules.js?v=1"></script>
     <script>
     (function() {
         var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
@@ -1256,81 +1257,16 @@
 
         // R7 — Machines specifiques drain obligatoire (1500-0009)
         // R7 — Drain obligatoire: prefixes de modeles (match si le modele COMMENCE par le prefixe)
-        var DRAIN_PREFIXES = [
-            // Case
-            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
-            // Caterpillar
-            '308','315','316','320','336','440','450','M318',
-            // Doosan/Develon
-            'DX190','DX235','BX190',
-            // Hitachi
-            'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
-            // JCB
-            '245X',
-            // John Deere
-            '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
-            // Kobelco
-            'SK210',
-            // Komatsu
-            'PC78','PC138','PC200','PC290',
-            // Liebherr
-            'R 920 K','R920','R 936','R936',
-            // Link-Belt
-            '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
-            // Takeuchi
-            'TB210','TW65',
-            // Volvo
-            'EC160','EC330','EC360','EC550','235',
-            // Wacker Neuson
-            'EZ36'
-        ];
+        // Liste DRAIN : source unique = js/kit-rules.js
+        var DRAIN_PREFIXES = (window.KitRules && window.KitRules.DRAIN_PREFIXES) || [];
 
         function computeDefaultBom(d) {
-            var bom = {};
-            var poids = 0;
-            var poidsStr = d.poids || '';
-            var match = poidsStr.match(/(\d[\d\s]*)/);
-            if (match) poids = parseInt(match[1].replace(/\s/g, ''));
+            // Defauts BOM (9 jetons) : source unique = js/kit-rules.js
+            var bom = window.KitRules.excDefaults({ 'Poids operationnel (kg / lbs)': d.poids }, d.modele);
+            bom['0003'] = 'na';   // Sans cabine — colonne specifique a la vue BD, na par defaut
 
-            var hasSwing = (d.swing || '').toLowerCase() === 'oui';
-            var hasBoom2 = (d.boom || '').toLowerCase().indexOf('2 partie') >= 0;
-            var isMini = poids > 0 && poids <= 5000;
-            var isStandard = poids >= 5000;
-
-            // Cabine obligatoire pour toutes les machines
-            bom['0000'] = 'r';
-            // Sans cabine — na par defaut, admin peut activer manuellement
-            bom['0003'] = 'na';
-
-            // R4: Hauteur et Rotation toujours optionnel
-            bom['0001'] = 'j';
-            bom['0002'] = 'j';
-
-            // R5: Mini < 5T = rouge, sinon N/A
-            bom['0004'] = isMini ? 'r' : 'na';
-
-            // R4: Multi Axes — jaune pour TOUTES les excavatrices
-            bom['0005'] = 'j';
-
-            // R1/R8: Swing boom = jaune si oui, N/A si non
-            bom['0008'] = 'na'; // Swing boom: N/A par defaut (admin peut activer manuellement dans edit-machine)
-
-            // R7: Drain — rouge si modele dans la liste, N/A sinon (pas une option)
-            var modUpper = d.modele.toUpperCase();
-            var isDrain = DRAIN_PREFIXES.some(function(prefix) {
-                return modUpper.indexOf(prefix.toUpperCase()) === 0;
-            });
-            bom['0009'] = isDrain ? 'r' : 'na';
-
-            // Boite GC — jaune seulement pour Caterpillar, na sinon
+            // Harnais de coupure — selon fabricant
             var fabUpper = d.fab.toUpperCase();
-            // Boite GC — na par defaut, admin remettra manuellement
-            bom['0070'] = 'na';
-
-            // Rotation cremaillere — TB216 seulement
-            bom['0304'] = (modUpper === 'TB216') ? 'r' : 'na';
-
-            // Harnais de coupure — selon fabricant (fabUpper deja defini)
             if (fabUpper === 'HITACHI') {
                 var is7 = d.modele.indexOf('-7') >= 0;
                 var is5or6 = d.modele.indexOf('-5') >= 0 || d.modele.indexOf('-6') >= 0;
@@ -1355,28 +1291,9 @@
         }
 
         function computeDefaultBomPompe(d) {
-            var bom = {};
-            var typePompe = d._spec_Type || '';
+            // Defauts BOM Pompe : source unique = js/kit-rules.js
             var nbSections = d._spec_Nombre_de_sections || d['_spec_Nombre de sections'] || '';
-            var isStationnaire = typePompe.toLowerCase().indexOf('stationnaire') >= 0;
-            var isRemorquee = typePompe.toLowerCase().indexOf('remorqu') >= 0;
-
-            // Tout N/A par defaut sauf Hauteur et Rotation (jaune)
-            // Admin peut modifier manuellement les autres
-            bom['0200'] = 'na';
-            bom['0203'] = 'na';
-            bom['0201'] = 'j'; // Hauteur
-            bom['0202'] = 'j'; // Rotation
-            // Sections: rouge si machine a ce nb ou plus (5 sec = 4+5, 6 sec = 4+5+6)
-            var sec = parseInt(nbSections) || 0;
-            bom['0204'] = (sec >= 4) ? 'r' : 'na';
-            bom['0205'] = (sec >= 5) ? 'r' : 'na';
-            bom['0206'] = (sec >= 6) ? 'r' : 'na';
-            bom['0207'] = 'na';
-            bom['0208'] = 'na';
-            bom['0209'] = 'na';
-
-            return bom;
+            return window.KitRules.pompeDefaults({ 'Nombre de sections': nbSections });
         }
 
         function nextBomState(current) {

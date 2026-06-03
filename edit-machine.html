@@ -414,6 +414,7 @@ body.force-mobile main{
 <script src="js/heartbeat.js?v=3"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=1"></script>
+    <script src="js/kit-rules.js?v=1"></script>
 
 <main id="root">
   <div class="loading">Chargement...</div>
@@ -541,21 +542,8 @@ body.force-mobile main{
     {v:'H0043', l:'0043 — Generique'}
   ];
 
-  var DRAIN_PREFIXES = [
-    'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
-    '308','315','316','320','336','440','450','M318',
-    'DX190','DX235','BX190',
-    'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
-    '245X',
-    '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
-    'SK210',
-    'PC78','PC138','PC200','PC290',
-    'R 920 K','R920','R 936','R936',
-    '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
-    'TB210','TW65',
-    'EC160','EC330','EC360','EC550','235',
-    'EZ36'
-  ];
+  // Regles de pre-remplissage : source unique = js/kit-rules.js
+  var DRAIN_PREFIXES = (window.KitRules && window.KitRules.DRAIN_PREFIXES) || [];
 
   // Auth
   var DB_ROLES = { super_admin:true, administrateur:true, ingenierie:true };
@@ -626,21 +614,10 @@ body.force-mobile main{
   }
 
   function computeDefaultsExc(d){
-    var bom = {};
-    var poids = parseWeight(d);
-    var hasSwing = (d['Swing boom']||'').toLowerCase()==='oui';
-    var isMini = poids > 0 && poids <= 5000;
+    // Defauts BOM : source unique = js/kit-rules.js
+    var bom = window.KitRules.excDefaults(d, MODEL);
     var modUpper = MODEL.toUpperCase();
     var fabUpper = FAB.toUpperCase();
-
-    bom['0000']='r'; bom['0001']='j'; bom['0002']='j';
-    bom['0004'] = isMini ? 'r' : 'na';
-    bom['0005']='j';
-    bom['0008'] = 'na'; // Swing boom: N/A par defaut, admin l'active manuellement si besoin
-    var isDrain = DRAIN_PREFIXES.some(function(p){ return modUpper.indexOf(p.toUpperCase()) === 0; });
-    bom['0009'] = isDrain ? 'r' : 'na';
-    bom['0070']='na';
-    bom['0304'] = (modUpper === 'TB216') ? 'r' : 'na';
 
     var harn = 'H0043';
     if (fabUpper === 'HITACHI'){
@@ -657,15 +634,8 @@ body.force-mobile main{
   }
 
   function computeDefaultsPompe(d){
-    var bom = {};
-    var nbSections = d['Nombre de sections'] || '';
-    bom['0200']='na'; bom['0203']='na'; bom['0201']='j'; bom['0202']='j';
-    var sec = parseInt(nbSections) || 0;
-    bom['0204'] = (sec >= 4) ? 'r' : 'na';
-    bom['0205'] = (sec >= 5) ? 'r' : 'na';
-    bom['0206'] = (sec >= 6) ? 'r' : 'na';
-    bom['0207']='na'; bom['0208']='na'; bom['0209']='na';
-    return { bom:bom, harnais:'' };
+    // Defauts BOM : source unique = js/kit-rules.js
+    return { bom: window.KitRules.pompeDefaults(d), harnais:'' };
   }
 
   // Legacy format (old machine.html) → modern format normalization

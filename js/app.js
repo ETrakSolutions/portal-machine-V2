@@ -476,44 +476,11 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         }
 
         // ---- BD = MAITRE: compute defaults then load overrides ----
-        // Same computeDefaultBom as database.html
-        var DRAIN_PREFIXES = [
-            'CX80','CX145','CX170','CX210','CX220','CX245','CX300','CX350','CX380','CX490','145 D',
-            '308','315','316','320','336','440','450','M318',
-            'DX190','DX235','BX190',
-            'ZX210LC','EX200','ZX130-6','ZX190','ZX350','ZX490','ZX50U','ZX75US','ZX245',
-            '245X',
-            '135','200CLC','210G','210P','210 P','245 P','245P','330X','350','410','470G','490D','130P',
-            'SK210',
-            'PC78','PC138','PC200','PC290',
-            'R 920 K','R920','R 936','R936',
-            '145 X4','145X4','160 X4','160X4','170X4','190','245X4','300 X4','300X4','350 X4','350X4','355 X4','355X4','490 X4','490X4',
-            'TB210','TW65',
-            'EC160','EC330','EC360','EC550','235',
-            'EZ36'
-        ];
-
-        var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
-        var poidsMatch = poidsStr.match(/(\d[\d\s]*)/);
-        var poidsKg = poidsMatch ? parseInt(poidsMatch[1].replace(/\s/g, '')) : 0;
-        var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
-        var isMini = poidsKg > 0 && poidsKg <= 5000;
+        // Defauts BOM : source unique = js/kit-rules.js (memes regles que database.html / edit / soumission / export)
         var fabUp = fab.toUpperCase();
         var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
         var modelUpper = modele.toUpperCase();
-        var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
-
-        var bomDefaults = {
-            '0000': 'r',
-            '0001': 'j',
-            '0002': 'j',
-            '0004': isMini ? 'r' : 'na',
-            '0005': 'j',
-            '0008': 'na', // Swing boom: N/A par defaut
-            '0009': isDrain ? 'r' : 'na',
-            '0070': 'na',
-            '0304': modelUpper === 'TB216' ? 'r' : 'na'
-        };
+        var bomDefaults = window.KitRules.excDefaults(specs, modele);
 
         // Harnais
         var hCode = 'Z03B-0043'; var hName = 'Generique';
@@ -628,21 +595,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             var kitPompeDesc = document.getElementById('kit-pompe-desc');
             if (kitPompeDesc) kitPompeDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
 
-            // Compute defaults same as database.html computeDefaultBomPompe
-            var nbSections = specs['Nombre de sections'] || '';
-            var sec = parseInt(nbSections) || 0;
-            var pompeBomDefaults = {
-                '0200': 'na',
-                '0203': 'na',
-                '0201': 'j', // Hauteur
-                '0202': 'j', // Rotation
-                '0204': (sec >= 4) ? 'r' : 'na',
-                '0205': (sec >= 5) ? 'r' : 'na',
-                '0206': (sec >= 6) ? 'r' : 'na',
-                '0207': 'na',
-                '0208': 'na',
-                '0209': 'na'
-            };
+            // Defauts BOM Pompe : source unique = js/kit-rules.js
+            var pompeBomDefaults = window.KitRules.pompeDefaults(specs);
 
             // Map pompe kit rows to BOM codes
             var POMPE_KIT_MAP = {
