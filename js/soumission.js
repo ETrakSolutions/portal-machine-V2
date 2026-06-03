@@ -1059,16 +1059,24 @@ function updateIdcLockValveWarning() {
 
 // Items du kit "a valider" (etat 'v') de la machine selectionnee.
 // 'v' ne vient que des corrections (overrides) -> on lit currentBomOverrides (type-agnostique).
-function bomLabelName(type, code) {
-    try { var labels = machinesData[type]._bom_labels; for (var k in labels) { if (k.split(' ')[0] === code) return k; } } catch (e) {}
-    return code;
+// Retourne le CODE PRODUIT (pn de _bom_labels, ex. 0009 -> 1500-0009) + le libelle sans le code BOM.
+function bomLabelInfo(type, code) {
+    try {
+        var labels = machinesData[type]._bom_labels;
+        for (var k in labels) {
+            if (k.split(' ')[0] === code) {
+                return { pn: (labels[k] && labels[k].pn) || code, label: k.replace(/^[0-9]+\s*/, '') || k };
+            }
+        }
+    } catch (e) {}
+    return { pn: code, label: code };
 }
 function aValiderItems() {
     var out = [], ov = currentBomOverrides, type = selectType ? selectType.value : '';
     if (!ov) return out;
     for (var code in ov) {
         if (code.charAt(0) === '_' || code === 'rows' || code === 'customRows' || code === 'undefined' || code === 'harnais') continue;
-        if (String(ov[code]).toLowerCase() === 'v') out.push({ code: code, name: bomLabelName(type, code) });
+        if (String(ov[code]).toLowerCase() === 'v') { var info = bomLabelInfo(type, code); out.push({ code: info.pn, name: info.label }); }
     }
     if (Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
         if (String(c.status || '').toLowerCase() === 'v') out.push({ code: c.pn || c.code || '', name: c.desc || c.code || 'Item custom' });
