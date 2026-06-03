@@ -352,6 +352,8 @@ function showOptions() {
     // Hide IDC lock valve warning on reset
     var idcWarn = document.getElementById('idc-lockvalve-warning');
     if (idcWarn) idcWarn.style.display = 'none';
+    var avWarn = document.getElementById('bom-avalider-warning');
+    if (avWarn) avWarn.style.display = 'none';
     // Reset limiteur checkboxes
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
@@ -769,6 +771,13 @@ if (submitBtn) {
             '  Modele : ' + modele + '\n' +
             '  Annee : ' + annee + '\n';
 
+        // Warning : items du kit a valider
+        var _avItems = aValiderItems();
+        if (_avItems.length > 0) {
+            body += '\n*** ATTENTION - ITEMS A VALIDER (a confirmer avec e-Trak) ***\n';
+            _avItems.forEach(function (i) { body += '  /!\\ ' + i.name + (i.code ? ' (' + i.code + ')' : '') + '\n'; });
+        }
+
         // Specs machine
         if (specsText) {
             body += '\nSpecifications:\n' + specsText;
@@ -864,6 +873,7 @@ var INDIVIDUAL_CODES = {
 
 // Update selected options summary list — each code on its own line
 function updateSelectedSummary() {
+    try { updateAValiderWarning(); } catch (e) {}
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
     if (!wrap || !list) return;
@@ -1030,6 +1040,38 @@ function updateIdcLockValveWarning() {
     var isExcavatrice = type === 'Excavatrice';
     var isActive = idcBox && idcBox.classList.contains('active');
     warning.style.display = (isExcavatrice && isActive) ? 'flex' : 'none';
+}
+
+// Items du kit "a valider" (etat 'v') de la machine selectionnee.
+// 'v' ne vient que des corrections (overrides) -> on lit currentBomOverrides (type-agnostique).
+function bomLabelName(type, code) {
+    try { var labels = machinesData[type]._bom_labels; for (var k in labels) { if (k.split(' ')[0] === code) return k; } } catch (e) {}
+    return code;
+}
+function aValiderItems() {
+    var out = [], ov = currentBomOverrides, type = selectType ? selectType.value : '';
+    if (!ov) return out;
+    for (var code in ov) {
+        if (code.charAt(0) === '_' || code === 'rows' || code === 'customRows' || code === 'undefined' || code === 'harnais') continue;
+        if (String(ov[code]).toLowerCase() === 'v') out.push({ code: code, name: bomLabelName(type, code) });
+    }
+    if (Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
+        if (String(c.status || '').toLowerCase() === 'v') out.push({ code: c.pn || c.code || '', name: c.desc || c.code || 'Item custom' });
+    });
+    return out;
+}
+// Affiche/masque la tuile warning "a valider" (meme style que indicateur de charge)
+function updateAValiderWarning() {
+    var warn = document.getElementById('bom-avalider-warning');
+    if (!warn) return;
+    var items = aValiderItems();
+    if (items.length) {
+        var listEl = document.getElementById('bom-avalider-list');
+        if (listEl) listEl.textContent = items.map(function (i) { return i.name + (i.code ? ' (' + i.code + ')' : ''); }).join('  ;  ');
+        warn.style.display = 'flex';
+    } else {
+        warn.style.display = 'none';
+    }
 }
 
 // Limiteur de portee sub-options logic (exclusive checkboxes — same as camera)
