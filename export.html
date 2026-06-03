@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="css/admin.css?v=164">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- SheetJS : generation .xlsx avec AutoFilter, cote client -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- xlsx-js-style : fork SheetJS avec support des styles/couleurs de cellule (AutoFilter + remplissages) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <style>
         .exp-wrap { max-width: 900px; margin: 0 auto; padding: 1rem; }
         .exp-legend { font-size: 0.8rem; color: var(--text-secondary, #aaa); margin: 0.5rem 0 1.5rem; }
@@ -70,7 +70,10 @@
                 </div>
                 <p class="exp-legend">
                     Telecharge le contenu de chaque fichier en Excel (.xlsx) avec <b>filtres automatiques</b> (AutoFilter) pour une vue d'ensemble rapide.<br>
-                    Legende des drapeaux BOM : <b>R</b> = obligatoire (rouge) &nbsp; <b>J</b> = option/recommande (jaune) &nbsp; <b>NA</b> = non applicable.
+                    Cellules BOM colorees : <span style="display:inline-block;width:11px;height:11px;background:#FF0000;border:1px solid #999;vertical-align:middle;"></span> <b>rouge</b> = obligatoire &nbsp;
+                    <span style="display:inline-block;width:11px;height:11px;background:#FFFF00;border:1px solid #999;vertical-align:middle;"></span> <b>jaune</b> = option/recommande &nbsp;
+                    <span style="display:inline-block;width:11px;height:11px;background:#D9D9D9;border:1px solid #999;vertical-align:middle;"></span> <b>gris</b> = non applicable.<br>
+                    Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur</b> pour isoler les options.
                 </p>
 
                 <div id="exp-loading" class="exp-loading">Chargement des donnees&hellip;</div>
@@ -154,15 +157,21 @@
         function normVal(v) {
             if (v === null || v === undefined) return '';
             if (typeof v === 'object') return JSON.stringify(v);
-            var s = String(v);
-            var low = s.toLowerCase();
-            if (low === 'r') return 'R';
-            if (low === 'j') return 'J';
-            if (low === 'na') return 'NA';
-            return s;
+            return String(v);
         }
 
-        // Construit un tableau (array of arrays) du BOM d'un type.
+        // Couleur de remplissage (ARGB) pour un drapeau BOM ; null si pas un drapeau.
+        function colorFor(v) {
+            if (v === null || v === undefined) return null;
+            var low = String(v).toLowerCase();
+            if (low === 'r') return 'FFFF0000';   // rouge = obligatoire
+            if (low === 'j') return 'FFFFFF00';   // jaune = option
+            if (low === 'na') return 'FFD9D9D9';  // gris = non applicable
+            return null;
+        }
+
+        // Construit le BOM d'un type : { aoa, fills }. Les drapeaux deviennent des couleurs
+        // de cellule (cellule vide + remplissage) ; les autres valeurs gardent leur texte.
         function bomAoa(typeName) {
             var node = OVERRIDES[typeName] || {};
             var rows = [], codeSet = {};
@@ -178,17 +187,23 @@
             var header = ['Type', 'Fabricant', 'Annee', 'Modele'];
             codes.forEach(function (c) { header.push(lm[c] || c); });
             header.push('Notes');
-            var aoa = [header];
+            var aoa = [header], fills = [];
             rows.sort(function (a, b) {
                 return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an);
             });
             rows.forEach(function (r) {
+                var rowIdx = aoa.length;
                 var line = [typeName, r.fab, r.an, r.mod];
-                codes.forEach(function (c) { line.push(normVal(r.bom[c])); });
+                codes.forEach(function (c, ci) {
+                    var raw = r.bom[c];
+                    var rgb = colorFor(raw);
+                    if (rgb) { line.push(''); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }
+                    else { line.push(normVal(raw)); }
+                });
                 line.push(r.notes);
                 aoa.push(line);
             });
-            return aoa;
+            return { aoa: aoa, fills: fills };
         }
 
         function specsAoa(typeName) {
@@ -216,7 +231,7 @@
             return aoa;
         }
 
-        function makeSheet(aoa) {
+        function makeSheet(aoa, fills) {
             var ws = XLSX.utils.aoa_to_sheet(aoa);
             var nCols = aoa[0].length, nRows = aoa.length;
             ws['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: Math.max(0, nRows - 1), c: nCols - 1 } }) };
@@ -224,6 +239,18 @@
                 var w = String(h).length;
                 for (var r = 1; r < Math.min(nRows, 200); r++) { var v = aoa[r][i]; if (v != null) w = Math.max(w, String(v).length); }
                 return { wch: Math.min(45, Math.max(8, w + 2)) };
+            });
+            // En-tete en gras
+            for (var c = 0; c < nCols; c++) {
+                var hr = XLSX.utils.encode_cell({ r: 0, c: c });
+                if (!ws[hr]) ws[hr] = { t: 's', v: '' };
+                ws[hr].s = { font: { bold: true } };
+            }
+            // Remplissages de couleur (drapeaux BOM)
+            (fills || []).forEach(function (f) {
+                var ref = XLSX.utils.encode_cell({ r: f.r, c: f.c });
+                if (!ws[ref]) ws[ref] = { t: 's', v: '' };
+                ws[ref].s = { fill: { patternType: 'solid', fgColor: { rgb: f.rgb } } };
             });
             return ws;
         }
@@ -240,16 +267,16 @@
         }
 
         function downloadType(typeName) {
-            var aoa = bomAoa(typeName);
+            var x = bomAoa(typeName);
             var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, makeSheet(aoa), safeName(typeName));
+            XLSX.utils.book_append_sheet(wb, makeSheet(x.aoa, x.fills), safeName(typeName));
             XLSX.writeFile(wb, 'BOM_' + (SLUGS[typeName] || safeName(typeName)) + '.xlsx');
-            toast('Export ' + typeName + ' (' + (aoa.length - 1) + ' lignes)');
+            toast('Export ' + typeName + ' (' + (x.aoa.length - 1) + ' lignes)');
         }
 
         function downloadAllBom() {
             var wb = XLSX.utils.book_new();
-            TYPE_ORDER.forEach(function (t) { XLSX.utils.book_append_sheet(wb, makeSheet(bomAoa(t)), safeName(t)); });
+            TYPE_ORDER.forEach(function (t) { var x = bomAoa(t); XLSX.utils.book_append_sheet(wb, makeSheet(x.aoa, x.fills), safeName(t)); });
             XLSX.writeFile(wb, 'BOM_tous_types.xlsx');
             toast('Export combine BOM (8 onglets)');
         }
