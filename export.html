@@ -70,10 +70,10 @@
                 </div>
                 <p class="exp-legend">
                     Telecharge le contenu de chaque fichier en Excel (.xlsx) avec <b>filtres automatiques</b> (AutoFilter) pour une vue d'ensemble rapide.<br>
-                    Cellules BOM colorees : <span style="display:inline-block;width:11px;height:11px;background:#FF0000;border:1px solid #999;vertical-align:middle;"></span> <b>rouge</b> = obligatoire &nbsp;
-                    <span style="display:inline-block;width:11px;height:11px;background:#FFFF00;border:1px solid #999;vertical-align:middle;"></span> <b>jaune</b> = option/recommande &nbsp;
-                    <span style="display:inline-block;width:11px;height:11px;background:#D9D9D9;border:1px solid #999;vertical-align:middle;"></span> <b>gris</b> = non applicable.<br>
-                    Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur</b> pour isoler les options.
+                    Drapeaux BOM affiches par un <b>point de couleur</b> : <span style="color:#FF0000;font-size:1.1rem;vertical-align:middle;">●</span> <b>rouge</b> = obligatoire &nbsp;
+                    <span style="color:#E6C000;font-size:1.1rem;vertical-align:middle;">●</span> <b>jaune</b> = option/recommande &nbsp;
+                    <span style="color:#B0B0B0;font-size:1.1rem;vertical-align:middle;">●</span> <b>gris</b> = non applicable.<br>
+                    Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur de police</b> pour isoler les options.
                 </p>
 
                 <div id="exp-loading" class="exp-loading">Chargement des donnees&hellip;</div>
@@ -197,7 +197,7 @@
                 codes.forEach(function (c, ci) {
                     var raw = r.bom[c];
                     var rgb = colorFor(raw);
-                    if (rgb) { line.push(''); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }
+                    if (rgb) { line.push('●'); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }  // point colore
                     else { line.push(normVal(raw)); }
                 });
                 line.push(r.notes);
@@ -246,11 +246,14 @@
                 if (!ws[hr]) ws[hr] = { t: 's', v: '' };
                 ws[hr].s = { font: { bold: true } };
             }
-            // Remplissages de couleur (drapeaux BOM)
+            // Point de couleur (drapeaux BOM) : caractere ● centre, colore — pas de remplissage de case
             (fills || []).forEach(function (f) {
                 var ref = XLSX.utils.encode_cell({ r: f.r, c: f.c });
-                if (!ws[ref]) ws[ref] = { t: 's', v: '' };
-                ws[ref].s = { fill: { patternType: 'solid', fgColor: { rgb: f.rgb } } };
+                if (!ws[ref]) ws[ref] = { t: 's', v: '●' };
+                ws[ref].s = {
+                    font: { color: { rgb: f.rgb }, sz: 14 },
+                    alignment: { horizontal: 'center', vertical: 'center' }
+                };
             });
             return ws;
         }
