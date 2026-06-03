@@ -16,10 +16,13 @@
   var lastJson = null;
 
   function tick() {
-    // URL unique (?t=) pour contourner le CDN GitHub Pages : 'cache:no-cache' (revalidation)
-    // n'est PAS fiable ici — le CDN sert parfois une reponse perimee. Une URL unique force le frais.
-    fetch('data/overrides.json?t=' + Date.now())
-      .then(function (r) { return r.ok ? r.json() : null; })
+    // Recharge les overrides decoupes par type (+ repli legacy) via le loader partage.
+    // window.loadMergedOverrides() utilise deja une URL unique (?t=) pour contourner le CDN
+    // GitHub Pages, ou 'cache:no-cache' (revalidation) n'est PAS fiable.
+    var load = (typeof window.loadMergedOverrides === 'function')
+      ? window.loadMergedOverrides()
+      : fetch('data/overrides.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : null; });
+    load
       .then(function (ov) {
         if (!ov) return;
         var s = JSON.stringify(ov);

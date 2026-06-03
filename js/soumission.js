@@ -121,7 +121,7 @@ function applyOverrides(machines, ov) {
 }
 Promise.all([
     fetch('data/machines.json?v=158').then(function(res) { return res.json(); }),
-    fetch('data/overrides.json?t=' + Date.now()).then(function(res) { return res.json(); }).catch(function(){ return {}; })
+    window.loadMergedOverrides()   // 8 fichiers par type + repli data/overrides.json
 ])
     .then(function(res) {
         machinesData = applyOverrides(res[0], res[1]);
