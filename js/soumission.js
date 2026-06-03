@@ -634,6 +634,7 @@ if (submitBtn) {
         // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
         var optionsOff = [];
+        var accessoires = [];   // creusage / camera : codes a lister a la suite du Kit Machine
 
         // Limiteur (exclusive) + IDC combined
         var _limChecked = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
@@ -658,8 +659,8 @@ if (submitBtn) {
         // Creusage (checkboxes — can select both)
         var _creus2d = document.getElementById('creus-2d');
         var _creusLaser = document.getElementById('creus-laser');
-        if (_creus2d && _creus2d.checked) optionsOn.push('Systeme de creusage 2D (1100-0007)');
-        if (_creusLaser && _creusLaser.checked) optionsOn.push('Reference laser (1000-0009)');
+        if (_creus2d && _creus2d.checked) { optionsOn.push('Systeme de creusage 2D (1100-0007)'); accessoires.push({ code: '1100-0007', name: 'Systeme de creusage 2D' }); }
+        if (_creusLaser && _creusLaser.checked) { optionsOn.push('Reference laser (1000-0009)'); accessoires.push({ code: '1000-0009', name: 'Reference laser' }); }
         if (!(_creus2d && _creus2d.checked) && !(_creusLaser && _creusLaser.checked)) optionsOff.push('Guide de creusage');
 
         // Camera
@@ -668,7 +669,9 @@ if (submitBtn) {
             var _camRadio = _camBox.querySelector('input[name="camera-type"]:checked');
             if (_camRadio) {
                 var _camName = 'Camera ' + _camRadio.value;
-                optionsOn.push(_camName + ' (' + getCode(_camName) + ')');
+                var _camCode = getCode(_camName);
+                optionsOn.push(_camName + ' (' + _camCode + ')');
+                accessoires.push({ code: _camCode, name: _camName });
             } else {
                 optionsOn.push('Camera');
             }
@@ -789,11 +792,14 @@ if (submitBtn) {
             optionsOn.forEach(function(o) { body += '  ' + o + '\n'; });
         }
 
-        // Kit Machine
-        if (kitItems.length > 0) {
+        // Kit Machine (+ codes creusage / camera a la suite)
+        if (kitItems.length > 0 || accessoires.length > 0) {
             body += '\nKit Machine e-Trak:\n';
             kitItems.forEach(function(item) {
                 body += '  ' + item.code + ' — ' + item.name + '\n';
+            });
+            accessoires.forEach(function(a) {
+                body += '  ' + a.code + ' — ' + a.name + '\n';
             });
         }
 
