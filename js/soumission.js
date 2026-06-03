@@ -822,7 +822,7 @@ if (submitBtn) {
         body += '\n--------------------------------\n' +
             'Demande par : ' + userName + '\n' +
             'Portail e-Trak\n' +
-            'https://etraksolutions.github.io/portal-machine/';
+            'https://etraksolutions.github.io/portal-machine-V2/';
 
         var mailUrl = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         if (vendeurEmail) {
