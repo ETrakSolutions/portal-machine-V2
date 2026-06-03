@@ -24,11 +24,14 @@ portal-machine-V2/
 ├── database.html           # Base de donnees (lecture seule) — gabarit canonique
 ├── edit-machine.html       # Edition d'une machine (BOM, notes, specs)
 ├── machine.html            # Fiche machine + Kit
-├── soumission.html         # Soumission / demande de kit
+├── soumission.html         # Soumission (formulaire de selection -> courriel)
+├── export.html             # Tuile Export (Super Admin/Admin) — BOM en .xlsx (voir 4.6/historique)
 ├── js/
 │   ├── app.js              # Logique fiche machine + kit
-│   ├── soumission.js       # Logique soumission
-│   ├── overrides-loader.js # Charge les overrides decoupes par type (voir 4.4)
+│   ├── soumission.js       # Logique soumission + courriel (regle creusage 2D, voir 4.7)
+│   ├── kit-rules.js        # *** SOURCE UNIQUE des regles du kit *** (voir 4.6)
+│   ├── overrides-loader.js # Charge les overrides decoupes par type (voir 4.2)
+│   ├── admin.js            # Comptes, roles, listes de courriels
 │   ├── data-refresh.js     # Rafraichissement transparent (~20 s)
 │   └── ...                 # i18n, translations, heartbeat, version-check...
 ├── css/style.css           # Styles
@@ -137,9 +140,25 @@ Backend = `apps-script/Api.gs` (ne PAS garder l'ancien `Code.gs` dans le projet)
 
 ### 4.5 Cache busting
 Les fichiers CSS et JS sont charges avec un parametre de version (`?v=XX`).
-- Actuels : `css/style.css?v=172`, `js/app.js?v=191`, `js/soumission.js?v=191`, `js/data-refresh.js?v=3`, `js/overrides-loader.js?v=1`.
+- Actuels : `css/style.css?v=172`, `js/app.js?v=192`, `js/soumission.js?v=195`, `js/data-refresh.js?v=3`, `js/overrides-loader.js?v=1`, `js/kit-rules.js?v=1`.
 
 **Important** : incrementer ces numeros dans la page HTML concernee apres chaque modif CSS/JS pour forcer le rechargement sur GitHub Pages (et mobile).
+
+### 4.6 Regles metier du KIT — source UNIQUE `js/kit-rules.js`
+Toutes les regles de pre-remplissage des jetons du kit vivent dans `js/kit-rules.js` (`window.KitRules`), chargee par machine.html, database.html, edit-machine.html, soumission.html et export.html. **Modifier une regle (ex. ajouter un modele drain) = UN SEUL fichier.**
+Expose : `DRAIN_PREFIXES` (77 prefixes), `excDefaults(specs, modele)`, `pompeDefaults(specs)`, `harnais(fab, modele)`, `applyOverride(defaults, bom, isExc)`.
+- **Excavatrice** : `0000` Cabine = **r toujours** ; `0001`/`0002`/`0005` = j ; `0004` Mini = r si poids <= 5000 kg ; `0009` Drain = r si le modele commence par un `DRAIN_PREFIXES` (jamais jaune) ; `0008`/`0070` = na ; `0304` = r si modele = TB216.
+- **Pompe a Beton** : `0201`/`0202` = j ; `0204`/`0205`/`0206` = r si `Nombre de sections` >= 4/5/6 ; reste na.
+- **Jeton affiche = defauts + overrides** (corrections manuelles par machine). C'est LA verite, identique dans fiche / BD / export. Jamais re-persiste.
+
+### 4.7 Soumission — regle du code Creusage 2D (FIXE, non-overridable)
+La tuile **Soumission** est un FORMULAIRE ou l'utilisateur SELECTIONNE les options (≠ affichage des jetons). Le BOM final = items obligatoires (du kit) + options choisies.
+Regle du **Systeme de creusage 2D** (`js/soumission.js`, fonction `creusage2dCode()`) — le code depend du **limiteur de portee** :
+- Limiteur **Hauteur** / **Hauteur + Rotation** / **Multi-axe** → **`1000-0007`** (creusage 2D integre au limiteur)
+- **Aucun limiteur** OU **Rotation seule** → **`1100-0007`** (creusage 2D autonome)
+
+Regle FIXE pour les excavatrices, **aucun override**. Appliquee dans le resume de la page ET le courriel. Les codes des accessoires (creusage 2D, camera) sont aussi listes **a la suite du Kit Machine** dans le courriel.
+Reference laser = `1000-0009`. Warning : si un item du kit est **a verifier** (etat `v`), une tuile orange s'affiche sur la page + une section warning dans le courriel.
 
 ---
 
@@ -188,8 +207,14 @@ Ou via Claude Code : `preview_start` avec la config `.claude/launch.json`
   - `scripts/split_overrides_by_type.py` : split sans perte (verifie : fusion == original ; excavatrices intactes).
   - `js/overrides-loader.js` : `loadMergedOverrides()` fusionne les 8 fichiers + repli legacy (rollout sans casse).
   - `Api.gs` : ecriture compacte (`JSON.stringify(data)`) + routage par type (`OV_TYPE_SLUGS`, `_ovFilePath`, `ohReadFile/Write/UpdateJson(type)`).
-  - **Frontend DEPLOYE** (commit f240791), verifie live (machine.html lit 5875 BOM exc + 6 pompes). **Reste : redeployer Api.gs** (console Apps Script) pour activer l'ecriture par type.
+  - **Frontend DEPLOYE** (commit f240791) + **Api.gs REDEPLOYE et verifie** (test machine factice : commit ecrit dans `data/overrides/excavatrice.json`, compact). Decoupage par type COMPLET de bout en bout.
 - **Bonus** : editer un type ne peut plus toucher le fichier d'un autre (excavatrices structurellement protegees).
+
+### 2026-06-03 — Regles centralisees, tuile Export, soumission enrichie
+- **`js/kit-rules.js`** : regles du kit centralisees (etaient dupliquees dans 5 fichiers). Voir 4.6.
+- **`export.html`** (tuile Export, Super Admin + Administrateurs) : telecharge le BOM par type en `.xlsx` (ExcelJS) avec points de couleur (R/J/V/NA), legende figee, AutoFilter, colonnes Items custom / Notes / Drapeau (warnings). Reflete l'etat AFFICHE (defauts + overrides).
+- **Soumission** : warning « items a valider » (tuile page + section courriel) ; codes accessoires (creusage 2D / camera) listes a la suite du Kit Machine ; regle du code Creusage 2D selon limiteur (voir 4.7).
+- Destinataires soumission = `sales_emails` (Script Property, gere dans l'Admin).
 
 ### 2026-06-03 — Fix header mobile
 - Logo qui empietait sur le toggle FR/EN sur cellulaire → media queries 600px + 360px (logo retreci, boutons resserres). Cache `style.css?v=172`.
