@@ -74,7 +74,8 @@
                     <span style="color:#E6C000;font-size:1.1rem;vertical-align:middle;">●</span> <b>jaune</b> = option/recommande &nbsp;
                     <span style="color:#E07B00;font-size:1.1rem;vertical-align:middle;">●</span> <b>orange</b> = a verifier &nbsp;
                     <span style="color:#B0B0B0;font-size:1.1rem;vertical-align:middle;">●</span> <b>gris</b> = non applicable.<br>
-                    Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur de police</b> pour isoler les options.
+                    Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur de police</b> pour isoler les options.<br>
+                    Colonnes de fin : <b>Items custom</b> (ajouts manuels), <b>Notes</b>, <b>Drapeau</b> (alertes &laquo; a verifier &raquo; signalees, en rouge).
                 </p>
 
                 <div id="exp-loading" class="exp-loading">Chargement des donnees&hellip;</div>
@@ -131,8 +132,10 @@
         ];
         var SLUGS = window.ETRAK_TYPE_SLUGS || {};
 
+        var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
         var MACHINES = {};   // machines.json (specs + _bom_labels)
         var OVERRIDES = {};  // overrides fusionnes (_bom / _notes)
+        var FLAGS = {};      // db_flags (warnings) : { "TYPE|FAB|MODEL|ANNEE": {flaggedBy,flaggedAt,note,active} }
 
         function toast(msg) {
             var t = document.getElementById('exp-toast');
@@ -180,40 +183,77 @@
             return null;
         }
 
-        // Construit le BOM d'un type : { aoa, fills }. Les drapeaux deviennent des couleurs
-        // de cellule (cellule vide + remplissage) ; les autres valeurs gardent leur texte.
+        var STATUS_LABEL = { r: 'obligatoire', j: 'option', v: 'a verifier', na: 'n/a' };
+
+        // Texte resumant les items ajoutes manuellement (_custom)
+        function customText(bom) {
+            var c = bom && bom._custom;
+            if (!Array.isArray(c) || !c.length) return '';
+            return c.map(function (it) {
+                var st = STATUS_LABEL[String(it.status || '').toLowerCase()] || it.status || '';
+                var pn = it.pn ? ' (' + it.pn + ')' : '';
+                return (it.desc || it.code || '?') + pn + (st ? ' [' + st + ']' : '');
+            }).join('  |  ');
+        }
+
+        // Texte du drapeau (warning) actif pour une machine
+        function flagText(flag) {
+            if (!flag || !flag.active) return '';
+            return '⚠ ' + (flag.note || '(sans note)') + ' — ' + (flag.flaggedBy || '?') + (flag.flaggedAt ? ' (' + flag.flaggedAt + ')' : '');
+        }
+
+        // Construit le BOM d'un type : { aoa, fills, redCells }.
+        // Colonnes : Type, Fab, Annee, Modele, [options en points colores], Items custom, Notes, Drapeau.
         function bomAoa(typeName) {
             var node = OVERRIDES[typeName] || {};
-            var rows = [], codeSet = {};
+            var rows = [], codeSet = {}, seen = {};
+            function rowKey(f, m, y) { return f + '|' + m + '|' + y; }
             for (var fab in node) for (var an in node[fab]) for (var mod in node[fab][an]) {
                 var e = node[fab][an][mod];
                 if (!e || (e._bom === undefined && e._notes === undefined)) continue;
                 var bom = e._bom || {};
                 for (var c in bom) { if (isOptionCode(c)) codeSet[c] = true; }
                 rows.push({ fab: fab, an: an, mod: mod, bom: bom, notes: e._notes || '' });
+                seen[rowKey(fab, mod, an)] = true;
+            }
+            // Ajoute les machines AVEC un drapeau actif mais absentes des overrides (sinon le warning serait perdu)
+            for (var fk in FLAGS) {
+                var fobj = FLAGS[fk];
+                if (!fobj || !fobj.active) continue;
+                var p = fk.split('|');   // TYPE|FAB|MODEL|ANNEE
+                if (p[0] !== typeName) continue;
+                if (!seen[rowKey(p[1], p[2], p[3])]) {
+                    rows.push({ fab: p[1], an: p[3], mod: p[2], bom: {}, notes: '' });
+                    seen[rowKey(p[1], p[2], p[3])] = true;
+                }
             }
             var codes = Object.keys(codeSet).sort();
             var lm = labelMap(typeName);
             var header = ['Type', 'Fabricant', 'Annee', 'Modele'];
             codes.forEach(function (c) { header.push(lm[c] || c); });
-            header.push('Notes');
-            var aoa = [header], fills = [];
-            rows.sort(function (a, b) {
-                return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an);
-            });
+            var cCustom = header.push('Items custom') - 1;
+            var cNotes = header.push('Notes') - 1;
+            var cFlag = header.push('Drapeau') - 1;
+            var aoa = [header], fills = [], redCells = [];
+            rows.sort(function (a, b) { return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an); });
             rows.forEach(function (r) {
                 var rowIdx = aoa.length;
                 var line = [typeName, r.fab, r.an, r.mod];
                 codes.forEach(function (c, ci) {
                     var raw = r.bom[c];
                     var rgb = colorFor(raw);
-                    if (rgb) { line.push('●'); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }  // point colore
+                    if (rgb) { line.push('●'); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }
                     else { line.push(normVal(raw)); }
                 });
-                line.push(r.notes);
+                line[cCustom] = customText(r.bom);
+                line[cNotes] = r.notes;
+                var flag = FLAGS[typeName + '|' + r.fab + '|' + r.mod + '|' + r.an];
+                var ft = flagText(flag);
+                line[cFlag] = ft;
+                if (ft) redCells.push({ r: rowIdx, c: cFlag });
                 aoa.push(line);
             });
-            return { aoa: aoa, fills: fills };
+            return { aoa: aoa, fills: fills, redCells: redCells };
         }
 
         function specsAoa(typeName) {
@@ -254,7 +294,7 @@
 
         // Construit une feuille ExcelJS. withLegend=true ajoute une ligne legende en haut.
         // Volets figes : la legende (si presente) + la ligne d'en-tete restent visibles au defilement.
-        function buildSheet(wb, sheetName, aoa, fills, withLegend) {
+        function buildSheet(wb, sheetName, aoa, fills, withLegend, redCells) {
             var nCols = aoa[0].length;
             var headerRow = withLegend ? 2 : 1;          // ligne de l'en-tete dans Excel
             var ws = wb.addWorksheet(sheetName, { views: [{ state: 'frozen', ySplit: headerRow }] });
@@ -276,6 +316,12 @@
                 cell.value = '●';
                 cell.font = { color: { argb: f.rgb }, size: 14 };
                 cell.alignment = { horizontal: 'center', vertical: 'middle' };
+            });
+
+            // Cellules drapeau (warnings) en rouge gras
+            (redCells || []).forEach(function (rc) {
+                var cell = ws.getCell(headerRow + rc.r, rc.c + 1);
+                cell.font = { color: { argb: 'FFCC0000' }, bold: true };
             });
 
             ws.autoFilter = { from: { row: headerRow, column: 1 }, to: { row: headerRow + aoa.length - 1, column: nCols } };
@@ -312,14 +358,14 @@
         function downloadType(typeName) {
             var x = bomAoa(typeName);
             var wb = new ExcelJS.Workbook();
-            buildSheet(wb, safeName(typeName), x.aoa, x.fills, true);
+            buildSheet(wb, safeName(typeName), x.aoa, x.fills, true, x.redCells);
             saveWorkbook(wb, 'BOM_' + (SLUGS[typeName] || safeName(typeName)) + '.xlsx');
             toast('Export ' + typeName + ' (' + (x.aoa.length - 1) + ' lignes)');
         }
 
         function downloadAllBom() {
             var wb = new ExcelJS.Workbook();
-            TYPE_ORDER.forEach(function (t) { var x = bomAoa(t); buildSheet(wb, safeName(t), x.aoa, x.fills, true); });
+            TYPE_ORDER.forEach(function (t) { var x = bomAoa(t); buildSheet(wb, safeName(t), x.aoa, x.fills, true, x.redCells); });
             saveWorkbook(wb, 'BOM_tous_types.xlsx');
             toast('Export combine BOM (8 onglets)');
         }
@@ -359,10 +405,14 @@
         // ---- Chargement ----
         Promise.all([
             fetch('data/machines.json?v=158').then(function (r) { return r.json(); }),
-            window.loadMergedOverrides()
+            window.loadMergedOverrides(),
+            fetch(API_URL + '?action=get&key=db_flags').then(function (r) { return r.json(); })
+                .then(function (d) { try { return d && d.value ? JSON.parse(d.value) : {}; } catch (e) { return {}; } })
+                .catch(function () { return {}; })   // si l'API ne repond pas : pas de drapeaux, le reste marche
         ]).then(function (res) {
             MACHINES = res[0] || {};
             OVERRIDES = res[1] || {};
+            FLAGS = res[2] || {};
             buildMenu();
         }).catch(function (err) {
             document.getElementById('exp-loading').textContent = 'Erreur de chargement des donnees.';
