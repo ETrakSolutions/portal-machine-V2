@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="css/admin.css?v=164">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- xlsx-js-style : fork SheetJS avec support des styles/couleurs de cellule (AutoFilter + remplissages) -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+    <!-- ExcelJS : .xlsx avec couleurs, AutoFilter, fusion de cellules ET figeage des volets (freeze panes) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
     <style>
         .exp-wrap { max-width: 900px; margin: 0 auto; padding: 1rem; }
         .exp-legend { font-size: 0.8rem; color: var(--text-secondary, #aaa); margin: 0.5rem 0 1.5rem; }
@@ -160,6 +160,14 @@
             return String(v);
         }
 
+        // Vrai code d'option BOM ? (exclut les cles internes : _removed, _custom, rows, customRows, undefined)
+        function isOptionCode(k) {
+            if (!k || k === 'undefined') return false;
+            if (k.charAt(0) === '_') return false;            // _removed, _custom, _specs...
+            if (k === 'rows' || k === 'customRows') return false;
+            return true;
+        }
+
         // Couleur de remplissage (ARGB) pour un drapeau BOM ; null si pas un drapeau.
         function colorFor(v) {
             if (v === null || v === undefined) return null;
@@ -179,7 +187,7 @@
                 var e = node[fab][an][mod];
                 if (!e || (e._bom === undefined && e._notes === undefined)) continue;
                 var bom = e._bom || {};
-                for (var c in bom) codeSet[c] = true;
+                for (var c in bom) { if (isOptionCode(c)) codeSet[c] = true; }
                 rows.push({ fab: fab, an: an, mod: mod, bom: bom, notes: e._notes || '' });
             }
             var codes = Object.keys(codeSet).sort();
@@ -231,31 +239,60 @@
             return aoa;
         }
 
-        function makeSheet(aoa, fills) {
-            var ws = XLSX.utils.aoa_to_sheet(aoa);
-            var nCols = aoa[0].length, nRows = aoa.length;
-            ws['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: Math.max(0, nRows - 1), c: nCols - 1 } }) };
-            ws['!cols'] = aoa[0].map(function (h, i) {
-                var w = String(h).length;
-                for (var r = 1; r < Math.min(nRows, 200); r++) { var v = aoa[r][i]; if (v != null) w = Math.max(w, String(v).length); }
-                return { wch: Math.min(45, Math.max(8, w + 2)) };
-            });
-            // En-tete en gras
-            for (var c = 0; c < nCols; c++) {
-                var hr = XLSX.utils.encode_cell({ r: 0, c: c });
-                if (!ws[hr]) ws[hr] = { t: 's', v: '' };
-                ws[hr].s = { font: { bold: true } };
+        // Ligne de legende (point rouge/jaune/gris) — affichee en haut de la feuille BOM
+        function legendRichText() {
+            return { richText: [
+                { text: 'Legende :  ', font: { bold: true } },
+                { text: '●', font: { color: { argb: 'FFFF0000' }, bold: true } }, { text: ' obligatoire     ' },
+                { text: '●', font: { color: { argb: 'FFE6C000' }, bold: true } }, { text: ' option / recommande     ' },
+                { text: '●', font: { color: { argb: 'FFB0B0B0' }, bold: true } }, { text: ' non applicable' }
+            ] };
+        }
+
+        // Construit une feuille ExcelJS. withLegend=true ajoute une ligne legende en haut.
+        // Volets figes : la legende (si presente) + la ligne d'en-tete restent visibles au defilement.
+        function buildSheet(wb, sheetName, aoa, fills, withLegend) {
+            var nCols = aoa[0].length;
+            var headerRow = withLegend ? 2 : 1;          // ligne de l'en-tete dans Excel
+            var ws = wb.addWorksheet(sheetName, { views: [{ state: 'frozen', ySplit: headerRow }] });
+
+            if (withLegend) {
+                ws.addRow([]);                           // ligne 1 = legende
+                ws.mergeCells(1, 1, 1, nCols);
+                var lc = ws.getCell(1, 1);
+                lc.value = legendRichText();
+                lc.alignment = { vertical: 'middle' };
             }
-            // Point de couleur (drapeaux BOM) : caractere ● centre, colore — pas de remplissage de case
+            var hr = ws.addRow(aoa[0]);                   // en-tete
+            hr.font = { bold: true };
+            for (var i = 1; i < aoa.length; i++) { ws.addRow(aoa[i]); }   // donnees
+
+            // Points de couleur (drapeaux BOM) : caractere ● centre, couleur de police
             (fills || []).forEach(function (f) {
-                var ref = XLSX.utils.encode_cell({ r: f.r, c: f.c });
-                if (!ws[ref]) ws[ref] = { t: 's', v: '●' };
-                ws[ref].s = {
-                    font: { color: { rgb: f.rgb }, sz: 14 },
-                    alignment: { horizontal: 'center', vertical: 'center' }
-                };
+                var cell = ws.getCell(headerRow + f.r, f.c + 1);   // f.r = index aoa (0=en-tete)
+                cell.value = '●';
+                cell.font = { color: { argb: f.rgb }, size: 14 };
+                cell.alignment = { horizontal: 'center', vertical: 'middle' };
             });
+
+            ws.autoFilter = { from: { row: headerRow, column: 1 }, to: { row: headerRow + aoa.length - 1, column: nCols } };
+
+            for (var c = 0; c < nCols; c++) {
+                var w = String(aoa[0][c]).length;
+                for (var r = 1; r < Math.min(aoa.length, 200); r++) { var v = aoa[r][c]; if (v != null) w = Math.max(w, String(v).length); }
+                ws.getColumn(c + 1).width = Math.min(45, Math.max(8, w + 2));
+            }
             return ws;
+        }
+
+        function saveWorkbook(wb, filename) {
+            return wb.xlsx.writeBuffer().then(function (buf) {
+                var blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var a = document.createElement('a');
+                a.href = URL.createObjectURL(blob); a.download = filename;
+                document.body.appendChild(a); a.click();
+                setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+            });
         }
 
         function safeName(s) { return s.replace(/[^A-Za-z0-9]+/g, '_').replace(/^_|_$/g, '').slice(0, 28) || 'Sheet'; }
@@ -271,23 +308,23 @@
 
         function downloadType(typeName) {
             var x = bomAoa(typeName);
-            var wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, makeSheet(x.aoa, x.fills), safeName(typeName));
-            XLSX.writeFile(wb, 'BOM_' + (SLUGS[typeName] || safeName(typeName)) + '.xlsx');
+            var wb = new ExcelJS.Workbook();
+            buildSheet(wb, safeName(typeName), x.aoa, x.fills, true);
+            saveWorkbook(wb, 'BOM_' + (SLUGS[typeName] || safeName(typeName)) + '.xlsx');
             toast('Export ' + typeName + ' (' + (x.aoa.length - 1) + ' lignes)');
         }
 
         function downloadAllBom() {
-            var wb = XLSX.utils.book_new();
-            TYPE_ORDER.forEach(function (t) { var x = bomAoa(t); XLSX.utils.book_append_sheet(wb, makeSheet(x.aoa, x.fills), safeName(t)); });
-            XLSX.writeFile(wb, 'BOM_tous_types.xlsx');
+            var wb = new ExcelJS.Workbook();
+            TYPE_ORDER.forEach(function (t) { var x = bomAoa(t); buildSheet(wb, safeName(t), x.aoa, x.fills, true); });
+            saveWorkbook(wb, 'BOM_tous_types.xlsx');
             toast('Export combine BOM (8 onglets)');
         }
 
         function downloadAllSpecs() {
-            var wb = XLSX.utils.book_new();
-            TYPE_ORDER.forEach(function (t) { XLSX.utils.book_append_sheet(wb, makeSheet(specsAoa(t)), safeName(t)); });
-            XLSX.writeFile(wb, 'Specifications_machines.xlsx');
+            var wb = new ExcelJS.Workbook();
+            TYPE_ORDER.forEach(function (t) { buildSheet(wb, safeName(t), specsAoa(t), null, false); });
+            saveWorkbook(wb, 'Specifications_machines.xlsx');
             toast('Export specifications (8 onglets)');
         }
 
