@@ -427,6 +427,10 @@ body.force-mobile main{
     <h3 style="text-align:center;margin-bottom:0.75rem">Confirmer la sauvegarde</h3>
     <div class="info" id="modal-save-info"></div>
     <pre id="modal-save-content" style="display:none"></pre>
+    <label id="save-allyears-label" style="display:none;align-items:center;gap:0.6rem;background:var(--input);padding:0.7rem 0.9rem;border-radius:6px;border:1px solid var(--jaune);cursor:pointer;margin-top:1rem;font-size:0.9rem">
+      <input type="checkbox" id="save-allyears" style="width:18px;height:18px;accent-color:var(--jaune);cursor:pointer">
+      <span>Appliquer <strong>toute cette config</strong> aux <strong id="save-allyears-count"></strong> autres annees (toutes identiques a l'annee courante)</span>
+    </label>
     <div class="btn-row" style="justify-content:flex-end;gap:0.6rem;margin-top:1rem">
       <button id="save-cancel-btn" class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem" onclick="document.getElementById('modal-save').classList.remove('show')">Annuler</button>
       <button id="save-confirm-btn" class="btn-primary-fancy" style="width:auto;padding:0.6rem 1.2rem" onclick="commitChanges()">Confirmer la sauvegarde</button>
@@ -894,6 +898,18 @@ body.force-mobile main{
     document.getElementById('modal-save-info').innerHTML =
       '<strong>' + countChanges() + ' modification(s)</strong>' + scope + '.';
     document.getElementById('modal-save-content').textContent = JSON.stringify(changes, null, 2);
+    // Case maitresse "appliquer toute la config a toutes les annees" (visible si plusieurs annees)
+    var saveAllLabel = document.getElementById('save-allyears-label');
+    var saveAllCb = document.getElementById('save-allyears');
+    if (saveAllLabel && saveAllCb){
+      if (ALL_YEARS_FOR_MODEL.length > 1){
+        document.getElementById('save-allyears-count').textContent = (ALL_YEARS_FOR_MODEL.length - 1);
+        saveAllLabel.style.display = 'flex';
+      } else {
+        saveAllLabel.style.display = 'none';
+      }
+      saveAllCb.checked = false;
+    }
     document.getElementById('modal-save').classList.add('show');
   }
 
@@ -905,6 +921,9 @@ body.force-mobile main{
     BOM_CODES.forEach(function(c){ if (BOM_CURRENT[c] !== BOM_INITIAL[c]) bomChanged = true; });
 
     var scopedCodes = Object.keys(SCOPE_ALL_CODES).filter(function(k){ return SCOPE_ALL_CODES[k]; });
+    // Case maitresse "appliquer toute la config a toutes les annees" (modale de sauvegarde)
+    var saveAllCb = document.getElementById('save-allyears');
+    var masterAllYears = !!(saveAllCb && saveAllCb.checked) && ALL_YEARS_FOR_MODEL.length > 1;
 
     // Les ecritures BOM (annee courante + annees "Toutes annees") sont collectees ici
     // puis envoyees en UNE seule requete (bulk) pour eviter les conflits sur overrides.json.
@@ -912,13 +931,22 @@ body.force-mobile main{
 
     // 1) Current year: save full override (all changes apply to this year)
     //    Aussi sauvegarder si seul SCOPE est actif (assure que l'override de cette annee est aussi a jour)
-    if (bomChanged || harnaisChanged || removedChanged || customChanged || scopedCodes.length > 0){
+    if (bomChanged || harnaisChanged || removedChanged || customChanged || scopedCodes.length > 0 || masterAllYears){
       bomItems.push({ annee: YEAR, bomOverride: buildOverridePayload() });
     }
 
-    // 2) Other years: pour chaque code en mode "Toutes annees", propager la VALEUR ACTUELLE
-    //    (qu'elle ait change cette annee ou non) vers les autres annees
-    if (scopedCodes.length > 0 && ALL_YEARS_FOR_MODEL.length > 1){
+    // 2a) Case maitresse: copie IDENTIQUE de la config courante a TOUTES les autres annees
+    if (masterAllYears){
+      var fullPayload = buildOverridePayload();
+      ALL_YEARS_FOR_MODEL.filter(function(y){ return y !== YEAR; }).forEach(function(yr){
+        var clone = JSON.parse(JSON.stringify(fullPayload));
+        OTHER_OVERRIDES[yr] = clone;
+        bomItems.push({ annee: yr, bomOverride: clone });
+      });
+      logChange('Config complete appliquee a toutes les annees (' + (ALL_YEARS_FOR_MODEL.length - 1) + ' autres)', 'Toutes annees');
+    }
+    // 2b) Sinon, mode granulaire: pour chaque code coche "Toutes annees", propager sa valeur actuelle
+    else if (scopedCodes.length > 0 && ALL_YEARS_FOR_MODEL.length > 1){
       ALL_YEARS_FOR_MODEL.filter(function(y){ return y !== YEAR; }).forEach(function(yr){
         // Deep clone to avoid mutating cached OTHER_OVERRIDES
         var ov = JSON.parse(JSON.stringify(OTHER_OVERRIDES[yr] || {}));
