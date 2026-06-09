@@ -978,7 +978,22 @@ body.force-mobile main{
       if (restored.length) logChange('Lignes restaurees : ' + restored.join(', '), '—');
     }
     if (customChanged){
-      logChange('Lignes custom : ' + CUSTOM_CURRENT.length + ' ligne(s)', CUSTOM_INITIAL.length + ' ligne(s)');
+      // Log par PIECE : description claire + colonne "Avant" = ancienne valeur ("Ajout" si nouvelle piece)
+      var ckey = function(r){ return r.code || r.pn || r.desc; };
+      var clabel = function(r){ return (r.desc || r.code || r.pn || 'Piece') + (r.pn ? ' (' + r.pn + ')' : ''); };
+      var initByKey = {}; CUSTOM_INITIAL.forEach(function(r){ initByKey[ckey(r)] = r; });
+      var curByKey = {};  CUSTOM_CURRENT.forEach(function(r){ curByKey[ckey(r)] = r; });
+      CUSTOM_CURRENT.forEach(function(r){
+        var before = initByKey[ckey(r)];
+        if (!before){
+          logChange('Piece ajoutee : ' + clabel(r) + ' [' + stateLabel(r.status) + ']', 'Ajout');
+        } else if (before.status !== r.status){
+          logChange('Piece ' + clabel(r) + ' → ' + stateLabel(r.status), stateLabel(before.status));
+        }
+      });
+      CUSTOM_INITIAL.forEach(function(r){
+        if (!curByKey[ckey(r)]) logChange('Piece retiree : ' + clabel(r), stateLabel(r.status));
+      });
     }
 
     // 4) Notes (current year only — harnais and notes don't have per-row scope)
