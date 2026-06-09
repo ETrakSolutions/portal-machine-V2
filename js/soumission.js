@@ -506,7 +506,7 @@ function getKitSummary(type, fab, modele, specs) {
         '0002': true,
         '0004': isMini,
         '0005': typeBras.includes('2 parties'),
-        '0008': false, // Swing boom: absent par defaut (admin doit l'activer via edit-machine)
+        '0008': hasSwing, // Swing boom: option si la spec 'Swing boom' = Oui
         '0009': isDrain,
         '0070': isCat,
         '0304': modelUpper === 'TB216'

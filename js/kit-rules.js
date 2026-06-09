@@ -50,10 +50,12 @@
   // Defauts Excavatrice -> { code: etat }
   function excDefaults(specs, modele) {
     var u = String(modele || '').toUpperCase();
+    var swing = String((specs && specs['Swing boom']) || '').trim().toLowerCase() === 'oui';
     return {
       '0000': 'r', '0001': 'j', '0002': 'j',
       '0004': isMini(specs) ? 'r' : 'na',
-      '0005': 'j', '0008': 'na',
+      '0005': 'j',
+      '0008': swing ? 'j' : 'na',   // swing boom = option (jaune) si la spec 'Swing boom' = Oui
       '0009': isDrain(modele) ? 'r' : 'na',
       '0070': 'na',
       '0304': u === 'TB216' ? 'r' : 'na'
