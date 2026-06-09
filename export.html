@@ -143,7 +143,7 @@
             if (labels) {
                 for (var k in labels) {
                     var code = k.split(' ')[0];
-                    var pn = labels[k] && labels[k].pn ? ' [' + labels[k].pn + ']' : '';
+                    var pn = labels[k] && labels[k].pn ? '\n' + labels[k].pn : '';   // PN sur 2e ligne
                     map[code] = k + pn;
                 }
             }
@@ -263,7 +263,7 @@
                     if (!customSeen[key]) {
                         customSeen[key] = true;
                         var pn = it.pn || it.code || '';
-                        customCols.push({ key: key, label: (it.desc || key) + (pn ? ' [' + pn + ']' : '') });
+                        customCols.push({ key: key, label: (it.desc || key) + (pn ? '\n' + pn : '') });   // PN sur 2e ligne
                     }
                 });
             });
@@ -356,7 +356,7 @@
                 ws.getRow(1).height = 22;
             }
             var hr = ws.addRow(aoa[0]);                   // en-tete
-            hr.height = 28;
+            hr.height = 34;                               // 2 lignes : libelle + n° de produit
             hr.eachCell({ includeEmpty: true }, function (cell) {
                 cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
                 cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2A2A2A' } };  // ardoise e-Trak
@@ -381,9 +381,13 @@
 
             ws.autoFilter = { from: { row: headerRow, column: 1 }, to: { row: headerRow + aoa.length - 1, column: nCols } };
 
+            // Largeur basee sur la LIGNE la plus longue (les en-tetes multi-lignes ne gonflent pas la colonne)
+            function lineLen(v) {
+                return String(v).split('\n').reduce(function (mx, s) { return Math.max(mx, s.length); }, 0);
+            }
             for (var c = 0; c < nCols; c++) {
-                var w = String(aoa[0][c]).length;
-                for (var r = 1; r < Math.min(aoa.length, 200); r++) { var v = aoa[r][c]; if (v != null) w = Math.max(w, String(v).length); }
+                var w = lineLen(aoa[0][c]);
+                for (var r = 1; r < Math.min(aoa.length, 200); r++) { var v = aoa[r][c]; if (v != null) w = Math.max(w, lineLen(v)); }
                 ws.getColumn(c + 1).width = Math.min(45, Math.max(8, w + 2));
             }
             return ws;
