@@ -891,8 +891,10 @@
         // Colonnes affichees dans la BD: Cabine, Sans cabine, Mini, Drain, Boite GC, Autre
         // Les autres codes (0001 Hauteur, 0002 Rotation, 0005 Multi Axes, 0008 Swing boom, 0304 Cremaillere, _custom)
         // sont regroupes dans la colonne virtuelle _AUTRE qui s'allume si une de ces options est obligatoire ou optionnelle
-        var EXC_BOM_CODES = ['0000','0003','0004','0009','0070','_AUTRE'];
-        var EXC_AUTRE_HIDDEN_CODES = ['0001','0002','0005','0008','0304'];
+        // Une colonne par piece : tous les codes standard sont affiches individuellement
+        // (les colonnes entierement 'na' sont masquees automatiquement par hideAlwaysOptionalColumns)
+        var EXC_BOM_CODES = ['0000','0003','0004','0001','0002','0005','0008','0009','0304','0070'];
+        var EXC_AUTRE_HIDDEN_CODES = [];  // plus de regroupement dans _AUTRE
         var POMPE_BOM_CODES = ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
         var BOM_CODES = EXC_BOM_CODES; // default, updated on type change
         var BOM_NAMES = {
@@ -938,6 +940,40 @@
                 });
             }
             return { state: hasRouge ? 'r' : hasVerif ? 'v' : 'na', details: details };
+        }
+
+        // ===== Colonnes "une par piece custom" (pseudo-codes 'CUSTOM:<cle>' ajoutes a BOM_CODES) =====
+        var CUSTOM_COLS = [];   // [{pseudo, key, label}] pour le type courant
+        function customKey(cr) { return cr.code || cr.pn || cr.desc || ''; }
+        // Pieces custom DISTINCTES presentes dans fullData pour ce type -> 1 colonne chacune
+        function computeCustomCols(typeName) {
+            var seen = {}, cols = [];
+            var node = (typeof fullData !== 'undefined' && fullData[typeName]) || {};
+            for (var fab in node) {
+                if (fab.charAt(0) === '_') continue;
+                for (var y in node[fab]) for (var m in node[fab][y]) {
+                    var e = node[fab][y][m];
+                    var cust = e && e._bom && e._bom._custom;
+                    if (Array.isArray(cust)) cust.forEach(function (cr) {
+                        var key = customKey(cr);
+                        if (!key || seen[key]) return;
+                        seen[key] = true;
+                        cols.push({ pseudo: 'CUSTOM:' + key, key: key, label: (cr.desc || key) });
+                    });
+                }
+            }
+            return cols;
+        }
+        function customLabelFor(pseudo) {
+            for (var i = 0; i < CUSTOM_COLS.length; i++) if (CUSTOM_COLS[i].pseudo === pseudo) return CUSTOM_COLS[i].label;
+            return pseudo.slice(7);
+        }
+        // Statut (r/j/v/na) d'une piece custom pour une machine donnee
+        function customStatusFor(d, pseudo) {
+            var key = pseudo.slice(7);
+            var c = d && d._custom;
+            if (Array.isArray(c)) for (var i = 0; i < c.length; i++) if (customKey(c[i]) === key) return c[i].status || 'r';
+            return 'na';
         }
 
         // Spec columns per machine type: {key: label}
@@ -1263,7 +1299,7 @@
 
         function computeDefaultBom(d) {
             // Defauts BOM (9 jetons) : source unique = js/kit-rules.js
-            var bom = window.KitRules.excDefaults({ 'Poids operationnel (kg / lbs)': d.poids }, d.modele);
+            var bom = window.KitRules.excDefaults({ 'Poids operationnel (kg / lbs)': d.poids, 'Swing boom': (d.swing || d['_spec_Swing boom'] || '') }, d.modele);
             bom['0003'] = 'na';   // Sans cabine — colonne specifique a la vue BD, na par defaut
 
             // Harnais de coupure — selon fabricant
@@ -1451,10 +1487,13 @@
             // Switch BOM codes based on type — only Excavatrice and Pompe a Beton have BOM
             if (typeVal === 'Pompe a Beton') {
                 BOM_CODES = POMPE_BOM_CODES;
+                CUSTOM_COLS = [];
             } else if (typeVal === 'Excavatrice') {
-                BOM_CODES = EXC_BOM_CODES;
+                CUSTOM_COLS = computeCustomCols('Excavatrice');                 // 1 colonne par piece custom
+                BOM_CODES = EXC_BOM_CODES.concat(CUSTOM_COLS.map(function (c) { return c.pseudo; }));
             } else {
                 BOM_CODES = []; // No BOM for other types or __ALL__
+                CUSTOM_COLS = [];
             }
             // Set spec columns for this type
             if (isAllTypes) {
@@ -1488,13 +1527,21 @@
                 var th = document.createElement('th');
                 th.className = 'bom-col';
                 th.dataset.col = 'bom_' + code;
-                th.innerHTML = (BOM_NAMES[code] || code) + '<span class="sort-arrow">&#9650;</span>';
-                th.addEventListener('click', function() {
-                    var col = this.dataset.col;
-                    if (sortCol === col) { sortAsc = !sortAsc; }
-                    else { sortCol = col; sortAsc = true; }
-                    applyFilters();
-                });
+                var isCustom = code.indexOf('CUSTOM:') === 0;
+                if (isCustom) {
+                    // Colonne d'une piece custom : libelle = description (pas de tri)
+                    th.classList.add('bom-custom-col');
+                    th.title = customLabelFor(code);
+                    th.innerHTML = customLabelFor(code);
+                } else {
+                    th.innerHTML = (BOM_NAMES[code] || code) + '<span class="sort-arrow">&#9650;</span>';
+                    th.addEventListener('click', function() {
+                        var col = this.dataset.col;
+                        if (sortCol === col) { sortAsc = !sortAsc; }
+                        else { sortCol = col; sortAsc = true; }
+                        applyFilters();
+                    });
+                }
                 headerRow.appendChild(th);
             });
             // Add harnais for excavatrice
@@ -1589,6 +1636,8 @@
                         for (var modele in section[fab][annee]) {
                             var s = section[fab][annee][modele];
                             var entry = { fab: fab, modele: modele, annee: annee, harnais: '', bom: {}, _type: currentType };
+                            // pieces custom dispo des le rendu initial (1 colonne par piece) — source = fullData
+                            entry._custom = (s._bom && Array.isArray(s._bom._custom)) ? s._bom._custom.slice() : [];
                             for (var key in s) { entry['_spec_' + key] = s[key]; }
                             var mapped = mapFn(s);
                             for (var mk in mapped) { entry[mk] = mapped[mk]; }
@@ -1766,6 +1815,14 @@
                         tr.appendChild(td);
                         return;
                     }
+                    if (code.indexOf('CUSTOM:') === 0) {
+                        // Piece custom : jeton lecture seule (statut de la machine), pas editable ici
+                        var cst = customStatusFor(d, code);
+                        var ccls = 'bom-token readonly' + (cst === 'r' ? ' bom-r' : cst === 'j' ? ' bom-j' : cst === 'v' ? ' bom-v' : ' bom-na');
+                        td.innerHTML = '<span class="' + ccls + '" data-code="' + code + '" data-idx="' + dataIdx + '" title="' + customLabelFor(code).replace(/"/g, '&quot;') + '">' + (cst === 'na' ? '-' : '') + '</span>';
+                        tr.appendChild(td);
+                        return;
+                    }
                     var isRemoved = Array.isArray(d._removed) && d._removed.indexOf(code) >= 0;
                     if (isRemoved){
                         td.innerHTML = '<span class="bom-token bom-na readonly" data-code="' + code + '" data-idx="' + dataIdx + '" title="Retire pour cette machine" style="opacity:0.4">&times;</span>';
@@ -1916,6 +1973,12 @@
                         tokens.forEach(function(token) {
                             var c = token.dataset.code;
                             if (!c) return;
+                            if (c.indexOf('CUSTOM:') === 0) {
+                                var cst = customStatusFor(d, c);
+                                token.className = 'bom-token readonly' + (cst === 'r' ? ' bom-r' : cst === 'j' ? ' bom-j' : cst === 'v' ? ' bom-v' : ' bom-na');
+                                token.textContent = cst === 'na' ? '-' : '';
+                                return;
+                            }
                             if (c === '_AUTRE') {
                                 var info = computeAutreState(d);
                                 token.className = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
@@ -2200,6 +2263,10 @@
             if (!filtered || !filtered.length || !BOM_CODES || !BOM_CODES.length) return [];
             return BOM_CODES.filter(function (code) {
                 if (code === '_AUTRE') return false;
+                if (code.indexOf('CUSTOM:') === 0) {
+                    // colonne custom masquee seulement si AUCUNE machine ne porte cette piece
+                    return filtered.every(function (d) { return customStatusFor(d, code) === 'na'; });
+                }
                 return filtered.every(function (d) {
                     if (!d.bom || Object.keys(d.bom).length === 0) {
                         if (d._type === 'Excavatrice' && typeof computeDefaultBom === 'function') d.bom = computeDefaultBom(d);
