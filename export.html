@@ -68,15 +68,6 @@
                 <div class="admin-hero" style="padding-bottom:0.5rem;">
                     <h1 class="admin-hero-title">Export BOM</h1>
                 </div>
-                <p class="exp-legend">
-                    Telecharge le contenu de chaque fichier en Excel (.xlsx) avec <b>filtres automatiques</b> (AutoFilter) pour une vue d'ensemble rapide.<br>
-                    Drapeaux BOM affiches par un <b>point de couleur</b> : <span style="color:#FF0000;font-size:1.1rem;vertical-align:middle;">●</span> <b>rouge</b> = obligatoire &nbsp;
-                    <span style="color:#E6C000;font-size:1.1rem;vertical-align:middle;">●</span> <b>jaune</b> = option/recommande &nbsp;
-                    <span style="color:#E07B00;font-size:1.1rem;vertical-align:middle;">●</span> <b>orange</b> = a verifier &nbsp;
-                    <span style="color:#B0B0B0;font-size:1.1rem;vertical-align:middle;">●</span> <b>gris</b> = non applicable.<br>
-                    Astuce : dans Excel, <b>Donnees &rarr; Filtrer</b> puis <b>Filtrer par couleur de police</b> pour isoler les options.<br>
-                    Colonnes de fin : <b>Items custom</b> (ajouts manuels), <b>Notes</b>, <b>Drapeau</b> (alertes &laquo; a verifier &raquo; signalees, en rouge).
-                </p>
 
                 <div id="exp-loading" class="exp-loading">Chargement des donnees&hellip;</div>
 
@@ -203,6 +194,15 @@
             return '⚠ ' + (flag.note || '(sans note)') + ' — ' + (flag.flaggedBy || '?') + (flag.flaggedAt ? ' (' + flag.flaggedAt + ')' : '');
         }
 
+        // Harnais de coupure (item necessaire des excavatrices) : defaut calcule par
+        // KR.harnais(fab, modele) + override eventuel (stocke 'H0080' -> 'Z03B-0080').
+        var HARNAIS_LABELS = { H0031: 'Hit5/6-JD', H0032: 'Komatsu', H0033: 'Doosan', H0034: 'Volvo', H0041: 'LB-Case', H0080: 'Cat', H0100: 'Cat(ECU)', H0121: 'Hit-7', H0043: 'Generic' };
+        function harnaisText(fab, mod, ov) {
+            if (ov) return 'Z03B-' + String(ov).replace('H', '') + ' (' + (HARNAIS_LABELS[ov] || ov) + ')';
+            var h = KR.harnais(fab, mod);
+            return h.code + ' (' + h.name + ')';
+        }
+
         // ====== Regles de defaut : SOURCE UNIQUE = js/kit-rules.js (window.KitRules) ======
         // L'etat AFFICHE = defauts calcules + overrides. L'export reflete ce qui est visible
         // dans la BD, identique aux autres tuiles car meme source de regles.
@@ -211,6 +211,10 @@
         function typeCodes(typeName) {
             if (typeName === 'Excavatrice') return KR.EXC_CODES;
             if (typeName === 'Pompe a Beton') return KR.POMPE_CODES;
+            // Auto-adaptatif : tout type ayant des _bom_labels expose ses options.
+            // Le code est le 1er token de chaque cle ("0000 Cabine" -> "0000").
+            var labels = MACHINES[typeName] && MACHINES[typeName]._bom_labels;
+            if (labels) return Object.keys(labels).map(function (k) { return k.split(' ')[0]; });
             return [];
         }
 
@@ -219,7 +223,7 @@
             var defaults;
             if (typeName === 'Excavatrice') defaults = KR.excDefaults(specs, modele);
             else if (typeName === 'Pompe a Beton') defaults = KR.pompeDefaults(specs);
-            else return {};
+            else defaults = {};   // pas de regles par defaut : l'etat vient des overrides seuls
             return KR.applyOverride(defaults, bom || {}, typeName === 'Excavatrice');
         }
 
@@ -230,6 +234,7 @@
             var ovNode = OVERRIDES[typeName] || {};
             var codes = typeCodes(typeName);
             var lm = labelMap(typeName);
+            var isExc = (typeName === 'Excavatrice');   // colonne Harnais : excavatrices seulement
             var rows = [];
             for (var fab in mNode) {
                 if (fab === '_bom_labels') continue;
@@ -241,13 +246,33 @@
                     rows.push({
                         fab: fab, an: an, mod: mod,
                         state: computeState(typeName, mod, entry, bom),
-                        bom: bom, notes: ovEntry._notes || ''
+                        bom: bom, notes: ovEntry._notes || '', harn: ovEntry.harnais || ''
                     });
                 }
             }
+            // Collecte les pieces custom DISTINCTES du type -> 1 colonne par piece.
+            // Cle = code (ou pn) ; chaque machine recoit un point colore selon le statut de SA piece.
+            var customCols = [], customSeen = {};
+            rows.forEach(function (r) {
+                r.cmap = {};
+                var c = r.bom && r.bom._custom;
+                if (Array.isArray(c)) c.forEach(function (it) {
+                    var key = it.code || it.pn || it.desc;
+                    if (!key) return;
+                    r.cmap[key] = String(it.status || 'r').toLowerCase();
+                    if (!customSeen[key]) {
+                        customSeen[key] = true;
+                        var pn = it.pn || it.code || '';
+                        customCols.push({ key: key, label: (it.desc || key) + (pn ? ' [' + pn + ']' : '') });
+                    }
+                });
+            });
+
             var header = ['Type', 'Fabricant', 'Annee', 'Modele'];
             codes.forEach(function (c) { header.push(lm[c] || c); });
-            var cCustom = header.push('Items custom') - 1;
+            var cHarnais = isExc ? (header.push('Harnais') - 1) : -1;
+            var cCustomStart = header.length;                 // 1re colonne piece custom
+            customCols.forEach(function (cc) { header.push(cc.label); });
             var cNotes = header.push('Notes') - 1;
             var cFlag = header.push('Drapeau') - 1;
             var aoa = [header], fills = [], redCells = [];
@@ -260,7 +285,13 @@
                     if (rgb) { line.push('●'); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }
                     else { line.push(''); }
                 });
-                line[cCustom] = customText(r.bom);
+                if (isExc) line[cHarnais] = harnaisText(r.fab, r.mod, r.harn);
+                customCols.forEach(function (cc, ci) {
+                    var rgb = r.cmap[cc.key] ? colorFor(r.cmap[cc.key]) : null;
+                    var col = cCustomStart + ci;
+                    if (rgb) { line[col] = '●'; fills.push({ r: rowIdx, c: col, rgb: rgb }); }
+                    else { line[col] = ''; }
+                });
                 line[cNotes] = r.notes;
                 var flag = FLAGS[typeName + '|' + r.fab + '|' + r.mod + '|' + r.an];
                 var ft = flagText(flag);
@@ -299,11 +330,11 @@
         // Ligne de legende (point rouge/jaune/gris) — affichee en haut de la feuille BOM
         function legendRichText() {
             return { richText: [
-                { text: 'Legende :  ', font: { bold: true } },
-                { text: '●', font: { color: { argb: 'FFFF0000' }, bold: true } }, { text: ' obligatoire     ' },
-                { text: '●', font: { color: { argb: 'FFE6C000' }, bold: true } }, { text: ' option / recommande     ' },
-                { text: '●', font: { color: { argb: 'FFE07B00' }, bold: true } }, { text: ' a verifier     ' },
-                { text: '●', font: { color: { argb: 'FFB0B0B0' }, bold: true } }, { text: ' non applicable' }
+                { text: 'Legende :  ', font: { bold: true, size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFFF0000' }, bold: true, size: 14 } }, { text: 'obligatoire     ', font: { size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFE6C000' }, bold: true, size: 14 } }, { text: 'option / recommande     ', font: { size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFE07B00' }, bold: true, size: 14 } }, { text: 'a verifier     ', font: { size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFB0B0B0' }, bold: true, size: 14 } }, { text: 'non applicable', font: { size: 11 } }
             ] };
         }
 
@@ -313,23 +344,32 @@
             var nCols = aoa[0].length;
             var headerRow = withLegend ? 2 : 1;          // ligne de l'en-tete dans Excel
             var ws = wb.addWorksheet(sheetName, { views: [{ state: 'frozen', ySplit: headerRow }] });
+            ws.properties.defaultRowHeight = 20;          // laisse respirer les points plus gros
 
             if (withLegend) {
                 ws.addRow([]);                           // ligne 1 = legende
                 ws.mergeCells(1, 1, 1, nCols);
                 var lc = ws.getCell(1, 1);
                 lc.value = legendRichText();
-                lc.alignment = { vertical: 'middle' };
+                lc.alignment = { vertical: 'middle', horizontal: 'left', indent: 1 };
+                lc.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFF4E0' } };  // creme clair
+                ws.getRow(1).height = 22;
             }
             var hr = ws.addRow(aoa[0]);                   // en-tete
-            hr.font = { bold: true };
+            hr.height = 28;
+            hr.eachCell({ includeEmpty: true }, function (cell) {
+                cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11 };
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF2A2A2A' } };  // ardoise e-Trak
+                cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+                cell.border = { bottom: { style: 'medium', color: { argb: 'FFFFB74D' } } };          // liseré orange
+            });
             for (var i = 1; i < aoa.length; i++) { ws.addRow(aoa[i]); }   // donnees
 
             // Points de couleur (drapeaux BOM) : caractere ● centre, couleur de police
             (fills || []).forEach(function (f) {
                 var cell = ws.getCell(headerRow + f.r, f.c + 1);   // f.r = index aoa (0=en-tete)
                 cell.value = '●';
-                cell.font = { color: { argb: f.rgb }, size: 14 };
+                cell.font = { color: { argb: f.rgb }, size: 18, bold: true };
                 cell.alignment = { horizontal: 'center', vertical: 'middle' };
             });
 
@@ -410,29 +450,50 @@
                 btn.className = 'exp-btn';
                 btn.textContent = 'Exporter';
                 if (n === 0) { btn.disabled = true; btn.textContent = 'Vide'; }
-                btn.addEventListener('click', function () { downloadType(t); });
+                btn.addEventListener('click', refreshThen(function () { downloadType(t); }));
                 row.appendChild(info); row.appendChild(btn);
                 grid.appendChild(row);
             });
-            document.getElementById('exp-all-bom').addEventListener('click', downloadAllBom);
-            document.getElementById('exp-all-specs').addEventListener('click', downloadAllSpecs);
+            document.getElementById('exp-all-bom').addEventListener('click', refreshThen(downloadAllBom));
+            document.getElementById('exp-all-specs').addEventListener('click', refreshThen(downloadAllSpecs));
             document.getElementById('exp-loading').style.display = 'none';
             document.getElementById('exp-content').style.display = 'block';
         }
 
-        // ---- Chargement ----
-        Promise.all([
-            fetch('data/machines.json?v=158').then(function (r) { return r.json(); }),
-            window.loadMergedOverrides(),
-            fetch(API_URL + '?action=get&key=db_flags').then(function (r) { return r.json(); })
-                .then(function (d) { try { return d && d.value ? JSON.parse(d.value) : {}; } catch (e) { return {}; } })
-                .catch(function () { return {}; })   // si l'API ne repond pas : pas de drapeaux, le reste marche
-        ]).then(function (res) {
-            MACHINES = res[0] || {};
-            OVERRIDES = res[1] || {};
-            FLAGS = res[2] || {};
-            buildMenu();
-        }).catch(function (err) {
+        // ---- Chargement des donnees (toujours frais : tout est cache-buste) ----
+        function loadData() {
+            return Promise.all([
+                fetch('data/machines.json?t=' + Date.now()).then(function (r) { return r.json(); }),
+                window.loadMergedOverrides(),
+                fetch(API_URL + '?action=get&key=db_flags').then(function (r) { return r.json(); })
+                    .then(function (d) { try { return d && d.value ? JSON.parse(d.value) : {}; } catch (e) { return {}; } })
+                    .catch(function () { return {}; })   // si l'API ne repond pas : pas de drapeaux, le reste marche
+            ]).then(function (res) {
+                MACHINES = res[0] || {};
+                OVERRIDES = res[1] || {};
+                FLAGS = res[2] || {};
+            });
+        }
+
+        // Recharge la base AVANT de generer le fichier -> l'export est toujours synchro.
+        // buildMenu() n'est PAS rappele ici (sinon doublons d'ecouteurs sur les boutons fixes).
+        var exporting = false;
+        function refreshThen(action) {
+            return function () {
+                if (exporting) return;                 // anti double-clic pendant la synchro
+                exporting = true;
+                toast('Synchronisation avec la base…');
+                loadData().then(function () {
+                    action();
+                }).catch(function (err) {
+                    console.error(err);
+                    toast('Erreur de synchronisation — export annule.');
+                }).then(function () { exporting = false; });
+            };
+        }
+
+        // Chargement initial : remplit le menu une seule fois.
+        loadData().then(buildMenu).catch(function (err) {
             document.getElementById('exp-loading').textContent = 'Erreur de chargement des donnees.';
             console.error(err);
         });
