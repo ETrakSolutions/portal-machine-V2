@@ -206,7 +206,9 @@
         .bom-r { background: #FF2D2D; box-shadow: 0 0 6px #FF2D2D80; }
         .bom-j { background: #FFD600; box-shadow: 0 0 6px #FFD60080; }
         .bom-v { background: #FF8C00; box-shadow: 0 0 6px #FF8C0080; color: #fff; font-size: 0.55rem; }
-        .bom-na { background: #555; color: #999; font-size: 0.45rem; }
+        /* 'na' (non applicable) : jeton invisible (case vide), mais reste cliquable pour editer */
+        .bom-na { background: transparent; color: transparent; box-shadow: none; }
+        .bom-na:not(.readonly):hover { background: rgba(255,255,255,0.15); }
         .db-table thead th.bom-col {
             writing-mode: vertical-rl;
             text-orientation: mixed;
@@ -580,7 +582,6 @@
                 <span class="db-legend-item"><span class="bom-token bom-r"></span> <span data-i18n="db.legend_obligatoire">Obligatoire</span></span>
                 <span class="db-legend-item"><span class="bom-token bom-j"></span> <span data-i18n="db.legend_optionnel">Optionnel</span></span>
                 <span class="db-legend-item"><span class="bom-token bom-v">?</span> À vérifier</span>
-                <span class="db-legend-item"><span class="bom-token bom-na">-</span> <span data-i18n="db.legend_na">N/A</span></span>
                 <span style="color:#555;">| Edition via la page d'edition (cliquer sur le modele)</span>
             </div>
             <div id="db-stats" class="db-stats"></div>
