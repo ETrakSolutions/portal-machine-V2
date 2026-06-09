@@ -505,7 +505,7 @@ function getKitSummary(type, fab, modele, specs) {
         '0001': true,
         '0002': true,
         '0004': isMini,
-        '0005': typeBras.includes('2 parties'),
+        '0005': true,   // Multi Axes : option toujours offerte (decouplee de la fleche, comme le portail)
         '0008': hasSwing, // Swing boom: option si la spec 'Swing boom' = Oui
         '0009': isDrain,
         '0070': isCat,
