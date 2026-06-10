@@ -328,6 +328,25 @@ button.small{padding:0.4rem 0.8rem;font-size:0.82rem}
   color:var(--rouge);cursor:pointer;font-size:1.2rem;padding:0 0.4rem;
   background:transparent;border:none;
 }
+.pc-item .pc-edit{
+  color:var(--accent);cursor:pointer;font-size:1rem;padding:0 0.4rem;
+  background:transparent;border:none;
+}
+.pc-item .pc-save{
+  color:var(--vert,#2ecc71);cursor:pointer;font-size:1.1rem;padding:0 0.4rem;
+  background:transparent;border:none;
+}
+.pc-item .pc-cancel{
+  color:var(--text-2);cursor:pointer;font-size:1.2rem;padding:0 0.4rem;
+  background:transparent;border:none;
+}
+.pc-item.pc-editing{flex-wrap:wrap}
+.pc-item .pc-edit-fields{flex:1;display:grid;grid-template-columns:120px 1fr 70px;gap:0.4rem}
+.pc-item .pc-edit-fields input{
+  background:var(--bg,#1a1a1a);color:var(--text);border:1px solid var(--border);
+  border-radius:4px;padding:0.35rem 0.5rem;font-size:0.85rem;font-family:inherit;
+}
+.pc-item .pc-edit-code{font-family:'JetBrains Mono',monospace}
 .pc-empty{color:var(--text-3);font-style:italic;padding:0.5rem 0}
 .pc-add{
   display:grid;grid-template-columns:120px 1fr 80px auto;gap:0.4rem;align-items:end;
@@ -1181,20 +1200,35 @@ body.force-mobile main{
   }
 
   // ===== Codes produit =====
+  var pcEditIdx = -1;
+  function pcEscAttr(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
   function renderProductCodes(){
     var container = document.getElementById('pc-list');
     if (!container) return;
     if (!PRODUCT_CODES.length){
+      pcEditIdx = -1;
       container.innerHTML = '<div class="pc-empty">Aucun code produit enregistre.</div>';
       return;
     }
     container.innerHTML = PRODUCT_CODES.map(function(c, i){
+      if (canEdit && i === pcEditIdx){
+        return '<div class="pc-item pc-editing">' +
+          '<div class="pc-edit-fields">' +
+            '<input class="pc-edit-code" value="' + pcEscAttr(c.code||'') + '" placeholder="Code">' +
+            '<input class="pc-edit-desc" value="' + pcEscAttr(c.desc||'') + '" placeholder="Description">' +
+            '<input class="pc-edit-qty" type="number" min="1" value="' + (c.qty||1) + '">' +
+          '</div>' +
+          '<button class="pc-save" data-i="' + i + '" title="Enregistrer">&#10003;</button>' +
+          '<button class="pc-cancel" title="Annuler">&times;</button>' +
+        '</div>';
+      }
       return '<div class="pc-item">' +
         '<div class="pc-info">' +
           '<span class="pc-code">' + (c.code||'') + '</span>' +
           '<span class="pc-desc">' + (c.desc||'') + '</span>' +
           '<span class="pc-qty">x' + (c.qty||1) + '</span>' +
         '</div>' +
+        (canEdit ? '<button class="pc-edit" data-i="' + i + '" title="Modifier">&#9998;</button>' : '') +
         (canEdit ? '<button class="pc-del" data-i="' + i + '" title="Supprimer">&times;</button>' : '') +
       '</div>';
     }).join('');
@@ -1203,7 +1237,36 @@ body.force-mobile main{
         var i = parseInt(btn.dataset.i);
         var removed = PRODUCT_CODES[i];
         PRODUCT_CODES.splice(i, 1);
+        if (pcEditIdx === i) pcEditIdx = -1;
         saveProductCodes('Code produit supprime', (removed.code + ' ' + (removed.desc||'')).trim());
+        renderProductCodes();
+      });
+    });
+    container.querySelectorAll('.pc-edit').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        pcEditIdx = parseInt(btn.dataset.i);
+        renderProductCodes();
+        var inp = container.querySelector('.pc-edit-code');
+        if (inp) inp.focus();
+      });
+    });
+    container.querySelectorAll('.pc-cancel').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        pcEditIdx = -1;
+        renderProductCodes();
+      });
+    });
+    container.querySelectorAll('.pc-save').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var i = parseInt(btn.dataset.i);
+        var item = btn.closest('.pc-editing');
+        var code = (item.querySelector('.pc-edit-code').value || '').trim();
+        var desc = (item.querySelector('.pc-edit-desc').value || '').trim();
+        var qty = parseInt(item.querySelector('.pc-edit-qty').value) || 1;
+        if (!code){ item.querySelector('.pc-edit-code').focus(); return; }
+        PRODUCT_CODES[i] = { code:code, desc:desc, qty:qty };
+        pcEditIdx = -1;
+        saveProductCodes('Code produit modifie', (code + ' ' + desc).trim());
         renderProductCodes();
       });
     });
