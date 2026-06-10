@@ -1,1 +1,1 @@
-{"v": "2026-06-10T15:00:00Z", "note": "Edition machine: bouton Modifier (crayon) rendu discret comme le bouton Supprimer; catalogue BOM pilote par la BD"}
+{"v": "2026-06-10T16:00:00Z", "note": "Base de donnees: regroupement des annees d'un meme modele sur une seule ligne (plage d'annees); scission si specs/BOM different selon l'annee"}

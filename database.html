@@ -659,7 +659,7 @@
                                 <th style="width:120px;">Utilisateur</th>
                                 <th style="width:120px;">Type machine</th>
                                 <th style="width:100px;">Fabricant</th>
-                                <th style="width:140px;">Modele (Annee)</th>
+                                <th style="width:140px;">Modele (Annees)</th>
                                 <th style="width:120px;">Avant</th>
                                 <th>Modification</th>
                             </tr>
@@ -1670,6 +1670,50 @@
         // Type changed
         document.getElementById('db-type').addEventListener('change', loadType);
 
+        // ===== Regroupement par modele sur plusieurs annees =====
+        // Une ligne par (type, fab, modele, signature). Les annees dont les specs+BOM
+        // sont identiques sont fusionnees ; si elles different, on scinde en plusieurs lignes.
+        var GROUP_SIG_EXCLUDE = { 'Image':1, '_kit':1, '_note_tech_texte':1, '_note_tech_auteur':1,
+            '_note_tech_date':1, '_actif':1, '_source_bom':1, '_notes':1, 'Flag':1 };
+        function groupSignature(d) {
+            var obj = {};
+            for (var k in d) {
+                if (k.indexOf('_spec_') !== 0) continue;
+                var name = k.slice(6);
+                if (GROUP_SIG_EXCLUDE[name]) continue;
+                obj[name] = d[k];
+            }
+            return JSON.stringify(obj, Object.keys(obj).sort());
+        }
+        function formatYearRange(years) {
+            var ys = years.map(Number).filter(function(n){return !isNaN(n);}).sort(function(a,b){return a-b;});
+            var parts = [], i = 0;
+            while (i < ys.length) {
+                var s = ys[i], e = ys[i];
+                while (i + 1 < ys.length && ys[i + 1] === e + 1) { e = ys[++i]; }
+                parts.push(s === e ? ('' + s) : (s + '–' + e));
+                i++;
+            }
+            return parts.join(', ');
+        }
+        function collapseByModelYears(list) {
+            var map = {}, order = [];
+            list.forEach(function(d) {
+                var key = (d._type || '') + '|' + d.fab + '|' + d.modele + '|' + groupSignature(d);
+                if (!map[key]) { map[key] = { rep: d, years: [d.annee] }; order.push(key); }
+                else {
+                    map[key].years.push(d.annee);
+                    if (Number(d.annee) > Number(map[key].rep.annee)) map[key].rep = d; // annee la plus recente = representant
+                }
+            });
+            return order.map(function(key) {
+                var g = map[key];
+                g.rep._yearsLabel = formatYearRange(g.years);
+                g.rep._groupYears = g.years.slice();
+                return g.rep;
+            });
+        }
+
         function applyFilters() {
             var fab = document.getElementById('db-fab').value;
             var annee = document.getElementById('db-annee').value;
@@ -1691,6 +1735,9 @@
                 if (search && d.modele.toLowerCase().indexOf(search) === -1 && d.fab.toLowerCase().indexOf(search) === -1) return false;
                 return true;
             });
+
+            // Regrouper les annees d'un meme modele sur une seule ligne (specs+BOM identiques)
+            filtered = collapseByModelYears(filtered);
 
             var classeOrder = {'Mini':0,'Compact':1,'120':2,'200':3,'270':4,'300':5,'400':6,'500':7,'700-800':8,'1000+':9};
             var bomStateOrder = {'r':0,'j':1,'v':2,'na':3};
@@ -1770,13 +1817,15 @@
                                     '&fab=' + encodeURIComponent(d.fab) +
                                     '&year=' + encodeURIComponent(d.annee) +
                                     '&model=' + encodeURIComponent(d.modele);
-                        link.title = 'Editer ' + d.fab + ' ' + d.modele + ' (' + d.annee + ')';
+                        var yearsLabel = d._yearsLabel || d.annee;
+                        link.title = 'Editer ' + d.fab + ' ' + d.modele + ' (' + yearsLabel + ')' +
+                                     (d._groupYears && d._groupYears.length > 1 ? ' — ouvre ' + d.annee : '');
                         link.textContent = d.modele;
                         link.addEventListener('click', saveDbState);
                         td.appendChild(link);
                         var yearSpan = document.createElement('span');
                         yearSpan.className = 'db-modele-year';
-                        yearSpan.textContent = ' ' + d.annee;
+                        yearSpan.textContent = ' ' + yearsLabel;
                         td.appendChild(yearSpan);
                     } else {
                         td.textContent = d[f] || '';
