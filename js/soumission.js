@@ -370,8 +370,54 @@ function showOptions() {
     loadNotesForModel(fab, modele, annee);
     loadProductCodes(fab, modele, annee);
 
+    // Restreindre certaines options selon le type de machine
+    applyTypeRestrictions(type);
+
     // Show kit obligatory items immediately
     updateSelectedSummary();
+}
+
+// Restrictions d'options par type de machine (tuile Soumission) :
+//  - "Indicateur de charge" + "Guide de creusage" (2D + Reference laser) : Excavatrice seulement
+//  - sous-option "Multi-axe" du Limiteur : Excavatrice ou Retrocaveuse seulement
+// Les options non admissibles sont masquees ET reinitialisees (donc non comptees dans la soumission).
+function applyTypeRestrictions(type) {
+    var isExc = (type === 'Excavatrice');
+    var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
+
+    // Point 1 — Indicateur de charge (excavatrice seulement)
+    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+    if (idcBox) {
+        idcBox.style.display = isExc ? '' : 'none';
+        if (!isExc) {
+            idcBox.classList.remove('active', 'open');
+            var idcSt = idcBox.querySelector('.toggle-status'); if (idcSt) idcSt.textContent = 'OFF';
+        }
+    }
+    var idcWarn = document.getElementById('idc-lockvalve-warning');
+    if (idcWarn && !isExc) idcWarn.style.display = 'none';
+
+    // Point 1 — Guide de creusage complet (2D + Reference laser), excavatrice seulement
+    var creusBox = document.getElementById('toggle-creusage');
+    if (creusBox) {
+        creusBox.style.display = isExc ? '' : 'none';
+        if (!isExc) {
+            creusBox.classList.remove('active', 'open');
+            var crSt = creusBox.querySelector('.toggle-status'); if (crSt) crSt.textContent = 'OFF';
+            var c2d = document.getElementById('creus-2d'); if (c2d) c2d.checked = false;
+            var cLaser = document.getElementById('creus-laser'); if (cLaser) cLaser.checked = false;
+        }
+    }
+
+    // Point 2 — sous-option Multi-axe (excavatrice ou retrocaveuse seulement)
+    var multiCb = document.getElementById('lim-multi');
+    if (multiCb) {
+        var multiLabel = multiCb.closest('.sub-option');
+        if (multiLabel) multiLabel.style.display = isExcOrBackhoe ? '' : 'none';
+        if (!isExcOrBackhoe) multiCb.checked = false;
+    }
+    var multiNote = document.querySelector('#limiteur-panel [data-i18n="soumission.multi_note"]');
+    if (multiNote) multiNote.style.display = isExcOrBackhoe ? '' : 'none';
 }
 
 // BOM overrides, product codes, notes for current machine
