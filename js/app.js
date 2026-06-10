@@ -399,6 +399,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Section telescopique' && value === 'Oui') {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
+        } else if (key === 'Test Robin' && value && value.trim() !== '') {
+            html += `<tr><td>${key}</td><td${dk}><span style="color:#FFD54F;font-weight:600;">${value}</span></td></tr>`;
         } else {
             html += `<tr><td>${key}</td><td${dk}>${value}</td></tr>`;
         }

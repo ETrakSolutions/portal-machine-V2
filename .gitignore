@@ -20,3 +20,6 @@ data/Portal_DB_Test_v[0-9]*.xlsx
 
 # Claude local config (per-user)
 .claude/settings.local.json
+
+# Secrets — ne JAMAIS committer
+Cle Progression Live.txt
