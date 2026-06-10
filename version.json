@@ -1,1 +1,1 @@
-{"v": "2026-06-10T20:00:00Z", "note": "Kit BOM pilote par la BD pour tous les types: affiche ET editable aussi dans la base de donnees (grille database + page edition), en plus de soumission/portail/export"}
+{"v": "2026-06-10T21:00:00Z", "note": "Soumission: l'option Hauteur/Rotation du limiteur affiche maintenant les codes propres au type de machine (ex. Pompe 1500-0201/0202, Grue 1500-0801/0802) au lieu des codes excavatrice"}

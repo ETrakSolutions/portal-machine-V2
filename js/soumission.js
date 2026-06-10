@@ -996,6 +996,29 @@ var INDIVIDUAL_CODES = {
 };
 
 // Update selected options summary list — each code on its own line
+// Codes du limiteur (base/hauteur/rotation/multi) propres au TYPE de machine, depuis _bom_labels.
+// Excavatrice -> 0000/0001/0002/0005 ; Pompe -> 0200/0201/0202 ; chaque type -> ses propres numeros.
+function limiteurRoleInfo(type, role) {
+    var labels = machinesData[type] && machinesData[type]._bom_labels;
+    if (!labels) return null;
+    for (var k in labels) {
+        var code = k.split(' ')[0];
+        var nom = k.slice(code.length).trim().toLowerCase();
+        var v = labels[k] || {};
+        var pn = v.pn || ('1500-' + code), desc = v.desc || k.slice(code.length).trim();
+        if (role === 'base') {
+            if (/(cabine|coffre|base)/.test(nom) && nom.indexOf('sans') < 0) return { pn: pn, desc: desc };
+        } else if (role === 'hauteur') {
+            if (nom.indexOf('hauteur') >= 0 && !/(cabine|coffre|base)/.test(nom)) return { pn: pn, desc: desc };
+        } else if (role === 'rotation') {
+            if (nom.indexOf('rotation') >= 0 && !/(cremaill|pignon|cylindre)/.test(nom)) return { pn: pn, desc: desc };
+        } else if (role === 'multi') {
+            if (nom.indexOf('multi') >= 0) return { pn: pn, desc: desc };
+        }
+    }
+    return null;
+}
+
 function updateSelectedSummary() {
     try { updateAValiderWarning(); } catch (e) {}
     var wrap = document.getElementById('selected-options-summary');
@@ -1012,19 +1035,28 @@ function updateSelectedSummary() {
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
     var hasIDC = idcBox && idcBox.classList.contains('active');
 
-    // Limiteur codes based on selection
+    // Limiteur codes based on selection — codes PROPRES AU TYPE (depuis _bom_labels)
+    var _selT = selectType.value;
+    var _liBase = limiteurRoleInfo(_selT, 'base');
+    var _liH = limiteurRoleInfo(_selT, 'hauteur');
+    var _liR = limiteurRoleInfo(_selT, 'rotation');
+    var _liM = limiteurRoleInfo(_selT, 'multi');
+    function pushLi(info, fbCode, fbDesc) {
+        if (info) items.push(fmtItem(info.pn, info.desc));
+        else if (fbCode) items.push(fmtItem(fbCode, fbDesc));
+    }
     if (limVal === 'Hauteur') {
-        items.push(fmtItem('1500-0000', 'Base limiteur'));
-        items.push(fmtItem('1500-0001', 'Limiteur Hauteur'));
+        pushLi(_liBase, '1500-0000', 'Base limiteur');
+        pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
     } else if (limVal === 'Rotation') {
-        items.push(fmtItem('1500-0000', 'Base limiteur'));
-        items.push(fmtItem('1500-0002', 'Limiteur Rotation'));
+        pushLi(_liBase, '1500-0000', 'Base limiteur');
+        pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Hauteur + Rotation') {
-        items.push(fmtItem('1500-0000', 'Base limiteur'));
-        items.push(fmtItem('1500-0001', 'Limiteur Hauteur'));
-        items.push(fmtItem('1500-0002', 'Limiteur Rotation'));
+        pushLi(_liBase, '1500-0000', 'Base limiteur');
+        pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
+        pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Multi-axe') {
-        items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
+        pushLi(_liM, '1500-0005', 'Limiteur Multi-axe');
     }
 
     // IDC
