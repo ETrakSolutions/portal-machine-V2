@@ -129,6 +129,14 @@ Promise.all([
     })
     .catch(function(err) { console.error('Erreur chargement donnees:', err); });
 
+// Prix (price list) : code produit -> { item, install }. data/prices.json
+var priceData = {};
+fetch('data/prices.json').then(function(r) { return r.json(); })
+    .then(function(d) { priceData = d || {}; try { updateSelectedSummary(); } catch (e) {} })
+    .catch(function() {});
+function priceFor(code) { return priceData[code] || { item: null, install: null }; }
+function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
+
 // Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change.
 // Met a jour les donnees + l'override de la machine selectionnee SANS toucher au formulaire (options en cours).
 window.__onOverridesChanged = function(ov) {
@@ -902,22 +910,35 @@ if (submitBtn) {
         }
 
         // Kit Machine (+ codes creusage / camera a la suite)
+        var _totItem = 0, _totInstall = 0;
+        var priceLine = function(code, name, qty) {
+            qty = qty || 1;
+            var pr = priceFor(code);
+            var it = (typeof pr.item === 'number') ? pr.item : null;
+            var ins = (typeof pr.install === 'number') ? pr.install : null;
+            if (it !== null) _totItem += it * qty;
+            if (ins !== null) _totInstall += ins * qty;
+            var suff = (it !== null || ins !== null) ? ('  [item ' + fmtPrice(it) + ' / install ' + fmtPrice(ins) + ']') : '';
+            return '  ' + code + ' — ' + name + (qty > 1 ? ' (x' + qty + ')' : '') + suff + '\n';
+        };
         if (kitItems.length > 0 || accessoires.length > 0) {
             body += '\nKit Machine e-Trak:\n';
-            kitItems.forEach(function(item) {
-                body += '  ' + item.code + ' — ' + item.name + '\n';
-            });
-            accessoires.forEach(function(a) {
-                body += '  ' + a.code + ' — ' + a.name + '\n';
-            });
+            kitItems.forEach(function(item) { body += priceLine(item.code, item.name); });
+            accessoires.forEach(function(a) { body += priceLine(a.code, a.name); });
         }
 
         // Product codes from BD
         if (productCodes.length > 0) {
             body += '\nCodes produit (BD):\n';
-            productCodes.forEach(function(pc) {
-                body += '  ' + pc.code + ' \u2014 ' + (pc.desc || '') + ' (x' + (pc.qty || 1) + ')\n';
-            });
+            productCodes.forEach(function(pc) { body += priceLine(pc.code, pc.desc || '', pc.qty || 1); });
+        }
+
+        // Total des prix (indicatif, hors taxes)
+        if (_totItem > 0 || _totInstall > 0) {
+            body += '\nPrix (indicatif, hors taxes) :\n' +
+                '  Total item         : ' + fmtPrice(_totItem) + '\n' +
+                '  Total installation : ' + fmtPrice(_totInstall) + '\n' +
+                '  Total combine      : ' + fmtPrice(_totItem + _totInstall) + '\n';
         }
 
         if (comment) {
@@ -1136,9 +1157,27 @@ function updateSelectedSummary() {
 
     var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
-        var html = items.map(function(i) { return '<li>' + i + '</li>'; }).join('');
-        html += obligItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
-        html += pcItems.map(function(i) { return '<li class="oblig">' + i + '</li>'; }).join('');
+        var totItem = 0, totInstall = 0, anyPrice = false;
+        var renderLine = function(lineStr, cls) {
+            var code = lineStr.indexOf(' — ') >= 0 ? lineStr.split(' — ')[0].trim() : '';
+            var pr = priceFor(code);
+            var ptxt = '';
+            if (pr.item !== null || pr.install !== null) {
+                anyPrice = true;
+                if (typeof pr.item === 'number') totItem += pr.item;
+                if (typeof pr.install === 'number') totInstall += pr.install;
+                ptxt = ' <span style="color:#FF8C00;font-size:0.85em;white-space:nowrap">[item ' + fmtPrice(pr.item) + ' · inst. ' + fmtPrice(pr.install) + ']</span>';
+            }
+            return '<li' + (cls ? ' class="' + cls + '"' : '') + '>' + lineStr + ptxt + '</li>';
+        };
+        var html = items.map(function(i) { return renderLine(i, ''); }).join('');
+        html += obligItems.map(function(i) { return renderLine(i, 'oblig'); }).join('');
+        html += pcItems.map(function(i) { return renderLine(i, 'oblig'); }).join('');
+        if (anyPrice) {
+            html += '<li class="oblig" style="border-top:1px solid #555;margin-top:6px;padding-top:6px;font-weight:700">' +
+                    'TOTAL — Item : ' + fmtPrice(totItem) + ' &middot; Installation : ' + fmtPrice(totInstall) +
+                    ' &middot; Combiné : ' + fmtPrice(totItem + totInstall) + '</li>';
+        }
         html += noteHtml;
         list.innerHTML = html;
         wrap.style.display = 'block';

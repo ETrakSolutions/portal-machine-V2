@@ -1,1 +1,1 @@
-{"v": "2026-06-10T21:00:00Z", "note": "Soumission: l'option Hauteur/Rotation du limiteur affiche maintenant les codes propres au type de machine (ex. Pompe 1500-0201/0202, Grue 1500-0801/0802) au lieu des codes excavatrice"}
+{"v": "2026-06-10T22:00:00Z", "note": "Soumission: ajout des prix (item + installation, depuis la price list) par produit du kit, avec sous-totaux item/installation/combine, a l'ecran et dans le courriel"}
