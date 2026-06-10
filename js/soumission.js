@@ -559,7 +559,37 @@ function getKitSummary(type, fab, modele, specs) {
         }
         return kitP;
     }
-    if (type !== 'Excavatrice') return [];
+    // Generique (BD maitre) : tout autre type ayant _bom_labels -> kit depuis la BD.
+    // Statut = override par machine, sinon le defaut 'def' stocke dans _bom_labels, sinon 'na'.
+    if (type !== 'Excavatrice') {
+        var labelsG = machinesData[type] && machinesData[type]._bom_labels;
+        if (!labelsG) return [];
+        var kitG = [];
+        var ovG = currentBomOverrides || {};
+        Object.keys(labelsG).forEach(function(key) {
+            var code = key.split(' ')[0];
+            var v = labelsG[key] || {};
+            var ovv = ovG[code];
+            var st = (ovv !== undefined && ovv !== null && ovv !== '') ? ovv : (v.def || 'na');
+            if (st === 'na') return;
+            kitG.push({
+                code: v.pn || ('1500-' + code),
+                name: v.desc || key.replace(/^[0-9]+\s*/, ''),
+                status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
+            });
+        });
+        if (Array.isArray(ovG._custom)) {
+            ovG._custom.forEach(function(c) {
+                if (c.status === 'na') return;
+                kitG.push({
+                    code: c.pn || c.code,
+                    name: c.desc || c.code,
+                    status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel')
+                });
+            });
+        }
+        return kitG;
+    }
 
     var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
     var poidsMatch = poidsStr.match(/^(\d+)/);

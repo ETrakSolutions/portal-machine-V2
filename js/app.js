@@ -674,6 +674,55 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         }
     }
 
+    // Kit GENERIQUE (BD = MAITRE) : tout autre type ayant _bom_labels.
+    // Lignes generees depuis _bom_labels (code + pn + desc + def) + override _bom. Aucune logique par type.
+    var kitGenericSection = document.getElementById('kit-generic-section');
+    if (kitGenericSection) {
+        var labelsG = machinesData[type] && machinesData[type]._bom_labels;
+        var isExcOrPompe = (type === 'Excavatrice' || type === 'Pompe a Beton');
+        if (!isExcOrPompe && labelsG) {
+            kitGenericSection.style.display = 'block';
+            var gDesc = document.getElementById('kit-generic-desc');
+            if (gDesc) gDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
+            var gBody = document.getElementById('kit-generic-tbody');
+            var renderGeneric = function(ov) {
+                ov = ov || {};
+                var removed = Array.isArray(ov._removed) ? ov._removed : [];
+                var rows = '';
+                var dotFor = function(st) {
+                    if (st === 'r') return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#CC0000"></span>';
+                    if (st === 'v') return '<span class="kit-verif-badge" style="display:inline-block;padding:2px 8px;border-radius:10px;background:#FFF1DC;color:#B25E00;border:1px solid #E07B00;font-size:0.72rem;font-weight:600;white-space:nowrap">&#128992; À vérifier</span>';
+                    return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#E6B400"></span>';
+                };
+                Object.keys(labelsG).forEach(function(key) {
+                    var code = key.split(' ')[0];
+                    var v = labelsG[key] || {};
+                    var ovv = ov[code];
+                    var st = (ovv !== undefined && ovv !== null && ovv !== '') ? ovv : (v.def || 'na');
+                    if (removed.indexOf(code) >= 0) st = 'na';
+                    if (st === 'na') return;
+                    rows += '<tr><td>' + (v.desc || key.replace(/^[0-9]+\s*/, '')) + '</td>' +
+                            '<td class="kit-code">' + (v.pn || ('1500-' + code)) + '</td>' +
+                            '<td class="kit-status-cell" style="text-align:center">' + dotFor(st) + '</td></tr>';
+                });
+                if (Array.isArray(ov._custom)) {
+                    ov._custom.forEach(function(c) {
+                        if (c.status === 'na') return;
+                        rows += '<tr><td>' + (c.desc || c.code) + '</td>' +
+                                '<td class="kit-code">' + (c.pn || c.code) + '</td>' +
+                                '<td class="kit-status-cell" style="text-align:center">' + dotFor(c.status === 'r' ? 'r' : (c.status === 'v' ? 'v' : 'j')) + '</td></tr>';
+                    });
+                }
+                gBody.innerHTML = rows || '<tr><td colspan="3" style="color:#888;padding:0.6rem">Aucune option pour cette machine</td></tr>';
+            };
+            renderGeneric(null);  // defauts de la BD d'abord
+            loadKitOverride(type, fab, modele, annee, function(overrides) { renderGeneric(overrides || {}); });
+            loadNotes(type, fab, modele, annee);
+        } else {
+            kitGenericSection.style.display = 'none';
+        }
+    }
+
     updateGearDeleteButton();
 }
 

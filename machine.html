@@ -250,6 +250,30 @@
                 </table>
             </div>
 
+            <!-- KIT GENERIQUE (BD maitre) : tout autre type ayant _bom_labels (Camion Girafe, Telehandler, Vacuum, Retrocaveuse, Foreuse, Grue) -->
+            <div id="kit-generic-section" class="kit-machine-section" style="display:none;">
+                <div class="kit-header">
+                    <h3 data-i18n="machine.kit_title">Kit Machine e-Trak</h3>
+                    <div class="kit-lock-row">
+                        <p class="kit-subtitle" id="kit-generic-desc"></p>
+                    </div>
+                </div>
+                <div class="kit-legend">
+                    <span class="kit-legend-item"><span class="legend-dot legend-red"></span> <span data-i18n="common.obligatoire">Obligatoire</span></span>
+                    <span class="kit-legend-item"><span class="legend-dot legend-yellow"></span> <span data-i18n="common.optionnel">Optionnel</span></span>
+                </div>
+                <table class="kit-table">
+                    <thead>
+                        <tr>
+                            <th style="width:50%;" data-i18n="machine.kit_option">Option</th>
+                            <th style="width:25%;" data-i18n="machine.kit_code">Code produit</th>
+                            <th style="text-align:center;width:25%;" data-i18n="machine.kit_bom">BOM</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kit-generic-tbody"></tbody>
+                </table>
+            </div>
+
             <!-- NOTES SECTION -->
             <div id="notes-section" class="notes-section" style="display:none;">
                 <div class="notes-header">
@@ -293,7 +317,7 @@
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=1"></script>
     <script src="js/kit-rules.js?v=2"></script>
-    <script src="js/app.js?v=195"></script>
+    <script src="js/app.js?v=196"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>

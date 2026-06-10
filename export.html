@@ -223,7 +223,17 @@
             var defaults;
             if (typeName === 'Excavatrice') defaults = KR.excDefaults(specs, modele);
             else if (typeName === 'Pompe a Beton') defaults = KR.pompeDefaults(specs);
-            else defaults = {};   // pas de regles par defaut : l'etat vient des overrides seuls
+            else {
+                // BD maitre : defaut 'def' stocke dans _bom_labels du type ("0300 Avec cabine" -> {def})
+                defaults = {};
+                var labels = MACHINES[typeName] && MACHINES[typeName]._bom_labels;
+                if (labels) {
+                    Object.keys(labels).forEach(function (k) {
+                        var code = k.split(' ')[0];
+                        defaults[code] = (labels[k] && labels[k].def) || 'na';
+                    });
+                }
+            }
             return KR.applyOverride(defaults, bom || {}, typeName === 'Excavatrice');
         }
 
