@@ -1333,6 +1333,17 @@
             return window.KitRules.pompeDefaults({ 'Nombre de sections': nbSections });
         }
 
+        // BD maitre : defauts generiques pour tout type ayant _bom_labels (def stocke dans la BD)
+        function computeDefaultBomGeneric(d) {
+            var labels = fullData && fullData[d._type] && fullData[d._type]._bom_labels;
+            var out = {};
+            if (labels) Object.keys(labels).forEach(function(k) {
+                var code = k.split(' ')[0];
+                out[code] = (labels[k] && labels[k].def) || 'na';
+            });
+            return out;
+        }
+
         function nextBomState(current) {
             if (current === 'na' || !current) return 'j';
             if (current === 'j') return 'r';
@@ -1491,6 +1502,15 @@
             } else if (typeVal === 'Excavatrice') {
                 CUSTOM_COLS = computeCustomCols('Excavatrice');                 // 1 colonne par piece custom
                 BOM_CODES = EXC_BOM_CODES.concat(CUSTOM_COLS.map(function (c) { return c.pseudo; }));
+            } else if (!isAllTypes && fullData[typeVal] && fullData[typeVal]._bom_labels) {
+                // BD maitre : codes + noms de colonnes depuis _bom_labels du type
+                var lbls = fullData[typeVal]._bom_labels;
+                BOM_CODES = Object.keys(lbls).map(function (k) { return k.split(' ')[0]; });
+                Object.keys(lbls).forEach(function (k) {
+                    var code = k.split(' ')[0];
+                    BOM_NAMES[code] = k.slice(code.length).trim();   // nom court = en-tete de colonne
+                });
+                CUSTOM_COLS = [];
             } else {
                 BOM_CODES = []; // No BOM for other types or __ALL__
                 CUSTOM_COLS = [];
@@ -1725,6 +1745,7 @@
                 if (!d.bom || Object.keys(d.bom).length === 0) {
                     if (d._type === 'Excavatrice') d.bom = computeDefaultBom(d);
                     else if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
+                    else d.bom = computeDefaultBomGeneric(d);
                 }
             });
 
@@ -1849,6 +1870,8 @@
                         d.bom = computeDefaultBom(d);
                     } else if (d._type === 'Pompe a Beton') {
                         d.bom = computeDefaultBomPompe(d);
+                    } else {
+                        d.bom = computeDefaultBomGeneric(d);
                     }
                 }
                 BOM_CODES.forEach(function(code) {
@@ -1981,7 +2004,8 @@
                         // Merge overrides on top of defaults
                         if (!d.bom || Object.keys(d.bom).length === 0) {
                             if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
-                            else d.bom = computeDefaultBom(d);
+                            else if (d._type === 'Excavatrice') d.bom = computeDefaultBom(d);
+                            else d.bom = computeDefaultBomGeneric(d);
                         }
                         // Apply meta keys (skip from BOM merge)
                         var removed = Array.isArray(overrides._removed) ? overrides._removed : [];
@@ -2320,6 +2344,7 @@
                     if (!d.bom || Object.keys(d.bom).length === 0) {
                         if (d._type === 'Excavatrice' && typeof computeDefaultBom === 'function') d.bom = computeDefaultBom(d);
                         else if (d._type === 'Pompe a Beton' && typeof computeDefaultBomPompe === 'function') d.bom = computeDefaultBomPompe(d);
+                        else if (typeof computeDefaultBomGeneric === 'function') d.bom = computeDefaultBomGeneric(d);
                     }
                     var v = d.bom ? d.bom[code] : '';
                     return v === 'na' || !v; // hide only when truly N/A everywhere
@@ -2420,6 +2445,7 @@
                 if (!d.bom || Object.keys(d.bom).length === 0) {
                     if (d._type === 'Excavatrice') d.bom = computeDefaultBom(d);
                     else if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
+                    else d.bom = computeDefaultBomGeneric(d);
                 }
             });
 

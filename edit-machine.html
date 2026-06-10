@@ -564,7 +564,7 @@ body.force-mobile main{
       var code = key.split(' ')[0];
       var nom = key.slice(code.length).trim();
       var v = labels[key] || {};
-      byCode[code] = { code: code, nom: nom, pn: v.pn || '', desc: v.desc || '' };
+      byCode[code] = { code: code, nom: nom, pn: v.pn || '', desc: v.desc || '', def: v.def || '' };
     });
     return byCode;
   }
@@ -1836,7 +1836,7 @@ body.force-mobile main{
 
       if (TYPE === 'Excavatrice') BOM_CODES = EXC_BOM_CODES;
       else if (TYPE === 'Pompe a Beton') BOM_CODES = POMPE_BOM_CODES;
-      else BOM_CODES = [];
+      else BOM_CODES = Object.keys((data[TYPE] && data[TYPE]._bom_labels) || {}).map(function(k){ return k.split(' ')[0]; });
 
       // BD maitre : PN + Description (longue) lus depuis _bom_labels du type.
       // L'ordre d'affichage reste celui de *_BOM_CODES; les constantes restent en fallback.
@@ -1852,7 +1852,12 @@ body.force-mobile main{
       var d;
       if (TYPE === 'Excavatrice') d = computeDefaultsExc(MACHINE);
       else if (TYPE === 'Pompe a Beton') d = computeDefaultsPompe(MACHINE);
-      else d = { bom:{}, harnais:'' };
+      else {
+        // BD maitre : defaut 'def' stocke dans _bom_labels du type
+        var gbom = {};
+        BOM_CODES.forEach(function(c){ gbom[c] = (BOM_LABELS[c] && BOM_LABELS[c].def) || 'na'; });
+        d = { bom: gbom, harnais: '' };
+      }
       BOM_DEFAULTS = d.bom;
       HARNAIS_DEFAULT = d.harnais;
       BOM_CODES.forEach(function(c){ BOM_INITIAL[c] = BOM_DEFAULTS[c] || 'na'; });

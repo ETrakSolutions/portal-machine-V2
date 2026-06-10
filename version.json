@@ -1,1 +1,1 @@
-{"v": "2026-06-10T19:00:00Z", "note": "Kit BOM pilote par la BD pour tous les types (Camion Girafe, Telehandler, Vacuum, Retrocaveuse, Foreuse, Grue): catalogue + statut par defaut stockes dans machines.json (_bom_labels), affiches dans soumission, portail et export"}
+{"v": "2026-06-10T20:00:00Z", "note": "Kit BOM pilote par la BD pour tous les types: affiche ET editable aussi dans la base de donnees (grille database + page edition), en plus de soumission/portail/export"}
