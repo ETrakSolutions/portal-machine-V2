@@ -92,6 +92,12 @@ function updateHubUI() {
             var exportRoles = { super_admin: true, administrateur: true };
             tileExport.style.display = exportRoles[currentUser.role] ? 'block' : 'none';
         }
+        // Tuile Price List : Super Admin + Administrateur (document interne)
+        var tilePricelist = document.getElementById('hub-tile-pricelist');
+        if (tilePricelist) {
+            var pricelistRoles = { super_admin: true, administrateur: true };
+            tilePricelist.style.display = pricelistRoles[currentUser.role] ? 'block' : 'none';
+        }
         // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
             hamburgerWrap.style.display = '';
