@@ -551,10 +551,13 @@ function getKitSummary(type, fab, modele, specs) {
     var bomCodePrefix = {'0000':'1500-','0001':'1500-','0002':'1500-','0004':'1500-','0005':'1500-','0008':'1500-','0009':'1500-','0070':'1000-','0304':'1500-'};
     for (var bCode in bomDefaults) {
         if (!bomDefaults[bCode]) continue;
-        var fullCode = (bomCodePrefix[bCode] || '1500-') + bCode;
+        // BD maitre : PN + description longue depuis _bom_labels; fallback sur les constantes locales.
+        var info = bomDescInfo(type, bCode);
+        var fullCode = (info && info.pn) ? info.pn : ((bomCodePrefix[bCode] || '1500-') + bCode);
+        var nm = (info && info.desc) ? info.desc : (BOM_NAMES[bCode] || bCode);
         kit.push({
             code: fullCode,
-            name: BOM_NAMES[bCode] || bCode,
+            name: nm,
             status: bomState[bCode] === 'v' ? 'À vérifier' : (ALWAYS_OBLIG[bCode] ? 'Obligatoire' : 'Optionnel')
         });
     }
@@ -1059,6 +1062,18 @@ function updateIdcLockValveWarning() {
 
 // Items du kit "a valider" (etat 'v') de la machine selectionnee.
 // 'v' ne vient que des corrections (overrides) -> on lit currentBomOverrides (type-agnostique).
+// BD maitre : retourne {pn, desc} (description LONGUE) depuis _bom_labels, ou null si absent.
+function bomDescInfo(type, code) {
+    try {
+        var labels = machinesData[type]._bom_labels;
+        for (var k in labels) {
+            if (k.split(' ')[0] === code) {
+                return { pn: (labels[k] && labels[k].pn) || '', desc: (labels[k] && labels[k].desc) || '' };
+            }
+        }
+    } catch (e) {}
+    return null;
+}
 // Retourne le CODE PRODUIT (pn de _bom_labels, ex. 0009 -> 1500-0009) + le libelle sans le code BOM.
 function bomLabelInfo(type, code) {
     try {

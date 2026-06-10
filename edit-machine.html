@@ -552,6 +552,22 @@ body.force-mobile main{
     '0207':'1500-0207','0208':'1500-0208','0209':'1500-0209'
   };
 
+  // _bom_labels (machines.json) = source unique du catalogue : "<code> <nom court>" -> {pn, desc}
+  // La BD est maitre : on l'utilise pour PN + Description; les constantes ci-dessus = fallback.
+  function parseBomLabels(labels){
+    var byCode = {};
+    if (!labels) return byCode;
+    Object.keys(labels).forEach(function(key){
+      var code = key.split(' ')[0];
+      var nom = key.slice(code.length).trim();
+      var v = labels[key] || {};
+      byCode[code] = { code: code, nom: nom, pn: v.pn || '', desc: v.desc || '' };
+    });
+    return byCode;
+  }
+  // Etat d'edition inline d'une ligne du tableau BOM : {kind:'std'|'custom', key:code|idx} ou null
+  var EDITING = null;
+
   var HARNAIS_OPTIONS = [
     {v:'',  l:'(aucun)'},
     {v:'H0031', l:'0031 — Hitachi-5/6 / John Deere'},
@@ -723,6 +739,14 @@ body.force-mobile main{
       method:'POST', headers:{'Content-Type':'text/plain'},
       body: JSON.stringify(body)
     });
+  }
+  // Ecrit le catalogue global (PN + description longue) dans machines.json (_bom_labels du type).
+  // Portee GLOBALE : affecte toutes les machines de ce type. Backend: action 'updateBomLabels'.
+  function saveBomLabels(code, pn, desc){
+    return fetch(API_URL, {
+      method:'POST', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify({ action:'updateBomLabels', type:TYPE, code:code, pn:pn, desc:desc, pin:PIN })
+    }).then(function(r){ return r.json().catch(function(){ return null; }); });
   }
   function saveBomOverride(annee, payload){
     payload = payload || {};
@@ -1344,38 +1368,60 @@ body.force-mobile main{
         var desc = BOM_NAMES[code] || '(sans nom)';
         var pn = BOM_PN[code] || '';
 
-        bomRows += '<tr class="' + (changed?'row-changed':'') + '">' +
-          '<td class="pn">' + (pn || '—') + '</td>' +
-          '<td>' + desc + '</td>' +
-          '<td>' +
-            '<select class="status-' + current + '" data-code="' + code + '"' + (canEdit?'':' disabled') + '>' +
+        var stEditing = (canEdit && EDITING && EDITING.kind === 'std' && EDITING.key === code);
+        var stStatusSel = '<select class="status-' + current + '" data-code="' + code + '"' + (canEdit?'':' disabled') + '>' +
               '<option value="r"' + (current==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
               '<option value="j"' + (current==='j'?' selected':'') + '>🟡 Optionnel</option>' +
               '<option value="v"' + (current==='v'?' selected':'') + '>🟠 À vérifier</option>' +
               '<option value="na"' + (current==='na'?' selected':'') + '>⚫ N/A</option>' +
-            '</select>' +
-          '</td>' +
-          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + code + '"' + (SCOPE_ALL_CODES[code]?' checked':'') + '><span></span></label></td>' : '') +
-          (canEdit ? '<td style="text-align:center;width:48px"><button class="row-del" data-code="' + code + '" data-kind="std" title="Retirer cette ligne pour cette machine">🗑</button></td>' : '<td></td>') +
-        '</tr>';
+            '</select>';
+        var stScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + code + '"' + (SCOPE_ALL_CODES[code]?' checked':'') + '><span></span></label></td>' : '');
+        if (stEditing){
+          bomRows += '<tr class="row-changed">' +
+            '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(pn) + '" placeholder="Part Number" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(desc) + '" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td>' + stStatusSel + '</td>' +
+            stScopeCell +
+            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-code="' + code + '" data-kind="std" title="Enregistrer pour toutes les machines" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="Annuler" class="secondary" style="padding:0.3rem 0.5rem">✗</button></td>' +
+          '</tr>';
+        } else {
+          bomRows += '<tr class="' + (changed?'row-changed':'') + '">' +
+            '<td class="pn">' + (pn || '—') + '</td>' +
+            '<td>' + desc + '</td>' +
+            '<td>' + stStatusSel + '</td>' +
+            stScopeCell +
+            (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-code="' + code + '" data-kind="std" title="Modifier PN / description (toutes les machines)">✏️</button> <button class="row-del" data-code="' + code + '" data-kind="std" title="Retirer cette ligne pour cette machine">🗑</button></td>' : '<td></td>') +
+          '</tr>';
+        }
       });
 
       // Custom rows
       CUSTOM_CURRENT.forEach(function(row, idx){
         var status = row.status || 'na';
-        bomRows += '<tr class="custom-row">' +
-          '<td class="pn">' + (row.pn || '—') + '</td>' +
-          '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') + '</td>' +
-          '<td>' +
-            '<select class="status-' + status + '" data-custom="' + idx + '"' + (canEdit?'':' disabled') + '>' +
+        var cuEditing = (canEdit && EDITING && EDITING.kind === 'custom' && EDITING.key === idx);
+        var cuStatusSel = '<select class="status-' + status + '" data-custom="' + idx + '"' + (canEdit?'':' disabled') + '>' +
               '<option value="r"' + (status==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
               '<option value="j"' + (status==='j'?' selected':'') + '>🟡 Optionnel</option>' +
               '<option value="na"' + (status==='na'?' selected':'') + '>⚫ N/A</option>' +
-            '</select>' +
-          '</td>' +
-          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + (row.code||'') + '"' + (SCOPE_ALL_CODES[row.code]?' checked':'') + '><span></span></label></td>' : '') +
-          (canEdit ? '<td style="text-align:center;width:48px"><button class="row-del" data-custom="' + idx + '" data-kind="custom" title="Supprimer cette ligne custom">🗑</button></td>' : '<td></td>') +
-        '</tr>';
+            '</select>';
+        var cuScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + (row.code||'') + '"' + (SCOPE_ALL_CODES[row.code]?' checked':'') + '><span></span></label></td>' : '');
+        if (cuEditing){
+          bomRows += '<tr class="custom-row row-changed">' +
+            '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(row.pn||'') + '" placeholder="Part Number" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(row.desc||'') + '" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td>' + cuStatusSel + '</td>' +
+            cuScopeCell +
+            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-custom="' + idx + '" data-kind="custom" title="Appliquer" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="Annuler" style="padding:0.3rem 0.5rem">✗</button></td>' +
+          '</tr>';
+        } else {
+          bomRows += '<tr class="custom-row">' +
+            '<td class="pn">' + (row.pn || '—') + '</td>' +
+            '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') + '</td>' +
+            '<td>' + cuStatusSel + '</td>' +
+            cuScopeCell +
+            (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-custom="' + idx + '" data-kind="custom" title="Modifier cette ligne">✏️</button> <button class="row-del" data-custom="' + idx + '" data-kind="custom" title="Supprimer cette ligne custom">🗑</button></td>' : '<td></td>') +
+          '</tr>';
+        }
       });
 
       // Add line form (inline) — Code (sera affiche en Part Number) + Description
@@ -1488,7 +1534,7 @@ body.force-mobile main{
             ? '<table class="bom-table">' +
                 '<thead><tr><th style="width:130px">Part Number</th><th>Description</th><th style="width:200px">Statut</th>' +
                 (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<th style="width:100px;text-align:center" title="Appliquer ce changement aux autres annees">Toutes annees</th>' : '') +
-                (canEdit ? '<th style="width:48px"></th>' : '') + '</tr></thead>' +
+                (canEdit ? '<th style="width:88px"></th>' : '') + '</tr></thead>' +
                 '<tbody>' + bomRows + '</tbody>' +
               '</table>' +
               (canEdit && !ADDING_LINE ? '<button class="secondary small" id="add-line-btn" style="margin-top:0.75rem">+ Ajouter une ligne</button>' : '') +
@@ -1600,6 +1646,54 @@ body.force-mobile main{
           cancelBtn.onclick = close;
 
           modal.classList.add('show');
+        });
+      });
+      // Bouton crayon : passe une ligne en edition inline
+      document.querySelectorAll('.row-edit').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          if (btn.dataset.kind === 'custom') EDITING = { kind:'custom', key: parseInt(btn.dataset.custom) };
+          else EDITING = { kind:'std', key: btn.dataset.code };
+          render();
+          var inp = document.querySelector('.row-edit-pn');
+          if (inp) inp.focus();
+        });
+      });
+      // Annuler l'edition inline
+      document.querySelectorAll('.row-cancel').forEach(function(btn){
+        btn.addEventListener('click', function(){ EDITING = null; render(); });
+      });
+      // Enregistrer l'edition inline
+      document.querySelectorAll('.row-save').forEach(function(btn){
+        btn.addEventListener('click', function(){
+          var pnInp = document.querySelector('.row-edit-pn');
+          var descInp = document.querySelector('.row-edit-desc');
+          var pn = (pnInp ? pnInp.value : '').trim();
+          var desc = (descInp ? descInp.value : '').trim();
+          if (!desc){ if (descInp) descInp.focus(); return; }
+          if (btn.dataset.kind === 'custom'){
+            // Ligne custom : per-machine, devient "dirty" (sauve par le flux Save existant)
+            var idx = parseInt(btn.dataset.custom);
+            if (CUSTOM_CURRENT[idx]){ CUSTOM_CURRENT[idx].pn = pn; CUSTOM_CURRENT[idx].desc = desc; }
+            EDITING = null;
+            render();
+            return;
+          }
+          // Ligne standard : catalogue GLOBAL (machines.json _bom_labels) -> ecriture immediate
+          var code = btn.dataset.code;
+          var prev = (BOM_PN[code]||'') + ' / ' + (BOM_NAMES[code]||'');
+          btn.disabled = true;
+          saveBomLabels(code, pn, desc).then(function(res){
+            if (!res || res.ok !== true) throw new Error((res && res.error) || 'echec');
+            BOM_PN[code] = pn;
+            BOM_NAMES[code] = desc;
+            EDITING = null;
+            logChange('Catalogue ' + code + ' -> ' + pn + ' / ' + desc, prev);
+            showToast('Catalogue mis a jour (toutes les machines)');
+            render();
+          }).catch(function(){
+            btn.disabled = false;
+            showToast('Erreur : sauvegarde du catalogue echouee', 'var(--rouge)');
+          });
         });
       });
       // Add line button
@@ -1740,6 +1834,17 @@ body.force-mobile main{
       if (TYPE === 'Excavatrice') BOM_CODES = EXC_BOM_CODES;
       else if (TYPE === 'Pompe a Beton') BOM_CODES = POMPE_BOM_CODES;
       else BOM_CODES = [];
+
+      // BD maitre : PN + Description (longue) lus depuis _bom_labels du type.
+      // L'ordre d'affichage reste celui de *_BOM_CODES; les constantes restent en fallback.
+      var BOM_LABELS = parseBomLabels(data[TYPE] && data[TYPE]._bom_labels);
+      BOM_CODES.forEach(function(code){
+        var lab = BOM_LABELS[code];
+        if (lab){
+          if (lab.desc) BOM_NAMES[code] = lab.desc;
+          if (lab.pn)   BOM_PN[code]    = lab.pn;
+        }
+      });
 
       var d;
       if (TYPE === 'Excavatrice') d = computeDefaultsExc(MACHINE);

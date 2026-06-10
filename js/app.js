@@ -547,6 +547,12 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         // Apply defaults first
         applyBomToKit(bomDefaults);
 
+        // BD maitre : libelles + PN depuis _bom_labels (map corrige : sans-cabine -> 0003, pas 0004)
+        applyBdKitLabels(document.querySelector('.kit-table'), {
+            'cabine':'0000','sans-cabine':'0003','hauteur':'0001','rotation':'0002',
+            'mini':'0004','gc':'0070','swing':'0008','drain':'0009','multi':'0005','cremaillere':'0304'
+        }, type);
+
         // Then load overrides (BD is master : lus depuis machines.json)
         loadKitOverride(type, fab, modele, annee, function(overrides) {
             if (overrides) {
@@ -632,6 +638,9 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             // Apply defaults first
             applyBomToPompeKit(pompeBomDefaults);
 
+            // BD maitre : libelles + PN depuis _bom_labels (map pompe 1:1)
+            applyBdKitLabels(kitPompeSection, POMPE_KIT_MAP, type);
+
             // Then load overrides (BD is master : lus depuis machines.json)
             loadKitOverride(type, fab, modele, annee, function(overrides) {
                 if (overrides) {
@@ -664,6 +673,35 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
     }
 
     updateGearDeleteButton();
+}
+
+// BD maitre : ecrit la description longue (.desc) et le code produit (.pn) de _bom_labels
+// dans les lignes du kit affichees (machine.html). On retire data-i18n pour que la traduction
+// ne reecrase pas le texte de la BD (BD mono-langue : le texte FR de la BD s'affiche partout).
+function applyBdKitLabels(rootEl, displayMap, type) {
+    var labels = (machinesData[type] && machinesData[type]._bom_labels) || null;
+    if (!labels || !rootEl) return;
+    var byCode = {};
+    Object.keys(labels).forEach(function(k){ byCode[String(k).split(' ')[0]] = labels[k] || {}; });
+    rootEl.querySelectorAll('tbody tr[data-kit]').forEach(function(tr) {
+        var code = displayMap[tr.dataset.kit];
+        if (!code) return;
+        var lab = byCode[code];
+        if (!lab) return;
+        if (lab.desc) {
+            var firstCell = tr.querySelector('td');
+            var span = firstCell ? (firstCell.querySelector('span[data-i18n-html], span[data-i18n], span') || firstCell) : null;
+            if (span) {
+                span.removeAttribute('data-i18n-html');
+                span.removeAttribute('data-i18n');
+                span.textContent = lab.desc;
+            }
+        }
+        if (lab.pn) {
+            var codeCell = tr.querySelector('.kit-code');
+            if (codeCell) codeCell.textContent = lab.pn;
+        }
+    });
 }
 
 function hideResults() {
