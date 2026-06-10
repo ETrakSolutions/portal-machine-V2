@@ -529,6 +529,36 @@ function loadNotesForModel(fab, modele, annee) {
 
 // Determine kit machine options based on specs (same logic as app.js)
 function getKitSummary(type, fab, modele, specs) {
+    // Pompe a Beton : kit derive de la BD (pompeDefaults + override), PN/desc depuis _bom_labels.
+    if (type === 'Pompe a Beton') {
+        var kitP = [];
+        var KRp = window.KitRules || {};
+        var defP = (KRp.pompeDefaults ? KRp.pompeDefaults(specs) : {});
+        var stP = (KRp.applyOverride ? KRp.applyOverride(defP, currentBomOverrides || {}, false) : defP);
+        var POMPE_CODES = (KRp.POMPE_CODES) || ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
+        POMPE_CODES.forEach(function(code) {
+            var st = stP[code] || 'na';
+            if (st === 'na') return;
+            var info = bomDescInfo(type, code);
+            kitP.push({
+                code: (info && info.pn) ? info.pn : ('1500-' + code),
+                name: (info && info.desc) ? info.desc : code,
+                status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
+            });
+        });
+        // Lignes custom ajoutees via edit-machine (_custom)
+        if (currentBomOverrides && Array.isArray(currentBomOverrides._custom)) {
+            currentBomOverrides._custom.forEach(function(c) {
+                if (c.status === 'na') return;
+                kitP.push({
+                    code: c.pn || c.code,
+                    name: c.desc || c.code,
+                    status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel')
+                });
+            });
+        }
+        return kitP;
+    }
     if (type !== 'Excavatrice') return [];
 
     var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
@@ -1006,9 +1036,12 @@ function updateSelectedSummary() {
         }
     });
 
-    // Add kit machine items — only when limiteur is selected
+    // Add kit machine items.
+    // Excavatrice : seulement quand un limiteur est selectionne (le kit s'articule autour du limiteur).
+    // Autres types (ex. Pompe a Beton) : toujours afficher les pieces obligatoires de la BD.
     var obligItems = [];
-    if (anyLim) {
+    var isExcType = (selectType.value === 'Excavatrice');
+    if (!isExcType || anyLim) {
         var kitAll = getKitAllItems();
         kitAll.forEach(function(item) {
             // Skip 1500-0000 (base limiteur) when Multi-axe is selected — Multi-axe replaces it
