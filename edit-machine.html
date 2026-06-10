@@ -94,11 +94,14 @@ select.status-na{color:var(--text-3)}
 }
 .custom-row td{background:rgba(0,204,102,0.05) !important}
 .add-row td{background:rgba(255,183,77,0.08) !important}
-.row-del{
+.row-del,.row-edit,.row-save,.row-cancel{
   background:transparent;border:1px solid var(--border);color:var(--text-3);
   padding:0.25rem 0.45rem;font-size:0.85rem;border-radius:4px;cursor:pointer;
 }
 .row-del:hover{background:rgba(255,68,68,0.15);border-color:var(--rouge);color:var(--rouge)}
+.row-edit:hover{background:rgba(78,161,255,0.15);border-color:var(--accent);color:var(--accent)}
+.row-save:hover{background:rgba(46,204,113,0.15);border-color:var(--vert,#2ecc71);color:var(--vert,#2ecc71)}
+.row-cancel:hover{background:var(--input);border-color:var(--text-3);color:var(--text)}
 
 .scope-cell{
   display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
@@ -1382,7 +1385,7 @@ body.force-mobile main{
             '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(desc) + '" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
             '<td>' + stStatusSel + '</td>' +
             stScopeCell +
-            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-code="' + code + '" data-kind="std" title="Enregistrer pour toutes les machines" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="Annuler" class="secondary" style="padding:0.3rem 0.5rem">✗</button></td>' +
+            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-code="' + code + '" data-kind="std" title="Enregistrer pour toutes les machines" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="Annuler" style="padding:0.3rem 0.5rem">✗</button></td>' +
           '</tr>';
         } else {
           bomRows += '<tr class="' + (changed?'row-changed':'') + '">' +
