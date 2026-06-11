@@ -1,1 +1,1 @@
-{"v": "2026-06-10T22:00:00Z", "note": "Soumission: ajout des prix (item + installation, depuis la price list) par produit du kit, avec sous-totaux item/installation/combine, a l'ecran et dans le courriel"}
+{"v": "2026-06-11T09:00:00Z", "note": "Soumission: le courriel envoie EXACTEMENT la meme liste de produits que le resume a l'ecran (meme selection, memes codes, memes prix/totaux)"}

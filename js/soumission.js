@@ -748,6 +748,9 @@ if (submitBtn) {
 
         // No limiteur check — options obligatoires only shown when limiteur selected
 
+        // S'assurer que la liste canonique (window.__selectionLines) reflete la selection courante
+        try { updateSelectedSummary(); } catch (e) {}
+
         // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
         var optionsOff = [];
@@ -903,34 +906,24 @@ if (submitBtn) {
             body += '\nSpecifications:\n' + specsText;
         }
 
-        // Produits demandes (ON only, no OFF)
-        if (optionsOn.length > 0) {
-            body += '\nProduits e-Trak demandes:\n';
-            optionsOn.forEach(function(o) { body += '  ' + o + '\n'; });
-        }
-
-        // Kit Machine (+ codes creusage / camera a la suite)
+        // Produits / kit demandes : EXACTEMENT la meme liste que l'ecran (window.__selectionLines)
         var _totItem = 0, _totInstall = 0;
-        var priceLine = function(code, name, qty) {
-            qty = qty || 1;
-            var pr = priceFor(code);
-            var it = (typeof pr.item === 'number') ? pr.item : null;
-            var ins = (typeof pr.install === 'number') ? pr.install : null;
-            if (it !== null) _totItem += it * qty;
-            if (ins !== null) _totInstall += ins * qty;
-            var suff = (it !== null || ins !== null) ? ('  [item ' + fmtPrice(it) + ' / install ' + fmtPrice(ins) + ']') : '';
-            return '  ' + code + ' — ' + name + (qty > 1 ? ' (x' + qty + ')' : '') + suff + '\n';
-        };
-        if (kitItems.length > 0 || accessoires.length > 0) {
-            body += '\nKit Machine e-Trak:\n';
-            kitItems.forEach(function(item) { body += priceLine(item.code, item.name); });
-            accessoires.forEach(function(a) { body += priceLine(a.code, a.name); });
-        }
-
-        // Product codes from BD
-        if (productCodes.length > 0) {
-            body += '\nCodes produit (BD):\n';
-            productCodes.forEach(function(pc) { body += priceLine(pc.code, pc.desc || '', pc.qty || 1); });
+        var selLines = window.__selectionLines || [];
+        if (selLines.length > 0) {
+            body += '\nProduits / kit demandes:\n';
+            selLines.forEach(function(line) {
+                var idx = line.indexOf(' — ');
+                var code = idx >= 0 ? line.slice(0, idx).trim() : '';
+                var name = idx >= 0 ? line.slice(idx + 3) : line;
+                if (!code) { body += '  ' + line + '\n'; return; }
+                var pr = priceFor(code);
+                var it = (typeof pr.item === 'number') ? pr.item : null;
+                var ins = (typeof pr.install === 'number') ? pr.install : null;
+                if (it !== null) _totItem += it;
+                if (ins !== null) _totInstall += ins;
+                var suff = (it !== null || ins !== null) ? ('  [item ' + fmtPrice(it) + ' / install ' + fmtPrice(ins) + ']') : '';
+                body += '  ' + code + ' — ' + name + suff + '\n';
+            });
         }
 
         // Total des prix (indicatif, hors taxes)
@@ -1154,6 +1147,9 @@ function updateSelectedSummary() {
     if (currentNotes) {
         noteHtml = '<li class="oblig note-item">Note: ' + currentNotes + '</li>';
     }
+
+    // Liste canonique de la selection (memes lignes que l'ecran) — reutilisee par le courriel.
+    window.__selectionLines = items.concat(obligItems, pcItems);
 
     var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
