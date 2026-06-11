@@ -1,56 +1,37 @@
 /* =====================================================================
-   ACTION  sendSoumission  — a AJOUTER dans ton projet Apps Script (Api.gs)
-   =====================================================================
+   ACTION  sendSoumission  — DEJA INTEGREE dans le Api.gs maitre local :
+   C:\Users\ryb086\OneDrive - Groupe R.Y. Beaudoin\Bureau\CLAUDE_CODE\apps-script\Api.gs
 
-   1) Dans doPost(e), apres avoir fait :
-          var data = JSON.parse(e.postData.contents);
-      ajoute ce branchement (avant les autres if/return, peu importe l'ordre) :
+   => Le plus simple : recopier TOUT le contenu de ce Api.gs maitre dans
+      l'editeur Apps Script (remplacer tout), Enregistrer, puis redeployer.
 
-          if (data.action === 'sendSoumission') {
-              return sendSoumission_(data);
-          }
-
-   2) Colle la fonction sendSoumission_ ci-dessous quelque part dans le fichier.
-
-   3) Deploie : Deployer > Gerer les deploiements > (crayon) > Nouvelle version > Deployer.
-      (La premiere fois que MailApp s'execute, Google demandera d'autoriser
-       l'envoi de courriels au nom de ton compte — accepte.)
-
-   NOTE securite : on n'envoie qu'a des adresses fournies par le portail
-   (memes destinataires que l'ancien mailto), apres validation du format,
-   et le PIN est requis. Le courriel part de TON compte Google (celui qui
-   possede le script), avec replyTo = la personne qui fait la demande.
+   Si tu preferes appliquer les 3 changements a la main, les voici (style
+   exact du codebase : action en minuscules, PIN gere par writeActions,
+   handler retournant un objet simple enveloppe par jsonOut) :
    ===================================================================== */
 
-function sendSoumission_(data) {
-  function out(obj) {
-    return ContentService
-      .createTextOutput(JSON.stringify(obj))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
+// (1) Dans doPost(e), ajoute 'sendsoumission' a la liste writeActions :
+//     var writeActions = [ ... ,'updatebomlabels','sendsoumission'];
 
-  // PIN (meme que les autres actions d'ecriture).
-  if (String(data.pin || '') !== '1400') {
-    return out({ ok: false, error: 'pin' });
-  }
+// (2) Dans doPost(e), ajoute la ligne de dispatch (apres updatebomlabels) :
+//     if (action === 'sendsoumission')     return jsonOut(sendSoumission(body));
 
+// (3) Ajoute cette fonction (ex. juste apres jsonOut) :
+
+function sendSoumission(body) {
   var RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-  // Destinataires : liste fournie par le portail, validee.
-  var to = String(data.to || '')
+  var to = String(body.to || '')
     .split(/[,;]+/)
     .map(function (s) { return s.trim(); })
     .filter(function (s) { return RE.test(s); });
+  if (!to.length) return { error: 'no_recipients' };
 
-  if (!to.length) {
-    return out({ ok: false, error: 'no_recipients' });
-  }
-
-  var cc = (data.cc && RE.test(String(data.cc).trim())) ? String(data.cc).trim() : '';
-  var replyTo = (data.replyTo && RE.test(String(data.replyTo).trim())) ? String(data.replyTo).trim() : '';
-  var subject = String(data.subject || 'Demande de soumission e-Trak').slice(0, 200);
-  var html = String(data.html || '');
-  var text = String(data.text || 'Voir la version HTML de ce courriel.');
+  var cc = (body.cc && RE.test(String(body.cc).trim())) ? String(body.cc).trim() : '';
+  var replyTo = (body.replyTo && RE.test(String(body.replyTo).trim())) ? String(body.replyTo).trim() : '';
+  var subject = String(body.subject || 'Demande de soumission e-Trak').slice(0, 200);
+  var html = String(body.html || '');
+  var text = String(body.text || 'Voir la version HTML de ce courriel.');
 
   var options = { htmlBody: html, name: 'Portail e-Trak' };
   if (cc) options.cc = cc;
@@ -59,8 +40,10 @@ function sendSoumission_(data) {
   try {
     MailApp.sendEmail(to.join(','), subject, text, options);
   } catch (err) {
-    return out({ ok: false, error: 'send_failed', detail: String(err) });
+    return { error: 'send_failed', detail: String(err) };
   }
-
-  return out({ ok: true, to: to.join(','), cc: cc });
+  return { ok: true, to: to.join(','), cc: cc };
 }
+
+/* Apres : Deployer > Gerer les deploiements > crayon > Nouvelle version > Deployer.
+   Au 1er envoi, autoriser MailApp (envoi de courriels). */
