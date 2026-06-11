@@ -1055,9 +1055,13 @@ function updateSelectedSummary() {
     var _liH = limiteurRoleInfo(_selT, 'hauteur');
     var _liR = limiteurRoleInfo(_selT, 'rotation');
     var _liM = limiteurRoleInfo(_selT, 'multi');
+    var _selHasLabels = !!(machinesData[_selT] && machinesData[_selT]._bom_labels);
     function pushLi(info, fbCode, fbDesc) {
-        if (info) items.push(fmtItem(info.pn, info.desc));
-        else if (fbCode) items.push(fmtItem(fbCode, fbDesc));
+        if (info) { items.push(fmtItem(info.pn, info.desc)); return; }
+        // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
+        // Pour un type connu sans ce role (ex. Telehandler sans hauteur dediee) : ne rien emettre
+        // -> evite la fuite de codes excavatrice.
+        if (fbCode && (_selT === 'Excavatrice' || !_selHasLabels)) items.push(fmtItem(fbCode, fbDesc));
     }
     if (limVal === 'Hauteur') {
         pushLi(_liBase, '1500-0000', 'Base limiteur');
