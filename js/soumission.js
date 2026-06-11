@@ -921,7 +921,7 @@ if (submitBtn) {
                 var ins = (typeof pr.install === 'number') ? pr.install : null;
                 if (it !== null) _totItem += it;
                 if (ins !== null) _totInstall += ins;
-                var suff = (it !== null || ins !== null) ? ('  [item ' + fmtPrice(it) + ' / install ' + fmtPrice(ins) + ']') : '';
+                var suff = (it !== null || ins !== null) ? ('  (Prix : ' + fmtPrice(it) + ' / Installation : ' + fmtPrice(ins) + ')') : '';
                 body += '  ' + code + ' — ' + name + suff + '\n';
             });
         }
@@ -929,7 +929,7 @@ if (submitBtn) {
         // Total des prix (indicatif, hors taxes)
         if (_totItem > 0 || _totInstall > 0) {
             body += '\nPrix (indicatif, hors taxes) :\n' +
-                '  Total item         : ' + fmtPrice(_totItem) + '\n' +
+                '  Total prix         : ' + fmtPrice(_totItem) + '\n' +
                 '  Total installation : ' + fmtPrice(_totInstall) + '\n' +
                 '  Total combine      : ' + fmtPrice(_totItem + _totInstall) + '\n';
         }
@@ -1158,28 +1158,50 @@ function updateSelectedSummary() {
     var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
         var totItem = 0, totInstall = 0, anyPrice = false;
-        var renderLine = function(lineStr, cls) {
-            var code = lineStr.indexOf(' — ') >= 0 ? lineStr.split(' — ')[0].trim() : '';
+        var cell = function(v) { return (v === null || v === undefined) ? '—' : fmtPrice(v); };
+        var rowFor = function(lineStr, oblig) {
+            var idx = lineStr.indexOf(' — ');
+            var code = idx >= 0 ? lineStr.slice(0, idx).trim() : '';
+            var name = idx >= 0 ? lineStr.slice(idx + 3) : lineStr;
             var pr = priceFor(code);
-            var ptxt = '';
             if (pr.item !== null || pr.install !== null) {
                 anyPrice = true;
                 if (typeof pr.item === 'number') totItem += pr.item;
                 if (typeof pr.install === 'number') totInstall += pr.install;
-                ptxt = ' <span style="color:#FF8C00;font-size:0.85em;white-space:nowrap">[item ' + fmtPrice(pr.item) + ' · inst. ' + fmtPrice(pr.install) + ']</span>';
             }
-            return '<li' + (cls ? ' class="' + cls + '"' : '') + '>' + lineStr + ptxt + '</li>';
+            var prod = code
+                ? '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">' + code + '</span> ' + name
+                : name;
+            var dot = oblig ? '<span style="color:#FF4444">&#9679; </span>' : '';
+            return '<tr>' +
+                '<td style="padding:4px 10px 4px 0;vertical-align:top">' + dot + prod + '</td>' +
+                '<td style="padding:4px 8px;text-align:right;white-space:nowrap">' + cell(pr.item) + '</td>' +
+                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">' + cell(pr.install) + '</td>' +
+                '</tr>';
         };
-        var html = items.map(function(i) { return renderLine(i, ''); }).join('');
-        html += obligItems.map(function(i) { return renderLine(i, 'oblig'); }).join('');
-        html += pcItems.map(function(i) { return renderLine(i, 'oblig'); }).join('');
+        var rows = items.map(function(i) { return rowFor(i, false); }).join('');
+        rows += obligItems.map(function(i) { return rowFor(i, true); }).join('');
+        rows += pcItems.map(function(i) { return rowFor(i, true); }).join('');
+
+        var totalRow = '';
         if (anyPrice) {
-            html += '<li class="oblig" style="border-top:1px solid #555;margin-top:6px;padding-top:6px;font-weight:700">' +
-                    'TOTAL — Item : ' + fmtPrice(totItem) + ' &middot; Installation : ' + fmtPrice(totInstall) +
-                    ' &middot; Combiné : ' + fmtPrice(totItem + totInstall) + '</li>';
+            totalRow = '<tr style="border-top:2px solid #555;font-weight:700">' +
+                '<td style="padding:6px 10px 4px 0">TOTAL <span style="font-weight:400;color:#aaa">(combiné : ' + fmtPrice(totItem + totInstall) + ')</span></td>' +
+                '<td style="padding:6px 8px 4px;text-align:right;color:#FF8C00">' + fmtPrice(totItem) + '</td>' +
+                '<td style="padding:6px 0 4px 8px;text-align:right;color:#FF8C00">' + fmtPrice(totInstall) + '</td>' +
+                '</tr>';
         }
-        html += noteHtml;
-        list.innerHTML = html;
+        var noteRow = currentNotes
+            ? '<tr><td colspan="3" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">Note : ' + currentNotes + '</td></tr>'
+            : '';
+
+        list.innerHTML =
+            '<table style="width:100%;border-collapse:collapse;font-size:0.9rem">' +
+            '<thead><tr style="border-bottom:1px solid #555;color:#9fb4c8;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">' +
+            '<th style="text-align:left;padding:0 10px 5px 0">Produit</th>' +
+            '<th style="text-align:right;padding:0 8px 5px">Prix</th>' +
+            '<th style="text-align:right;padding:0 0 5px 8px">Installation</th>' +
+            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>';
         wrap.style.display = 'block';
     } else {
         list.innerHTML = '';

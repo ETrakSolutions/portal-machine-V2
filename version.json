@@ -1,1 +1,1 @@
-{"v": "2026-06-11T11:00:00Z", "note": "BD: correction du libelle du code 0004 Excavatrice (etait 'Indicateur de charge (IDC)' avec PN 1000-0004 par erreur -> 'Option mini excavatrice', PN 1500-0004). Corrige l'affichage trompeur sur mini-excavatrice dans soumission/portail/BD/export."}
+{"v": "2026-06-11T12:00:00Z", "note": "Soumission: prix affiches en tableau avec colonnes Produit / Prix / Installation (entetes), au lieu du texte [item ...]. Total combine en bas. Courriel harmonise."}
