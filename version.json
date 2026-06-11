@@ -1,1 +1,1 @@
-{"v": "2026-06-11T16:15:00Z", "note": "Courriel soumission : produits affiches en tableau ASCII aligne (CODE / PRODUIT / PRIX / INSTALL.), marqueur * pour les obligatoires, ligne TOTAL + combine."}
+{"v": "2026-06-11T17:30:00Z", "note": "Courriel soumission : vrai tableau HTML envoye via le backend (action sendSoumission). Repli automatique sur mailto: si l'envoi backend echoue. Necessite redeploiement Apps Script."}

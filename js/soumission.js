@@ -136,6 +136,7 @@ fetch('data/prices.json').then(function(r) { return r.json(); })
     .catch(function() {});
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }
 function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
+function escHtml(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 
 // Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change.
 // Met a jour les donnees + l'override de la machine selectionnee SANS toucher au formulaire (options en cours).
@@ -1017,9 +1018,167 @@ if (submitBtn) {
         if (vendeurEmail) {
             mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
         }
-        window.location.href = mailUrl;
+
+        // ----- Version HTML (vrai tableau) envoyee par le backend -----
+        var htmlBody = buildSoumissionHtml({
+            type: type, fab: fab, modele: modele, annee: annee,
+            refClient: refClient, comment: comment,
+            specsText: specsText, aValider: _avItems,
+            selRows: selRows, totItem: _totItem, totInstall: _totInstall,
+            vendeurName: vendeurName, vendeurEmail: vendeurEmail, userName: userName
+        });
+
+        var btn = document.getElementById('soumission-submit');
+        var btnHtml = btn ? btn.innerHTML : '';
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Envoi en cours…'; }
+
+        var doFallbackMailto = function () {
+            if (btn) { btn.disabled = false; btn.innerHTML = btnHtml; }
+            if (confirm('L\'envoi automatique a echoue. Ouvrir votre client courriel pour envoyer la demande?')) {
+                window.location.href = mailUrl;
+            }
+        };
+
+        fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+                action: 'sendSoumission',
+                to: mailTo,
+                subject: subject,
+                html: htmlBody,
+                text: body,
+                cc: vendeurEmail || '',
+                replyTo: (currentUser && currentUser.email) || '',
+                pin: '1400'
+            })
+        })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res && res.ok) {
+                    showSoumissionSent(res);
+                } else {
+                    doFallbackMailto();
+                }
+            })
+            .catch(function () { doFallbackMailto(); });
         } // end sendEmail
     });
+}
+
+// Construit le corps HTML du courriel de soumission (vrai tableau, styles inline).
+function buildSoumissionHtml(o) {
+    var ORANGE = '#FF8C00', DARK = '#1a1a1a', GREY = '#666', LINE = '#e2e2e2';
+    var price = function (v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); };
+
+    // Lignes produits (options d'abord, puis obligatoires).
+    var rows = (o.selRows || []).slice().sort(function (a, b) {
+        return (a.oblig === b.oblig) ? 0 : (a.oblig ? 1 : -1);
+    });
+    var anyOblig = false;
+    var rowsHtml = rows.map(function (r) {
+        var pr = priceFor(r.code);
+        var it = (typeof pr.item === 'number') ? pr.item : null;
+        var ins = (typeof pr.install === 'number') ? pr.install : null;
+        if (r.oblig) anyOblig = true;
+        var dot = r.oblig ? '<span style="color:#e23434;font-size:11px">&#9679;</span>&nbsp;' : '';
+        var td = 'padding:7px 10px;border-bottom:1px solid ' + LINE + ';font-size:13px';
+        return '<tr>' +
+            '<td style="' + td + ';font-family:Consolas,monospace;color:#557;white-space:nowrap">' + escHtml(r.code) + '</td>' +
+            '<td style="' + td + '">' + dot + escHtml(r.name) + '</td>' +
+            '<td style="' + td + ';text-align:right;white-space:nowrap">' + (it !== null ? price(it) : '—') + '</td>' +
+            '<td style="' + td + ';text-align:right;white-space:nowrap">' + (ins !== null ? price(ins) : '—') + '</td>' +
+            '</tr>';
+    }).join('');
+
+    var th = 'padding:8px 10px;text-align:left;font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:' + DARK;
+    var thR = th + ';text-align:right';
+    var totalRow = (o.totItem > 0 || o.totInstall > 0)
+        ? '<tr style="font-weight:bold;background:#faf3e8">' +
+            '<td style="padding:8px 10px" colspan="2">TOTAL <span style="font-weight:normal;color:' + GREY + '">(combiné : ' + price(o.totItem + o.totInstall) + ')</span></td>' +
+            '<td style="padding:8px 10px;text-align:right;color:' + ORANGE + ';white-space:nowrap">' + price(o.totItem) + '</td>' +
+            '<td style="padding:8px 10px;text-align:right;color:' + ORANGE + ';white-space:nowrap">' + price(o.totInstall) + '</td>' +
+          '</tr>'
+        : '';
+
+    var productsTable = rows.length
+        ? '<table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;margin-top:6px">' +
+            '<thead><tr><th style="' + th + '">Code</th><th style="' + th + '">Produit</th>' +
+            '<th style="' + thR + '">Prix</th><th style="' + thR + '">Installation</th></tr></thead>' +
+            '<tbody>' + rowsHtml + totalRow + '</tbody></table>' +
+            (anyOblig ? '<div style="font-size:11px;color:' + GREY + ';margin-top:6px"><span style="color:#e23434">&#9679;</span> inclus dans le kit (obligatoire)</div>' : '') +
+            '<div style="font-size:11px;color:' + GREY + ';margin-top:4px">Prix indicatifs, hors taxes.</div>'
+        : '';
+
+    // Specs (lignes "  cle : valeur\n" deja prepares en texte).
+    var specsHtml = '';
+    if (o.specsText) {
+        var sLines = o.specsText.split('\n').filter(function (l) { return l.trim(); }).map(function (l) {
+            var cleaned = l.replace(/\*\*\*/g, '').trim();
+            return '<div style="font-size:13px;color:#333">' + escHtml(cleaned) + '</div>';
+        }).join('');
+        specsHtml = '<div style="margin-top:16px"><div style="font-weight:bold;color:' + DARK + ';font-size:13px;margin-bottom:4px">Spécifications</div>' + sLines + '</div>';
+    }
+
+    var avHtml = '';
+    if (o.aValider && o.aValider.length) {
+        avHtml = '<div style="margin-top:14px;padding:10px 12px;background:#fff4e5;border-left:4px solid ' + ORANGE + ';font-size:13px">' +
+            '<strong>&#9888; Items à valider</strong> (à confirmer avec e-Trak) :<ul style="margin:6px 0 0;padding-left:18px">' +
+            o.aValider.map(function (i) { return '<li>' + escHtml(i.name) + (i.code ? ' (' + escHtml(i.code) + ')' : '') + '</li>'; }).join('') +
+            '</ul></div>';
+    }
+
+    var infoRow = function (label, val) {
+        return '<tr><td style="padding:3px 12px 3px 0;color:' + GREY + ';font-size:13px;white-space:nowrap">' + label + '</td>' +
+            '<td style="padding:3px 0;font-size:13px;font-weight:600;color:#222">' + escHtml(val) + '</td></tr>';
+    };
+
+    var html =
+    '<div style="font-family:Arial,Helvetica,sans-serif;max-width:680px;margin:0 auto;color:#222">' +
+        '<div style="background:' + DARK + ';padding:16px 22px;border-radius:8px 8px 0 0">' +
+            '<span style="color:#fff;font-size:18px;font-weight:bold">Demande de soumission</span>' +
+            '<span style="color:' + ORANGE + ';font-size:18px;font-weight:bold"> e-Trak</span>' +
+        '</div>' +
+        '<div style="border:1px solid ' + LINE + ';border-top:none;padding:20px 22px;border-radius:0 0 8px 8px">' +
+            (o.refClient ? '<div style="font-size:13px;margin-bottom:10px"><span style="color:' + GREY + '">Référence client :</span> <strong>' + escHtml(o.refClient) + '</strong></div>' : '') +
+            '<table role="presentation" cellpadding="0" cellspacing="0">' +
+                infoRow('Type', o.type) + infoRow('Fabricant', o.fab) + infoRow('Modèle', o.modele) + infoRow('Année', o.annee) +
+            '</table>' +
+            avHtml +
+            specsHtml +
+            '<div style="margin-top:18px"><div style="font-weight:bold;color:' + DARK + ';font-size:13px;margin-bottom:2px">Produits / kit demandés</div>' + productsTable + '</div>' +
+            (o.comment ? '<div style="margin-top:16px"><div style="font-weight:bold;color:' + DARK + ';font-size:13px">Commentaire</div><div style="font-size:13px;color:#333;white-space:pre-wrap">' + escHtml(o.comment) + '</div></div>' : '') +
+            (o.vendeurName ? '<div style="margin-top:16px;font-size:13px;color:' + GREY + '">Vendeur associé : <strong style="color:#222">' + escHtml(o.vendeurName) + '</strong> (' + escHtml(o.vendeurEmail) + ')</div>' : '') +
+            '<div style="margin-top:18px;border-top:1px solid ' + LINE + ';padding-top:12px;font-size:12px;color:' + GREY + '">' +
+                'Demande par : <strong style="color:#222">' + escHtml(o.userName) + '</strong><br>' +
+                '<a href="https://etraksolutions.github.io/portal-machine-V2/" style="color:' + ORANGE + ';text-decoration:none">Portail e-Trak</a>' +
+            '</div>' +
+        '</div>' +
+    '</div>';
+    return html;
+}
+
+// Confirmation visuelle apres envoi reussi par le backend.
+function showSoumissionSent(res) {
+    var btn = document.getElementById('soumission-submit');
+    if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '&#10004; Demande envoyée';
+        btn.style.background = '#2e7d32';
+        btn.style.color = '#fff';
+    }
+    var section = document.getElementById('options-section');
+    if (section) {
+        var note = document.getElementById('soumission-sent-note');
+        if (!note) {
+            note = document.createElement('div');
+            note.id = 'soumission-sent-note';
+            note.style.cssText = 'margin-top:14px;padding:12px 14px;background:rgba(46,125,50,0.12);border-left:4px solid #2e7d32;border-radius:6px;color:#cfe9d0;font-size:0.9rem';
+            btn.parentNode.insertBefore(note, btn.nextSibling);
+        }
+        var dest = (res && res.to) ? (' à ' + res.to + (res.cc ? ' (cc ' + res.cc + ')' : '')) : '';
+        note.innerHTML = '&#10004; Votre demande de soumission a été envoyée' + escHtml(dest) + '. L\'équipe e-Trak vous répondra sous peu.';
+    }
 }
 
 // Build combined text for Limiteur/IDC/Creusage based on truth table
