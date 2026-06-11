@@ -911,9 +911,9 @@ if (submitBtn) {
             _avItems.forEach(function (i) { body += '  /!\\ ' + i.name + (i.code ? ' (' + i.code + ')' : '') + '\n'; });
         }
 
-        // Multi-axe sur retrocaveuse : approbation ingenierie requise.
+        // Multi-axe sur retrocaveuse : analyse ingenierie requise avant soumission.
         if (_limVal === 'Multi-axe' && type === 'Retrocaveuse') {
-            body += '\n*** MULTI-AXE SUR RETROCAVEUSE : equipement a faire APPROUVER PAR L\'INGENIERIE avant installation. ***\n';
+            body += '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
         }
 
         // Specs machine
