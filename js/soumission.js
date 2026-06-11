@@ -916,32 +916,58 @@ if (submitBtn) {
             body += '\nSpecifications:\n' + specsText;
         }
 
-        // Produits / kit demandes : EXACTEMENT la meme liste que l'ecran (window.__selectionLines)
+        // Produits / kit demandes : EXACTEMENT la meme selection que l'ecran.
+        // window.__selectionRows = [{code, name, oblig}] (genere par updateSelectedSummary)
         var _totItem = 0, _totInstall = 0;
-        var selLines = window.__selectionLines || [];
-        if (selLines.length > 0) {
-            body += '\nProduits / kit demandes:\n';
-            selLines.forEach(function(line) {
-                var idx = line.indexOf(' — ');
-                var code = idx >= 0 ? line.slice(0, idx).trim() : '';
-                var name = idx >= 0 ? line.slice(idx + 3) : line;
-                if (!code) { body += '  ' + line + '\n'; return; }
-                var pr = priceFor(code);
+        var selRows = window.__selectionRows || [];
+        // Repli sur l'ancienne liste plate si la version structuree manque.
+        if (selRows.length === 0 && window.__selectionLines) {
+            selRows = window.__selectionLines.map(function (l) {
+                var i = l.indexOf(' — ');
+                return { code: i >= 0 ? l.slice(0, i).trim() : '', name: i >= 0 ? l.slice(i + 3) : l, oblig: false };
+            });
+        }
+
+        if (selRows.length > 0) {
+            // Une ligne produit propre : code + nom, puis prix indente sur la ligne suivante.
+            var renderRow = function (r) {
+                var pr = priceFor(r.code);
                 var it = (typeof pr.item === 'number') ? pr.item : null;
                 var ins = (typeof pr.install === 'number') ? pr.install : null;
                 if (it !== null) _totItem += it;
                 if (ins !== null) _totInstall += ins;
-                var suff = (it !== null || ins !== null) ? ('  (Prix : ' + fmtPrice(it) + ' / Installation : ' + fmtPrice(ins) + ')') : '';
-                body += '  ' + code + ' — ' + name + suff + '\n';
-            });
+                var head = r.code ? ('  - ' + r.code + '  ' + r.name) : ('  - ' + r.name);
+                var out = head + '\n';
+                if (it !== null || ins !== null) {
+                    out += '       Prix : ' + fmtPrice(it) + '     Installation : ' + fmtPrice(ins) + '\n';
+                }
+                return out;
+            };
+
+            var optionRows = selRows.filter(function (r) { return !r.oblig; });
+            var obligRows  = selRows.filter(function (r) { return r.oblig; });
+
+            body += '\n================================\n' +
+                    'PRODUITS / KIT DEMANDES\n' +
+                    '================================\n';
+
+            if (optionRows.length > 0) {
+                body += '\nOptions choisies :\n';
+                optionRows.forEach(function (r) { body += renderRow(r); });
+            }
+            if (obligRows.length > 0) {
+                body += '\nInclus dans le kit (obligatoire) :\n';
+                obligRows.forEach(function (r) { body += renderRow(r); });
+            }
         }
 
         // Total des prix (indicatif, hors taxes)
         if (_totItem > 0 || _totInstall > 0) {
-            body += '\nPrix (indicatif, hors taxes) :\n' +
-                '  Total prix         : ' + fmtPrice(_totItem) + '\n' +
-                '  Total installation : ' + fmtPrice(_totInstall) + '\n' +
-                '  Total combine      : ' + fmtPrice(_totItem + _totInstall) + '\n';
+            body += '\n--------------------------------\n' +
+                'TOTAL (indicatif, hors taxes) :\n' +
+                '  Prix          : ' + fmtPrice(_totItem) + '\n' +
+                '  Installation  : ' + fmtPrice(_totInstall) + '\n' +
+                '  Combine       : ' + fmtPrice(_totItem + _totInstall) + '\n';
         }
 
         if (comment) {
@@ -1164,6 +1190,18 @@ function updateSelectedSummary() {
 
     // Liste canonique de la selection (memes lignes que l'ecran) — reutilisee par le courriel.
     window.__selectionLines = items.concat(obligItems, pcItems);
+    // Version structuree (code/nom/obligatoire) — le courriel s'en sert pour grouper proprement.
+    var _mkRow = function (lineStr, oblig) {
+        var idx = lineStr.indexOf(' — ');
+        return {
+            code: idx >= 0 ? lineStr.slice(0, idx).trim() : '',
+            name: idx >= 0 ? lineStr.slice(idx + 3) : lineStr,
+            oblig: !!oblig
+        };
+    };
+    window.__selectionRows = items.map(function (l) { return _mkRow(l, false); })
+        .concat(obligItems.map(function (l) { return _mkRow(l, true); }))
+        .concat(pcItems.map(function (l) { return _mkRow(l, true); }));
 
     var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || currentNotes) {
