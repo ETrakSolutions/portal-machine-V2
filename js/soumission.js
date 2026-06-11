@@ -911,6 +911,11 @@ if (submitBtn) {
             _avItems.forEach(function (i) { body += '  /!\\ ' + i.name + (i.code ? ' (' + i.code + ')' : '') + '\n'; });
         }
 
+        // Multi-axe sur retrocaveuse : approbation ingenierie requise.
+        if (_limVal === 'Multi-axe' && type === 'Retrocaveuse') {
+            body += '\n*** MULTI-AXE SUR RETROCAVEUSE : equipement a faire APPROUVER PAR L\'INGENIERIE avant installation. ***\n';
+        }
+
         // Specs machine
         if (specsText) {
             body += '\nSpecifications:\n' + specsText;
@@ -1072,6 +1077,9 @@ function updateSelectedSummary() {
     var _liR = limiteurRoleInfo(_selT, 'rotation');
     var _liM = limiteurRoleInfo(_selT, 'multi');
     var _selHasLabels = !!(machinesData[_selT] && machinesData[_selT]._bom_labels);
+    // Avertissement : Multi-axe sur retrocaveuse -> doit etre approuve par l'ingenierie.
+    var _maw = document.getElementById('multiaxe-retro-warning');
+    if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
     function pushLi(info, fbCode, fbDesc) {
         if (info) { items.push(fmtItem(info.pn, info.desc)); return; }
         // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
@@ -1090,7 +1098,12 @@ function updateSelectedSummary() {
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
         pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Multi-axe') {
-        pushLi(_liM, '1500-0005', 'Limiteur Multi-axe');
+        // Multi-axe : meme produit que l'excavatrice (1500-0005), partage avec la retrocaveuse.
+        if (_liM) {
+            items.push(fmtItem(_liM.pn, _liM.desc));
+        } else if (_selT === 'Excavatrice' || _selT === 'Retrocaveuse' || !_selHasLabels) {
+            items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
+        }
     }
 
     // IDC
