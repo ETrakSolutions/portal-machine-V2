@@ -1,1 +1,1 @@
-{"v": "2026-06-11T17:30:00Z", "note": "Courriel soumission : vrai tableau HTML envoye via le backend (action sendSoumission). Repli automatique sur mailto: si l'envoi backend echoue. Necessite redeploiement Apps Script."}
+{"v": "2026-06-11T18:45:00Z", "note": "Courriel soumission simplifie : retour au mailto: (part de la boite de l'utilisateur, aucun probleme de livraison). Liste des produits sans prix par ligne + une seule ligne de totaux en bas (Total pieces / Total installation). Backend HTML retire."}
