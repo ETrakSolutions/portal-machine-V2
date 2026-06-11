@@ -1153,8 +1153,10 @@ function updateSelectedSummary() {
     if (!isExcType || anyLim) {
         var kitAll = getKitAllItems();
         kitAll.forEach(function(item) {
-            // Skip 1500-0000 (base limiteur) when Multi-axe is selected — Multi-axe replaces it
-            if (item.code === '1500-0000' && limVal === 'Multi-axe') return;
+            // Multi-axe remplace la base limiteur du type -> on masque la base.
+            // Excavatrice : 1500-0000 ; Retrocaveuse : 1500-0600 (via _liBase) ; etc.
+            var _baseSkip = (_liBase && _liBase.pn) || '';
+            if (limVal === 'Multi-axe' && (item.code === '1500-0000' || (_baseSkip && item.code === _baseSkip))) return;
             var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
             if (!alreadyListed && item.status === 'Obligatoire') {
                 obligItems.push(fmtItem(item.code, item.name));
