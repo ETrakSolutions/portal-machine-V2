@@ -1,1 +1,1 @@
-{"v": "2026-06-11T12:00:00Z", "note": "Soumission: prix affiches en tableau avec colonnes Produit / Prix / Installation (entetes), au lieu du texte [item ...]. Total combine en bas. Courriel harmonise."}
+{"v": "2026-06-11T13:00:00Z", "note": "Soumission FIX: le menu Type ne s'efface plus quand le fetch allowed_types revient (race). La selection du type est preservee -> les modeles/options s'affichent correctement."}

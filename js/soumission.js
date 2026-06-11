@@ -163,9 +163,19 @@ fetch(API_URL + '?action=get&key=soumission_allowed_types')
                 var parsed = JSON.parse(data.value);
                 if (parsed && parsed.length > 0) {
                     allowedTypes = parsed;
-                    // Re-populate with filter applied
+                    // Re-populate with filter applied — PRESERVE la selection en cours
+                    // (sinon, si l'utilisateur a deja choisi un type avant le retour de ce fetch,
+                    //  la reconstruction du menu effaçait sa selection -> cascade cassee)
+                    var _prevType = selectType.value;
                     while (selectType.options.length > 1) selectType.remove(1);
                     populateTypes();
+                    if (_prevType) {
+                        selectType.value = _prevType;
+                        if (selectType.value !== _prevType) {
+                            // le type choisi n'est pas dans la liste autorisee -> on repart a zero proprement
+                            try { resetFrom('fabricant'); } catch (e) {}
+                        }
+                    }
                 }
             } catch(e) {}
         }
