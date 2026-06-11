@@ -929,45 +929,75 @@ if (submitBtn) {
         }
 
         if (selRows.length > 0) {
-            // Une ligne produit propre : code + nom, puis prix indente sur la ligne suivante.
-            var renderRow = function (r) {
+            // Helpers de padding pour un tableau ASCII aligne (police monospace).
+            var padR = function (s, w) { s = String(s); while (s.length < w) s += ' '; return s; };
+            var padL = function (s, w) { s = String(s); while (s.length < w) s = ' ' + s; return s; };
+            var anyOblig = false;
+
+            // Construire les lignes (options d'abord, puis obligatoires) + cumuler les totaux.
+            var tableRows = selRows.map(function (r) {
                 var pr = priceFor(r.code);
                 var it = (typeof pr.item === 'number') ? pr.item : null;
                 var ins = (typeof pr.install === 'number') ? pr.install : null;
                 if (it !== null) _totItem += it;
                 if (ins !== null) _totInstall += ins;
-                var head = r.code ? ('  - ' + r.code + '  ' + r.name) : ('  - ' + r.name);
-                var out = head + '\n';
-                if (it !== null || ins !== null) {
-                    out += '       Prix : ' + fmtPrice(it) + '     Installation : ' + fmtPrice(ins) + '\n';
-                }
-                return out;
+                if (r.oblig) anyOblig = true;
+                return {
+                    mark: r.oblig ? '*' : '',
+                    code: r.code || '',
+                    prod: r.name || '',
+                    prix: (it !== null) ? fmtPrice(it) : '—',
+                    inst: (ins !== null) ? fmtPrice(ins) : '—'
+                };
+            }).sort(function (a, b) { return (a.mark === b.mark) ? 0 : (a.mark ? 1 : -1); });
+
+            var hasTotal = (_totItem > 0 || _totInstall > 0);
+            var totalRow = hasTotal
+                ? { mark: '', code: '', prod: 'TOTAL', prix: fmtPrice(_totItem), inst: fmtPrice(_totInstall) }
+                : null;
+
+            // Largeurs de colonnes (dynamiques, noms complets non tronques).
+            var allR = totalRow ? tableRows.concat([totalRow]) : tableRows;
+            var wMark = 1;
+            var wCode = 'CODE'.length;
+            var wProd = 'PRODUIT'.length;
+            var wPrix = 'PRIX'.length;
+            var wInst = 'INSTALL.'.length;
+            allR.forEach(function (r) {
+                if (r.mark.length > wMark) wMark = r.mark.length;
+                if (r.code.length > wCode) wCode = r.code.length;
+                if (r.prod.length > wProd) wProd = r.prod.length;
+                if (r.prix.length > wPrix) wPrix = r.prix.length;
+                if (r.inst.length > wInst) wInst = r.inst.length;
+            });
+
+            var sep = '+' + '-'.repeat(wMark + 2) + '+' + '-'.repeat(wCode + 2) + '+' +
+                      '-'.repeat(wProd + 2) + '+' + '-'.repeat(wPrix + 2) + '+' +
+                      '-'.repeat(wInst + 2) + '+';
+            var line = function (m, c, p, pr, ins, alignNum) {
+                return '| ' + padR(m, wMark) + ' | ' + padR(c, wCode) + ' | ' + padR(p, wProd) + ' | ' +
+                       (alignNum ? padL(pr, wPrix) : padR(pr, wPrix)) + ' | ' +
+                       (alignNum ? padL(ins, wInst) : padR(ins, wInst)) + ' |';
             };
 
-            var optionRows = selRows.filter(function (r) { return !r.oblig; });
-            var obligRows  = selRows.filter(function (r) { return r.oblig; });
-
-            body += '\n================================\n' +
-                    'PRODUITS / KIT DEMANDES\n' +
-                    '================================\n';
-
-            if (optionRows.length > 0) {
-                body += '\nOptions choisies :\n';
-                optionRows.forEach(function (r) { body += renderRow(r); });
+            body += '\nPRODUITS / KIT DEMANDES (prix indicatifs, hors taxes)\n';
+            body += sep + '\n';
+            body += line(' ', 'CODE', 'PRODUIT', 'PRIX', 'INSTALL.', false) + '\n';
+            body += sep + '\n';
+            tableRows.forEach(function (r) {
+                body += line(r.mark, r.code, r.prod, r.prix, r.inst, true) + '\n';
+            });
+            if (totalRow) {
+                body += sep + '\n';
+                body += line('', '', 'TOTAL', totalRow.prix, totalRow.inst, true) + '\n';
             }
-            if (obligRows.length > 0) {
-                body += '\nInclus dans le kit (obligatoire) :\n';
-                obligRows.forEach(function (r) { body += renderRow(r); });
-            }
+            body += sep + '\n';
+            if (anyOblig) body += '(*) inclus dans le kit (obligatoire)\n';
         }
 
-        // Total des prix (indicatif, hors taxes)
+        // Total combine (prix + installation)
         if (_totItem > 0 || _totInstall > 0) {
-            body += '\n--------------------------------\n' +
-                'TOTAL (indicatif, hors taxes) :\n' +
-                '  Prix          : ' + fmtPrice(_totItem) + '\n' +
-                '  Installation  : ' + fmtPrice(_totInstall) + '\n' +
-                '  Combine       : ' + fmtPrice(_totItem + _totInstall) + '\n';
+            body += 'Combine (prix + installation) : ' + fmtPrice(_totItem + _totInstall) + '\n';
         }
 
         if (comment) {
