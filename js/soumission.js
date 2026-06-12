@@ -122,7 +122,7 @@ function applyOverrides(machines, ov) {
     return machines;
 }
 Promise.all([
-    fetch('data/machines.json?v=158').then(function(res) { return res.json(); }),
+    fetch('data/machines.json', { cache: 'no-cache' }).then(function(res) { return res.json(); }),
     window.loadMergedOverrides()   // 8 fichiers par type + repli data/overrides.json
 ])
     .then(function(res) {
@@ -133,7 +133,7 @@ Promise.all([
 
 // Prix (price list) : code produit -> { item, install }. data/prices.json
 var priceData = {};
-fetch('data/prices.json').then(function(r) { return r.json(); })
+fetch('data/prices.json', { cache: 'no-cache' }).then(function(r) { return r.json(); })
     .then(function(d) { priceData = d || {}; try { updateSelectedSummary(); } catch (e) {} })
     .catch(function() {});
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }

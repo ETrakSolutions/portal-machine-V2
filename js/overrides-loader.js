@@ -33,8 +33,10 @@
     return arr;
   }
 
+  // cache:'no-cache' -> revalidation conditionnelle (ETag) : toujours frais apres un save,
+  // 304 leger si inchange (remplace l'ancien ?t=Date.now() qui re-telechargeait a chaque fois).
   function fetchJson(url) {
-    return fetch(url).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
+    return fetch(url, { cache: 'no-cache' }).then(function (r) { return r.ok ? r.json() : {}; }).catch(function () { return {}; });
   }
 
   // Fusionne au niveau du type (chaque fichier ne contient qu'un type).
@@ -54,9 +56,9 @@
   }
 
   window.loadMergedOverrides = function () {
-    var bust = '?t=' + Date.now();
     // 1) repli legacy d'abord (priorite la plus basse), 2) fichiers par type ensuite.
-    var sources = ['data/overrides.json' + bust].concat(typeFiles().map(function (f) { return f + bust; }));
+    // Revalidation via fetchJson (cache:'no-cache') -> plus besoin de buster dans l'URL.
+    var sources = ['data/overrides.json'].concat(typeFiles());
     return Promise.all(sources.map(fetchJson)).then(function (parts) {
       var merged = {};
       parts.forEach(function (p) { mergeInto(merged, p); });

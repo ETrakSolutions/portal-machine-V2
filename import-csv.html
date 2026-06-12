@@ -291,7 +291,7 @@
   function loadMachinesAndDiff() {
     var info = document.getElementById('file-info');
     info.textContent += ' — Chargement de la BD...';
-    fetch('data/machines.json?v=' + Date.now())
+    fetch('data/machines.json', { cache: 'no-cache' })
       .then(function(r) { return r.json(); })
       .then(function(data) {
         fullData = data;

@@ -7,7 +7,9 @@ let machinesData = {};
 let installedMachines = [];
 
 // Load installed machines list
-fetch('data/installed_machines.json')
+// cache:'no-cache' -> revalidation conditionnelle (ETag) : toujours a jour apres un save,
+// 304 leger si inchange. Voir aussi machines.json plus bas (meme strategie partout).
+fetch('data/installed_machines.json', { cache: 'no-cache' })
     .then(function(r) { return r.json(); })
     .then(function(data) { installedMachines = data; })
     .catch(function() {});
@@ -62,7 +64,7 @@ function applyOverrides(machines, ov) {
     return machines;
 }
 Promise.all([
-    fetch('data/machines.json?v=158').then(res => res.json()),
+    fetch('data/machines.json', { cache: 'no-cache' }).then(res => res.json()),
     window.loadMergedOverrides()   // 8 fichiers par type + repli data/overrides.json
 ])
     .then(res => {
