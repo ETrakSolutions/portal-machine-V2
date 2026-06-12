@@ -24,11 +24,16 @@ const ROLES = {
 };
 
 // ---- LOGIN SYSTEM ----
-const AUTHORIZED_USERS = [
-    { username: 'administrateur', email: 'robin@gryb.ca', password: '1400', role: 'administrateur', name: 'Robin Gagnon', active: true },
-    { username: 'jacquot', email: 'jacquot@gryb.ca', password: '1234', role: 'administrateur', name: 'Jacquot', active: true }
-];
+// Les comptes vivent UNIQUEMENT cote serveur (Apps Script). Le login se fait sur le hub
+// (index.html / admin.js) ; cette page restaure la session depuis localStorage.
+const AUTHORIZED_USERS = [];
 let currentUser = null; // { username, name, role, permissions }
+
+// Token de session (renvoye par l'API au login, stocke dans portal_user).
+// Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
+function portalToken() {
+    try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; }
+}
 
 function getUserPermissions(role) {
     return ROLES[role] || { modifBom: false, createAccount: false, modifAccounts: false };
@@ -224,7 +229,7 @@ function updateGearDeleteButton() {
         fetch(API_URL, {
             method: 'POST',
             headers: {'Content-Type': 'text/plain'},
-            body: JSON.stringify({ action: 'save', key: 'deleted_' + type + '_' + fab + '_' + annee + '_' + mod, value: 'deleted', pin: '1400' })
+            body: JSON.stringify({ action: 'save', key: 'deleted_' + type + '_' + fab + '_' + annee + '_' + mod, value: 'deleted', pin: portalToken() })
         }).catch(() => {});
 
         // Remove from dropdown
@@ -340,7 +345,7 @@ function createCustomModel(type, fab, annee, customName) {
             action: 'saveModel',
             modelKey: type + '_' + fab + '_' + annee + '_' + customName,
             specs: specs,
-            pin: '1400'
+            pin: portalToken()
         })
     }).catch(() => {});
 
@@ -868,7 +873,7 @@ function saveKitFlagAndRefresh(type, fab, modele, annee, fc) {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: KIT_FLAGS_KEY, value: JSON.stringify(fc), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: KIT_FLAGS_KEY, value: JSON.stringify(fc), pin: portalToken() })
     }).catch(function() {});
     renderKitFlagBtn(type, fab, modele, annee, fc);
 }
@@ -932,7 +937,7 @@ function saveNotes() {
             action: 'updateMachineNotes',
             type: typeM, fab: fab, modele: modele, annee: annee,
             notes: noteContent,
-            pin: '1400'
+            pin: portalToken()
         })
     })
     .then(r => r.json())
@@ -1189,7 +1194,7 @@ function saveKitOverride(overrideData) {
         body: JSON.stringify({
             action: 'updateMachineBom',
             type: currentKitType, fab: currentKitFab, modele: currentKitModele, annee: currentKitAnnee,
-            bomOverride: flat, harnais: (flat.harnais || ''), pin: '1400'
+            bomOverride: flat, harnais: (flat.harnais || ''), pin: portalToken()
         })
     }).catch(function() {});
 }
@@ -1448,7 +1453,7 @@ function saveEmails() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'target_emails', value: JSON.stringify(targetEmails), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'target_emails', value: JSON.stringify(targetEmails), pin: portalToken() })
     }).catch(() => {});
 }
 
@@ -1478,18 +1483,18 @@ function getMailTo() {
 }
 
 // ---- USER MANAGEMENT ----
+// Action authentifiee 'listusers' : sans mots de passe (sauf token admin).
 function loadUsers() {
-    fetch(API_URL + '?action=get&key=authorized_users_v2')
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'listusers', token: portalToken() })
+    })
         .then(function(r) { return r.json(); })
         .then(function(data) {
-            if (data.value) {
-                try {
-                    var saved = JSON.parse(data.value);
-                    if (Array.isArray(saved) && saved.length > 0) {
-                        AUTHORIZED_USERS.length = 0;
-                        saved.forEach(function(u) { AUTHORIZED_USERS.push(u); });
-                    }
-                } catch(e) {}
+            if (Array.isArray(data.users) && data.users.length > 0) {
+                AUTHORIZED_USERS.length = 0;
+                data.users.forEach(function(u) { AUTHORIZED_USERS.push(u); });
             }
             renderUserList();
             // Re-validate session with fresh user list
@@ -1512,7 +1517,7 @@ function saveUsers() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'authorized_users_v2', value: JSON.stringify(AUTHORIZED_USERS), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'authorized_users_v2', value: JSON.stringify(AUTHORIZED_USERS), pin: portalToken() })
     }).catch(function() {});
 }
 

@@ -684,10 +684,17 @@
 
     <script src="js/translations.js?v=166"></script>
     <script src="js/i18n.js?v=166"></script>
-    <script src="js/heartbeat.js?v=3"></script>
+    <script src="js/heartbeat.js?v=4"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=1"></script>
     <script src="js/kit-rules.js?v=2"></script>
+    <script>
+    // Token de session (renvoye par l'API au login, stocke dans portal_user).
+    // Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
+    function portalToken() {
+        try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; }
+    }
+    </script>
     <script>
     (function() {
         var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
@@ -728,7 +735,7 @@
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(codes), pin: '1400' })
+                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(codes), pin: portalToken() })
             }).then(function() {
                 showToast('Codes produit sauvegardes');
                 var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
@@ -767,7 +774,7 @@
                 fetch(API_URL, {
                     method: 'POST',
                     headers: {'Content-Type': 'text/plain'},
-                    body: JSON.stringify({ action: 'save', key: key, value: codeCopy, pin: '1400' })
+                    body: JSON.stringify({ action: 'save', key: key, value: codeCopy, pin: portalToken() })
                 }).then(function() {
                     saved++;
                     saveNext();
@@ -1040,7 +1047,7 @@
                     return fetch(API_URL, {
                         method: 'POST',
                         headers: {'Content-Type': 'text/plain'},
-                        body: JSON.stringify({ action: 'save', key: LOG_KEY, value: JSON.stringify(log), pin: '1400' })
+                        body: JSON.stringify({ action: 'save', key: LOG_KEY, value: JSON.stringify(log), pin: portalToken() })
                     });
                 })
                 .then(function() { if (window.renderChangelog) window.renderChangelog(); })
@@ -1113,7 +1120,7 @@
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({ action: 'save', key: FLAGS_KEY, value: JSON.stringify(flagsCache), pin: '1400' })
+                body: JSON.stringify({ action: 'save', key: FLAGS_KEY, value: JSON.stringify(flagsCache), pin: portalToken() })
             }).then(function() { if (callback) callback(); loadFlags(); })
             .catch(function() {});
         }
@@ -1285,7 +1292,7 @@
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: '1400' })
+                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: portalToken() })
             }).then(function() {
                 showToast('BOM sauvegarde');
                 if (nature) logChange(nature, machineType, fab, modele, annee, prevValue);
@@ -2205,7 +2212,7 @@
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({ key: noteKey, value: val, pin: '1400' })
+                body: JSON.stringify({ key: noteKey, value: val, pin: portalToken() })
             })
             .then(function(r) { return r.json(); })
             .then(function(data) {
@@ -2245,7 +2252,7 @@
             fetch(API_URL, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
-                body: JSON.stringify({ action: 'save', key: delKey, value: 'deleted', pin: '1400' })
+                body: JSON.stringify({ action: 'save', key: delKey, value: 'deleted', pin: portalToken() })
             }).then(function() {
                 logChange('Modele supprime', delType, d.fab, d.modele, d.annee);
             }).catch(function() {});
@@ -2561,7 +2568,7 @@
         if (!section) return;
 
         // Show section only for admin users
-        var PIN = '1400';
+        var PIN = portalToken();
         var API_OPT = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
         var STORE_KEY = 'soumission_option_codes';
 
@@ -2664,10 +2671,11 @@
             });
 
             saveBtn.textContent = 'Sauvegarde...';
+            // JSON comme partout ailleurs (l'ancien POST form-urlencoded n'etait pas parse par le backend)
             fetch(API_OPT, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: 'pin=' + PIN + '&key=' + STORE_KEY + '&value=' + encodeURIComponent(JSON.stringify(optionCodes))
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: STORE_KEY, value: JSON.stringify(optionCodes), pin: PIN })
             }).then(function() {
                 saveBtn.innerHTML = '&#10004; Sauvegarde!';
                 setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
@@ -2766,7 +2774,7 @@
                     iconBtn.classList.remove('holding');
                     if (confirm('Reinitialiser TOUT l\'historique des modifications ?\n\nCette action est irreversible.')) {
                         fetch(RESET_API, { method:'POST', headers:{'Content-Type':'text/plain'},
-                            body: JSON.stringify({ action:'save', key:'db_changelog', value:'[]', pin:'1400' }) })
+                            body: JSON.stringify({ action:'save', key:'db_changelog', value:'[]', pin:portalToken() }) })
                         .then(function(){
                             if (window.renderChangelog) window.renderChangelog();
                             if (typeof showToast === 'function') showToast('Historique reinitialise'); else alert('Historique reinitialise');

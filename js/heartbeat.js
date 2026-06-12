@@ -14,10 +14,14 @@
  */
 (function() {
   var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
-  var PIN = '1400';
 
   function getUser() {
     try { return JSON.parse(localStorage.getItem('portal_user')); } catch(e) { return null; }
+  }
+  // Token de session du login (le backend accepte token ou PIN script dans le champ 'pin')
+  function getToken() {
+    var u = getUser();
+    return (u && u.token) || '';
   }
 
   // Suivi de l'activite reelle
@@ -46,7 +50,7 @@
           action: 'save',
           key: key,
           value: JSON.stringify(payload),
-          pin: PIN
+          pin: getToken()
         })
       }).catch(function(){});
     }

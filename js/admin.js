@@ -14,12 +14,17 @@ const ROLES = {
     ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Ingenierie' }
 };
 
-const DEFAULT_USERS = [
-    { username: 'administrateur', email: 'robin@gryb.ca', password: '1400', role: 'super_admin', name: 'Robin Gagnon', active: true },
-    { username: 'jacquot', email: 'jacquot@gryb.ca', password: '1234', role: 'administrateur', name: 'Jacquot', active: true }
-];
+// Les comptes vivent UNIQUEMENT cote serveur (Apps Script, cle authorized_users_v2).
+// Le login se fait par l'action 'login' de l'API ; plus aucun identifiant dans le code public.
+const DEFAULT_USERS = [];
 
 let USERS = [...DEFAULT_USERS];
+
+// Token de session (renvoye par l'API au login, stocke dans portal_user).
+// Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
+function portalToken() {
+    try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; }
+}
 const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
 let targetEmails = [...DEFAULT_EMAILS];
 const DEFAULT_SALES_EMAILS = [];
@@ -205,7 +210,7 @@ function saveRoles() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'roles_permissions', value: JSON.stringify(ROLES), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'roles_permissions', value: JSON.stringify(ROLES), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -271,7 +276,9 @@ function showWelcome(name, role) {
 }
 
 // ---- CHANGE PASSWORD MODAL ----
-function showChangePasswordModal(user) {
+// oldPassword = mot de passe (temporaire) que l'utilisateur vient d'entrer au login ;
+// requis par l'action serveur 'changepassword'.
+function showChangePasswordModal(user, oldPassword) {
     var existing = document.getElementById('change-pwd-modal');
     if (existing) existing.remove();
 
@@ -312,20 +319,33 @@ function showChangePasswordModal(user) {
             return;
         }
 
-        // Update password in USERS array and remove mustChangePassword flag
-        var idx = USERS.findIndex(function(u) { return u.username === user.username; });
-        if (idx !== -1) {
-            USERS[idx].password = newPwd;
-            delete USERS[idx].mustChangePassword;
-            saveUsers();
-        }
-
-        modal.remove();
-
-        // Complete login
-        currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
-        localStorage.setItem('portal_user', JSON.stringify(currentUser));
-        showWelcome(user.name, getUserPermissions(user.role).label || user.role);
+        // Changement cote serveur (valide l'ancien mot de passe, retire le drapeau,
+        // retourne une session) — le mot de passe ne transite jamais vers d'autres clients.
+        var submitBtn = document.getElementById('change-pwd-submit');
+        submitBtn.disabled = true;
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/plain'},
+            body: JSON.stringify({ action: 'changepassword', username: user.username || user.email, oldPassword: oldPassword, newPassword: newPwd })
+        })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                submitBtn.disabled = false;
+                if (data.ok && data.user) {
+                    modal.remove();
+                    currentUser = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role) };
+                    localStorage.setItem('portal_user', JSON.stringify(currentUser));
+                    showWelcome(data.user.name, getUserPermissions(data.user.role).label || data.user.role);
+                } else {
+                    errorEl.textContent = 'Erreur lors du changement de mot de passe. Reessayez.';
+                    errorEl.style.display = 'block';
+                }
+            })
+            .catch(function() {
+                submitBtn.disabled = false;
+                errorEl.textContent = 'Erreur de connexion au serveur. Reessayez.';
+                errorEl.style.display = 'block';
+            });
     });
 
     document.getElementById('change-pwd-confirm').addEventListener('keydown', function(e) {
@@ -448,7 +468,7 @@ function saveEmails() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'target_emails', value: JSON.stringify(targetEmails), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'target_emails', value: JSON.stringify(targetEmails), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -490,7 +510,7 @@ function saveSalesEmails() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'sales_emails', value: JSON.stringify(salesEmails), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'sales_emails', value: JSON.stringify(salesEmails), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -534,7 +554,7 @@ function saveKitEmails() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'kit_emails', value: JSON.stringify(kitEmails), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'kit_emails', value: JSON.stringify(kitEmails), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -577,7 +597,7 @@ function saveVendeurs() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'vendeurs_list', value: JSON.stringify(vendeurs), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'vendeurs_list', value: JSON.stringify(vendeurs), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -619,7 +639,7 @@ function saveNotesEmails() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'notes_emails', value: JSON.stringify(notesEmails), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'notes_emails', value: JSON.stringify(notesEmails), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -645,17 +665,18 @@ function renderNotesEmails() {
 }
 
 // ---- USERS ----
+// Liste chargee par l'action authentifiee 'listusers' : les mots de passe ne sont
+// retournes que pour un token admin (UI de gestion des comptes).
 function loadUsers() {
-    fetch(API_URL + '?action=get&key=authorized_users_v2')
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'listusers', token: portalToken() })
+    })
         .then(function(r) { return r.json(); })
         .then(function(data) {
-            if (data.value) {
-                try {
-                    var saved = JSON.parse(data.value);
-                    if (Array.isArray(saved) && saved.length > 0) {
-                        USERS = saved;
-                    }
-                } catch(e) {}
+            if (Array.isArray(data.users) && data.users.length > 0) {
+                USERS = data.users;
             }
             renderUsers();
         })
@@ -666,7 +687,7 @@ function saveUsers() {
     fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
-        body: JSON.stringify({ action: 'save', key: 'authorized_users_v2', value: JSON.stringify(USERS), pin: '1400' })
+        body: JSON.stringify({ action: 'save', key: 'authorized_users_v2', value: JSON.stringify(USERS), pin: portalToken() })
     }).catch(function() {});
 }
 
@@ -922,18 +943,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     updateHubUI();
 
-    // Load users for login validation
-    fetch(API_URL + '?action=get&key=authorized_users_v2')
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            if (data.value) {
-                try {
-                    var s = JSON.parse(data.value);
-                    if (Array.isArray(s) && s.length > 0) USERS = s;
-                } catch(e) {}
-            }
-        })
-        .catch(function() {});
+    // (la validation du login se fait desormais cote serveur — plus de prechargement
+    //  de la liste des utilisateurs ici)
 
     // LOGIN
     var loginBtn = document.getElementById('hub-login-btn');
@@ -968,26 +979,38 @@ document.addEventListener('DOMContentLoaded', function() {
         loginSubmit.addEventListener('click', function() {
             var username = loginUsername.value.trim().toLowerCase();
             var password = loginPassword.value.trim();
-            var user = USERS.find(function(u) {
-                var matchUser = u.username.toLowerCase() === username;
-                var matchEmail = u.email && u.email.toLowerCase() === username;
-                return (matchUser || matchEmail) && u.password === password && u.active !== false;
-            });
-            if (user) {
-                if (user.mustChangePassword) {
-                    // Show change password modal
-                    loginModal.style.display = 'none';
-                    showChangePasswordModal(user);
-                } else {
-                    currentUser = { username: user.username, name: user.name, role: user.role, permissions: getUserPermissions(user.role) };
-                    localStorage.setItem('portal_user', JSON.stringify(currentUser));
-                    loginModal.style.display = 'none';
-                    showWelcome(user.name, getUserPermissions(user.role).label || user.role);
-                }
-            } else {
-                loginError.textContent = (typeof i18n !== 'undefined') ? i18n.t('hub.login_error') : 'Utilisateur ou mot de passe invalide';
-                loginError.style.display = 'block';
-            }
+            loginError.style.display = 'none';
+            loginSubmit.disabled = true;
+            // Validation cote serveur : le mot de passe ne vit plus dans le code public
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'login', username: username, password: password })
+            })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    loginSubmit.disabled = false;
+                    if (data.ok && data.user) {
+                        var user = data.user;
+                        if (user.mustChangePassword) {
+                            loginModal.style.display = 'none';
+                            showChangePasswordModal(user, password);
+                        } else {
+                            currentUser = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role) };
+                            localStorage.setItem('portal_user', JSON.stringify(currentUser));
+                            loginModal.style.display = 'none';
+                            showWelcome(user.name, getUserPermissions(user.role).label || user.role);
+                        }
+                    } else {
+                        loginError.textContent = (typeof i18n !== 'undefined') ? i18n.t('hub.login_error') : 'Utilisateur ou mot de passe invalide';
+                        loginError.style.display = 'block';
+                    }
+                })
+                .catch(function() {
+                    loginSubmit.disabled = false;
+                    loginError.textContent = 'Erreur de connexion au serveur. Reessayez.';
+                    loginError.style.display = 'block';
+                });
         });
     }
 
@@ -1020,6 +1043,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (mainEl) { mainEl.style.position = 'relative'; mainEl.appendChild(overlay); }
             else document.body.appendChild(overlay);
             requestAnimationFrame(function() { overlay.classList.add('welcome-visible'); });
+
+            // Invalide la session cote serveur (fire-and-forget)
+            var tok = portalToken();
+            if (tok) {
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/plain'},
+                    body: JSON.stringify({ action: 'logout', token: tok })
+                }).catch(function() {});
+            }
 
             // Fade out after 3s then disconnect
             setTimeout(function() {
@@ -1308,7 +1341,7 @@ if (saveTypesBtn) {
         saveTypesBtn.textContent = (typeof i18n !== 'undefined') ? i18n.t('admin.save_saving') : 'Sauvegarde...';
         fetch(API_URL, {
             method: 'POST',
-            body: JSON.stringify({ action: 'save', key: 'soumission_allowed_types', value: JSON.stringify(checked), pin: '1400' })
+            body: JSON.stringify({ action: 'save', key: 'soumission_allowed_types', value: JSON.stringify(checked), pin: portalToken() })
         }).then(function() {
             saveTypesBtn.textContent = '\u2713 ' + ((typeof i18n !== 'undefined') ? i18n.t('admin.save_done') : 'Sauvegarde!');
             setTimeout(function() { saveTypesBtn.textContent = (typeof i18n !== 'undefined') ? i18n.t('common.sauvegarder') : 'Sauvegarder'; }, 2000);

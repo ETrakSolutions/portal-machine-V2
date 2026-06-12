@@ -62,17 +62,19 @@ if (saved) {
     try { currentUser = JSON.parse(saved); } catch(e) {}
 }
 // Load full user profile from API (to get vendeurEmail)
-fetch(API_URL + '?action=get&key=authorized_users_v2')
+// Action authentifiee 'listusers' (token de session) : retourne la liste sans mots de passe.
+fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'text/plain'},
+    body: JSON.stringify({ action: 'listusers', token: (currentUser && currentUser.token) || '' })
+})
     .then(function(r) { return r.json(); })
     .then(function(data) {
-        if (data.value && currentUser) {
-            try {
-                var users = JSON.parse(data.value);
-                var fullUser = users.find(function(u) { return u.email && currentUser.username && u.email.toLowerCase() === currentUser.username.toLowerCase(); });
-                if (fullUser && fullUser.vendeurEmail) {
-                    currentUser.vendeurEmail = fullUser.vendeurEmail;
-                }
-            } catch(e) {}
+        if (Array.isArray(data.users) && currentUser) {
+            var fullUser = data.users.find(function(u) { return u.email && currentUser.username && u.email.toLowerCase() === currentUser.username.toLowerCase(); });
+            if (fullUser && fullUser.vendeurEmail) {
+                currentUser.vendeurEmail = fullUser.vendeurEmail;
+            }
         }
     })
     .catch(function() {});

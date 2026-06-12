@@ -149,7 +149,8 @@
 <script>
 (function() {
   var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
-  var PIN = '1400';
+  // Token de session du login (le backend accepte token ou PIN script dans le champ 'pin')
+  var PIN = (function(){ try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; } })();
 
   // Auth check
   var user = null;
