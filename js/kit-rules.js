@@ -46,6 +46,13 @@
     var u = String(modele || '').toUpperCase();
     return DRAIN_PREFIXES.some(function (p) { return u.indexOf(p.toUpperCase()) === 0; });
   }
+  // Boite GC (0070) obligatoire pour les modeles Caterpillar comportant "GC"
+  // (313 GC, 315 GC, 320 GC, 330 GC). "GC" est un suffixe exclusif a Caterpillar
+  // -> detecte par le nom du modele. Token isole (precede d'un non-lettre) pour
+  // ne pas matcher "GC" au milieu d'un mot.
+  function isGC(modele) {
+    return /(^|[^A-Z])GC/.test(String(modele || '').toUpperCase());
+  }
 
   // Defauts Excavatrice -> { code: etat }
   function excDefaults(specs, modele) {
@@ -57,7 +64,7 @@
       '0005': 'j',
       '0008': swing ? 'j' : 'na',   // swing boom = option (jaune) si la spec 'Swing boom' = Oui
       '0009': isDrain(modele) ? 'r' : 'na',
-      '0070': 'na',
+      '0070': isGC(modele) ? 'r' : 'na',   // Boite GC obligatoire si modele Cat "GC"
       '0304': u === 'TB216' ? 'r' : 'na'
     };
   }
@@ -110,7 +117,7 @@
     DRAIN_PREFIXES: DRAIN_PREFIXES,
     EXC_CODES: EXC_CODES,
     POMPE_CODES: POMPE_CODES,
-    poidsKg: poidsKg, isMini: isMini, isDrain: isDrain,
+    poidsKg: poidsKg, isMini: isMini, isDrain: isDrain, isGC: isGC,
     excDefaults: excDefaults, pompeDefaults: pompeDefaults,
     harnais: harnais, isOptionCode: isOptionCode, applyOverride: applyOverride
   };

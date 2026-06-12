@@ -612,8 +612,10 @@ function getKitSummary(type, fab, modele, specs) {
     }
 
     var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
-    var poidsMatch = poidsStr.match(/^(\d+)/);
-    var poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 99999;
+    // #5 : tolere les espaces de milliers ("22 952 kg" -> 22952), comme kit-rules.js.
+    // L'ancien /^(\d+)/ lisait "22 952" comme 22 -> jeton Mini exc (0004) a tort.
+    var poidsMatch = poidsStr.match(/(\d[\d\s]*)/);
+    var poidsKg = poidsMatch ? parseInt(poidsMatch[1].replace(/\s/g, '')) : 0;
     var modelUpper = modele.toUpperCase();
     var fabUp = fab.toUpperCase();
     var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
@@ -634,7 +636,9 @@ function getKitSummary(type, fab, modele, specs) {
         '0005': true,   // Multi Axes : option toujours offerte (decouplee de la fleche, comme le portail)
         '0008': hasSwing, // Swing boom: option si la spec 'Swing boom' = Oui
         '0009': isDrain,
-        '0070': isCat,
+        // #4 : Boite GC obligatoire pour les Cat "GC" (313/315/320/330 GC), pas toutes les Cat.
+        // Regle unique = kit-rules.js (isGC), identique a la BD / page machine / export.
+        '0070': (window.KitRules && window.KitRules.isGC) ? window.KitRules.isGC(modele) : false,
         '0304': modelUpper === 'TB216'
     };
 
