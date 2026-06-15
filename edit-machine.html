@@ -622,6 +622,7 @@ body.force-mobile main{
   var BOM_DEFAULTS = {}, BOM_INITIAL = {}, BOM_CURRENT = {};
   var HARNAIS_DEFAULT = '', HARNAIS_INITIAL = '', HARNAIS_CURRENT = '';
   var NOTES_INITIAL = '', NOTES_CURRENT = '';
+  var WARNING_INITIAL = '', WARNING_CURRENT = '';
   var FLAG = null;     // { active, flaggedBy, flaggedAt, note, resolvedBy, resolvedAt }
   var PRODUCT_CODES = [];   // [{code, desc, qty}]
   var ALL_YEARS_FOR_MODEL = [];  // for "apply to all years" checkbox
@@ -768,8 +769,8 @@ body.force-mobile main{
       body: JSON.stringify({ action:'updateMachineBomBulk', type:TYPE, fab:FAB, modele:MODEL, items:items, pin:PIN })
     });
   }
-  function saveNotes(notes){
-    return apiMachine('updateMachineNotes', { annee: YEAR, notes: notes || '' });
+  function saveNotes(notes, warning){
+    return apiMachine('updateMachineNotes', { annee: YEAR, notes: notes || '', warning: warning || '' });
   }
   function deleteMachineEntry(){
     return apiMachine('deleteMachine', { annee: YEAR });
@@ -806,6 +807,7 @@ body.force-mobile main{
     BOM_CODES.forEach(function(c){ if (BOM_CURRENT[c] !== BOM_INITIAL[c]) n++; });
     if (HARNAIS_CURRENT !== HARNAIS_INITIAL) n++;
     if (NOTES_CURRENT !== NOTES_INITIAL) n++;
+    if (WARNING_CURRENT !== WARNING_INITIAL) n++;
     if (!arrSame(REMOVED_CURRENT, REMOVED_INITIAL)) n++;
     if (!customSame(CUSTOM_CURRENT, CUSTOM_INITIAL)) n++;
     Object.keys(SPECS_CURRENT).forEach(function(k){
@@ -937,6 +939,10 @@ body.force-mobile main{
     if (NOTES_CURRENT !== NOTES_INITIAL){
       changes.notes_change = { from: NOTES_INITIAL ? NOTES_INITIAL.slice(0,60)+(NOTES_INITIAL.length>60?'...':'') : '(vide)',
                                to:   NOTES_CURRENT ? NOTES_CURRENT.slice(0,60)+(NOTES_CURRENT.length>60?'...':'') : '(vide)' };
+    }
+    if (WARNING_CURRENT !== WARNING_INITIAL){
+      changes.warning_change = { from: WARNING_INITIAL ? WARNING_INITIAL.slice(0,60)+(WARNING_INITIAL.length>60?'...':'') : '(vide)',
+                                 to:   WARNING_CURRENT ? WARNING_CURRENT.slice(0,60)+(WARNING_CURRENT.length>60?'...':'') : '(vide)' };
     }
     var scopedCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){ return SCOPE_ALL_CODES[k]; }).length;
     var scope = scopedCount > 0
@@ -1071,10 +1077,12 @@ body.force-mobile main{
       });
     }
 
-    // 4) Notes (current year only — harnais and notes don't have per-row scope)
-    if (NOTES_CURRENT !== NOTES_INITIAL){
-      promises.push(saveNotes(NOTES_CURRENT).then(function(){
-        logChange('Note modifiee', NOTES_INITIAL ? NOTES_INITIAL.slice(0,60) : '(vide)');
+    // 4) Notes + Avertissement (current year only — pas de scope par ligne)
+    //    Sauves ensemble via updateMachineNotes (qui ecrit _notes et _warning).
+    if (NOTES_CURRENT !== NOTES_INITIAL || WARNING_CURRENT !== WARNING_INITIAL){
+      promises.push(saveNotes(NOTES_CURRENT, WARNING_CURRENT).then(function(){
+        if (NOTES_CURRENT !== NOTES_INITIAL) logChange('Note modifiee', NOTES_INITIAL ? NOTES_INITIAL.slice(0,60) : '(vide)');
+        if (WARNING_CURRENT !== WARNING_INITIAL) logChange('Avertissement modifie', WARNING_INITIAL ? WARNING_INITIAL.slice(0,60) : '(vide)');
       }));
     }
 
@@ -1104,6 +1112,7 @@ body.force-mobile main{
       BOM_CODES.forEach(function(c){ BOM_INITIAL[c] = BOM_CURRENT[c]; });
       HARNAIS_INITIAL = HARNAIS_CURRENT;
       NOTES_INITIAL = NOTES_CURRENT;
+      WARNING_INITIAL = WARNING_CURRENT;
       REMOVED_INITIAL = REMOVED_CURRENT.slice();
       CUSTOM_INITIAL = CUSTOM_CURRENT.map(function(r){ return Object.assign({}, r); });
       Object.keys(SPECS_CURRENT).forEach(function(k){ SPECS_INITIAL[k] = SPECS_CURRENT[k]; });
@@ -1167,6 +1176,7 @@ body.force-mobile main{
     BOM_CODES.forEach(function(c){ BOM_CURRENT[c] = BOM_INITIAL[c]; });
     HARNAIS_CURRENT = HARNAIS_INITIAL;
     NOTES_CURRENT = NOTES_INITIAL;
+    WARNING_CURRENT = WARNING_INITIAL;
     REMOVED_CURRENT = REMOVED_INITIAL.slice();
     CUSTOM_CURRENT = CUSTOM_INITIAL.map(function(r){ return Object.assign({}, r); });
     Object.keys(SPECS_INITIAL).forEach(function(k){ SPECS_CURRENT[k] = SPECS_INITIAL[k]; });
@@ -1551,6 +1561,8 @@ body.force-mobile main{
           '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
             '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Notes sur ce modele</label>' +
             '<textarea id="notes-area" class="notes-area"' + (canEdit?'':' readonly') + '>' + (NOTES_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
+            '<label style="display:block;font-size:0.75rem;color:#E07B00;margin:1rem 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em">&#9888; Avertissement soumission <span style="text-transform:none;color:var(--text-3)">(s\'affiche en bandeau dans la soumission)</span></label>' +
+            '<textarea id="warning-area" class="notes-area"' + (canEdit?'':' readonly') + ' placeholder="Ex. : Cette soumission doit passer par l\'ingenierie.">' + (WARNING_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
           '</div>' +
           (canEdit ? (
             (function(){
@@ -1727,6 +1739,13 @@ body.force-mobile main{
           updateSaveButtons();
         });
       }
+      var warningArea = document.getElementById('warning-area');
+      if (warningArea){
+        warningArea.addEventListener('input', function(){
+          WARNING_CURRENT = warningArea.value;
+          updateSaveButtons();
+        });
+      }
       // Helper: met a jour les boutons Save/Reset (haut + bas)
       function updateSaveButtons() {
         var dc = countChanges();
@@ -1811,7 +1830,7 @@ body.force-mobile main{
     for (var t in ov){ for (var f in ov[t]){ for (var y in ov[t][f]){ for (var m in ov[t][f][y]){
       var o = ov[t][f][y][m];
       var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
-      if (e && o){ if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+      if (e && o){ if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; if (o._warning !== undefined) e._warning = o._warning; }
     }}}}
     return machines;
   }
@@ -1876,6 +1895,7 @@ body.force-mobile main{
       // Drapeaux + codes produit : restent en Script Properties (cles auxiliaires)
       var ov = MACHINE._bom ? normalizeOverride(MACHINE._bom) : null;
       var notes = (typeof MACHINE._notes === 'string') ? MACHINE._notes : '';
+      var warning = (typeof MACHINE._warning === 'string') ? MACHINE._warning : '';
 
       Promise.all([
         apiGet('db_flags'),
@@ -1907,6 +1927,8 @@ body.force-mobile main{
         CUSTOM_CURRENT = CUSTOM_INITIAL.map(function(r){ return Object.assign({}, r); });
         NOTES_INITIAL = (typeof notes === 'string') ? notes : (notes || '');
         NOTES_CURRENT = NOTES_INITIAL;
+        WARNING_INITIAL = (typeof warning === 'string') ? warning : (warning || '');
+        WARNING_CURRENT = WARNING_INITIAL;
         FLAG = (flags && flags[flagKey()]) || null;
         PRODUCT_CODES = Array.isArray(pc) ? pc : [];
         render();

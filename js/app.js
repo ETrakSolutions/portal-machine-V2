@@ -59,7 +59,7 @@ function applyOverrides(machines, ov) {
     for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
         var o = ov[t][f][y][m];
         var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
-        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; if (o._warning !== undefined) e._warning = o._warning; }
     }}}}
     return machines;
 }
@@ -84,7 +84,8 @@ window.__onOverridesChanged = function(ov) {
             var e = machinesData[t] && machinesData[t][f] && machinesData[t][f][a] && machinesData[t][f][a][m];
             var o = (ov[t] && ov[t][f] && ov[t][f][a] && ov[t][f][a][m]) || {};
             if (e) { if (o._bom !== undefined) e._bom = o._bom; else delete e._bom;
-                     if (o._notes !== undefined) e._notes = o._notes; else delete e._notes; }
+                     if (o._notes !== undefined) e._notes = o._notes; else delete e._notes;
+                     if (o._warning !== undefined) e._warning = o._warning; else delete e._warning; }
         } catch (err) {}
         try { selectModele.dispatchEvent(new Event('change')); } catch (e) {}  // re-affiche la fiche/kit a jour
     }

@@ -117,7 +117,7 @@ function applyOverrides(machines, ov) {
     for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
         var o = ov[t][f][y][m];
         var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
-        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; if (o._warning !== undefined) e._warning = o._warning; }
     }}}}
     return machines;
 }
@@ -150,7 +150,8 @@ window.__onOverridesChanged = function(ov) {
             var e = machinesData[t] && machinesData[t][f] && machinesData[t][f][a] && machinesData[t][f][a][m];
             var o = (ov[t] && ov[t][f] && ov[t][f][a] && ov[t][f][a][m]) || {};
             if (e) { if (o._bom !== undefined) e._bom = o._bom; else delete e._bom;
-                     if (o._notes !== undefined) e._notes = o._notes; else delete e._notes; }
+                     if (o._notes !== undefined) e._notes = o._notes; else delete e._notes;
+                     if (o._warning !== undefined) e._warning = o._warning; else delete e._warning; }
         } catch (err) {}
         try { loadBomOverrides(f, m, a); loadNotesForModel(f, m, a); } catch (e) {}  // rafraichit kit/notes, pas le formulaire
     }
@@ -374,8 +375,8 @@ function showOptions() {
     if (idcWarn) idcWarn.style.display = 'none';
     var avWarn = document.getElementById('bom-avalider-warning');
     if (avWarn) avWarn.style.display = 'none';
-    var atlasWarn = document.getElementById('atlas-engineering-warning');
-    if (atlasWarn) atlasWarn.style.display = 'none';
+    var machineWarn = document.getElementById('machine-warning');
+    if (machineWarn) machineWarn.style.display = 'none';
     // Reset limiteur checkboxes
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
@@ -446,6 +447,7 @@ function applyTypeRestrictions(type) {
 var currentBomOverrides = null;
 var currentProductCodes = [];
 var currentNotes = '';
+var currentWarning = '';
 
 // Load BOM overrides — BD = MAITRE : lus directement dans machines.json (entry._bom)
 function loadBomOverrides(fab, modele, annee) {
@@ -541,12 +543,25 @@ function renderSpecsTable(type, fab, annee, modele) {
 }
 
 function loadNotesForModel(fab, modele, annee) {
-    // BD = MAITRE : la note est lue directement dans machines.json (entry._notes)
+    // BD = MAITRE : la note (_notes) et l'avertissement (_warning) sont lus directement dans machines.json.
     currentNotes = '';
+    currentWarning = '';
     var type = selectType ? selectType.value : '';
     var entry = null;
     try { entry = machinesData[type][fab][annee][modele]; } catch(e) { entry = null; }
     currentNotes = (entry && typeof entry._notes === 'string') ? entry._notes : '';
+    currentWarning = (entry && typeof entry._warning === 'string') ? entry._warning : '';
+    // Bandeau d'avertissement par machine (donnee _warning, editable dans edit-machine).
+    var mw = document.getElementById('machine-warning');
+    if (mw) {
+        if (currentWarning) {
+            var txt = mw.querySelector('.idc-warning-text');
+            if (txt) txt.innerHTML = currentWarning.replace(/</g, '&lt;').replace(/\n/g, '<br>');
+            mw.style.display = 'flex';
+        } else {
+            mw.style.display = 'none';
+        }
+    }
 }
 
 // Determine kit machine options based on specs (same logic as app.js)
@@ -1088,9 +1103,7 @@ function updateSelectedSummary() {
     // Avertissement : Multi-axe sur retrocaveuse -> doit etre approuve par l'ingenierie.
     var _maw = document.getElementById('multiaxe-retro-warning');
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
-    // Avertissement : tout Atlas (boom truck) -> la soumission doit passer par l'ingenierie.
-    var _aew = document.getElementById('atlas-engineering-warning');
-    if (_aew) _aew.style.display = (selectFabricant && selectFabricant.value === 'Atlas') ? 'flex' : 'none';
+    // Avertissement par machine : pilote par la donnee _warning (voir loadNotesForModel / #machine-warning).
     function pushLi(info, fbCode, fbDesc) {
         if (info) { items.push(fmtItem(info.pn, info.desc)); return; }
         // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
