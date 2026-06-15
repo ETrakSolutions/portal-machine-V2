@@ -512,7 +512,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
 
         // Apply BOM defaults to kit table rows
         var KIT_MAP = {
-            'cabine': '0000', 'sans-cabine': '0004', 'hauteur': '0001', 'rotation': '0002',
+            'cabine': '0000', 'sans-cabine': '0003', 'hauteur': '0001', 'rotation': '0002',
             'mini': '0004', 'gc': '0070', 'swing': '0008', 'drain': '0009',
             'multi': '0005', 'cremaillere': '0304'
         };
