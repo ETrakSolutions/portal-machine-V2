@@ -374,6 +374,8 @@ function showOptions() {
     if (idcWarn) idcWarn.style.display = 'none';
     var avWarn = document.getElementById('bom-avalider-warning');
     if (avWarn) avWarn.style.display = 'none';
+    var atlasWarn = document.getElementById('atlas-engineering-warning');
+    if (atlasWarn) atlasWarn.style.display = 'none';
     // Reset limiteur checkboxes
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
@@ -1086,6 +1088,9 @@ function updateSelectedSummary() {
     // Avertissement : Multi-axe sur retrocaveuse -> doit etre approuve par l'ingenierie.
     var _maw = document.getElementById('multiaxe-retro-warning');
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
+    // Avertissement : tout Atlas (boom truck) -> la soumission doit passer par l'ingenierie.
+    var _aew = document.getElementById('atlas-engineering-warning');
+    if (_aew) _aew.style.display = (selectFabricant && selectFabricant.value === 'Atlas') ? 'flex' : 'none';
     function pushLi(info, fbCode, fbDesc) {
         if (info) { items.push(fmtItem(info.pn, info.desc)); return; }
         // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
