@@ -1017,6 +1017,12 @@
                 {key: 'sections', label: 'Sections de boom'},
                 {key: 'rotation', label: 'Angle de rotation'},
                 {key: 'voltage', label: 'Voltage'}
+            ],
+            'Camion Vacuum': [
+                {key: 'longueur', label: 'Longueur de boom'},
+                {key: 'sections', label: 'Sections de boom'},
+                {key: 'rotation', label: 'Angle de rotation'},
+                {key: 'voltage', label: 'Voltage'}
             ]
         };
         var currentSpecCols = SPEC_COLS['Excavatrice'];
@@ -1679,6 +1685,14 @@
                     };
                 },
                 'Camion Girafe (Boom Truck)': function(s) {
+                    return {
+                        longueur: s['Longueur de boom'] || '',
+                        sections: s['Nombre de sections de boom'] || '',
+                        rotation: s['Angle de rotation'] || '',
+                        voltage: s['Voltage'] || ''
+                    };
+                },
+                'Camion Vacuum': function(s) {
                     return {
                         longueur: s['Longueur de boom'] || '',
                         sections: s['Nombre de sections de boom'] || '',
