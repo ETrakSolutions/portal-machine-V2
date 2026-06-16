@@ -1184,19 +1184,23 @@ function updateSelectedSummary() {
         // -> evite la fuite de codes excavatrice.
         if (fbCode && (_selT === 'Excavatrice' || !_selHasLabels)) items.push(fmtItem(fbCode, fbDesc));
     }
-    // Camion Vacuum : la base (1500-0503) vient du kit (obligatoire), pas du limiteur -> pas de base ici.
-    var _vacNoBase = (_selT === 'Camion Vacuum');
-    if (limVal === 'Hauteur') {
-        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
+    if (_selT === 'Camion Vacuum') {
+        // Vacuum : groupe hauteur exclusif (Hauteur OU Hauteur + extension) + Rotation independante.
+        // La base (1500-0503) vient du kit obligatoire, pas du limiteur. Plusieurs cases possibles.
+        var _vHE = document.getElementById('lim-hauteur-ext');
+        var _vH = document.getElementById('lim-hauteur');
+        var _vR = document.getElementById('lim-rotation');
+        if (_vHE && _vHE.checked) items.push(fmtItem('1500-0505', 'Limitation Hauteur + extension'));
+        else if (_vH && _vH.checked) items.push(fmtItem('1500-0501', 'Limitation Hauteur camion vac'));
+        if (_vR && _vR.checked) items.push(fmtItem('1500-0502', 'Limitation Rotation camion vac'));
+    } else if (limVal === 'Hauteur') {
+        pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
-    } else if (limVal === 'Hauteur + extension') {
-        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
-        items.push(fmtItem('1500-0505', 'Limitation Hauteur + extension'));
     } else if (limVal === 'Rotation') {
-        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
+        pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Hauteur + Rotation') {
-        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
+        pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
         pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Multi-axe') {
@@ -1489,22 +1493,31 @@ function updateAValiderWarning() {
     var cbs = limBox.querySelectorAll('input[name="limiteur-type"]');
     var status = limBox.querySelector('.toggle-status');
 
+    var HEIGHT_IDS = ['lim-hauteur', 'lim-hauteur-ext'];
     cbs.forEach(function(cb) {
         cb.addEventListener('change', function() {
             if (this.checked) {
-                // Uncheck others (exclusive)
-                cbs.forEach(function(other) {
-                    if (other !== cb) other.checked = false;
-                });
-                limBox.classList.add('active');
-                status.textContent = this.value;
-            } else {
-                var anyChecked = false;
-                cbs.forEach(function(c) { if (c.checked) anyChecked = true; });
-                if (!anyChecked) {
-                    limBox.classList.remove('active');
-                    status.textContent = 'OFF';
+                var isVac = (selectType.value === 'Camion Vacuum');
+                if (isVac) {
+                    // Vacuum : les 2 hauteurs s'excluent entre elles; Rotation reste independante.
+                    if (HEIGHT_IDS.indexOf(this.id) >= 0) {
+                        cbs.forEach(function(other) {
+                            if (other !== cb && HEIGHT_IDS.indexOf(other.id) >= 0) other.checked = false;
+                        });
+                    }
+                } else {
+                    // Autres types : choix exclusif unique.
+                    cbs.forEach(function(other) { if (other !== cb) other.checked = false; });
                 }
+            }
+            // Recalcule etat + libelle a partir de toutes les cases cochees (visibles).
+            var checked = [].filter.call(cbs, function(c) { return c.checked; });
+            if (checked.length) {
+                limBox.classList.add('active');
+                status.textContent = checked.map(function(c) { return c.value; }).join(' + ');
+            } else {
+                limBox.classList.remove('active');
+                status.textContent = 'OFF';
             }
             updateSelectedSummary();
         });
