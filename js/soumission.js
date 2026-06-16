@@ -186,7 +186,11 @@ fetch(API_URL + '?action=get&key=soumission_allowed_types')
     .catch(function() {});
 
 function populateTypes() {
-    const types = Object.keys(machinesData).sort();
+    // Meme ordre que la tuile Base de donnees : Excavatrice + Pompe a Beton en tete, reste alphabetique.
+    const TYPE_ORDER_PRIORITY = ['Excavatrice', 'Pompe a Beton'];
+    const _all = Object.keys(machinesData);
+    const types = TYPE_ORDER_PRIORITY.filter(t => _all.indexOf(t) >= 0)
+        .concat(_all.filter(t => TYPE_ORDER_PRIORITY.indexOf(t) < 0).sort());
     types.forEach(type => {
         // Filter by allowed types (if configured)
         if (allowedTypes && allowedTypes.length > 0 && allowedTypes.indexOf(type) === -1) return;
