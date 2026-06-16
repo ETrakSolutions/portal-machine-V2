@@ -99,6 +99,12 @@
     gap: 12px;
     flex-wrap: wrap;
 }
+/* Balance ST-7 : la sous-option Imprimante apparait quand la balance est active (ON) */
+#toggle-balance.active .balance-sub {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
 .sub-option {
     display: flex;
     align-items: center;

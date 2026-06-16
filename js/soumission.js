@@ -385,6 +385,8 @@ function showOptions() {
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
+    // Reset sous-option Imprimante de la Balance
+    var balImpR = document.getElementById('balance-imprimante'); if (balImpR) balImpR.checked = false;
     var refInput = document.getElementById('soumission-ref-client');
     if (refInput) refInput.value = '';
     var textarea = document.getElementById('soumission-comment');
@@ -434,17 +436,17 @@ function applyTypeRestrictions(type) {
     var isExc = (type === 'Excavatrice');
     var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
 
-    // Balance ST-7 (1200-0011) + Imprimante thermique (1200-0014) — Telehandler ou Loader
+    // Balance ST-7 (1200-0011) + sous-option Imprimante thermique (1200-0014) — Telehandler ou Loader
     var isTeleOrLoader = (type === 'Telehandler' || type === 'Loader');
-    ['toggle-balance', 'toggle-imprimante'].forEach(function (boxId) {
-        var box = document.getElementById(boxId);
-        if (!box) return;
-        box.style.display = isTeleOrLoader ? '' : 'none';
+    var balBox = document.getElementById('toggle-balance');
+    if (balBox) {
+        balBox.style.display = isTeleOrLoader ? '' : 'none';
         if (!isTeleOrLoader) {
-            box.classList.remove('active', 'open');
-            var st = box.querySelector('.toggle-status'); if (st) st.textContent = 'OFF';
+            balBox.classList.remove('active', 'open');
+            var balSt = balBox.querySelector('.toggle-status'); if (balSt) balSt.textContent = 'OFF';
+            var balImpReset = document.getElementById('balance-imprimante'); if (balImpReset) balImpReset.checked = false;
         }
-    });
+    }
 
     // Point 1 — Indicateur de charge (excavatrice seulement)
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
@@ -886,6 +888,14 @@ if (submitBtn) {
             }
         });
 
+        // Imprimante thermique (1200-0014) : sous-option de la Balance ST-7
+        var _balBoxE = document.getElementById('toggle-balance');
+        var _balImpE = document.getElementById('balance-imprimante');
+        if (_balBoxE && _balBoxE.classList.contains('active') && _balImpE && _balImpE.checked) {
+            optionsOn.push('Imprimante thermique');
+            accessoires.push({ code: '1200-0014', name: 'Imprimante thermique' });
+        }
+
         var refClient = (document.getElementById('soumission-ref-client').value || '').trim();
         var comment = (document.getElementById('soumission-comment').value || '').trim();
         var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
@@ -1213,6 +1223,13 @@ function updateSelectedSummary() {
         }
     });
 
+    // Imprimante thermique (1200-0014) : sous-option de la Balance ST-7
+    var _balBoxS = document.getElementById('toggle-balance');
+    var _balImpS = document.getElementById('balance-imprimante');
+    if (_balBoxS && _balBoxS.classList.contains('active') && _balImpS && _balImpS.checked) {
+        items.push(fmtItem('1200-0014', 'Imprimante thermique'));
+    }
+
     // Add kit machine items.
     // Excavatrice : seulement quand un limiteur est selectionne (le kit s'articule autour du limiteur).
     // Autres types (ex. Pompe a Beton) : toujours afficher les pieces obligatoires de la BD.
@@ -1345,13 +1362,20 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
             this.classList.toggle('open');
         });
     } else {
-        box.addEventListener('click', function() {
+        box.addEventListener('click', function(e) {
+            // Clic sur une sous-option (ex. case Imprimante de la Balance) : ne pas basculer la tuile
+            if (e.target.closest('.toggle-sub-panel') || e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+                updateSelectedSummary();
+                return;
+            }
             this.classList.toggle('active');
             var status = this.querySelector('.toggle-status');
             if (this.classList.contains('active')) {
                 status.textContent = 'ON';
             } else {
                 status.textContent = 'OFF';
+                // Balance OFF -> decocher l'imprimante
+                var impOff = this.querySelector('#balance-imprimante'); if (impOff) impOff.checked = false;
             }
             // Show/hide lock valve warning for IDC on Excavatrice
             if (this.dataset.option === 'Indicateur de charge') {
@@ -1361,6 +1385,10 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
         });
     }
 });
+
+// Sous-option Imprimante de la Balance : recalculer le sommaire au changement
+var _balImpCb = document.getElementById('balance-imprimante');
+if (_balImpCb) _balImpCb.addEventListener('change', updateSelectedSummary);
 
 // IDC Lock Valve warning — visible only when type=Excavatrice and IDC is ON
 function updateIdcLockValveWarning() {

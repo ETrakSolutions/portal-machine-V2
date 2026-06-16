@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
     <link rel="stylesheet" href="css/style.css?v=172">
-    <link rel="stylesheet" href="css/soumission.css?v=161">
+    <link rel="stylesheet" href="css/soumission.css?v=162">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -131,10 +131,9 @@
                 <div class="toggle-box" data-option="Balance ST-7" id="toggle-balance" style="display:none;">
                     <span class="toggle-label">Balance ST-7</span>
                     <span class="toggle-status">OFF</span>
-                </div>
-                <div class="toggle-box" data-option="Imprimante thermique" id="toggle-imprimante" style="display:none;">
-                    <span class="toggle-label">Imprimante thermique</span>
-                    <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel balance-sub">
+                        <label class="sub-option"><input type="checkbox" id="balance-imprimante"> Imprimante thermique</label>
+                    </div>
                 </div>
             </div>
 
@@ -220,7 +219,7 @@
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=3"></script>
     <script src="js/kit-rules.js?v=3"></script>
-    <script src="js/soumission.js?v=226"></script>
+    <script src="js/soumission.js?v=227"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>
