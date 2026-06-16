@@ -395,9 +395,31 @@ function showOptions() {
 
     // Restreindre certaines options selon le type de machine
     applyTypeRestrictions(type);
+    // Telehandler sans base rotative -> pas d'option Rotation
+    applyRotationRestriction(type, fab, modele, annee);
 
     // Show kit obligatory items immediately
     updateSelectedSummary();
+}
+
+// Telehandler sans base rotative -> les sous-options "Rotation" et "Hauteur + Rotation"
+// du limiteur ne sont pas disponibles (lues depuis la spec "Base rotative" du modele).
+function applyRotationRestriction(type, fab, modele, annee) {
+    var rotCb = document.getElementById('lim-rotation');
+    var hrCb = document.getElementById('lim-hr');
+    var allowRot = true;
+    if (type === 'Telehandler') {
+        var e = null;
+        try { e = machinesData[type][fab][annee][modele]; } catch (ex) { e = null; }
+        var base = e && (e['Base rotative'] || (e._specs && e._specs['Base rotative']));
+        allowRot = (base === 'Oui');
+    }
+    [rotCb, hrCb].forEach(function(cb) {
+        if (!cb) return;
+        var label = cb.closest('.sub-option');
+        if (label) label.style.display = allowRot ? '' : 'none';
+        if (!allowRot) cb.checked = false;
+    });
 }
 
 // Restrictions d'options par type de machine (tuile Soumission) :
