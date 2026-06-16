@@ -572,10 +572,6 @@
                     <label data-i18n="db.search">Recherche</label>
                     <input type="text" id="db-search" class="db-search" data-i18n-placeholder="db.search_placeholder" placeholder="Rechercher un modele...">
                 </div>
-                <div class="db-control-group">
-                    <label>&nbsp;</label>
-                    <button id="db-export" class="db-export-btn" data-i18n-html="db.export">&#128196; Exporter CSV</button>
-                </div>
             </div>
 
             <div class="db-legend" id="db-legend">
@@ -2463,7 +2459,8 @@
             if (box) box.style.display = 'none';
         }
 
-        document.getElementById('db-export').addEventListener('click', function() {
+        var _dbExportBtn = document.getElementById('db-export');
+        if (_dbExportBtn) _dbExportBtn.addEventListener('click', function() {
             var typeVal = document.getElementById('db-type').value;
             var isExc = (typeVal === 'Excavatrice');
 
