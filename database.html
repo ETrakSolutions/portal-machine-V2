@@ -1007,7 +1007,9 @@
                 {key: 'hauteur', label: 'Hauteur levée'},
                 {key: 'reach', label: 'Portée avant'},
                 {key: 'puissance', label: 'Puissance'},
-                {key: 'poids', label: 'Poids'}
+                {key: 'poids', label: 'Poids'},
+                {key: 'rotative', label: 'Base rotative'},
+                {key: 'stab', label: 'Pattes stab.'}
             ]
         };
         var currentSpecCols = SPEC_COLS['Excavatrice'];
@@ -1657,7 +1659,9 @@
                         hauteur: s['Hauteur levee max'] || '',
                         reach: s['Portee avant max'] || '',
                         puissance: s['Puissance moteur'] || '',
-                        poids: s['Poids operationnel'] || ''
+                        poids: s['Poids operationnel'] || '',
+                        rotative: s['Base rotative'] || '',
+                        stab: s['Pattes stabilisatrices'] || ''
                     };
                 }
             };
