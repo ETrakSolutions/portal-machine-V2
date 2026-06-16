@@ -434,16 +434,17 @@ function applyTypeRestrictions(type) {
     var isExc = (type === 'Excavatrice');
     var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
 
-    // Balance ST-7 (1200-0011) — Telehandler seulement
-    var balBox = document.getElementById('toggle-balance');
-    if (balBox) {
-        var isTele = (type === 'Telehandler');
-        balBox.style.display = isTele ? '' : 'none';
-        if (!isTele) {
-            balBox.classList.remove('active', 'open');
-            var balSt = balBox.querySelector('.toggle-status'); if (balSt) balSt.textContent = 'OFF';
+    // Balance ST-7 (1200-0011) + Imprimante thermique (1200-0014) — Telehandler ou Loader
+    var isTeleOrLoader = (type === 'Telehandler' || type === 'Loader');
+    ['toggle-balance', 'toggle-imprimante'].forEach(function (boxId) {
+        var box = document.getElementById(boxId);
+        if (!box) return;
+        box.style.display = isTeleOrLoader ? '' : 'none';
+        if (!isTeleOrLoader) {
+            box.classList.remove('active', 'open');
+            var st = box.querySelector('.toggle-status'); if (st) st.textContent = 'OFF';
         }
-    }
+    });
 
     // Point 1 — Indicateur de charge (excavatrice seulement)
     var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
@@ -1090,7 +1091,8 @@ var INDIVIDUAL_CODES = {
     'Camera Recul + capteur': [{code: '1300-0012', desc: 'Camera recul + capteur proximite'}],
     'Camera Quad': [{code: '1300-0003', desc: 'Camera Quad'}],
     'Camera 360': [{code: '1300-0004', desc: 'Camera 360 (4 cameras)'}],
-    'Balance ST-7': [{code: '1200-0011', desc: 'Balance ST-7 (balance en valise)'}]
+    'Balance ST-7': [{code: '1200-0011', desc: 'Balance ST-7 (balance en valise)'}],
+    'Imprimante thermique': [{code: '1200-0014', desc: 'Imprimante thermique'}]
 };
 
 // Update selected options summary list — each code on its own line
