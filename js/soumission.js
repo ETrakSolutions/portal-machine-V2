@@ -1284,6 +1284,16 @@ function updateSelectedSummary() {
         noteHtml = '<li class="oblig note-item">Note: ' + currentNotes + '</li>';
     }
 
+    // Camion Vacuum : 1500-0505 (Hauteur + extension) remplace 1500-0501 (Hauteur).
+    // Si 0505 est present dans la selection, on retire 0501 (peu importe sa source).
+    if (selectType.value === 'Camion Vacuum') {
+        var _hasExt = items.concat(obligItems, pcItems).some(function (l) { return l.indexOf('1500-0505') !== -1; });
+        if (_hasExt) {
+            var _noH = function (arr) { return arr.filter(function (l) { return l.indexOf('1500-0501') === -1; }); };
+            items = _noH(items); obligItems = _noH(obligItems); pcItems = _noH(pcItems);
+        }
+    }
+
     // Liste canonique de la selection (memes lignes que l'ecran) — reutilisee par le courriel.
     window.__selectionLines = items.concat(obligItems, pcItems);
     // Version structuree (code/nom/obligatoire) — le courriel s'en sert pour grouper proprement.
