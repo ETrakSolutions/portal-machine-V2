@@ -410,6 +410,7 @@ function showOptions() {
 
 // Telehandler sans base rotative -> les sous-options "Rotation" et "Hauteur + Rotation"
 // du limiteur ne sont pas disponibles (lues depuis la spec "Base rotative" du modele).
+// Loader (chargeuse sur roues) : pas de rotation -> seule la limitation Hauteur est offerte.
 function applyRotationRestriction(type, fab, modele, annee) {
     var rotCb = document.getElementById('lim-rotation');
     var hrCb = document.getElementById('lim-hr');
@@ -419,6 +420,8 @@ function applyRotationRestriction(type, fab, modele, annee) {
         try { e = machinesData[type][fab][annee][modele]; } catch (ex) { e = null; }
         var base = e && (e['Base rotative'] || (e._specs && e._specs['Base rotative']));
         allowRot = (base === 'Oui');
+    } else if (type === 'Loader') {
+        allowRot = false;
     }
     [rotCb, hrCb].forEach(function(cb) {
         if (!cb) return;
