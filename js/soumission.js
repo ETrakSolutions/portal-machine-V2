@@ -414,21 +414,30 @@ function showOptions() {
 function applyRotationRestriction(type, fab, modele, annee) {
     var rotCb = document.getElementById('lim-rotation');
     var hrCb = document.getElementById('lim-hr');
-    var allowRot = true;
+    var extCb = document.getElementById('lim-hauteur-ext');
+    var isVac = (type === 'Camion Vacuum');
+    var allowRot = true, allowHR = true;
     if (type === 'Telehandler') {
         var e = null;
         try { e = machinesData[type][fab][annee][modele]; } catch (ex) { e = null; }
         var base = e && (e['Base rotative'] || (e._specs && e._specs['Base rotative']));
-        allowRot = (base === 'Oui');
+        allowRot = (base === 'Oui'); allowHR = allowRot;
     } else if (type === 'Loader') {
-        allowRot = false;
+        allowRot = false; allowHR = false;
+    } else if (isVac) {
+        // Camion Vacuum : choix = Hauteur / Hauteur + extension / Rotation (pas de Hauteur + Rotation)
+        allowRot = true; allowHR = false;
     }
-    [rotCb, hrCb].forEach(function(cb) {
+    function setVis(cb, show) {
         if (!cb) return;
         var label = cb.closest('.sub-option');
-        if (label) label.style.display = allowRot ? '' : 'none';
-        if (!allowRot) cb.checked = false;
-    });
+        if (label) label.style.display = show ? '' : 'none';
+        if (!show) cb.checked = false;
+    }
+    setVis(rotCb, allowRot);
+    setVis(hrCb, allowHR);
+    // Hauteur + extension (1500-0505) : Camion Vacuum seulement
+    setVis(extCb, isVac);
 }
 
 // Restrictions d'options par type de machine (tuile Soumission) :
@@ -1175,14 +1184,19 @@ function updateSelectedSummary() {
         // -> evite la fuite de codes excavatrice.
         if (fbCode && (_selT === 'Excavatrice' || !_selHasLabels)) items.push(fmtItem(fbCode, fbDesc));
     }
+    // Camion Vacuum : la base (1500-0503) vient du kit (obligatoire), pas du limiteur -> pas de base ici.
+    var _vacNoBase = (_selT === 'Camion Vacuum');
     if (limVal === 'Hauteur') {
-        pushLi(_liBase, '1500-0000', 'Base limiteur');
+        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
+    } else if (limVal === 'Hauteur + extension') {
+        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
+        items.push(fmtItem('1500-0505', 'Limitation Hauteur + extension'));
     } else if (limVal === 'Rotation') {
-        pushLi(_liBase, '1500-0000', 'Base limiteur');
+        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Hauteur + Rotation') {
-        pushLi(_liBase, '1500-0000', 'Base limiteur');
+        if (!_vacNoBase) pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
         pushLi(_liR, '1500-0002', 'Limiteur Rotation');
     } else if (limVal === 'Multi-axe') {
