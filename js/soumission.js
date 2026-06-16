@@ -385,8 +385,8 @@ function showOptions() {
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
-    // Reset sous-option Imprimante de la Balance
-    var balImpR = document.getElementById('balance-imprimante'); if (balImpR) balImpR.checked = false;
+    // Reset sous-options Balance
+    document.querySelectorAll('input[name="balance-type"]').forEach(function(r) { r.checked = false; });
     var refInput = document.getElementById('soumission-ref-client');
     if (refInput) refInput.value = '';
     var textarea = document.getElementById('soumission-comment');
@@ -447,7 +447,7 @@ function applyTypeRestrictions(type) {
         if (!isTeleOrLoader) {
             balBox.classList.remove('active', 'open');
             var balSt = balBox.querySelector('.toggle-status'); if (balSt) balSt.textContent = 'OFF';
-            var balImpReset = document.getElementById('balance-imprimante'); if (balImpReset) balImpReset.checked = false;
+            balBox.querySelectorAll('input[name="balance-type"]').forEach(function(c) { c.checked = false; });
         }
     }
 
@@ -879,6 +879,7 @@ if (submitBtn) {
         document.querySelectorAll('.toggle-box').forEach(function(box) {
             if (box.id === 'toggle-limiteur') return;
             if (box.id === 'toggle-camera') return;
+            if (box.id === 'toggle-balance') return;
             if (box.dataset.option === 'Indicateur de charge') return;
             if (box.dataset.option === 'Guide de creusage') return;
             var name = box.dataset.option;
@@ -891,12 +892,20 @@ if (submitBtn) {
             }
         });
 
-        // Imprimante thermique (1200-0014) : sous-option de la Balance ST-7
+        // Balance ST-7 (choix exclusif : Balance seule / Balance + imprimante)
         var _balBoxE = document.getElementById('toggle-balance');
-        var _balImpE = document.getElementById('balance-imprimante');
-        if (_balBoxE && _balBoxE.classList.contains('active') && _balImpE && _balImpE.checked) {
-            optionsOn.push('Imprimante thermique');
-            accessoires.push({ code: '1200-0014', name: 'Imprimante thermique' });
+        if (_balBoxE && _balBoxE.classList.contains('active')) {
+            var _balSelE = _balBoxE.querySelector('input[name="balance-type"]:checked');
+            if (_balSelE) {
+                optionsOn.push('Balance ST-7');
+                accessoires.push({ code: '1200-0011', name: 'Balance ST-7' });
+                if (_balSelE.value === 'Balance + imprimante') {
+                    optionsOn.push('Imprimante thermique');
+                    accessoires.push({ code: '1200-0014', name: 'Imprimante thermique' });
+                }
+            }
+        } else {
+            optionsOff.push('Balance ST-7');
         }
 
         var refClient = (document.getElementById('soumission-ref-client').value || '').trim();
@@ -1218,6 +1227,7 @@ function updateSelectedSummary() {
         if (box.id === 'toggle-limiteur') return;
         if (box.id === 'toggle-camera') return;
         if (box.id === 'toggle-creusage') return;
+        if (box.id === 'toggle-balance') return;
         if (box.dataset.option === 'Indicateur de charge') return;
         if (box.classList.contains('active')) {
             var od = INDIVIDUAL_CODES[box.dataset.option];
@@ -1226,11 +1236,14 @@ function updateSelectedSummary() {
         }
     });
 
-    // Imprimante thermique (1200-0014) : sous-option de la Balance ST-7
+    // Balance ST-7 (choix exclusif : Balance seule / Balance + imprimante)
     var _balBoxS = document.getElementById('toggle-balance');
-    var _balImpS = document.getElementById('balance-imprimante');
-    if (_balBoxS && _balBoxS.classList.contains('active') && _balImpS && _balImpS.checked) {
-        items.push(fmtItem('1200-0014', 'Imprimante thermique'));
+    if (_balBoxS && _balBoxS.classList.contains('active')) {
+        var _balSelS = _balBoxS.querySelector('input[name="balance-type"]:checked');
+        if (_balSelS) {
+            items.push(fmtItem('1200-0011', 'Balance ST-7 (balance en valise)'));
+            if (_balSelS.value === 'Balance + imprimante') items.push(fmtItem('1200-0014', 'Imprimante thermique'));
+        }
     }
 
     // Add kit machine items.
@@ -1357,28 +1370,21 @@ function getKitAllItems() {
 
 // Toggle boxes click handler
 document.querySelectorAll('.toggle-box').forEach(function(box) {
-    // Limiteur and Camera have sub-options — special handler
-    if (box.id === 'toggle-limiteur' || box.id === 'toggle-camera' || box.id === 'toggle-creusage') {
+    // Limiteur, Camera, Creusage et Balance ont des sous-options — handler ouverture/fermeture
+    if (box.id === 'toggle-limiteur' || box.id === 'toggle-camera' || box.id === 'toggle-creusage' || box.id === 'toggle-balance') {
         box.addEventListener('click', function(e) {
             // Don't toggle open/close when clicking inside sub-panel (checkboxes, labels)
             if (e.target.closest('.toggle-sub-panel') || e.target.closest('.sub-option') || e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
             this.classList.toggle('open');
         });
     } else {
-        box.addEventListener('click', function(e) {
-            // Clic sur une sous-option (ex. case Imprimante de la Balance) : ne pas basculer la tuile
-            if (e.target.closest('.toggle-sub-panel') || e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
-                updateSelectedSummary();
-                return;
-            }
+        box.addEventListener('click', function() {
             this.classList.toggle('active');
             var status = this.querySelector('.toggle-status');
             if (this.classList.contains('active')) {
                 status.textContent = 'ON';
             } else {
                 status.textContent = 'OFF';
-                // Balance OFF -> decocher l'imprimante
-                var impOff = this.querySelector('#balance-imprimante'); if (impOff) impOff.checked = false;
             }
             // Show/hide lock valve warning for IDC on Excavatrice
             if (this.dataset.option === 'Indicateur de charge') {
@@ -1388,10 +1394,6 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
         });
     }
 });
-
-// Sous-option Imprimante de la Balance : recalculer le sommaire au changement
-var _balImpCb = document.getElementById('balance-imprimante');
-if (_balImpCb) _balImpCb.addEventListener('change', updateSelectedSummary);
 
 // IDC Lock Valve warning — visible only when type=Excavatrice and IDC is ON
 function updateIdcLockValveWarning() {
@@ -1477,6 +1479,31 @@ function updateAValiderWarning() {
                 cbs.forEach(function(c) { if (c.checked) anyChecked = true; });
                 if (!anyChecked) {
                     limBox.classList.remove('active');
+                    status.textContent = 'OFF';
+                }
+            }
+            updateSelectedSummary();
+        });
+    });
+})();
+
+// Balance sub-options logic (choix exclusif : Balance seule / Balance + imprimante)
+(function() {
+    var balBox = document.getElementById('toggle-balance');
+    if (!balBox) return;
+    var cbs = balBox.querySelectorAll('input[name="balance-type"]');
+    var status = balBox.querySelector('.toggle-status');
+    cbs.forEach(function(cb) {
+        cb.addEventListener('change', function() {
+            if (this.checked) {
+                cbs.forEach(function(other) { if (other !== cb) other.checked = false; });
+                balBox.classList.add('active');
+                status.textContent = this.value;
+            } else {
+                var anyChecked = false;
+                cbs.forEach(function(c) { if (c.checked) anyChecked = true; });
+                if (!anyChecked) {
+                    balBox.classList.remove('active');
                     status.textContent = 'OFF';
                 }
             }

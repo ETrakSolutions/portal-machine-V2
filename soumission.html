@@ -128,11 +128,12 @@
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-360" value="360"> <span data-i18n="soumission.cam_360">360 (4 cameras)</span></label>
                     </div>
                 </div>
-                <div class="toggle-box" data-option="Balance ST-7" id="toggle-balance" style="display:none;">
+                <div class="toggle-box toggle-has-sub" data-option="Balance ST-7" id="toggle-balance" style="display:none;">
                     <span class="toggle-label">Balance ST-7</span>
                     <span class="toggle-status">OFF</span>
-                    <div class="toggle-sub-panel balance-sub">
-                        <label class="sub-option"><input type="checkbox" id="balance-imprimante"> Imprimante thermique</label>
+                    <div class="toggle-sub-panel" id="balance-panel">
+                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-seule" value="Balance seule"> Balance seule</label>
+                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-imp" value="Balance + imprimante"> Balance + imprimante thermique</label>
                     </div>
                 </div>
             </div>
@@ -219,7 +220,7 @@
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=3"></script>
     <script src="js/kit-rules.js?v=3"></script>
-    <script src="js/soumission.js?v=228"></script>
+    <script src="js/soumission.js?v=229"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>
