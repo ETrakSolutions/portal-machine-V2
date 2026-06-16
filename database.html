@@ -1001,6 +1001,13 @@
                 {key: 'console', label: 'Console'},
                 {key: 'estop', label: 'E-stop'},
                 {key: 'notes', label: 'Notes'}
+            ],
+            'Telehandler': [
+                {key: 'capacite', label: 'Capacité max'},
+                {key: 'hauteur', label: 'Hauteur levée'},
+                {key: 'reach', label: 'Portée avant'},
+                {key: 'puissance', label: 'Puissance'},
+                {key: 'poids', label: 'Poids'}
             ]
         };
         var currentSpecCols = SPEC_COLS['Excavatrice'];
@@ -1642,6 +1649,15 @@
                         console: s['Console operateur'] || '',
                         estop: s['E-stop'] || '',
                         notes: s['Notes'] || ''
+                    };
+                },
+                'Telehandler': function(s) {
+                    return {
+                        capacite: s['Capacite max'] || '',
+                        hauteur: s['Hauteur levee max'] || '',
+                        reach: s['Portee avant max'] || '',
+                        puissance: s['Puissance moteur'] || '',
+                        poids: s['Poids operationnel'] || ''
                     };
                 }
             };
