@@ -1011,6 +1011,12 @@
                 {key: 'levage', label: 'Capacité de levage'},
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'}
+            ],
+            'Camion Girafe (Boom Truck)': [
+                {key: 'longueur', label: 'Longueur de boom'},
+                {key: 'sections', label: 'Sections de boom'},
+                {key: 'rotation', label: 'Angle de rotation'},
+                {key: 'voltage', label: 'Voltage'}
             ]
         };
         var currentSpecCols = SPEC_COLS['Excavatrice'];
@@ -1670,6 +1676,14 @@
                         levage: s['Capacite de levage'] || '',
                         puissance: s['Puissance moteur'] || '',
                         poids: s['Poids operationnel'] || ''
+                    };
+                },
+                'Camion Girafe (Boom Truck)': function(s) {
+                    return {
+                        longueur: s['Longueur de boom'] || '',
+                        sections: s['Nombre de sections de boom'] || '',
+                        rotation: s['Angle de rotation'] || '',
+                        voltage: s['Voltage'] || ''
                     };
                 }
             };
