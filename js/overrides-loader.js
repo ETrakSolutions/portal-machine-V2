@@ -23,7 +23,8 @@
     'Telehandler': 'telehandler',
     'Foreuse': 'foreuse',
     'Camion Vacuum': 'camion-vacuum',
-    'Retrocaveuse': 'retrocaveuse'
+    'Retrocaveuse': 'retrocaveuse',
+    'Loader': 'loader'
   };
   window.ETRAK_TYPE_SLUGS = TYPE_SLUGS;
 
