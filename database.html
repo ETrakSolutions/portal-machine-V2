@@ -1008,7 +1008,7 @@
                 {key: 'stab', label: 'Pattes stab.'}
             ],
             'Loader': [
-                {key: 'godet', label: 'Capacité godet'},
+                {key: 'levage', label: 'Capacité de levage'},
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'}
             ]
@@ -1667,7 +1667,7 @@
                 },
                 'Loader': function(s) {
                     return {
-                        godet: s['Capacite godet'] || '',
+                        levage: s['Capacite de levage'] || '',
                         puissance: s['Puissance moteur'] || '',
                         poids: s['Poids operationnel'] || ''
                     };
