@@ -1350,7 +1350,6 @@ body.force-mobile main{
     var dirtyCount = countChanges();
     var isFlagged = FLAG && FLAG.active;
 
-    var FIT_KEYS = ['Raccords hydrauliques','PN raccord (Epicor)','Boulons'];   // Loader : lignes dans le tableau Kit BOM, hors Specifications
     var bomRows = '';
     if (hasBom){
       // Harnais — premiere ligne, meme format que les autres BOM
@@ -1417,6 +1416,7 @@ body.force-mobile main{
         var cuStatusSel = '<select class="status-' + status + '" data-custom="' + idx + '"' + (canEdit?'':' disabled') + '>' +
               '<option value="r"' + (status==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
               '<option value="j"' + (status==='j'?' selected':'') + '>🟡 Optionnel</option>' +
+              '<option value="v"' + (status==='v'?' selected':'') + '>🟠 À vérifier</option>' +
               '<option value="na"' + (status==='na'?' selected':'') + '>⚫ N/A</option>' +
             '</select>';
         var cuScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + (row.code||'') + '"' + (SCOPE_ALL_CODES[row.code]?' checked':'') + '><span></span></label></td>' : '');
@@ -1438,30 +1438,6 @@ body.force-mobile main{
           '</tr>';
         }
       });
-
-      // Loader : raccords hydrauliques + boulons, presentes comme des lignes du BOM
-      if (TYPE === 'Loader'){
-        var scopeShown = (canEdit && ALL_YEARS_FOR_MODEL.length > 1);
-        var ncol = 3 + (scopeShown ? 1 : 0) + 1;
-        var scopeEmpty = scopeShown ? '<td></td>' : '';
-        var fitInput = function(key){
-          var v = SPECS_CURRENT[key] != null ? SPECS_CURRENT[key] : '';
-          return '<input type="text" data-spec-key="' + key.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '" placeholder="' + key + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"' + (canEdit?'':' disabled') + '>';
-        };
-        bomRows += '<tr><td colspan="' + ncol + '" style="padding-top:0.9rem;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-2);font-weight:600;border:none">Raccords hydrauliques &amp; boulons</td></tr>';
-        bomRows += '<tr class="fit-row">' +
-          '<td>' + fitInput('PN raccord (Epicor)') + '</td>' +
-          '<td>' + fitInput('Raccords hydrauliques') + '</td>' +
-          '<td style="color:var(--text-3);font-size:0.8rem">Raccord</td>' +
-          scopeEmpty + '<td></td>' +
-        '</tr>';
-        bomRows += '<tr class="fit-row">' +
-          '<td></td>' +
-          '<td>' + fitInput('Boulons') + '</td>' +
-          '<td style="color:var(--text-3);font-size:0.8rem">Boulons</td>' +
-          scopeEmpty + '<td></td>' +
-        '</tr>';
-      }
 
       // Add line form (inline) — Code (sera affiche en Part Number) + Description
       if (canEdit && ADDING_LINE){
@@ -1490,7 +1466,7 @@ body.force-mobile main{
     // (Le harnais est maintenant integre comme premiere ligne du tableau BOM — voir plus haut)
 
     var specRows = '';
-    var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image' && FIT_KEYS.indexOf(k) < 0; });
+    var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; });
     specKeys.forEach(function(k){
       var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';
       var changed = SPECS_CURRENT[k] !== SPECS_INITIAL[k];
@@ -1530,7 +1506,7 @@ body.force-mobile main{
     });
 
     // Side specs (top 6)
-    var topSpecKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image' && FIT_KEYS.indexOf(k) < 0; });
+    var topSpecKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; });
     var sideSpecsHtml = topSpecKeys.map(function(k){
       return '<div class="row"><span class="k">' + k.replace(/\(.*$/,'').trim() + '</span><span class="v">' + (MACHINE[k] || '—') + '</span></div>';
     }).join('');
