@@ -1010,7 +1010,9 @@
             'Loader': [
                 {key: 'levage', label: 'Capacité de levage'},
                 {key: 'puissance', label: 'Puissance'},
-                {key: 'poids', label: 'Poids'}
+                {key: 'poids', label: 'Poids'},
+                {key: 'raccords', label: 'Raccords hydrauliques'},
+                {key: 'bolts', label: 'Boulons'}
             ],
             'Camion Girafe (Boom Truck)': [
                 {key: 'longueur', label: 'Longueur de boom'},
@@ -1686,7 +1688,9 @@
                     return {
                         levage: s['Capacite de levage'] || '',
                         puissance: s['Puissance moteur'] || '',
-                        poids: s['Poids operationnel'] || ''
+                        poids: s['Poids operationnel'] || '',
+                        raccords: s['Raccords hydrauliques'] || '',
+                        bolts: s['Boulons'] || ''
                     };
                 },
                 'Camion Girafe (Boom Truck)': function(s) {
