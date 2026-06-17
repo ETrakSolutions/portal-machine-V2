@@ -1465,7 +1465,7 @@ body.force-mobile main{
     // (Le harnais est maintenant integre comme premiere ligne du tableau BOM — voir plus haut)
 
     var specRows = '';
-    var FIT_KEYS = ['Raccords hydrauliques','Boulons'];   // Loader : affiches dans l'onglet Kit BOM, pas Specifications
+    var FIT_KEYS = ['Raccords hydrauliques','PN raccord (Epicor)','Boulons'];   // Loader : affiches dans l'onglet Kit BOM, pas Specifications
     var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image' && FIT_KEYS.indexOf(k) < 0; });
     specKeys.forEach(function(k){
       var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';

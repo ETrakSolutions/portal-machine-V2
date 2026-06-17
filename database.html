@@ -1012,6 +1012,7 @@
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'},
                 {key: 'raccords', label: 'Raccords hydrauliques'},
+                {key: 'pnraccord', label: 'PN raccord'},
                 {key: 'bolts', label: 'Boulons'}
             ],
             'Camion Girafe (Boom Truck)': [
@@ -1690,6 +1691,7 @@
                         puissance: s['Puissance moteur'] || '',
                         poids: s['Poids operationnel'] || '',
                         raccords: s['Raccords hydrauliques'] || '',
+                        pnraccord: s['PN raccord (Epicor)'] || '',
                         bolts: s['Boulons'] || ''
                     };
                 },
@@ -2108,7 +2110,8 @@
                                 },
                                 'Loader': {
                                     'Capacite de levage':'levage','Puissance moteur':'puissance',
-                                    'Poids operationnel':'poids','Raccords hydrauliques':'raccords','Boulons':'bolts'
+                                    'Poids operationnel':'poids','Raccords hydrauliques':'raccords',
+                                    'PN raccord (Epicor)':'pnraccord','Boulons':'bolts'
                                 }
                             };
                             var fmap = SPEC_FIELD_MAP[d._type] || {};
