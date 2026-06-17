@@ -1023,6 +1023,11 @@
                 {key: 'sections', label: 'Sections de boom'},
                 {key: 'rotation', label: 'Angle de rotation'},
                 {key: 'voltage', label: 'Voltage'}
+            ],
+            'Foreuse': [
+                {key: 'mat_type', label: 'Type de mât (lead/kelly)'},
+                {key: 'mat_long', label: 'Longueur du mât'},
+                {key: 'kelly_long', label: 'Longueur du kelly'}
             ]
         };
         var currentSpecCols = SPEC_COLS['Excavatrice'];
@@ -1698,6 +1703,13 @@
                         sections: s['Nombre de sections de boom'] || '',
                         rotation: s['Angle de rotation'] || '',
                         voltage: s['Voltage'] || ''
+                    };
+                },
+                'Foreuse': function(s) {
+                    return {
+                        mat_type: s['Type de mat (lead/kelly)'] || '',
+                        mat_long: s['Longueur du mat'] || '',
+                        kelly_long: s['Longueur du kelly'] || ''
                     };
                 }
             };
