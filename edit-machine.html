@@ -1465,7 +1465,8 @@ body.force-mobile main{
     // (Le harnais est maintenant integre comme premiere ligne du tableau BOM — voir plus haut)
 
     var specRows = '';
-    var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; });
+    var FIT_KEYS = ['Raccords hydrauliques','Boulons'];   // Loader : affiches dans l'onglet Kit BOM, pas Specifications
+    var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image' && FIT_KEYS.indexOf(k) < 0; });
     specKeys.forEach(function(k){
       var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';
       var changed = SPECS_CURRENT[k] !== SPECS_INITIAL[k];
@@ -1475,6 +1476,25 @@ body.force-mobile main{
         '<input id="' + safeId + '" type="text" data-spec-key="' + k.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '"' + (canEdit?'':' disabled') + '>' +
       '</div>';
     });
+
+    // Loader : bloc editable "Raccords hydrauliques & boulons" dans l'onglet Kit BOM
+    var loaderFittingsHtml = '';
+    if (TYPE === 'Loader') {
+      var fitRows = FIT_KEYS.map(function(k){
+        var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';
+        var changed = SPECS_CURRENT[k] !== SPECS_INITIAL[k];
+        var safeId = 'spec-' + k.replace(/[^a-zA-Z0-9]/g,'_');
+        return '<div class="spec-edit' + (changed?' changed':'') + '">' +
+          '<label for="' + safeId + '">' + k + '</label>' +
+          '<input id="' + safeId + '" type="text" data-spec-key="' + k.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '"' + (canEdit?'':' disabled') + '>' +
+        '</div>';
+      }).join('');
+      loaderFittingsHtml =
+        '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
+          '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Raccords hydrauliques &amp; boulons</label>' +
+          '<div class="specs-edit">' + fitRows + '</div>' +
+        '</div>';
+    }
 
     var actions = '';
     if (canFlag){
@@ -1505,7 +1525,7 @@ body.force-mobile main{
     });
 
     // Side specs (top 6)
-    var topSpecKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image'; });
+    var topSpecKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image' && FIT_KEYS.indexOf(k) < 0; });
     var sideSpecsHtml = topSpecKeys.map(function(k){
       return '<div class="row"><span class="k">' + k.replace(/\(.*$/,'').trim() + '</span><span class="v">' + (MACHINE[k] || '—') + '</span></div>';
     }).join('');
@@ -1558,6 +1578,7 @@ body.force-mobile main{
                   '</div>'
                 : '')
             : '<p style="color:var(--text-3);padding:1rem 0">Aucun code BOM defini pour ce type de machine.</p>') +
+          loaderFittingsHtml +
           '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
             '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Notes sur ce modele</label>' +
             '<textarea id="notes-area" class="notes-area"' + (canEdit?'':' readonly') + '>' + (NOTES_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
