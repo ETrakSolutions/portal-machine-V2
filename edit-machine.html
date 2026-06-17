@@ -1350,6 +1350,7 @@ body.force-mobile main{
     var dirtyCount = countChanges();
     var isFlagged = FLAG && FLAG.active;
 
+    var FIT_KEYS = ['Raccords hydrauliques','PN raccord (Epicor)','Boulons'];   // Loader : lignes dans le tableau Kit BOM, hors Specifications
     var bomRows = '';
     if (hasBom){
       // Harnais — premiere ligne, meme format que les autres BOM
@@ -1438,6 +1439,30 @@ body.force-mobile main{
         }
       });
 
+      // Loader : raccords hydrauliques + boulons, presentes comme des lignes du BOM
+      if (TYPE === 'Loader'){
+        var scopeShown = (canEdit && ALL_YEARS_FOR_MODEL.length > 1);
+        var ncol = 3 + (scopeShown ? 1 : 0) + 1;
+        var scopeEmpty = scopeShown ? '<td></td>' : '';
+        var fitInput = function(key){
+          var v = SPECS_CURRENT[key] != null ? SPECS_CURRENT[key] : '';
+          return '<input type="text" data-spec-key="' + key.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '" placeholder="' + key + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"' + (canEdit?'':' disabled') + '>';
+        };
+        bomRows += '<tr><td colspan="' + ncol + '" style="padding-top:0.9rem;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-2);font-weight:600;border:none">Raccords hydrauliques &amp; boulons</td></tr>';
+        bomRows += '<tr class="fit-row">' +
+          '<td>' + fitInput('PN raccord (Epicor)') + '</td>' +
+          '<td>' + fitInput('Raccords hydrauliques') + '</td>' +
+          '<td style="color:var(--text-3);font-size:0.8rem">Raccord</td>' +
+          scopeEmpty + '<td></td>' +
+        '</tr>';
+        bomRows += '<tr class="fit-row">' +
+          '<td></td>' +
+          '<td>' + fitInput('Boulons') + '</td>' +
+          '<td style="color:var(--text-3);font-size:0.8rem">Boulons</td>' +
+          scopeEmpty + '<td></td>' +
+        '</tr>';
+      }
+
       // Add line form (inline) — Code (sera affiche en Part Number) + Description
       if (canEdit && ADDING_LINE){
         bomRows += '<tr class="add-row">' +
@@ -1465,7 +1490,6 @@ body.force-mobile main{
     // (Le harnais est maintenant integre comme premiere ligne du tableau BOM — voir plus haut)
 
     var specRows = '';
-    var FIT_KEYS = ['Raccords hydrauliques','PN raccord (Epicor)','Boulons'];   // Loader : affiches dans l'onglet Kit BOM, pas Specifications
     var specKeys = Object.keys(MACHINE).filter(function(k){ return !k.startsWith('_') && k !== 'Flag' && k !== 'Image' && FIT_KEYS.indexOf(k) < 0; });
     specKeys.forEach(function(k){
       var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';
@@ -1476,25 +1500,6 @@ body.force-mobile main{
         '<input id="' + safeId + '" type="text" data-spec-key="' + k.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '"' + (canEdit?'':' disabled') + '>' +
       '</div>';
     });
-
-    // Loader : bloc editable "Raccords hydrauliques & boulons" dans l'onglet Kit BOM
-    var loaderFittingsHtml = '';
-    if (TYPE === 'Loader') {
-      var fitRows = FIT_KEYS.map(function(k){
-        var v = SPECS_CURRENT[k] != null ? SPECS_CURRENT[k] : '';
-        var changed = SPECS_CURRENT[k] !== SPECS_INITIAL[k];
-        var safeId = 'spec-' + k.replace(/[^a-zA-Z0-9]/g,'_');
-        return '<div class="spec-edit' + (changed?' changed':'') + '">' +
-          '<label for="' + safeId + '">' + k + '</label>' +
-          '<input id="' + safeId + '" type="text" data-spec-key="' + k.replace(/"/g,'&quot;') + '" value="' + (v||'').replace(/"/g,'&quot;') + '"' + (canEdit?'':' disabled') + '>' +
-        '</div>';
-      }).join('');
-      loaderFittingsHtml =
-        '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
-          '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Raccords hydrauliques &amp; boulons</label>' +
-          '<div class="specs-edit">' + fitRows + '</div>' +
-        '</div>';
-    }
 
     var actions = '';
     if (canFlag){
@@ -1578,7 +1583,6 @@ body.force-mobile main{
                   '</div>'
                 : '')
             : '<p style="color:var(--text-3);padding:1rem 0">Aucun code BOM defini pour ce type de machine.</p>') +
-          loaderFittingsHtml +
           '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
             '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Notes sur ce modele</label>' +
             '<textarea id="notes-area" class="notes-area"' + (canEdit?'':' readonly') + '>' + (NOTES_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
