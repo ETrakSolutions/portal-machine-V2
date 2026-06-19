@@ -1,1 +1,1 @@
-{"v": "2026-06-19T18:03:49Z", "note": "Propagation des changements de role sans re-login : a l ouverture du hub, le client revalide son role via backend whoami et rafraichit les tuiles. Necessite redeploiement Apps Script (action whoami)."}
+{"v": "2026-06-19T18:39:25Z", "note": "Soumission: le vendeur interne associe au dealer/distributeur apparait dans le courriel (corps + CC). vendeurEmail persiste en session (login + whoami) ; champ Vendeur associe ajoute a la modale d edition admin (assignation/correction apres creation)."}

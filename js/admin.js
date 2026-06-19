@@ -135,11 +135,13 @@ function refreshSessionRole() {
         var fresh = data.user;
         var changed = (fresh.role !== currentUser.role) ||
                       (fresh.name && fresh.name !== currentUser.name) ||
-                      (fresh.email && fresh.email !== currentUser.email);
+                      (fresh.email && fresh.email !== currentUser.email) ||
+                      ((fresh.vendeurEmail || '') !== (currentUser.vendeurEmail || ''));
         if (!changed) return;
         currentUser.role = fresh.role;
         if (fresh.name) currentUser.name = fresh.name;
         if (fresh.email) currentUser.email = fresh.email;
+        currentUser.vendeurEmail = fresh.vendeurEmail || '';
         currentUser.permissions = getUserPermissions(currentUser.role);
         localStorage.setItem('portal_user', JSON.stringify(currentUser));
         updateHubUI();   // re-affiche les tuiles selon le nouveau role
@@ -364,7 +366,7 @@ function showChangePasswordModal(user, oldPassword) {
                 submitBtn.disabled = false;
                 if (data.ok && data.user) {
                     modal.remove();
-                    currentUser = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role) };
+                    currentUser = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role), vendeurEmail: data.user.vendeurEmail || '' };
                     localStorage.setItem('portal_user', JSON.stringify(currentUser));
                     showWelcome(data.user.name, getUserPermissions(data.user.role).label || data.user.role);
                 } else {
@@ -860,6 +862,12 @@ function openEditUserModal(idx) {
     Object.keys(ROLES).forEach(function(key) {
         roleOptions += '<option value="' + key + '"' + (user.role === key ? ' selected' : '') + '>' + ROLES[key].label + '</option>';
     });
+    // Vendeur associe (dealer/distributeur) : liste des vendeurs (Admin > Vendeurs)
+    var vendeurOptions = '<option value="">-- Aucun --</option>';
+    (vendeurs || []).forEach(function(vv) {
+        vendeurOptions += '<option value="' + vv.email + '"' + (user.vendeurEmail === vv.email ? ' selected' : '') + '>' + vv.name + ' (' + vv.email + ')</option>';
+    });
+    var showVendeur = (user.role === 'dealer' || user.role === 'distributeur');
 
     var modal = document.createElement('div');
     modal.id = 'edit-user-modal';
@@ -877,6 +885,8 @@ function openEditUserModal(idx) {
         '<input type="text" id="edit-user-password" class="login-input" value="' + (user.password || '') + '"></div>' +
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Role</label>' +
         '<select id="edit-user-role" class="login-input"' + (isSuperAdmin ? ' disabled style="opacity:0.5;"' : '') + '>' + roleOptions + '</select></div>' +
+        '<div class="admin-form-group" id="edit-user-vendeur-group" style="margin-bottom:0.75rem;display:' + (showVendeur ? 'block' : 'none') + ';"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Vendeur associe</label>' +
+        '<select id="edit-user-vendeur" class="login-input">' + vendeurOptions + '</select></div>' +
         '<button type="button" id="edit-user-save" class="login-submit">Enregistrer</button>' +
         '<button type="button" id="edit-user-resend" style="width:100%;margin-top:8px;background:transparent;border:1px solid #444;color:#aaa;padding:10px;border-radius:8px;cursor:pointer;font-size:0.88rem;">📧 Renvoyer les informations de connexion</button>' +
         '</div>';
@@ -886,6 +896,12 @@ function openEditUserModal(idx) {
     // Close
     document.getElementById('edit-user-close').addEventListener('click', function() { modal.remove(); });
     modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+
+    // Affiche le champ Vendeur seulement pour dealer/distributeur
+    document.getElementById('edit-user-role').addEventListener('change', function() {
+        var grp = document.getElementById('edit-user-vendeur-group');
+        if (grp) grp.style.display = (this.value === 'dealer' || this.value === 'distributeur') ? 'block' : 'none';
+    });
 
     // Save
     document.getElementById('edit-user-save').addEventListener('click', function() {
@@ -904,6 +920,13 @@ function openEditUserModal(idx) {
             USERS[idx].email = newEmail.toLowerCase();
             USERS[idx].username = newEmail.toLowerCase();
             USERS[idx].role = newRole;
+            // Vendeur associe : seulement pour dealer/distributeur, sinon on retire
+            if (newRole === 'dealer' || newRole === 'distributeur') {
+                var vsel = document.getElementById('edit-user-vendeur');
+                USERS[idx].vendeurEmail = vsel ? vsel.value : '';
+            } else {
+                delete USERS[idx].vendeurEmail;
+            }
         }
         USERS[idx].password = newPassword;
 
@@ -1029,7 +1052,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             loginModal.style.display = 'none';
                             showChangePasswordModal(user, password);
                         } else {
-                            currentUser = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role) };
+                            currentUser = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role), vendeurEmail: user.vendeurEmail || '' };
                             localStorage.setItem('portal_user', JSON.stringify(currentUser));
                             loginModal.style.display = 'none';
                             showWelcome(user.name, getUserPermissions(user.role).label || user.role);
