@@ -116,6 +116,37 @@ function updateHubUI() {
     }
 }
 
+// Re-valide le role de l'utilisateur connecte aupres du serveur a l'ouverture du hub,
+// pour propager un changement de role fait par un admin SANS exiger un re-login.
+// Backend: action 'whoami' (token -> utilisateur frais, role lu depuis authorized_users_v2).
+// GRACIEUX : si le backend ne supporte pas encore 'whoami' (ancien deploiement) ou est
+// hors-ligne, on garde la session en cache (aucun changement, aucune erreur).
+function refreshSessionRole() {
+    if (!currentUser || currentUser.isGuest || !currentUser.token) return;
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'whoami', token: currentUser.token })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        // backend sans 'whoami' -> {error:'unknown action'} ; session invalide -> {ok:false}
+        if (!data || !data.ok || !data.user || !data.user.role) return;
+        var fresh = data.user;
+        var changed = (fresh.role !== currentUser.role) ||
+                      (fresh.name && fresh.name !== currentUser.name) ||
+                      (fresh.email && fresh.email !== currentUser.email);
+        if (!changed) return;
+        currentUser.role = fresh.role;
+        if (fresh.name) currentUser.name = fresh.name;
+        if (fresh.email) currentUser.email = fresh.email;
+        currentUser.permissions = getUserPermissions(currentUser.role);
+        localStorage.setItem('portal_user', JSON.stringify(currentUser));
+        updateHubUI();   // re-affiche les tuiles selon le nouveau role
+    })
+    .catch(function() {});   // hors-ligne -> on garde le cache
+}
+
 function showVenteSection() {
     document.getElementById('hub-nav').style.display = 'none';
     var venteContent = document.getElementById('vente-content');
@@ -942,6 +973,8 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) {}
     }
     updateHubUI();
+    // Propage un eventuel changement de role fait par un admin (sans re-login).
+    refreshSessionRole();
 
     // (la validation du login se fait desormais cote serveur — plus de prechargement
     //  de la liste des utilisateurs ici)

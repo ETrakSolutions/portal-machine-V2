@@ -1,1 +1,1 @@
-{"v": "2026-06-19T17:39:35Z", "note": "Nacelle: regle base selon categorie. Flèche articulée -> base 1500-0903 (0900 n/a); télescopique/mât vertical -> base 1500-0900 (0903 n/a). kit-rules.js nacelleDefaults, branche dans machine/database/edit/export."}
+{"v": "2026-06-19T18:03:49Z", "note": "Propagation des changements de role sans re-login : a l ouverture du hub, le client revalide son role via backend whoami et rafraichit les tuiles. Necessite redeploiement Apps Script (action whoami)."}
