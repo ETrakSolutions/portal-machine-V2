@@ -197,7 +197,7 @@ function renderPermTable() {
                     ROLES[r][p] = !ROLES[r][p];
                     saveRoles();
                     renderPermTable();
-                    showToast('Permission modifiee');
+                    showToast(i18n.t('admin.perm_modified'));
                 });
             }
             tr.appendChild(td);
@@ -488,7 +488,7 @@ function renderEmails() {
             targetEmails.splice(idx, 1);
             saveEmails();
             renderEmails();
-            showToast('Courriel supprime');
+            showToast(i18n.t('admin.email_deleted'));
         });
     });
 }
@@ -530,7 +530,7 @@ function renderSalesEmails() {
             salesEmails.splice(idx, 1);
             saveSalesEmails();
             renderSalesEmails();
-            showToast('Courriel vente supprime');
+            showToast(i18n.t('admin.sales_email_deleted'));
         });
     });
 }
@@ -574,7 +574,7 @@ function renderKitEmails() {
             kitEmails.splice(idx, 1);
             saveKitEmails();
             renderKitEmails();
-            showToast('Courriel kit supprime');
+            showToast(i18n.t('admin.kit_email_deleted'));
         });
     });
 }
@@ -617,7 +617,7 @@ function renderVendeurs() {
             vendeurs.splice(idx, 1);
             saveVendeurs();
             renderVendeurs();
-            showToast('Vendeur supprime');
+            showToast(i18n.t('admin.vendeur_deleted'));
         });
     });
 }
@@ -659,7 +659,7 @@ function renderNotesEmails() {
             notesEmails.splice(idx, 1);
             saveNotesEmails();
             renderNotesEmails();
-            showToast('Courriel notes supprime');
+            showToast(i18n.t('admin.notes_email_deleted'));
         });
     });
 }
@@ -727,15 +727,15 @@ function renderUsers() {
             var idx = parseInt(this.dataset.idx);
             var user = USERS[idx];
             if (user.email && user.email.toLowerCase() === SUPER_ADMIN) {
-                alert('Impossible de supprimer le super administrateur.');
+                alert(i18n.t('admin.cannot_delete_super'));
                 return;
             }
             var userName = user.name;
-            if (!confirm('Supprimer l\'utilisateur "' + userName + '" ?')) return;
+            if (!confirm(i18n.t('admin.confirm_delete_user', {name: userName}))) return;
             USERS.splice(idx, 1);
             saveUsers();
             renderUsers();
-            showToast('Utilisateur "' + userName + '" supprime');
+            showToast(i18n.t('admin.user_deleted', {name: userName}));
         });
     });
 }
@@ -864,7 +864,7 @@ function openEditUserModal(idx) {
         var newRole = document.getElementById('edit-user-role').value;
 
         if (!newName || !newEmail || !newPassword) {
-            alert('Nom, courriel et mot de passe sont obligatoires.');
+            alert(i18n.t('admin.required_fields'));
             return;
         }
 
@@ -879,7 +879,7 @@ function openEditUserModal(idx) {
         saveUsers();
         renderUsers();
         modal.remove();
-        showToast('Utilisateur "' + newName + '" modifie');
+        showToast(i18n.t('admin.user_modified', {name: newName}));
     });
 
     // Resend credentials
@@ -1116,7 +1116,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderVendeurs();
                 nameInput.value = '';
                 emailInput.value = '';
-                showToast('Vendeur "' + name + '" ajoute');
+                showToast(i18n.t('admin.vendeur_added', {name: name}));
             }
         };
     }
@@ -1132,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 saveEmails();
                 renderEmails();
                 input.value = '';
-                showToast('Courriel ajoute');
+                showToast(i18n.t('admin.email_added'));
             }
         };
     }
@@ -1148,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 saveSalesEmails();
                 renderSalesEmails();
                 input.value = '';
-                showToast('Courriel vente ajoute');
+                showToast(i18n.t('admin.sales_email_added'));
             }
         };
     }
@@ -1164,7 +1164,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 saveKitEmails();
                 renderKitEmails();
                 input.value = '';
-                showToast('Courriel kit ajoute');
+                showToast(i18n.t('admin.kit_email_added'));
             }
         };
     }
@@ -1180,7 +1180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 saveNotesEmails();
                 renderNotesEmails();
                 input.value = '';
-                showToast('Courriel notes ajoute');
+                showToast(i18n.t('admin.notes_email_added'));
             }
         };
     }
@@ -1248,7 +1248,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
-            showToast('Utilisateur "' + name + '" ajoute avec succes');
+            showToast(i18n.t('admin.user_added', {name: name}));
         };
     }
 
@@ -1276,11 +1276,11 @@ document.addEventListener('DOMContentLoaded', function() {
             var emailInput = document.getElementById('share-email');
             var email = emailInput.value.trim();
             if (!email || !email.includes('@')) {
-                alert('Veuillez entrer une adresse courriel valide.');
+                alert(i18n.t('admin.invalid_email'));
                 return;
             }
-            var subject = 'Portail e-Trak — Acces au portail';
-            var body = 'Bonjour,\n\nVous avez ete invite a acceder au Portail e-Trak.\nCliquez sur le lien ci-dessous :\n\nhttps://etraksolutions.github.io/portal-machine-V2/?guest=1\n\nCe lien vous donne un acces temporaire (1 heure) en tant qu\'invite.\nPour un acces permanent, demandez la creation d\'un compte.\n\nPortail e-Trak — e-Trak Technology Solutions';
+            var subject = i18n.t('admin.share_subject');
+            var body = i18n.t('admin.share_body');
             window.location.href = 'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
             emailInput.value = '';
         });

@@ -931,7 +931,7 @@ if (submitBtn) {
         }
 
         if (salesEmails.length === 0) {
-            alert('Les courriels de vente ne sont pas encore charges. Veuillez patienter quelques secondes et reessayer.');
+            alert((typeof i18n !== 'undefined') ? i18n.t('soumission.emails_not_loaded') : 'Les courriels de vente ne sont pas encore charges. Veuillez patienter quelques secondes et reessayer.');
             // Retry loading
             fetch(API_URL + '?action=get&key=sales_emails')
                 .then(function(r) { return r.json(); })
@@ -1001,13 +1001,13 @@ if (submitBtn) {
         // Warning : items du kit a valider
         var _avItems = aValiderItems();
         if (_avItems.length > 0) {
-            body += '\n*** ATTENTION - ITEMS A VALIDER (a confirmer avec e-Trak) ***\n';
+            body += (typeof i18n !== 'undefined') ? i18n.t('email.validate_items') : '\n*** ATTENTION - ITEMS A VALIDER (a confirmer avec e-Trak) ***\n';
             _avItems.forEach(function (i) { body += '  /!\\ ' + i.name + (i.code ? ' (' + i.code + ')' : '') + '\n'; });
         }
 
         // Multi-axe sur retrocaveuse : analyse ingenierie requise avant soumission.
         if (_limVal === 'Multi-axe' && type === 'Retrocaveuse') {
-            body += '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
+            body += (typeof i18n !== 'undefined') ? i18n.t('email.multiaxe_engineering') : '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
         }
 
         // Specs machine

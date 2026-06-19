@@ -225,7 +225,7 @@ function updateGearDeleteButton() {
         const mod = selectModele.value;
         if (!mod || mod === '__OTHER__') return;
 
-        if (!confirm('\u26A0 Confirmer la suppression :\n\n' + fab + ' ' + mod + '\nAnnee : ' + annee + ' seulement\n\nCette action est irreversible.')) return;
+        if (!confirm((typeof i18n !== 'undefined') ? i18n.t('js.confirm_delete', {fab: fab, modele: mod, annee: annee}) : ('\u26A0 Confirmer la suppression :\n\n' + fab + ' ' + mod + '\nAnnee : ' + annee + ' seulement\n\nCette action est irreversible.'))) return;
 
         // Delete from local data
         if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee]) {
@@ -1772,7 +1772,7 @@ function toggleKitLock() {
     // (lien depuis la base de donnees)
     if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
         var m = window.__currentMachine || {};
-        if (!m.type || !m.fab) { alert('Selectionnez d\'abord une machine.'); return; }
+        if (!m.type || !m.fab) { alert((typeof i18n !== 'undefined') ? i18n.t('machine.select_machine_first') : 'Selectionnez d\'abord une machine.'); return; }
         var url = 'edit-machine.html'
             + '?type=' + encodeURIComponent(m.type)
             + '&fab=' + encodeURIComponent(m.fab)
@@ -1780,7 +1780,7 @@ function toggleKitLock() {
             + '&model=' + encodeURIComponent(m.modele);
         window.location.href = url;
     } else {
-        alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
+        alert((typeof i18n !== 'undefined') ? i18n.t('js.permission_denied') : 'Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
     }
 }
 
@@ -1788,11 +1788,11 @@ function updateKitLockButton() {
     if (!kitLockBtn) return;
     if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
         kitLockBtn.classList.add('perm-unlock');
-        kitLockBtn.title = 'Ouvrir la page d\'edition (BOM, harnais, specs, notes)';
+        kitLockBtn.title = (typeof i18n !== 'undefined') ? i18n.t('machine.edit_open_title') : 'Ouvrir la page d\'edition (BOM, harnais, specs, notes)';
         kitLockBtn.innerHTML = '&#9881;&#65039;'; // gear icon
     } else {
         kitLockBtn.classList.remove('perm-unlock');
-        kitLockBtn.title = 'Edition BOM disponible via la base de donnees (admin requis)';
+        kitLockBtn.title = (typeof i18n !== 'undefined') ? i18n.t('machine.edit_db_title') : 'Edition BOM disponible via la base de donnees (admin requis)';
     }
 }
 
@@ -1853,7 +1853,7 @@ if (kitLockBtn) {
             if (currentUser && currentUser.permissions && currentUser.permissions.modifBom) {
                 unlockKit();
             } else {
-                alert('Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
+                alert((typeof i18n !== 'undefined') ? i18n.t('js.permission_denied') : 'Permission insuffisante. Connectez-vous avec un compte ayant la permission de modification BOM.');
             }
         }
     };

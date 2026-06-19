@@ -529,7 +529,7 @@
 <body>
     <header>
         <div class="header-content">
-            <a href="index.html" class="header-back" title="Page precedente" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span>Retour</span></a>
+            <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
@@ -541,13 +541,13 @@
             <div class="intro-row">
                 <span class="section-title" data-i18n="db.title">Base de donnees Machine</span>
                 <div style="margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                    <button id="btn-toggle-flags" class="db-tile-btn" title="Drapeaux actifs" style="display:none;">
-                        <span class="tile-ico">&#128681;</span><span class="tile-label">Drapeaux</span><span id="flags-icon-badge" class="badge empty"></span>
+                    <button id="btn-toggle-flags" class="db-tile-btn" title="Drapeaux actifs" data-i18n-title="db.flags_title" style="display:none;">
+                        <span class="tile-ico">&#128681;</span><span class="tile-label" data-i18n="db.tile_flags">Drapeaux</span><span id="flags-icon-badge" class="badge empty"></span>
                     </button>
-                    <button id="btn-toggle-changelog" class="db-tile-btn" title="Journal des modifications" style="display:none;">
-                        <span class="tile-ico">&#128221;</span><span class="tile-label">Journal</span>
+                    <button id="btn-toggle-changelog" class="db-tile-btn" title="Journal des modifications" data-i18n-title="db.changelog_title" style="display:none;">
+                        <span class="tile-ico">&#128221;</span><span class="tile-label" data-i18n="db.tile_journal">Journal</span>
                     </button>
-                    <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire">&#128241; Apercu mobile</button>
+                    <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire" data-i18n-title="common.mobile_view_title">&#128241; Apercu mobile</button>
                 </div>
             </div>
 
@@ -678,7 +678,7 @@
         </div>
     </footer>
 
-    <script src="js/translations.js?v=167"></script>
+    <script src="js/translations.js?v=171"></script>
     <script src="js/i18n.js?v=166"></script>
     <script src="js/heartbeat.js?v=4"></script>
     <script src="js/version-check.js?v=2"></script>
@@ -733,7 +733,7 @@
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(codes), pin: portalToken() })
             }).then(function() {
-                showToast('Codes produit sauvegardes');
+                showToast(i18n.t('db.codes_saved'));
                 var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
                 logChange('Codes produit modifies', machineType, fab, modele, annee, prevCodes);
             }).catch(function() {});
@@ -762,7 +762,7 @@
             var saved = 0;
             function saveNext() {
                 if (saved >= years.length) {
-                    showToast('Codes produit sauvegardes pour ' + years.length + ' annees');
+                    showToast(i18n.t('db.codes_saved_years', {n: years.length}));
                     return;
                 }
                 var y = years[saved];
@@ -1158,7 +1158,7 @@
             var ts = new Date().toISOString().slice(0,19).replace('T',' ');
             flagsCache[fk] = { flaggedBy: userName, flaggedAt: ts, note: note || '', active: true };
             saveFlags();
-            showToast('\uD83D\uDEA9 Drapeau pose sur ' + fab + ' ' + modele + ' (' + annee + ')');
+            showToast(i18n.t('db.flag_set', {fab: fab, modele: modele, annee: annee}));
         }
 
         function resolveFlag(type, fab, modele, annee) {
@@ -1170,7 +1170,7 @@
                 flagsCache[fk].resolvedAt = new Date().toISOString().slice(0,19).replace('T',' ');
             }
             saveFlags();
-            showToast('\u2705 Drapeau resolu pour ' + fab + ' ' + modele + ' (' + annee + ')');
+            showToast(i18n.t('db.flag_resolved', {fab: fab, modele: modele, annee: annee}));
         }
 
         function closeFlagPopup() {
@@ -1321,7 +1321,7 @@
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: portalToken() })
             }).then(function() {
-                showToast('BOM sauvegarde');
+                showToast(i18n.t('db.bom_saved'));
                 if (nature) logChange(nature, machineType, fab, modele, annee, prevValue);
             }).catch(function() {});
         }
@@ -2315,7 +2315,7 @@
             var idx = parseInt(btn.dataset.idx);
             var d = allData[idx];
             if (!d) return;
-            if (!confirm('Supprimer ' + d.fab + ' ' + d.modele + ' (' + d.annee + ') ?\n\nCette action est irreversible.')) return;
+            if (!confirm(i18n.t('db.confirm_delete', {fab: d.fab, modele: d.modele, annee: d.annee}))) return;
 
             // Mark as deleted in API
             var delKey = 'deleted_' + d.fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.annee;
@@ -2331,7 +2331,7 @@
             // Remove from local data
             allData.splice(idx, 1);
             applyFilters();
-            showToast(d.fab + ' ' + d.modele + ' (' + d.annee + ') supprime');
+            showToast(i18n.t('db.deleted', {fab: d.fab, modele: d.modele, annee: d.annee}));
         });
 
         // Click on BOM token
@@ -2619,10 +2619,10 @@
                 link.download = typeSlug + '_bd_' + new Date().toISOString().slice(0, 10) + '.csv';
                 link.click();
                 hideExportProgress();
-                showToast('Export CSV genere (' + filtered.length + ' lignes)');
+                showToast(i18n.t('db.export_done', {n: filtered.length}));
             }).catch(function(err) {
                 hideExportProgress();
-                showToast('Erreur export: ' + (err && err.message || err));
+                showToast(i18n.t('db.export_error', {error: (err && err.message || err)}));
             });
         });
     })();
@@ -2844,14 +2844,14 @@
                     holdTimer = null;
                     longPressed = true;            // empeche le clic-toggle qui suit
                     iconBtn.classList.remove('holding');
-                    if (confirm('Reinitialiser TOUT l\'historique des modifications ?\n\nCette action est irreversible.')) {
+                    if (confirm(i18n.t('db.reset_history_confirm'))) {
                         fetch(RESET_API, { method:'POST', headers:{'Content-Type':'text/plain'},
                             body: JSON.stringify({ action:'save', key:'db_changelog', value:'[]', pin:portalToken() }) })
                         .then(function(){
                             if (window.renderChangelog) window.renderChangelog();
-                            if (typeof showToast === 'function') showToast('Historique reinitialise'); else alert('Historique reinitialise');
+                            if (typeof showToast === 'function') showToast(i18n.t('db.history_reset')); else alert(i18n.t('db.history_reset'));
                         })
-                        .catch(function(){ alert('Erreur lors de la reinitialisation'); });
+                        .catch(function(){ alert(i18n.t('db.reset_error')); });
                     }
                 }, 5000);
             }
@@ -2884,7 +2884,7 @@
             var btn = document.getElementById('view-mobile-toggle');
             if (btn) {
                 btn.classList.toggle('active', on);
-                btn.innerHTML = on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile';
+                btn.innerHTML = (typeof i18n !== 'undefined') ? (on ? i18n.t('common.view_desktop') : i18n.t('common.mobile_view')) : (on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile');
             }
             try { localStorage.setItem(VIEW_KEY, on ? '1' : '0'); } catch(e){}
             syncViewMode();
@@ -2896,6 +2896,7 @@
             });
         }
         window.addEventListener('resize', syncViewMode);
+        window.addEventListener('langchange', function(){ applyForcedView(document.body.classList.contains('force-mobile')); });
         // Inject Fabricant sublabel into Modele cells (for mobile)
         function injectFabSublabels() {
             var rows = document.querySelectorAll('#db-tbody tr');

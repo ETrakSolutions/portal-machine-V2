@@ -63,43 +63,43 @@
 <body>
 <header>
   <div class="header-content">
-    <a href="database.html" class="header-back">&larr; <span>Retour BD</span></a>
+    <a href="database.html" class="header-back">&larr; <span data-i18n="csv.back_db">Retour BD</span></a>
     <div class="logo-section"><img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo"></div>
   </div>
 </header>
 
 <main>
 <div class="import-wrap">
-  <h2 style="color:#fff;font-size:1.2rem;margin-bottom:0.8rem;">📥 Import CSV — Mise a jour massive de la BD</h2>
-  <div id="auth-error" class="auth-error" style="display:none;">Acces non autorise. Reserve aux administrateurs.</div>
+  <h2 style="color:#fff;font-size:1.2rem;margin-bottom:0.8rem;" data-i18n="csv.title">📥 Import CSV — Mise a jour massive de la BD</h2>
+  <div id="auth-error" class="auth-error" style="display:none;" data-i18n="csv.auth_error">Acces non autorise. Reserve aux administrateurs.</div>
 
   <div id="main-content" style="display:none;">
 
     <!-- ETAPE 1 : Upload -->
     <div class="import-step" id="step1">
-      <h3><span class="step-num">1</span> Charger un fichier CSV</h3>
-      <div class="help-text">
+      <h3><span class="step-num">1</span> <span data-i18n="csv.step1_title">Charger un fichier CSV</span></h3>
+      <div class="help-text" data-i18n-html="csv.step1_help">
         Format attendu : meme structure que l'export CSV de la BD (premiere ligne = en-tetes). Colonnes reconnues : Fabricant, Modele, Annee, Cabine, Sans cabine, Mini exc, Drain hyd, Boite GC, Hauteur, Rotation, Multi Axes, Swing boom, Rot. cremaillere, Harnais, Notes, Drapeau actif, Drapeau note. Valeurs : <code>Obligatoire</code> / <code>Optionnel</code> / <code>N/A</code>.
       </div>
       <label class="file-input">
         <input type="file" id="csv-input" accept=".csv,text/csv">
-        <div style="font-size:0.9rem;color:#4FC3F7;">📄 Clique pour choisir un fichier CSV</div>
+        <div style="font-size:0.9rem;color:#4FC3F7;" data-i18n="csv.file_pick">📄 Clique pour choisir un fichier CSV</div>
         <div class="file-info" id="file-info"></div>
       </label>
     </div>
 
     <!-- ETAPE 2 : Diff Preview -->
     <div class="import-step disabled" id="step2">
-      <h3><span class="step-num">2</span> Apercu des modifications (dry-run)</h3>
-      <div class="help-text">Verifie les changements avant d'appliquer. Aucune modification n'est encore envoyee a la BD.</div>
+      <h3><span class="step-num">2</span> <span data-i18n="csv.step2_title">Apercu des modifications (dry-run)</span></h3>
+      <div class="help-text" data-i18n="csv.step2_help">Verifie les changements avant d'appliquer. Aucune modification n'est encore envoyee a la BD.</div>
       <div class="summary" id="diff-summary"></div>
       <div class="filter-bar">
-        <input type="text" id="diff-search" placeholder="Rechercher fab/modele..." style="min-width:220px;">
+        <input type="text" id="diff-search" placeholder="Rechercher fab/modele..." data-i18n-placeholder="csv.search_placeholder" style="min-width:220px;">
         <select id="diff-filter-type">
-          <option value="">Tous les changements</option>
-          <option value="add">Nouveaux (ajout d'override)</option>
-          <option value="mod">Modifies</option>
-          <option value="skip">Identiques (skipped)</option>
+          <option value="" data-i18n="csv.filter_all">Tous les changements</option>
+          <option value="add" data-i18n="csv.filter_new">Nouveaux (ajout d'override)</option>
+          <option value="mod" data-i18n="csv.filter_modified">Modifies</option>
+          <option value="skip" data-i18n="csv.filter_same">Identiques (skipped)</option>
         </select>
         <span style="color:#666;font-size:0.72rem;margin-left:auto;" id="diff-count"></span>
       </div>
@@ -107,11 +107,11 @@
         <table class="diff-table" id="diff-table">
           <thead>
             <tr>
-              <th style="width:60px;">Type</th>
-              <th style="width:120px;">Fabricant</th>
-              <th style="width:140px;">Modele</th>
-              <th style="width:70px;">Annee</th>
-              <th>Changements (Avant → Apres)</th>
+              <th style="width:60px;" data-i18n="db.type">Type</th>
+              <th style="width:120px;" data-i18n="db.fabricant">Fabricant</th>
+              <th style="width:140px;" data-i18n="db.th_modele">Modele</th>
+              <th style="width:70px;" data-i18n="db.annee">Annee</th>
+              <th data-i18n="csv.th_changes">Changements (Avant → Apres)</th>
             </tr>
           </thead>
           <tbody id="diff-tbody"></tbody>
@@ -121,18 +121,18 @@
 
     <!-- ETAPE 3 : Confirmation + execution -->
     <div class="import-step disabled" id="step3">
-      <h3><span class="step-num">3</span> Confirmation et execution</h3>
-      <div class="help-text">
+      <h3><span class="step-num">3</span> <span data-i18n="csv.step3_title">Confirmation et execution</span></h3>
+      <div class="help-text" data-i18n-html="csv.step3_help">
         ⚠️ Cette action ecrira les modifications dans la BD via l'API. Un snapshot complet de l'etat actuel sera sauvegarde avant les modifications (<code>snapshot_import_&lt;timestamp&gt;</code>) pour rollback possible.
       </div>
       <div style="display:flex;gap:0.5rem;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;">
         <label style="display:flex;align-items:center;gap:6px;color:#FFB74D;font-size:0.85rem;cursor:pointer;">
-          <input type="checkbox" id="confirm-check"> J'ai verifie l'apercu et je veux appliquer les modifications
+          <input type="checkbox" id="confirm-check"> <span data-i18n="csv.confirm_check">J'ai verifie l'apercu et je veux appliquer les modifications</span>
         </label>
       </div>
       <div style="display:flex;gap:0.5rem;">
-        <button id="apply-btn" class="btn btn-success" disabled>📤 Appliquer les modifications</button>
-        <button id="cancel-btn" class="btn">Annuler / Recommencer</button>
+        <button id="apply-btn" class="btn btn-success" disabled data-i18n="csv.apply_btn">📤 Appliquer les modifications</button>
+        <button id="cancel-btn" class="btn" data-i18n="csv.cancel_restart">Annuler / Recommencer</button>
       </div>
       <div id="apply-progress" style="display:none;margin-top:0.8rem;">
         <div class="progress-bar"><div class="fill" id="prog-fill" style="width:0%;"></div><div class="label" id="prog-label">0 / 0</div></div>
@@ -144,8 +144,10 @@
 </div>
 </main>
 
-<footer><div class="footer-content"><p class="footer-copy">&copy; 2026 Portail e-Trak — Usage interne</p></div></footer>
+<footer><div class="footer-content"><p class="footer-copy" data-i18n="common.footer_copy">&copy; 2026 Portail e-Trak — Usage interne</p></div></footer>
 
+<script src="js/translations.js?v=171"></script>
+<script src="js/i18n.js?v=166"></script>
 <script src="js/kit-rules.js?v=3"></script>
 <script>
 (function() {
@@ -356,7 +358,7 @@
     });
     var recognizedCount = Object.keys(headerMap).length;
     if (!recognizedCount) {
-      alert('⚠️ Aucune colonne BOM reconnue dans le CSV. Headers attendus : Cabine, Sans cabine, Mini exc, Drain hyd, Boite GC, Hauteur, Rotation, Multi Axes, Swing boom, Rot. cremaillere.');
+      alert((typeof i18n !== 'undefined') ? i18n.t('csv.no_bom_cols') : '⚠️ Aucune colonne BOM reconnue dans le CSV. Headers attendus : Cabine, Sans cabine, Mini exc, Drain hyd, Boite GC, Hauteur, Rotation, Multi Axes, Swing boom, Rot. cremaillere.');
       return;
     }
 
@@ -461,7 +463,7 @@
   confirmCheck.addEventListener('change', function() { applyBtn.disabled = !this.checked; });
 
   document.getElementById('cancel-btn').addEventListener('click', function() {
-    if (!confirm('Recommencer ? Le CSV charge sera oublie.')) return;
+    if (!confirm((typeof i18n !== 'undefined') ? i18n.t('csv.restart_confirm') : 'Recommencer ? Le CSV charge sera oublie.')) return;
     location.reload();
   });
 
@@ -477,9 +479,9 @@
   applyBtn.addEventListener('click', function() {
     if (applyBtn.disabled) return;
     var toApply = diffEntries.filter(function(e) { return e.type === 'add' || e.type === 'mod'; });
-    if (!toApply.length) { alert('Aucune modification a appliquer.'); return; }
+    if (!toApply.length) { alert((typeof i18n !== 'undefined') ? i18n.t('csv.no_changes') : 'Aucune modification a appliquer.'); return; }
 
-    if (!confirm('⚠️ Appliquer ' + toApply.length + ' modification(s) ? Un snapshot sera sauvegarde avant.')) return;
+    if (!confirm((typeof i18n !== 'undefined') ? i18n.t('csv.apply_confirm', {n: toApply.length}) : ('⚠️ Appliquer ' + toApply.length + ' modification(s) ? Un snapshot sera sauvegarde avant.'))) return;
 
     applyBtn.disabled = true;
     confirmCheck.disabled = true;

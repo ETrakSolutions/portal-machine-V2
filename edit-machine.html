@@ -27,6 +27,9 @@ header.top{
   padding:0 2rem;height:75px;display:flex;align-items:center;
   position:sticky;top:0;z-index:100;
 }
+.lang-switch{position:absolute;right:0;display:flex;gap:4px}
+.lang-btn{background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.28);border-radius:5px;padding:4px 9px;font-size:0.8rem;cursor:pointer;font-weight:600;line-height:1}
+.lang-btn.active{background:#fff;color:#085591}
 .header-content{
   max-width:1200px;width:100%;margin:0 auto;display:flex;
   align-items:center;justify-content:center;position:relative;
@@ -425,11 +428,12 @@ body.force-mobile main{
 
 <header class="top">
   <div class="header-content">
-    <a href="database.html" class="header-back" title="Page precedente" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span>Retour</span></a>
+    <a href="database.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
     <div class="logo-section">
       <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
     </div>
-    <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire" style="position:absolute;right:0;">&#128241; Apercu mobile</button>
+    <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire" data-i18n-title="common.mobile_view_title" style="position:absolute;right:96px;">&#128241; Apercu mobile</button>
+    <div class="lang-switch"><button class="lang-btn" data-lang="fr">FR</button><button class="lang-btn" data-lang="en">EN</button></div>
   </div>
 </header>
 
@@ -437,25 +441,27 @@ body.force-mobile main{
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=3"></script>
     <script src="js/kit-rules.js?v=3"></script>
+    <script src="js/translations.js?v=171"></script>
+    <script src="js/i18n.js?v=166"></script>
 
 <main id="root">
-  <div class="loading">Chargement...</div>
+  <div class="loading" data-i18n="js.loading">Chargement...</div>
 </main>
 
 <!-- Save preview modal -->
 <div class="modal-bg" id="modal-save">
   <div class="modal modal-fancy" style="max-width:480px">
     <div class="modal-header-icon" style="text-align:center;font-size:2.5rem;margin-bottom:0.5rem">💾</div>
-    <h3 style="text-align:center;margin-bottom:0.75rem">Confirmer la sauvegarde</h3>
+    <h3 style="text-align:center;margin-bottom:0.75rem" data-i18n="edit.confirm_save">Confirmer la sauvegarde</h3>
     <div class="info" id="modal-save-info"></div>
     <pre id="modal-save-content" style="display:none"></pre>
     <label id="save-allyears-label" style="display:none;align-items:center;gap:0.6rem;background:var(--input);padding:0.7rem 0.9rem;border-radius:6px;border:1px solid var(--jaune);cursor:pointer;margin-top:1rem;font-size:0.9rem">
       <input type="checkbox" id="save-allyears" style="width:18px;height:18px;accent-color:var(--jaune);cursor:pointer">
-      <span>Appliquer <strong>toute cette config</strong> aux <strong id="save-allyears-count"></strong> autres annees (toutes identiques a l'annee courante)</span>
+      <span><span data-i18n="edit.save_all_pre">Appliquer toute cette config aux</span> <strong id="save-allyears-count"></strong> <span data-i18n="edit.save_all_post">autres annees (toutes identiques a l'annee courante)</span></span>
     </label>
     <div class="btn-row" style="justify-content:flex-end;gap:0.6rem;margin-top:1rem">
-      <button id="save-cancel-btn" class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem" onclick="document.getElementById('modal-save').classList.remove('show')">Annuler</button>
-      <button id="save-confirm-btn" class="btn-primary-fancy" style="width:auto;padding:0.6rem 1.2rem" onclick="commitChanges()">Confirmer la sauvegarde</button>
+      <button id="save-cancel-btn" class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem" data-i18n="edit.cancel" onclick="document.getElementById('modal-save').classList.remove('show')">Annuler</button>
+      <button id="save-confirm-btn" class="btn-primary-fancy" style="width:auto;padding:0.6rem 1.2rem" data-i18n="edit.confirm_save" onclick="commitChanges()">Confirmer la sauvegarde</button>
     </div>
   </div>
 </div>
@@ -463,14 +469,14 @@ body.force-mobile main{
 <!-- Red flag modal -->
 <div class="modal-bg" id="modal-flag">
   <div class="modal">
-    <h3 id="flag-modal-title">Drapeau</h3>
+    <h3 id="flag-modal-title" data-i18n="edit.flag">Drapeau</h3>
     <div id="flag-modal-meta" style="color:var(--text-2);font-size:0.85rem;margin-bottom:1rem"></div>
-    <label>Note (optionnel)</label>
-    <textarea id="flag-note" rows="3" placeholder="Decrire le probleme..."></textarea>
+    <label data-i18n="edit.flag_note_label">Note (optionnel)</label>
+    <textarea id="flag-note" rows="3" placeholder="Decrire le probleme..." data-i18n-placeholder="edit.flag_note_placeholder"></textarea>
     <div class="btn-row" style="justify-content:flex-end">
-      <button class="secondary" onclick="document.getElementById('modal-flag').classList.remove('show')">Annuler</button>
-      <button class="warn" id="flag-set-btn">Poser le drapeau</button>
-      <button class="secondary" id="flag-resolve-btn" style="display:none">Marquer verifie</button>
+      <button class="secondary" data-i18n="edit.cancel" onclick="document.getElementById('modal-flag').classList.remove('show')">Annuler</button>
+      <button class="warn" id="flag-set-btn" data-i18n="edit.flag_set_btn">Poser le drapeau</button>
+      <button class="secondary" id="flag-resolve-btn" style="display:none" data-i18n="edit.flag_resolve_btn">Marquer verifie</button>
     </div>
   </div>
 </div>
@@ -478,15 +484,15 @@ body.force-mobile main{
 <!-- Delete confirm modal -->
 <div class="modal-bg" id="modal-delete">
   <div class="modal" style="max-width:500px">
-    <h3 style="color:var(--rouge)">Confirmer la suppression</h3>
+    <h3 style="color:var(--rouge)" data-i18n="edit.del_confirm_title">Confirmer la suppression</h3>
     <div class="info" style="border-left-color:var(--rouge);background:rgba(255,68,68,0.08);color:var(--text)">
-      Cette action supprime <strong id="del-modele-name"></strong> de la base de donnees.
-      <br><br><strong>Annee : <span id="del-annee-name"></span> seulement</strong>. Les autres annees du modele restent.
-      <br><br>Cette action est <strong>irreversible</strong>.
+      <span data-i18n="edit.del_info_pre">Cette action supprime</span> <strong id="del-modele-name"></strong> <span data-i18n="edit.del_info_db">de la base de donnees.</span>
+      <br><br><strong><span data-i18n="edit.del_year">Annee :</span> <span id="del-annee-name"></span> <span data-i18n="edit.del_only">seulement</span></strong>. <span data-i18n="edit.del_years_stay2">Les autres annees du modele restent.</span>
+      <br><br><span data-i18n="edit.del_irreversible">Cette action est irreversible.</span>
     </div>
     <div class="btn-row" style="justify-content:flex-end">
-      <button class="secondary" onclick="document.getElementById('modal-delete').classList.remove('show')">Annuler</button>
-      <button class="danger" id="del-confirm-btn">Supprimer definitivement</button>
+      <button class="secondary" data-i18n="edit.cancel" onclick="document.getElementById('modal-delete').classList.remove('show')">Annuler</button>
+      <button class="danger" id="del-confirm-btn" data-i18n="edit.delete_permanent">Supprimer definitivement</button>
     </div>
   </div>
 </div>
@@ -495,17 +501,17 @@ body.force-mobile main{
 <div class="modal-bg" id="modal-del-line">
   <div class="modal modal-fancy" style="max-width:460px">
     <div class="modal-header-icon" style="text-align:center;font-size:2.5rem;margin-bottom:0.5rem">🗑</div>
-    <h3 style="text-align:center;margin-bottom:0.5rem">Retirer cette ligne ?</h3>
+    <h3 style="text-align:center;margin-bottom:0.5rem" data-i18n="edit.del_line_title">Retirer cette ligne ?</h3>
     <p id="del-line-detail" style="color:var(--text-2);text-align:center;margin-bottom:1rem;font-size:0.92rem">
-      <strong id="del-line-name">Code</strong> sera retire du Kit BOM.
+      <strong id="del-line-name">Code</strong> <span data-i18n="edit.del_line_detail">sera retire du Kit BOM.</span>
     </p>
     <label id="del-line-allyears-label" style="display:none;align-items:center;gap:0.6rem;background:var(--input);padding:0.7rem 0.9rem;border-radius:6px;border:1px solid var(--border);cursor:pointer;margin-bottom:1rem;font-size:0.9rem">
       <input type="checkbox" id="del-line-allyears" style="width:18px;height:18px;accent-color:var(--jaune);cursor:pointer">
-      <span>Appliquer a TOUTES les annees du modele (<span id="del-line-year-count">0</span> annees)</span>
+      <span><span data-i18n="edit.del_line_allyears_pre">Appliquer a TOUTES les annees du modele (</span><span id="del-line-year-count">0</span><span data-i18n="edit.del_line_allyears_post"> annees)</span></span>
     </label>
     <div class="btn-row" style="display:flex;gap:0.6rem;justify-content:flex-end">
-      <button id="del-line-cancel" class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem">Annuler</button>
-      <button id="del-line-confirm" class="btn-danger-fancy">Retirer</button>
+      <button id="del-line-cancel" class="btn-cancel-fancy" style="width:auto;padding:0.6rem 1.1rem" data-i18n="edit.cancel">Annuler</button>
+      <button id="del-line-confirm" class="btn-danger-fancy" data-i18n="edit.remove">Retirer</button>
     </div>
   </div>
 </div>
@@ -514,15 +520,15 @@ body.force-mobile main{
 <div class="modal-bg" id="modal-unsaved">
   <div class="modal modal-fancy" style="max-width:480px">
     <div class="modal-header-icon" style="text-align:center;font-size:2.5rem;margin-bottom:0.5rem">⚠️</div>
-    <h3 style="text-align:center;margin-bottom:0.5rem">Modifications non sauvegardees</h3>
+    <h3 style="text-align:center;margin-bottom:0.5rem" data-i18n="edit.unsaved_title">Modifications non sauvegardees</h3>
     <p style="color:var(--text-2);text-align:center;margin-bottom:1.5rem;font-size:0.92rem">
-      Vous avez <strong id="unsaved-count" style="color:var(--jaune)">0</strong> modification(s) non sauvegardee(s).<br>
-      Que voulez-vous faire ?
+      <span data-i18n="edit.unsaved_count_pre">Vous avez</span> <strong id="unsaved-count" style="color:var(--jaune)">0</strong> <span data-i18n="edit.unsaved_count_post">modification(s) non sauvegardee(s).</span><br>
+      <span data-i18n="edit.unsaved_what">Que voulez-vous faire ?</span>
     </p>
     <div class="btn-row" style="display:flex;flex-direction:column;gap:0.5rem">
-      <button id="unsaved-save-leave" class="btn-primary-fancy">💾 Sauvegarder puis quitter</button>
-      <button id="unsaved-leave" class="btn-warn-fancy">🚪 Quitter sans sauvegarder</button>
-      <button id="unsaved-cancel" class="btn-cancel-fancy">↩ Rester sur la page</button>
+      <button id="unsaved-save-leave" class="btn-primary-fancy" data-i18n="edit.unsaved_save_leave">💾 Sauvegarder puis quitter</button>
+      <button id="unsaved-leave" class="btn-warn-fancy" data-i18n="edit.unsaved_leave">🚪 Quitter sans sauvegarder</button>
+      <button id="unsaved-cancel" class="btn-cancel-fancy" data-i18n="edit.unsaved_cancel">↩ Rester sur la page</button>
     </div>
   </div>
 </div>
@@ -607,12 +613,12 @@ body.force-mobile main{
 
   if (!hasAccess){
     document.getElementById('root').innerHTML =
-      '<div class="empty"><div class="big">&#128274;</div><div>Acces non autorise.</div></div>';
+      '<div class="empty"><div class="big">&#128274;</div><div>' + i18n.t('edit.unauthorized') + '</div></div>';
     return;
   }
   if (!TYPE || !FAB || !YEAR || !MODEL){
     document.getElementById('root').innerHTML =
-      '<div class="empty"><div class="big">!</div><div>Parametres manquants.</div></div>';
+      '<div class="empty"><div class="big">!</div><div>' + i18n.t('edit.missing_params') + '</div></div>';
     return;
   }
 
@@ -1119,10 +1125,10 @@ body.force-mobile main{
       SCOPE_ALL_CODES = {};
       setSavingState(false);
       document.getElementById('modal-save').classList.remove('show');
-      showToast('Sauvegarde complete');
+      showToast(i18n.t('edit.save_complete'));
       render();
       return true;
-    }).catch(function(){ setSavingState(false); showToast('Erreur de sauvegarde', 'var(--rouge)'); return false; });
+    }).catch(function(){ setSavingState(false); showToast(i18n.t('edit.save_error'), 'var(--rouge)'); return false; });
   };
 
   function ensureSpinStyle(){
@@ -1165,10 +1171,10 @@ body.force-mobile main{
       btn.disabled = on;
       btn.style.opacity = on ? '0.7' : '';
       btn.style.cursor = on ? 'wait' : '';
-      btn.innerHTML = on ? (spin + ' Sauvegarde en cours…') : 'Confirmer la sauvegarde';
+      btn.innerHTML = on ? (spin + ' ' + i18n.t('edit.saving')) : i18n.t('edit.confirm_save');
     }
     if (cancel) cancel.disabled = on;
-    if (on && info) info.innerHTML += '<div id="save-spinner-note" style="margin-top:0.6rem;color:#888;font-size:0.85rem">' + spin + ' Écriture dans la base en ligne, patiente quelques secondes…</div>';
+    if (on && info) info.innerHTML += '<div id="save-spinner-note" style="margin-top:0.6rem;color:#888;font-size:0.85rem">' + spin + ' ' + i18n.t('edit.saving_note') + '</div>';
     else { var sn = document.getElementById('save-spinner-note'); if (sn) sn.remove(); }
   }
 
@@ -1188,13 +1194,13 @@ body.force-mobile main{
   // ===== Flag =====
   window.openFlagModal = function(){
     var isActive = FLAG && FLAG.active;
-    document.getElementById('flag-modal-title').textContent = isActive ? 'Drapeau actif' : 'Signaler pour verification';
+    document.getElementById('flag-modal-title').textContent = isActive ? i18n.t('edit.flag_active_title') : i18n.t('edit.flag_report_title');
     document.getElementById('flag-modal-meta').innerHTML = isActive
-      ? 'Pose par <strong>' + (FLAG.flaggedBy||'?') + '</strong> le ' + (FLAG.flaggedAt||'?')
+      ? i18n.t('edit.flag_posted_by', {by: '<strong>' + (FLAG.flaggedBy||'?') + '</strong>', at: (FLAG.flaggedAt||'?')})
       : '';
     document.getElementById('flag-note').value = (isActive && FLAG.note) ? FLAG.note : '';
     document.getElementById('flag-set-btn').style.display = isActive ? 'none' : '';
-    document.getElementById('flag-set-btn').textContent = 'Poser le drapeau';
+    document.getElementById('flag-set-btn').textContent = i18n.t('edit.flag_set_btn');
     document.getElementById('flag-resolve-btn').style.display = (isActive && canFlag) ? '' : 'none';
     document.getElementById('modal-flag').classList.add('show');
   };
@@ -1211,7 +1217,7 @@ body.force-mobile main{
       FLAG = { flaggedBy:userName, flaggedAt:ts, note:note, active:true };
       logChange('Drapeau pose', note || '—');
       document.getElementById('modal-flag').classList.remove('show');
-      showToast('Drapeau pose');
+      showToast(i18n.t('edit.flag_set_toast'));
       render();
     });
   }
@@ -1232,7 +1238,7 @@ body.force-mobile main{
       if (FLAG){ FLAG.active = false; FLAG.resolvedBy = userName; FLAG.resolvedAt = ts; }
       logChange('Drapeau resolu', '—');
       document.getElementById('modal-flag').classList.remove('show');
-      showToast('Drapeau resolu');
+      showToast(i18n.t('edit.flag_resolved_toast'));
       render();
     });
   }
@@ -1245,19 +1251,19 @@ body.force-mobile main{
     if (!container) return;
     if (!PRODUCT_CODES.length){
       pcEditIdx = -1;
-      container.innerHTML = '<div class="pc-empty">Aucun code produit enregistre.</div>';
+      container.innerHTML = '<div class="pc-empty">' + i18n.t('edit.pc_empty') + '</div>';
       return;
     }
     container.innerHTML = PRODUCT_CODES.map(function(c, i){
       if (canEdit && i === pcEditIdx){
         return '<div class="pc-item pc-editing">' +
           '<div class="pc-edit-fields">' +
-            '<input class="pc-edit-code" value="' + pcEscAttr(c.code||'') + '" placeholder="Code">' +
-            '<input class="pc-edit-desc" value="' + pcEscAttr(c.desc||'') + '" placeholder="Description">' +
+            '<input class="pc-edit-code" value="' + pcEscAttr(c.code||'') + '" placeholder="' + i18n.t('edit.ph_code') + '">' +
+            '<input class="pc-edit-desc" value="' + pcEscAttr(c.desc||'') + '" placeholder="' + i18n.t('edit.ph_description') + '">' +
             '<input class="pc-edit-qty" type="number" min="1" value="' + (c.qty||1) + '">' +
           '</div>' +
-          '<button class="pc-save" data-i="' + i + '" title="Enregistrer">&#10003;</button>' +
-          '<button class="pc-cancel" title="Annuler">&times;</button>' +
+          '<button class="pc-save" data-i="' + i + '" title="' + i18n.t('edit.t_save') + '">&#10003;</button>' +
+          '<button class="pc-cancel" title="' + i18n.t('edit.t_cancel') + '">&times;</button>' +
         '</div>';
       }
       return '<div class="pc-item">' +
@@ -1266,8 +1272,8 @@ body.force-mobile main{
           '<span class="pc-desc">' + (c.desc||'') + '</span>' +
           '<span class="pc-qty">x' + (c.qty||1) + '</span>' +
         '</div>' +
-        (canEdit ? '<button class="pc-edit" data-i="' + i + '" title="Modifier">&#9998;</button>' : '') +
-        (canEdit ? '<button class="pc-del" data-i="' + i + '" title="Supprimer">&times;</button>' : '') +
+        (canEdit ? '<button class="pc-edit" data-i="' + i + '" title="' + i18n.t('edit.t_edit') + '">&#9998;</button>' : '') +
+        (canEdit ? '<button class="pc-del" data-i="' + i + '" title="' + i18n.t('edit.t_delete') + '">&times;</button>' : '') +
       '</div>';
     }).join('');
     container.querySelectorAll('.pc-del').forEach(function(btn){
@@ -1323,8 +1329,8 @@ body.force-mobile main{
     }
     return Promise.all(ops).then(function(){
       logChange(nature || 'Codes produit modifies', prev);
-      showToast('Codes produit sauvegardes');
-    }).catch(function(){ showToast('Erreur', 'var(--rouge)'); });
+      showToast(i18n.t('edit.codes_saved'));
+    }).catch(function(){ showToast(i18n.t('common.error'), 'var(--rouge)'); });
   }
 
   // ===== Delete =====
@@ -1338,9 +1344,9 @@ body.force-mobile main{
     return deleteMachineEntry().then(function(){
       logChange('Modele supprime', '—');
       document.getElementById('modal-delete').classList.remove('show');
-      showToast(FAB + ' ' + MODEL + ' (' + YEAR + ') supprime');
+      showToast(i18n.t('db.deleted', {fab: FAB, modele: MODEL, annee: YEAR}));
       setTimeout(function(){ location.href = 'database.html'; }, 800);
-    }).catch(function(){ showToast('Erreur', 'var(--rouge)'); });
+    }).catch(function(){ showToast(i18n.t('common.error'), 'var(--rouge)'); });
   }
 
   // ===== Render =====
@@ -1360,15 +1366,15 @@ body.force-mobile main{
         var hPN = hCur ? 'Z03B-' + hCur.replace(/^H/, '') : 'Z03B-—';
         var hLabelObj = HARNAIS_OPTIONS.find(function(o){return o.v===hCur;}) || {l:'(aucun)'};
         var hOpts = HARNAIS_OPTIONS.map(function(o){
-          return '<option value="' + o.v + '"' + (o.v===hCur?' selected':'') + '>' + o.l + '</option>';
+          return '<option value="' + o.v + '"' + (o.v===hCur?' selected':'') + '>' + (o.v==='' ? i18n.t('edit.harnais_none') : o.l) + '</option>';
         }).join('');
         bomRows += '<tr class="harnais-bom-row ' + (hChanged?'row-changed':'') + '">' +
           '<td class="pn">' + hPN + '</td>' +
-          '<td>Harnais de coupure</td>' +
+          '<td>' + i18n.t('edit.harnais_label') + '</td>' +
           '<td>' +
             '<select id="harnais-sel" class="harnais-bom-select"' + (canEdit?'':' disabled') + '>' + hOpts + '</select>' +
           '</td>' +
-          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="__harnais__"' + (SCOPE_ALL_CODES['__harnais__']?' checked':'') + '><span></span></label></td>' : '') +
+          (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="' + i18n.t('edit.t_apply_years', {n: (ALL_YEARS_FOR_MODEL.length-1)}) + '"><input type="checkbox" data-scope="__harnais__"' + (SCOPE_ALL_CODES['__harnais__']?' checked':'') + '><span></span></label></td>' : '') +
           '<td></td>' +  // pas de bouton supprimer pour harnais
         '</tr>';
       }
@@ -1379,24 +1385,24 @@ body.force-mobile main{
         var current = BOM_CURRENT[code] || 'na';
         var initial = BOM_INITIAL[code] || 'na';
         var changed = current !== initial;
-        var desc = BOM_NAMES[code] || '(sans nom)';
+        var desc = BOM_NAMES[code] || i18n.t('edit.no_name');
         var pn = BOM_PN[code] || '';
 
         var stEditing = (canEdit && EDITING && EDITING.kind === 'std' && EDITING.key === code);
         var stStatusSel = '<select class="status-' + current + '" data-code="' + code + '"' + (canEdit?'':' disabled') + '>' +
-              '<option value="r"' + (current==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
-              '<option value="j"' + (current==='j'?' selected':'') + '>🟡 Optionnel</option>' +
-              '<option value="v"' + (current==='v'?' selected':'') + '>🟠 À vérifier</option>' +
-              '<option value="na"' + (current==='na'?' selected':'') + '>⚫ N/A</option>' +
+              '<option value="r"' + (current==='r'?' selected':'') + '>' + i18n.t('edit.status_r') + '</option>' +
+              '<option value="j"' + (current==='j'?' selected':'') + '>' + i18n.t('edit.status_j') + '</option>' +
+              '<option value="v"' + (current==='v'?' selected':'') + '>' + i18n.t('edit.status_v') + '</option>' +
+              '<option value="na"' + (current==='na'?' selected':'') + '>' + i18n.t('edit.status_na') + '</option>' +
             '</select>';
-        var stScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + code + '"' + (SCOPE_ALL_CODES[code]?' checked':'') + '><span></span></label></td>' : '');
+        var stScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="' + i18n.t('edit.t_apply_years', {n: (ALL_YEARS_FOR_MODEL.length-1)}) + '"><input type="checkbox" data-scope="' + code + '"' + (SCOPE_ALL_CODES[code]?' checked':'') + '><span></span></label></td>' : '');
         if (stEditing){
           bomRows += '<tr class="row-changed">' +
-            '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(pn) + '" placeholder="Part Number" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
-            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(desc) + '" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(pn) + '" placeholder="' + i18n.t('edit.ph_part_number') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(desc) + '" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
             '<td>' + stStatusSel + '</td>' +
             stScopeCell +
-            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-code="' + code + '" data-kind="std" title="Enregistrer pour toutes les machines" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="Annuler" style="padding:0.3rem 0.5rem">✗</button></td>' +
+            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-code="' + code + '" data-kind="std" title="' + i18n.t('edit.t_save_all_machines') + '" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="' + i18n.t('edit.t_cancel') + '" style="padding:0.3rem 0.5rem">✗</button></td>' +
           '</tr>';
         } else {
           bomRows += '<tr class="' + (changed?'row-changed':'') + '">' +
@@ -1404,7 +1410,7 @@ body.force-mobile main{
             '<td>' + desc + '</td>' +
             '<td>' + stStatusSel + '</td>' +
             stScopeCell +
-            (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-code="' + code + '" data-kind="std" title="Modifier PN / description (toutes les machines)">✏️</button> <button class="row-del" data-code="' + code + '" data-kind="std" title="Retirer cette ligne pour cette machine">🗑</button></td>' : '<td></td>') +
+            (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-code="' + code + '" data-kind="std" title="' + i18n.t('edit.t_edit_pn') + '">✏️</button> <button class="row-del" data-code="' + code + '" data-kind="std" title="' + i18n.t('edit.t_remove_line') + '">🗑</button></td>' : '<td></td>') +
           '</tr>';
         }
       });
@@ -1414,19 +1420,19 @@ body.force-mobile main{
         var status = row.status || 'na';
         var cuEditing = (canEdit && EDITING && EDITING.kind === 'custom' && EDITING.key === idx);
         var cuStatusSel = '<select class="status-' + status + '" data-custom="' + idx + '"' + (canEdit?'':' disabled') + '>' +
-              '<option value="r"' + (status==='r'?' selected':'') + '>🔴 Obligatoire</option>' +
-              '<option value="j"' + (status==='j'?' selected':'') + '>🟡 Optionnel</option>' +
-              '<option value="v"' + (status==='v'?' selected':'') + '>🟠 À vérifier</option>' +
-              '<option value="na"' + (status==='na'?' selected':'') + '>⚫ N/A</option>' +
+              '<option value="r"' + (status==='r'?' selected':'') + '>' + i18n.t('edit.status_r') + '</option>' +
+              '<option value="j"' + (status==='j'?' selected':'') + '>' + i18n.t('edit.status_j') + '</option>' +
+              '<option value="v"' + (status==='v'?' selected':'') + '>' + i18n.t('edit.status_v') + '</option>' +
+              '<option value="na"' + (status==='na'?' selected':'') + '>' + i18n.t('edit.status_na') + '</option>' +
             '</select>';
-        var cuScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="Appliquer aux ' + (ALL_YEARS_FOR_MODEL.length-1) + ' autres annees"><input type="checkbox" data-scope="' + (row.code||'') + '"' + (SCOPE_ALL_CODES[row.code]?' checked':'') + '><span></span></label></td>' : '');
+        var cuScopeCell = (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<td style="text-align:center"><label class="scope-cell" title="' + i18n.t('edit.t_apply_years', {n: (ALL_YEARS_FOR_MODEL.length-1)}) + '"><input type="checkbox" data-scope="' + (row.code||'') + '"' + (SCOPE_ALL_CODES[row.code]?' checked':'') + '><span></span></label></td>' : '');
         if (cuEditing){
           bomRows += '<tr class="custom-row row-changed">' +
-            '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(row.pn||'') + '" placeholder="Part Number" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
-            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(row.desc||'') + '" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(row.pn||'') + '" placeholder="' + i18n.t('edit.ph_part_number') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(row.desc||'') + '" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
             '<td>' + cuStatusSel + '</td>' +
             cuScopeCell +
-            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-custom="' + idx + '" data-kind="custom" title="Appliquer" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="Annuler" style="padding:0.3rem 0.5rem">✗</button></td>' +
+            '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_apply') + '" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="' + i18n.t('edit.t_cancel') + '" style="padding:0.3rem 0.5rem">✗</button></td>' +
           '</tr>';
         } else {
           bomRows += '<tr class="custom-row">' +
@@ -1434,7 +1440,7 @@ body.force-mobile main{
             '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') + '</td>' +
             '<td>' + cuStatusSel + '</td>' +
             cuScopeCell +
-            (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-custom="' + idx + '" data-kind="custom" title="Modifier cette ligne">✏️</button> <button class="row-del" data-custom="' + idx + '" data-kind="custom" title="Supprimer cette ligne custom">🗑</button></td>' : '<td></td>') +
+            (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_edit_line') + '">✏️</button> <button class="row-del" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_delete_custom') + '">🗑</button></td>' : '<td></td>') +
           '</tr>';
         }
       });
@@ -1443,16 +1449,16 @@ body.force-mobile main{
       if (canEdit && ADDING_LINE){
         bomRows += '<tr class="add-row">' +
           '<td>' +
-            '<input type="text" id="add-code" placeholder="Code" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
+            '<input type="text" id="add-code" placeholder="' + i18n.t('edit.ph_code') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
           '</td>' +
           '<td>' +
-            '<input type="text" id="add-desc" placeholder="Description" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
+            '<input type="text" id="add-desc" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
           '</td>' +
           '<td>' +
             '<select id="add-status" style="padding:0.3rem 0.5rem;font-size:0.85rem;width:100%">' +
-              '<option value="r">🔴 Obligatoire</option>' +
-              '<option value="j" selected>🟡 Optionnel</option>' +
-              '<option value="na">⚫ N/A</option>' +
+              '<option value="r">' + i18n.t('edit.status_r') + '</option>' +
+              '<option value="j" selected>' + i18n.t('edit.status_j') + '</option>' +
+              '<option value="na">' + i18n.t('edit.status_na') + '</option>' +
             '</select>' +
           '</td>' +
           '<td style="text-align:center;white-space:nowrap">' +
@@ -1479,10 +1485,10 @@ body.force-mobile main{
 
     var actions = '';
     if (canFlag){
-      actions += '<button class="warn ' + (isFlagged?'active':'') + ' small" onclick="openFlagModal()">' + (isFlagged ? '🚩 Drapeau actif' : '🏳️ Signaler') + '</button>';
+      actions += '<button class="warn ' + (isFlagged?'active':'') + ' small" onclick="openFlagModal()">' + (isFlagged ? i18n.t('edit.flag_btn_active') : i18n.t('edit.flag_btn')) + '</button>';
     }
     if (canDelete){
-      actions += '<button class="danger small" onclick="openDeleteModal()">🗑️ Supprimer</button>';
+      actions += '<button class="danger small" onclick="openDeleteModal()">' + i18n.t('edit.delete_btn') + '</button>';
     }
 
     // Type icon
@@ -1512,12 +1518,12 @@ body.force-mobile main{
     }).join('');
 
     var readonlyBanner = canEdit ? '' :
-      '<div class="readonly-banner">Mode lecture seule. Connectez-vous comme administrateur pour editer.</div>';
+      '<div class="readonly-banner">' + i18n.t('edit.readonly_banner') + '</div>';
 
     var flagBanner = isFlagged
-      ? '<div class="flag-banner"><div>🚩 <strong>Drapeau actif</strong> — Pose par ' + (FLAG.flaggedBy||'?') + ' le ' + (FLAG.flaggedAt||'?') +
+      ? '<div class="flag-banner"><div>' + i18n.t('edit.flag_banner_active', {by: (FLAG.flaggedBy||'?'), at: (FLAG.flaggedAt||'?')}) +
         (FLAG.note ? '<br><span style="color:var(--text);margin-left:1.5rem">"' + FLAG.note + '"</span>' : '') +
-        '</div>' + (canFlag ? '<button class="secondary small" onclick="openFlagModal()">Voir / Resoudre</button>' : '') + '</div>'
+        '</div>' + (canFlag ? '<button class="secondary small" onclick="openFlagModal()">' + i18n.t('edit.flag_view_resolve') + '</button>' : '') + '</div>'
       : '';
 
     var yearCount = ALL_YEARS_FOR_MODEL.length;
@@ -1525,8 +1531,8 @@ body.force-mobile main{
     var scopeCountForTop = Object.keys(SCOPE_ALL_CODES).filter(function(k){return SCOPE_ALL_CODES[k];}).length;
     var saveButtonsInline = canEdit ?
       '<div class="tabs-save-group">' +
-        '<button id="btn-save-top" ' + (dirtyCount===0?'disabled':'') + '>💾 Sauvegarder (' + dirtyCount + ' chgmt)' + (scopeCountForTop > 0 ? ' [' + scopeCountForTop + ' multi-an]' : '') + '</button>' +
-        '<button class="secondary" id="btn-reset-top" ' + (dirtyCount===0?'disabled':'') + '>Annuler</button>' +
+        '<button id="btn-save-top" ' + (dirtyCount===0?'disabled':'') + '>' + i18n.t('edit.save_btn', {n: dirtyCount}) + (scopeCountForTop > 0 ? i18n.t('edit.multi_an_suffix', {n: scopeCountForTop}) : '') + '</button>' +
+        '<button class="secondary" id="btn-reset-top" ' + (dirtyCount===0?'disabled':'') + '>' + i18n.t('edit.reset_btn') + '</button>' +
       '</div>' : '';
 
     document.getElementById('root').innerHTML =
@@ -1538,8 +1544,8 @@ body.force-mobile main{
         readonlyBanner + flagBanner +
         '<div class="tabs tabs-with-save">' +
           '<div class="tabs-buttons">' +
-            '<button class="tab active" data-tab="bom">Kit BOM</button>' +
-            '<button class="tab" data-tab="specs">Specifications</button>' +
+            '<button class="tab active" data-tab="bom">' + i18n.t('edit.tab_bom') + '</button>' +
+            '<button class="tab" data-tab="specs">' + i18n.t('edit.tab_specs') + '</button>' +
           '</div>' +
           saveButtonsInline +
         '</div>' +
@@ -1547,30 +1553,30 @@ body.force-mobile main{
         '<div id="tab-bom">' +
           (hasBom
             ? '<table class="bom-table">' +
-                '<thead><tr><th style="width:130px">Part Number</th><th>Description</th><th style="width:200px">Statut</th>' +
-                (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<th style="width:100px;text-align:center" title="Appliquer ce changement aux autres annees">Toutes annees</th>' : '') +
+                '<thead><tr><th style="width:130px">' + i18n.t('edit.th_part_number') + '</th><th>' + i18n.t('edit.th_description') + '</th><th style="width:200px">' + i18n.t('edit.th_status') + '</th>' +
+                (canEdit && ALL_YEARS_FOR_MODEL.length > 1 ? '<th style="width:100px;text-align:center" title="' + i18n.t('edit.t_apply_change_years') + '">' + i18n.t('edit.th_all_years') + '</th>' : '') +
                 (canEdit ? '<th style="width:88px"></th>' : '') + '</tr></thead>' +
                 '<tbody>' + bomRows + '</tbody>' +
               '</table>' +
-              (canEdit && !ADDING_LINE ? '<button class="secondary small" id="add-line-btn" style="margin-top:0.75rem">+ Ajouter une ligne</button>' : '') +
+              (canEdit && !ADDING_LINE ? '<button class="secondary small" id="add-line-btn" style="margin-top:0.75rem">' + i18n.t('edit.add_line') + '</button>' : '') +
               (REMOVED_CURRENT.length > 0
-                ? '<div style="margin-top:0.75rem;color:var(--text-3);font-size:0.78rem">Lignes retirees : ' + REMOVED_CURRENT.join(', ') +
-                  (canEdit ? ' <button class="secondary small" id="restore-all" style="margin-left:0.5rem;padding:0.25rem 0.6rem;font-size:0.75rem">Restaurer tout</button>' : '') +
+                ? '<div style="margin-top:0.75rem;color:var(--text-3);font-size:0.78rem">' + i18n.t('edit.removed_lines') + ' ' + REMOVED_CURRENT.join(', ') +
+                  (canEdit ? ' <button class="secondary small" id="restore-all" style="margin-left:0.5rem;padding:0.25rem 0.6rem;font-size:0.75rem">' + i18n.t('edit.restore_all') + '</button>' : '') +
                   '</div>'
                 : '')
-            : '<p style="color:var(--text-3);padding:1rem 0">Aucun code BOM defini pour ce type de machine.</p>') +
+            : '<p style="color:var(--text-3);padding:1rem 0">' + i18n.t('edit.no_bom_type') + '</p>') +
           '<div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)">' +
-            '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">Notes sur ce modele</label>' +
+            '<label style="display:block;font-size:0.75rem;color:var(--text-2);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.05em">' + i18n.t('edit.notes_label') + '</label>' +
             '<textarea id="notes-area" class="notes-area"' + (canEdit?'':' readonly') + '>' + (NOTES_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
-            '<label style="display:block;font-size:0.75rem;color:#E07B00;margin:1rem 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em">&#9888; Avertissement soumission <span style="text-transform:none;color:var(--text-3)">(s\'affiche en bandeau dans la soumission)</span></label>' +
-            '<textarea id="warning-area" class="notes-area"' + (canEdit?'':' readonly') + ' placeholder="Ex. : Cette soumission doit passer par l\'ingenierie.">' + (WARNING_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
+            '<label style="display:block;font-size:0.75rem;color:#E07B00;margin:1rem 0 0.5rem;text-transform:uppercase;letter-spacing:0.05em">' + i18n.t('edit.warning_label') + ' <span style="text-transform:none;color:var(--text-3)">' + i18n.t('edit.warning_label_sub') + '</span></label>' +
+            '<textarea id="warning-area" class="notes-area"' + (canEdit?'':' readonly') + ' placeholder="' + i18n.t('edit.warning_placeholder') + '">' + (WARNING_CURRENT||'').replace(/</g,'&lt;') + '</textarea>' +
           '</div>' +
           (canEdit ? (
             (function(){
               var scopeCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){return SCOPE_ALL_CODES[k];}).length;
               return '<div class="btn-row">' +
-                '<button id="btn-save" ' + (dirtyCount===0?'disabled':'') + '>💾 Sauvegarder (' + dirtyCount + ' chgmt)' + (scopeCount > 0 ? ' [' + scopeCount + ' multi-an]' : '') + '</button>' +
-                '<button class="secondary" id="btn-reset" ' + (dirtyCount===0?'disabled':'') + '>Annuler les changements</button>' +
+                '<button id="btn-save" ' + (dirtyCount===0?'disabled':'') + '>' + i18n.t('edit.save_btn', {n: dirtyCount}) + (scopeCount > 0 ? i18n.t('edit.multi_an_suffix', {n: scopeCount}) : '') + '</button>' +
+                '<button class="secondary" id="btn-reset" ' + (dirtyCount===0?'disabled':'') + '>' + i18n.t('edit.reset_changes_btn') + '</button>' +
               '</div>';
             })()
           ) : '') +
@@ -1622,9 +1628,9 @@ body.force-mobile main{
             displayName = (BOM_NAMES[code] || code) + ' (' + (BOM_PN[code] || code) + ')';
           } else if (kind === 'custom' && customIdx != null){
             var c = CUSTOM_CURRENT[parseInt(customIdx)];
-            displayName = c ? ((c.desc || '') + ' (' + (c.pn || c.code) + ')') : 'cette ligne';
+            displayName = c ? ((c.desc || '') + ' (' + (c.pn || c.code) + ')') : i18n.t('edit.this_line');
           }
-          document.getElementById('del-line-name').textContent = displayName || 'cette ligne';
+          document.getElementById('del-line-name').textContent = displayName || i18n.t('edit.this_line');
 
           // Affiche la case 'toutes annees' uniquement si modele multi-annees
           var nYears = ALL_YEARS_FOR_MODEL.length;
@@ -1751,7 +1757,7 @@ body.force-mobile main{
       function updateSaveButtons() {
         var dc = countChanges();
         var scopeCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){return SCOPE_ALL_CODES[k];}).length;
-        var label = '💾 Sauvegarder (' + dc + ' chgmt)' + (scopeCount > 0 ? ' [' + scopeCount + ' multi-an]' : '');
+        var label = i18n.t('edit.save_btn', {n: dc}) + (scopeCount > 0 ? i18n.t('edit.multi_an_suffix', {n: scopeCount}) : '');
         ['btn-save', 'btn-save-top'].forEach(function(id){
           var b = document.getElementById(id);
           if (b){ b.disabled = dc===0; b.innerHTML = label; }
@@ -1844,7 +1850,7 @@ body.force-mobile main{
       try{ MACHINE = data[TYPE][FAB][YEAR][MODEL]; }catch(e){}
       if (!MACHINE){
         document.getElementById('root').innerHTML =
-          '<div class="empty"><div class="big">!</div><div>Machine introuvable : ' + TYPE + ' / ' + FAB + ' / ' + YEAR + ' / ' + MODEL + '</div></div>';
+          '<div class="empty"><div class="big">!</div><div>' + i18n.t('edit.machine_not_found', {info: TYPE + ' / ' + FAB + ' / ' + YEAR + ' / ' + MODEL}) + '</div></div>';
         return;
       }
 
@@ -1933,11 +1939,13 @@ body.force-mobile main{
         FLAG = (flags && flags[flagKey()]) || null;
         PRODUCT_CODES = Array.isArray(pc) ? pc : [];
         render();
+        // Re-rendu du contenu dynamique au changement de langue (FR/EN)
+        window.addEventListener('langchange', function(){ if (MACHINE) render(); });
       });
     })
     .catch(function(){
       document.getElementById('root').innerHTML =
-        '<div class="empty"><div class="big">!</div><div>Impossible de charger data/machines.json</div></div>';
+        '<div class="empty"><div class="big">!</div><div>' + i18n.t('edit.load_error') + '</div></div>';
     });
 })();
 </script>
@@ -1959,7 +1967,7 @@ body.force-mobile main{
         var btn = document.getElementById('view-mobile-toggle');
         if (btn) {
             btn.classList.toggle('active', on);
-            btn.innerHTML = on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile';
+            btn.innerHTML = (typeof i18n !== 'undefined') ? (on ? i18n.t('common.view_desktop') : i18n.t('common.mobile_view')) : (on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile');
         }
         try { localStorage.setItem(VIEW_KEY, on ? '1' : '0'); } catch(e){}
         syncViewMode();
@@ -1969,6 +1977,7 @@ body.force-mobile main{
         applyForcedView(!document.body.classList.contains('force-mobile'));
     });
     window.addEventListener('resize', syncViewMode);
+    window.addEventListener('langchange', function(){ applyForcedView(document.body.classList.contains('force-mobile')); });
     try { applyForcedView(localStorage.getItem(VIEW_KEY) === '1'); }
     catch(e) { syncViewMode(); }
 })();

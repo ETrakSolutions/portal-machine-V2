@@ -13,7 +13,7 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            <a href="index.html" class="header-back" title="Page precedente" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span>Retour</span></a>
+            <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
@@ -93,7 +93,7 @@
                     <span class="toggle-status">OFF</span>
                     <div class="toggle-sub-panel" id="limiteur-panel">
                         <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-hauteur" value="Hauteur"> <span data-i18n="soumission.hauteur">Hauteur</span></label>
-                        <label class="sub-option" id="sub-hauteur-ext" style="display:none"><input type="checkbox" name="limiteur-type" id="lim-hauteur-ext" value="Hauteur + extension"> Hauteur + extension</label>
+                        <label class="sub-option" id="sub-hauteur-ext" style="display:none"><input type="checkbox" name="limiteur-type" id="lim-hauteur-ext" value="Hauteur + extension"> <span data-i18n="soumission.hauteur_extension">Hauteur + extension</span></label>
                         <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-rotation" value="Rotation"> <span data-i18n="soumission.rotation">Rotation</span></label>
                         <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-hr" value="Hauteur + Rotation"> <span data-i18n="soumission.hauteur_rotation">Hauteur + Rotation</span></label>
                         <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-multi" value="Multi-axe"> <span data-i18n="soumission.multi_axe">Multi-axe</span></label>
@@ -107,8 +107,8 @@
                 <div id="idc-lockvalve-warning" class="idc-warning" style="display:none;">
                     <span class="idc-warning-icon">&#9888;</span>
                     <div class="idc-warning-text">
-                        <strong>Lock Valve obligatoire boom/stick</strong><br>
-                        Details techniques des lock valves avant de planifier installation
+                        <strong data-i18n="soumission.lockvalve_title">Lock Valve obligatoire boom/stick</strong><br>
+                        <span data-i18n="soumission.lockvalve_desc">Details techniques des lock valves avant de planifier installation</span>
                     </div>
                 </div>
                 <div class="toggle-box toggle-has-sub" data-option="Guide de creusage" id="toggle-creusage">
@@ -130,11 +130,11 @@
                     </div>
                 </div>
                 <div class="toggle-box toggle-has-sub" data-option="Balance ST-7" id="toggle-balance" style="display:none;">
-                    <span class="toggle-label">Balance ST-7</span>
+                    <span class="toggle-label" data-i18n="soumission.balance">Balance ST-7</span>
                     <span class="toggle-status">OFF</span>
                     <div class="toggle-sub-panel" id="balance-panel">
-                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-seule" value="Balance seule"> Balance seule</label>
-                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-imp" value="Balance + imprimante"> Balance + imprimante thermique</label>
+                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-seule" value="Balance seule"> <span data-i18n="soumission.balance_seule">Balance seule</span></label>
+                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-imp" value="Balance + imprimante"> <span data-i18n="soumission.balance_imp">Balance + imprimante thermique</span></label>
                     </div>
                 </div>
             </div>
@@ -142,17 +142,17 @@
             <div id="bom-avalider-warning" class="idc-warning" style="display:none; margin-top:12px;">
                 <span class="idc-warning-icon">&#9888;</span>
                 <div class="idc-warning-text">
-                    <strong>Items du kit a valider</strong><br>
+                    <strong data-i18n="soumission.bom_validate_title">Items du kit a valider</strong><br>
                     <span id="bom-avalider-list"></span><br>
-                    A confirmer avec e-Trak avant de finaliser la soumission.
+                    <span data-i18n="soumission.bom_validate_warning">A confirmer avec e-Trak avant de finaliser la soumission.</span>
                 </div>
             </div>
 
             <div id="multiaxe-retro-warning" class="idc-warning" style="display:none; margin-top:12px;">
                 <span class="idc-warning-icon">&#9888;</span>
                 <div class="idc-warning-text">
-                    <strong>Multi-axe sur retrocaveuse</strong><br>
-                    Doit etre analyse par l'ingenierie avant la soumission.
+                    <strong data-i18n="soumission.multiaxe_retro_title">Multi-axe sur retrocaveuse</strong><br>
+                    <span data-i18n="soumission.multiaxe_retro_desc">Doit etre analyse par l'ingenierie avant la soumission.</span>
                 </div>
             </div>
 
@@ -215,13 +215,13 @@
         </div>
     </footer>
 
-    <script src="js/translations.js?v=167"></script>
+    <script src="js/translations.js?v=171"></script>
     <script src="js/i18n.js?v=166"></script>
     <script src="js/heartbeat.js?v=4"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=3"></script>
     <script src="js/kit-rules.js?v=3"></script>
-    <script src="js/soumission.js?v=232"></script>
+    <script src="js/soumission.js?v=233"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>

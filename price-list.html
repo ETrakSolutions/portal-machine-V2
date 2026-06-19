@@ -31,7 +31,7 @@
 <body>
     <header>
         <div class="header-content">
-            <a href="index.html" class="header-back" title="Retour au hub">&larr; Retour</a>
+            <a href="index.html" class="header-back" title="Retour au hub" data-i18n-title="common.back_hub">&larr; <span data-i18n="common.retour">Retour</span></a>
             <div class="logo-section">
                 <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
             </div>
@@ -47,28 +47,28 @@
             <!-- Acces refuse (non-admin) -->
             <div id="pl-denied" style="display:none; text-align:center; padding:3rem 1rem;">
                 <div class="pl-lock">&#128274;</div>
-                <h2 style="color:#fff;">Acces reserve aux administrateurs</h2>
-                <p style="color:#999;">Cette section est reservee au Super Admin et aux Administrateurs.</p>
-                <a href="index.html" class="pl-btn" style="margin-top:1rem;">Retour au hub</a>
+                <h2 style="color:#fff;" data-i18n="common.admin_only_title">Acces reserve aux administrateurs</h2>
+                <p style="color:#999;" data-i18n="common.admin_only_desc">Cette section est reservee au Super Admin et aux Administrateurs.</p>
+                <a href="index.html" class="pl-btn" style="margin-top:1rem;" data-i18n="common.back_hub">Retour au hub</a>
             </div>
 
             <!-- Contenu (admin) -->
             <div id="pl-root" style="display:none;">
                 <div class="admin-hero" style="padding-bottom:0.5rem;">
-                    <h1 class="admin-hero-title">Liste de prix</h1>
+                    <h1 class="admin-hero-title" data-i18n="pl.title">Liste de prix</h1>
                 </div>
                 <div class="pl-card">
                     <div class="pl-lock">&#128178;</div>
-                    <h2>Liste de prix &mdash; Juin 2026 (Options R1)</h2>
-                    <div class="pl-sub">Document interne &middot; acc&egrave;s e-Trak requis</div>
-                    <a id="pl-open" href="https://ecotrakindustrie.sharepoint.com/:b:/r/sites/E-TrakProduction/Documents%20partages/General/_Portail%20e-Trak/Liste%20prix%202026.pdf?csf=1&amp;web=1&amp;e=rIwciu" target="_blank" rel="noopener" class="pl-btn">Ouvrir la liste de prix &#8599;</a>
-                    <div class="pl-note">Le document s'ouvre sur SharePoint. Une connexion avec votre compte e-Trak (Microsoft 365) est requise &mdash; il n'est pas stocke sur le portail public.</div>
+                    <h2 data-i18n="pl.card_title">Liste de prix &mdash; Juin 2026 (Options R1)</h2>
+                    <div class="pl-sub" data-i18n="pl.card_sub">Document interne &middot; acc&egrave;s e-Trak requis</div>
+                    <a id="pl-open" href="https://ecotrakindustrie.sharepoint.com/:b:/r/sites/E-TrakProduction/Documents%20partages/General/_Portail%20e-Trak/Liste%20prix%202026.pdf?csf=1&amp;web=1&amp;e=rIwciu" target="_blank" rel="noopener" class="pl-btn" data-i18n="pl.open_btn">Ouvrir la liste de prix &#8599;</a>
+                    <div class="pl-note" data-i18n="pl.note">Le document s'ouvre sur SharePoint. Une connexion avec votre compte e-Trak (Microsoft 365) est requise &mdash; il n'est pas stocke sur le portail public.</div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="js/translations.js?v=168"></script>
+    <script src="js/translations.js?v=171"></script>
     <script src="js/i18n.js?v=166"></script>
     <script>
     (function () {
