@@ -1,1 +1,1 @@
-{"v": "2026-06-19T13:59:37Z", "note": "Nouveau type Nacelle (manlifts): 13 marques, 145 modeles 2015-2026 (Genie/JLG/Skyjack/Haulotte/Snorkel/Manitou/Niftylift/Sinoboom/LGMG/Dingli/MEC/XCMG/Zoomlion). Branche partout (DB, machine, export, admin, i18n). Kit _bom_labels = placeholder a definir par admin."}
+{"v": "2026-06-19T17:28:44Z", "note": "Kit Nacelle = vrais codes liste de prix 1500-09XX : 0900 base telescopique (oblig.), 0901 Hauteur, 0902 Rotation, 0903 Articule, 0904 Gestion G-D, 0905 Drain. Remplace le placeholder."}
