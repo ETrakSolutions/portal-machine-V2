@@ -1,1 +1,1 @@
-{"v": "2026-06-11T20:10:00Z", "note": "Soumission : sur retrocaveuse, le Multi-axe (1500-0005) remplace et masque la base 1500-0600 (comme l'excavatrice masque son 1500-0000). Regression excavatrice OK."}
+{"v": "2026-06-19T13:59:37Z", "note": "Nouveau type Nacelle (manlifts): 13 marques, 145 modeles 2015-2026 (Genie/JLG/Skyjack/Haulotte/Snorkel/Manitou/Niftylift/Sinoboom/LGMG/Dingli/MEC/XCMG/Zoomlion). Branche partout (DB, machine, export, admin, i18n). Kit _bom_labels = placeholder a definir par admin."}

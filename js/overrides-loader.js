@@ -24,7 +24,8 @@
     'Foreuse': 'foreuse',
     'Camion Vacuum': 'camion-vacuum',
     'Retrocaveuse': 'retrocaveuse',
-    'Loader': 'loader'
+    'Loader': 'loader',
+    'Nacelle': 'nacelle'
   };
   window.ETRAK_TYPE_SLUGS = TYPE_SLUGS;
 
