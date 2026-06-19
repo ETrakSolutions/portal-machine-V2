@@ -79,6 +79,23 @@
     };
   }
 
+  // Defauts Nacelle -> { code: etat }. Base selon la categorie :
+  //  - Flèche articulée  -> base = 0903 (Nacelle articulee), 0900 (telescopique) = na
+  //  - Flèche télescopique / Mât vertical -> base = 0900, 0903 = na
+  // Les autres (0901 Hauteur, 0902 Rotation, 0904 Gestion G-D, 0905 Drain) = option (j).
+  function nacelleDefaults(specs) {
+    var cat = String((specs && (specs['Categorie'] || specs['Catégorie'])) || '').toLowerCase();
+    var artic = cat.indexOf('articul') >= 0;
+    return {
+      '0900': artic ? 'na' : 'r',
+      '0901': 'j',
+      '0902': 'j',
+      '0903': artic ? 'r' : 'na',
+      '0904': 'j',
+      '0905': 'j'
+    };
+  }
+
   // Harnais de coupure selon le fabricant -> { code, name }
   function harnais(fab, modele) {
     var f = String(fab || '').toUpperCase(), m = String(modele || '');
@@ -118,7 +135,7 @@
     EXC_CODES: EXC_CODES,
     POMPE_CODES: POMPE_CODES,
     poidsKg: poidsKg, isMini: isMini, isDrain: isDrain, isGC: isGC,
-    excDefaults: excDefaults, pompeDefaults: pompeDefaults,
+    excDefaults: excDefaults, pompeDefaults: pompeDefaults, nacelleDefaults: nacelleDefaults,
     harnais: harnais, isOptionCode: isOptionCode, applyOverride: applyOverride
   };
 })();

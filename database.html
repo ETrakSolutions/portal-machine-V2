@@ -683,7 +683,7 @@
     <script src="js/heartbeat.js?v=4"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=4"></script>
-    <script src="js/kit-rules.js?v=3"></script>
+    <script src="js/kit-rules.js?v=4"></script>
     <script>
     // Token de session (renvoye par l'API au login, stocke dans portal_user).
     // Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
@@ -1381,6 +1381,11 @@
                 var code = k.split(' ')[0];
                 out[code] = (labels[k] && labels[k].def) || 'na';
             });
+            // Nacelle : base selon la categorie (articulee -> 0903, sinon 0900)
+            if (d._type === 'Nacelle' && window.KitRules && window.KitRules.nacelleDefaults) {
+                var nd = window.KitRules.nacelleDefaults({ 'Categorie': d.categorie || d['_spec_Categorie'] || '' });
+                for (var c in nd) out[c] = nd[c];
+            }
             return out;
         }
 

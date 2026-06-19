@@ -697,6 +697,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             var gDesc = document.getElementById('kit-generic-desc');
             if (gDesc) gDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
             var gBody = document.getElementById('kit-generic-tbody');
+            // Nacelle : base selon la categorie (articulee -> 0903, sinon 0900)
+            var nacDef = (type === 'Nacelle' && window.KitRules && window.KitRules.nacelleDefaults) ? window.KitRules.nacelleDefaults(specs) : null;
             var renderGeneric = function(ov) {
                 ov = ov || {};
                 var removed = Array.isArray(ov._removed) ? ov._removed : [];
@@ -710,7 +712,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                     var code = key.split(' ')[0];
                     var v = labelsG[key] || {};
                     var ovv = ov[code];
-                    var st = (ovv !== undefined && ovv !== null && ovv !== '') ? ovv : (v.def || 'na');
+                    var baseDef = (nacDef && nacDef[code] !== undefined) ? nacDef[code] : (v.def || 'na');
+                    var st = (ovv !== undefined && ovv !== null && ovv !== '') ? ovv : baseDef;
                     if (removed.indexOf(code) >= 0) st = 'na';
                     if (st === 'na') return;
                     rows += '<tr><td>' + (v.desc || key.replace(/^[0-9]+\s*/, '')) + '</td>' +

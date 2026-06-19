@@ -1,1 +1,1 @@
-{"v": "2026-06-19T17:28:44Z", "note": "Kit Nacelle = vrais codes liste de prix 1500-09XX : 0900 base telescopique (oblig.), 0901 Hauteur, 0902 Rotation, 0903 Articule, 0904 Gestion G-D, 0905 Drain. Remplace le placeholder."}
+{"v": "2026-06-19T17:39:35Z", "note": "Nacelle: regle base selon categorie. Flèche articulée -> base 1500-0903 (0900 n/a); télescopique/mât vertical -> base 1500-0900 (0903 n/a). kit-rules.js nacelleDefaults, branche dans machine/database/edit/export."}
