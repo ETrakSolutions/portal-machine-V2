@@ -562,7 +562,13 @@
     text-align: center;
     transition: all 0.25s;
     cursor: pointer;
-    display: block;
+    /* Hauteur commune a TOUTES les tuiles : laisse la place au temoin (sous le texte)
+       de la tuile BD sans le faire chevaucher, tout en gardant les tuiles uniformes. */
+    box-sizing: border-box;
+    min-height: 143px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .hub-tile:hover {
     border-color: #0062CC;
@@ -593,15 +599,12 @@
    pastille orange pulsee = quelqu'un a demande une machine. */
 .hub-tile-database { position: relative; }
 .hub-tile-reqbadge {
-    /* Sous le texte, centre, mais EN ABSOLU (hors flux) pour ne PAS changer la hauteur
-       de la tuile -> toutes les tuiles gardent la meme dimension. display reel
-       (inline-flex/none) gere par admin.js selon les demandes actives. */
-    position: absolute;
-    bottom: 8px;
-    left: 50%;
-    transform: translateX(-50%);
+    /* Sous le texte, centre, DANS LE FLUX (jamais par-dessus le texte). Pour que les
+       tuiles restent uniformes malgre la hauteur ajoutee, .hub-tile a un min-height
+       commun (voir .hub-tile). display reel (inline-flex/none) gere par admin.js. */
     align-items: center;
     gap: 3px;
+    margin: 10px auto 0;
     padding: 3px 9px;
     font-size: 0.66rem;
     font-weight: 700;
@@ -611,7 +614,6 @@
     border: 1px solid #FF6A00;
     border-radius: 999px;
     cursor: pointer;
-    z-index: 2;
     box-shadow: 0 0 0 0 rgba(255,106,0,0.6);
     animation: reqbadge-pulse 1.8s infinite;
 }
