@@ -562,13 +562,7 @@
     text-align: center;
     transition: all 0.25s;
     cursor: pointer;
-    /* Hauteur commune a TOUTES les tuiles : laisse la place au temoin (sous le texte)
-       de la tuile BD sans le faire chevaucher, tout en gardant les tuiles uniformes. */
-    box-sizing: border-box;
-    min-height: 143px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: block;
 }
 .hub-tile:hover {
     border-color: #0062CC;
@@ -599,32 +593,27 @@
    pastille orange pulsee = quelqu'un a demande une machine. */
 .hub-tile-database { position: relative; }
 .hub-tile-reqbadge {
-    /* Sous le texte, centre, DANS LE FLUX (jamais par-dessus le texte). Pour que les
-       tuiles restent uniformes malgre la hauteur ajoutee, .hub-tile a un min-height
-       commun (voir .hub-tile). display reel (inline-flex/none) gere par admin.js. */
+    /* Petit temoin discret dans le coin (absolu -> n'affecte pas la taille de la tuile,
+       pas de chevauchement). Visible seulement si demande active (display via admin.js). */
+    position: absolute;
+    top: 6px;
+    right: 6px;
     align-items: center;
     gap: 3px;
-    margin: 10px auto 0;
-    padding: 3px 9px;
-    font-size: 0.66rem;
+    padding: 1px 6px;
+    font-size: 0.58rem;
     font-weight: 700;
-    line-height: 1.2;
+    line-height: 1.25;
     color: #fff;
     background: #FF6A00;
-    border: 1px solid #FF6A00;
     border-radius: 999px;
     cursor: pointer;
-    box-shadow: 0 0 0 0 rgba(255,106,0,0.6);
-    animation: reqbadge-pulse 1.8s infinite;
+    opacity: 0.9;
+    z-index: 2;
 }
-.hub-tile-reqbadge::before { content: "\1F514"; font-size: 0.72rem; }
-.hub-tile-reqbadge:hover { filter: brightness(1.08); }
+.hub-tile-reqbadge::before { content: "\1F514"; font-size: 0.58rem; }
+.hub-tile-reqbadge:hover { opacity: 1; }
 .hub-tile-reqcount { font-weight: 800; }
-@keyframes reqbadge-pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(255,106,0,0.55); }
-    70%  { box-shadow: 0 0 0 8px rgba(255,106,0,0); }
-    100% { box-shadow: 0 0 0 0 rgba(255,106,0,0); }
-}
 
 /* Empty state */
 .hub-empty {
