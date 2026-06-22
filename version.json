@@ -1,1 +1,1 @@
-{"v": "2026-06-22T13:05:00Z", "note": "Demandes machines: bouton 'Nouvelle machine' remplace 'Apercu mobile' dans la BD; badge tuile = temoin (visible si demande active)."}
+{"v": "2026-06-22T13:40:00Z", "note": "Le bouton courriel 'Demande kit machine' enregistre aussi la demande (allume le temoin)."}

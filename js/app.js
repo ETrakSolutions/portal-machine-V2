@@ -480,7 +480,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         var _reqDbLabel = (typeof i18n !== 'undefined') ? i18n.t('js.req_add_to_db') : '\uD83D\uDCCB Demander l\'ajout a la BD';
         html += '<div class="kit-request-box">' +
             '<p class="kit-request-text">' + _reqText + '</p>' +
-            '<a href="mailto:' + mailTo + '?subject=' + mailSubject + '&body=' + mailBody + '" class="kit-request-btn">\uD83D\uDCE7 Demande kit machine</a>' +
+            '<a href="mailto:' + mailTo + '?subject=' + mailSubject + '&body=' + mailBody + '" id="kit-email-request-btn" class="kit-request-btn">\uD83D\uDCE7 Demande kit machine</a>' +
             '<button type="button" id="db-request-btn" class="kit-request-btn kit-request-btn-db">' + _reqDbLabel + '</button>' +
             '</div>';
     }
@@ -491,6 +491,15 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
     var _dbReqBtn = document.getElementById('db-request-btn');
     if (_dbReqBtn) {
         _dbReqBtn.addEventListener('click', function() {
+            submitMachineRequest({ type: type, fab: fab, modele: modele, annee: annee }, _dbReqBtn);
+        });
+    }
+    // Le bouton courriel enregistre AUSSI la demande (allume le temoin), en plus d'ouvrir
+    // le courriel. Pas de preventDefault : le mailto s'ouvre normalement, l'enregistrement
+    // se fait en parallele. Le retour visuel s'affiche sur le bouton "Demander l'ajout".
+    var _emailReqBtn = document.getElementById('kit-email-request-btn');
+    if (_emailReqBtn) {
+        _emailReqBtn.addEventListener('click', function() {
             submitMachineRequest({ type: type, fab: fab, modele: modele, annee: annee }, _dbReqBtn);
         });
     }
