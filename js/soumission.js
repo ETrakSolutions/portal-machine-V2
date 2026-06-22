@@ -275,6 +275,13 @@ function populateModeles(type, fab, anneeFilter) {
         opt.textContent = modele;
         selectModele.appendChild(opt);
     });
+    // "Autre modele (pas dans la liste)" -> permet de DEMANDER l'ajout d'une machine absente
+    // (meme principe que le Portail Machine). value '__OTHER__'.
+    var optAutre = document.createElement('option');
+    optAutre.value = '__OTHER__';
+    optAutre.textContent = (typeof i18n !== 'undefined') ? i18n.t('js.other_model') : '⊕ Autre modele (pas dans la liste)';
+    optAutre.style.fontStyle = 'italic';
+    selectModele.appendChild(optAutre);
     selectModele.disabled = false;
 }
 
@@ -304,6 +311,11 @@ function doModeleChange() {
     if (!modele) { hideOptions(); return; }
     const type = selectType.value;
     const fab = selectFabricant.value;
+    if (modele === '__OTHER__') {
+        // Machine absente de la BD -> proposer de demander son ajout
+        showSoumissionCustomModelModal(type, fab);
+        return;
+    }
     // N'afficher dans le menu Annee QUE les annees ou ce modele existe
     var modelYears = Object.keys(machinesData[type][fab]).filter(function(y){
         return machinesData[type][fab][y] && machinesData[type][fab][y][modele];
@@ -341,6 +353,8 @@ btnReset.addEventListener('click', () => {
 });
 
 function showOptions() {
+    removeRequestPanel();
+    var _sb = document.getElementById('soumission-submit'); if (_sb) _sb.style.display = '';
     const type = selectType.value;
     const fab = selectFabricant.value;
     const annee = selectAnnee.value;
@@ -804,6 +818,101 @@ function getKitSummary(type, fab, modele, specs) {
 function hideOptions() {
     optionsSection.style.display = 'none';
     emptyState.style.display = 'block';
+    removeRequestPanel();
+    var _sb = document.getElementById('soumission-submit'); if (_sb) _sb.style.display = '';
+}
+
+// ---- Demande d'ajout d'une machine absente de la BD (meme mecanisme que le Portail Machine) ----
+function portalToken() {
+    try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; }
+}
+function removeRequestPanel() {
+    var p = document.getElementById('soumission-request-panel');
+    if (p) p.remove();
+}
+function showSoumissionCustomModelModal(type, fab) {
+    var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
+    var existing = document.getElementById('custom-model-modal');
+    if (existing) existing.remove();
+    var modal = document.createElement('div');
+    modal.id = 'custom-model-modal';
+    modal.className = 'custom-modal-overlay';
+    modal.innerHTML =
+        '<div class="custom-modal">' +
+        '<h3>' + t('soum.req_title', 'Machine absente de la liste') + '</h3>' +
+        '<p class="modal-desc">' + fab + ' — ' + type + '</p>' +
+        '<input type="text" id="custom-model-name" class="modal-input" placeholder="' + t('soum.req_model_ph', 'Nom du modele') + '" autocomplete="off">' +
+        '<input type="text" id="custom-model-year" class="modal-input" inputmode="numeric" placeholder="' + t('soum.req_year_ph', 'Annee (ex: 2026)') + '" autocomplete="off" style="margin-top:0.5rem">' +
+        '<div class="modal-buttons">' +
+        '<button id="modal-cancel" class="modal-btn modal-btn-cancel">' + t('common.annuler', 'Annuler') + '</button>' +
+        '<button id="modal-create" class="modal-btn modal-btn-create">' + t('soum.req_continue', 'Continuer') + '</button>' +
+        '</div></div>';
+    document.body.appendChild(modal);
+    var nameF = document.getElementById('custom-model-name');
+    var yearF = document.getElementById('custom-model-year');
+    nameF.focus();
+    document.getElementById('modal-cancel').addEventListener('click', function(){ modal.remove(); selectModele.value = ''; hideOptions(); });
+    document.getElementById('modal-create').addEventListener('click', function(){
+        var nm = nameF.value.trim(); var yr = yearF.value.trim();
+        if (!nm) { nameF.style.borderColor = 'red'; return; }
+        if (!/^\d{4}$/.test(yr)) { yearF.style.borderColor = 'red'; return; }
+        modal.remove();
+        showSoumissionRequestPanel(type, fab, nm, yr);
+    });
+    nameF.addEventListener('keydown', function(e){ if (e.key === 'Enter') yearF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
+    yearF.addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('modal-create').click(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
+}
+function showSoumissionRequestPanel(type, fab, modele, annee) {
+    var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
+    var specsSection = document.getElementById('specs-section');
+    if (specsSection) specsSection.style.display = 'none';
+    optionsSection.style.display = 'none';
+    emptyState.style.display = 'none';
+    var _sb = document.getElementById('soumission-submit'); if (_sb) _sb.style.display = 'none';
+    removeRequestPanel();
+    var panel = document.createElement('section');
+    panel.id = 'soumission-request-panel';
+    panel.className = 'options-section';
+    panel.innerHTML =
+        '<div class="kit-request-box">' +
+        '<p class="kit-request-text">⚠ ' + fab + ' ' + modele + ' (' + annee + ') ' + t('soum.req_absent', "n'est pas dans la base de donnees.") + '</p>' +
+        '<button type="button" id="soum-db-request-btn" class="kit-request-btn kit-request-btn-db">' + t('js.req_add_to_db', "📋 Demander l'ajout a la BD") + '</button>' +
+        '</div>';
+    document.querySelector('main').appendChild(panel);
+    document.getElementById('soum-db-request-btn').addEventListener('click', function(){
+        submitMachineRequest({ type: type, fab: fab, modele: modele, annee: annee }, this);
+    });
+}
+function submitMachineRequest(info, btnEl) {
+    var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
+    var prev = btnEl ? btnEl.textContent : '';
+    if (btnEl) { btnEl.disabled = true; btnEl.textContent = t('js.req_sending', 'Envoi...'); }
+    fetch(API_URL + '?action=get&key=machine_requests')
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+            var list = [];
+            if (data && data.value) { try { list = JSON.parse(data.value) || []; } catch(e){ list = []; } }
+            if (!Array.isArray(list)) list = [];
+            var dup = list.some(function(r){
+                return r && r.status === 'active' && r.type === info.type &&
+                    (r.fab || '') === (info.fab || '') && (r.modele || '') === (info.modele || '') &&
+                    String(r.annee || '') === String(info.annee || '');
+            });
+            if (dup) { if (btnEl) btnEl.textContent = t('js.req_exists', '✓ Demande deja enregistree'); return null; }
+            var u = currentUser || {};
+            list.push({
+                id: 'req_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                type: info.type, fab: info.fab, modele: info.modele, annee: info.annee,
+                requester: u.name || u.username || '', requesterEmail: u.username || '',
+                date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                note: '(via soumission)', status: 'active'
+            });
+            return fetch(API_URL, {
+                method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'save', key: 'machine_requests', value: JSON.stringify(list), pin: portalToken() })
+            }).then(function(r){ return r.json(); }).then(function(){ if (btnEl) btnEl.textContent = t('js.req_done', '✓ Demande enregistree'); });
+        })
+        .catch(function(){ if (btnEl) { btnEl.disabled = false; btnEl.textContent = prev; } alert(t('js.req_error', "Erreur lors de l'envoi de la demande. Reessayez.")); });
 }
 
 // Submit
