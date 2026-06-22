@@ -1,1 +1,1 @@
-{"v": "2026-06-19T18:39:25Z", "note": "Soumission: le vendeur interne associe au dealer/distributeur apparait dans le courriel (corps + CC). vendeurEmail persiste en session (login + whoami) ; champ Vendeur associe ajoute a la modale d edition admin (assignation/correction apres creation)."}
+{"v": "2026-06-22T12:17:45Z", "note": "Audit: database.html guard hasAccess (plus de TypeError quand non connecte, #20) + favicon e-Trak ajoute a toutes les pages (#26)."}

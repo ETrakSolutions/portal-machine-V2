@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
     <link rel="stylesheet" href="css/style.css?v=172">
@@ -1419,7 +1420,7 @@
             }}}}
             return machines;
         }
-        Promise.all([
+        if (hasAccess) Promise.all([
             fetch('data/machines.json', { cache: 'no-cache' }).then(function(r) { return r.json(); }),
             window.loadMergedOverrides()   // 8 fichiers par type + repli data/overrides.json
         ])
@@ -1782,7 +1783,7 @@
         }
 
         // Type changed
-        document.getElementById('db-type').addEventListener('change', loadType);
+        if (hasAccess) document.getElementById('db-type').addEventListener('change', loadType);
 
         // ===== Regroupement par modele sur plusieurs annees =====
         // Une ligne par (type, fab, modele, signature). Les annees dont les specs+BOM
@@ -2277,6 +2278,10 @@
             });
         })();
 
+        // Listeners d'edition/tri : referencent #db-* qui n'existent que si l'utilisateur
+        // est autorise (sinon <main> est remplace par un message). Ne pas les attacher sinon
+        // -> TypeError sur null quand non connecte. Voir audit #20.
+        if (hasAccess) {
         // Change harnais dropdown — (legacy, dead code: l'edition se fait via edit-machine.html)
         document.getElementById('db-tbody').addEventListener('change', function(e) {
             var sel = e.target.closest('.db-harnais-select');
@@ -2395,6 +2400,7 @@
         document.getElementById('db-search').addEventListener('input', applyFilters);
         document.getElementById('db-prev').addEventListener('click', function() { currentPage--; renderPage(); });
         document.getElementById('db-next').addEventListener('click', function() { currentPage++; renderPage(); });
+        }  // fin if (hasAccess) — listeners d'edition/navigation
 
         // Sort (only on spec columns, not BOM)
         document.querySelectorAll('.db-table thead th[data-col]').forEach(function(th) {
@@ -2418,8 +2424,10 @@
             var tbl = document.getElementById('db-table');
             if (tbl) scrollInner.style.width = tbl.scrollWidth + 'px';
         }
-        scrollTop.addEventListener('scroll', function() { tableWrap.scrollLeft = scrollTop.scrollLeft; });
-        tableWrap.addEventListener('scroll', function() { scrollTop.scrollLeft = tableWrap.scrollLeft; });
+        if (scrollTop && tableWrap) {
+            scrollTop.addEventListener('scroll', function() { tableWrap.scrollLeft = scrollTop.scrollLeft; });
+            tableWrap.addEventListener('scroll', function() { scrollTop.scrollLeft = tableWrap.scrollLeft; });
+        }
         var origRender = renderPage;
         var _renderWrap = renderPage;
         // After each render: sync scroll width + hide BOM columns where no row is "obligatoire"
