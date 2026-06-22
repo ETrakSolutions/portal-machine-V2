@@ -226,13 +226,34 @@
         }
 
         // ---- Creation machine (endpoint existant updatemachinespecs : cree l'entree) ----
+        // Champs techniques attendus pour CE TYPE : copies d'une machine existante du meme
+        // type (valeur "A completer"). Ainsi la nouvelle machine s'ouvre dans l'edition avec
+        // les bons champs a remplir (edit-machine derive le formulaire des cles de la machine).
+        function specTemplateForType(type) {
+            var specs = {};
+            var t = fullData && fullData[type];
+            if (!t) return specs;
+            for (var f in t) {
+                if (f.charAt(0) === '_') continue;
+                for (var y in t[f]) {
+                    for (var m in t[f][y]) {
+                        var e = t[f][y][m] || {};
+                        var keys = Object.keys(e).filter(function (k) {
+                            return k.charAt(0) !== '_' && k !== 'Flag' && k !== 'Image';
+                        });
+                        if (keys.length) { keys.forEach(function (k) { specs[k] = 'A completer'; }); return specs; }
+                    }
+                }
+            }
+            return specs;
+        }
         function createMachine(type, fab, annee, modele) {
             return fetch(API_URL, {
                 method: 'POST', headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({
                     action: 'updatemachinespecs',
                     type: type, fab: fab, annee: String(annee), modele: modele,
-                    specs: {}, pin: portalToken()
+                    specs: specTemplateForType(type), pin: portalToken()
                 })
             }).then(function (r) { return r.json(); });
         }
