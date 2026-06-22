@@ -938,7 +938,13 @@ if (submitBtn) {
                 .then(function(data) { if (data.value) { try { salesEmails = JSON.parse(data.value); } catch(e) {} } });
             return;
         }
-        var mailTo = salesEmails.join(',');
+        // Separateur point-virgule (Outlook ne separe PAS les adresses par virgule dans
+        // un lien mailto -> il les met toutes dans un seul champ invalide et le courriel
+        // ne part pas). Filtre aussi les entrees vides/espaces.
+        var mailTo = salesEmails
+            .map(function(e) { return (e || '').trim(); })
+            .filter(function(e) { return e; })
+            .join(';');
         var subject = 'Demande de soumission \u2014 ' + fab + ' ' + modele + ' (' + annee + ')';
         // Get kit machine summary
         var specs = {};
