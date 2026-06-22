@@ -87,6 +87,7 @@ function updateHubUI() {
         var tileDatabase = document.getElementById('hub-tile-database');
         if (tileDatabase) {
             tileDatabase.style.display = currentUser.permissions.databaseAccess ? 'block' : 'none';
+            if (currentUser.permissions.databaseAccess) updateMachineRequestsBadge();
         }
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
@@ -114,6 +115,33 @@ function updateHubUI() {
         if (hubEmpty) hubEmpty.style.display = 'block';
         if (hamburgerWrap) hamburgerWrap.style.display = 'none';
     }
+}
+
+// Badge "Nouvelles machines" sur la tuile BD : visible pour les roles a databaseAccess
+// (acces a la page de gestion + ajout manuel), en SURBRILLANCE (+ compteur) quand il y a
+// des demandes actives. Source : KV 'machine_requests' (endpoint get existant).
+var __reqBadgeWired = false;
+function updateMachineRequestsBadge() {
+    var badge = document.getElementById('hub-db-reqbadge');
+    if (!badge) return;
+    badge.style.display = 'inline-flex';
+    if (!__reqBadgeWired) {
+        __reqBadgeWired = true;
+        var go = function(e) { e.preventDefault(); e.stopPropagation(); window.location.href = 'machine-requests.html'; };
+        badge.addEventListener('click', go);
+        badge.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') go(e); });
+    }
+    fetch(API_URL + '?action=get&key=machine_requests')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var list = [];
+            if (data && data.value) { try { list = JSON.parse(data.value) || []; } catch(e) { list = []; } }
+            var n = Array.isArray(list) ? list.filter(function(r) { return r && r.status === 'active'; }).length : 0;
+            var countEl = document.getElementById('hub-db-reqcount');
+            if (countEl) countEl.textContent = n > 0 ? (' (' + n + ')') : '';
+            badge.classList.toggle('is-hot', n > 0);
+        })
+        .catch(function() {});
 }
 
 // Re-valide le role de l'utilisateur connecte aupres du serveur a l'ouverture du hub,

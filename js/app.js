@@ -41,6 +41,49 @@ function getUserPermissions(role) {
     return ROLES[role] || { modifBom: false, createAccount: false, modifAccounts: false };
 }
 
+// Enregistre une demande d'ajout de machine dans le KV store (cle 'machine_requests').
+// Reutilise les endpoints existants get/save (aucun changement backend). La page
+// machine-requests.html (cote admin) liste ces demandes et permet de generer la machine.
+function submitMachineRequest(info, btnEl) {
+    var t = function(k, fb) { return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
+    var prev = btnEl ? btnEl.textContent : '';
+    if (btnEl) { btnEl.disabled = true; btnEl.textContent = t('js.req_sending', 'Envoi...'); }
+    fetch(API_URL + '?action=get&key=machine_requests')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var list = [];
+            if (data && data.value) { try { list = JSON.parse(data.value) || []; } catch(e) { list = []; } }
+            if (!Array.isArray(list)) list = [];
+            var dup = list.some(function(r) {
+                return r && r.status === 'active' && r.type === info.type &&
+                    (r.fab || '') === (info.fab || '') && (r.modele || '') === (info.modele || '') &&
+                    String(r.annee || '') === String(info.annee || '');
+            });
+            if (dup) {
+                if (btnEl) { btnEl.textContent = t('js.req_exists', '✓ Demande déjà enregistrée'); }
+                return null;
+            }
+            var u = currentUser || {};
+            list.push({
+                id: 'req_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                type: info.type, fab: info.fab, modele: info.modele, annee: info.annee,
+                requester: u.name || u.username || '', requesterEmail: u.username || '',
+                date: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                note: '', status: 'active'
+            });
+            return fetch(API_URL, {
+                method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'save', key: 'machine_requests', value: JSON.stringify(list), pin: portalToken() })
+            }).then(function(r) { return r.json(); }).then(function() {
+                if (btnEl) { btnEl.textContent = t('js.req_done', '✓ Demande enregistrée'); }
+            });
+        })
+        .catch(function() {
+            if (btnEl) { btnEl.disabled = false; btnEl.textContent = prev; }
+            alert(t('js.req_error', 'Erreur lors de l\'envoi de la demande. Réessayez.'));
+        });
+}
+
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
 const selectAnnee = document.getElementById('select-annee');
@@ -433,13 +476,24 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             'Portail Machine e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine-V2/'
         );
+        var _reqText = (typeof i18n !== 'undefined') ? i18n.t('js.kit_request_text') : '\u26A0 Ce modele n\'est pas dans la base de donnees. Les specifications sont a completer.';
+        var _reqDbLabel = (typeof i18n !== 'undefined') ? i18n.t('js.req_add_to_db') : '\uD83D\uDCCB Demander l\'ajout a la BD';
         html += '<div class="kit-request-box">' +
-            '<p class="kit-request-text">\u26A0 Ce modele n\'est pas dans la base de donnees. Les specifications sont a completer.</p>' +
+            '<p class="kit-request-text">' + _reqText + '</p>' +
             '<a href="mailto:' + mailTo + '?subject=' + mailSubject + '&body=' + mailBody + '" class="kit-request-btn">\uD83D\uDCE7 Demande kit machine</a>' +
+            '<button type="button" id="db-request-btn" class="kit-request-btn kit-request-btn-db">' + _reqDbLabel + '</button>' +
             '</div>';
     }
 
     resultsTableContainer.innerHTML = html;
+
+    // Bouton "Demander l'ajout a la BD" (modele absent) -> enregistre une demande suivie.
+    var _dbReqBtn = document.getElementById('db-request-btn');
+    if (_dbReqBtn) {
+        _dbReqBtn.addEventListener('click', function() {
+            submitMachineRequest({ type: type, fab: fab, modele: modele, annee: annee }, _dbReqBtn);
+        });
+    }
 
     // Load and display product codes for this machine
     var pcApiKey = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
