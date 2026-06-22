@@ -593,11 +593,12 @@
    pastille orange pulsee = quelqu'un a demande une machine. */
 .hub-tile-database { position: relative; }
 .hub-tile-reqbadge {
-    /* Petit temoin discret dans le coin (absolu -> n'affecte pas la taille de la tuile,
-       pas de chevauchement). Visible seulement si demande active (display via admin.js). */
+    /* Petit temoin discret, centre en bas de la tuile (absolu -> n'affecte pas la taille
+       de la tuile, pas de chevauchement). Visible seulement si demande active (admin.js). */
     position: absolute;
-    top: 6px;
-    right: 6px;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
     align-items: center;
     gap: 3px;
     padding: 1px 6px;
@@ -605,10 +606,10 @@
     font-weight: 700;
     line-height: 1.25;
     color: #fff;
-    background: #FF6A00;
+    background: #00A651;
     border-radius: 999px;
     cursor: pointer;
-    opacity: 0.9;
+    opacity: 0.92;
     z-index: 2;
 }
 .hub-tile-reqbadge::before { content: "\1F514"; font-size: 0.58rem; }
