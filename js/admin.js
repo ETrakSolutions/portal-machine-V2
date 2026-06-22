@@ -124,7 +124,6 @@ var __reqBadgeWired = false;
 function updateMachineRequestsBadge() {
     var badge = document.getElementById('hub-db-reqbadge');
     if (!badge) return;
-    badge.style.display = 'inline-flex';
     if (!__reqBadgeWired) {
         __reqBadgeWired = true;
         var go = function(e) { e.preventDefault(); e.stopPropagation(); window.location.href = 'machine-requests.html'; };
@@ -137,11 +136,12 @@ function updateMachineRequestsBadge() {
             var list = [];
             if (data && data.value) { try { list = JSON.parse(data.value) || []; } catch(e) { list = []; } }
             var n = Array.isArray(list) ? list.filter(function(r) { return r && r.status === 'active'; }).length : 0;
+            // Temoin : visible UNIQUEMENT s'il y a au moins une demande active.
+            badge.style.display = n > 0 ? 'inline-flex' : 'none';
             var countEl = document.getElementById('hub-db-reqcount');
             if (countEl) countEl.textContent = n > 0 ? (' (' + n + ')') : '';
-            badge.classList.toggle('is-hot', n > 0);
         })
-        .catch(function() {});
+        .catch(function() { badge.style.display = 'none'; });
 }
 
 // Re-valide le role de l'utilisateur connecte aupres du serveur a l'ouverture du hub,

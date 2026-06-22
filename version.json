@@ -1,1 +1,1 @@
-{"v": "2026-06-22T12:17:45Z", "note": "Audit: database.html guard hasAccess (plus de TypeError quand non connecte, #20) + favicon e-Trak ajoute a toutes les pages (#26)."}
+{"v": "2026-06-22T13:05:00Z", "note": "Demandes machines: bouton 'Nouvelle machine' remplace 'Apercu mobile' dans la BD; badge tuile = temoin (visible si demande active)."}

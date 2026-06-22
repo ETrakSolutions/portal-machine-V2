@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Base de donnees</title>
     <link rel="stylesheet" href="css/style.css?v=172">
-    <link rel="stylesheet" href="css/admin.css?v=166">
+    <link rel="stylesheet" href="css/admin.css?v=167">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -506,6 +506,9 @@
         }
         .view-toggle:hover { background: rgba(255,255,255,0.12); }
         .view-toggle.active { background: #FFB74D; color: #000; border-color: #FFB74D; }
+        /* Vrai bouton d'acces aux demandes / creation (remplace l'ancien "Apercu mobile") */
+        .db-new-machine-btn { background: #00A651; border-color: #00A651; color: #fff; }
+        .db-new-machine-btn:hover { background: #00b85b; }
 
         /* Forced mobile preview frame */
         body.force-mobile { background: #0a0d12; }
@@ -548,7 +551,7 @@
                     <button id="btn-toggle-changelog" class="db-tile-btn" title="Journal des modifications" data-i18n-title="db.changelog_title" style="display:none;">
                         <span class="tile-ico">&#128221;</span><span class="tile-label" data-i18n="db.tile_journal">Journal</span>
                     </button>
-                    <button id="view-mobile-toggle" class="view-toggle" title="Forcer l'affichage cellulaire" data-i18n-title="common.mobile_view_title">&#128241; Apercu mobile</button>
+                    <button id="db-new-machine-btn" class="view-toggle db-new-machine-btn" title="Nouvelle machine / demandes" data-i18n-title="db.new_machine_title" onclick="window.location.href='machine-requests.html'">&#10133; <span data-i18n="db.new_machine">Nouvelle machine</span></button>
                 </div>
             </div>
 
@@ -679,7 +682,7 @@
         </div>
     </footer>
 
-    <script src="js/translations.js?v=174"></script>
+    <script src="js/translations.js?v=175"></script>
     <script src="js/i18n.js?v=166"></script>
     <script src="js/heartbeat.js?v=4"></script>
     <script src="js/version-check.js?v=2"></script>
