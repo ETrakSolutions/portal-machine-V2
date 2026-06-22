@@ -448,12 +448,14 @@ function applyTypeRestrictions(type) {
     var isExc = (type === 'Excavatrice');
     var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
 
-    // Balance ST-7 (1200-0011) + sous-option Imprimante thermique (1200-0014) — Telehandler ou Loader
-    var isTeleOrLoader = (type === 'Telehandler' || type === 'Loader');
+    // Balance ST-7 (1200-0011) + sous-option Imprimante thermique (1200-0014).
+    // Types avec un godet chargeur (loader) : Telehandler, Loader et Retrocaveuse
+    // (la retrocaveuse a un godet avant -> balance pour le loader).
+    var isBalanceType = (type === 'Telehandler' || type === 'Loader' || type === 'Retrocaveuse');
     var balBox = document.getElementById('toggle-balance');
     if (balBox) {
-        balBox.style.display = isTeleOrLoader ? '' : 'none';
-        if (!isTeleOrLoader) {
+        balBox.style.display = isBalanceType ? '' : 'none';
+        if (!isBalanceType) {
             balBox.classList.remove('active', 'open');
             var balSt = balBox.querySelector('.toggle-status'); if (balSt) balSt.textContent = 'OFF';
             balBox.querySelectorAll('input[name="balance-type"]').forEach(function(c) { c.checked = false; });
