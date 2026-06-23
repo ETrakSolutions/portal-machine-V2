@@ -79,11 +79,17 @@ Reproduire le style des entrées existantes du même type : `"15 000 lb"`, `"44 
 5. **Présenter** les valeurs + sources + incertitudes, puis écrire via `updatemachinespecs`
    pour **chaque année**.
 6. Si la machine venait d'une demande : passer la demande à `done` dans `machine_requests`.
+7bis. **Notifier le demandeur par courriel** une fois les specs remplies (machine dans la BD) :
+   `python scripts/notify_machine_ready.py "<Type>" "<Fabricant>" "<Modele>" "<Annee>"` — retrouve `requesterEmail` dans `machine_requests` et envoie un courriel (via l'endpoint `sendsoumission`, aucun redeploiement) : « machine ajoutee, consultez la fiche [lien] ». Si pas de demandeur (ajout manuel), aucun courriel.
 7. **Vérifier dans le fichier committé** (l'API `getmachinejson` peut être périmée) :
    `git show origin/main:data/machines.json | grep '"<MODELE>"'`.
 8. Pousser au besoin (skill `portal-deploy`) — compte GitHub **Robin-Gagnon** (`robingag` = 403).
    Live mis à jour ~1 min après (latence CDN GitHub Pages).
 9. Laisser l'humain vérifier/ajuster les specs + compléter le kit dans `edit-machine.html`.
+
+## Notifier le demandeur (courriel)
+
+Quand la fiche est remplie et la machine dans la BD, **on previent la personne qui a fait la demande** : `scripts/notify_machine_ready.py` retrouve son courriel (`requesterEmail` dans `machine_requests`) et envoie « Machine ajoutee au Portail e-Trak — consultez la fiche : <lien> » via l'endpoint backend `sendsoumission` (deja deploye, accepte token ou PIN). C'est l'ETAPE FINALE du remplissage. Pour un ajout manuel sans demandeur, le script ne fait rien (pas d'email).
 
 ## Pièges
 - **Concurrence** : ne PAS écrire dans machines.json pendant qu'un humain édite la même machine
