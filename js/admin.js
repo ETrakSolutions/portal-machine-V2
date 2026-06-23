@@ -738,12 +738,24 @@ function loadUsers() {
     })
         .then(function(r) { return r.json(); })
         .then(function(data) {
-            if (Array.isArray(data.users) && data.users.length > 0) {
-                USERS = data.users;
+            // Pas de tableau 'users' => le backend a refuse l'authentification
+            // (jeton de session expire/invalide). On l'affiche clairement au lieu
+            // de laisser une table vide muette (sinon "je ne vois aucun user").
+            if (!Array.isArray(data.users)) {
+                renderUsersMessage(i18n.t('admin.users_session_expired'));
+                return;
             }
+            if (data.users.length > 0) USERS = data.users;
             renderUsers();
         })
         .catch(function() { renderUsers(); });
+}
+
+// Affiche un message sur toute la largeur de la table des utilisateurs.
+function renderUsersMessage(msg) {
+    var tbody = document.getElementById('admin-user-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '<tr><td colspan="4" style="padding:1.2rem;color:#E07B00;text-align:center;line-height:1.5">' + msg + '</td></tr>';
 }
 
 function saveUsers() {
