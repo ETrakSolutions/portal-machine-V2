@@ -229,6 +229,8 @@ function renderPermTable() {
     tbody.innerHTML = '';
     var roleKeys = Object.keys(ROLES);
     roleKeys.forEach(function(roleKey) {
+        // Masquer le role Super Admin sauf si le viewer est lui-meme super_admin
+        if (roleKey === 'super_admin' && (!currentUser || currentUser.role !== 'super_admin')) return;
         var role = ROLES[roleKey];
         var tr = document.createElement('tr');
         var tdName = document.createElement('td');
@@ -758,6 +760,8 @@ function renderUsers() {
     tbody.innerHTML = '';
     var SUPER_ADMIN = 'robin@gryb.ca';
     USERS.forEach(function(user, i) {
+        // Masquer les comptes Super Admin sauf pour un viewer super_admin
+        if (user.role === 'super_admin' && (!currentUser || currentUser.role !== 'super_admin')) return;
         var roleLabel = ROLES[user.role] ? ROLES[user.role].label : user.role;
         var isSuperAdmin = user.email && user.email.toLowerCase() === SUPER_ADMIN;
         var tr = document.createElement('tr');
@@ -766,7 +770,7 @@ function renderUsers() {
         // Voyant d'activite (sera mis a jour par loadActiveStatus apres render)
         var dotHtml = '<span class="user-active-dot" data-email="' + (user.email || '').toLowerCase() + '" title="Statut inconnu" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#444;margin-right:8px;vertical-align:middle"></span>';
         tr.innerHTML =
-            '<td>' + dotHtml + '<strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '</td>' +
+            '<td>' + dotHtml + '<strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '<div class="user-lastseen" data-email="' + (user.email || '').toLowerCase() + '" style="font-size:0.66rem;color:#8aa;margin-top:2px;margin-left:18px">…</div>' + '</td>' +
             '<td>' + (user.email || '<span style="color:#555;">\u2014</span>') + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
             '<td>' + (!isSuperAdmin && currentUser && currentUser.permissions && currentUser.permissions.modifAccounts ? '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>' : '') + '</td>';
@@ -816,6 +820,10 @@ function loadUserActiveStatus() {
         if (h < 24) return h + 'h';
         return Math.round(h/24) + 'j';
     }
+    function fmtDate(ts){ var d=new Date(ts); if(isNaN(d.getTime())) return ''; var p=function(n){return (n<10?'0':'')+n;}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
+    function setLastSeen(email, txt){ var e=document.querySelector('.user-lastseen[data-email="'+email+'"]'); if(e) e.textContent=txt; }
+    var LBL = (typeof i18n!=='undefined') ? i18n.t('admin.lastseen') : 'Derniere activite';
+    var NEVER = (typeof i18n!=='undefined') ? i18n.t('admin.never_connected') : 'Jamais connecte';
     document.querySelectorAll('.user-active-dot').forEach(function(dot) {
         var email = dot.dataset.email;
         if (!email) return;
@@ -827,6 +835,7 @@ function loadUserActiveStatus() {
                     dot.style.background = '#444';
                     dot.style.boxShadow = 'none';
                     dot.title = 'Jamais connecte';
+                    setLastSeen(email, NEVER);
                     return;
                 }
                 // Nouveau format: JSON {lastPing, lastActivity}
@@ -843,6 +852,7 @@ function loadUserActiveStatus() {
 
                 var pingDiff = now - pingTs;
                 var activityDiff = now - activityTs;
+                setLastSeen(email, LBL + ' : ' + fmtDate(activityTs));
 
                 if (pingDiff > PING_THRESHOLD_MS) {
                     // Pas de ping recent — deconnecte
