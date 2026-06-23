@@ -442,7 +442,7 @@ body.force-mobile main{
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=4"></script>
     <script src="js/kit-rules.js?v=4"></script>
-    <script src="js/translations.js?v=183"></script>
+    <script src="js/translations.js?v=184"></script>
     <script src="js/i18n.js?v=166"></script>
 
 <main id="root">
@@ -691,6 +691,24 @@ body.force-mobile main{
   var SPECS_BASE = {};                               // specs originales depuis machines.json
   var SPECS_INITIAL = {};                            // specs apres override API charge
   var SPECS_CURRENT = {};                            // specs en cours d'edition
+  var REQUESTER = null;                               // demande machine_requests correspondante (pour "Prevenir le demandeur")
+
+  // Retrouve la demande (machine_requests) qui correspond a cette machine, tolerante aux
+  // tirets/casse (ex. "GTH1544" == "GTH-1544"). On ignore le statut (active/done) et on
+  // prend la plus recente ayant un requesterEmail.
+  function normReqKey(s){ return (s||'').toString().toLowerCase().replace(/[^a-z0-9]/g,''); }
+  function findRequester(list){
+    if (!Array.isArray(list)) return null;
+    var tk = normReqKey(TYPE), fk = normReqKey(FAB), mk = normReqKey(MODEL);
+    var match = null;
+    list.forEach(function(r){
+      if (!r || !r.requesterEmail) return;
+      if (normReqKey(r.type) === tk && normReqKey(r.fab) === fk && normReqKey(r.modele) === mk){
+        if (!match || (r.date||'') >= (match.date||'')) match = r;
+      }
+    });
+    return match;
+  }
 
   function bomKey(yr){ return 'kit_override_' + FAB.replace(/[^a-zA-Z0-9]/g,'_') + '_' + MODEL.replace(/[^a-zA-Z0-9]/g,'_') + '_' + (yr||YEAR); }
   function notesKey(yr){ return 'notes_' + FAB + '_' + MODEL + '_' + (yr||YEAR); }
@@ -1245,6 +1263,19 @@ body.force-mobile main{
   }
 
   // ===== Flag =====
+  // Previent le demandeur de la machine par courriel — meme methode que la soumission :
+  // un mailto: qui s'ouvre dans le client (Outlook) de l'admin, donc envoye depuis son
+  // compte (et non depuis le Gmail du backend, bloque par le M365 de gryb.ca).
+  window.notifyRequester = function(){
+    if (!REQUESTER || !REQUESTER.requesterEmail){ showToast(i18n.t('edit.notify_none'), '#E07B00'); return; }
+    var link = 'https://etraksolutions.github.io/portal-machine-V2/machine.html';
+    var subject = i18n.t('edit.notify_subject', { fab: FAB, model: MODEL, year: YEAR });
+    var body = i18n.t('edit.notify_body', { fab: FAB, model: MODEL, year: YEAR, type: TYPE, link: link });
+    var mailto = 'mailto:' + encodeURIComponent(REQUESTER.requesterEmail) +
+      '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    window.location.href = mailto;
+  };
+
   window.openFlagModal = function(){
     var isActive = FLAG && FLAG.active;
     document.getElementById('flag-modal-title').textContent = isActive ? i18n.t('edit.flag_active_title') : i18n.t('edit.flag_report_title');
@@ -1542,6 +1573,9 @@ body.force-mobile main{
     }
     if (canDelete){
       actions += '<button class="danger small" onclick="openDeleteModal()">' + i18n.t('edit.delete_btn') + '</button>';
+    }
+    if (canEdit && REQUESTER && REQUESTER.requesterEmail){
+      actions += '<button class="secondary small" onclick="notifyRequester()" title="' + i18n.t('edit.notify_requester_title') + '">' + i18n.t('edit.notify_requester_btn') + '</button>';
     }
 
     // Type icon
@@ -1980,10 +2014,12 @@ body.force-mobile main{
 
       Promise.all([
         apiGet('db_flags'),
-        apiGet(pcKey())
+        apiGet(pcKey()),
+        apiGet('machine_requests')
       ]).then(function(results){
         var flags = results[0];
         var pc = results[1];
+        REQUESTER = findRequester(results[2]);
         // _specs vit a l'interieur du payload _bom
         var specsOv = (ov && ov._specs) || null;
 
