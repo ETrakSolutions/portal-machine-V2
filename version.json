@@ -1,1 +1,1 @@
-{"v": "2026-06-23T14:30:00Z", "note": "Admin : message clair 'session expiree' au lieu d'une liste d'utilisateurs vide quand le jeton est invalide."}
+{"v": "2026-06-23T15:30:00Z", "note": "Auto-detection du jeton de session mort : reconnexion forcee (corrige les echecs silencieux type Jacquot/Luna)."}

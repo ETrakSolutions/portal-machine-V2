@@ -158,6 +158,16 @@ function refreshSessionRole() {
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
+        // Jeton MORT : le backend dit explicitement que la session est invalide.
+        // On force une reconnexion propre, sinon le portail reste "connecte" avec un
+        // jeton inutile et toutes les actions authentifiees (heartbeat, liste users,
+        // sauvegardes) echouent EN SILENCE (cas Jacquot/Luna). On ne reagit qu'aux
+        // erreurs explicites du backend — PAS aux pannes reseau (catch) ni a un vieux
+        // backend sans whoami ({error:'unknown action'}, sans ok:false).
+        if (data && data.ok === false && (data.error === 'invalid session' || data.error === 'user not found')) {
+            forceRelogin();
+            return;
+        }
         // backend sans 'whoami' -> {error:'unknown action'} ; session invalide -> {ok:false}
         if (!data || !data.ok || !data.user || !data.user.role) return;
         var fresh = data.user;
@@ -175,6 +185,15 @@ function refreshSessionRole() {
         updateHubUI();   // re-affiche les tuiles selon le nouveau role
     })
     .catch(function() {});   // hors-ligne -> on garde le cache
+}
+
+// Jeton invalide detecte (whoami) -> nettoie la session locale et revient au login.
+// Garde-fou anti-boucle : sans portal_user, refreshSessionRole() ne rappelle pas ceci.
+function forceRelogin() {
+    try { localStorage.removeItem('portal_user'); } catch (e) {}
+    currentUser = null;
+    try { alert(i18n.t('admin.session_dead_relogin')); } catch (e) {}
+    location.reload();
 }
 
 function showVenteSection() {
