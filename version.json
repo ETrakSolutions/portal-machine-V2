@@ -1,1 +1,1 @@
-{"v": "2026-06-22T18:30:00Z", "note": "edit-machine: surface les erreurs de sauvegarde (session expiree) au lieu d'un faux succes."}
+{"v": "2026-06-23T09:00:00Z", "note": "edit-machine: reconnexion en place si session expiree -> la sauvegarde repart sans recharger ni reconnexion manuelle au hub."}

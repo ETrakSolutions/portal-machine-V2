@@ -442,7 +442,7 @@ body.force-mobile main{
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=4"></script>
     <script src="js/kit-rules.js?v=4"></script>
-    <script src="js/translations.js?v=179"></script>
+    <script src="js/translations.js?v=180"></script>
     <script src="js/i18n.js?v=166"></script>
 
 <main id="root">
@@ -541,6 +541,56 @@ body.force-mobile main{
   var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
   // Token de session du login (le backend accepte token ou PIN script dans le champ 'pin')
   var PIN = (function(){ try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; } })();
+  // Lit le jeton FRAIS a chaque ecriture (apres une reconnexion en place, pas besoin de recharger).
+  function getPin(){ try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; } }
+  // Reconnexion EN PLACE quand une sauvegarde est refusee (session expiree) : ouvre une mini-fenetre
+  // login -> met a jour le jeton -> relance automatiquement l'action (retryFn) sans perdre les modifs.
+  function promptReloginThenRetry(retryFn){
+    var ex = document.getElementById('relogin-modal'); if (ex) ex.remove();
+    var u = {}; try { u = JSON.parse(localStorage.getItem('portal_user')) || {}; } catch(e){}
+    var m = document.createElement('div'); m.id = 'relogin-modal';
+    m.style.cssText = 'position:fixed;inset:0;z-index:100000;background:rgba(15,23,42,0.6);display:flex;align-items:center;justify-content:center';
+    var inS = 'width:100%;box-sizing:border-box;padding:0.55rem 0.7rem;margin-top:0.5rem;border:1px solid #cbd5e1;border-radius:7px;font-size:0.95rem';
+    var btS = 'padding:0.55rem 1rem;border:none;border-radius:7px;font-weight:700;cursor:pointer';
+    m.innerHTML = '<div style="background:#fff;color:#1e293b;border-radius:12px;padding:1.4rem 1.6rem;max-width:360px;width:90%;box-shadow:0 12px 40px rgba(0,0,0,0.4)">' +
+      '<h3 style="margin:0 0 0.3rem">' + i18n.t('edit.relogin_title') + '</h3>' +
+      '<p style="margin:0;color:#64748b;font-size:0.88rem">' + i18n.t('edit.relogin_desc') + '</p>' +
+      '<input type="email" id="relogin-user" style="' + inS + '" placeholder="' + i18n.t('edit.relogin_email') + '" value="' + String(u.username||'').replace(/"/g,'&quot;') + '" autocomplete="username">' +
+      '<input type="password" id="relogin-pass" style="' + inS + '" placeholder="' + i18n.t('edit.relogin_pass') + '" autocomplete="current-password">' +
+      '<p id="relogin-err" style="color:#dc2626;display:none;margin:0.5rem 0 0;font-size:0.85rem"></p>' +
+      '<div style="display:flex;gap:0.5rem;justify-content:flex-end;margin-top:1rem">' +
+      '<button id="relogin-cancel" style="' + btS + ';background:#e2e8f0;color:#334">' + i18n.t('common.annuler') + '</button>' +
+      '<button id="relogin-submit" style="' + btS + ';background:#0062CC;color:#fff">' + i18n.t('edit.relogin_btn') + '</button>' +
+      '</div></div>';
+    document.body.appendChild(m);
+    var pass = document.getElementById('relogin-pass'); pass.focus();
+    document.getElementById('relogin-cancel').onclick = function(){ m.remove(); };
+    function doLogin(){
+      var un = (document.getElementById('relogin-user').value||'').trim(); var pw = pass.value;
+      var err = document.getElementById('relogin-err');
+      if (!un || !pw){ err.textContent = i18n.t('edit.relogin_missing'); err.style.display='block'; return; }
+      var b = document.getElementById('relogin-submit'); b.disabled = true; b.textContent = '...';
+      fetch(API_URL, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({ action:'login', username:un, password:pw }) })
+        .then(function(r){ return r.json(); })
+        .then(function(data){
+          if (data && data.ok && data.token){
+            var prev = {}; try { prev = JSON.parse(localStorage.getItem('portal_user')) || {}; } catch(e){}
+            var nu = data.user || {};
+            localStorage.setItem('portal_user', JSON.stringify(Object.assign({}, prev, {
+              username: nu.username||un, name: nu.name||prev.name, role: nu.role||prev.role,
+              email: nu.email||nu.username||un, token: data.token })));
+            m.remove(); showToast(i18n.t('edit.relogin_ok'));
+            if (typeof retryFn === 'function') retryFn();
+          } else {
+            b.disabled=false; b.textContent=i18n.t('edit.relogin_btn');
+            err.textContent = i18n.t('edit.relogin_failed'); err.style.display='block';
+          }
+        })
+        .catch(function(){ b.disabled=false; b.textContent=i18n.t('edit.relogin_btn'); err.textContent=i18n.t('edit.relogin_failed'); err.style.display='block'; });
+    }
+    document.getElementById('relogin-submit').onclick = doLogin;
+    pass.addEventListener('keydown', function(e){ if(e.key==='Enter') doLogin(); if(e.key==='Escape') m.remove(); });
+  }
 
   var EXC_BOM_CODES = ['0000','0001','0002','0004','0005','0008','0009','0070','0304'];
   var POMPE_BOM_CODES = ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
@@ -738,7 +788,7 @@ body.force-mobile main{
   function apiSave(key, value){
     return fetch(API_URL, {
       method:'POST', headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify({action:'save', key:key, value: (typeof value === 'string' ? value : JSON.stringify(value)), pin:PIN})
+      body: JSON.stringify({action:'save', key:key, value: (typeof value === 'string' ? value : JSON.stringify(value)), pin:getPin()})
     });
   }
 
@@ -746,7 +796,7 @@ body.force-mobile main{
   // Le BOM (override complet : codes + harnais + _removed + _custom + _specs), les notes
   // et la suppression sont ecrits directement dans machines.json, plus dans Script Properties.
   function apiMachine(action, extra){
-    var body = Object.assign({ action:action, type:TYPE, fab:FAB, modele:MODEL, pin:PIN }, extra);
+    var body = Object.assign({ action:action, type:TYPE, fab:FAB, modele:MODEL, pin:getPin() }, extra);
     return fetch(API_URL, {
       method:'POST', headers:{'Content-Type':'text/plain'},
       body: JSON.stringify(body)
@@ -758,7 +808,7 @@ body.force-mobile main{
   function saveBomLabels(code, pn, desc){
     return fetch(API_URL, {
       method:'POST', headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify({ action:'updateBomLabels', type:TYPE, code:code, pn:pn, desc:desc, pin:PIN })
+      body: JSON.stringify({ action:'updateBomLabels', type:TYPE, code:code, pn:pn, desc:desc, pin:getPin() })
     }).then(function(r){ return r.json().catch(function(){ return null; }); });
   }
   function saveBomOverride(annee, payload){
@@ -774,7 +824,7 @@ body.force-mobile main{
   function saveBomOverrideBulk(items){
     return fetch(API_URL, {
       method:'POST', headers:{'Content-Type':'text/plain'},
-      body: JSON.stringify({ action:'updateMachineBomBulk', type:TYPE, fab:FAB, modele:MODEL, items:items, pin:PIN })
+      body: JSON.stringify({ action:'updateMachineBomBulk', type:TYPE, fab:FAB, modele:MODEL, items:items, pin:getPin() })
     }).then(function(r){ return r.json().catch(function(){ return {}; }); })
       .then(function(d){ if (d && d.error) throw new Error(d.error); return d; });
   }
@@ -1131,7 +1181,7 @@ body.force-mobile main{
       showToast(i18n.t('edit.save_complete'));
       render();
       return true;
-    }).catch(function(err){ setSavingState(false); var m=String((err&&err.message)||err||''); var auth=/pin|invalid|session|unauthor/i.test(m); showToast(i18n.t(auth?'edit.save_error_auth':'edit.save_error'), 'var(--rouge)'); return false; });
+    }).catch(function(err){ setSavingState(false); var m=String((err&&err.message)||err||''); var auth=/pin|invalid|session|unauthor/i.test(m); if (auth){ promptReloginThenRetry(commitChanges); return false; } showToast(i18n.t('edit.save_error'), 'var(--rouge)'); return false; });
   };
 
   function ensureSpinStyle(){
