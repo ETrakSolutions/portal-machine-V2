@@ -1,8 +1,16 @@
 # -*- coding: utf-8 -*-
 """
+=============================================================================
+ DEPRECIE / DESACTIVE (decision 2026-06-23) — NE PAS UTILISER.
+ La notification du demandeur se fait UNIQUEMENT via le bouton
+ « 📧 Prévenir le demandeur » de edit-machine.html (mailto -> Outlook de
+ l'admin), fiable et instantane. Ce script envoie via le Gmail de l'Apps
+ Script, retarde et marque « expediteur externe » par le M365 de gryb.ca
+ (et ferait doublon). Conserve pour reference seulement.
+=============================================================================
+
 Notifie par courriel le DEMANDEUR d'une machine que sa fiche est remplie et
-disponible dans le Portail Machine. A lancer par Claude APRES avoir rempli les
-specs (skill portal-fill-specs), une fois la machine dans la BD.
+disponible dans le Portail Machine.
 
 Reutilise l'endpoint backend existant `sendsoumission` (aucun redeploiement).
 Le demandeur (requesterEmail) est retrouve dans la cle KV `machine_requests`.
@@ -38,6 +46,12 @@ def find_requester(type_, fab, modele):
     return None
 
 def main():
+    if "--force" not in sys.argv:
+        raise SystemExit(
+            "DESACTIVE : notifier le demandeur via le bouton « Prevenir le demandeur » de "
+            "edit-machine.html (mailto). Ce script backend est deprecie. "
+            "(--force pour outrepasser, deconseille.)")
+    sys.argv = [a for a in sys.argv if a != "--force"]
     if len(sys.argv) < 5:
         raise SystemExit("usage: notify_machine_ready.py <Type> <Fab> <Modele> <Annee> [email]")
     type_, fab, modele, annee = sys.argv[1:5]
