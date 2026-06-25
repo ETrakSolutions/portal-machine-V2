@@ -1038,6 +1038,15 @@
                 {key: 'hauteur', label: 'Hauteur travail (pi)'},
                 {key: 'voltage', label: 'Voltage / motorisation'},
                 {key: 'sections', label: 'Sections flèche'}
+            ],
+            'Grue Mobile': [
+                {key: 'capacite', label: 'Capacité max'},
+                {key: 'fleche', label: 'Flèche'},
+                {key: 'hauteur', label: 'Hauteur max'},
+                {key: 'essieux', label: 'Essieux'},
+                {key: 'puissance', label: 'Puissance'},
+                {key: 'voltage', label: 'Voltage'},
+                {key: 'contrepoids', label: 'Contrepoids'}
             ]
         };
         var currentSpecCols = SPEC_COLS['Excavatrice'];
@@ -1734,6 +1743,17 @@
                         voltage: s['Voltage'] || '',
                         sections: s['Nb sections fleche'] || ''
                     };
+                },
+                'Grue Mobile': function(s) {
+                    return {
+                        capacite: s['Capacite max'] || '',
+                        fleche: s['Fleche telescopique'] || '',
+                        hauteur: s['Hauteur max'] || '',
+                        essieux: s['Essieux'] || '',
+                        puissance: s['Puissance moteur'] || '',
+                        voltage: s['Voltage machine (V/type)'] || '',
+                        contrepoids: s['Contrepoids max'] || ''
+                    };
                 }
             };
             allData = [];
@@ -2130,6 +2150,11 @@
                                 },
                                 'Nacelle': {
                                     'Categorie':'categorie','Hauteur travail (pi)':'hauteur','Voltage':'voltage','Nb sections fleche':'sections'
+                                },
+                                'Grue Mobile': {
+                                    'Capacite max':'capacite','Fleche telescopique':'fleche','Hauteur max':'hauteur',
+                                    'Essieux':'essieux','Puissance moteur':'puissance',
+                                    'Voltage machine (V/type)':'voltage','Contrepoids max':'contrepoids'
                                 }
                             };
                             var fmap = SPEC_FIELD_MAP[d._type] || {};
