@@ -145,6 +145,14 @@
     return true;
   }
 
+  // Coercition par code pour l'Excavatrice : le Drain hyd (0009) ne peut JAMAIS etre
+  // jaune (option) — il est obligatoire ou absent. SOURCE UNIQUE de cette regle,
+  // utilisee par applyOverride (affichage) ET par l'editeur (edit-machine.html).
+  function coerceExcState(code, state) {
+    if (code === '0009' && state === 'j') return 'r';
+    return state;
+  }
+
   // Applique les overrides + _removed sur les defauts -> etat final { code: etat }
   function applyOverride(defaults, bom, isExc) {
     var st = {}; for (var k in defaults) st[k] = defaults[k];
@@ -152,7 +160,7 @@
       for (var c in bom) { if (isOptionCode(c) && bom[c]) st[c] = bom[c]; }
       if (Array.isArray(bom._removed)) bom._removed.forEach(function (c) { st[c] = 'na'; });
     }
-    if (isExc && st['0009'] === 'j') st['0009'] = 'r';   // drain jamais jaune
+    if (isExc) st['0009'] = coerceExcState('0009', st['0009']);   // drain jamais jaune
     return st;
   }
 
@@ -165,6 +173,6 @@
     excDefaults: excDefaults, pompeDefaults: pompeDefaults, nacelleDefaults: nacelleDefaults,
     harnais: harnais, harnaisPN: harnaisPN, harnaisDefaultH: harnaisDefaultH,
     harnaisOverride: harnaisOverride,
-    isOptionCode: isOptionCode, applyOverride: applyOverride
+    isOptionCode: isOptionCode, coerceExcState: coerceExcState, applyOverride: applyOverride
   };
 })();

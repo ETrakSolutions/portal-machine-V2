@@ -696,53 +696,19 @@ function getKitSummary(type, fab, modele, specs) {
         return kitG;
     }
 
-    var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
-    // #5 : tolere les espaces de milliers ("22 952 kg" -> 22952), comme kit-rules.js.
-    // L'ancien /^(\d+)/ lisait "22 952" comme 22 -> jeton Mini exc (0004) a tort.
-    var poidsMatch = poidsStr.match(/(\d[\d\s]*)/);
-    var poidsKg = poidsMatch ? parseInt(poidsMatch[1].replace(/\s/g, '')) : 0;
-    var modelUpper = modele.toUpperCase();
     var fabUp = fab.toUpperCase();
-    var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
-    var isMini = poidsKg > 0 && poidsKg <= 5000;
-    var typeBras = specs['Type de boom'] || '';
 
-    // Liste DRAIN : source unique = js/kit-rules.js
-    var DRAIN_PREFIXES = (window.KitRules && window.KitRules.DRAIN_PREFIXES) || [];
-    var isDrain = DRAIN_PREFIXES.some(function(p) { return modelUpper.indexOf(p.toUpperCase()) === 0; });
+    // Excavatrice : etat reel (defaut + override) via la source unique js/kit-rules.js,
+    // identique a la page machine / BD / export. Le statut derive de l'etat AFFICHE :
+    //   'r' -> Obligatoire, 'j' -> Optionnel, 'v' -> A verifier, 'na' -> masque.
+    // #12 : un override 'r' sur 0001/0002/0005/0008 s'affiche desormais Obligatoire
+    //       (avant : statut fige sur une liste ALWAYS_OBLIG -> override rouge ignore).
+    // #13 : applyOverride(isExc=true) applique "drain 0009 jamais jaune" + _removed.
+    var excState = window.KitRules.applyOverride(
+        window.KitRules.excDefaults(specs, modele),
+        currentBomOverrides || {}, true);
 
-    // Compute defaults: present or na (BD is master via overrides)
-    var bomDefaults = {
-        '0000': true,
-        '0001': true,
-        '0002': true,
-        '0004': isMini,
-        '0005': true,   // Multi Axes : option toujours offerte (decouplee de la fleche, comme le portail)
-        '0008': hasSwing, // Swing boom: option si la spec 'Swing boom' = Oui
-        '0009': isDrain,
-        // #4 : Boite GC obligatoire pour les Cat "GC" (313/315/320/330 GC), pas toutes les Cat.
-        // Regle unique = kit-rules.js (isGC), identique a la BD / page machine / export.
-        '0070': (window.KitRules && window.KitRules.isGC) ? window.KitRules.isGC(modele) : false,
-        '0304': modelUpper === 'TB216'
-    };
-
-    // Etat reel par code (pour distinguer 'à vérifier')
-    var bomState = {};
-    // Apply BOM overrides from API (BD is master — any non-na value means present)
-    if (currentBomOverrides) {
-        for (var code in currentBomOverrides) {
-            if (code === '_specs' || code === '_custom' || code === '_removed' || code === 'harnais') continue;
-            var ov = currentBomOverrides[code];
-            if (ov === 'na') bomDefaults[code] = false;
-            else if (ov) { bomDefaults[code] = true; bomState[code] = ov; }
-        }
-        // _removed: force absent
-        if (Array.isArray(currentBomOverrides._removed)){
-            currentBomOverrides._removed.forEach(function(c){ bomDefaults[c] = false; });
-        }
-    }
-
-    // BOM item names
+    // BOM item names (fallback si _bom_labels absent)
     var BOM_NAMES = {
         '0000': 'Machine avec cabine (kit de base)',
         '0001': 'Option Hauteur',
@@ -754,17 +720,12 @@ function getKitSummary(type, fab, modele, specs) {
         '0070': 'Boite (GC)',
         '0304': 'Option rotation cremaillere'
     };
-
-    // Build kit — obligatoire or optionnel based on item type
-    // These codes are always obligatoire when present
-    var ALWAYS_OBLIG = {'0000':true, '0004':true, '0009':true, '0070':true, '0304':true};
-    // These codes are always optionnel (user choice)
-    // 0001=Hauteur, 0002=Rotation, 0005=Multi-axe, 0008=Swing boom
+    var bomCodePrefix = {'0000':'1500-','0001':'1500-','0002':'1500-','0004':'1500-','0005':'1500-','0008':'1500-','0009':'1500-','0070':'1000-','0304':'1500-'};
 
     var kit = [];
-    var bomCodePrefix = {'0000':'1500-','0001':'1500-','0002':'1500-','0004':'1500-','0005':'1500-','0008':'1500-','0009':'1500-','0070':'1000-','0304':'1500-'};
-    for (var bCode in bomDefaults) {
-        if (!bomDefaults[bCode]) continue;
+    window.KitRules.EXC_CODES.forEach(function(bCode){
+        var st = excState[bCode] || 'na';
+        if (st === 'na') return;
         // BD maitre : PN + description longue depuis _bom_labels; fallback sur les constantes locales.
         var info = bomDescInfo(type, bCode);
         var fullCode = (info && info.pn) ? info.pn : ((bomCodePrefix[bCode] || '1500-') + bCode);
@@ -772,9 +733,9 @@ function getKitSummary(type, fab, modele, specs) {
         kit.push({
             code: fullCode,
             name: nm,
-            status: bomState[bCode] === 'v' ? 'À vérifier' : (ALWAYS_OBLIG[bCode] ? 'Obligatoire' : 'Optionnel')
+            status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
         });
-    }
+    });
 
     // Harnais de coupure — obligatoire, defaut calcule par la source unique js/kit-rules.js
     var _h = window.KitRules.harnais(fabUp, modele);
