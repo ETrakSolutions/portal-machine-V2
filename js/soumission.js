@@ -703,7 +703,6 @@ function getKitSummary(type, fab, modele, specs) {
     var poidsKg = poidsMatch ? parseInt(poidsMatch[1].replace(/\s/g, '')) : 0;
     var modelUpper = modele.toUpperCase();
     var fabUp = fab.toUpperCase();
-    var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
     var hasSwing = (specs['Swing boom'] || '').toLowerCase() === 'oui';
     var isMini = poidsKg > 0 && poidsKg <= 5000;
     var typeBras = specs['Type de boom'] || '';
@@ -777,26 +776,14 @@ function getKitSummary(type, fab, modele, specs) {
         });
     }
 
-    // Harnais de coupure — obligatoire, code depend du fabricant
-    var hCode = 'Z03B-0043'; var hName = 'Harnais Generique';
-    if (fabUp === 'HITACHI') {
-        var is7 = modele.indexOf('-7') >= 0;
-        var is5or6 = modele.indexOf('-5') >= 0 || modele.indexOf('-6') >= 0;
-        if (is7 && !is5or6) { hCode = 'Z03B-0121'; hName = 'Harnais Hitachi -7'; }
-        else { hCode = 'Z03B-0031'; hName = 'Harnais Hitachi -5/-6'; }
-    } else if (fabUp === 'JOHN DEERE') { hCode = 'Z03B-0031'; hName = 'Harnais Hitachi/JD'; }
-    else if (fabUp === 'KOMATSU') { hCode = 'Z03B-0032'; hName = 'Harnais Komatsu'; }
-    else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Harnais Doosan'; }
-    else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Harnais Volvo'; }
-    else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Harnais Link-Belt/Case'; }
-    else if (isCat) { hCode = 'Z03B-0080'; hName = 'Harnais Caterpillar'; }
+    // Harnais de coupure — obligatoire, defaut calcule par la source unique js/kit-rules.js
+    var _h = window.KitRules.harnais(fabUp, modele);
+    var hCode = _h.code; var hName = 'Harnais ' + _h.name;
 
-    // Check harnais override
+    // Override eventuel (libelles : meme source unique)
     if (currentBomOverrides && currentBomOverrides.harnais) {
-        var hOverride = currentBomOverrides.harnais;
-        hCode = 'Z03B-' + hOverride.replace('H','');
-        var HARNAIS_LABELS = {'H0031':'Hitachi/JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'Link-Belt/Case','H0080':'Caterpillar','H0100':'Cat(ECU)','H0121':'Hitachi-7','H0043':'Generique'};
-        hName = 'Harnais ' + (HARNAIS_LABELS[hOverride] || hOverride);
+        var _ho = window.KitRules.harnaisOverride(currentBomOverrides.harnais);
+        hCode = _ho.code; hName = 'Harnais ' + _ho.name;
     }
     kit.push({ code: hCode, name: hName, status: 'Obligatoire' });
 

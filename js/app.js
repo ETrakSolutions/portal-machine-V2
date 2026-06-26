@@ -555,23 +555,11 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         // ---- BD = MAITRE: compute defaults then load overrides ----
         // Defauts BOM : source unique = js/kit-rules.js (memes regles que database.html / edit / soumission / export)
         var fabUp = fab.toUpperCase();
-        var isCat = fabUp.indexOf('CATERPILLAR') >= 0 || fabUp === 'CAT';
-        var modelUpper = modele.toUpperCase();
         var bomDefaults = window.KitRules.excDefaults(specs, modele);
 
-        // Harnais
-        var hCode = 'Z03B-0043'; var hName = 'Generique';
-        if (fabUp === 'HITACHI') {
-            var is7 = modele.indexOf('-7') >= 0;
-            var is5or6 = modele.indexOf('-5') >= 0 || modele.indexOf('-6') >= 0;
-            if (is7 && !is5or6) { hCode = 'Z03B-0121'; hName = 'Hitachi -7'; }
-            else { hCode = 'Z03B-0031'; hName = 'Hitachi -5/-6'; }
-        } else if (fabUp === 'JOHN DEERE') { hCode = 'Z03B-0031'; hName = 'Hitachi/JD'; }
-        else if (fabUp === 'KOMATSU') { hCode = 'Z03B-0032'; hName = 'Komatsu'; }
-        else if (fabUp.indexOf('DOOSAN') >= 0 || fabUp.indexOf('DEVELON') >= 0) { hCode = 'Z03B-0033'; hName = 'Doosan'; }
-        else if (fabUp.indexOf('VOLVO') >= 0) { hCode = 'Z03B-0034'; hName = 'Volvo'; }
-        else if (fabUp.indexOf('LINK') >= 0 || fabUp === 'CASE') { hCode = 'Z03B-0041'; hName = 'Link-Belt/Case'; }
-        else if (isCat) { hCode = 'Z03B-0080'; hName = 'Caterpillar'; }
+        // Harnais — defaut calcule par la source unique js/kit-rules.js
+        var _h = window.KitRules.harnais(fabUp, modele);
+        var hCode = _h.code; var hName = _h.name;
 
         var harnaisLabel = document.getElementById('kit-harnais-label');
         var harnaisCodeEl = document.getElementById('kit-harnais-code');
@@ -645,11 +633,11 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 // Drain hyd (0009) ne peut JAMAIS etre jaune — rouge ou na seulement
                 if (bomDefaults['0009'] === 'j') bomDefaults['0009'] = 'r';
                 applyBomToKit(bomDefaults);
-                // Update harnais if override exists
+                // Update harnais if override exists (libelles : source unique kit-rules.js)
                 if (overrides.harnais) {
-                    var HARNAIS_LABELS = {'H0031':'Hit5/6-JD','H0032':'Komatsu','H0033':'Doosan','H0034':'Volvo','H0041':'LB-Case','H0080':'Cat','H0100':'Cat(ECU)','H0121':'Hit-7','H0043':'Generic'};
-                    if (harnaisCodeEl) harnaisCodeEl.textContent = 'Z03B-' + overrides.harnais.replace('H','');
-                    if (harnaisLabel) harnaisLabel.textContent = HARNAIS_LABELS[overrides.harnais] || overrides.harnais;
+                    var _ho = window.KitRules.harnaisOverride(overrides.harnais);
+                    if (harnaisCodeEl) harnaisCodeEl.textContent = _ho.code;
+                    if (harnaisLabel) harnaisLabel.textContent = _ho.name;
                 }
                 // Apply custom rows (added in edit-machine.html via _custom)
                 if (Array.isArray(overrides._custom) && overrides._custom.length){

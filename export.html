@@ -103,7 +103,7 @@
     <script src="js/translations.js?v=186"></script>
     <script src="js/i18n.js?v=166"></script>
     <script src="js/overrides-loader.js?v=4"></script>
-    <script src="js/kit-rules.js?v=4"></script>
+    <script src="js/kit-rules.js?v=5"></script>
     <script>
     (function () {
         'use strict';
@@ -195,12 +195,10 @@
             return '⚠ ' + (flag.note || '(sans note)') + ' — ' + (flag.flaggedBy || '?') + (flag.flaggedAt ? ' (' + flag.flaggedAt + ')' : '');
         }
 
-        // Harnais de coupure (item necessaire des excavatrices) : defaut calcule par
-        // KR.harnais(fab, modele) + override eventuel (stocke 'H0080' -> 'Z03B-0080').
-        var HARNAIS_LABELS = { H0031: 'Hit5/6-JD', H0032: 'Komatsu', H0033: 'Doosan', H0034: 'Volvo', H0041: 'LB-Case', H0080: 'Cat', H0100: 'Cat(ECU)', H0121: 'Hit-7', H0043: 'Generic' };
+        // Harnais de coupure (item necessaire des excavatrices) : defaut + override
+        // calcules par la source unique js/kit-rules.js (KR).
         function harnaisText(fab, mod, ov) {
-            if (ov) return 'Z03B-' + String(ov).replace('H', '') + ' (' + (HARNAIS_LABELS[ov] || ov) + ')';
-            var h = KR.harnais(fab, mod);
+            var h = ov ? KR.harnaisOverride(ov) : KR.harnais(fab, mod);
             return h.code + ' (' + h.name + ')';
         }
 

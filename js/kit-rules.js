@@ -96,7 +96,22 @@
     };
   }
 
-  // Harnais de coupure selon le fabricant -> { code, name }
+  // Libelles canoniques du harnais par code d'override (H-code stocke dans _bom.harnais).
+  // UNIQUE source pour TOUTES les tuiles + l'export. Ne pas dupliquer ailleurs.
+  var HARNAIS_LABELS = {
+    H0031: 'Hitachi/JD', H0032: 'Komatsu', H0033: 'Doosan', H0034: 'Volvo',
+    H0041: 'Link-Belt/Case', H0080: 'Caterpillar', H0100: 'Caterpillar (ECU)',
+    H0121: 'Hitachi -7', H0043: 'Generique'
+  };
+
+  // 'H0080' -> 'Z03B-0080' (PN affiche). Tolere deja un Z03B-XXXX en entree.
+  function harnaisPN(hCode) {
+    var c = String(hCode || '');
+    if (c.indexOf('Z03B-') === 0) return c;
+    return 'Z03B-' + c.replace(/^H/, '');
+  }
+
+  // Harnais de coupure selon le fabricant -> { code: 'Z03B-XXXX', name }
   function harnais(fab, modele) {
     var f = String(fab || '').toUpperCase(), m = String(modele || '');
     if (f === 'HITACHI') {
@@ -110,6 +125,17 @@
     if (f.indexOf('LINK') >= 0 || f === 'CASE') return { code: 'Z03B-0041', name: 'Link-Belt/Case' };
     if (f.indexOf('CATERPILLAR') >= 0 || f === 'CAT') return { code: 'Z03B-0080', name: 'Caterpillar' };
     return { code: 'Z03B-0043', name: 'Generique' };
+  }
+
+  // Harnais par defaut sous forme de H-code ('H0031') — pour les vues qui stockent
+  // le code interne (database.html, edit-machine.html).
+  function harnaisDefaultH(fab, modele) {
+    return harnais(fab, modele).code.replace(/^Z03B-/, 'H');
+  }
+
+  // Harnais resultant d'un override (H-code) -> { code: 'Z03B-XXXX', name canonique }.
+  function harnaisOverride(hCode) {
+    return { code: harnaisPN(hCode), name: HARNAIS_LABELS[hCode] || String(hCode) };
   }
 
   function isOptionCode(k) {
@@ -134,8 +160,11 @@
     DRAIN_PREFIXES: DRAIN_PREFIXES,
     EXC_CODES: EXC_CODES,
     POMPE_CODES: POMPE_CODES,
+    HARNAIS_LABELS: HARNAIS_LABELS,
     poidsKg: poidsKg, isMini: isMini, isDrain: isDrain, isGC: isGC,
     excDefaults: excDefaults, pompeDefaults: pompeDefaults, nacelleDefaults: nacelleDefaults,
-    harnais: harnais, isOptionCode: isOptionCode, applyOverride: applyOverride
+    harnais: harnais, harnaisPN: harnaisPN, harnaisDefaultH: harnaisDefaultH,
+    harnaisOverride: harnaisOverride,
+    isOptionCode: isOptionCode, applyOverride: applyOverride
   };
 })();

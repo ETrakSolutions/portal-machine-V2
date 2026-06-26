@@ -687,7 +687,7 @@
     <script src="js/heartbeat.js?v=4"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=4"></script>
-    <script src="js/kit-rules.js?v=4"></script>
+    <script src="js/kit-rules.js?v=5"></script>
     <script>
     // Token de session (renvoye par l'API au login, stocke dans portal_user).
     // Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
@@ -1355,27 +1355,8 @@
             var bom = window.KitRules.excDefaults({ 'Poids operationnel (kg / lbs)': d.poids, 'Swing boom': (d.swing || d['_spec_Swing boom'] || '') }, d.modele);
             bom['0003'] = 'na';   // Sans cabine — colonne specifique a la vue BD, na par defaut
 
-            // Harnais de coupure — selon fabricant
-            var fabUpper = d.fab.toUpperCase();
-            if (fabUpper === 'HITACHI') {
-                var is7 = d.modele.indexOf('-7') >= 0;
-                var is5or6 = d.modele.indexOf('-5') >= 0 || d.modele.indexOf('-6') >= 0;
-                d.harnais = (is7 && !is5or6) ? 'H0121' : 'H0031';
-            } else if (fabUpper === 'JOHN DEERE') {
-                d.harnais = 'H0031';
-            } else if (fabUpper === 'KOMATSU') {
-                d.harnais = 'H0032';
-            } else if (fabUpper.indexOf('DOOSAN') >= 0 || fabUpper.indexOf('DEVELON') >= 0) {
-                d.harnais = 'H0033';
-            } else if (fabUpper.indexOf('VOLVO') >= 0) {
-                d.harnais = 'H0034';
-            } else if (fabUpper.indexOf('LINK') >= 0 || fabUpper === 'CASE') {
-                d.harnais = 'H0041';
-            } else if (fabUpper.indexOf('CATERPILLAR') >= 0 || fabUpper === 'CAT') {
-                d.harnais = 'H0080';
-            } else {
-                d.harnais = 'H0043';
-            }
+            // Harnais de coupure — defaut (H-code) calcule par la source unique js/kit-rules.js
+            d.harnais = window.KitRules.harnaisDefaultH(d.fab, d.modele);
 
             return bom;
         }
