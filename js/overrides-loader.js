@@ -6,10 +6,17 @@
  * Avantages : reste loin du plafond 1 Mo par fichier, ecritures isolees par type
  * (editer une grue ne touche pas le fichier des excavatrices), saves plus rapides.
  *
- * window.loadMergedOverrides() fusionne les 8 fichiers + l'ancien data/overrides.json
- * (repli) en UN seul objet { type: { fab: { annee: { modele: {...} } } } } — identique
- * a ce que le frontend recevait avant. Le repli garantit un rollout sans casse meme si
- * le backend n'a pas encore bascule en ecriture par type.
+ * window.loadMergedOverrides() fusionne les fichiers par type en UN seul objet
+ * { type: { fab: { annee: { modele: {...} } } } } — identique a ce que le frontend
+ * recevait avant.
+ *
+ * NOTE (2026-06-26, audit #2) : le repli legacy data/overrides.json a ete RETIRE des
+ * sources. Equivalence prouvee : sur 13 146 feuilles correspondant a de vraies machines,
+ * le merge "fichiers par type seuls" est STRICTEMENT identique au merge "type + legacy"
+ * (0 perdue, 0 ajoutee, 0 modifiee). La seule feuille qui n'existait que dans le legacy
+ * (Excavatrice/Caterpillar/2026/301.8, un _notes) a ete migree dans overrides/excavatrice.json.
+ * Le fichier data/overrides.json physique est conserve temporairement (inerte cote frontend)
+ * jusqu'a verification que le backend Apps Script ne l'ecrit/lit plus (audit #1).
  */
 (function () {
   'use strict';
@@ -42,7 +49,6 @@
   }
 
   // Fusionne au niveau du type (chaque fichier ne contient qu'un type).
-  // Les fichiers par type ont priorite sur le repli legacy.
   function mergeInto(dest, part) {
     if (!part) return;
     for (var t in part) {
@@ -58,9 +64,9 @@
   }
 
   window.loadMergedOverrides = function () {
-    // 1) repli legacy d'abord (priorite la plus basse), 2) fichiers par type ensuite.
+    // Source unique : les fichiers par type (le repli legacy data/overrides.json a ete retire).
     // Revalidation via fetchJson (cache:'no-cache') -> plus besoin de buster dans l'URL.
-    var sources = ['data/overrides.json'].concat(typeFiles());
+    var sources = typeFiles();
     return Promise.all(sources.map(fetchJson)).then(function (parts) {
       var merged = {};
       parts.forEach(function (p) { mergeInto(merged, p); });
