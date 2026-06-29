@@ -910,11 +910,15 @@
             '0070': 'Boite GC', '0304': 'Rotation cremaillere', '_AUTRE': 'Autre',
             '0200': 'Avec coffre', '0203': 'Sans coffre', '0201': 'Hauteur', '0202': 'Rotation',
             '0204': '4 sections', '0205': '5 sections', '0206': '6 sections',
-            '0207': 'Rot. cylindre', '0208': 'Inclinometre', '0209': 'Reel 15M',
-            'H0031': 'Harnais Hitachi-5/6 JD', 'H0032': 'Harnais Komatsu', 'H0033': 'Harnais Doosan',
-            'H0034': 'Harnais Volvo', 'H0041': 'Harnais Link-Belt/Case', 'H0080': 'Harnais Cat',
-            'H0100': 'Harnais Cat (ECU)', 'H0121': 'Harnais Hitachi-7', 'H0043': 'Harnais Generique'
+            '0207': 'Rot. cylindre', '0208': 'Inclinometre', '0209': 'Reel 15M'
         };
+        // Libelles de harnais : derives de l'UNIQUE source kit-rules.js (audit #8),
+        // prefixes "Harnais " pour la colonne du tableau. Plus de copie divergente ici.
+        if (window.KitRules && window.KitRules.HARNAIS_LABELS) {
+            Object.keys(window.KitRules.HARNAIS_LABELS).forEach(function (h) {
+                BOM_NAMES[h] = 'Harnais ' + window.KitRules.HARNAIS_LABELS[h];
+            });
+        }
 
         // Calcule l'etat de la colonne "Autre": rouge si au moins une option cachee
         // ou personnalisee (_custom) est marquee OBLIGATOIRE dans la page d'edition. Sinon na.
