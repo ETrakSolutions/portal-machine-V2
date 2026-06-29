@@ -115,7 +115,8 @@
   function harnais(fab, modele) {
     var f = String(fab || '').toUpperCase(), m = String(modele || '');
     if (f === 'HITACHI') {
-      var is7 = m.indexOf('-7') >= 0, is56 = m.indexOf('-5') >= 0 || m.indexOf('-6') >= 0;
+      // Generation ancree : '-5'/'-6'/'-7' non suivis d'un chiffre (matche -5A/-5G/-5N, pas un futur -50).
+      var is7 = /-7(?![0-9])/.test(m), is56 = /-[56](?![0-9])/.test(m);
       return (is7 && !is56) ? { code: 'Z03B-0121', name: 'Hitachi -7' } : { code: 'Z03B-0031', name: 'Hitachi -5/-6' };
     }
     if (f === 'JOHN DEERE') return { code: 'Z03B-0031', name: 'Hitachi/JD' };
