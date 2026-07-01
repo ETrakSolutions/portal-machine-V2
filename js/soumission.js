@@ -267,9 +267,20 @@ function populateModeles(type, fab, anneeFilter) {
     var years = Object.keys(machinesData[type][fab]);
     if (anneeFilter) years = years.filter(function(y){ return y === anneeFilter; });
     years.forEach(function(y) {
-        Object.keys(machinesData[type][fab][y]).forEach(function(m) { modelesSet[m] = true; });
+        Object.keys(machinesData[type][fab][y]).forEach(function(m) {
+            if (!modelesSet[m]) modelesSet[m] = machinesData[type][fab][y][m];
+        });
     });
-    Object.keys(modelesSet).sort().forEach(function(modele) {
+    // Ordre par grosseur (Classe machine), puis alphabetique -- identique a app.js
+    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'330':8,'400':9,'500':10,'700-800':11,'1000+':12};
+    Object.keys(modelesSet).sort(function(a, b) {
+        var ca = (modelesSet[a] && modelesSet[a]['Classe machine']) || 'Standard';
+        var cb = (modelesSet[b] && modelesSet[b]['Classe machine']) || 'Standard';
+        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 99;
+        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 99;
+        if (oa !== ob) return oa - ob;
+        return a.localeCompare(b);
+    }).forEach(function(modele) {
         const opt = document.createElement('option');
         opt.value = modele;
         opt.textContent = modele;

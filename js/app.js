@@ -169,7 +169,7 @@ selectType.addEventListener('change', () => {
 function populateModeles(type, fab, anneeFilter) {
     selectModele.innerHTML = '<option value="">' + ((typeof i18n !== 'undefined') ? i18n.t('common.selectionnez') : '-- Selectionnez --') + '</option>';
     var fabData = machinesData[type][fab];
-    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'400':8};
+    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'330':8,'400':9,'500':10,'700-800':11,'1000+':12};
     // Collect unique models across all years (or filtered year)
     var modelSet = {};
     var annees = anneeFilter ? [anneeFilter] : Object.keys(fabData);
@@ -182,8 +182,8 @@ function populateModeles(type, fab, anneeFilter) {
     var modeles = Object.keys(modelSet).sort(function(a, b) {
         var ca = modelSet[a]['Classe machine'] || 'Standard';
         var cb = modelSet[b]['Classe machine'] || 'Standard';
-        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 5;
-        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 5;
+        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 99;
+        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 99;
         if (oa !== ob) return oa - ob;
         return a.localeCompare(b);
     });
