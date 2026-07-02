@@ -975,7 +975,6 @@ function saveNotes() {
     if (!notesTextarea || !currentNoteKey) return;
 
     var noteContent = notesTextarea.value;
-    localStorage.setItem(currentNoteKey, noteContent);
 
     // Get current machine info
     var fab = selectFabricant ? selectFabricant.value : '';
