@@ -25,6 +25,12 @@ let USERS = [...DEFAULT_USERS];
 function portalToken() {
     try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; }
 }
+// Echappe le HTML (XSS) avant insertion dans un innerHTML — noms/emails saisis par les admins.
+function escHtml(s) {
+    return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
 const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
 let targetEmails = [...DEFAULT_EMAILS];
 const DEFAULT_SALES_EMAILS = [];
@@ -336,7 +342,7 @@ function showWelcome(name, role) {
     overlay.innerHTML =
         '<div class="welcome-line"></div>' +
         '<div class="welcome-text">Bienvenue</div>' +
-        '<div class="welcome-name">' + name + '</div>' +
+        '<div class="welcome-name">' + escHtml(name) + '</div>' +
         '<div class="welcome-role">' + roleLabel + '</div>' +
         '<div class="welcome-line"></div>';
     var mainEl = document.querySelector('main.admin-main');
@@ -489,8 +495,8 @@ function showCredentialsPopup(name, email, password, roleLabel) {
             '</div>' +
             '<p style="margin:0 0 16px;color:#aaa;font-size:0.85rem;">' + (isFr ? 'Transmettez ces informations \u00e0 l\'utilisateur.' : 'Share these credentials with the user.') + '</p>' +
             '<div style="background:#111;border-radius:8px;padding:14px 16px;font-size:0.88rem;line-height:1.9;">' +
-                '<div><span style="color:#888;">' + (isFr ? 'Nom' : 'Name') + '&nbsp;&nbsp;</span><strong>' + name + '</strong></div>' +
-                '<div><span style="color:#888;">' + (isFr ? 'Courriel' : 'Email') + '&nbsp;&nbsp;</span><strong>' + email + '</strong></div>' +
+                '<div><span style="color:#888;">' + (isFr ? 'Nom' : 'Name') + '&nbsp;&nbsp;</span><strong>' + escHtml(name) + '</strong></div>' +
+                '<div><span style="color:#888;">' + (isFr ? 'Courriel' : 'Email') + '&nbsp;&nbsp;</span><strong>' + escHtml(email) + '</strong></div>' +
                 '<div><span style="color:#888;">' + (isFr ? 'Mot de passe' : 'Password') + '&nbsp;&nbsp;</span><strong style="color:#f90;">' + password + '</strong> <span style="color:#555;font-size:0.75rem;">(' + (isFr ? 'temporaire' : 'temporary') + ')</span></div>' +
                 '<div><span style="color:#888;">' + (isFr ? 'R\u00f4le' : 'Role') + '&nbsp;&nbsp;</span><strong>' + roleLabel + '</strong></div>' +
                 '<div><span style="color:#888;">Portal&nbsp;&nbsp;</span><a href="https://etraksolutions.github.io/portal-machine-V2/" target="_blank" style="color:#4ea8de;">etraksolutions.github.io/portal-machine-V2</a></div>' +
@@ -561,7 +567,7 @@ function renderEmails() {
     targetEmails.forEach(function(email, i) {
         var item = document.createElement('div');
         item.className = 'admin-list-item';
-        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
@@ -603,7 +609,7 @@ function renderSalesEmails() {
     salesEmails.forEach(function(email, i) {
         var item = document.createElement('div');
         item.className = 'admin-list-item';
-        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
@@ -647,7 +653,7 @@ function renderKitEmails() {
     kitEmails.forEach(function(email, i) {
         var item = document.createElement('div');
         item.className = 'admin-list-item';
-        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
@@ -690,7 +696,7 @@ function renderVendeurs() {
     vendeurs.forEach(function(v, i) {
         var item = document.createElement('div');
         item.className = 'admin-list-item';
-        item.innerHTML = '<span><strong>' + v.name + '</strong> &mdash; ' + v.email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        item.innerHTML = '<span><strong>' + escHtml(v.name) + '</strong> &mdash; ' + escHtml(v.email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
@@ -732,7 +738,7 @@ function renderNotesEmails() {
     notesEmails.forEach(function(email, i) {
         var item = document.createElement('div');
         item.className = 'admin-list-item';
-        item.innerHTML = '<span>' + email + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">\u2715 Supprimer</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
@@ -799,10 +805,10 @@ function renderUsers() {
         tr.style.cursor = 'pointer';
         tr.dataset.idx = i;
         // Voyant d'activite (sera mis a jour par loadActiveStatus apres render)
-        var dotHtml = '<span class="user-active-dot" data-email="' + (user.email || '').toLowerCase() + '" title="Statut inconnu" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#444;margin-right:8px;vertical-align:middle"></span>';
+        var dotHtml = '<span class="user-active-dot" data-email="' + escHtml((user.email || '').toLowerCase()) + '" title="Statut inconnu" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#444;margin-right:8px;vertical-align:middle"></span>';
         tr.innerHTML =
-            '<td>' + dotHtml + '<strong>' + user.name + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '<div class="user-lastseen" data-email="' + (user.email || '').toLowerCase() + '" style="font-size:0.66rem;color:#8aa;margin-top:2px;margin-left:18px">…</div>' + '</td>' +
-            '<td>' + (user.email || '<span style="color:#555;">\u2014</span>') + '</td>' +
+            '<td>' + dotHtml + '<strong>' + escHtml(user.name) + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '<div class="user-lastseen" data-email="' + escHtml((user.email || '').toLowerCase()) + '" style="font-size:0.66rem;color:#8aa;margin-top:2px;margin-left:18px">…</div>' + '</td>' +
+            '<td>' + (user.email ? escHtml(user.email) : '<span style="color:#555;">\u2014</span>') + '</td>' +
             '<td><span class="role-badge role-' + user.role + '">' + roleLabel + '</span></td>' +
             '<td>' + (!isSuperAdmin && currentUser && currentUser.permissions && currentUser.permissions.modifAccounts ? '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>' : '') + '</td>';
         tbody.appendChild(tr);
