@@ -24,3 +24,6 @@ data/Portal_DB_Test_v[0-9]*.xlsx
 # Secrets — ne JAMAIS committer
 Cle Progression Live.txt
 PIN Portail.txt
+
+# Backend Apps Script complet — garde LOCAL (repo public : ne pas exposer l'architecture de securite)
+apps-script/Api.gs
