@@ -31,6 +31,19 @@ function escHtml(s) {
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
+// #5 : mot de passe temporaire ALEATOIRE (remplace l'ancien '0000' fixe et devinable).
+// Jeu de caracteres sans ambiguite (pas de O/0/I/l/1). L'utilisateur DOIT le changer au 1er login
+// (mustChangePassword). Affiche dans le popup d'identifiants comme avant.
+function _genTempPassword() {
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+    var out = '';
+    var rnd = (window.crypto && window.crypto.getRandomValues) ? window.crypto.getRandomValues(new Uint32Array(10)) : null;
+    for (var i = 0; i < 10; i++) {
+        var r = rnd ? rnd[i] : Math.floor(Math.random() * 1e9);
+        out += chars.charAt(r % chars.length);
+    }
+    return out;
+}
 const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
 let targetEmails = [...DEFAULT_EMAILS];
 const DEFAULT_SALES_EMAILS = [];
@@ -1367,7 +1380,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (errorEl) { errorEl.textContent = 'Cette adresse courriel existe deja.'; errorEl.style.display = 'block'; }
                 return;
             }
-            var newUser = { username: email.toLowerCase(), email: email.toLowerCase(), password: '0000', role: role, name: name, active: true, mustChangePassword: true };
+            var tempPwd = _genTempPassword();
+            var newUser = { username: email.toLowerCase(), email: email.toLowerCase(), password: tempPwd, role: role, name: name, active: true, mustChangePassword: true };
             if (vendeurEmail) newUser.vendeurEmail = vendeurEmail;
             USERS.push(newUser);
             saveUsers();
@@ -1375,7 +1389,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Show credentials popup + mailto button
             var roleLabel = ROLES[role] ? ROLES[role].label : role;
-            showCredentialsPopup(name, email, '0000', roleLabel);
+            showCredentialsPopup(name, email, tempPwd, roleLabel);
 
             document.getElementById('admin-new-name').value = '';
             document.getElementById('admin-new-email').value = '';
