@@ -37,7 +37,8 @@ var OPTION_CODES = {
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data && data.value) {
-                var arr = JSON.parse(data.value);
+                var arr = null;
+                try { arr = JSON.parse(data.value); } catch (e) { arr = null; }
                 if (Array.isArray(arr)) {
                     arr.forEach(function(item) {
                         if (item.name && item.codes) OPTION_CODES[item.name] = item.codes;
@@ -607,9 +608,9 @@ function renderSpecsTable(type, fab, annee, modele) {
 
         var highlight = false;
         if (key === 'Type de traction' && val === 'Roue') highlight = true;
-        if (key === 'Type de boom' && val.includes('2 parties')) highlight = true;
+        if (key === 'Type de boom' && String(val).includes('2 parties')) highlight = true;
         if (key === 'Swing boom' && val === 'Oui') highlight = true;
-        if (key === 'Voltage machine (V/type)' && val.includes('12V')) highlight = true;
+        if (key === 'Voltage machine (V/type)' && String(val).includes('12V')) highlight = true;
 
         if (highlight) {
             html += '<tr><td>' + key + '</td><td><span class="flash-yellow">' + val + '</span></td></tr>';
@@ -1045,7 +1046,7 @@ if (submitBtn) {
             if (sKey === 'Type de traction' && sVal === 'Roue') highlight = true;
             if (sKey === 'Type de boom' && sVal.indexOf('2 parties') >= 0) highlight = true;
             if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
-            if (sKey === 'Voltage machine (V/type)' && sVal.indexOf('12V') >= 0) highlight = true;
+            if (sKey === 'Voltage machine (V/type)' && String(sVal).indexOf('12V') >= 0) highlight = true;
             if (highlight) {
                 specsText += '  ' + sKey + ' : *** ' + sVal.toUpperCase() + ' ***\n';
             } else {

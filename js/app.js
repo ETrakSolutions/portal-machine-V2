@@ -446,11 +446,11 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             }
         } else if (key === 'Type de traction' && value === 'Roue') {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
-        } else if (key === 'Type de boom' && value.includes('2 parties')) {
+        } else if (key === 'Type de boom' && String(value).includes('2 parties')) {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Swing boom' && value === 'Oui') {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
-        } else if (key === 'Voltage machine (V/type)' && value.includes('12V')) {
+        } else if (key === 'Voltage machine (V/type)' && String(value).includes('12V')) {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
         } else if (key === 'Section telescopique' && value === 'Oui') {
             html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
