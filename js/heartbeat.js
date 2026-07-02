@@ -13,7 +13,7 @@
  * Valeur: JSON {"lastPing":"...ISO...","lastActivity":"...ISO..."}
  */
 (function() {
-  var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+  var API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 
   function getUser() {
     try { return JSON.parse(localStorage.getItem('portal_user')); } catch(e) { return null; }

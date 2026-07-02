@@ -100,9 +100,10 @@
 
     <div id="exp-toast" class="exp-toast"></div>
 
+    <script src="js/config.js?v=1"></script>
     <script src="js/translations.js?v=186"></script>
     <script src="js/i18n.js?v=166"></script>
-    <script src="js/heartbeat.js?v=4"></script>
+    <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=5"></script>
     <script src="js/kit-rules.js?v=7"></script>
@@ -127,7 +128,7 @@
         ];
         var SLUGS = window.ETRAK_TYPE_SLUGS || {};
 
-        var API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+        var API_URL = window.PORTAL_API_URL;  // #32 : js/config.js
         var MACHINES = {};   // machines.json (specs + _bom_labels)
         var OVERRIDES = {};  // overrides fusionnes (_bom / _notes)
         var FLAGS = {};      // db_flags (warnings) : { "TYPE|FAB|MODEL|ANNEE": {flaggedBy,flaggedAt,note,active} }

@@ -2,7 +2,7 @@
 // e-Trak Portal — Soumission Page Logic
 // ============================================
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+const API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 let salesEmails = [];
 let machinesData = {};
 let currentUser = null;

@@ -2,7 +2,7 @@
 // e-Trak Portal — HUB + Admin Logic v2
 // ============================================
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec';
+const API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 
 const ROLES = {
     super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Super Admin' },
