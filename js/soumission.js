@@ -595,7 +595,7 @@ function renderSpecsTable(type, fab, annee, modele) {
         else if (poidsKg < 35000) classe = 'Moyen';
         else if (poidsKg < 50000) classe = 'Grand';
         else if (poidsKg < 80000) classe = 'Tres grand';
-        else classe = 'Mega';
+        else classe = 'Mining';
     }
     if (classe) html += '<tr><td>Classe machine</td><td><strong>' + classe + '</strong></td></tr>';
 
