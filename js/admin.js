@@ -1390,12 +1390,14 @@ document.addEventListener('DOMContentLoaded', function() {
         hamburgerBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             hamburgerBtn.classList.toggle('active');
-            hamburgerMenu.classList.toggle('open');
+            var open = hamburgerMenu.classList.toggle('open');
+            hamburgerBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
         });
         document.addEventListener('click', function(e) {
             if (!hamburgerMenu.contains(e.target) && !hamburgerBtn.contains(e.target)) {
                 hamburgerBtn.classList.remove('active');
                 hamburgerMenu.classList.remove('open');
+                hamburgerBtn.setAttribute('aria-expanded', 'false');
             }
         });
     }
