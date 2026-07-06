@@ -39,12 +39,18 @@ try:
     m2026 = models_for_year('2026')
     m2018 = models_for_year('2018')
     m2020 = models_for_year('2020')
+    m2010 = models_for_year('2010')
     print('\n2026 (%d):' % len(m2026), m2026)
     print('2020 (%d):' % len(m2020), m2020)
     print('2018 (%d):' % len(m2018), m2018)
+    print('2010 (%d):' % len(m2010), m2010)
 
     checks = {
-        '2018-2026 tous presents': years == [str(y) for y in range(2018, 2027)],
+        '2008-2026 tous presents': years == [str(y) for y in range(2008, 2027)],
+        '2010 (ere CLG) contient CLG856': 'CLG856' in m2010,
+        '2010 contient CLG835 et CLG888': 'CLG835' in m2010 and 'CLG888' in m2010,
+        '2010 SANS serie H (pas de 856H)': '856H' not in m2010 and not any(x.endswith('H') for x in m2010),
+        '2018 SANS modeles CLG': not any(x.startswith('CLG') for x in m2018),
         '2026 contient 856HV (HV)': '856HV' in m2026,
         '2026 contient 856HE MAX': '856HE MAX' in m2026,
         '2026 contient 8128H (global)': '8128H' in m2026,
