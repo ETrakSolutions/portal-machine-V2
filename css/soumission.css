@@ -359,6 +359,20 @@
 .options-comment {
     margin-bottom: 1rem;
 }
+.soumission-install-box {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px 6px;
+    margin-bottom: 1rem;
+}
+.soumission-install-title {
+    margin: 0 0 12px;
+    color: var(--text-secondary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 .options-comment label {
     display: block;
     color: var(--text-secondary);

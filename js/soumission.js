@@ -413,8 +413,10 @@ function showOptions() {
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
     // Reset sous-options Balance
     document.querySelectorAll('input[name="balance-type"]').forEach(function(r) { r.checked = false; });
-    var refInput = document.getElementById('soumission-ref-client');
-    if (refInput) refInput.value = '';
+    ['soumission-company','soumission-nb-systemes','soumission-lieu','soumission-date-install'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+    });
     var textarea = document.getElementById('soumission-comment');
     if (textarea) textarea.value = '';
 
@@ -885,22 +887,38 @@ if (submitBtn) {
         var modele = selectModele.value;
         if (!fab || !modele || !annee) return;
 
-        // Reference client obligatoire
-        var refClient = (document.getElementById('soumission-ref-client').value || '').trim();
-        if (!refClient) {
-            var refInput = document.getElementById('soumission-ref-client');
-            if (refInput) {
-                refInput.style.border = '2px solid #ff4444';
-                refInput.focus();
-                refInput.setAttribute('placeholder', '⚠ Reference client obligatoire');
-                refInput.addEventListener('input', function handler() {
-                    refInput.style.border = '';
-                    refInput.setAttribute('placeholder', 'Numero de PO, reference interne, nom du client...');
-                    refInput.removeEventListener('input', handler);
-                });
+        // Champs obligatoires : le courriel ne part pas si un seul est vide.
+        // Chaque case vide passe en encadre rouge; redevient normale des qu'on la remplit.
+        var REQUIRED_FIELDS = [
+            { id: 'soumission-company',      reqKey: 'soumission.company_required', phKey: 'soumission.company_placeholder' },
+            { id: 'soumission-nb-systemes',  reqKey: 'soumission.nb_required',       phKey: 'soumission.nb_systemes_placeholder' },
+            { id: 'soumission-lieu',         reqKey: 'soumission.lieu_required',     phKey: 'soumission.lieu_placeholder' }
+        ];
+        var _firstEmpty = null;
+        REQUIRED_FIELDS.forEach(function(f) {
+            var el = document.getElementById(f.id);
+            if (!el) return;
+            if (!(el.value || '').trim()) {
+                el.style.border = '2px solid #ff4444';
+                if (!_firstEmpty) _firstEmpty = el;
+                if (f.phKey) {
+                    var _msg = (typeof i18n !== 'undefined') ? i18n.t(f.reqKey) : '';
+                    if (_msg) el.setAttribute('placeholder', _msg);
+                }
+                var _clear = function() {
+                    el.style.border = '';
+                    if (f.phKey) {
+                        var _p = (typeof i18n !== 'undefined') ? i18n.t(f.phKey) : '';
+                        if (_p) el.setAttribute('placeholder', _p);
+                    }
+                    el.removeEventListener('input', _clear);
+                    el.removeEventListener('change', _clear);
+                };
+                el.addEventListener('input', _clear);
+                el.addEventListener('change', _clear);
             }
-            return;
-        }
+        });
+        if (_firstEmpty) { _firstEmpty.focus(); return; }
 
         // No limiteur check — options obligatoires only shown when limiteur selected
 
@@ -988,8 +1006,12 @@ if (submitBtn) {
             optionsOff.push('Balance ST-7');
         }
 
-        var refClient = (document.getElementById('soumission-ref-client').value || '').trim();
         var comment = (document.getElementById('soumission-comment').value || '').trim();
+        function _fieldVal(id){ var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
+        var companyName = _fieldVal('soumission-company');
+        var nbSystemes = _fieldVal('soumission-nb-systemes');
+        var lieuInstall = _fieldVal('soumission-lieu');
+        var dateInstall = _fieldVal('soumission-date-install');
         var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
         // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
         var vendeurEmail = '';
@@ -1058,14 +1080,23 @@ if (submitBtn) {
             'Demande de soumission e-Trak\n' +
             '================================\n\n';
 
-        // Reference client + Notes (top of email)
-        if (refClient) {
-            body += 'Reference client: ' + refClient + '\n';
+        // Compagnie/dealer + installation + Notes (top of email)
+        if (companyName) {
+            body += 'Concessionnaire et client: ' + companyName + '\n';
+        }
+        if (nbSystemes) {
+            body += 'Nombre d\'unite: ' + nbSystemes + '\n';
+        }
+        if (lieuInstall) {
+            body += 'Lieu d\'installation: ' + lieuInstall + '\n';
+        }
+        if (dateInstall) {
+            body += 'Date d\'installation souhaitee: ' + dateInstall + '\n';
         }
         if (currentNotes && currentNotes.trim()) {
             body += 'Notes machine: ' + currentNotes.trim() + '\n';
         }
-        if (refClient || (currentNotes && currentNotes.trim())) {
+        if (companyName || nbSystemes || lieuInstall || dateInstall || (currentNotes && currentNotes.trim())) {
             body += '\n';
         }
 
@@ -1126,7 +1157,7 @@ if (submitBtn) {
         }
 
         if (comment) {
-            body += '\nCommentaire:\n  ' + comment + '\n';
+            body += '\nInformation supplementaire:\n  ' + comment + '\n';
         }
 
         if (vendeurName) {
