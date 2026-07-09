@@ -671,6 +671,23 @@ function loadNotesForModel(fab, modele, annee) {
     }
 }
 
+// Les lignes custom (_custom) servent aux FITTINGS (raccords/boulons) qui vont
+// avec la Balance sur les machines equipees de l'option Balance (Loader,
+// Telehandler, Retrocaveuse). Regle GENERALE (pas de patch par modele) : sur ces
+// types, les fittings ne s'affichent QUE si la Balance ST-7 est selectionnee.
+// Sur les autres types, les _custom restent toujours visibles (ce ne sont pas
+// des fittings).
+var BALANCE_TYPES = { 'Telehandler': true, 'Loader': true, 'Retrocaveuse': true };
+function balanceIsSelected() {
+    var b = document.getElementById('toggle-balance');
+    if (!b) return false;
+    return !!b.querySelector('input[name="balance-type"]:checked');
+}
+function customVisible(type) {
+    if (!BALANCE_TYPES[type]) return true;   // pas une machine a balance -> _custom normal
+    return balanceIsSelected();              // machine a balance -> fittings seulement si balance cochee
+}
+
 // Determine kit machine options based on specs (same logic as app.js)
 function getKitSummary(type, fab, modele, specs) {
     // Pompe a Beton : kit derive de la BD (pompeDefaults + override), PN/desc depuis _bom_labels.
@@ -690,8 +707,8 @@ function getKitSummary(type, fab, modele, specs) {
                 status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
             });
         });
-        // Lignes custom ajoutees via edit-machine (_custom)
-        if (currentBomOverrides && Array.isArray(currentBomOverrides._custom)) {
+        // Lignes custom ajoutees via edit-machine (_custom) — fittings gates sur la Balance
+        if (customVisible(type) && currentBomOverrides && Array.isArray(currentBomOverrides._custom)) {
             currentBomOverrides._custom.forEach(function(c) {
                 if (c.status === 'na') return;
                 kitP.push({
@@ -722,7 +739,7 @@ function getKitSummary(type, fab, modele, specs) {
                 status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
             });
         });
-        if (Array.isArray(ovG._custom)) {
+        if (customVisible(type) && Array.isArray(ovG._custom)) {
             ovG._custom.forEach(function(c) {
                 if (c.status === 'na') return;
                 kitG.push({
@@ -787,8 +804,8 @@ function getKitSummary(type, fab, modele, specs) {
     }
     kit.push({ code: hCode, name: hName, status: 'Obligatoire' });
 
-    // Custom rows from edit-machine.html (_custom)
-    if (currentBomOverrides && Array.isArray(currentBomOverrides._custom)){
+    // Custom rows from edit-machine.html (_custom) — fittings gates sur la Balance
+    if (customVisible(type) && currentBomOverrides && Array.isArray(currentBomOverrides._custom)){
         currentBomOverrides._custom.forEach(function(c){
             if (c.status === 'na') return;
             kit.push({
