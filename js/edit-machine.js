@@ -145,6 +145,26 @@
   var PRODUCT_CODES = [];   // [{code, desc, qty}]
   var ALL_YEARS_FOR_MODEL = [];  // for "apply to all years" checkbox
   var STICKY_ALL_YEARS = false;  // memorise le choix "toutes les annees" entre 2 sauvegardes (saisie en lot)
+
+  // Rattachement d'une ligne custom a une OPTION (stocke dans c.opt). L'item ne
+  // s'affichera en soumission que si cette option est cochee ('' = toujours).
+  // La liste depend du type (options reellement disponibles pour la machine).
+  function optionsForType(type){
+    var o = [{key:'', label:'Toujours'}, {key:'limiteur', label:'Limiteur'}, {key:'camera', label:'Caméra'}];
+    if (type === 'Telehandler' || type === 'Loader' || type === 'Retrocaveuse') o.push({key:'balance', label:'Balance'});
+    if (type === 'Excavatrice'){ o.push({key:'idc', label:'Indicateur de charge'}); o.push({key:'creusage', label:'Guide de creusage'}); }
+    return o;
+  }
+  function optLabel(key){
+    var f = optionsForType(TYPE).filter(function(o){ return o.key === (key||''); });
+    return f.length ? f[0].label : key;
+  }
+  function optSelectHtml(id, selected){
+    return '<select id="' + id + '" style="padding:0.3rem 0.5rem;font-size:0.85rem;width:100%">' +
+      optionsForType(TYPE).map(function(o){
+        return '<option value="' + o.key + '"' + ((o.key === (selected||'')) ? ' selected' : '') + '>' + o.label + '</option>';
+      }).join('') + '</select>';
+  }
   var REMOVED_INITIAL = [], REMOVED_CURRENT = [];   // codes catalogue masques pour cette machine
   var CUSTOM_INITIAL = [], CUSTOM_CURRENT = [];     // lignes custom: [{code, pn, desc, status}]
   var ADDING_LINE = false;                          // true quand le formulaire d'ajout est ouvert
@@ -967,7 +987,8 @@
         if (cuEditing){
           bomRows += '<tr class="custom-row row-changed">' +
             '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(row.pn||'') + '" placeholder="' + i18n.t('edit.ph_part_number') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
-            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(row.desc||'') + '" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
+            '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(row.desc||'') + '" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
+              '<div style="margin-top:4px;display:flex;align-items:center;gap:4px"><span style="font-size:0.7rem;color:#888">Option:</span>' + optSelectHtml('edit-opt', row.opt||'') + '</div></td>' +
             '<td>' + cuStatusSel + '</td>' +
             cuScopeCell +
             '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_apply') + '" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="' + i18n.t('edit.t_cancel') + '" style="padding:0.3rem 0.5rem">✗</button></td>' +
@@ -975,7 +996,8 @@
         } else {
           bomRows += '<tr class="custom-row">' +
             '<td class="pn">' + (row.pn || '—') + '</td>' +
-            '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') + '</td>' +
+            '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') +
+              (row.opt ? ' <span style="font-size:0.65rem;background:#22333f;color:#8fd6ff;padding:1px 6px;border-radius:8px;margin-left:4px;white-space:nowrap" title="Affiche seulement avec cette option">' + optLabel(row.opt) + '</span>' : '') + '</td>' +
             '<td>' + cuStatusSel + '</td>' +
             cuScopeCell +
             (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_edit_line') + '">✏️</button> <button class="row-del" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_delete_custom') + '">🗑</button></td>' : '<td></td>') +
@@ -991,6 +1013,7 @@
           '</td>' +
           '<td>' +
             '<input type="text" id="add-desc" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
+            '<div style="margin-top:4px;display:flex;align-items:center;gap:4px"><span style="font-size:0.7rem;color:#888">Option:</span>' + optSelectHtml('add-opt','') + '</div>' +
           '</td>' +
           '<td>' +
             '<select id="add-status" style="padding:0.3rem 0.5rem;font-size:0.85rem;width:100%">' +
@@ -1240,7 +1263,8 @@
           if (btn.dataset.kind === 'custom'){
             // Ligne custom : per-machine, devient "dirty" (sauve par le flux Save existant)
             var idx = parseInt(btn.dataset.custom);
-            if (CUSTOM_CURRENT[idx]){ CUSTOM_CURRENT[idx].pn = pn; CUSTOM_CURRENT[idx].desc = desc; }
+            var optSel = document.getElementById('edit-opt');
+            if (CUSTOM_CURRENT[idx]){ CUSTOM_CURRENT[idx].pn = pn; CUSTOM_CURRENT[idx].desc = desc; if (optSel) CUSTOM_CURRENT[idx].opt = optSel.value; }
             EDITING = null;
             render();
             return;
@@ -1272,8 +1296,9 @@
         var desc = (document.getElementById('add-desc').value||'').trim();
         var status = document.getElementById('add-status').value;
         if (!code){ document.getElementById('add-code').focus(); return; }
+        var opt = (document.getElementById('add-opt') || {}).value || '';
         // pn = code (le Code saisi sert aussi de Part Number affiche)
-        CUSTOM_CURRENT.push({code:code, desc:desc, pn:code, status:status});
+        CUSTOM_CURRENT.push({code:code, desc:desc, pn:code, status:status, opt:opt});
         ADDING_LINE = false;
         render();
       });
