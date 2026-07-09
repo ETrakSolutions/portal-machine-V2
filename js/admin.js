@@ -190,6 +190,12 @@ function refreshSessionRole() {
         // backend sans 'whoami' -> {error:'unknown action'} ; session invalide -> {ok:false}
         if (!data || !data.ok || !data.user || !data.user.role) return;
         var fresh = data.user;
+        // Synchro du consentement depuis le serveur (source de verite) : evite de
+        // redemander la signature si l'utilisateur a deja signe sur un autre appareil.
+        if (fresh.consentVersion !== undefined && Number(fresh.consentVersion) !== Number(currentUser.consentVersion || 0)) {
+            currentUser.consentVersion = Number(fresh.consentVersion);
+            try { localStorage.setItem('portal_user', JSON.stringify(currentUser)); } catch (e) {}
+        }
         var changed = (fresh.role !== currentUser.role) ||
                       (fresh.name && fresh.name !== currentUser.name) ||
                       (fresh.email && fresh.email !== currentUser.email) ||
@@ -434,9 +440,8 @@ function showChangePasswordModal(user, oldPassword) {
                 submitBtn.disabled = false;
                 if (data.ok && data.user) {
                     modal.remove();
-                    currentUser = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role), vendeurEmail: data.user.vendeurEmail || '' };
-                    localStorage.setItem('portal_user', JSON.stringify(currentUser));
-                    showWelcome(data.user.name, getUserPermissions(data.user.role).label || data.user.role);
+                    var sess = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role), vendeurEmail: data.user.vendeurEmail || '', consentVersion: data.user.consentVersion || 0 };
+                    proceedAfterAuth(sess, data.user);
                 } else {
                     errorEl.textContent = 'Erreur lors du changement de mot de passe. Reessayez.';
                     errorEl.style.display = 'block';
@@ -454,6 +459,194 @@ function showChangePasswordModal(user, oldPassword) {
     });
 
     document.getElementById('change-pwd-new').focus();
+}
+
+// ---- CONSENTEMENT (Conditions d'utilisation + confidentialite) ----
+// Version courante du texte. INCREMENTER cette valeur = forcer tout le monde a
+// re-signer a la prochaine ouverture (ex. apres une revision juridique du texte).
+window.CONSENT_VERSION = 1;
+
+// Doit-on demander le consentement ? Oui si l'utilisateur n'a jamais signe (aucune
+// version enregistree) ou a signe une version anterieure. Les acces invite (QR,
+// 1h, sans compte persistant) sont exclus : rien a enregistrer contre un compte.
+function consentNeeded(user) {
+    if (!user || user.isGuest) return false;
+    var v = Number(user.consentVersion || 0);
+    return v < window.CONSENT_VERSION;
+}
+
+// Enregistrement cote serveur (preuve : qui, quand, quelle version). Best-effort :
+// tant que l'action Apps Script 'acceptconsent' n'est pas deployee, on enregistre
+// localement pour ne pas bloquer l'utilisateur ; le serveur devient la source de
+// verite des qu'il est en place (whoami/login renverront consentVersion).
+function recordConsentServer(token, version, cb) {
+    if (!token) { cb(false); return; }
+    fetch(API_URL, {
+        method: 'POST', headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'acceptconsent', token: token, version: version })
+    }).then(function(r) { return r.json(); })
+      .then(function(d) { cb(!!(d && d.ok)); })
+      .catch(function() { cb(false); });
+}
+
+// Texte du consentement (FR/EN). Miroir de CONSENTEMENT_BROUILLON.md — a garder
+// synchronise si le texte est revise. Les crochets [...] restent a confirmer.
+function consentTextHtml(lang) {
+    if (lang === 'en') {
+        return '<h4>e-Trak Portal — Terms of Use</h4>' +
+            '<p>By logging into the e-Trak Portal (the "Portal"), operated by GRYB International ("e-Trak", "we"), you agree to the following terms:</p>' +
+            '<ol>' +
+            '<li><strong>Restricted access.</strong> Access is strictly reserved for authorized users within the scope of their business relationship with e-Trak. Your account is personal and <strong>must not be shared</strong>. You are responsible for keeping your credentials confidential and for all activity under your account.</li>' +
+            '<li><strong>Permitted use.</strong> The Portal and its content (specifications, configurations, bills of materials, <strong>pricing</strong> and documents) are provided solely to let you prepare and submit good-faith requests related to e-Trak products. Any other use is prohibited.</li>' +
+            '<li><strong>Accuracy.</strong> Specifications and prices shown are indicative and may change without notice. They are not a firm offer and must be confirmed by e-Trak in the official quotation.</li>' +
+            '<li><strong>Suspension.</strong> e-Trak may suspend or revoke your access at any time, including for breach of these terms.</li>' +
+            '</ol>' +
+            '<h4>Confidentiality Clause</h4>' +
+            '<ol>' +
+            '<li><strong>Confidential information.</strong> All information accessible through the Portal — in particular <strong>prices, price lists, configurations, bills of materials (BOM), technical specifications and commercial data</strong> — is confidential and remains the exclusive property of GRYB / e-Trak.</li>' +
+            '<li><strong>Non-disclosure.</strong> You agree not to disclose, reproduce, publish, transmit or make available this information to any third party, in any form, <strong>including by screenshot</strong>, photograph, printout, export or copy, without e-Trak\'s prior written authorization.</li>' +
+            '<li><strong>Limited use.</strong> You will use this information only within the authorized scope above and <strong>never for competitive purposes</strong> or for the benefit of a third party.</li>' +
+            '<li><strong>Traceability.</strong> You acknowledge that displayed prices carry a watermark identifying the logged-in user, and that Portal access may be logged for security and traceability purposes.</li>' +
+            '<li><strong>Term.</strong> These obligations remain in effect for the duration of your access and [X years / permanently] thereafter.</li>' +
+            '<li><strong>Breach.</strong> Any breach may result in immediate revocation of access and [any remedy available at law / under applicable agreements].</li>' +
+            '</ol>';
+    }
+    return '<h4>Conditions d\'utilisation du Portail e-Trak</h4>' +
+        '<p>En vous connectant au Portail e-Trak (le « Portail »), exploité par GRYB International (« e-Trak », « nous »), vous acceptez les conditions suivantes :</p>' +
+        '<ol>' +
+        '<li><strong>Accès réservé.</strong> L\'accès au Portail est strictement réservé aux utilisateurs autorisés dans le cadre de leur relation d\'affaires avec e-Trak. Votre compte est personnel et <strong>ne doit pas être partagé</strong>. Vous êtes responsable de la confidentialité de vos identifiants et de toute activité effectuée sous votre compte.</li>' +
+        '<li><strong>Usage autorisé.</strong> Le Portail et son contenu (spécifications, configurations, listes de matériel, <strong>prix</strong> et documents) sont fournis uniquement pour vous permettre de préparer et de soumettre des demandes de bonne foi liées aux produits e-Trak. Toute autre utilisation est interdite.</li>' +
+        '<li><strong>Exactitude.</strong> Les spécifications et les prix affichés sont fournis à titre indicatif et peuvent changer sans préavis. Ils ne constituent pas une offre ferme et doivent être confirmés par e-Trak lors de la soumission officielle.</li>' +
+        '<li><strong>Suspension.</strong> e-Trak peut suspendre ou révoquer votre accès en tout temps, notamment en cas de non-respect des présentes conditions.</li>' +
+        '</ol>' +
+        '<h4>Clause de confidentialité</h4>' +
+        '<ol>' +
+        '<li><strong>Informations confidentielles.</strong> Toutes les informations accessibles via le Portail — en particulier les <strong>prix, listes de prix, configurations, listes de matériel (BOM), spécifications techniques et données commerciales</strong> — sont confidentielles et demeurent la propriété exclusive de GRYB / e-Trak.</li>' +
+        '<li><strong>Engagement de non-divulgation.</strong> Vous vous engagez à ne pas divulguer, reproduire, publier, transmettre ou rendre accessible ces informations à un tiers, sous quelque forme que ce soit, <strong>y compris par capture d\'écran</strong>, photographie, impression, export ou copie, sans l\'autorisation écrite préalable d\'e-Trak.</li>' +
+        '<li><strong>Usage limité.</strong> Vous n\'utiliserez ces informations que dans le cadre autorisé ci-dessus et <strong>jamais à des fins concurrentielles</strong> ni au bénéfice d\'un tiers.</li>' +
+        '<li><strong>Traçabilité.</strong> Vous reconnaissez que les prix affichés portent un filigrane identifiant l\'utilisateur connecté, et que les accès au Portail peuvent être journalisés à des fins de sécurité et de traçabilité.</li>' +
+        '<li><strong>Durée.</strong> Ces engagements demeurent en vigueur pendant toute la durée de votre accès au Portail et [X années / de façon permanente] après la fin de celui-ci.</li>' +
+        '<li><strong>Manquement.</strong> Tout manquement peut entraîner la révocation immédiate de l\'accès et [tout recours prévu par la loi / les ententes applicables].</li>' +
+        '</ol>';
+}
+
+// Fenetre bloquante de consentement. onAccepted() est appele une fois le
+// consentement enregistre (localement + best-effort serveur).
+function showConsentModal(sessionUser, onAccepted) {
+    var existing = document.getElementById('consent-modal');
+    if (existing) existing.remove();
+    var lang = (typeof i18n !== 'undefined' && i18n.getLang) ? i18n.getLang() : 'fr';
+    var isFr = lang !== 'en';
+
+    var modal = document.createElement('div');
+    modal.id = 'consent-modal';
+    modal.className = 'login-modal';
+    modal.style.display = 'flex';
+    modal.innerHTML =
+        '<div class="login-modal-content" style="max-width:640px;width:92%;text-align:left;">' +
+        '<h3 style="margin-top:0;">' + (isFr ? 'Consentement requis' : 'Consent required') + '</h3>' +
+        '<p style="color:#999;font-size:0.82rem;margin:0 0 0.8rem;">' +
+        (isFr ? 'Veuillez lire jusqu\'en bas, puis accepter pour accéder au portail.'
+              : 'Please read to the end, then accept to access the portal.') + '</p>' +
+        '<div id="consent-scroll" style="max-height:46vh;overflow-y:auto;border:1px solid #333;border-radius:8px;padding:14px 16px;background:#161622;font-size:0.82rem;line-height:1.5;color:#d8d8e0;">' +
+        consentTextHtml(lang) + '</div>' +
+        '<label style="display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:0.82rem;cursor:pointer;opacity:0.5;" id="consent-lbl-1">' +
+        '<input type="checkbox" id="consent-cb-1" disabled style="margin-top:3px;"> <span>' +
+        (isFr ? 'J\'ai lu et j\'accepte les Conditions d\'utilisation.' : 'I have read and accept the Terms of Use.') + '</span></label>' +
+        '<label style="display:flex;gap:8px;align-items:flex-start;margin-top:6px;font-size:0.82rem;cursor:pointer;opacity:0.5;" id="consent-lbl-2">' +
+        '<input type="checkbox" id="consent-cb-2" disabled style="margin-top:3px;"> <span>' +
+        (isFr ? 'J\'ai lu et j\'accepte la clause de confidentialité.' : 'I have read and accept the Confidentiality Clause.') + '</span></label>' +
+        '<p id="consent-hint" style="color:#FF8C00;font-size:0.72rem;margin:8px 0 0;">' +
+        (isFr ? 'Faites défiler le texte jusqu\'en bas pour activer les cases.' : 'Scroll to the bottom to enable the checkboxes.') + '</p>' +
+        '<div style="display:flex;gap:10px;margin-top:14px;">' +
+        '<button type="button" id="consent-accept" class="login-submit" style="flex:1;opacity:0.5;" disabled>' +
+        (isFr ? 'Accepter' : 'Accept') + '</button>' +
+        '<button type="button" id="consent-decline" class="login-submit" style="flex:0 0 auto;background:#3a3a44;">' +
+        (isFr ? 'Refuser et se déconnecter' : 'Decline and log out') + '</button>' +
+        '</div>' +
+        '<p id="consent-error" class="login-error" style="display:none;"></p>' +
+        '</div>';
+    document.body.appendChild(modal);
+
+    var scroll = document.getElementById('consent-scroll');
+    var cb1 = document.getElementById('consent-cb-1');
+    var cb2 = document.getElementById('consent-cb-2');
+    var lbl1 = document.getElementById('consent-lbl-1');
+    var lbl2 = document.getElementById('consent-lbl-2');
+    var hint = document.getElementById('consent-hint');
+    var acceptBtn = document.getElementById('consent-accept');
+    var errorEl = document.getElementById('consent-error');
+    var scrolled = false;
+
+    function enableChecks() {
+        if (scrolled) return;
+        scrolled = true;
+        cb1.disabled = false; cb2.disabled = false;
+        lbl1.style.opacity = '1'; lbl2.style.opacity = '1';
+        if (hint) hint.style.display = 'none';
+    }
+    function checkScroll() {
+        if (scroll.scrollTop + scroll.clientHeight >= scroll.scrollHeight - 8) enableChecks();
+    }
+    // Si le texte est plus court que la zone (pas de defilement possible), activer d'emblee.
+    if (scroll.scrollHeight <= scroll.clientHeight + 8) enableChecks();
+    scroll.addEventListener('scroll', checkScroll);
+
+    function refreshAccept() {
+        var ok = cb1.checked && cb2.checked;
+        acceptBtn.disabled = !ok;
+        acceptBtn.style.opacity = ok ? '1' : '0.5';
+    }
+    cb1.addEventListener('change', refreshAccept);
+    cb2.addEventListener('change', refreshAccept);
+
+    acceptBtn.addEventListener('click', function() {
+        if (!(cb1.checked && cb2.checked)) return;
+        acceptBtn.disabled = true;
+        errorEl.style.display = 'none';
+        var version = window.CONSENT_VERSION;
+        // Enregistrement local immediat (source de verite locale + gate).
+        currentUser = currentUser || sessionUser;
+        currentUser.consentVersion = version;
+        currentUser.consentDate = new Date().toISOString();
+        try { localStorage.setItem('portal_user', JSON.stringify(currentUser)); } catch (e) {}
+        // Best-effort serveur (ne bloque pas l'acces si non deploye).
+        recordConsentServer(currentUser.token, version, function(/* okServer */) {});
+        modal.remove();
+        if (typeof onAccepted === 'function') onAccepted();
+    });
+
+    document.getElementById('consent-decline').addEventListener('click', function() {
+        // Refus = pas d'acces. On nettoie la session et on revient a l'etat deconnecte.
+        var tok = (currentUser && currentUser.token) || '';
+        if (tok) {
+            fetch(API_URL, { method: 'POST', headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'logout', token: tok }) }).catch(function() {});
+        }
+        currentUser = null;
+        try { localStorage.removeItem('portal_user'); } catch (e) {}
+        modal.remove();
+        try { hideAdminSection(); } catch (e) {}
+        updateHubUI();
+    });
+}
+
+// Funnel commun apres authentification reussie (login normal OU apres changement
+// de mot de passe). Etablit la session puis impose le consentement si requis.
+function proceedAfterAuth(sessionUser, rawUser) {
+    currentUser = sessionUser;
+    try { localStorage.setItem('portal_user', JSON.stringify(currentUser)); } catch (e) {}
+    var loginModalEl = document.getElementById('hub-login-modal');
+    function done() {
+        if (loginModalEl) loginModalEl.style.display = 'none';
+        showWelcome(sessionUser.name, (getUserPermissions(sessionUser.role).label) || sessionUser.role);
+    }
+    if (consentNeeded(rawUser || sessionUser)) {
+        if (loginModalEl) loginModalEl.style.display = 'none';
+        showConsentModal(sessionUser, done);
+    } else {
+        done();
+    }
 }
 
 // ---- CREDENTIALS POPUP ----
@@ -1084,6 +1277,11 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch(e) {}
     }
     updateHubUI();
+    // Consentement : force la signature a l'ouverture pour tout utilisateur (deja
+    // connecte) qui n'a jamais signe la version courante. Exclut les acces invite.
+    if (currentUser && consentNeeded(currentUser)) {
+        showConsentModal(currentUser, function() { updateHubUI(); });
+    }
     // Propage un eventuel changement de role fait par un admin (sans re-login).
     refreshSessionRole();
 
@@ -1140,10 +1338,8 @@ document.addEventListener('DOMContentLoaded', function() {
                             loginModal.style.display = 'none';
                             showChangePasswordModal(user, password);
                         } else {
-                            currentUser = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role), vendeurEmail: user.vendeurEmail || '' };
-                            localStorage.setItem('portal_user', JSON.stringify(currentUser));
-                            loginModal.style.display = 'none';
-                            showWelcome(user.name, getUserPermissions(user.role).label || user.role);
+                            var sess = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role), vendeurEmail: user.vendeurEmail || '', consentVersion: user.consentVersion || 0 };
+                            proceedAfterAuth(sess, user);
                         }
                     } else {
                         loginError.textContent = (typeof i18n !== 'undefined') ? i18n.t('hub.login_error') : 'Utilisateur ou mot de passe invalide';

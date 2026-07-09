@@ -140,6 +140,31 @@ fetch('data/prices.json', { cache: 'no-cache' }).then(function(r) { return r.jso
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }
 function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
 
+// Filigrane anti-partage : le nom (+ courriel) du user connecte est repete en
+// diagonale, en fond du tableau de prix. Dissuade la diffusion d'une capture
+// d'ecran de nos prix : l'identite de la personne qui l'a prise reste visible.
+function watermarkLabel() {
+    // Source de verite = la session stockee a la connexion (robuste meme si la
+    // variable currentUser n'a pas encore ete peuplee). Repli sur currentUser.
+    var u = null;
+    try { u = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
+    if (!u || (!u.name && !u.email && !u.username)) u = currentUser || {};
+    var name = (u.name || '').trim();
+    var mail = (u.email || u.username || '').trim();
+    if (name && mail) return name + '  ·  ' + mail;
+    return name || mail || 'e-Trak — confidentiel';
+}
+function watermarkBg() {
+    var txt = watermarkLabel().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    // Tuile resserree : le nom se repete plus souvent et reste lisible meme quand
+    // le tableau ne compte qu'une ou deux lignes.
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="52">' +
+        '<text x="4" y="34" transform="rotate(-22 150 26)" ' +
+        'font-family="Inter, Arial, sans-serif" font-size="12" font-weight="600" ' +
+        'fill="#ffffff" fill-opacity="0.16">' + txt + '</text></svg>';
+    return 'url("data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '")';
+}
+
 // Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change.
 // Met a jour les donnees + l'override de la machine selectionnee SANS toucher au formulaire (options en cours).
 window.__onOverridesChanged = function(ov) {
@@ -1482,9 +1507,32 @@ function updateSelectedSummary() {
             '<th style="text-align:right;padding:0 8px 5px">Prix</th>' +
             '<th style="text-align:right;padding:0 0 5px 8px">Installation</th>' +
             '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>';
+        // Filigrane du nom du user en fond du tableau de prix (dissuasion capture d'ecran).
+        // Applique seulement si des prix sont reellement affiches.
+        list.style.backgroundImage = '';   // ancienne approche (fond direct) retiree
+        if (anyPrice) {
+            list.style.position = 'relative';
+            list.style.minHeight = '104px'; // garantit >= 2 lignes de filigrane meme si peu d'options
+            // Filigrane sur une couche dediee DERRIERE le tableau. Un masque vide le
+            // premier tiers (gauche) pour ne pas empieter sur les descriptions de
+            // produits ; le nom apparait dans les espaces, cote prix (droite).
+            var wm = document.createElement('div');
+            wm.setAttribute('aria-hidden', 'true');
+            var mask = 'linear-gradient(to right, transparent 0, transparent 36%, #000 50%, #000 100%)';
+            wm.style.cssText = 'position:absolute;inset:0;z-index:0;pointer-events:none;' +
+                'background-image:' + watermarkBg() + ';background-repeat:repeat;' +
+                '-webkit-mask-image:' + mask + ';mask-image:' + mask + ';';
+            list.appendChild(wm);
+            var tbl = list.querySelector('table');
+            if (tbl) { tbl.style.position = 'relative'; tbl.style.zIndex = '1'; }
+        } else {
+            list.style.minHeight = '';
+        }
         wrap.style.display = 'block';
     } else {
         list.innerHTML = '';
+        list.style.backgroundImage = '';
+        list.style.minHeight = '';
         wrap.style.display = 'none';
     }
 }
