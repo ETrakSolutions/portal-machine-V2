@@ -671,21 +671,35 @@ function loadNotesForModel(fab, modele, annee) {
     }
 }
 
-// Les lignes custom (_custom) servent aux FITTINGS (raccords/boulons) qui vont
-// avec la Balance sur les machines equipees de l'option Balance (Loader,
-// Telehandler, Retrocaveuse). Regle GENERALE (pas de patch par modele) : sur ces
-// types, les fittings ne s'affichent QUE si la Balance ST-7 est selectionnee.
-// Sur les autres types, les _custom restent toujours visibles (ce ne sont pas
-// des fittings).
+// Rattachement des lignes custom (_custom) a une OPTION. Chaque ligne peut porter
+// un champ c.opt = 'limiteur' | 'camera' | 'balance' | 'creusage' | 'idc' (ou vide).
+// Elle ne s'affiche en soumission que si son option est selectionnee (ou toujours
+// si opt vide). Ainsi une meme machine peut avoir un fitting pour le limiteur, un
+// autre pour la balance, un autre pour la camera, chacun visible avec SON option.
 var BALANCE_TYPES = { 'Telehandler': true, 'Loader': true, 'Retrocaveuse': true };
-function balanceIsSelected() {
-    var b = document.getElementById('toggle-balance');
-    if (!b) return false;
-    return !!b.querySelector('input[name="balance-type"]:checked');
+// Une bascule d'option est "selectionnee" si elle porte la classe 'active' OU
+// contient un input coche (radio/checkbox de sous-option).
+function _boxSelected(el) {
+    if (!el) return false;
+    if (el.classList && el.classList.contains('active')) return true;
+    return !!el.querySelector('input:checked');
 }
-function customVisible(type) {
-    if (!BALANCE_TYPES[type]) return true;   // pas une machine a balance -> _custom normal
-    return balanceIsSelected();              // machine a balance -> fittings seulement si balance cochee
+function optionIsSelected(optKey) {
+    var el;
+    if (optKey === 'idc') el = document.querySelector('[data-option="Indicateur de charge"]');
+    else el = document.getElementById('toggle-' + optKey);  // limiteur/camera/balance/creusage
+    return _boxSelected(el);
+}
+// Visibilite d'une ligne custom :
+//  - opt explicite -> visible seulement si cette option est cochee ;
+//  - pas de opt + machine a balance -> RETROCOMPAT : traite comme un fitting balance
+//    (ne casse pas les fittings deja en place, non encore etiquetes) ;
+//  - pas de opt + autre type -> toujours visible.
+function customItemVisible(c, type) {
+    var opt = c && c.opt;
+    if (opt) return optionIsSelected(opt);
+    if (BALANCE_TYPES[type]) return optionIsSelected('balance');
+    return true;
 }
 
 // Determine kit machine options based on specs (same logic as app.js)
@@ -707,10 +721,11 @@ function getKitSummary(type, fab, modele, specs) {
                 status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
             });
         });
-        // Lignes custom ajoutees via edit-machine (_custom) — fittings gates sur la Balance
-        if (customVisible(type) && currentBomOverrides && Array.isArray(currentBomOverrides._custom)) {
+        // Lignes custom ajoutees via edit-machine (_custom) — visibles selon leur option (c.opt)
+        if (currentBomOverrides && Array.isArray(currentBomOverrides._custom)) {
             currentBomOverrides._custom.forEach(function(c) {
                 if (c.status === 'na') return;
+                if (!customItemVisible(c, type)) return;
                 kitP.push({
                     code: c.pn || c.code,
                     name: c.desc || c.code,
@@ -739,9 +754,10 @@ function getKitSummary(type, fab, modele, specs) {
                 status: st === 'v' ? 'À vérifier' : (st === 'r' ? 'Obligatoire' : 'Optionnel')
             });
         });
-        if (customVisible(type) && Array.isArray(ovG._custom)) {
+        if (Array.isArray(ovG._custom)) {
             ovG._custom.forEach(function(c) {
                 if (c.status === 'na') return;
+                if (!customItemVisible(c, type)) return;
                 kitG.push({
                     code: c.pn || c.code,
                     name: c.desc || c.code,
@@ -804,10 +820,11 @@ function getKitSummary(type, fab, modele, specs) {
     }
     kit.push({ code: hCode, name: hName, status: 'Obligatoire' });
 
-    // Custom rows from edit-machine.html (_custom) — fittings gates sur la Balance
-    if (customVisible(type) && currentBomOverrides && Array.isArray(currentBomOverrides._custom)){
+    // Custom rows from edit-machine.html (_custom) — visibles selon leur option (c.opt)
+    if (currentBomOverrides && Array.isArray(currentBomOverrides._custom)){
         currentBomOverrides._custom.forEach(function(c){
             if (c.status === 'na') return;
+            if (!customItemVisible(c, type)) return;
             kit.push({
                 code: c.pn || c.code,
                 name: c.desc || c.code,
@@ -1215,11 +1232,144 @@ if (submitBtn) {
         if (vendeurEmail) {
             mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
         }
+        // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours).
+        window.__lastSoumissionEmail = { to: mailTo, cc: vendeurEmail || '', subject: subject, body: body };
+        // Cache un eventuel panneau de secours d'un envoi precedent.
+        hideSoumissionFallback();
+        // Detecte si le client courriel s'ouvre; sinon, affiche le panneau de secours.
+        armMailtoFallback();
         // Envoi via le client courriel de l'utilisateur (part de sa propre adresse).
         window.location.href = mailUrl;
         } // end sendEmail
     });
 }
+
+// ===========================================================================
+// Panneau de secours "copier/coller" — si le client courriel ne s'ouvre pas.
+// Le bouton "Envoyer" ouvre un lien mailto:. Sur un poste sans logiciel de
+// courriel par defaut (webmail non configure, navigateur, mobile), rien ne se
+// passe. On detecte ce cas et on offre : (1) copier la demande, (2) l'aide de
+// configuration. Le bouton "?" permet aussi d'ouvrir ce panneau manuellement.
+// ===========================================================================
+function soumissionLang() {
+    try { return localStorage.getItem('portal_lang') || 'fr'; } catch (e) { return 'fr'; }
+}
+
+function hideSoumissionFallback() {
+    var box = document.getElementById('soumission-fallback');
+    if (box) { box.style.display = 'none'; box.classList.remove('is-auto'); }
+}
+
+// Rend le panneau. auto=true => le courriel ne s'est pas ouvert (ton "alerte").
+function renderSoumissionFallback(auto) {
+    var box = document.getElementById('soumission-fallback');
+    if (!box) return;
+    var fr = soumissionLang() === 'fr';
+    var title = auto
+        ? (fr ? '📭 Le courriel ne s\'est pas ouvert ?' : '📭 Email didn\'t open?')
+        : (fr ? '📋 Envoyer autrement' : '📋 Send another way');
+    var text = auto
+        ? (fr ? 'On dirait qu\'aucun logiciel de courriel n\'est configure sur cet appareil. Copie la demande ci-dessous et colle-la dans un nouveau courriel adresse a e-Trak.'
+              : 'It looks like no email app is set up on this device. Copy the request below and paste it into a new email addressed to e-Trak.')
+        : (fr ? 'Si le courriel ne s\'ouvre pas automatiquement, copie la demande et colle-la dans un nouveau courriel.'
+              : 'If the email does not open automatically, copy the request and paste it into a new email.');
+    var copyLabel = fr ? '📋 Copier la demande' : '📋 Copy the request';
+    var helpSummary = fr ? 'Configurer mon courriel par defaut' : 'Set up my default email';
+    var helpItems = fr ? [
+        '<b>Windows</b> : Parametres → Applications → Applications par defaut → choisir Outlook (ou Courrier) pour le courriel.',
+        '<b>Chrome + Gmail</b> : cliquer l\'icone en losange a droite de la barre d\'adresse, puis autoriser Gmail a ouvrir les liens courriel.',
+        '<b>iPhone / Android</b> : installer et se connecter a l\'app Mail ou Gmail.',
+        'Sinon, utilise simplement le bouton <b>Copier la demande</b> ci-dessus.'
+    ] : [
+        '<b>Windows</b>: Settings → Apps → Default apps → choose Outlook (or Mail) for email.',
+        '<b>Chrome + Gmail</b>: click the diamond icon at the right of the address bar, then allow Gmail to open email links.',
+        '<b>iPhone / Android</b>: install and sign in to the Mail or Gmail app.',
+        'Otherwise, just use the <b>Copy the request</b> button above.'
+    ];
+    var itemsHtml = helpItems.map(function (i) { return '<li>' + i + '</li>'; }).join('');
+    box.className = 'soumission-fallback' + (auto ? ' is-auto' : '');
+    box.innerHTML =
+        '<p class="soumission-fallback-title">' + title + '</p>' +
+        '<p class="soumission-fallback-text">' + text + '</p>' +
+        '<button type="button" id="soumission-copy-btn" class="soumission-copy-btn">' + copyLabel + '</button>' +
+        '<details class="soumission-fallback-help"><summary>' + helpSummary + '</summary><ul>' + itemsHtml + '</ul></details>';
+    box.style.display = 'block';
+    var copyBtn = document.getElementById('soumission-copy-btn');
+    if (copyBtn) copyBtn.addEventListener('click', copySoumissionRequest);
+}
+
+// Construit le texte complet (destinataires + objet + corps) et le copie.
+function copySoumissionRequest() {
+    var m = window.__lastSoumissionEmail;
+    var fr = soumissionLang() === 'fr';
+    var btn = document.getElementById('soumission-copy-btn');
+    if (!m) {
+        alert(fr ? 'Aucune demande a copier. Clique d\'abord sur "Envoyer la demande".'
+                 : 'Nothing to copy. Click "Send the request" first.');
+        return;
+    }
+    var text =
+        (fr ? 'A : ' : 'To: ') + (m.to || '').replace(/;/g, '; ') + '\n' +
+        (m.cc ? (fr ? 'Cc : ' : 'Cc: ') + m.cc + '\n' : '') +
+        (fr ? 'Objet : ' : 'Subject: ') + m.subject + '\n\n' +
+        m.body;
+    var done = function () {
+        if (!btn) return;
+        var prev = btn.textContent;
+        btn.classList.add('is-copied');
+        btn.textContent = fr ? '✓ Copie !' : '✓ Copied!';
+        setTimeout(function () { btn.classList.remove('is-copied'); btn.textContent = prev; }, 2500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () { legacyCopy(text, done); });
+    } else {
+        legacyCopy(text, done);
+    }
+}
+
+function legacyCopy(text, cb) {
+    try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (cb) cb();
+    } catch (e) {
+        alert((soumissionLang() === 'fr')
+            ? 'Impossible de copier automatiquement. Selectionne le texte manuellement.'
+            : 'Automatic copy failed. Please select the text manually.');
+    }
+}
+
+// Detecte si le lien mailto a ouvert le client courriel. Si la fenetre ne perd
+// pas le focus dans le delai, c'est qu'aucun logiciel n'a pris le relais.
+function armMailtoFallback() {
+    var opened = false;
+    var onBlur = function () { opened = true; };
+    var onHide = function () { if (document.hidden) opened = true; };
+    window.addEventListener('blur', onBlur);
+    document.addEventListener('visibilitychange', onHide);
+    setTimeout(function () {
+        window.removeEventListener('blur', onBlur);
+        document.removeEventListener('visibilitychange', onHide);
+        if (!opened) { renderSoumissionFallback(true); }
+    }, 1500);
+}
+
+// Bouton "?" a cote de "Envoyer" : ouvre/ferme le panneau de secours.
+(function () {
+    var help = document.getElementById('soumission-help-toggle');
+    if (!help) return;
+    help.addEventListener('click', function () {
+        var box = document.getElementById('soumission-fallback');
+        if (box && box.style.display !== 'none') { hideSoumissionFallback(); }
+        else { renderSoumissionFallback(false); }
+    });
+})();
 
 // Build combined text for Limiteur/IDC/Creusage based on truth table
 function buildLimIdcCreusageText() {
@@ -1640,8 +1790,9 @@ function aValiderItems() {
         if (code.charAt(0) === '_' || code === 'rows' || code === 'customRows' || code === 'undefined' || code === 'harnais') continue;
         if (String(ov[code]).toLowerCase() === 'v') { var info = bomLabelInfo(type, code); out.push({ code: info.pn, name: info.label }); }
     }
-    // Fittings (_custom) : soumis a la meme regle Balance que le reste du kit.
-    if (customVisible(type) && Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
+    // Fittings (_custom) : soumis a la regle d'option (c.opt) comme le reste du kit.
+    if (Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
+        if (!customItemVisible(c, type)) return;
         if (String(c.status || '').toLowerCase() === 'v') out.push({ code: c.pn || c.code || '', name: c.desc || c.code || 'Item custom' });
     });
     return out;

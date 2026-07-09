@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
     <link rel="stylesheet" href="css/style.css?v=173">
-    <link rel="stylesheet" href="css/soumission.css?v=163">
+    <link rel="stylesheet" href="css/soumission.css?v=164">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -198,7 +198,13 @@
             </div>
 
 
-<button id="soumission-submit" class="soumission-submit-btn" data-i18n-html="soumission.submit">&#128231; Envoyer la demande</button>
+<div class="soumission-submit-wrap">
+    <button id="soumission-submit" class="soumission-submit-btn" data-i18n-html="soumission.submit">&#128231; Envoyer la demande</button>
+    <button type="button" id="soumission-help-toggle" class="soumission-help-btn" aria-label="Aide" title="Le courriel ne part pas ?">?</button>
+</div>
+
+<!-- Panneau de secours : s'affiche si le courriel ne s'ouvre pas, ou via le bouton "?" -->
+<div id="soumission-fallback" class="soumission-fallback" style="display:none;"></div>
         </section>
 
         <!-- EMPTY STATE -->
@@ -243,7 +249,7 @@
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=5"></script>
     <script src="js/kit-rules.js?v=7"></script>
-    <script src="js/soumission.js?v=248"></script>
+    <script src="js/soumission.js?v=249"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>
