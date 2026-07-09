@@ -144,6 +144,7 @@
   var FLAG = null;     // { active, flaggedBy, flaggedAt, note, resolvedBy, resolvedAt }
   var PRODUCT_CODES = [];   // [{code, desc, qty}]
   var ALL_YEARS_FOR_MODEL = [];  // for "apply to all years" checkbox
+  var STICKY_ALL_YEARS = false;  // memorise le choix "toutes les annees" entre 2 sauvegardes (saisie en lot)
   var REMOVED_INITIAL = [], REMOVED_CURRENT = [];   // codes catalogue masques pour cette machine
   var CUSTOM_INITIAL = [], CUSTOM_CURRENT = [];     // lignes custom: [{code, pn, desc, status}]
   var ADDING_LINE = false;                          // true quand le formulaire d'ajout est ouvert
@@ -485,7 +486,11 @@
       } else {
         saveAllLabel.style.display = 'none';
       }
-      saveAllCb.checked = false;
+      // Case COLLANTE : on restaure le dernier choix au lieu de toujours decocher,
+      // pour la saisie en lot (Steve n'a plus a recocher a chaque sauvegarde).
+      // Elle reste cochee jusqu'a ce qu'il la decoche lui-meme.
+      saveAllCb.checked = STICKY_ALL_YEARS;
+      saveAllCb.onchange = function(){ STICKY_ALL_YEARS = saveAllCb.checked; };
     }
     document.getElementById('modal-save').classList.add('show');
   }
