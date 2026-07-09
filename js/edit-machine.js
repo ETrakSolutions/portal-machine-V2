@@ -160,10 +160,29 @@
     return f.length ? f[0].label : key;
   }
   function optSelectHtml(id, selected){
-    return '<select id="' + id + '" style="padding:0.3rem 0.5rem;font-size:0.85rem;width:100%">' +
+    return '<select id="' + id + '" style="padding:0.25rem 0.45rem;font-size:0.82rem">' +
       optionsForType(TYPE).map(function(o){
         return '<option value="' + o.key + '"' + ((o.key === (selected||'')) ? ' selected' : '') + '>' + o.label + '</option>';
       }).join('') + '</select>';
+  }
+  // Bloc de controles secondaires d'une ligne custom (Option + Quantite), presente
+  // proprement sous la description en edition/ajout.
+  function customExtraControls(optId, optSel, qtyId, qtyVal){
+    return '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:6px 10px;background:rgba(255,255,255,0.045);border-radius:6px">' +
+      '<label style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9fb4c8;margin:0;font-weight:600;letter-spacing:0.02em">OPTION ' + optSelectHtml(optId, optSel) + '</label>' +
+      '<label style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9fb4c8;margin:0;font-weight:600;letter-spacing:0.02em">QTÉ <input type="number" id="' + qtyId + '" min="1" step="1" value="' + (parseInt(qtyVal) > 0 ? parseInt(qtyVal) : 1) + '" style="width:56px;padding:0.25rem 0.4rem;font-size:0.85rem;text-align:center"></label>' +
+    '</div>';
+  }
+  // Badges compacts affiches sur une ligne custom (quantite + option rattachee).
+  function customBadges(row){
+    var out = '';
+    if (row.qty && parseInt(row.qty) > 1) {
+      out += ' <span style="font-size:0.68rem;font-weight:700;background:#243a2a;color:#8fe0a0;padding:1px 7px;border-radius:8px;margin-left:5px;white-space:nowrap">×' + parseInt(row.qty) + '</span>';
+    }
+    if (row.opt) {
+      out += ' <span style="font-size:0.65rem;background:#22333f;color:#8fd6ff;padding:1px 7px;border-radius:8px;margin-left:5px;white-space:nowrap" title="Affiche seulement avec cette option">' + optLabel(row.opt) + '</span>';
+    }
+    return out;
   }
   var REMOVED_INITIAL = [], REMOVED_CURRENT = [];   // codes catalogue masques pour cette machine
   var CUSTOM_INITIAL = [], CUSTOM_CURRENT = [];     // lignes custom: [{code, pn, desc, status}]
@@ -988,7 +1007,7 @@
           bomRows += '<tr class="custom-row row-changed">' +
             '<td><input type="text" class="row-edit-pn" value="' + pcEscAttr(row.pn||'') + '" placeholder="' + i18n.t('edit.ph_part_number') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem"></td>' +
             '<td><input type="text" class="row-edit-desc" value="' + pcEscAttr(row.desc||'') + '" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
-              '<div style="margin-top:4px;display:flex;align-items:center;gap:4px"><span style="font-size:0.7rem;color:#888">Option:</span>' + optSelectHtml('edit-opt', row.opt||'') + '</div></td>' +
+              customExtraControls('edit-opt', row.opt||'', 'edit-qty', row.qty||1) + '</td>' +
             '<td>' + cuStatusSel + '</td>' +
             cuScopeCell +
             '<td style="text-align:center;white-space:nowrap"><button class="row-save" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_apply') + '" style="padding:0.3rem 0.5rem">✓</button> <button class="row-cancel" title="' + i18n.t('edit.t_cancel') + '" style="padding:0.3rem 0.5rem">✗</button></td>' +
@@ -996,8 +1015,7 @@
         } else {
           bomRows += '<tr class="custom-row">' +
             '<td class="pn">' + (row.pn || '—') + '</td>' +
-            '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') +
-              (row.opt ? ' <span style="font-size:0.65rem;background:#22333f;color:#8fd6ff;padding:1px 6px;border-radius:8px;margin-left:4px;white-space:nowrap" title="Affiche seulement avec cette option">' + optLabel(row.opt) + '</span>' : '') + '</td>' +
+            '<td><span style="color:var(--vert);margin-right:0.3rem">+</span>' + (row.desc||'') + customBadges(row) + '</td>' +
             '<td>' + cuStatusSel + '</td>' +
             cuScopeCell +
             (canEdit ? '<td style="text-align:center;white-space:nowrap"><button class="row-edit" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_edit_line') + '">✏️</button> <button class="row-del" data-custom="' + idx + '" data-kind="custom" title="' + i18n.t('edit.t_delete_custom') + '">🗑</button></td>' : '<td></td>') +
@@ -1013,7 +1031,7 @@
           '</td>' +
           '<td>' +
             '<input type="text" id="add-desc" placeholder="' + i18n.t('edit.ph_description') + '" style="width:100%;padding:0.3rem 0.5rem;font-size:0.85rem">' +
-            '<div style="margin-top:4px;display:flex;align-items:center;gap:4px"><span style="font-size:0.7rem;color:#888">Option:</span>' + optSelectHtml('add-opt','') + '</div>' +
+            customExtraControls('add-opt', '', 'add-qty', 1) +
           '</td>' +
           '<td>' +
             '<select id="add-status" style="padding:0.3rem 0.5rem;font-size:0.85rem;width:100%">' +
@@ -1264,7 +1282,12 @@
             // Ligne custom : per-machine, devient "dirty" (sauve par le flux Save existant)
             var idx = parseInt(btn.dataset.custom);
             var optSel = document.getElementById('edit-opt');
-            if (CUSTOM_CURRENT[idx]){ CUSTOM_CURRENT[idx].pn = pn; CUSTOM_CURRENT[idx].desc = desc; if (optSel) CUSTOM_CURRENT[idx].opt = optSel.value; }
+            var qtyInp = document.getElementById('edit-qty');
+            if (CUSTOM_CURRENT[idx]){
+              CUSTOM_CURRENT[idx].pn = pn; CUSTOM_CURRENT[idx].desc = desc;
+              if (optSel) CUSTOM_CURRENT[idx].opt = optSel.value;
+              if (qtyInp){ var q = parseInt(qtyInp.value) || 1; CUSTOM_CURRENT[idx].qty = q < 1 ? 1 : q; }
+            }
             EDITING = null;
             render();
             return;
@@ -1297,8 +1320,10 @@
         var status = document.getElementById('add-status').value;
         if (!code){ document.getElementById('add-code').focus(); return; }
         var opt = (document.getElementById('add-opt') || {}).value || '';
+        var qty = parseInt((document.getElementById('add-qty') || {}).value) || 1;
+        if (qty < 1) qty = 1;
         // pn = code (le Code saisi sert aussi de Part Number affiche)
-        CUSTOM_CURRENT.push({code:code, desc:desc, pn:code, status:status, opt:opt});
+        CUSTOM_CURRENT.push({code:code, desc:desc, pn:code, status:status, opt:opt, qty:qty});
         ADDING_LINE = false;
         render();
       });

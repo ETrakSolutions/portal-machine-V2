@@ -701,6 +701,11 @@ function customItemVisible(c, type) {
     if (BALANCE_TYPES[type]) return optionIsSelected('balance');
     return true;
 }
+// Nom d'un item custom avec sa quantite (ex. "Raccord hydraulique  ×2").
+function customName(c) {
+    var q = parseInt(c && c.qty);
+    return ((c && (c.desc || c.code)) || '') + (q > 1 ? '  ×' + q : '');
+}
 
 // Determine kit machine options based on specs (same logic as app.js)
 function getKitSummary(type, fab, modele, specs) {
@@ -728,7 +733,7 @@ function getKitSummary(type, fab, modele, specs) {
                 if (!customItemVisible(c, type)) return;
                 kitP.push({
                     code: c.pn || c.code,
-                    name: c.desc || c.code,
+                    name: customName(c),
                     status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel')
                 });
             });
@@ -760,7 +765,7 @@ function getKitSummary(type, fab, modele, specs) {
                 if (!customItemVisible(c, type)) return;
                 kitG.push({
                     code: c.pn || c.code,
-                    name: c.desc || c.code,
+                    name: customName(c),
                     status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel')
                 });
             });
@@ -827,7 +832,7 @@ function getKitSummary(type, fab, modele, specs) {
             if (!customItemVisible(c, type)) return;
             kit.push({
                 code: c.pn || c.code,
-                name: c.desc || c.code,
+                name: customName(c),
                 status: c.status === 'r' ? 'Obligatoire' : 'Optionnel'
             });
         });
@@ -1793,7 +1798,7 @@ function aValiderItems() {
     // Fittings (_custom) : soumis a la regle d'option (c.opt) comme le reste du kit.
     if (Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
         if (!customItemVisible(c, type)) return;
-        if (String(c.status || '').toLowerCase() === 'v') out.push({ code: c.pn || c.code || '', name: c.desc || c.code || 'Item custom' });
+        if (String(c.status || '').toLowerCase() === 'v') out.push({ code: c.pn || c.code || '', name: customName(c) || c.code || 'Item custom' });
     });
     return out;
 }
