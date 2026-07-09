@@ -507,7 +507,9 @@ var OV_TYPE_SLUGS = {
   'Telehandler': 'telehandler',
   'Foreuse': 'foreuse',
   'Camion Vacuum': 'camion-vacuum',
-  'Retrocaveuse': 'retrocaveuse'
+  'Retrocaveuse': 'retrocaveuse',
+  'Loader': 'loader',
+  'Nacelle': 'nacelle'
 };
 // Chemin du fichier overrides pour un type. Decoupe par type -> chaque fichier reste petit,
 // les ecritures sont isolees (editer une grue ne touche pas le fichier des excavatrices).
