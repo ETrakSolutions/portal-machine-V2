@@ -1640,7 +1640,8 @@ function aValiderItems() {
         if (code.charAt(0) === '_' || code === 'rows' || code === 'customRows' || code === 'undefined' || code === 'harnais') continue;
         if (String(ov[code]).toLowerCase() === 'v') { var info = bomLabelInfo(type, code); out.push({ code: info.pn, name: info.label }); }
     }
-    if (Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
+    // Fittings (_custom) : soumis a la meme regle Balance que le reste du kit.
+    if (customVisible(type) && Array.isArray(ov._custom)) ov._custom.forEach(function (c) {
         if (String(c.status || '').toLowerCase() === 'v') out.push({ code: c.pn || c.code || '', name: c.desc || c.code || 'Item custom' });
     });
     return out;
