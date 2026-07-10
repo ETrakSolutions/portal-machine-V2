@@ -1176,7 +1176,7 @@ en: {
     'type.Camion Girafe (Boom Truck)': 'Boom Truck',
     'type.Telehandler': 'Telehandler',
     'type.Loader': 'Loader',
-    'type.Nacelle': 'Aerial Lift',
+    'type.Nacelle': 'Aerial/Elevating work platform (AWP-EWP)',
     'type.Camion Vacuum': 'Vacuum Truck',
     'type.Retrocaveuse': 'Backhoe',
     'type.Foreuse': 'Drilling Machine',
