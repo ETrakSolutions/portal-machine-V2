@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr" data-i18n-title="doc.title_soumission">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Demande de soumission</title>
+    <link rel="stylesheet" href="css/style.css?v=173">
+    <link rel="stylesheet" href="css/soumission.css?v=164">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
+            <div class="logo-section">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+            </div>
+            <div class="lang-switch" style="position:absolute;right:0;">
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+    <div class="accent-bar"></div>
+
+    <main>
+        <!-- SELECTOR PANEL -->
+        <section class="selector-section">
+            <div class="intro-row">
+                <span class="section-title" data-i18n="soumission.title">Demande de soumission</span>
+            </div>
+
+            <div class="selectors-grid">
+                <div class="selector-group">
+                    <label for="select-type">
+                        <span class="label-num">01</span> <span data-i18n="machine.type">Type de machine</span>
+                    </label>
+                    <select id="select-type">
+                        <option value="" data-i18n="common.selectionnez">-- Selectionnez --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-fabricant">
+                        <span class="label-num">02</span> <span data-i18n="machine.fabricant">Fabricant</span>
+                    </label>
+                    <select id="select-fabricant" disabled>
+                        <option value="" data-i18n="common.selectionnez">-- Selectionnez --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-modele">
+                        <span class="label-num">03</span> <span data-i18n="machine.modele">Modele</span>
+                    </label>
+                    <select id="select-modele" disabled>
+                        <option value="" data-i18n="common.selectionnez">-- Selectionnez --</option>
+                    </select>
+                </div>
+
+                <div class="selector-group">
+                    <label for="select-annee">
+                        <span class="label-num">04</span> <span data-i18n="machine.annee">Annee</span>
+                    </label>
+                    <select id="select-annee" disabled>
+                        <option value="" data-i18n="common.selectionnez">-- Selectionnez --</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="btn-reset" class="btn-reset" style="display:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                <span data-i18n="common.reinitialiser">Reinitialiser</span>
+            </button>
+        </section>
+
+        <!-- SPECS MACHINE (visible after model selection) -->
+        <section id="specs-section" class="options-section" style="display:none;">
+            <div class="options-header">
+                <h3 id="specs-title" data-i18n="soumission.specs_title">Specifications machine</h3>
+            </div>
+            <table class="specs-table" id="soumission-specs-table"></table>
+        </section>
+
+        <!-- OPTIONS e-TRAK (visible after model selection) -->
+        <section id="options-section" class="options-section" style="display:none;">
+            <div class="options-header">
+                <h3 id="options-title" data-i18n="soumission.options_title">Options e-Trak</h3>
+                <p class="options-desc" id="options-machine-desc" data-i18n="soumission.options_desc">Selectionnez les produits souhaites pour cette machine.</p>
+            </div>
+
+            <div class="toggle-grid">
+                <div class="toggle-box toggle-has-sub" data-option="Limiteur de portee" id="toggle-limiteur">
+                    <span class="toggle-label" data-i18n="soumission.limiteur">Limiteur de portee</span>
+                    <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel" id="limiteur-panel">
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-hauteur" value="Hauteur"> <span data-i18n="soumission.hauteur">Hauteur</span></label>
+                        <label class="sub-option" id="sub-hauteur-ext" style="display:none"><input type="checkbox" name="limiteur-type" id="lim-hauteur-ext" value="Hauteur + extension"> <span data-i18n="soumission.hauteur_extension">Hauteur + extension</span></label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-rotation" value="Rotation"> <span data-i18n="soumission.rotation">Rotation</span></label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-hr" value="Hauteur + Rotation"> <span data-i18n="soumission.hauteur_rotation">Hauteur + Rotation</span></label>
+                        <label class="sub-option"><input type="checkbox" name="limiteur-type" id="lim-multi" value="Multi-axe"> <span data-i18n="soumission.multi_axe">Multi-axe</span></label>
+                        <span class="sub-note" data-i18n="soumission.multi_note">* Multi-axe inclut Hauteur et Rotation</span>
+                    </div>
+                </div>
+                <div class="toggle-box" data-option="Indicateur de charge">
+                    <span class="toggle-label" data-i18n="soumission.idc">Indicateur de charge</span>
+                    <span class="toggle-status">OFF</span>
+                </div>
+                <div id="idc-lockvalve-warning" class="idc-warning" style="display:none;">
+                    <span class="idc-warning-icon">&#9888;</span>
+                    <div class="idc-warning-text">
+                        <strong data-i18n="soumission.lockvalve_title">Lock Valve obligatoire boom/stick</strong><br>
+                        <span data-i18n="soumission.lockvalve_desc">Details techniques des lock valves avant de planifier installation</span>
+                    </div>
+                </div>
+                <div class="toggle-box toggle-has-sub" data-option="Guide de creusage" id="toggle-creusage">
+                    <span class="toggle-label" data-i18n="soumission.creusage">Guide de creusage</span>
+                    <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel" id="creusage-panel">
+                        <label class="sub-option"><input type="checkbox" id="creus-2d" value="2D"> <span data-i18n="soumission.creusage_2d">Systeme de creusage 2D</span></label>
+                        <label class="sub-option"><input type="checkbox" id="creus-laser" value="Laser"> <span data-i18n="soumission.laser">Reference laser</span></label>
+                    </div>
+                </div>
+                <div class="toggle-box toggle-has-sub" data-option="Camera" id="toggle-camera">
+                    <span class="toggle-label" data-i18n="soumission.camera">Camera</span>
+                    <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel" id="camera-panel">
+                        <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-recul" value="Recul"> <span data-i18n="soumission.cam_recul">Recul</span></label>
+                        <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-capteur" value="Recul + capteur"> <span data-i18n="soumission.cam_capteur">Recul + capteur proximite</span></label>
+                        <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-quad" value="Quad"> <span data-i18n="soumission.cam_quad">Quad</span></label>
+                        <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-360" value="360"> <span data-i18n="soumission.cam_360">360 (4 cameras)</span></label>
+                    </div>
+                </div>
+                <div class="toggle-box toggle-has-sub" data-option="Balance ST-7" id="toggle-balance" style="display:none;">
+                    <span class="toggle-label" data-i18n="soumission.balance">Balance ST-7</span>
+                    <span class="toggle-status">OFF</span>
+                    <div class="toggle-sub-panel" id="balance-panel">
+                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-seule" value="Balance seule"> <span data-i18n="soumission.balance_seule">Balance seule</span></label>
+                        <label class="sub-option"><input type="checkbox" name="balance-type" id="bal-imp" value="Balance + imprimante"> <span data-i18n="soumission.balance_imp">Balance + imprimante thermique</span></label>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bom-avalider-warning" class="idc-warning" style="display:none; margin-top:12px;">
+                <span class="idc-warning-icon">&#9888;</span>
+                <div class="idc-warning-text">
+                    <strong data-i18n="soumission.bom_validate_title">Items du kit a valider</strong><br>
+                    <span id="bom-avalider-list"></span><br>
+                    <span data-i18n="soumission.bom_validate_warning">A confirmer avec e-Trak avant de finaliser la soumission.</span>
+                </div>
+            </div>
+
+            <div id="multiaxe-retro-warning" class="idc-warning" style="display:none; margin-top:12px;">
+                <span class="idc-warning-icon">&#9888;</span>
+                <div class="idc-warning-text">
+                    <strong data-i18n="soumission.multiaxe_retro_title">Multi-axe sur retrocaveuse</strong><br>
+                    <span data-i18n="soumission.multiaxe_retro_desc">Doit etre analyse par l'ingenierie avant la soumission.</span>
+                </div>
+            </div>
+
+            <div id="machine-warning" class="idc-warning" style="display:none; margin-top:12px;">
+                <span class="idc-warning-icon">&#9888;</span>
+                <div class="idc-warning-text"></div>
+            </div>
+
+            <div id="selected-options-summary" class="selected-options-summary" style="display:none;">
+                <h4 data-i18n="soumission.selected_options">Options selectionnees</h4>
+                <div id="selected-options-list"></div>
+            </div>
+
+            <div class="options-comment">
+                <label for="soumission-company" data-i18n="soumission.company">Nom du concessionnaire et du client (obligatoire)</label>
+                <input type="text" id="soumission-company" class="soumission-input" required data-i18n-placeholder="soumission.company_placeholder" placeholder="Nom du concessionnaire et du client (obligatoire)">
+            </div>
+
+            <div class="soumission-install-box">
+                <h4 class="soumission-install-title" data-i18n="soumission.install_box_title">Installation</h4>
+                <div class="options-comment">
+                    <label for="soumission-nb-systemes" data-i18n="soumission.nb_systemes">Nombre d'unite (obligatoire)</label>
+                    <input type="number" min="1" id="soumission-nb-systemes" class="soumission-input" required data-i18n-placeholder="soumission.nb_systemes_placeholder" placeholder="Ex. 2">
+                </div>
+                <div class="options-comment">
+                    <label for="soumission-lieu" data-i18n="soumission.lieu">Lieu d'installation (obligatoire)</label>
+                    <input type="text" id="soumission-lieu" class="soumission-input" required data-i18n-placeholder="soumission.lieu_placeholder" placeholder="Ville / site">
+                </div>
+                <div class="options-comment" style="margin-bottom:0.4rem;">
+                    <label for="soumission-date-install" data-i18n="soumission.date_install">Date d'installation souhaitee (facultatif)</label>
+                    <input type="date" id="soumission-date-install" class="soumission-input">
+                </div>
+            </div>
+
+            <div class="options-comment">
+                <label for="soumission-comment" data-i18n="soumission.comment">Information supplementaire (facultatif)</label>
+                <textarea id="soumission-comment" class="soumission-textarea" data-i18n-placeholder="soumission.comment_placeholder" placeholder="Information supplementaire..." rows="3"></textarea>
+            </div>
+
+
+<div class="soumission-submit-wrap">
+    <button id="soumission-submit" class="soumission-submit-btn" data-i18n-html="soumission.submit">&#128231; Envoyer la demande</button>
+    <button type="button" id="soumission-help-toggle" class="soumission-help-btn" aria-label="Aide" data-i18n-title="soum.help_title" title="Le courriel ne part pas ?">?</button>
+</div>
+
+<!-- Panneau de secours : s'affiche si le courriel ne s'ouvre pas, ou via le bouton "?" -->
+<div id="soumission-fallback" class="soumission-fallback" style="display:none;"></div>
+        </section>
+
+        <!-- EMPTY STATE -->
+        <section id="empty-state" class="empty-state">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                    <polyline points="16 3 12 7 8 3"/>
+                </svg>
+            </div>
+            <p class="empty-title" data-i18n="soumission.empty_title">Selectionnez une machine</p>
+            <p class="empty-subtitle" data-i18n="soumission.empty_subtitle">Utilisez les filtres ci-dessus pour choisir la machine et les options souhaitees.</p>
+        </section>
+    </main>
+
+    <!-- MODAL: Confirmation changement machine -->
+    <div id="modal-reset" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h3 class="modal-title" data-i18n="soumission.modal_title">Changer de machine?</h3>
+            <p class="modal-text" data-i18n="soumission.modal_text">Des options sont selectionnees. Voulez-vous changer de machine et tout reinitialiser?</p>
+            <div class="modal-actions">
+                <button id="modal-reset-cancel" class="modal-btn modal-btn-cancel" data-i18n="soumission.modal_cancel">Annuler</button>
+                <button id="modal-reset-confirm" class="modal-btn modal-btn-confirm" data-i18n="soumission.modal_confirm">Reinitialiser</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
+            </div>
+            <p class="footer-copy" data-i18n="common.footer_soumission">&copy; 2026 Portail e-Trak &mdash; Demande de soumission</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js?v=1"></script>
+    <script src="js/translations.js?v=202"></script>
+    <script src="js/i18n.js?v=167"></script>
+    <script src="js/heartbeat.js?v=5"></script>
+    <script src="js/version-check.js?v=2"></script>
+    <script src="js/overrides-loader.js?v=5"></script>
+    <script src="js/kit-rules.js?v=7"></script>
+    <script src="js/soumission.js?v=252"></script>
+    <script src="js/data-refresh.js?v=3"></script>
+</body>
+</html>

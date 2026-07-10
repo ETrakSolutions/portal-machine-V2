@@ -1,0 +1,2984 @@
+<!DOCTYPE html>
+<html lang="fr" data-i18n-title="doc.title_database">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Base de donnees</title>
+    <link rel="stylesheet" href="css/style.css?v=173">
+    <link rel="stylesheet" href="css/admin.css?v=174">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Full width on desktop */
+        .selector-section {
+            max-width: 100% !important;
+            padding: 0.5rem 1.5rem !important;
+        }
+        .db-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            align-items: flex-end;
+        }
+        .db-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .db-control-group label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+        }
+        .db-control-group select,
+        .db-control-group input {
+            padding: 8px 12px;
+            background: var(--bg-input, #1a2332);
+            border: 1px solid var(--border, #2a3a4a);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.85rem;
+            min-width: 160px;
+        }
+        .db-search {
+            min-width: 250px !important;
+        }
+        .db-stats {
+            color: #999;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .db-stats strong {
+            color: #00CC66;
+        }
+        .db-scroll-top {
+            overflow-x: auto;
+            border: 1px solid var(--border, #2a3a4a);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+        }
+        .db-scroll-top-inner {
+            height: 1px;
+        }
+        .db-table-wrap {
+            overflow: auto;                      /* defilement H + V DANS le conteneur */
+            max-height: calc(100vh - 230px);     /* hauteur limitee -> l'en-tete sticky reste visible */
+            border-radius: 0 0 8px 8px;
+            border: 1px solid var(--border, #2a3a4a);
+            border-top: none;
+        }
+        .db-table thead th:last-child,
+        .db-table tbody td:last-child {
+            padding-right: 30px;
+        }
+        .db-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .db-table thead th {
+            background: #1a2a3a;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            cursor: pointer;
+            user-select: none;
+            white-space: nowrap;
+        }
+        .db-table thead th:hover {
+            background: #243a4f;
+        }
+        .db-table thead th .sort-arrow {
+            margin-left: 4px;
+            opacity: 0.3;
+        }
+        .db-table thead th.sorted .sort-arrow {
+            opacity: 1;
+            color: #00CC66;
+        }
+        .db-table tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .db-table tbody tr:hover {
+            background: rgba(0,100,200,0.1);
+        }
+        .db-table tbody td {
+            padding: 8px 12px;
+            color: #ccc;
+            white-space: nowrap;
+        }
+        .db-table tbody td:first-child {
+            font-weight: 600;
+            color: #fff;
+        }
+        /* Freeze first 2 columns */
+        .db-table thead th:nth-child(1),
+        .db-table tbody td:nth-child(1) {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background: #1a2a3a;
+        }
+        .db-table thead th:nth-child(2),
+        .db-table tbody td:nth-child(2) {
+            position: sticky;
+            left: 100px;
+            z-index: 5;
+            background: #1a2a3a;
+        }
+        .db-table thead th:nth-child(1),
+        .db-table thead th:nth-child(2) {
+            z-index: 15;
+        }
+        .db-table tbody tr:hover td:nth-child(1),
+        .db-table tbody tr:hover td:nth-child(2) {
+            background: #1e3450;
+        }
+        /* When fab column is hidden, modele becomes the first sticky column */
+        .db-table.fab-hidden thead th:nth-child(2),
+        .db-table.fab-hidden tbody td:nth-child(2) {
+            left: 0;
+        }
+        .db-table .incomplete {
+            color: #FF8C00;
+            font-style: italic;
+        }
+        .db-pagination {
+            display: none !important;
+        }
+        .db-pagination-old {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .db-pagination button {
+            padding: 6px 14px;
+            background: var(--bg-input, #1a2332);
+            border: 1px solid var(--border, #2a3a4a);
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .db-pagination button:hover { border-color: #0062CC; }
+        .db-pagination button:disabled { opacity: 0.3; cursor: default; }
+        .db-pagination .page-info { color: #999; font-size: 0.8rem; }
+        .db-export-btn {
+            padding: 8px 16px;
+            background: #0062CC;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .db-export-btn:hover { background: #004A99; }
+        /* BOM tokens */
+        .bom-token {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 14px;
+            font-size: 0.5rem;
+            font-weight: 800;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.15s;
+        }
+        .bom-token:hover { transform: scale(1.4); }
+        .bom-token.readonly { cursor: default; opacity: 0.8; }
+        .bom-token.readonly:hover { transform: none; }
+        .bom-r { background: #FF2D2D; box-shadow: 0 0 6px #FF2D2D80; }
+        .bom-j { background: #FFD600; box-shadow: 0 0 6px #FFD60080; }
+        .bom-v { background: #FF8C00; box-shadow: 0 0 6px #FF8C0080; color: #fff; font-size: 0.55rem; }
+        /* 'na' (non applicable) : jeton invisible (case vide), mais reste cliquable pour editer */
+        .bom-na { background: transparent; color: transparent; box-shadow: none; }
+        .bom-na:not(.readonly):hover { background: rgba(255,255,255,0.15); }
+        .db-table thead th.bom-col {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            padding: 8px 4px;
+            font-size: 0.55rem;
+            min-width: 30px;
+            max-width: 34px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .db-table thead th.bom-col:hover { background: #243a4f; }
+        .db-table thead th.bom-col .sort-arrow {
+            writing-mode: horizontal-tb;
+            display: block;
+            margin: 2px auto 0;
+            font-size: 0.6rem;
+            opacity: 0.3;
+        }
+        .db-table thead th.bom-col.sorted .sort-arrow { opacity: 1; color: #00CC66; }
+        .db-legend {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+            font-size: 0.75rem;
+            color: #999;
+        }
+        .db-legend-item { display: flex; align-items: center; gap: 4px; }
+        .db-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00CC66;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 9999;
+            animation: toastFade 2s forwards;
+        }
+        @keyframes toastFade { 0%,70%{opacity:1} 100%{opacity:0} }
+        .db-delete-btn {
+            background: none;
+            border: none;
+            color: #FF4444;
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0.4;
+        }
+        .db-delete-btn:hover { opacity: 1; background: rgba(255,68,68,0.15); }
+        .db-harnais-select {
+            background: #1a2332;
+            border: 1px solid #2a3a4a;
+            border-radius: 4px;
+            color: #00CC66;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 4px;
+            cursor: pointer;
+            max-width: 110px;
+        }
+        .db-harnais-select:focus { border-color: #0062CC; outline: none; }
+        .db-modele-link {
+            color: #4FC3F7;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 1px dashed rgba(79,195,247,0.4);
+            white-space: nowrap;
+        }
+        .db-modele-link:hover { color: #FFB74D; border-bottom-color: #FFB74D; }
+        .db-modele-year {
+            color: #888;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-left: 0.2rem;
+        }
+        .db-fixed-col {
+            padding: 4px 6px !important;
+            font-size: 0.78rem;
+            white-space: nowrap;
+            max-width: 130px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .db-note-dot {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            cursor: help;
+            transition: all 0.2s;
+        }
+        .db-note-dot.has-note {
+            background: #00CC66;
+            border-color: #00CC66;
+            box-shadow: 0 0 6px rgba(0,204,102,0.6);
+        }
+        .db-note-input {
+            background: var(--bg-input, #1a2332);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            color: #ccc;
+            font-size: 0.65rem;
+            padding: 3px 6px;
+            width: 120px;
+            min-width: 80px;
+        }
+        .db-note-input:focus { border-color: #0062CC; outline: none; color: #fff; }
+        .db-note-input.note-saved { border-color: #00CC66; }
+        /* Red flag */
+        .flagged-row { box-shadow: inset 3px 0 0 #FF4444; }
+        .flag-btn { background: transparent; border: none; cursor: pointer; font-size: 1rem; padding: 2px 4px; border-radius: 3px; transition: transform 0.15s; }
+        .flag-btn:hover { transform: scale(1.2); }
+        .flag-btn.active { filter: drop-shadow(0 0 4px #FF4444); }
+        .flag-btn:not(.active) { opacity: 0.2; }
+        .flag-btn:not(.active):hover { opacity: 0.7; }
+        .flag-popup { position: fixed; z-index: 9999; background: #1a2332; border: 1px solid #FF4444; border-radius: 8px; padding: 14px; min-width: 280px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); }
+        .flag-popup h4 { margin: 0 0 8px; color: #FF8888; font-size: 0.85rem; }
+        .flag-popup .flag-meta { color: #aaa; font-size: 0.72rem; margin-bottom: 8px; }
+        .flag-popup textarea { width: 100%; box-sizing: border-box; background: #0f1824; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 4px; padding: 6px; font-size: 0.75rem; resize: vertical; margin-bottom: 8px; }
+        .flag-popup .flag-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .flag-popup button { padding: 5px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.75rem; font-weight: 600; }
+        .flag-set-btn { background: #FF4444; color: #fff; }
+        .flag-set-btn:hover { background: #FF6666; }
+        .flag-resolve-btn { background: #00CC66; color: #fff; }
+        .flag-resolve-btn:hover { background: #00EE77; }
+        .flag-cancel-btn { background: rgba(255,255,255,0.1); color: #ccc; }
+        .flag-section-row {
+            display: flex; gap: 8px; align-items: center;
+            padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+            font-size: 0.78rem; flex-wrap: wrap;
+        }
+        .flag-section-row:last-child { border-bottom: none; }
+        .flag-badge { background: rgba(255,68,68,0.15); color: #FF8888; border-radius: 3px; padding: 2px 7px; font-size: 0.65rem; font-weight: 700; white-space: nowrap; }
+        .flag-note-text { color: #ccc; flex: 1 1 220px; min-width: 0; word-break: break-word; }
+        .flag-by { color: #888; font-size: 0.68rem; white-space: normal; flex-shrink: 0; }
+        .flag-resolve-btn { flex-shrink: 0; }
+        /* Sur ecran etroit la ligne se met en colonne */
+        @media (max-width: 720px) {
+          .flag-section-row { gap: 6px 8px; }
+          .flag-by { flex-basis: 100%; order: 4; }
+          .flag-resolve-btn { order: 5; }
+        }
+        /* Product codes */
+        .db-pc-cell { position: relative; min-width: 120px; }
+        .db-pc-tags { display: flex; flex-wrap: wrap; gap: 2px; cursor: pointer; min-height: 22px; }
+        .db-pc-tag {
+            display: inline-flex; align-items: center; gap: 2px;
+            background: rgba(0,98,204,0.2); color: #6CB4FF; border-radius: 3px;
+            font-size: 0.6rem; font-weight: 600; padding: 1px 5px; white-space: nowrap;
+        }
+        .db-pc-tag .pc-rm { cursor: pointer; color: #FF4444; font-weight: 800; margin-left: 2px; }
+        .db-pc-tag .pc-rm:hover { color: #FF8888; }
+        .db-pc-empty { color: #555; font-size: 0.6rem; cursor: pointer; }
+        .db-pc-popup {
+            position: fixed; z-index: 9999; background: #1a2332; border: 1px solid #0062CC;
+            border-radius: 8px; padding: 12px; min-width: 300px; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .db-pc-popup h4 { margin: 0 0 8px; color: #fff; font-size: 0.8rem; }
+        .db-pc-popup .pc-row { display: flex; gap: 4px; margin-bottom: 6px; }
+        .db-pc-popup input { background: #0d1520; border: 1px solid #2a3a4a; border-radius: 4px; color: #fff; padding: 4px 8px; font-size: 0.75rem; }
+        .db-pc-popup input.pc-code { width: 90px; }
+        .db-pc-popup input.pc-desc { flex: 1; min-width: 100px; }
+        .db-pc-popup input.pc-qty { width: 40px; text-align: center; }
+        .db-pc-popup .pc-add-btn {
+            background: #00CC66; color: #000; border: none; border-radius: 4px;
+            padding: 4px 10px; font-weight: 700; font-size: 0.75rem; cursor: pointer;
+        }
+        .db-pc-popup .pc-add-btn:hover { background: #00AA55; }
+        .db-pc-popup .pc-close {
+            position: absolute; top: 6px; right: 10px; background: none; border: none;
+            color: #999; font-size: 1rem; cursor: pointer;
+        }
+        .db-pc-popup .pc-list { max-height: 150px; overflow-y: auto; margin-bottom: 8px; }
+        .db-pc-popup .pc-list-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.7rem; color: #ccc;
+        }
+        .db-pc-popup .pc-list-item .pc-del { color: #FF4444; cursor: pointer; padding: 0 4px; }
+        .pc-allyears-label {
+            display: flex; align-items: center; gap: 6px; margin-bottom: 8px;
+            font-size: 0.7rem; color: #FF8C00; cursor: pointer; user-select: none;
+        }
+        .pc-allyears-label input { accent-color: #FF8C00; cursor: pointer; }
+
+        /* ===== Petites tuiles intro-row (flags + changelog) ===== */
+        .db-tile-btn {
+            background: linear-gradient(145deg, #2A2A2A, #222222);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #F0F0F0;
+            padding: 6px 11px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.78rem; font-weight: 600;
+            position: relative;
+            transition: all 0.15s;
+            font-family: inherit;
+            line-height: 1.2;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+        .db-tile-btn:hover {
+            border-color: rgba(255,183,77,0.5);
+            color: #FFB74D;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .db-tile-btn.active {
+            background: linear-gradient(145deg, #FFB74D, #FFA02D);
+            border-color: #FFB74D;
+            color: #000;
+        }
+        .db-tile-btn .tile-ico { font-size: 0.95rem; line-height: 1; }
+        .db-tile-btn .tile-label { letter-spacing: 0.2px; }
+        .db-tile-btn .badge {
+            background: #FF4444; color: #fff;
+            border-radius: 10px;
+            padding: 0 6px;
+            font-size: 0.62rem; font-weight: 800;
+            line-height: 1.5;
+            min-width: 16px; height: 16px;
+            display: inline-flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+        }
+        .db-tile-btn .badge.empty { display: none; }
+        .db-tile-btn.active .badge { background: #B12C2C; }
+        /* Hide the original tile headers — toggled via icon now */
+        #flags-section > .intro-row,
+        #changelog-section > .intro-row { display: none; }
+        #flags-section, #changelog-section { margin-top: 0.75rem !important; }
+
+        /* ===== Responsive : mobile-view (auto via JS OU force via bouton) ===== */
+        body.mobile-view header { padding: 0 1rem !important; height: 60px !important; }
+        body.mobile-view .header-logo { height: 44px !important; }
+        body.mobile-view .header-back { padding: 4px 10px !important; font-size: 0.72rem !important; }
+        body.mobile-view main { padding: 0.75rem 0.5rem !important; }
+        body.mobile-view .selector-section { padding: 0.5rem 0.75rem !important; border-radius: 6px !important; }
+        body.mobile-view .intro-row { gap: 0.5rem !important; margin-bottom: 0.75rem !important; flex-wrap: wrap; }
+        body.mobile-view .section-title { font-size: 0.95rem !important; }
+        body.mobile-view .db-controls {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 0.5rem !important;
+        }
+        body.mobile-view .db-controls .db-control-group { min-width: 0 !important; }
+        body.mobile-view .db-controls .db-control-group:has(#db-search),
+        body.mobile-view .db-controls .db-control-group:has(#db-export) { grid-column: 1 / -1; }
+        body.mobile-view .db-control-group select,
+        body.mobile-view .db-control-group input { min-width: 0 !important; width: 100% !important; }
+        body.mobile-view .db-search { min-width: 0 !important; }
+        body.mobile-view .db-table { font-size: 0.74rem !important; }
+        body.mobile-view .db-table thead th { font-size: 0.6rem !important; padding: 5px 5px !important; }
+        body.mobile-view .db-table tbody td { padding: 5px 6px !important; font-size: 0.72rem !important; }
+        /* Hide Fabricant column on mobile, keep only Modele sticky */
+        body.mobile-view .db-table thead th[data-col="fab"],
+        body.mobile-view .db-table tbody td[data-col-cell="fab"] { display: none !important; }
+        body.mobile-view .db-table thead th[data-col="modele"],
+        body.mobile-view .db-table tbody td[data-col-cell="modele"],
+        body.mobile-view .db-table thead th:nth-child(2),
+        body.mobile-view .db-table tbody td:nth-child(2) {
+            left: 0 !important; position: sticky;
+            width: 110px !important; min-width: 110px !important; max-width: 110px !important;
+            white-space: normal !important;
+        }
+        body.mobile-view .db-fab-mobile {
+            display: block; font-size: 0.6rem; color: #9ca8b5;
+            font-weight: 500; margin-top: 2px; line-height: 1.1;
+        }
+        .db-fab-mobile { display: none; }
+        body.mobile-view .db-table-wrap { -webkit-overflow-scrolling: touch; max-height: 70vh !important; }
+        body.mobile-view .db-legend { font-size: 0.7rem; gap: 0.5rem; flex-wrap: wrap; }
+        body.mobile-view .db-pagination { flex-wrap: wrap; gap: 0.3rem; }
+        body.mobile-view .db-pagination button { padding: 5px 10px; font-size: 0.72rem; }
+
+        body.narrow-view .db-controls { grid-template-columns: 1fr !important; }
+        body.narrow-view .header-back span { display: none; }
+
+        /* Toggle button for forced mobile preview */
+        .view-toggle {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: #fff;
+            padding: 5px 10px; border-radius: 6px;
+            cursor: pointer; font-size: 0.74rem; font-weight: 600;
+            font-family: inherit;
+            display: inline-flex; align-items: center; gap: 4px;
+        }
+        .view-toggle:hover { background: rgba(255,255,255,0.12); }
+        .view-toggle.active { background: #FFB74D; color: #000; border-color: #FFB74D; }
+        /* Vrai bouton d'acces aux demandes / creation (remplace l'ancien "Apercu mobile") */
+        .db-new-machine-btn { background: #00A651; border-color: #00A651; color: #fff; }
+        .db-new-machine-btn:hover { background: #00b85b; }
+
+        /* Forced mobile preview frame */
+        body.force-mobile { background: #0a0d12; }
+        body.force-mobile header, body.force-mobile .accent-bar, body.force-mobile main {
+            width: 100% !important;
+            max-width: 414px !important;
+            margin-left: auto !important; margin-right: auto !important;
+            box-sizing: border-box !important;
+        }
+        body.force-mobile header {
+            border-radius: 18px 18px 0 0;
+            box-shadow: 0 0 0 6px #1c1f24, 0 8px 28px rgba(0,0,0,0.55);
+        }
+        body.force-mobile main {
+            min-height: calc(100vh - 80px);
+            border-radius: 0 0 18px 18px;
+            box-shadow: 0 0 0 6px #1c1f24, 0 8px 28px rgba(0,0,0,0.55);
+        }
+        body.force-mobile .accent-bar { display: none; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
+            <div class="logo-section">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="selector-section">
+            <div class="intro-row">
+                <span class="section-title" data-i18n="db.title">Base de donnees Machine</span>
+                <div style="margin-left:auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                    <button id="btn-toggle-flags" class="db-tile-btn" title="Drapeaux actifs" data-i18n-title="db.flags_title" style="display:none;">
+                        <span class="tile-ico">&#128681;</span><span class="tile-label" data-i18n="db.tile_flags">Drapeaux</span><span id="flags-icon-badge" class="badge empty"></span>
+                    </button>
+                    <button id="btn-toggle-changelog" class="db-tile-btn" title="Journal des modifications" data-i18n-title="db.changelog_title" style="display:none;">
+                        <span class="tile-ico">&#128221;</span><span class="tile-label" data-i18n="db.tile_journal">Journal</span>
+                    </button>
+                    <button id="db-new-machine-btn" class="view-toggle db-new-machine-btn" title="Nouvelle machine / demandes" data-i18n-title="db.new_machine_title" onclick="window.location.href='machine-requests.html'">&#10133; <span data-i18n="db.new_machine">Nouvelle machine</span></button>
+                </div>
+            </div>
+
+            <div class="db-controls">
+                <div class="db-control-group">
+                    <label data-i18n="db.type">Type</label>
+                    <select id="db-type"></select>
+                </div>
+                <div class="db-control-group">
+                    <label data-i18n="db.fabricant">Fabricant</label>
+                    <select id="db-fab">
+                        <option value="" data-i18n="common.tous">Tous</option>
+                    </select>
+                </div>
+                <div class="db-control-group">
+                    <label data-i18n="db.annee">Annee</label>
+                    <select id="db-annee">
+                        <option value="" data-i18n="common.toutes">Toutes</option>
+                    </select>
+                </div>
+                <div class="db-control-group">
+                    <label data-i18n="db.search">Recherche</label>
+                    <input type="text" id="db-search" class="db-search" data-i18n-placeholder="db.search_placeholder" placeholder="Rechercher un modele...">
+                </div>
+            </div>
+
+            <div class="db-legend" id="db-legend">
+                <span class="db-legend-item"><span class="bom-token bom-r"></span> <span data-i18n="db.legend_obligatoire">Obligatoire</span></span>
+                <span class="db-legend-item"><span class="bom-token bom-j"></span> <span data-i18n="db.legend_optionnel">Optionnel</span></span>
+                <span class="db-legend-item"><span class="bom-token bom-v">?</span> <span data-i18n="db.legend_verifier">À vérifier</span></span>
+                <span style="color:#555;" data-i18n="db.legend_edit_hint">| Edition via la page d'edition (cliquer sur le modele)</span>
+            </div>
+            <div id="db-stats" class="db-stats"></div>
+
+            <div class="db-scroll-top" id="db-scroll-top"><div class="db-scroll-top-inner" id="db-scroll-top-inner"></div></div>
+            <div class="db-table-wrap" id="db-table-wrap" style="max-height: 80vh; overflow-y: auto;">
+                <table class="db-table" id="db-table">
+                    <thead>
+                        <tr>
+                            <th data-col="fab" style="width:110px;min-width:80px;"><span data-i18n="db.th_fabricant">Fabricant</span> <span class="sort-arrow">&#9650;</span></th>
+                            <th data-col="modele" style="width:130px;min-width:100px;"><span data-i18n="db.th_modele">Modele</span> <span class="sort-arrow">&#9650;</span></th>
+                            <!-- BOM + Spec + FLAG + DEL columns generated dynamically by loadType() -->
+                        </tr>
+                    </thead>
+                    <tbody id="db-tbody"></tbody>
+                </table>
+            </div>
+
+            <div class="db-pagination">
+                <button id="db-prev" disabled data-i18n="db.prev">&larr; Precedent</button>
+                <span id="db-page-info" class="page-info"></span>
+                <button id="db-next" data-i18n="db.next">Suivant &rarr;</button>
+            </div>
+        </section>
+
+        <!-- Options Soumission Admin Section -->
+        <section class="selector-section" id="options-admin-section" style="display:none; margin-top:1.5rem;">
+            <div class="intro-row">
+                <span class="section-title" data-i18n="db.options_soum_title">Options Soumission — Codes produits</span>
+                <button id="options-admin-toggle" class="db-export-btn" style="margin-left:auto;" data-i18n-html="db.show">&#9660; Afficher</button>
+            </div>
+            <div id="options-admin-body" style="display:none;">
+                <p style="color:#888;font-size:0.8rem;margin-bottom:0.8rem;" data-i18n="db.options_soum_desc">Modifier les codes produits associes a chaque option/combinaison de la page soumission.</p>
+                <table class="db-table" id="options-codes-table" style="font-size:0.8rem;">
+                    <thead>
+                        <tr>
+                            <th style="width:45%;" data-i18n="db.th_combinaison">Combinaison</th>
+                            <th style="width:45%;" data-i18n="db.th_codes_produits">Codes produits</th>
+                            <th style="width:10%;text-align:center;" data-i18n="db.th_action">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="options-codes-tbody"></tbody>
+                </table>
+                <div style="margin-top:0.8rem;display:flex;gap:0.5rem;">
+                    <button id="options-codes-save" class="db-export-btn" style="background:#00CC66;" data-i18n-html="db.save_btn">&#128190; Sauvegarder</button>
+                    <button id="options-codes-add" class="db-export-btn" data-i18n="admin.add_btn">+ Ajouter</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Drapeaux actifs -->
+        <section class="selector-section" id="flags-section" style="display:none; margin-top:1.5rem;">
+            <div class="intro-row">
+                <span class="section-title" data-i18n="db.flags_heading">🚩 Drapeaux actifs</span>
+                <span id="flags-count-badge" style="background:rgba(255,68,68,0.2);color:#FF8888;border-radius:3px;padding:2px 8px;font-size:0.7rem;font-weight:700;margin-left:8px;"></span>
+                <button id="flags-toggle" class="db-export-btn" style="margin-left:auto;" data-i18n-html="db.show">&#9660; Afficher</button>
+            </div>
+            <div id="flags-body" style="display:none; margin-top:0.8rem;">
+                <div id="flags-list"><p style="color:#666;font-size:0.8rem;" data-i18n="db.no_flags">Aucun drapeau actif.</p></div>
+            </div>
+        </section>
+
+        <!-- Changelog BD -->
+        <section class="selector-section" id="changelog-section" style="display:none; margin-top:1.5rem;">
+            <div class="intro-row">
+                <span class="section-title" data-i18n-html="db.changelog_heading">&#128221; Journal des modifications</span>
+                <button id="changelog-toggle" class="db-export-btn" style="margin-left:auto;" data-i18n-html="db.show">&#9660; Afficher</button>
+            </div>
+            <div id="changelog-body" style="display:none; margin-top:0.8rem;">
+                <div style="overflow-x:auto;">
+                    <table class="db-table" style="font-size:0.78rem; min-width:700px;">
+                        <thead>
+                            <tr>
+                                <th style="width:140px;" data-i18n="db.ch_datetime">Date / Heure</th>
+                                <th style="width:120px;" data-i18n="db.ch_user">Utilisateur</th>
+                                <th style="width:120px;" data-i18n="db.ch_type">Type machine</th>
+                                <th style="width:100px;" data-i18n="db.th_fabricant">Fabricant</th>
+                                <th style="width:140px;" data-i18n="db.ch_model_years">Modele (Annees)</th>
+                                <th style="width:120px;" data-i18n="db.ch_before">Avant</th>
+                                <th data-i18n="db.ch_modification">Modification</th>
+                            </tr>
+                        </thead>
+                        <tbody id="changelog-tbody">
+                            <tr><td colspan="6" style="text-align:center;color:#666;padding:1rem;" data-i18n="js.loading">Chargement...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="footer-logo">
+            </div>
+            <p class="footer-copy" data-i18n="common.footer_copy">&copy; 2026 Portail e-Trak &mdash; Usage interne</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js?v=1"></script>
+    <script src="js/translations.js?v=202"></script>
+    <script src="js/i18n.js?v=167"></script>
+    <script src="js/heartbeat.js?v=5"></script>
+    <script src="js/version-check.js?v=2"></script>
+    <script src="js/overrides-loader.js?v=5"></script>
+    <script src="js/kit-rules.js?v=7"></script>
+    <script>
+    // Token de session (renvoye par l'API au login, stocke dans portal_user).
+    // Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
+    function portalToken() {
+        try { return (JSON.parse(localStorage.getItem('portal_user')) || {}).token || ''; } catch(e) { return ''; }
+    }
+    </script>
+    <script>
+    (function() {
+        var API_URL = window.PORTAL_API_URL;  // #32 : js/config.js
+        // Pagination retiree — chargement infini par chunks (lazy render au scroll)
+        var CHUNK_SIZE = 100;
+        var PAGE_SIZE = 100000; // legacy (unused but kept for state-restore compat)
+        var currentPage = 0;
+        var displayedRows = 0;  // combien de lignes sont actuellement rendues
+        var allData = [];
+        var filtered = [];
+        var sortCol = 'fab';
+        var sortAsc = true;
+        var overridesCache = {};
+        var productCodesCache = {};
+
+        function pcKey(fab, modele, annee) {
+            return 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+        }
+
+        function loadProductCodes(fab, modele, annee, callback) {
+            var key = pcKey(fab, modele, annee);
+            if (productCodesCache[key] !== undefined) { callback(productCodesCache[key]); return; }
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var val = [];
+                    if (data.value) { try { val = JSON.parse(data.value); } catch(e) {} }
+                    productCodesCache[key] = val;
+                    callback(val);
+                })
+                .catch(function() { callback([]); });
+        }
+
+        function saveProductCodes(fab, modele, annee, codes) {
+            var key = pcKey(fab, modele, annee);
+            var prevCodes = (productCodesCache[key] || []).map(function(c) { return c.code; }).join(', ') || '—';
+            productCodesCache[key] = codes;
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(codes), pin: portalToken() })
+            }).then(function() {
+                showToast(i18n.t('db.codes_saved'));
+                var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
+                logChange(i18n.t('db.log_codes_modified'), machineType, fab, modele, annee, prevCodes);
+            }).catch(function() {});
+        }
+
+        function saveProductCodesAllYears(fab, modele, codes) {
+            // Find all years for this fab+modele
+            var years = [];
+            allData.forEach(function(d) {
+                if (d.fab === fab && d.modele === modele && years.indexOf(d.annee) === -1) {
+                    years.push(d.annee);
+                }
+            });
+            var codeCopy = JSON.stringify(codes);
+            // Update cache + visible cells immediately
+            years.forEach(function(y) {
+                productCodesCache[pcKey(fab, modele, y)] = JSON.parse(codeCopy);
+            });
+            document.querySelectorAll('.db-pc-tags').forEach(function(tags) {
+                if (tags.dataset.fab === fab && tags.dataset.modele === modele) {
+                    var cell = tags.closest('.db-pc-cell');
+                    renderCellTags(cell, JSON.parse(codeCopy));
+                }
+            });
+            // Save to API sequentially (Google Apps Script drops simultaneous calls)
+            var saved = 0;
+            function saveNext() {
+                if (saved >= years.length) {
+                    showToast(i18n.t('db.codes_saved_years', {n: years.length}));
+                    return;
+                }
+                var y = years[saved];
+                var key = pcKey(fab, modele, y);
+                fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/plain'},
+                    body: JSON.stringify({ action: 'save', key: key, value: codeCopy, pin: portalToken() })
+                }).then(function() {
+                    saved++;
+                    saveNext();
+                }).catch(function() {
+                    saved++;
+                    saveNext();
+                });
+            }
+            saveNext();
+        }
+
+        var activePopup = null;
+        function closePopup() {
+            if (activePopup) { activePopup.remove(); activePopup = null; }
+        }
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closePopup(); });
+
+        function openProductCodesPopup(fab, modele, annee, cell) {
+            closePopup();
+            var key = pcKey(fab, modele, annee);
+            var codes = productCodesCache[key] || [];
+
+            var popup = document.createElement('div');
+            popup.className = 'db-pc-popup';
+            // Count how many years exist for this fab+modele
+            var yearCount = 0;
+            var seenYears = {};
+            allData.forEach(function(d) {
+                if (d.fab === fab && d.modele === modele && !seenYears[d.annee]) {
+                    seenYears[d.annee] = true;
+                    yearCount++;
+                }
+            });
+
+            popup.innerHTML =
+                '<button class="pc-close">&times;</button>' +
+                '<h4>' + i18n.t('db.pc_title', {fab: fab, modele: modele, annee: annee}) + '</h4>' +
+                (yearCount > 1 ? '<label class="pc-allyears-label"><input type="checkbox" id="pc-allyears"> ' + i18n.t('db.pc_all_years', {n: yearCount}) + '</label>' : '') +
+                '<div class="pc-list" id="pc-list-active"></div>' +
+                '<div class="pc-row">' +
+                    '<input class="pc-code" id="pc-new-code" placeholder="' + i18n.t('edit.ph_code') + '" maxlength="20">' +
+                    '<input class="pc-desc" id="pc-new-desc" placeholder="' + i18n.t('edit.ph_description') + '">' +
+                    '<input class="pc-qty" id="pc-new-qty" type="number" min="1" value="1" placeholder="' + i18n.t('common.qty') + '">' +
+                    '<button class="pc-add-btn" id="pc-add-btn">+</button>' +
+                '</div>';
+
+            document.body.appendChild(popup);
+            activePopup = popup;
+
+            // Position near cell
+            var rect = cell.getBoundingClientRect();
+            popup.style.top = Math.min(rect.bottom + 4, window.innerHeight - popup.offsetHeight - 10) + 'px';
+            popup.style.left = Math.min(rect.left, window.innerWidth - popup.offsetWidth - 10) + 'px';
+
+            function renderList() {
+                var list = popup.querySelector('#pc-list-active');
+                if (!codes.length) {
+                    list.innerHTML = '<div style="color:#555;font-size:0.65rem;padding:4px;">' + i18n.t('db.pc_none') + '</div>';
+                    return;
+                }
+                list.innerHTML = codes.map(function(c, i) {
+                    return '<div class="pc-list-item"><span>' + c.code + ' — ' + c.desc + ' (x' + c.qty + ')</span><span class="pc-del" data-i="' + i + '">&times;</span></div>';
+                }).join('');
+            }
+            renderList();
+
+            function isAllYears() {
+                var cb = popup.querySelector('#pc-allyears');
+                return cb && cb.checked;
+            }
+
+            function saveCodes() {
+                if (isAllYears()) {
+                    saveProductCodesAllYears(fab, modele, codes);
+                } else {
+                    saveProductCodes(fab, modele, annee, codes);
+                    renderCellTags(cell, codes);
+                }
+            }
+
+            // Delete
+            popup.addEventListener('click', function(e) {
+                var del = e.target.closest('.pc-del');
+                if (del) {
+                    codes.splice(parseInt(del.dataset.i), 1);
+                    saveCodes();
+                    renderList();
+                }
+                if (e.target.closest('.pc-close')) closePopup();
+            });
+
+            // Add
+            popup.querySelector('#pc-add-btn').addEventListener('click', function() {
+                var codeVal = popup.querySelector('#pc-new-code').value.trim();
+                var descVal = popup.querySelector('#pc-new-desc').value.trim();
+                var qtyVal = parseInt(popup.querySelector('#pc-new-qty').value) || 1;
+                if (!codeVal) { popup.querySelector('#pc-new-code').focus(); return; }
+                codes.push({ code: codeVal, desc: descVal, qty: qtyVal });
+                saveCodes();
+                renderList();
+                popup.querySelector('#pc-new-code').value = '';
+                popup.querySelector('#pc-new-desc').value = '';
+                popup.querySelector('#pc-new-qty').value = '1';
+                popup.querySelector('#pc-new-code').focus();
+            });
+
+            popup.querySelector('#pc-new-code').focus();
+        }
+
+        function renderCellTags(cell, codes) {
+            var tags = cell.querySelector('.db-pc-tags');
+            if (!codes.length) {
+                tags.innerHTML = '<span class="db-pc-empty">' + i18n.t('admin.add_btn') + '</span>';
+            } else {
+                tags.innerHTML = codes.map(function(c) {
+                    return '<span class="db-pc-tag">' + c.code + (c.qty > 1 ? ' x' + c.qty : '') + '</span>';
+                }).join('');
+            }
+        }
+
+        // Colonnes affichees dans la BD: Cabine, Sans cabine, Mini, Drain, Boite GC, Autre
+        // Les autres codes (0001 Hauteur, 0002 Rotation, 0005 Multi Axes, 0008 Swing boom, 0304 Cremaillere, _custom)
+        // sont regroupes dans la colonne virtuelle _AUTRE qui s'allume si une de ces options est obligatoire ou optionnelle
+        // Une colonne par piece : tous les codes standard sont affiches individuellement
+        // (les colonnes entierement 'na' sont masquees automatiquement par hideAlwaysOptionalColumns)
+        var EXC_BOM_CODES = ['0000','0003','0004','0001','0002','0005','0008','0009','0304','0070'];
+        var EXC_AUTRE_HIDDEN_CODES = [];  // plus de regroupement dans _AUTRE
+        var POMPE_BOM_CODES = ['0200','0203','0201','0202','0204','0205','0206','0207','0208','0209'];
+        var BOM_CODES = EXC_BOM_CODES; // default, updated on type change
+        var BOM_NAMES = {
+            '0000': 'Cabine', '0001': 'Hauteur', '0002': 'Rotation', '0003': 'Sans cabine',
+            '0004': 'Mini exc', '0005': 'Multi Axes', '0008': 'Swing boom', '0009': 'Drain hyd',
+            '0070': 'Boite GC', '0304': 'Rotation cremaillere', '_AUTRE': 'Autre',
+            '0200': 'Avec coffre', '0203': 'Sans coffre', '0201': 'Hauteur', '0202': 'Rotation',
+            '0204': '4 sections', '0205': '5 sections', '0206': '6 sections',
+            '0207': 'Rot. cylindre', '0208': 'Inclinometre', '0209': 'Reel 15M'
+        };
+        // Libelles de harnais : derives de l'UNIQUE source kit-rules.js (audit #8),
+        // prefixes "Harnais " pour la colonne du tableau. Plus de copie divergente ici.
+        if (window.KitRules && window.KitRules.HARNAIS_LABELS) {
+            Object.keys(window.KitRules.HARNAIS_LABELS).forEach(function (h) {
+                BOM_NAMES[h] = 'Harnais ' + window.KitRules.HARNAIS_LABELS[h];
+            });
+        }
+
+        // Calcule l'etat de la colonne "Autre": rouge si au moins une option cachee
+        // ou personnalisee (_custom) est marquee OBLIGATOIRE dans la page d'edition. Sinon na.
+        function computeAutreState(d) {
+            var hasRouge = false;
+            var hasVerif = false;
+            var details = [];
+            var bom = d.bom || {};
+            var removed = Array.isArray(d._removed) ? d._removed : [];
+            EXC_AUTRE_HIDDEN_CODES.forEach(function(c) {
+                if (removed.indexOf(c) >= 0) return;
+                var st = bom[c] || 'na';
+                if (st === 'r') {
+                    hasRouge = true;
+                    details.push((BOM_NAMES[c] || c) + ' : ' + i18n.t('common.obligatoire'));
+                } else if (st === 'v') {
+                    hasVerif = true;
+                    details.push((BOM_NAMES[c] || c) + ' : ' + i18n.t('db.legend_verifier'));
+                }
+            });
+            if (Array.isArray(d._custom)) {
+                d._custom.forEach(function(cr) {
+                    if (cr.status === 'r') {
+                        hasRouge = true;
+                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : ' + i18n.t('common.obligatoire'));
+                    } else if (cr.status === 'v') {
+                        hasVerif = true;
+                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : ' + i18n.t('db.legend_verifier'));
+                    }
+                });
+            }
+            return { state: hasRouge ? 'r' : hasVerif ? 'v' : 'na', details: details };
+        }
+
+        // ===== Colonnes "une par piece custom" (pseudo-codes 'CUSTOM:<cle>' ajoutes a BOM_CODES) =====
+        var CUSTOM_COLS = [];   // [{pseudo, key, label}] pour le type courant
+        function customKey(cr) { return cr.code || cr.pn || cr.desc || ''; }
+        // Pieces custom DISTINCTES presentes dans fullData pour ce type -> 1 colonne chacune
+        function computeCustomCols(typeName) {
+            var seen = {}, cols = [];
+            var node = (typeof fullData !== 'undefined' && fullData[typeName]) || {};
+            for (var fab in node) {
+                if (fab.charAt(0) === '_') continue;
+                for (var y in node[fab]) for (var m in node[fab][y]) {
+                    var e = node[fab][y][m];
+                    var cust = e && e._bom && e._bom._custom;
+                    if (Array.isArray(cust)) cust.forEach(function (cr) {
+                        var key = customKey(cr);
+                        if (!key || seen[key]) return;
+                        seen[key] = true;
+                        cols.push({ pseudo: 'CUSTOM:' + key, key: key, label: (cr.desc || key) });
+                    });
+                }
+            }
+            return cols;
+        }
+        function customLabelFor(pseudo) {
+            for (var i = 0; i < CUSTOM_COLS.length; i++) if (CUSTOM_COLS[i].pseudo === pseudo) return CUSTOM_COLS[i].label;
+            return pseudo.slice(7);
+        }
+        // Statut (r/j/v/na) d'une piece custom pour une machine donnee
+        function customStatusFor(d, pseudo) {
+            var key = pseudo.slice(7);
+            var c = d && d._custom;
+            if (Array.isArray(c)) for (var i = 0; i < c.length; i++) if (customKey(c[i]) === key) return c[i].status || 'r';
+            return 'na';
+        }
+
+        // Spec columns per machine type: {key: label}
+        var SPEC_COLS = {
+            'Excavatrice': [
+                {key: 'classe', label: 'Classe'},
+                {key: 'traction', label: 'Traction'},
+                {key: 'boom', label: 'Type boom'},
+                {key: 'swing', label: 'Swing'},
+                {key: 'voltage', label: 'Voltage'}
+            ],
+            'Pompe a Beton': [
+                {key: 'type_pompe', label: 'Type'},
+                {key: 'nb_sections', label: 'Nb sections'},
+                {key: 'pliage', label: 'Pliage'},
+                {key: 'voltage', label: 'Voltage'},
+                {key: 'rotation', label: 'Rotation'},
+                {key: 'console', label: 'Console'},
+                {key: 'estop', label: 'E-stop'},
+                {key: 'notes', label: 'Notes'}
+            ],
+            'Telehandler': [
+                {key: 'capacite', label: 'Capacité max'},
+                {key: 'hauteur', label: 'Hauteur levée'},
+                {key: 'reach', label: 'Portée avant'},
+                {key: 'puissance', label: 'Puissance'},
+                {key: 'poids', label: 'Poids'},
+                {key: 'rotative', label: 'Base rotative'},
+                {key: 'stab', label: 'Pattes stab.'}
+            ],
+            'Loader': [
+                {key: 'levage', label: 'Capacité de levage'},
+                {key: 'puissance', label: 'Puissance'},
+                {key: 'poids', label: 'Poids'}
+            ],
+            'Camion Girafe (Boom Truck)': [
+                {key: 'longueur', label: 'Longueur de boom'},
+                {key: 'sections', label: 'Sections de boom'},
+                {key: 'rotation', label: 'Angle de rotation'},
+                {key: 'voltage', label: 'Voltage'}
+            ],
+            'Camion Vacuum': [
+                {key: 'longueur', label: 'Longueur de boom'},
+                {key: 'sections', label: 'Sections de boom'},
+                {key: 'rotation', label: 'Angle de rotation'},
+                {key: 'voltage', label: 'Voltage'}
+            ],
+            'Foreuse': [
+                {key: 'mat_type', label: 'Type de mât (lead/kelly)'},
+                {key: 'mat_long', label: 'Longueur du mât'},
+                {key: 'kelly_long', label: 'Longueur du kelly'}
+            ],
+            'Nacelle': [
+                {key: 'categorie', label: 'Catégorie'},
+                {key: 'hauteur', label: 'Hauteur travail (pi)'},
+                {key: 'voltage', label: 'Voltage / motorisation'},
+                {key: 'sections', label: 'Sections flèche'}
+            ],
+            'Grue Mobile': [
+                {key: 'capacite', label: 'Capacité max'},
+                {key: 'fleche', label: 'Flèche'},
+                {key: 'hauteur', label: 'Hauteur max'},
+                {key: 'essieux', label: 'Essieux'},
+                {key: 'puissance', label: 'Puissance'},
+                {key: 'voltage', label: 'Voltage'},
+                {key: 'contrepoids', label: 'Contrepoids'}
+            ]
+        };
+        var currentSpecCols = SPEC_COLS['Excavatrice'];
+
+        // Auth
+        var DB_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
+        var EDIT_ROLES = { super_admin: true, administrateur: true };
+        var IMPORT_ROLES = { super_admin: true, administrateur: true };
+        var user = null;
+        try { user = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+        var hasAccess = user && user.role && DB_ROLES[user.role];
+        // Lecture seule : toute l'edition se fait via edit-machine.html
+        // (cliquer sur le nom du modele pour ouvrir la page d'edition)
+        var canEdit = false;
+        if (!hasAccess) {
+            document.querySelector('main').innerHTML = '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">' + i18n.t('mr.unauthorized') + '</p></section>';
+        }
+
+        function showToast(msg) {
+            var t = document.createElement('div');
+            t.className = 'db-toast';
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(function() { t.remove(); }, 2200);
+        }
+
+        var LOG_KEY = 'db_changelog';
+        var LOG_MAX = 200;
+
+        window.logChange = function logChange(nature, machineType, fab, modele, annee, prevValue) {
+            var userName = (user && user.name) ? user.name : 'Inconnu';
+            var now = new Date();
+            var ts = now.toISOString().slice(0,19).replace('T',' ');
+            var entry = { ts: ts, user: userName, type: machineType || '', fab: fab, modele: modele, annee: annee, nature: nature, prev: prevValue || '—' };
+
+            // Load existing log, prepend entry, trim to max, save
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(LOG_KEY))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var log = [];
+                    if (data.value) { try { log = JSON.parse(data.value); } catch(e) {} }
+                    log.unshift(entry);
+                    if (log.length > LOG_MAX) log = log.slice(0, LOG_MAX);
+                    return fetch(API_URL, {
+                        method: 'POST',
+                        headers: {'Content-Type': 'text/plain'},
+                        body: JSON.stringify({ action: 'save', key: LOG_KEY, value: JSON.stringify(log), pin: portalToken() })
+                    });
+                })
+                .then(function() { if (window.renderChangelog) window.renderChangelog(); })
+                .catch(function() {});
+        }
+
+        window.renderChangelog = function renderChangelog() {
+            var tbody = document.getElementById('changelog-tbody');
+            if (!tbody) return;
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(LOG_KEY))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    var log = [];
+                    if (data.value) { try { log = JSON.parse(data.value); } catch(e) {} }
+                    if (!log.length) {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#666;padding:1rem;">' + i18n.t('db.no_changes_log') + '</td></tr>';
+                        return;
+                    }
+                    tbody.innerHTML = log.map(function(e) {
+                        return '<tr>' +
+                            '<td style="white-space:nowrap;">' + e.ts + '</td>' +
+                            '<td>' + (e.user || '') + '</td>' +
+                            '<td>' + (e.type || '') + '</td>' +
+                            '<td>' + (e.fab || '') + '</td>' +
+                            '<td>' + (e.modele || '') + ' (' + (e.annee || '') + ')</td>' +
+                            '<td style="color:#aaa;">' + (e.prev || '—') + '</td>' +
+                            '<td>' + (e.nature || '') + '</td>' +
+                        '</tr>';
+                    }).join('');
+                })
+                .catch(function() {});
+        }
+
+        // ---- RED FLAG ----
+        var FLAG_ROLES = { super_admin: true, administrateur: true, ingenierie: true };
+        var canFlag = user && (user.permissions && user.permissions.flagBom || FLAG_ROLES[user.role]);
+        var canResolve = canFlag;
+        var flagsCache = {};
+        var FLAGS_KEY = 'db_flags';
+        var activeFlagPopup = null;
+
+        function flagKey(type, fab, modele, annee) {
+            return [type, fab, modele, annee].join('|');
+        }
+
+        function loadFlags(callback) {
+            fetch(API_URL + '?action=get&key=' + encodeURIComponent(FLAGS_KEY))
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    flagsCache = {};
+                    if (data.value) { try { flagsCache = JSON.parse(data.value); } catch(e) {} }
+                    if (callback) callback();
+                    renderFlagsSection();
+                    // Refresh flag icons on visible rows
+                    document.querySelectorAll('.flag-btn').forEach(function(btn) {
+                        var fk = btn.dataset.flagkey;
+                        var fi = flagsCache[fk];
+                        var active = fi && fi.active;
+                        btn.className = 'flag-btn' + (active ? ' active' : '');
+                        btn.textContent = active ? '\uD83D\uDEA9' : '\uD83C\uDFF3\uFE0F';
+                        btn.title = active ? i18n.t('db.flag_reported_by', {by: fi.flaggedBy, at: fi.flaggedAt}) + '\n' + (fi.note || '') : i18n.t('edit.flag_report_title');
+                        var row = btn.closest('tr');
+                        if (row) { active ? row.classList.add('flagged-row') : row.classList.remove('flagged-row'); }
+                    });
+                })
+                .catch(function() { if (callback) callback(); });
+        }
+
+        function saveFlags(callback) {
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: FLAGS_KEY, value: JSON.stringify(flagsCache), pin: portalToken() })
+            }).then(function() { if (callback) callback(); loadFlags(); })
+            .catch(function() {});
+        }
+
+        function setFlag(type, fab, modele, annee, note) {
+            var fk = flagKey(type, fab, modele, annee);
+            var userName = (user && user.name) ? user.name : 'Inconnu';
+            var ts = new Date().toISOString().slice(0,19).replace('T',' ');
+            flagsCache[fk] = { flaggedBy: userName, flaggedAt: ts, note: note || '', active: true };
+            saveFlags();
+            showToast(i18n.t('db.flag_set', {fab: fab, modele: modele, annee: annee}));
+        }
+
+        function resolveFlag(type, fab, modele, annee) {
+            var fk = flagKey(type, fab, modele, annee);
+            if (flagsCache[fk]) {
+                var userName = (user && user.name) ? user.name : 'Inconnu';
+                flagsCache[fk].active = false;
+                flagsCache[fk].resolvedBy = userName;
+                flagsCache[fk].resolvedAt = new Date().toISOString().slice(0,19).replace('T',' ');
+            }
+            saveFlags();
+            showToast(i18n.t('db.flag_resolved', {fab: fab, modele: modele, annee: annee}));
+        }
+
+        function closeFlagPopup() {
+            if (activeFlagPopup) { activeFlagPopup.remove(); activeFlagPopup = null; }
+        }
+
+        function openFlagPopup(type, fab, modele, annee, anchorEl) {
+            closeFlagPopup();
+            var fk = flagKey(type, fab, modele, annee);
+            var fi = flagsCache[fk];
+            var isActive = fi && fi.active;
+
+            var popup = document.createElement('div');
+            popup.className = 'flag-popup';
+            var title = isActive ? i18n.t('db.flag_popup_active') : i18n.t('db.flag_popup_report');
+            var meta = isActive ? i18n.t('db.flag_posted_by_html', {by: fi.flaggedBy, at: fi.flaggedAt}) : '';
+            popup.innerHTML =
+                '<button class="pc-close" style="float:right;">&times;</button>' +
+                '<h4>' + title + '</h4>' +
+                '<div class="flag-meta">' + meta + '</div>' +
+                '<textarea rows="3" id="flag-note-input" placeholder="' + i18n.t('machine.flag_note_ph') + '">' + (isActive ? (fi.note || '') : '') + '</textarea>' +
+                '<div class="flag-actions">' +
+                    (!isActive ? '<button class="flag-set-btn">' + i18n.t('machine.flag_set_btn') + '</button>' : '') +
+                    (isActive && canResolve ? '<button class="flag-resolve-btn">' + i18n.t('machine.flag_resolve_btn') + '</button>' : '') +
+                    '<button class="flag-cancel-btn">' + i18n.t('common.annuler') + '</button>' +
+                '</div>';
+
+            document.body.appendChild(popup);
+            activeFlagPopup = popup;
+
+            // Position near anchor
+            var rect = anchorEl.getBoundingClientRect();
+            var top = Math.min(rect.bottom + 6, window.innerHeight - 200);
+            var left = Math.max(0, Math.min(rect.left, window.innerWidth - 300));
+            popup.style.top = top + 'px';
+            popup.style.left = left + 'px';
+
+            popup.querySelector('.pc-close').onclick = closeFlagPopup;
+            popup.querySelector('.flag-cancel-btn').onclick = closeFlagPopup;
+            var setBtn = popup.querySelector('.flag-set-btn');
+            if (setBtn) setBtn.onclick = function() {
+                var note = document.getElementById('flag-note-input').value.trim();
+                closeFlagPopup();
+                setFlag(type, fab, modele, annee, note);
+            };
+            var resBtn = popup.querySelector('.flag-resolve-btn');
+            if (resBtn) resBtn.onclick = function() {
+                closeFlagPopup();
+                resolveFlag(type, fab, modele, annee);
+            };
+        }
+
+        window.renderFlagsSection = function renderFlagsSection() {
+            var list = document.getElementById('flags-list');
+            var badge = document.getElementById('flags-count-badge');
+            var iconBadge = document.getElementById('flags-icon-badge');
+            if (!list) return;
+            var active = Object.keys(flagsCache).filter(function(k) { return flagsCache[k] && flagsCache[k].active; });
+            if (badge) badge.textContent = active.length ? active.length + ' ' + i18n.t(active.length > 1 ? 'db.active_many' : 'db.active_one') : '';
+            if (iconBadge) {
+                iconBadge.textContent = active.length || '';
+                iconBadge.classList.toggle('empty', !active.length);
+            }
+            if (!active.length) {
+                list.innerHTML = '<p style="color:#666;font-size:0.8rem;padding:0.5rem 0;">' + i18n.t('db.no_flags') + '</p>';
+                return;
+            }
+            list.innerHTML = active.map(function(k) {
+                var parts = k.split('|');
+                var type = parts[0], fab = parts[1], modele = parts[2], annee = parts[3];
+                var fi = flagsCache[k];
+                return '<div class="flag-section-row">' +
+                    '<span class="flag-badge">' + (type || '') + '</span>' +
+                    '<span style="color:#fff;font-weight:600;">' + fab + ' ' + modele + ' (' + annee + ')</span>' +
+                    '<span class="flag-note-text">' + (fi.note || '<em style="color:#555;">' + i18n.t('machine.flag_no_note') + '</em>') + '</span>' +
+                    '<span class="flag-by">' + i18n.t('machine.flag_by', {by: fi.flaggedBy, at: fi.flaggedAt}) + '</span>' +
+                    (canResolve ? '<button class="flag-resolve-btn" style="font-size:0.65rem;padding:3px 8px;" data-flagkey="' + k + '" data-fab="' + fab + '" data-modele="' + modele + '" data-annee="' + annee + '" data-type="' + type + '">' + i18n.t('db.resolved') + '</button>' : '') +
+                '</div>';
+            }).join('');
+
+            // Resolve buttons in flags list
+            list.querySelectorAll('.flag-resolve-btn[data-flagkey]').forEach(function(btn) {
+                btn.onclick = function() {
+                    resolveFlag(btn.dataset.type, btn.dataset.fab, btn.dataset.modele, btn.dataset.annee);
+                };
+            });
+        };
+
+        function bomKey(fab, modele, annee) {
+            return 'kit_override_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
+        }
+
+        // Legacy format from machine.html (old): {rows:{kitId:'red/yellow/na'}, customRows:[...]}
+        // Modern format (edit-machine.html / database.html): {code:'r/j/na', harnais:'...', _custom, _removed, _specs}
+        // Normalize legacy -> modern so old API data still loads correctly.
+        var KIT_ID_TO_CODE = {
+            'cabine':'0000','sans-cabine':'0003','hauteur':'0001','rotation':'0002',
+            'cremaillere':'0304','mini':'0004','gc':'0070','swing':'0008','drain':'0009','multi':'0005',
+            'pompe-coffre':'0200','pompe-sans-coffre':'0203','pompe-hauteur':'0201','pompe-rotation':'0202',
+            'pompe-4sec':'0204','pompe-5sec':'0205','pompe-6sec':'0206',
+            'pompe-rot-cylindre':'0207','pompe-inclinometre':'0208','pompe-reel':'0209'
+        };
+        var STATUS_LEGACY_TO_RJN = { 'red':'r', 'yellow':'j', 'na':'na' };
+
+        function normalizeOverride(ov) {
+            if (!ov || typeof ov !== 'object') return ov;
+            // Already modern format
+            if (!ov.rows && !ov.customRows) return ov;
+            var out = {};
+            if (ov.rows) {
+                Object.keys(ov.rows).forEach(function(kitId) {
+                    var code = KIT_ID_TO_CODE[kitId];
+                    if (code) out[code] = STATUS_LEGACY_TO_RJN[ov.rows[kitId]] || 'na';
+                });
+            }
+            if (Array.isArray(ov.customRows)) {
+                out._custom = ov.customRows.map(function(c) {
+                    return {
+                        code: c.id || c.code,
+                        pn: c.code || '',
+                        desc: c.label || '',
+                        status: STATUS_LEGACY_TO_RJN[c.status] || 'na'
+                    };
+                });
+            }
+            if (ov.harnais) out.harnais = ov.harnais;
+            return out;
+        }
+
+        // BD = MAITRE : l'override BOM est lu directement dans machines.json (entry._bom),
+        // en memoire (fullData), plus depuis les Script Properties.
+        function loadOverride(type, fab, modele, annee, callback) {
+            var key = bomKey(fab, modele, annee);
+            if (overridesCache[key] !== undefined) { callback(overridesCache[key]); return; }
+            var entry = null;
+            try { entry = fullData[type][fab][annee][modele]; } catch(e) { entry = null; }
+            var val = (entry && entry._bom) ? normalizeOverride(entry._bom) : null;
+            overridesCache[key] = val;
+            callback(val);
+        }
+
+        function saveOverride(fab, modele, annee, overrides, nature, prevValue) {
+            var key = bomKey(fab, modele, annee);
+            overridesCache[key] = overrides;
+            var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: key, value: JSON.stringify(overrides), pin: portalToken() })
+            }).then(function() {
+                showToast(i18n.t('db.bom_saved'));
+                if (nature) logChange(nature, machineType, fab, modele, annee, prevValue);
+            }).catch(function() {});
+        }
+
+        // R7 — Machines specifiques drain obligatoire (1500-0009)
+        // R7 — Drain obligatoire: prefixes de modeles (match si le modele COMMENCE par le prefixe)
+        // Liste DRAIN : source unique = js/kit-rules.js
+        var DRAIN_PREFIXES = (window.KitRules && window.KitRules.DRAIN_PREFIXES) || [];
+
+        function computeDefaultBom(d) {
+            // Defauts BOM (9 jetons) : source unique = js/kit-rules.js
+            var bom = window.KitRules.excDefaults({ 'Poids operationnel (kg / lbs)': d.poids, 'Swing boom': (d.swing || d['_spec_Swing boom'] || '') }, d.modele);
+            bom['0003'] = 'na';   // Sans cabine — colonne specifique a la vue BD, na par defaut
+
+            // Harnais de coupure — defaut (H-code) calcule par la source unique js/kit-rules.js
+            d.harnais = window.KitRules.harnaisDefaultH(d.fab, d.modele);
+
+            return bom;
+        }
+
+        function computeDefaultBomPompe(d) {
+            // Defauts BOM Pompe : source unique = js/kit-rules.js
+            var nbSections = d._spec_Nombre_de_sections || d['_spec_Nombre de sections'] || '';
+            return window.KitRules.pompeDefaults({ 'Nombre de sections': nbSections });
+        }
+
+        // BD maitre : defauts generiques pour tout type ayant _bom_labels (def stocke dans la BD)
+        function computeDefaultBomGeneric(d) {
+            var labels = fullData && fullData[d._type] && fullData[d._type]._bom_labels;
+            var out = {};
+            if (labels) Object.keys(labels).forEach(function(k) {
+                var code = k.split(' ')[0];
+                out[code] = (labels[k] && labels[k].def) || 'na';
+            });
+            // Nacelle : base selon la categorie (articulee -> 0903, sinon 0900)
+            if (d._type === 'Nacelle' && window.KitRules && window.KitRules.nacelleDefaults) {
+                var nd = window.KitRules.nacelleDefaults({ 'Categorie': d.categorie || d['_spec_Categorie'] || '' });
+                for (var c in nd) out[c] = nd[c];
+            }
+            return out;
+        }
+
+        function nextBomState(current) {
+            if (current === 'na' || !current) return 'j';
+            if (current === 'j') return 'r';
+            if (current === 'r') return 'v';
+            return 'na';
+        }
+
+        function bomTokenHtml(state, code, idx, editable) {
+            var cls = 'bom-token';
+            if (state === 'r') cls += ' bom-r';
+            else if (state === 'j') cls += ' bom-j';
+            else if (state === 'v') cls += ' bom-v';
+            else cls += ' bom-na';
+            if (!editable) cls += ' readonly';
+            var label = state === 'r' ? '' : state === 'j' ? '' : state === 'v' ? '?' : '-';
+            return '<span class="' + cls + '" data-code="' + code + '" data-idx="' + idx + '" title="' + BOM_NAMES[code] + '">' + label + '</span>';
+        }
+
+        // Load data
+        var fullData = null;
+        // Option B : machines.json (specs de base) + overrides.json (_bom/_notes), fusionnes en memoire.
+        function applyOverrides(machines, ov) {
+            if (!ov) return machines;
+            for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
+                var o = ov[t][f][y][m];
+                var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
+                if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; }
+            }}}}
+            return machines;
+        }
+        if (hasAccess) Promise.all([
+            fetch('data/machines.json', { cache: 'no-cache' }).then(function(r) { return r.json(); }),
+            window.loadMergedOverrides()   // 8 fichiers par type + repli data/overrides.json
+        ])
+            .then(function(res) {
+                fullData = applyOverrides(res[0], res[1]);
+                // Populate type dropdown — placeholder vide par defaut, puis types
+                var typeSelect = document.getElementById('db-type');
+                typeSelect.innerHTML = '';
+                // Option placeholder (vide = rien affiche)
+                var optEmpty = document.createElement('option');
+                optEmpty.value = '';
+                optEmpty.textContent = i18n.t('db.select_type_placeholder');
+                typeSelect.appendChild(optEmpty);
+                var TYPE_ORDER_PRIORITY = ['Excavatrice', 'Pompe a Beton'];
+                var allTypes = Object.keys(fullData);
+                var sortedTypes = TYPE_ORDER_PRIORITY.filter(function(t){ return allTypes.indexOf(t) >= 0; })
+                    .concat(allTypes.filter(function(t){ return TYPE_ORDER_PRIORITY.indexOf(t) < 0; }).sort());
+                sortedTypes.forEach(function(t) {
+                    var opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    typeSelect.appendChild(opt);
+                });
+
+                // Restaurer etat sauvegarde (back depuis edit-machine.html)
+                try {
+                    var savedState = JSON.parse(sessionStorage.getItem('db_state') || 'null');
+                    if (savedState) {
+                        if (savedState.type) document.getElementById('db-type').value = savedState.type;
+                        if (savedState.sortCol) sortCol = savedState.sortCol;
+                        if (typeof savedState.sortAsc === 'boolean') sortAsc = savedState.sortAsc;
+                        if (typeof savedState.currentPage === 'number') currentPage = savedState.currentPage;
+                        // fab/annee/search seront restaures apres loadType (qui les re-cree)
+                        window.__pendingState = savedState;
+                    }
+                } catch(e){}
+
+                loadType();
+                // Apres loadType (qui peuple fab/annee dropdowns), restaurer ces filtres
+                if (window.__pendingState) {
+                    var ps = window.__pendingState;
+                    if (ps.fab) { var fs = document.getElementById('db-fab'); if (fs) fs.value = ps.fab; }
+                    if (ps.annee) { var ays = document.getElementById('db-annee'); if (ays) ays.value = ps.annee; }
+                    if (ps.search) { var ss = document.getElementById('db-search'); if (ss) ss.value = ps.search; }
+                    applyFilters();
+                    // applyFilters reset currentPage a 0 — le restaurer apres
+                    if (typeof ps.currentPage === 'number' && ps.currentPage > 0) {
+                        currentPage = ps.currentPage;
+                        renderPage();
+                    }
+                    delete window.__pendingState;
+                }
+                loadFlags();
+            });
+
+        // Rafraichissement transparent : data-refresh.js appelle ceci quand overrides.json change.
+        // Re-fusionne les overrides dans la BD en memoire et re-rend la grille en preservant le defilement.
+        window.__onOverridesChanged = function(ov) {
+            if (!fullData) return;
+            applyOverrides(fullData, ov);
+            overridesCache = {};            // forcer la relecture des overrides
+            var sy = window.scrollY;
+            try { if (document.getElementById('db-type').value) applyFilters(); } catch(e){}
+            try { window.scrollTo(0, sy); } catch(e){}
+        };
+
+        // Sauvegarder l'etat courant pour pouvoir le restaurer apres back/forward
+        function saveDbState() {
+            try {
+                var state = {
+                    type: document.getElementById('db-type').value,
+                    fab: document.getElementById('db-fab').value,
+                    annee: document.getElementById('db-annee').value,
+                    search: document.getElementById('db-search').value,
+                    currentPage: currentPage,
+                    sortCol: sortCol,
+                    sortAsc: sortAsc
+                };
+                sessionStorage.setItem('db_state', JSON.stringify(state));
+            } catch(e){}
+        }
+
+        function loadType() {
+            var typeVal = document.getElementById('db-type').value;
+            var isAllTypes = (typeVal === '__ALL__');
+            var isEmpty = !typeVal;
+
+            // Cacher la legende BOM en vue Tous ou vide
+            var legend = document.getElementById('db-legend');
+            if (legend) legend.style.display = (isAllTypes || isEmpty) ? 'none' : '';
+
+            // Desactiver le filtre annee en vue Tous ou vide
+            var anneeSel = document.getElementById('db-annee');
+            if (anneeSel) {
+                anneeSel.disabled = isAllTypes || isEmpty;
+                if (isAllTypes || isEmpty) anneeSel.value = '';
+            }
+
+            // Vue vide: nettoyer la table et afficher un message
+            if (isEmpty) {
+                allData = [];
+                filtered = [];
+                BOM_CODES = [];
+                var headerRow = document.querySelector('#db-table thead tr');
+                while (headerRow.children.length > 2) headerRow.removeChild(headerRow.lastChild);
+                var fabHeader = document.querySelector('#db-table thead th[data-col="fab"]');
+                if (fabHeader) fabHeader.style.display = '';
+                document.getElementById('db-table').classList.remove('fab-hidden');
+                var tbody = document.getElementById('db-tbody');
+                if (tbody) tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;color:#666;padding:3rem;font-style:italic">' + i18n.t('db.select_type_hint') + '</td></tr>';
+                // Reset fab and annee dropdowns
+                var fabSel = document.getElementById('db-fab');
+                if (fabSel) { fabSel.innerHTML = '<option value="">' + i18n.t('common.tous') + '</option>'; }
+                if (anneeSel) { anneeSel.innerHTML = '<option value="">' + i18n.t('common.toutes') + '</option>'; }
+                var pageInfo = document.getElementById('db-page-info');
+                if (pageInfo) pageInfo.textContent = '0 - 0 sur 0';
+                document.getElementById('db-prev').disabled = true;
+                document.getElementById('db-next').disabled = true;
+                return;
+            }
+            // Switch BOM codes based on type — only Excavatrice and Pompe a Beton have BOM
+            if (typeVal === 'Pompe a Beton') {
+                BOM_CODES = POMPE_BOM_CODES;
+                CUSTOM_COLS = [];
+            } else if (typeVal === 'Excavatrice') {
+                CUSTOM_COLS = computeCustomCols('Excavatrice');                 // 1 colonne par piece custom
+                BOM_CODES = EXC_BOM_CODES.concat(CUSTOM_COLS.map(function (c) { return c.pseudo; }));
+            } else if (!isAllTypes && fullData[typeVal] && fullData[typeVal]._bom_labels) {
+                // BD maitre : codes + noms de colonnes depuis _bom_labels du type
+                var lbls = fullData[typeVal]._bom_labels;
+                BOM_CODES = Object.keys(lbls).map(function (k) { return k.split(' ')[0]; });
+                Object.keys(lbls).forEach(function (k) {
+                    var code = k.split(' ')[0];
+                    BOM_NAMES[code] = k.slice(code.length).trim();   // nom court = en-tete de colonne
+                });
+                CUSTOM_COLS = [];
+            } else {
+                BOM_CODES = []; // No BOM for other types or __ALL__
+                CUSTOM_COLS = [];
+            }
+            // Set spec columns for this type
+            if (isAllTypes) {
+                currentSpecCols = []; // pas de specs en vue globale (differentes par type)
+            } else {
+                currentSpecCols = SPEC_COLS[typeVal] || SPEC_COLS['Excavatrice'];
+            }
+
+            // Rebuild all dynamic headers (remove old BOM + spec + DEL columns, keep fab+modele)
+            var headerRow = document.querySelector('#db-table thead tr');
+            // Remove everything except fab and modele headers
+            while (headerRow.children.length > 2) {
+                headerRow.removeChild(headerRow.lastChild);
+            }
+            // Add Type column (only in __ALL__ view)
+            if (isAllTypes) {
+                var thType = document.createElement('th');
+                thType.dataset.col = '_type';
+                thType.style.cssText = 'width:120px;min-width:100px;font-size:0.72rem;';
+                thType.innerHTML = i18n.t('db.type') + ' <span class="sort-arrow">&#9650;</span>';
+                thType.style.cursor = 'pointer';
+                thType.addEventListener('click', function() {
+                    if (sortCol === '_type') { sortAsc = !sortAsc; }
+                    else { sortCol = '_type'; sortAsc = true; }
+                    applyFilters();
+                });
+                headerRow.appendChild(thType);
+            }
+            // Add BOM columns (avec fleche de tri comme les autres titres)
+            BOM_CODES.forEach(function(code) {
+                var th = document.createElement('th');
+                th.className = 'bom-col';
+                th.dataset.col = 'bom_' + code;
+                var isCustom = code.indexOf('CUSTOM:') === 0;
+                if (isCustom) {
+                    // Colonne d'une piece custom : libelle = description (pas de tri)
+                    th.classList.add('bom-custom-col');
+                    th.title = customLabelFor(code);
+                    th.innerHTML = customLabelFor(code);
+                } else {
+                    th.innerHTML = (BOM_NAMES[code] || code) + '<span class="sort-arrow">&#9650;</span>';
+                    th.addEventListener('click', function() {
+                        var col = this.dataset.col;
+                        if (sortCol === col) { sortAsc = !sortAsc; }
+                        else { sortCol = col; sortAsc = true; }
+                        applyFilters();
+                    });
+                }
+                headerRow.appendChild(th);
+            });
+            // Add harnais for excavatrice
+            if (typeVal === 'Excavatrice') {
+                var thH = document.createElement('th');
+                thH.className = 'bom-col';
+                thH.dataset.col = 'harnais';
+                thH.innerHTML = i18n.t('db.th_harnais') + '<span class="sort-arrow">&#9650;</span>';
+                thH.addEventListener('click', function() {
+                    if (sortCol === 'harnais') { sortAsc = !sortAsc; }
+                    else { sortCol = 'harnais'; sortAsc = true; }
+                    applyFilters();
+                });
+                headerRow.appendChild(thH);
+            }
+            // Add Notes column — large en vue Tous (etire pour remplir l'espace), compact en vue type
+            var thNotes = document.createElement('th');
+            thNotes.textContent = i18n.t('machine.notes_title');
+            if (isAllTypes) {
+                thNotes.style.cssText = 'min-width:200px;text-align:left;font-size:0.65rem;';
+            } else {
+                thNotes.style.cssText = 'width:50px;min-width:50px;text-align:center;font-size:0.65rem;';
+            }
+            headerRow.appendChild(thNotes);
+
+            // (Colonne Codes produit retiree — edition uniquement via edit-machine.html)
+
+            // Add FLAG column
+            var thFlag = document.createElement('th');
+            thFlag.id = 'db-flag-th';
+            thFlag.style.cssText = 'width:30px;min-width:30px;text-align:center;font-size:0.9rem;';
+            thFlag.textContent = '\uD83D\uDEA9';
+            headerRow.appendChild(thFlag);
+
+            // (Colonne DEL retiree — suppression via edit-machine.html)
+
+            // Add spec columns (deplacees a la fin)
+            currentSpecCols.forEach(function(col) {
+                var th = document.createElement('th');
+                th.dataset.col = col.key;
+                th.innerHTML = i18n.tSpec(col.label) + ' <span class="sort-arrow">&#9650;</span>';
+                th.style.cursor = 'pointer';
+                th.addEventListener('click', function() {
+                    if (sortCol === col.key) { sortAsc = !sortAsc; }
+                    else { sortCol = col.key; sortAsc = true; }
+                    applyFilters();
+                });
+                headerRow.appendChild(th);
+            });
+
+            // Spec field mapping per type
+            var SPEC_MAP = {
+                'Excavatrice': function(s) {
+                    return {
+                        puissance: s['Puissance moteur (kW / HP)'] || '',
+                        traction: s['Type de traction'] || '',
+                        boom: s['Type de boom'] || '',
+                        swing: s['Swing boom'] || '',
+                        voltage: s['Voltage machine (V/type)'] || '',
+                        poids: s['Poids operationnel (kg / lbs)'] || '',
+                        classe: s['Classe machine'] || ''
+                    };
+                },
+                'Pompe a Beton': function(s) {
+                    return {
+                        type_pompe: s['Type'] || '',
+                        nb_sections: s['Nombre de sections'] || '',
+                        pliage: s['Type de pliage'] || '',
+                        voltage: s['Voltage machine (V/type)'] || '',
+                        rotation: s['Type de rotation'] || '',
+                        console: s['Console operateur'] || '',
+                        estop: s['E-stop'] || '',
+                        notes: s['Notes'] || ''
+                    };
+                },
+                'Telehandler': function(s) {
+                    return {
+                        capacite: s['Capacite max'] || '',
+                        hauteur: s['Hauteur levee max'] || '',
+                        reach: s['Portee avant max'] || '',
+                        puissance: s['Puissance moteur'] || '',
+                        poids: s['Poids operationnel'] || '',
+                        rotative: s['Base rotative'] || '',
+                        stab: s['Pattes stabilisatrices'] || ''
+                    };
+                },
+                'Loader': function(s) {
+                    return {
+                        levage: s['Capacite de levage'] || '',
+                        puissance: s['Puissance moteur'] || '',
+                        poids: s['Poids operationnel'] || ''
+                    };
+                },
+                'Camion Girafe (Boom Truck)': function(s) {
+                    return {
+                        longueur: s['Longueur de boom'] || '',
+                        sections: s['Nombre de sections de boom'] || '',
+                        rotation: s['Angle de rotation'] || '',
+                        voltage: s['Voltage'] || ''
+                    };
+                },
+                'Camion Vacuum': function(s) {
+                    return {
+                        longueur: s['Longueur de boom'] || '',
+                        sections: s['Nombre de sections de boom'] || '',
+                        rotation: s['Angle de rotation'] || '',
+                        voltage: s['Voltage'] || ''
+                    };
+                },
+                'Foreuse': function(s) {
+                    return {
+                        mat_type: s['Type de mat (lead/kelly)'] || '',
+                        mat_long: s['Longueur du mat'] || '',
+                        kelly_long: s['Longueur du kelly'] || ''
+                    };
+                },
+                'Nacelle': function(s) {
+                    return {
+                        categorie: s['Categorie'] || '',
+                        hauteur: s['Hauteur travail (pi)'] || '',
+                        voltage: s['Voltage'] || '',
+                        sections: s['Nb sections fleche'] || ''
+                    };
+                },
+                'Grue Mobile': function(s) {
+                    return {
+                        capacite: s['Capacite max'] || '',
+                        fleche: s['Fleche telescopique'] || '',
+                        hauteur: s['Hauteur max'] || '',
+                        essieux: s['Essieux'] || '',
+                        puissance: s['Puissance moteur'] || '',
+                        voltage: s['Voltage machine (V/type)'] || '',
+                        contrepoids: s['Contrepoids max'] || ''
+                    };
+                }
+            };
+            allData = [];
+            var fabs = new Set();
+            var years = new Set();
+
+            // En vue "Tous les types": iterer sur tous les types. Sinon, juste le type selectionne.
+            var typesToLoad = isAllTypes ? Object.keys(fullData) : [typeVal];
+            typesToLoad.forEach(function(currentType){
+                if (currentType.startsWith('_')) return;  // skip meta keys
+                var mapFn = SPEC_MAP[currentType] || function(s) { return {}; };
+                var section = fullData[currentType] || {};
+                for (var fab in section) {
+                    if (fab.charAt(0) === '_') continue;  // skip cles meta (ex: _bom_labels)
+                    fabs.add(fab);
+                    for (var annee in section[fab]) {
+                        years.add(annee);
+                        for (var modele in section[fab][annee]) {
+                            var s = section[fab][annee][modele];
+                            var entry = { fab: fab, modele: modele, annee: annee, harnais: '', bom: {}, _type: currentType };
+                            // pieces custom dispo des le rendu initial (1 colonne par piece) — source = fullData
+                            entry._custom = (s._bom && Array.isArray(s._bom._custom)) ? s._bom._custom.slice() : [];
+                            for (var key in s) { entry['_spec_' + key] = s[key]; }
+                            var mapped = mapFn(s);
+                            for (var mk in mapped) { entry[mk] = mapped[mk]; }
+                            allData.push(entry);
+                        }
+                    }
+                }
+            });
+
+            // Update fab filter
+            var fabSelect = document.getElementById('db-fab');
+            fabSelect.innerHTML = '<option value="">' + i18n.t('common.tous') + '</option>';
+            Array.from(fabs).sort().forEach(function(f) {
+                var opt = document.createElement('option');
+                opt.value = f; opt.textContent = f;
+                fabSelect.appendChild(opt);
+            });
+            // Update year filter
+            var yearSelect = document.getElementById('db-annee');
+            yearSelect.innerHTML = '<option value="">' + i18n.t('common.toutes') + '</option>';
+            Array.from(years).sort().reverse().forEach(function(y) {
+                var opt = document.createElement('option');
+                opt.value = y; opt.textContent = y;
+                yearSelect.appendChild(opt);
+            });
+            overridesCache = {};
+            applyFilters();
+        }
+
+        // Type changed
+        if (hasAccess) document.getElementById('db-type').addEventListener('change', loadType);
+
+        // ===== Regroupement par modele sur plusieurs annees =====
+        // Une ligne par (type, fab, modele, signature). Les annees dont les specs+BOM
+        // sont identiques sont fusionnees ; si elles different, on scinde en plusieurs lignes.
+        var GROUP_SIG_EXCLUDE = { 'Image':1, '_kit':1, '_note_tech_texte':1, '_note_tech_auteur':1,
+            '_note_tech_date':1, '_actif':1, '_source_bom':1, '_notes':1, 'Flag':1 };
+        function groupSignature(d) {
+            var obj = {};
+            for (var k in d) {
+                if (k.indexOf('_spec_') !== 0) continue;
+                var name = k.slice(6);
+                if (GROUP_SIG_EXCLUDE[name]) continue;
+                obj[name] = d[k];
+            }
+            return JSON.stringify(obj, Object.keys(obj).sort());
+        }
+        function formatYearRange(years) {
+            var ys = years.map(Number).filter(function(n){return !isNaN(n);}).sort(function(a,b){return a-b;});
+            var parts = [], i = 0;
+            while (i < ys.length) {
+                var s = ys[i], e = ys[i];
+                while (i + 1 < ys.length && ys[i + 1] === e + 1) { e = ys[++i]; }
+                parts.push(s === e ? ('' + s) : (s + '–' + e));
+                i++;
+            }
+            return parts.join(', ');
+        }
+        function collapseByModelYears(list) {
+            var map = {}, order = [];
+            list.forEach(function(d) {
+                var key = (d._type || '') + '|' + d.fab + '|' + d.modele + '|' + groupSignature(d);
+                if (!map[key]) { map[key] = { rep: d, years: [d.annee] }; order.push(key); }
+                else {
+                    map[key].years.push(d.annee);
+                    if (Number(d.annee) > Number(map[key].rep.annee)) map[key].rep = d; // annee la plus recente = representant
+                }
+            });
+            return order.map(function(key) {
+                var g = map[key];
+                g.rep._yearsLabel = formatYearRange(g.years);
+                g.rep._groupYears = g.years.slice();
+                return g.rep;
+            });
+        }
+
+        function applyFilters() {
+            var fab = document.getElementById('db-fab').value;
+            var annee = document.getElementById('db-annee').value;
+            var search = document.getElementById('db-search').value.toLowerCase().trim();
+
+            // Pre-calculer d.bom pour TOUTES les machines (pas juste celles rendues),
+            // sinon les filtres BOM voient 'na' pour les machines des pages suivantes.
+            allData.forEach(function(d) {
+                if (!d.bom || Object.keys(d.bom).length === 0) {
+                    if (d._type === 'Excavatrice') d.bom = computeDefaultBom(d);
+                    else if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
+                    else d.bom = computeDefaultBomGeneric(d);
+                }
+            });
+
+            filtered = allData.filter(function(d) {
+                if (fab && d.fab !== fab) return false;
+                // Skip year filter when search is active — show all years for matching models
+                if (annee && !search && d.annee !== annee) return false;
+                if (search && d.modele.toLowerCase().indexOf(search) === -1 && d.fab.toLowerCase().indexOf(search) === -1) return false;
+                return true;
+            });
+
+            // Regrouper les annees d'un meme modele sur une seule ligne (specs+BOM identiques)
+            filtered = collapseByModelYears(filtered);
+
+            var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'330':8,'400':9,'500':10,'700-800':11,'1000+':12};
+            var bomStateOrder = {'r':0,'j':1,'v':2,'na':3};
+            filtered.sort(function(a, b) {
+                var va, vb;
+                if (sortCol && sortCol.indexOf('bom_') === 0) {
+                    var code = sortCol.slice(4);
+                    if (code === '_AUTRE') {
+                        va = computeAutreState(a).state;
+                        vb = computeAutreState(b).state;
+                    } else {
+                        va = (a.bom && a.bom[code]) || 'na';
+                        vb = (b.bom && b.bom[code]) || 'na';
+                    }
+                    va = bomStateOrder[va] !== undefined ? bomStateOrder[va] : 3;
+                    vb = bomStateOrder[vb] !== undefined ? bomStateOrder[vb] : 3;
+                } else {
+                    va = a[sortCol] || '';
+                    vb = b[sortCol] || '';
+                    if (sortCol === 'annee') { va = parseInt(va) || 0; vb = parseInt(vb) || 0; }
+                    else if (sortCol === 'classe') {
+                        va = classeOrder[va] !== undefined ? classeOrder[va] : 99;
+                        vb = classeOrder[vb] !== undefined ? classeOrder[vb] : 99;
+                    }
+                }
+                if (va < vb) return sortAsc ? -1 : 1;
+                if (va > vb) return sortAsc ? 1 : -1;
+                // Secondary sort: fab then modele
+                if (a.fab < b.fab) return -1;
+                if (a.fab > b.fab) return 1;
+                return a.modele.localeCompare(b.modele);
+            });
+
+            currentPage = 0;
+            displayedRows = 0;
+            renderPage();
+        }
+
+        function renderPage(append) {
+            var tbody = document.getElementById('db-tbody');
+            var start, end;
+            if (append) {
+                start = displayedRows;
+                end = Math.min(start + CHUNK_SIZE, filtered.length);
+                if (start >= filtered.length) return; // nothing more to render
+            } else {
+                tbody.innerHTML = '';
+                displayedRows = 0;
+                start = 0;
+                end = Math.min(CHUNK_SIZE, filtered.length);
+            }
+
+            // Hide fab column when a fabricant is selected in filter
+            var fabFilter = document.getElementById('db-fab').value;
+            var fabHeader = document.querySelector('#db-table thead th[data-col="fab"]');
+            var dbTable = document.getElementById('db-table');
+            if (fabHeader) fabHeader.style.display = fabFilter ? 'none' : '';
+            if (fabFilter) dbTable.classList.add('fab-hidden');
+            else dbTable.classList.remove('fab-hidden');
+
+            var typeValRender = document.getElementById('db-type').value;
+            var isAllTypesRender = (typeValRender === '__ALL__');
+
+            for (var i = start; i < end; i++) {
+                var d = filtered[i];
+                var tr = document.createElement('tr');
+                // Fab + Modele first
+                var dataIdx = allData.indexOf(d);
+                var searchActive = document.getElementById('db-search').value.trim() !== '';
+                ['fab', 'modele'].forEach(function(f) {
+                    var td = document.createElement('td');
+                    td.className = 'db-fixed-col';
+                    if (f === 'modele') {
+                        var link = document.createElement('a');
+                        link.className = 'db-modele-link';
+                        link.href = 'edit-machine.html?type=' + encodeURIComponent(d._type || '') +
+                                    '&fab=' + encodeURIComponent(d.fab) +
+                                    '&year=' + encodeURIComponent(d.annee) +
+                                    '&model=' + encodeURIComponent(d.modele);
+                        var yearsLabel = d._yearsLabel || d.annee;
+                        link.title = i18n.t('db.edit_title', {fab: d.fab, modele: d.modele, years: yearsLabel}) +
+                                     (d._groupYears && d._groupYears.length > 1 ? i18n.t('db.edit_opens', {annee: d.annee}) : '');
+                        link.textContent = d.modele;
+                        link.addEventListener('click', saveDbState);
+                        td.appendChild(link);
+                        var yearSpan = document.createElement('span');
+                        yearSpan.className = 'db-modele-year';
+                        yearSpan.textContent = ' ' + yearsLabel;
+                        td.appendChild(yearSpan);
+                    } else {
+                        td.textContent = d[f] || '';
+                    }
+                    if (f === 'fab' && fabFilter) td.style.display = 'none';
+                    tr.appendChild(td);
+                });
+
+                // Type column (en vue "Tous les types" seulement)
+                if (isAllTypesRender) {
+                    var tdType = document.createElement('td');
+                    tdType.className = 'db-fixed-col';
+                    tdType.style.color = '#A0A0A0';
+                    tdType.textContent = d._type || '';
+                    tr.appendChild(tdType);
+                }
+
+                // BOM columns — compute defaults per type
+                if (!d.bom || Object.keys(d.bom).length === 0) {
+                    if (d._type === 'Excavatrice') {
+                        d.bom = computeDefaultBom(d);
+                    } else if (d._type === 'Pompe a Beton') {
+                        d.bom = computeDefaultBomPompe(d);
+                    } else {
+                        d.bom = computeDefaultBomGeneric(d);
+                    }
+                }
+                BOM_CODES.forEach(function(code) {
+                    var td = document.createElement('td');
+                    td.style.textAlign = 'center';
+                    td.style.padding = '4px';
+                    if (code === '_AUTRE') {
+                        var info = computeAutreState(d);
+                        var cls = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
+                        var label = info.state === 'na' ? '-' : '';
+                        var title = info.details.length ? info.details.join('\n') : i18n.t('db.no_other_option');
+                        td.innerHTML = '<span class="' + cls + '" data-code="_AUTRE" data-idx="' + dataIdx + '" title="' + title.replace(/"/g, '&quot;') + '">' + label + '</span>';
+                        tr.appendChild(td);
+                        return;
+                    }
+                    if (code.indexOf('CUSTOM:') === 0) {
+                        // Piece custom : jeton lecture seule (statut de la machine), pas editable ici
+                        var cst = customStatusFor(d, code);
+                        var ccls = 'bom-token readonly' + (cst === 'r' ? ' bom-r' : cst === 'j' ? ' bom-j' : cst === 'v' ? ' bom-v' : ' bom-na');
+                        td.innerHTML = '<span class="' + ccls + '" data-code="' + code + '" data-idx="' + dataIdx + '" title="' + customLabelFor(code).replace(/"/g, '&quot;') + '">' + (cst === 'na' ? '-' : '') + '</span>';
+                        tr.appendChild(td);
+                        return;
+                    }
+                    var isRemoved = Array.isArray(d._removed) && d._removed.indexOf(code) >= 0;
+                    if (isRemoved){
+                        td.innerHTML = '<span class="bom-token bom-na readonly" data-code="' + code + '" data-idx="' + dataIdx + '" title="' + i18n.t('db.removed_for_machine') + '" style="opacity:0.4">&times;</span>';
+                    } else {
+                        var state = (d.bom && d.bom[code]) || 'na';
+                        td.innerHTML = bomTokenHtml(state, code, dataIdx, canEdit);
+                    }
+                    tr.appendChild(td);
+                });
+
+                // Harnais column — seulement pour Excavatrice (lecture seule, affiche le PN Z03B-XXXX)
+                if (d._type === 'Excavatrice') {
+                    var tdHarnais = document.createElement('td');
+                    tdHarnais.className = 'db-harnais-pn';
+                    tdHarnais.dataset.idx = dataIdx;
+                    tdHarnais.style.textAlign = 'center';
+                    tdHarnais.style.padding = '4px';
+                    tdHarnais.style.fontSize = '0.72rem';
+                    tdHarnais.style.fontWeight = '600';
+                    tdHarnais.style.fontFamily = "'JetBrains Mono','Courier New',monospace";
+                    var harnaisCode = d.harnais || '';
+                    if (harnaisCode) {
+                        tdHarnais.style.color = '#00CC66';
+                        tdHarnais.textContent = 'Z03B-' + harnaisCode.replace(/^H/, '');
+                    } else {
+                        tdHarnais.style.color = '#555';
+                        tdHarnais.textContent = '-';
+                    }
+                    tr.appendChild(tdHarnais);
+                } // end if Excavatrice harnais
+
+                // (Spec fields deplaces a la fin du row — apres DEL)
+
+                // Notes column — temoin lumineux + preview texte en vue Tous
+                var tdNotes = document.createElement('td');
+                tdNotes.style.padding = '4px 8px';
+                if (isAllTypesRender){
+                    tdNotes.style.textAlign = 'left';
+                    tdNotes.style.color = '#888';
+                    tdNotes.style.fontSize = '0.75rem';
+                } else {
+                    tdNotes.style.textAlign = 'center';
+                }
+                var noteDot = document.createElement('span');
+                noteDot.className = 'db-note-dot';
+                noteDot.dataset.type = d._type;
+                noteDot.dataset.fab = d.fab;
+                noteDot.dataset.modele = d.modele;
+                noteDot.dataset.annee = d.annee;
+                noteDot.dataset.noteKey = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
+                noteDot.title = i18n.t('db.no_note');
+                tdNotes.appendChild(noteDot);
+                if (isAllTypesRender){
+                    var notePreview = document.createElement('span');
+                    notePreview.className = 'db-note-preview';
+                    notePreview.style.marginLeft = '6px';
+                    tdNotes.appendChild(notePreview);
+                }
+                tr.appendChild(tdNotes);
+
+                // (Cellule Codes produit retiree — edition uniquement via edit-machine.html)
+
+                // Flag button
+                var tdFlag = document.createElement('td');
+                tdFlag.style.textAlign = 'center';
+                tdFlag.style.padding = '2px';
+                if (canFlag) {
+                    var fk = flagKey(d._type, d.fab, d.modele, d.annee);
+                    var fi = flagsCache[fk];
+                    var isActive = fi && fi.active;
+                    var flagBtn = document.createElement('button');
+                    flagBtn.className = 'flag-btn' + (isActive ? ' active' : '');
+                    flagBtn.textContent = isActive ? '\uD83D\uDEA9' : '\uD83C\uDFF3\uFE0F';
+                    flagBtn.title = isActive ? i18n.t('db.flag_reported_by_name', {by: fi.flaggedBy}) + '\n' + (fi.note || '') : i18n.t('edit.flag_report_title');
+                    flagBtn.dataset.flagkey = fk;
+                    flagBtn.dataset.fab = d.fab;
+                    flagBtn.dataset.modele = d.modele;
+                    flagBtn.dataset.annee = d.annee;
+                    flagBtn.dataset.type = d._type;
+                    if (isActive) tr.classList.add('flagged-row');
+                    tdFlag.appendChild(flagBtn);
+                }
+                tr.appendChild(tdFlag);
+
+                // (Cellule DEL retiree \u2014 suppression via edit-machine.html)
+
+                // Spec fields (deplaces a la fin)
+                currentSpecCols.forEach(function(col) {
+                    var f = col.key;
+                    var td = document.createElement('td');
+                    var val = d[f] || '';
+                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = i18n.t('js.complete'); }
+                    else { td.textContent = i18n.tVal(val); }
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            }
+
+            // Load overrides for visible rows
+            for (var i = start; i < end; i++) {
+                (function(idx) {
+                    var d = filtered[idx];
+                    loadOverride(d._type, d.fab, d.modele, d.annee, function(overrides) {
+                        if (!overrides) return;
+                        var globalIdx = allData.indexOf(d);
+                        // Merge overrides on top of defaults
+                        if (!d.bom || Object.keys(d.bom).length === 0) {
+                            if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
+                            else if (d._type === 'Excavatrice') d.bom = computeDefaultBom(d);
+                            else d.bom = computeDefaultBomGeneric(d);
+                        }
+                        // Apply meta keys (skip from BOM merge)
+                        var removed = Array.isArray(overrides._removed) ? overrides._removed : [];
+                        var custom  = Array.isArray(overrides._custom)  ? overrides._custom  : [];
+                        var specsOv = overrides._specs || null;
+                        d._removed = removed;
+                        d._custom = custom;
+                        // Apply spec overrides on entry's fields (re-mapping)
+                        if (specsOv){
+                            var SPEC_FIELD_MAP = {
+                                'Excavatrice': {
+                                    'Puissance moteur (kW / HP)':'puissance','Type de traction':'traction',
+                                    'Type de boom':'boom','Swing boom':'swing',
+                                    'Voltage machine (V/type)':'voltage',
+                                    'Poids operationnel (kg / lbs)':'poids','Classe machine':'classe'
+                                },
+                                'Pompe a Beton': {
+                                    'Type':'type_pompe','Nombre de sections':'nb_sections','Type de pliage':'pliage',
+                                    'Voltage machine (V/type)':'voltage','Type de rotation':'rotation',
+                                    'Console operateur':'console','E-stop':'estop','Notes':'notes'
+                                },
+                                'Loader': {
+                                    'Capacite de levage':'levage','Puissance moteur':'puissance','Poids operationnel':'poids'
+                                },
+                                'Nacelle': {
+                                    'Categorie':'categorie','Hauteur travail (pi)':'hauteur','Voltage':'voltage','Nb sections fleche':'sections'
+                                },
+                                'Grue Mobile': {
+                                    'Capacite max':'capacite','Fleche telescopique':'fleche','Hauteur max':'hauteur',
+                                    'Essieux':'essieux','Puissance moteur':'puissance',
+                                    'Voltage machine (V/type)':'voltage','Contrepoids max':'contrepoids'
+                                }
+                            };
+                            var fmap = SPEC_FIELD_MAP[d._type] || {};
+                            Object.keys(specsOv).forEach(function(fullKey){
+                                d['_spec_' + fullKey] = specsOv[fullKey];
+                                if (fmap[fullKey]) d[fmap[fullKey]] = specsOv[fullKey];
+                            });
+                        }
+                        // Merge BOM codes (skip meta keys)
+                        for (var code in overrides) {
+                            if (code === '_removed' || code === '_custom' || code === '_specs' || code === 'harnais') continue;
+                            d.bom[code] = overrides[code];
+                        }
+                        // Drain hyd (0009) ne peut JAMAIS etre jaune
+                        if (d.bom['0009'] === 'j') d.bom['0009'] = 'r';
+                        // Update visible tokens (respecting _removed)
+                        var tokens = tbody.querySelectorAll('[data-idx="' + globalIdx + '"]');
+                        tokens.forEach(function(token) {
+                            var c = token.dataset.code;
+                            if (!c) return;
+                            if (c.indexOf('CUSTOM:') === 0) {
+                                var cst = customStatusFor(d, c);
+                                token.className = 'bom-token readonly' + (cst === 'r' ? ' bom-r' : cst === 'j' ? ' bom-j' : cst === 'v' ? ' bom-v' : ' bom-na');
+                                token.textContent = cst === 'na' ? '-' : '';
+                                return;
+                            }
+                            if (c === '_AUTRE') {
+                                var info = computeAutreState(d);
+                                token.className = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
+                                token.textContent = info.state === 'na' ? '-' : '';
+                                token.title = info.details.length ? info.details.join('\n') : i18n.t('db.no_other_option');
+                                return;
+                            }
+                            if (removed.indexOf(c) >= 0){
+                                token.className = 'bom-token bom-na readonly';
+                                token.textContent = '×';
+                                token.style.opacity = '0.4';
+                                token.title = i18n.t('db.removed_for_machine');
+                                return;
+                            }
+                            var st = d.bom[c] || 'na';
+                            token.className = 'bom-token' + (st === 'r' ? ' bom-r' : st === 'j' ? ' bom-j' : st === 'v' ? ' bom-v' : ' bom-na') + (canEdit ? '' : ' readonly');
+                            token.textContent = st === 'r' ? '' : st === 'j' ? '' : '-';
+                        });
+                        // Re-apply spec cells (specs columns are at fixed positions after BOM+harnais)
+                        if (specsOv){
+                            var rowEl = tbody.querySelector('.db-harnais-pn[data-idx="' + globalIdx + '"]') ?
+                                        tbody.querySelector('.db-harnais-pn[data-idx="' + globalIdx + '"]').parentElement : null;
+                            if (rowEl){
+                                // Find the row by walking from any cell with data-idx
+                                var allRows = tbody.querySelectorAll('tr');
+                                for (var ri = 0; ri < allRows.length; ri++){
+                                    var probeCell = allRows[ri].querySelector('[data-idx="' + globalIdx + '"]');
+                                    if (probeCell){ rowEl = allRows[ri]; break; }
+                                }
+                            } else {
+                                var probeRow = tbody.querySelector('[data-idx="' + globalIdx + '"]');
+                                rowEl = probeRow ? probeRow.closest('tr') : null;
+                            }
+                            if (rowEl){
+                                // Spec cells at the END of the row (after Notes/Flag)
+                                // Layout: Fab(0) Modele(1) BOM(2..N+1) Harnais(N+2 for Exc) Notes Flag Specs
+                                var startCol = 2 + BOM_CODES.length + (d._type === 'Excavatrice' ? 1 : 0) + 2;
+                                currentSpecCols.forEach(function(col, i){
+                                    var td = rowEl.children[startCol + i];
+                                    if (td) td.textContent = i18n.tVal(d[col.key] || '');
+                                });
+                            }
+                        }
+                        // Update harnais PN cell if override has it
+                        if (overrides.harnais) {
+                            d.harnais = overrides.harnais;
+                            var hCell = tbody.querySelector('.db-harnais-pn[data-idx="' + globalIdx + '"]');
+                            if (hCell) {
+                                hCell.style.color = '#00CC66';
+                                hCell.textContent = 'Z03B-' + overrides.harnais.replace(/^H/, '');
+                            }
+                        }
+                    });
+                })(i);
+            }
+
+            // Update displayed count for incremental loading
+            displayedRows = end;
+
+            // Stats — show how many displayed of total filtered
+            var incomplete = filtered.filter(function(d) {
+                return d.puissance === 'A completer' || d.poids === 'A completer' || !d.puissance || !d.poids;
+            }).length;
+            document.getElementById('db-stats').innerHTML =
+                '<strong>' + displayedRows + '</strong> / <strong>' + filtered.length + '</strong> ' + i18n.t('db.stats_shown') +
+                (incomplete > 0 ? ' | <span style="color:#FF8C00;">' + incomplete + ' ' + i18n.t('db.stats_incomplete') + '</span>' : '') +
+                (displayedRows < filtered.length ? ' | <span style="color:#888;font-style:italic;">' + i18n.t('db.stats_scroll_more') + '</span>' : '');
+
+            document.getElementById('db-prev').disabled = true;
+            document.getElementById('db-next').disabled = true;
+            document.getElementById('db-page-info').textContent = '';
+
+            // Lazy-load notes for visible rows — set indicator state + preview text
+            var noteDots = tbody.querySelectorAll('.db-note-dot');
+            noteDots.forEach(function(dot) {
+                var previewEl = dot.nextElementSibling; // .db-note-preview if present
+                // BD = MAITRE : la note est lue directement dans machines.json (entry._notes)
+                var entry = null;
+                try { entry = fullData[dot.dataset.type][dot.dataset.fab][dot.dataset.annee][dot.dataset.modele]; } catch(e) { entry = null; }
+                var note = (entry && typeof entry._notes === 'string') ? entry._notes : '';
+                if (note && note.trim()) {
+                    dot.classList.add('has-note');
+                    dot.title = note;
+                    if (previewEl && previewEl.classList.contains('db-note-preview')) {
+                        previewEl.textContent = note.slice(0, 80);
+                        previewEl.style.color = '#bbb';
+                    }
+                }
+            });
+
+            // Lazy-load product codes for visible rows
+            var pcCells = tbody.querySelectorAll('.db-pc-cell');
+            pcCells.forEach(function(cell) {
+                var tags = cell.querySelector('.db-pc-tags');
+                var fab = tags.dataset.fab;
+                var modele = tags.dataset.modele;
+                var annee = tags.dataset.annee;
+                loadProductCodes(fab, modele, annee, function(codes) {
+                    renderCellTags(cell, codes);
+                });
+            });
+        }
+
+        // Infinite scroll : detecte quand on approche du bas et charge le prochain chunk
+        (function setupInfiniteScroll() {
+            var wrap = document.getElementById('db-table-wrap');
+            if (!wrap) return;
+            var loading = false;
+            function checkAndLoad(remaining) {
+                if (loading) return;
+                if (!filtered.length || displayedRows >= filtered.length) return;
+                if (remaining < 400) {
+                    loading = true;
+                    renderPage(true);
+                    loading = false;
+                }
+            }
+            wrap.addEventListener('scroll', function() {
+                checkAndLoad(wrap.scrollHeight - wrap.scrollTop - wrap.clientHeight);
+            });
+            window.addEventListener('scroll', function() {
+                checkAndLoad(document.documentElement.scrollHeight - window.scrollY - window.innerHeight);
+            });
+        })();
+
+        // Listeners d'edition/tri : referencent #db-* qui n'existent que si l'utilisateur
+        // est autorise (sinon <main> est remplace par un message). Ne pas les attacher sinon
+        // -> TypeError sur null quand non connecte. Voir audit #20.
+        if (hasAccess) {
+        // Change harnais dropdown — (legacy, dead code: l'edition se fait via edit-machine.html)
+        document.getElementById('db-tbody').addEventListener('change', function(e) {
+            var sel = e.target.closest('.db-harnais-select');
+            if (!sel || !canEdit) return;  // both always false now
+            var idx = parseInt(sel.dataset.idx);
+            var d = allData[idx];
+            if (!d) return;
+            var prevHarnais = (d.bom && d.bom['harnais']) || d.harnais || '—';
+            d.harnais = sel.value;
+            // Save harnais in the BOM override
+            if (!d.bom) d.bom = {};
+            d.bom['harnais'] = sel.value;
+            saveOverride(d.fab, d.modele, d.annee, d.bom, 'Harnais \u2192 ' + sel.value, prevHarnais);
+        });
+
+        // Save notes on blur (onchange/onblur)
+        document.getElementById('db-tbody').addEventListener('focusout', function(e) {
+            var input = e.target.closest('.db-note-input');
+            if (!input) return;
+            var noteKey = input.dataset.noteKey;
+            var val = input.value.trim();
+            var prevNote = localStorage.getItem(noteKey) || '—';
+            // Save locally first
+            localStorage.setItem(noteKey, val);
+            // Save to API
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ key: noteKey, value: val, pin: portalToken() })
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    input.classList.add('note-saved');
+                    setTimeout(function() { input.classList.remove('note-saved'); }, 1500);
+                    var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
+                    logChange(i18n.t('db.log_note_modified'), machineType, input.dataset.fab, input.dataset.modele, input.dataset.annee, prevNote);
+                }
+            })
+            .catch(function() {});
+        });
+
+        // Click on product codes cell to open popup
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var tags = e.target.closest('.db-pc-tags');
+            if (!tags || !canEdit) return;
+            var fab = tags.dataset.fab;
+            var modele = tags.dataset.modele;
+            var annee = tags.dataset.annee;
+            var cell = tags.closest('.db-pc-cell');
+            openProductCodesPopup(fab, modele, annee, cell);
+        });
+
+        // Click on Delete button
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var btn = e.target.closest('.db-delete-btn');
+            if (!btn || !canEdit) return;
+            var idx = parseInt(btn.dataset.idx);
+            var d = allData[idx];
+            if (!d) return;
+            if (!confirm(i18n.t('db.confirm_delete', {fab: d.fab, modele: d.modele, annee: d.annee}))) return;
+
+            // Mark as deleted in API
+            var delKey = 'deleted_' + d.fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + d.annee;
+            var delType = d._type || (document.getElementById('db-type') ? document.getElementById('db-type').value : '');
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: delKey, value: 'deleted', pin: portalToken() })
+            }).then(function() {
+                logChange(i18n.t('db.log_model_deleted'), delType, d.fab, d.modele, d.annee);
+            }).catch(function() {});
+
+            // Remove from local data
+            allData.splice(idx, 1);
+            applyFilters();
+            showToast(i18n.t('db.deleted', {fab: d.fab, modele: d.modele, annee: d.annee}));
+        });
+
+        // Click on BOM token
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var token = e.target.closest('.bom-token');
+            if (!token || !canEdit || token.classList.contains('readonly')) return;
+
+            var idx = parseInt(token.dataset.idx);
+            var code = token.dataset.code;
+            var d = allData[idx];
+            if (!d) return;
+
+            if (!d.bom) d.bom = {};
+            var current = d.bom[code] || 'na';
+            var next = nextBomState(current);
+            d.bom[code] = next;
+
+            // Update token visually
+            token.className = 'bom-token' + (next === 'r' ? ' bom-r' : next === 'j' ? ' bom-j' : next === 'v' ? ' bom-v' : ' bom-na');
+            token.textContent = next === 'r' ? '' : next === 'j' ? '' : '-';
+
+            // Save to API
+            var prevLabel = current === 'r' ? 'Obligatoire' : current === 'j' ? 'Optionnel' : 'N/A';
+            var stateLabel = next === 'r' ? 'Obligatoire' : next === 'j' ? 'Optionnel' : 'N/A';
+            saveOverride(d.fab, d.modele, d.annee, d.bom, 'BOM ' + code + ' \u2192 ' + stateLabel, prevLabel);
+        });
+
+        // Flag button click
+        document.getElementById('db-tbody').addEventListener('click', function(e) {
+            var btn = e.target.closest('.flag-btn');
+            if (!btn || !canFlag) return;
+            openFlagPopup(btn.dataset.type, btn.dataset.fab, btn.dataset.modele, btn.dataset.annee, btn);
+        });
+        document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeFlagPopup(); });
+
+        // Events
+        document.getElementById('db-fab').addEventListener('change', applyFilters);
+        document.getElementById('db-annee').addEventListener('change', applyFilters);
+        document.getElementById('db-search').addEventListener('input', applyFilters);
+        document.getElementById('db-prev').addEventListener('click', function() { currentPage--; renderPage(); });
+        document.getElementById('db-next').addEventListener('click', function() { currentPage++; renderPage(); });
+        }  // fin if (hasAccess) — listeners d'edition/navigation
+
+        // Sort (only on spec columns, not BOM)
+        document.querySelectorAll('.db-table thead th[data-col]').forEach(function(th) {
+            th.addEventListener('click', function() {
+                var col = this.dataset.col;
+                if (sortCol === col) { sortAsc = !sortAsc; }
+                else { sortCol = col; sortAsc = true; }
+                document.querySelectorAll('.db-table thead th').forEach(function(t) { t.classList.remove('sorted'); });
+                this.classList.add('sorted');
+                var arrow = this.querySelector('.sort-arrow');
+                if (arrow) arrow.textContent = sortAsc ? '\u25B2' : '\u25BC';
+                applyFilters();
+            });
+        });
+
+        // Sync top scrollbar with table
+        var scrollTop = document.getElementById('db-scroll-top');
+        var tableWrap = document.getElementById('db-table-wrap');
+        var scrollInner = document.getElementById('db-scroll-top-inner');
+        function syncScrollWidth() {
+            var tbl = document.getElementById('db-table');
+            if (tbl) scrollInner.style.width = tbl.scrollWidth + 'px';
+        }
+        if (scrollTop && tableWrap) {
+            scrollTop.addEventListener('scroll', function() { tableWrap.scrollLeft = scrollTop.scrollLeft; });
+            tableWrap.addEventListener('scroll', function() { scrollTop.scrollLeft = tableWrap.scrollLeft; });
+        }
+        var origRender = renderPage;
+        var _renderWrap = renderPage;
+        // After each render: sync scroll width + hide BOM columns where no row is "obligatoire"
+        var _origRenderPage = renderPage;
+        renderPage = function(append) {
+            _origRenderPage(append);
+            setTimeout(syncScrollWidth, 50);
+            hideAlwaysOptionalColumns();
+        };
+
+        // Cache une colonne BOM si TOUTES les lignes ont l'item en N/A (= colonne sans contenu utile).
+        // Les jaunes (optionnel/admin-configurable) restent visibles.
+        function computeAlwaysOptionalCodes() {
+            if (!filtered || !filtered.length || !BOM_CODES || !BOM_CODES.length) return [];
+            return BOM_CODES.filter(function (code) {
+                if (code === '_AUTRE') return false;
+                if (code.indexOf('CUSTOM:') === 0) {
+                    // colonne custom masquee seulement si AUCUNE machine ne porte cette piece
+                    return filtered.every(function (d) { return customStatusFor(d, code) === 'na'; });
+                }
+                return filtered.every(function (d) {
+                    if (!d.bom || Object.keys(d.bom).length === 0) {
+                        if (d._type === 'Excavatrice' && typeof computeDefaultBom === 'function') d.bom = computeDefaultBom(d);
+                        else if (d._type === 'Pompe a Beton' && typeof computeDefaultBomPompe === 'function') d.bom = computeDefaultBomPompe(d);
+                        else if (typeof computeDefaultBomGeneric === 'function') d.bom = computeDefaultBomGeneric(d);
+                    }
+                    var v = d.bom ? d.bom[code] : '';
+                    return v === 'na' || !v; // hide only when truly N/A everywhere
+                });
+            });
+        }
+
+        function hideAlwaysOptionalColumns() {
+            var hideCodes = computeAlwaysOptionalCodes();
+            var headerRow = document.querySelector('#db-table thead tr');
+            if (!headerRow) return;
+            var hiddenIndices = [];
+            Array.from(headerRow.children).forEach(function (th, i) {
+                var col = th.dataset && th.dataset.col;
+                if (col && col.indexOf('bom_') === 0) {
+                    var code = col.replace('bom_', '');
+                    var shouldHide = hideCodes.indexOf(code) >= 0;
+                    th.style.display = shouldHide ? 'none' : '';
+                    if (shouldHide) hiddenIndices.push(i);
+                }
+            });
+            document.querySelectorAll('#db-tbody tr').forEach(function (tr) {
+                Array.from(tr.children).forEach(function (td, i) {
+                    if (hiddenIndices.indexOf(i) >= 0) td.style.display = 'none';
+                });
+            });
+        }
+
+        // Export CSV \u2014 version enrichie avec tous les codes BOM + Autre + Custom + Notes + Drapeau.
+        // Precharge les overrides manquants en parallele avec progress avant generation.
+        function stateLabel(s) {
+            return s === 'r' ? 'Obligatoire' : s === 'j' ? 'Optionnel' : s === 'v' ? 'À vérifier' : s === 'na' ? 'N/A' : (s || 'N/A');
+        }
+
+        function ensureAllOverridesLoaded(rows, onProgress) {
+            // Charge tous les overrides manquants en lots de 10 paralleles
+            var todo = rows.filter(function(d) {
+                return overridesCache[bomKey(d.fab, d.modele, d.annee)] === undefined;
+            });
+            if (!todo.length) return Promise.resolve();
+            var BATCH = 10;
+            var idx = 0, done = 0, total = todo.length;
+            return new Promise(function(resolve) {
+                function nextBatch() {
+                    if (idx >= todo.length) { resolve(); return; }
+                    var batch = todo.slice(idx, idx + BATCH);
+                    idx += BATCH;
+                    Promise.all(batch.map(function(d) {
+                        return new Promise(function(res) {
+                            loadOverride(d._type, d.fab, d.modele, d.annee, function() { res(); });
+                        });
+                    })).then(function() {
+                        done += batch.length;
+                        if (onProgress) onProgress(done, total);
+                        nextBatch();
+                    });
+                }
+                nextBatch();
+            });
+        }
+
+        function ensureAllNotesLoaded(rows, onProgress) {
+            // BD = MAITRE : les notes sont lues directement dans machines.json (entry._notes), en memoire.
+            rows.forEach(function(d) {
+                var k = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
+                if (notesCache[k] !== undefined) return;
+                var entry = null;
+                try { entry = fullData[d._type][d.fab][d.annee][d.modele]; } catch(e) { entry = null; }
+                notesCache[k] = (entry && typeof entry._notes === 'string') ? entry._notes : '';
+            });
+            if (onProgress) onProgress(rows.length, rows.length);
+            return Promise.resolve();
+        }
+        var notesCache = {};
+
+        function showExportProgress(msg) {
+            var box = document.getElementById('db-export-progress');
+            if (!box) {
+                box = document.createElement('div');
+                box.id = 'db-export-progress';
+                box.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a2332;border:2px solid #0062CC;border-radius:8px;padding:1.5rem 2rem;color:#fff;font-size:0.9rem;z-index:99999;box-shadow:0 8px 32px rgba(0,0,0,0.6);min-width:300px;text-align:center;';
+                document.body.appendChild(box);
+            }
+            box.textContent = msg;
+            box.style.display = '';
+        }
+        function hideExportProgress() {
+            var box = document.getElementById('db-export-progress');
+            if (box) box.style.display = 'none';
+        }
+
+        var _dbExportBtn = document.getElementById('db-export');
+        if (_dbExportBtn) _dbExportBtn.addEventListener('click', function() {
+            var typeVal = document.getElementById('db-type').value;
+            var isExc = (typeVal === 'Excavatrice');
+
+            // S'assurer que d.bom est calcule pour toutes les lignes filtrees
+            filtered.forEach(function(d) {
+                if (!d.bom || Object.keys(d.bom).length === 0) {
+                    if (d._type === 'Excavatrice') d.bom = computeDefaultBom(d);
+                    else if (d._type === 'Pompe a Beton') d.bom = computeDefaultBomPompe(d);
+                    else d.bom = computeDefaultBomGeneric(d);
+                }
+            });
+
+            showExportProgress(i18n.t('db.loading_overrides', {done: 0, total: filtered.length}));
+            ensureAllOverridesLoaded(filtered, function(done, total) {
+                showExportProgress(i18n.t('db.loading_overrides', {done: done, total: total}));
+            }).then(function() {
+                // Appliquer overrides sur d.bom
+                filtered.forEach(function(d) {
+                    var ov = overridesCache[bomKey(d.fab, d.modele, d.annee)];
+                    if (!ov) return;
+                    d._removed = Array.isArray(ov._removed) ? ov._removed : [];
+                    d._custom = Array.isArray(ov._custom) ? ov._custom : [];
+                    for (var c in ov) {
+                        if (c === '_removed' || c === '_custom' || c === '_specs' || c === 'harnais') continue;
+                        d.bom[c] = ov[c];
+                    }
+                    if (d.bom['0009'] === 'j') d.bom['0009'] = 'r';
+                    if (ov.harnais) d.harnais = ov.harnais;
+                });
+                showExportProgress(i18n.t('db.loading_notes'));
+                return ensureAllNotesLoaded(filtered, function(done, total) {
+                    showExportProgress(i18n.t('db.loading_notes_count', {done: done, total: total}));
+                });
+            }).then(function() {
+                // Construire le CSV enrichi
+                var headers;
+                if (isExc) {
+                    headers = [
+                        'Fabricant','Modele','Annee','Classe','Poids','Puissance','Traction','Type boom','Swing','Voltage',
+                        'Cabine','Sans cabine','Mini exc','Drain hyd','Boite GC',
+                        'Autre (Oui/Non)','Autre \u2014 details',
+                        'Hauteur','Rotation','Multi Axes','Swing boom','Rot. cremaillere',
+                        'Options custom (obligatoires)','Options custom (optionnelles)',
+                        'Harnais','Notes','Drapeau actif','Drapeau note'
+                    ];
+                } else {
+                    headers = ['Fabricant','Modele','Annee'];
+                    BOM_CODES.forEach(function(c) { headers.push(BOM_NAMES[c] || c); });
+                    headers.push('Notes','Drapeau actif','Drapeau note');
+                }
+
+                function esc(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+                var lines = [headers.map(esc).join(',')];
+
+                filtered.forEach(function(d) {
+                    var bom = d.bom || {};
+                    var noteKey = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
+                    var note = notesCache[noteKey] || '';
+                    var fk = flagKey(d._type, d.fab, d.modele, d.annee);
+                    var flag = flagsCache[fk];
+                    var flagActif = (flag && flag.active) ? 'Oui' : 'Non';
+                    var flagNote = (flag && flag.active) ? (flag.note || '') : '';
+
+                    var row;
+                    if (isExc) {
+                        var autre = computeAutreState(d);
+                        var customR = [], customJ = [];
+                        if (Array.isArray(d._custom)) {
+                            d._custom.forEach(function(cr) {
+                                var label = (cr.pn || cr.code || '') + (cr.desc ? ' ' + cr.desc : '');
+                                if (cr.status === 'r') customR.push(label.trim());
+                                else if (cr.status === 'j') customJ.push(label.trim());
+                            });
+                        }
+                        row = [
+                            d.fab, d.modele, d.annee, d.classe || '', d.poids || '', d.puissance || '',
+                            d.traction || '', d.boom || '', d.swing || '', d.voltage || '',
+                            stateLabel(bom['0000']), stateLabel(bom['0003']), stateLabel(bom['0004']),
+                            stateLabel(bom['0009']), stateLabel(bom['0070']),
+                            autre.state === 'r' ? 'Oui' : 'Non',
+                            autre.details.join(' | '),
+                            stateLabel(bom['0001']), stateLabel(bom['0002']), stateLabel(bom['0005']),
+                            stateLabel(bom['0008']), stateLabel(bom['0304']),
+                            customR.join(' | '), customJ.join(' | '),
+                            d.harnais ? 'Z03B-' + d.harnais.replace(/^H/, '') : '',
+                            note, flagActif, flagNote
+                        ];
+                    } else {
+                        row = [d.fab, d.modele, d.annee];
+                        BOM_CODES.forEach(function(c) { row.push(stateLabel(bom[c])); });
+                        row.push(note, flagActif, flagNote);
+                    }
+                    lines.push(row.map(esc).join(','));
+                });
+
+                var csv = lines.join('\n');
+                var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                var typeSlug = (typeVal || 'bd').toLowerCase().replace(/[^a-z0-9]+/g,'_');
+                link.download = typeSlug + '_bd_' + new Date().toISOString().slice(0, 10) + '.csv';
+                link.click();
+                hideExportProgress();
+                showToast(i18n.t('db.export_done', {n: filtered.length}));
+            }).catch(function(err) {
+                hideExportProgress();
+                showToast(i18n.t('db.export_error', {error: (err && err.message || err)}));
+            });
+        });
+    })();
+
+    // ============================================
+    // Options Soumission Admin — Codes produits
+    // ============================================
+    (function() {
+        var section = document.getElementById('options-admin-section');
+        var toggleBtn = document.getElementById('options-admin-toggle');
+        var body = document.getElementById('options-admin-body');
+        var tbody = document.getElementById('options-codes-tbody');
+        var saveBtn = document.getElementById('options-codes-save');
+        var addBtn = document.getElementById('options-codes-add');
+        if (!section) return;
+
+        // Show section only for admin users
+        var PIN = portalToken();
+        var API_OPT = window.PORTAL_API_URL;  // #32 : js/config.js
+        var STORE_KEY = 'soumission_option_codes';
+
+        // Default codes (from Excel)
+        var DEFAULT_CODES = [
+            {name: 'Limiteur Hauteur', codes: '1500-0000 / 1500-0001'},
+            {name: 'Limiteur Rotation', codes: '1500-0000 / 1500-0002'},
+            {name: 'Limiteur Hauteur + Rotation', codes: '1500-0000 / 1500-0001 / 1500-0002'},
+            {name: 'Limiteur Multi-axe', codes: '1500-0005'},
+            {name: 'IDC', codes: '1000-0400'},
+            {name: 'Limiteur Hauteur / IDC', codes: '1500-0000 / 1500-0001 / 1000-0004'},
+            {name: 'Limiteur Rotation / IDC', codes: '1500-0000 / 1500-0002 / 1000-0004'},
+            {name: 'Limiteur Hauteur + Rotation / IDC', codes: '1500-0000 / 1500-0001 / 1500-0002 / 1000-0004'},
+            {name: 'Limiteur Multi-axe / IDC', codes: '1500-0005 / 1000-0004'},
+            {name: 'Systeme de creusage 2D', codes: '1100-0007'},
+            {name: 'Camera Recul', codes: '1300-0001'},
+            {name: 'Camera Recul + capteur', codes: '1300-0012'},
+            {name: 'Camera Quad', codes: '1300-0003'},
+            {name: 'Camera 360', codes: '1300-0004'}
+        ];
+
+        var optionCodes = [];
+
+        // Show section after auth check (reuse existing auth)
+        setTimeout(function() {
+            var user = null;
+            try { user = JSON.parse(sessionStorage.getItem('etrak_user')); } catch(e) {}
+            if (user && user.permissions && (user.permissions.modifBom || user.role === 'admin')) {
+                section.style.display = '';
+            }
+        }, 1500);
+
+        // Toggle
+        toggleBtn.addEventListener('click', function() {
+            if (body.style.display === 'none') {
+                body.style.display = '';
+                toggleBtn.innerHTML = i18n.t('db.hide');
+                loadOptionCodes();
+            } else {
+                body.style.display = 'none';
+                toggleBtn.innerHTML = i18n.t('db.show');
+            }
+        });
+
+        function loadOptionCodes() {
+            fetch(API_OPT + '?action=get&key=' + STORE_KEY)
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data && data.value && Array.isArray(JSON.parse(data.value))) {
+                        optionCodes = JSON.parse(data.value);
+                    } else {
+                        optionCodes = DEFAULT_CODES.slice();
+                    }
+                    renderTable();
+                })
+                .catch(function() {
+                    optionCodes = DEFAULT_CODES.slice();
+                    renderTable();
+                });
+        }
+
+        function renderTable() {
+            tbody.innerHTML = '';
+            optionCodes.forEach(function(item, idx) {
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td><input type="text" value="' + (item.name || '') + '" style="width:100%;background:#1a1a2e;color:#fff;border:1px solid #333;padding:4px;font-size:0.8rem;"></td>' +
+                    '<td><input type="text" value="' + (item.codes || '') + '" style="width:100%;background:#1a1a2e;color:#fff;border:1px solid #333;padding:4px;font-size:0.8rem;"></td>' +
+                    '<td style="text-align:center;"><span class="db-del-btn" style="cursor:pointer;color:#FF4444;font-size:1.2rem;" data-idx="' + idx + '">&#10060;</span></td>';
+                tbody.appendChild(tr);
+            });
+            // Delete handlers
+            tbody.querySelectorAll('.db-del-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    var i = parseInt(this.dataset.idx);
+                    optionCodes.splice(i, 1);
+                    renderTable();
+                });
+            });
+        }
+
+        // Add row
+        addBtn.addEventListener('click', function() {
+            optionCodes.push({name: '', codes: ''});
+            renderTable();
+            // Focus last name input
+            var inputs = tbody.querySelectorAll('tr:last-child input');
+            if (inputs[0]) inputs[0].focus();
+        });
+
+        // Save
+        saveBtn.addEventListener('click', function() {
+            // Read values from table
+            var rows = tbody.querySelectorAll('tr');
+            optionCodes = [];
+            rows.forEach(function(tr) {
+                var inputs = tr.querySelectorAll('input[type="text"]');
+                var name = inputs[0] ? inputs[0].value.trim() : '';
+                var codes = inputs[1] ? inputs[1].value.trim() : '';
+                if (name) optionCodes.push({name: name, codes: codes});
+            });
+
+            saveBtn.textContent = i18n.t('admin.save_saving');
+            // JSON comme partout ailleurs (l'ancien POST form-urlencoded n'etait pas parse par le backend)
+            fetch(API_OPT, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'save', key: STORE_KEY, value: JSON.stringify(optionCodes), pin: PIN })
+            }).then(function() {
+                saveBtn.innerHTML = i18n.t('db.save_done');
+                setTimeout(function() { saveBtn.innerHTML = i18n.t('db.save_btn'); }, 2000);
+            }).catch(function() {
+                saveBtn.textContent = i18n.t('admin.save_error');
+                setTimeout(function() { saveBtn.innerHTML = i18n.t('db.save_btn'); }, 2000);
+            });
+        });
+    })();
+
+    // ============================================
+    // Drapeaux actifs — icone discrete + section masquee par defaut
+    // ============================================
+    (function() {
+        var section = document.getElementById('flags-section');
+        var iconBtn = document.getElementById('btn-toggle-flags');
+        var body = document.getElementById('flags-body');
+        if (!section || !iconBtn) return;
+
+        // Hidden by default — only show icon button if user has admin/eng role
+        section.style.display = 'none';
+        body.style.display = '';  // body always visible inside section (section gates visibility)
+
+        setTimeout(function() {
+            var u = null;
+            try { u = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+            if (u && u.role && ['super_admin','administrateur','ingenierie'].indexOf(u.role) >= 0) {
+                iconBtn.style.display = '';
+                if (window.renderFlagsSection) window.renderFlagsSection();
+            }
+        }, 600);
+
+        iconBtn.addEventListener('click', function() {
+            var open = section.style.display !== 'none';
+            section.style.display = open ? 'none' : '';
+            iconBtn.classList.toggle('active', !open);
+            if (!open) {
+                // Scroll to the section so the user lands directly on the content
+                setTimeout(function() {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            }
+        });
+    })();
+
+    // ============================================
+    // Changelog BD — icone discrete
+    // ============================================
+    (function() {
+        var section = document.getElementById('changelog-section');
+        var iconBtn = document.getElementById('btn-toggle-changelog');
+        var body = document.getElementById('changelog-body');
+        if (!section || !iconBtn) return;
+
+        section.style.display = 'none';
+        body.style.display = '';
+
+        setTimeout(function() {
+            var u = null;
+            try { u = JSON.parse(localStorage.getItem('portal_user')); } catch(e) {}
+            if (u && u.role && ['super_admin','administrateur','ingenierie'].indexOf(u.role) >= 0) {
+                iconBtn.style.display = '';
+            }
+        }, 500);
+
+        iconBtn.addEventListener('click', function() {
+            var open = section.style.display !== 'none';
+            section.style.display = open ? 'none' : '';
+            iconBtn.classList.toggle('active', !open);
+            if (!open) {
+                renderChangelog();
+                setTimeout(function() {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            }
+        });
+
+        // ===== Appui long 5 s sur "Journal" => reinitialiser l'historique (db_changelog) =====
+        (function(){
+            var RESET_API = window.PORTAL_API_URL;  // #32 : js/config.js (global, accessible partout)
+            var st = document.createElement('style');
+            st.textContent =
+              '@keyframes etrak-holdfill{from{box-shadow:inset 0 0 0 0 rgba(211,47,47,0.55)}to{box-shadow:inset 0 0 0 60px rgba(211,47,47,0.55)}}' +
+              '#btn-toggle-changelog.holding{animation:etrak-holdfill 5s linear forwards;-webkit-touch-callout:none;user-select:none}';
+            document.head.appendChild(st);
+
+            var holdTimer = null, longPressed = false;
+            function cancelHold(){ if(holdTimer){ clearTimeout(holdTimer); holdTimer=null; } iconBtn.classList.remove('holding'); }
+            function startHold(){
+                longPressed = false;
+                iconBtn.classList.add('holding');
+                holdTimer = setTimeout(function(){
+                    holdTimer = null;
+                    longPressed = true;            // empeche le clic-toggle qui suit
+                    iconBtn.classList.remove('holding');
+                    if (confirm(i18n.t('db.reset_history_confirm'))) {
+                        fetch(RESET_API, { method:'POST', headers:{'Content-Type':'text/plain'},
+                            body: JSON.stringify({ action:'save', key:'db_changelog', value:'[]', pin:portalToken() }) })
+                        .then(function(){
+                            if (window.renderChangelog) window.renderChangelog();
+                            if (typeof showToast === 'function') showToast(i18n.t('db.history_reset')); else alert(i18n.t('db.history_reset'));
+                        })
+                        .catch(function(){ alert(i18n.t('db.reset_error')); });
+                    }
+                }, 5000);
+            }
+            iconBtn.addEventListener('pointerdown', startHold);
+            iconBtn.addEventListener('pointerup', cancelHold);
+            iconBtn.addEventListener('pointerleave', cancelHold);
+            iconBtn.addEventListener('pointercancel', cancelHold);
+            // Supprime le clic-toggle declenche apres un appui long (phase capture = avant le handler de toggle)
+            iconBtn.addEventListener('click', function(ev){
+                if (longPressed){ ev.stopImmediatePropagation(); ev.preventDefault(); longPressed = false; }
+            }, true);
+        })();
+    })();
+    </script>
+
+    <!-- View-mode toggle (responsive auto + force-mobile button) -->
+    <script>
+    (function(){
+        var VIEW_KEY = 'portal_view_mobile_forced';
+        function syncViewMode() {
+            var body = document.body;
+            var forced = body.classList.contains('force-mobile');
+            var w = window.innerWidth;
+            body.classList.toggle('mobile-view', forced || w <= 768);
+            body.classList.toggle('narrow-view', forced || w <= 480);
+        }
+        function applyForcedView(on) {
+            var body = document.body;
+            body.classList.toggle('force-mobile', on);
+            var btn = document.getElementById('view-mobile-toggle');
+            if (btn) {
+                btn.classList.toggle('active', on);
+                btn.innerHTML = (typeof i18n !== 'undefined') ? (on ? i18n.t('common.view_desktop') : i18n.t('common.mobile_view')) : (on ? '&#128187; Vue desktop' : '&#128241; Apercu mobile');
+            }
+            try { localStorage.setItem(VIEW_KEY, on ? '1' : '0'); } catch(e){}
+            syncViewMode();
+        }
+        var btn = document.getElementById('view-mobile-toggle');
+        if (btn) {
+            btn.addEventListener('click', function(){
+                applyForcedView(!document.body.classList.contains('force-mobile'));
+            });
+        }
+        window.addEventListener('resize', syncViewMode);
+        window.addEventListener('langchange', function(){ applyForcedView(document.body.classList.contains('force-mobile')); });
+        // Inject Fabricant sublabel into Modele cells (for mobile)
+        function injectFabSublabels() {
+            var rows = document.querySelectorAll('#db-tbody tr');
+            rows.forEach(function(tr){
+                var tds = tr.children;
+                if (tds.length < 2) return;
+                var fabCell = tds[0], modCell = tds[1];
+                if (!fabCell || !modCell) return;
+                // Tag cells with data attrs for CSS targeting
+                fabCell.setAttribute('data-col-cell','fab');
+                modCell.setAttribute('data-col-cell','modele');
+                // Inject fab sublabel if not already present
+                if (!modCell.querySelector('.db-fab-mobile')) {
+                    var fabText = (fabCell.textContent || '').trim();
+                    if (fabText) {
+                        var sub = document.createElement('div');
+                        sub.className = 'db-fab-mobile';
+                        sub.textContent = fabText;
+                        modCell.appendChild(sub);
+                    }
+                }
+            });
+            // Also tag header cells for CSS
+            var ths = document.querySelectorAll('#db-table thead th');
+            if (ths[0]) ths[0].setAttribute('data-col','fab');
+            if (ths[1]) ths[1].setAttribute('data-col','modele');
+        }
+        // Run after table renders (observe tbody for changes)
+        var tbody = document.getElementById('db-tbody');
+        if (tbody) {
+            var mo = new MutationObserver(function(){ injectFabSublabels(); });
+            mo.observe(tbody, { childList: true });
+            injectFabSublabels();
+        }
+        try { applyForcedView(localStorage.getItem(VIEW_KEY) === '1'); }
+        catch(e) { syncViewMode(); }
+    })();
+    </script>
+    <script src="js/data-refresh.js?v=3"></script>
+
+</body>
+</html>
