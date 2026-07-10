@@ -1,0 +1,20 @@
+name: Validation portail (HTML/JSON)
+
+# Detecte les fichiers HTML vides/casses ou les JSON invalides AVANT qu'ils ne
+# rendent le portail live blanc. GitHub Pages publie les fichiers vides sans
+# erreur : ce garde-fou rend le probleme visible (echec rouge + courriel).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Verifier l'integrite des fichiers du portail
+        run: python3 scripts/check_portal_integrity.py

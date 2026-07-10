@@ -1,0 +1,9 @@
+#!/bin/sh
+# Bloque un commit qui contiendrait un fichier HTML vide/casse ou un JSON invalide.
+# Active-le une seule fois par poste :  git config core.hooksPath .githooks
+python3 scripts/check_portal_integrity.py --staged || {
+  echo ""
+  echo "Commit BLOQUE : integrite du portail non respectee (voir ci-dessus)."
+  echo "Pour forcer malgre tout (deconseille) : git commit --no-verify"
+  exit 1
+}
