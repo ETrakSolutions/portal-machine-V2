@@ -760,14 +760,14 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                     var st = (ovv !== undefined && ovv !== null && ovv !== '') ? ovv : baseDef;
                     if (removed.indexOf(code) >= 0) st = 'na';
                     if (st === 'na') return;
-                    rows += '<tr><td>' + (v.desc || key.replace(/^[0-9]+\s*/, '')) + '</td>' +
+                    rows += '<tr><td>' + i18n.tBom(v.desc || key.replace(/^[0-9]+\s*/, '')) + '</td>' +
                             '<td class="kit-code">' + (v.pn || ('1500-' + code)) + '</td>' +
                             '<td class="kit-status-cell" style="text-align:center">' + dotFor(st) + '</td></tr>';
                 });
                 if (Array.isArray(ov._custom)) {
                     ov._custom.forEach(function(c) {
                         if (c.status === 'na') return;
-                        rows += '<tr><td>' + (c.desc || c.code) + '</td>' +
+                        rows += '<tr><td>' + i18n.tBom(c.desc || c.code) + '</td>' +
                                 '<td class="kit-code">' + (c.pn || c.code) + '</td>' +
                                 '<td class="kit-status-cell" style="text-align:center">' + dotFor(c.status === 'r' ? 'r' : (c.status === 'v' ? 'v' : 'j')) + '</td></tr>';
                     });
@@ -804,7 +804,7 @@ function applyBdKitLabels(rootEl, displayMap, type) {
             if (span) {
                 span.removeAttribute('data-i18n-html');
                 span.removeAttribute('data-i18n');
-                span.textContent = lab.desc;
+                span.textContent = i18n.tBom(lab.desc);
             }
         }
         if (lab.pn) {

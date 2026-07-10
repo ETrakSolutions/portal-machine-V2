@@ -1485,7 +1485,7 @@ function updateSelectedSummary() {
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
     // Avertissement par machine : pilote par la donnee _warning (voir loadNotesForModel / #machine-warning).
     function pushLi(info, fbCode, fbDesc) {
-        if (info) { items.push(fmtItem(info.pn, info.desc)); return; }
+        if (info) { items.push(fmtItem(info.pn, i18n.tBom(info.desc))); return; }
         // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
         // Pour un type connu sans ce role (ex. Telehandler sans hauteur dediee) : ne rien emettre
         // -> evite la fuite de codes excavatrice.
@@ -1585,7 +1585,7 @@ function updateSelectedSummary() {
             if (limVal === 'Multi-axe' && (item.code === '1500-0000' || (_baseSkip && item.code === _baseSkip))) return;
             var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
             if (!alreadyListed && item.status === 'Obligatoire') {
-                obligItems.push(fmtItem(item.code, item.name));
+                obligItems.push(fmtItem(item.code, i18n.tBom(item.name)));
             }
         });
     }

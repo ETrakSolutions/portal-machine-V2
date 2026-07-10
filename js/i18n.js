@@ -49,11 +49,33 @@
 
     // Translate spec values (Oui, Non, Chenille, etc.)
     function tVal(frenchValue) {
+        if (frenchValue === undefined || frenchValue === null) return frenchValue;
         var lang = getLang();
         if (lang === 'fr') return frenchValue;
+        var v = String(frenchValue);
         var dict = window.TRANSLATIONS && window.TRANSLATIONS[lang];
-        var mapped = dict && dict['val.' + frenchValue];
-        return mapped || frenchValue;
+        var mapped = dict && dict['val.' + v];
+        if (mapped !== undefined && mapped !== null) return mapped;
+        // Normalisation N/D, n/d, N/A -> N/A (donnee "non disponible")
+        if (/^n\s*\/?\s*[ad]$/i.test(v.trim())) return 'N/A';
+        // Motif "Portee 47 m" / "Portée 28m" -> "Reach 47 m"
+        var m = v.match(/^Port[eé]{1,2}\s*([\d.,]+)\s*m$/i);
+        if (m) return 'Reach ' + m[1] + ' m';
+        // Motif "61 m treillis" -> "61 m lattice"
+        m = v.match(/^([\d.,]+)\s*m\s+treillis$/i);
+        if (m) return m[1] + ' m lattice';
+        return frenchValue;
+    }
+
+    // Translate BOM / kit item descriptions coming from the DB (_bom_labels).
+    // La BD est en francais ; on traduit a l'affichage via la table 'bom.<desc>'.
+    function tBom(frenchDesc) {
+        if (frenchDesc === undefined || frenchDesc === null) return frenchDesc;
+        var lang = getLang();
+        if (lang === 'fr') return frenchDesc;
+        var dict = window.TRANSLATIONS && window.TRANSLATIONS[lang];
+        var mapped = dict && dict['bom.' + String(frenchDesc)];
+        return (mapped !== undefined && mapped !== null) ? mapped : frenchDesc;
     }
 
     // Walk DOM and apply translations
@@ -116,6 +138,7 @@
         t: t,
         tSpec: tSpec,
         tVal: tVal,
+        tBom: tBom,
         getLang: getLang,
         setLang: setLang,
         translatePage: translatePage
