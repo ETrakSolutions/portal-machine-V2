@@ -278,7 +278,7 @@ function renderPermTable() {
         var role = ROLES[roleKey];
         var tr = document.createElement('tr');
         var tdName = document.createElement('td');
-        tdName.innerHTML = '<strong>' + role.label + '</strong>';
+        tdName.innerHTML = '<strong>' + i18n.t('role.' + roleKey) + '</strong>';
         tr.appendChild(tdName);
 
         PERM_KEYS.forEach(function(perm) {
@@ -354,13 +354,13 @@ function hideAdminSection() {
 // ---- WELCOME OVERLAY ----
 function showWelcome(name, role) {
     var roleLabel = '';
-    if (currentUser && ROLES[currentUser.role]) roleLabel = ROLES[currentUser.role].label;
+    if (currentUser && currentUser.role) roleLabel = i18n.t('role.' + currentUser.role);
 
     var overlay = document.createElement('div');
     overlay.className = 'welcome-overlay';
     overlay.innerHTML =
         '<div class="welcome-line"></div>' +
-        '<div class="welcome-text">Bienvenue</div>' +
+        '<div class="welcome-text">' + i18n.t('admin.welcome') + '</div>' +
         '<div class="welcome-name">' + escHtml(name) + '</div>' +
         '<div class="welcome-role">' + roleLabel + '</div>' +
         '<div class="welcome-line"></div>';
@@ -395,11 +395,11 @@ function showChangePasswordModal(user, oldPassword) {
     modal.style.display = 'flex';
     modal.innerHTML =
         '<div class="login-modal-content" style="max-width:380px;">' +
-        '<h3>Changement de mot de passe requis</h3>' +
-        '<p style="color:#999;font-size:0.8rem;margin-bottom:1rem;">Bienvenue <strong style="color:#00CC66;">' + user.name + '</strong> ! Veuillez choisir un nouveau mot de passe.</p>' +
-        '<input type="password" id="change-pwd-new" class="login-input" placeholder="Nouveau mot de passe" autocomplete="new-password">' +
-        '<input type="password" id="change-pwd-confirm" class="login-input" placeholder="Confirmer le mot de passe" autocomplete="new-password">' +
-        '<button type="button" id="change-pwd-submit" class="login-submit">Enregistrer</button>' +
+        '<h3>' + i18n.t('admin.pwd_change_title') + '</h3>' +
+        '<p style="color:#999;font-size:0.8rem;margin-bottom:1rem;">' + i18n.t('admin.pwd_welcome', {name: user.name}) + '</p>' +
+        '<input type="password" id="change-pwd-new" class="login-input" placeholder="' + i18n.t('admin.pwd_new_ph') + '" autocomplete="new-password">' +
+        '<input type="password" id="change-pwd-confirm" class="login-input" placeholder="' + i18n.t('admin.pwd_confirm_ph') + '" autocomplete="new-password">' +
+        '<button type="button" id="change-pwd-submit" class="login-submit">' + i18n.t('admin.enregistrer') + '</button>' +
         '<p id="change-pwd-error" class="login-error" style="display:none;"></p>' +
         '</div>';
 
@@ -411,17 +411,17 @@ function showChangePasswordModal(user, oldPassword) {
         var errorEl = document.getElementById('change-pwd-error');
 
         if (!newPwd || newPwd.length < 4) {
-            errorEl.textContent = 'Le mot de passe doit contenir au moins 4 caracteres.';
+            errorEl.textContent = i18n.t('admin.pwd_err_min');
             errorEl.style.display = 'block';
             return;
         }
         if (newPwd === '0000') {
-            errorEl.textContent = 'Veuillez choisir un mot de passe different de 0000.';
+            errorEl.textContent = i18n.t('admin.pwd_err_0000');
             errorEl.style.display = 'block';
             return;
         }
         if (newPwd !== confirmPwd) {
-            errorEl.textContent = 'Les mots de passe ne correspondent pas.';
+            errorEl.textContent = i18n.t('admin.pwd_err_mismatch');
             errorEl.style.display = 'block';
             return;
         }
@@ -443,13 +443,13 @@ function showChangePasswordModal(user, oldPassword) {
                     var sess = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role), vendeurEmail: data.user.vendeurEmail || '', consentVersion: data.user.consentVersion || 0 };
                     proceedAfterAuth(sess, data.user);
                 } else {
-                    errorEl.textContent = 'Erreur lors du changement de mot de passe. Reessayez.';
+                    errorEl.textContent = i18n.t('admin.err_pwd_change');
                     errorEl.style.display = 'block';
                 }
             })
             .catch(function() {
                 submitBtn.disabled = false;
-                errorEl.textContent = 'Erreur de connexion au serveur. Reessayez.';
+                errorEl.textContent = i18n.t('admin.err_server');
                 errorEl.style.display = 'block';
             });
     });
@@ -1005,13 +1005,13 @@ function renderUsers() {
     USERS.forEach(function(user, i) {
         // Masquer les comptes Super Admin sauf pour un viewer super_admin
         if (user.role === 'super_admin' && (!currentUser || currentUser.role !== 'super_admin')) return;
-        var roleLabel = ROLES[user.role] ? ROLES[user.role].label : user.role;
+        var roleLabel = i18n.t('role.' + user.role);
         var isSuperAdmin = user.email && user.email.toLowerCase() === SUPER_ADMIN;
         var tr = document.createElement('tr');
         tr.style.cursor = 'pointer';
         tr.dataset.idx = i;
         // Voyant d'activite (sera mis a jour par loadActiveStatus apres render)
-        var dotHtml = '<span class="user-active-dot" data-email="' + escHtml((user.email || '').toLowerCase()) + '" title="Statut inconnu" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#444;margin-right:8px;vertical-align:middle"></span>';
+        var dotHtml = '<span class="user-active-dot" data-email="' + escHtml((user.email || '').toLowerCase()) + '" title="' + i18n.t('admin.status_unknown') + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#444;margin-right:8px;vertical-align:middle"></span>';
         tr.innerHTML =
             '<td>' + dotHtml + '<strong>' + escHtml(user.name) + '</strong>' + (isSuperAdmin ? ' <span style="color:#FFD700;font-size:0.65rem;">&#9733; SUPER</span>' : '') + '<div class="user-lastseen" data-email="' + escHtml((user.email || '').toLowerCase()) + '" style="font-size:0.66rem;color:#8aa;margin-top:2px;margin-left:18px">…</div>' + '</td>' +
             '<td>' + (user.email ? escHtml(user.email) : '<span style="color:#555;">\u2014</span>') + '</td>' +
@@ -1061,7 +1061,7 @@ function loadUserActiveStatus() {
         if (m < 60) return m + ' min';
         var h = Math.round(m/60);
         if (h < 24) return h + 'h';
-        return Math.round(h/24) + 'j';
+        return Math.round(h/24) + i18n.t('admin.unit_day');
     }
     function fmtDate(ts){ var d=new Date(ts); if(isNaN(d.getTime())) return ''; var p=function(n){return (n<10?'0':'')+n;}; return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes()); }
     function setLastSeen(email, txt){ var e=document.querySelector('.user-lastseen[data-email="'+email+'"]'); if(e) e.textContent=txt; }
@@ -1077,7 +1077,7 @@ function loadUserActiveStatus() {
                 if (!data.value) {
                     dot.style.background = '#444';
                     dot.style.boxShadow = 'none';
-                    dot.title = 'Jamais connecte';
+                    dot.title = i18n.t('admin.never_connected');
                     setLastSeen(email, NEVER);
                     return;
                 }
@@ -1091,7 +1091,7 @@ function loadUserActiveStatus() {
                 }
                 var pingTs = new Date(info.lastPing).getTime();
                 var activityTs = new Date(info.lastActivity || info.lastPing).getTime();
-                if (isNaN(pingTs)) { dot.style.background = '#444'; dot.title = 'Donnees invalides'; return; }
+                if (isNaN(pingTs)) { dot.style.background = '#444'; dot.title = i18n.t('admin.status_invalid'); return; }
 
                 var pingDiff = now - pingTs;
                 var activityDiff = now - activityTs;
@@ -1101,17 +1101,17 @@ function loadUserActiveStatus() {
                     // Pas de ping recent — deconnecte
                     dot.style.background = '#444';
                     dot.style.boxShadow = 'none';
-                    dot.title = 'Deconnecte (dernier ping il y a ' + fmtAgo(pingDiff) + ')';
+                    dot.title = i18n.t('admin.status_disconnected', {ago: fmtAgo(pingDiff)});
                 } else if (activityDiff > ACTIVITY_THRESHOLD_MS) {
                     // Ping recent mais pas d'activite — page ouverte mais inactif
                     dot.style.background = '#FFB74D';
                     dot.style.boxShadow = '0 0 6px rgba(255,183,77,0.6)';
-                    dot.title = 'Page ouverte mais inactif depuis ' + fmtAgo(activityDiff);
+                    dot.title = i18n.t('admin.status_inactive', {ago: fmtAgo(activityDiff)});
                 } else {
                     // Actif maintenant
                     dot.style.background = '#00CC66';
                     dot.style.boxShadow = '0 0 6px rgba(0,204,102,0.7)';
-                    dot.title = 'Actif (interaction il y a ' + fmtAgo(activityDiff) + ')';
+                    dot.title = i18n.t('admin.status_active', {ago: fmtAgo(activityDiff)});
                 }
             })
             .catch(function() {});
@@ -1141,10 +1141,10 @@ function openEditUserModal(idx) {
 
     var roleOptions = '';
     Object.keys(ROLES).forEach(function(key) {
-        roleOptions += '<option value="' + key + '"' + (user.role === key ? ' selected' : '') + '>' + ROLES[key].label + '</option>';
+        roleOptions += '<option value="' + key + '"' + (user.role === key ? ' selected' : '') + '>' + i18n.t('role.' + key) + '</option>';
     });
     // Vendeur associe (dealer/distributeur) : liste des vendeurs (Admin > Vendeurs)
-    var vendeurOptions = '<option value="">-- Aucun --</option>';
+    var vendeurOptions = '<option value="">' + i18n.t('admin.vendeur_none') + '</option>';
     (vendeurs || []).forEach(function(vv) {
         vendeurOptions += '<option value="' + vv.email + '"' + (user.vendeurEmail === vv.email ? ' selected' : '') + '>' + vv.name + ' (' + vv.email + ')</option>';
     });
@@ -1157,19 +1157,19 @@ function openEditUserModal(idx) {
     modal.innerHTML =
         '<div class="login-modal-content" style="max-width:420px;">' +
         '<button class="login-close" id="edit-user-close">&times;</button>' +
-        '<h3>Modifier l\'utilisateur</h3>' +
-        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Nom complet</label>' +
+        '<h3>' + i18n.t('admin.edit_user_title') + '</h3>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.full_name') + '</label>' +
         '<input type="text" id="edit-user-name" class="login-input" value="' + (user.name || '') + '"></div>' +
-        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Adresse courriel (identifiant de connexion)</label>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.email_login_label') + '</label>' +
         '<input type="email" id="edit-user-email" class="login-input" value="' + (user.email || '') + '"' + (isSuperAdmin ? ' readonly style="opacity:0.5;"' : '') + '></div>' +
-        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Mot de passe</label>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.password_label') + '</label>' +
         '<input type="text" id="edit-user-password" class="login-input" value="' + (user.password || '') + '"></div>' +
-        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Role</label>' +
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.role_label') + '</label>' +
         '<select id="edit-user-role" class="login-input"' + (isSuperAdmin ? ' disabled style="opacity:0.5;"' : '') + '>' + roleOptions + '</select></div>' +
-        '<div class="admin-form-group" id="edit-user-vendeur-group" style="margin-bottom:0.75rem;display:' + (showVendeur ? 'block' : 'none') + ';"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">Vendeur associe</label>' +
+        '<div class="admin-form-group" id="edit-user-vendeur-group" style="margin-bottom:0.75rem;display:' + (showVendeur ? 'block' : 'none') + ';"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.vendeur_label') + '</label>' +
         '<select id="edit-user-vendeur" class="login-input">' + vendeurOptions + '</select></div>' +
-        '<button type="button" id="edit-user-save" class="login-submit">Enregistrer</button>' +
-        '<button type="button" id="edit-user-resend" style="width:100%;margin-top:8px;background:transparent;border:1px solid #444;color:#aaa;padding:10px;border-radius:8px;cursor:pointer;font-size:0.88rem;">📧 Renvoyer les informations de connexion</button>' +
+        '<button type="button" id="edit-user-save" class="login-submit">' + i18n.t('admin.enregistrer') + '</button>' +
+        '<button type="button" id="edit-user-resend" style="width:100%;margin-top:8px;background:transparent;border:1px solid #444;color:#aaa;padding:10px;border-radius:8px;cursor:pointer;font-size:0.88rem;">' + i18n.t('admin.resend_credentials') + '</button>' +
         '</div>';
 
     document.body.appendChild(modal);
@@ -1223,7 +1223,7 @@ function openEditUserModal(idx) {
         var currentEmail = document.getElementById('edit-user-email').value.trim() || user.email;
         var currentPassword = document.getElementById('edit-user-password').value.trim() || user.password;
         var currentRole = document.getElementById('edit-user-role').value;
-        var roleLabel = ROLES[currentRole] ? ROLES[currentRole].label : currentRole;
+        var roleLabel = i18n.t('role.' + currentRole);
         modal.remove();
         showCredentialsPopup(currentName, currentEmail, currentPassword, roleLabel);
     });
@@ -1348,7 +1348,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(function() {
                     loginSubmit.disabled = false;
-                    loginError.textContent = 'Erreur de connexion au serveur. Reessayez.';
+                    loginError.textContent = i18n.t('admin.err_server');
                     loginError.style.display = 'block';
                 });
         });
@@ -1376,7 +1376,7 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.className = 'welcome-overlay goodbye-overlay';
             overlay.innerHTML =
                 '<div class="welcome-line"></div>' +
-                '<div class="welcome-text">Au revoir</div>' +
+                '<div class="welcome-text">' + i18n.t('admin.goodbye') + '</div>' +
                 '<div class="welcome-name">' + userName + '</div>' +
                 '<div class="welcome-line"></div>';
             var mainEl = document.querySelector('main.admin-main');
@@ -1537,7 +1537,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var vendeurSel = document.getElementById('admin-new-vendeur');
             if (vendeurSel) {
                 var current = vendeurSel.value;
-                vendeurSel.innerHTML = '<option value="">-- Aucun --</option>';
+                vendeurSel.innerHTML = '<option value="">' + i18n.t('admin.vendeur_none') + '</option>';
                 vendeurs.forEach(function(v) {
                     var opt = document.createElement('option');
                     opt.value = v.email;
@@ -1568,12 +1568,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (errorEl) errorEl.style.display = 'none';
 
             if (!name || !email || !email.includes('@')) {
-                if (errorEl) { errorEl.textContent = 'Veuillez remplir le nom et une adresse courriel valide.'; errorEl.style.display = 'block'; }
+                if (errorEl) { errorEl.textContent = i18n.t('admin.add_user_err_name_email'); errorEl.style.display = 'block'; }
                 return;
             }
             var exists = USERS.find(function(u) { return (u.email && u.email.toLowerCase() === email.toLowerCase()) || u.username.toLowerCase() === email.toLowerCase(); });
             if (exists) {
-                if (errorEl) { errorEl.textContent = 'Cette adresse courriel existe deja.'; errorEl.style.display = 'block'; }
+                if (errorEl) { errorEl.textContent = i18n.t('admin.add_user_err_exists'); errorEl.style.display = 'block'; }
                 return;
             }
             var tempPwd = _genTempPassword();
@@ -1584,7 +1584,7 @@ document.addEventListener('DOMContentLoaded', function() {
             renderUsers();
 
             // Show credentials popup + mailto button
-            var roleLabel = ROLES[role] ? ROLES[role].label : role;
+            var roleLabel = i18n.t('role.' + role);
             showCredentialsPopup(name, email, tempPwd, roleLabel);
 
             document.getElementById('admin-new-name').value = '';
@@ -1668,7 +1668,7 @@ function renderTypeCheckboxes(container, allowed) {
         cb.checked = allowed.length === 0 || allowed.indexOf(type) >= 0; // all checked if no config
         cb.style.accentColor = '#4DA8FF';
         label.appendChild(cb);
-        label.appendChild(document.createTextNode(type));
+        label.appendChild(document.createTextNode(i18n.t('type.' + type)));
         container.appendChild(label);
     });
 }

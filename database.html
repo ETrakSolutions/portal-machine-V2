@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-i18n-title="doc.title_database">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -581,8 +581,8 @@
             <div class="db-legend" id="db-legend">
                 <span class="db-legend-item"><span class="bom-token bom-r"></span> <span data-i18n="db.legend_obligatoire">Obligatoire</span></span>
                 <span class="db-legend-item"><span class="bom-token bom-j"></span> <span data-i18n="db.legend_optionnel">Optionnel</span></span>
-                <span class="db-legend-item"><span class="bom-token bom-v">?</span> À vérifier</span>
-                <span style="color:#555;">| Edition via la page d'edition (cliquer sur le modele)</span>
+                <span class="db-legend-item"><span class="bom-token bom-v">?</span> <span data-i18n="db.legend_verifier">À vérifier</span></span>
+                <span style="color:#555;" data-i18n="db.legend_edit_hint">| Edition via la page d'edition (cliquer sur le modele)</span>
             </div>
             <div id="db-stats" class="db-stats"></div>
 
@@ -610,24 +610,24 @@
         <!-- Options Soumission Admin Section -->
         <section class="selector-section" id="options-admin-section" style="display:none; margin-top:1.5rem;">
             <div class="intro-row">
-                <span class="section-title">Options Soumission — Codes produits</span>
-                <button id="options-admin-toggle" class="db-export-btn" style="margin-left:auto;">&#9660; Afficher</button>
+                <span class="section-title" data-i18n="db.options_soum_title">Options Soumission — Codes produits</span>
+                <button id="options-admin-toggle" class="db-export-btn" style="margin-left:auto;" data-i18n-html="db.show">&#9660; Afficher</button>
             </div>
             <div id="options-admin-body" style="display:none;">
-                <p style="color:#888;font-size:0.8rem;margin-bottom:0.8rem;">Modifier les codes produits associes a chaque option/combinaison de la page soumission.</p>
+                <p style="color:#888;font-size:0.8rem;margin-bottom:0.8rem;" data-i18n="db.options_soum_desc">Modifier les codes produits associes a chaque option/combinaison de la page soumission.</p>
                 <table class="db-table" id="options-codes-table" style="font-size:0.8rem;">
                     <thead>
                         <tr>
-                            <th style="width:45%;">Combinaison</th>
-                            <th style="width:45%;">Codes produits</th>
-                            <th style="width:10%;text-align:center;">Action</th>
+                            <th style="width:45%;" data-i18n="db.th_combinaison">Combinaison</th>
+                            <th style="width:45%;" data-i18n="db.th_codes_produits">Codes produits</th>
+                            <th style="width:10%;text-align:center;" data-i18n="db.th_action">Action</th>
                         </tr>
                     </thead>
                     <tbody id="options-codes-tbody"></tbody>
                 </table>
                 <div style="margin-top:0.8rem;display:flex;gap:0.5rem;">
-                    <button id="options-codes-save" class="db-export-btn" style="background:#00CC66;">&#128190; Sauvegarder</button>
-                    <button id="options-codes-add" class="db-export-btn">+ Ajouter</button>
+                    <button id="options-codes-save" class="db-export-btn" style="background:#00CC66;" data-i18n-html="db.save_btn">&#128190; Sauvegarder</button>
+                    <button id="options-codes-add" class="db-export-btn" data-i18n="admin.add_btn">+ Ajouter</button>
                 </div>
             </div>
         </section>
@@ -635,37 +635,37 @@
         <!-- Drapeaux actifs -->
         <section class="selector-section" id="flags-section" style="display:none; margin-top:1.5rem;">
             <div class="intro-row">
-                <span class="section-title">🚩 Drapeaux actifs</span>
+                <span class="section-title" data-i18n="db.flags_heading">🚩 Drapeaux actifs</span>
                 <span id="flags-count-badge" style="background:rgba(255,68,68,0.2);color:#FF8888;border-radius:3px;padding:2px 8px;font-size:0.7rem;font-weight:700;margin-left:8px;"></span>
-                <button id="flags-toggle" class="db-export-btn" style="margin-left:auto;">&#9660; Afficher</button>
+                <button id="flags-toggle" class="db-export-btn" style="margin-left:auto;" data-i18n-html="db.show">&#9660; Afficher</button>
             </div>
             <div id="flags-body" style="display:none; margin-top:0.8rem;">
-                <div id="flags-list"><p style="color:#666;font-size:0.8rem;">Aucun drapeau actif.</p></div>
+                <div id="flags-list"><p style="color:#666;font-size:0.8rem;" data-i18n="db.no_flags">Aucun drapeau actif.</p></div>
             </div>
         </section>
 
         <!-- Changelog BD -->
         <section class="selector-section" id="changelog-section" style="display:none; margin-top:1.5rem;">
             <div class="intro-row">
-                <span class="section-title">&#128221; Journal des modifications</span>
-                <button id="changelog-toggle" class="db-export-btn" style="margin-left:auto;">&#9660; Afficher</button>
+                <span class="section-title" data-i18n-html="db.changelog_heading">&#128221; Journal des modifications</span>
+                <button id="changelog-toggle" class="db-export-btn" style="margin-left:auto;" data-i18n-html="db.show">&#9660; Afficher</button>
             </div>
             <div id="changelog-body" style="display:none; margin-top:0.8rem;">
                 <div style="overflow-x:auto;">
                     <table class="db-table" style="font-size:0.78rem; min-width:700px;">
                         <thead>
                             <tr>
-                                <th style="width:140px;">Date / Heure</th>
-                                <th style="width:120px;">Utilisateur</th>
-                                <th style="width:120px;">Type machine</th>
-                                <th style="width:100px;">Fabricant</th>
-                                <th style="width:140px;">Modele (Annees)</th>
-                                <th style="width:120px;">Avant</th>
-                                <th>Modification</th>
+                                <th style="width:140px;" data-i18n="db.ch_datetime">Date / Heure</th>
+                                <th style="width:120px;" data-i18n="db.ch_user">Utilisateur</th>
+                                <th style="width:120px;" data-i18n="db.ch_type">Type machine</th>
+                                <th style="width:100px;" data-i18n="db.th_fabricant">Fabricant</th>
+                                <th style="width:140px;" data-i18n="db.ch_model_years">Modele (Annees)</th>
+                                <th style="width:120px;" data-i18n="db.ch_before">Avant</th>
+                                <th data-i18n="db.ch_modification">Modification</th>
                             </tr>
                         </thead>
                         <tbody id="changelog-tbody">
-                            <tr><td colspan="6" style="text-align:center;color:#666;padding:1rem;">Chargement...</td></tr>
+                            <tr><td colspan="6" style="text-align:center;color:#666;padding:1rem;" data-i18n="js.loading">Chargement...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -683,7 +683,7 @@
     </footer>
 
     <script src="js/config.js?v=1"></script>
-    <script src="js/translations.js?v=186"></script>
+    <script src="js/translations.js?v=200"></script>
     <script src="js/i18n.js?v=166"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
@@ -740,7 +740,7 @@
             }).then(function() {
                 showToast(i18n.t('db.codes_saved'));
                 var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
-                logChange('Codes produit modifies', machineType, fab, modele, annee, prevCodes);
+                logChange(i18n.t('db.log_codes_modified'), machineType, fab, modele, annee, prevCodes);
             }).catch(function() {});
         }
 
@@ -812,13 +812,13 @@
 
             popup.innerHTML =
                 '<button class="pc-close">&times;</button>' +
-                '<h4>Codes produit — ' + fab + ' ' + modele + ' (' + annee + ')</h4>' +
-                (yearCount > 1 ? '<label class="pc-allyears-label"><input type="checkbox" id="pc-allyears"> Appliquer a toutes les annees (' + yearCount + ' annees)</label>' : '') +
+                '<h4>' + i18n.t('db.pc_title', {fab: fab, modele: modele, annee: annee}) + '</h4>' +
+                (yearCount > 1 ? '<label class="pc-allyears-label"><input type="checkbox" id="pc-allyears"> ' + i18n.t('db.pc_all_years', {n: yearCount}) + '</label>' : '') +
                 '<div class="pc-list" id="pc-list-active"></div>' +
                 '<div class="pc-row">' +
-                    '<input class="pc-code" id="pc-new-code" placeholder="Code" maxlength="20">' +
-                    '<input class="pc-desc" id="pc-new-desc" placeholder="Description">' +
-                    '<input class="pc-qty" id="pc-new-qty" type="number" min="1" value="1" placeholder="Qte">' +
+                    '<input class="pc-code" id="pc-new-code" placeholder="' + i18n.t('edit.ph_code') + '" maxlength="20">' +
+                    '<input class="pc-desc" id="pc-new-desc" placeholder="' + i18n.t('edit.ph_description') + '">' +
+                    '<input class="pc-qty" id="pc-new-qty" type="number" min="1" value="1" placeholder="' + i18n.t('common.qty') + '">' +
                     '<button class="pc-add-btn" id="pc-add-btn">+</button>' +
                 '</div>';
 
@@ -833,7 +833,7 @@
             function renderList() {
                 var list = popup.querySelector('#pc-list-active');
                 if (!codes.length) {
-                    list.innerHTML = '<div style="color:#555;font-size:0.65rem;padding:4px;">Aucun code produit</div>';
+                    list.innerHTML = '<div style="color:#555;font-size:0.65rem;padding:4px;">' + i18n.t('db.pc_none') + '</div>';
                     return;
                 }
                 list.innerHTML = codes.map(function(c, i) {
@@ -888,7 +888,7 @@
         function renderCellTags(cell, codes) {
             var tags = cell.querySelector('.db-pc-tags');
             if (!codes.length) {
-                tags.innerHTML = '<span class="db-pc-empty">+ Ajouter</span>';
+                tags.innerHTML = '<span class="db-pc-empty">' + i18n.t('admin.add_btn') + '</span>';
             } else {
                 tags.innerHTML = codes.map(function(c) {
                     return '<span class="db-pc-tag">' + c.code + (c.qty > 1 ? ' x' + c.qty : '') + '</span>';
@@ -934,20 +934,20 @@
                 var st = bom[c] || 'na';
                 if (st === 'r') {
                     hasRouge = true;
-                    details.push((BOM_NAMES[c] || c) + ' : Obligatoire');
+                    details.push((BOM_NAMES[c] || c) + ' : ' + i18n.t('common.obligatoire'));
                 } else if (st === 'v') {
                     hasVerif = true;
-                    details.push((BOM_NAMES[c] || c) + ' : À vérifier');
+                    details.push((BOM_NAMES[c] || c) + ' : ' + i18n.t('db.legend_verifier'));
                 }
             });
             if (Array.isArray(d._custom)) {
                 d._custom.forEach(function(cr) {
                     if (cr.status === 'r') {
                         hasRouge = true;
-                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : Obligatoire');
+                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : ' + i18n.t('common.obligatoire'));
                     } else if (cr.status === 'v') {
                         hasVerif = true;
-                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : À vérifier');
+                        details.push((cr.desc || cr.pn || cr.code || 'Option') + ' : ' + i18n.t('db.legend_verifier'));
                     }
                 });
             }
@@ -1067,7 +1067,7 @@
         // (cliquer sur le nom du modele pour ouvrir la page d'edition)
         var canEdit = false;
         if (!hasAccess) {
-            document.querySelector('main').innerHTML = '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">Acces non autorise. Connectez-vous avec un compte administrateur ou ingenierie.</p></section>';
+            document.querySelector('main').innerHTML = '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">' + i18n.t('mr.unauthorized') + '</p></section>';
         }
 
         function showToast(msg) {
@@ -1114,7 +1114,7 @@
                     var log = [];
                     if (data.value) { try { log = JSON.parse(data.value); } catch(e) {} }
                     if (!log.length) {
-                        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#666;padding:1rem;">Aucun changement enregistre.</td></tr>';
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#666;padding:1rem;">' + i18n.t('db.no_changes_log') + '</td></tr>';
                         return;
                     }
                     tbody.innerHTML = log.map(function(e) {
@@ -1159,7 +1159,7 @@
                         var active = fi && fi.active;
                         btn.className = 'flag-btn' + (active ? ' active' : '');
                         btn.textContent = active ? '\uD83D\uDEA9' : '\uD83C\uDFF3\uFE0F';
-                        btn.title = active ? 'Signale par ' + fi.flaggedBy + ' (' + fi.flaggedAt + ')\n' + (fi.note || '') : 'Signaler pour verification';
+                        btn.title = active ? i18n.t('db.flag_reported_by', {by: fi.flaggedBy, at: fi.flaggedAt}) + '\n' + (fi.note || '') : i18n.t('edit.flag_report_title');
                         var row = btn.closest('tr');
                         if (row) { active ? row.classList.add('flagged-row') : row.classList.remove('flagged-row'); }
                     });
@@ -1209,17 +1209,17 @@
 
             var popup = document.createElement('div');
             popup.className = 'flag-popup';
-            var title = isActive ? '\uD83D\uDEA9 Drapeau actif' : '\uD83C\uDFF3\uFE0F Signaler pour verification';
-            var meta = isActive ? 'Pose par <strong>' + fi.flaggedBy + '</strong> le ' + fi.flaggedAt : '';
+            var title = isActive ? i18n.t('db.flag_popup_active') : i18n.t('db.flag_popup_report');
+            var meta = isActive ? i18n.t('db.flag_posted_by_html', {by: fi.flaggedBy, at: fi.flaggedAt}) : '';
             popup.innerHTML =
                 '<button class="pc-close" style="float:right;">&times;</button>' +
                 '<h4>' + title + '</h4>' +
                 '<div class="flag-meta">' + meta + '</div>' +
-                '<textarea rows="3" id="flag-note-input" placeholder="Note (optionnel)...">' + (isActive ? (fi.note || '') : '') + '</textarea>' +
+                '<textarea rows="3" id="flag-note-input" placeholder="' + i18n.t('machine.flag_note_ph') + '">' + (isActive ? (fi.note || '') : '') + '</textarea>' +
                 '<div class="flag-actions">' +
-                    (!isActive ? '<button class="flag-set-btn">\uD83D\uDEA9 Poser le drapeau</button>' : '') +
-                    (isActive && canResolve ? '<button class="flag-resolve-btn">\u2705 Marquer comme verifie</button>' : '') +
-                    '<button class="flag-cancel-btn">Annuler</button>' +
+                    (!isActive ? '<button class="flag-set-btn">' + i18n.t('machine.flag_set_btn') + '</button>' : '') +
+                    (isActive && canResolve ? '<button class="flag-resolve-btn">' + i18n.t('machine.flag_resolve_btn') + '</button>' : '') +
+                    '<button class="flag-cancel-btn">' + i18n.t('common.annuler') + '</button>' +
                 '</div>';
 
             document.body.appendChild(popup);
@@ -1253,13 +1253,13 @@
             var iconBadge = document.getElementById('flags-icon-badge');
             if (!list) return;
             var active = Object.keys(flagsCache).filter(function(k) { return flagsCache[k] && flagsCache[k].active; });
-            if (badge) badge.textContent = active.length ? active.length + ' actif' + (active.length > 1 ? 's' : '') : '';
+            if (badge) badge.textContent = active.length ? active.length + ' ' + i18n.t(active.length > 1 ? 'db.active_many' : 'db.active_one') : '';
             if (iconBadge) {
                 iconBadge.textContent = active.length || '';
                 iconBadge.classList.toggle('empty', !active.length);
             }
             if (!active.length) {
-                list.innerHTML = '<p style="color:#666;font-size:0.8rem;padding:0.5rem 0;">Aucun drapeau actif.</p>';
+                list.innerHTML = '<p style="color:#666;font-size:0.8rem;padding:0.5rem 0;">' + i18n.t('db.no_flags') + '</p>';
                 return;
             }
             list.innerHTML = active.map(function(k) {
@@ -1269,9 +1269,9 @@
                 return '<div class="flag-section-row">' +
                     '<span class="flag-badge">' + (type || '') + '</span>' +
                     '<span style="color:#fff;font-weight:600;">' + fab + ' ' + modele + ' (' + annee + ')</span>' +
-                    '<span class="flag-note-text">' + (fi.note || '<em style="color:#555;">Sans note</em>') + '</span>' +
-                    '<span class="flag-by">par ' + fi.flaggedBy + ' &mdash; ' + fi.flaggedAt + '</span>' +
-                    (canResolve ? '<button class="flag-resolve-btn" style="font-size:0.65rem;padding:3px 8px;" data-flagkey="' + k + '" data-fab="' + fab + '" data-modele="' + modele + '" data-annee="' + annee + '" data-type="' + type + '">\u2705 Resolu</button>' : '') +
+                    '<span class="flag-note-text">' + (fi.note || '<em style="color:#555;">' + i18n.t('machine.flag_no_note') + '</em>') + '</span>' +
+                    '<span class="flag-by">' + i18n.t('machine.flag_by', {by: fi.flaggedBy, at: fi.flaggedAt}) + '</span>' +
+                    (canResolve ? '<button class="flag-resolve-btn" style="font-size:0.65rem;padding:3px 8px;" data-flagkey="' + k + '" data-fab="' + fab + '" data-modele="' + modele + '" data-annee="' + annee + '" data-type="' + type + '">' + i18n.t('db.resolved') + '</button>' : '') +
                 '</div>';
             }).join('');
 
@@ -1430,7 +1430,7 @@
                 // Option placeholder (vide = rien affiche)
                 var optEmpty = document.createElement('option');
                 optEmpty.value = '';
-                optEmpty.textContent = '— Selectionner un type —';
+                optEmpty.textContent = i18n.t('db.select_type_placeholder');
                 typeSelect.appendChild(optEmpty);
                 var TYPE_ORDER_PRIORITY = ['Excavatrice', 'Pompe a Beton'];
                 var allTypes = Object.keys(fullData);
@@ -1528,11 +1528,11 @@
                 if (fabHeader) fabHeader.style.display = '';
                 document.getElementById('db-table').classList.remove('fab-hidden');
                 var tbody = document.getElementById('db-tbody');
-                if (tbody) tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;color:#666;padding:3rem;font-style:italic">Selectionner un type de machine ci-dessus pour afficher les modeles</td></tr>';
+                if (tbody) tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;color:#666;padding:3rem;font-style:italic">' + i18n.t('db.select_type_hint') + '</td></tr>';
                 // Reset fab and annee dropdowns
                 var fabSel = document.getElementById('db-fab');
-                if (fabSel) { fabSel.innerHTML = '<option value="">Tous</option>'; }
-                if (anneeSel) { anneeSel.innerHTML = '<option value="">Toutes</option>'; }
+                if (fabSel) { fabSel.innerHTML = '<option value="">' + i18n.t('common.tous') + '</option>'; }
+                if (anneeSel) { anneeSel.innerHTML = '<option value="">' + i18n.t('common.toutes') + '</option>'; }
                 var pageInfo = document.getElementById('db-page-info');
                 if (pageInfo) pageInfo.textContent = '0 - 0 sur 0';
                 document.getElementById('db-prev').disabled = true;
@@ -1577,7 +1577,7 @@
                 var thType = document.createElement('th');
                 thType.dataset.col = '_type';
                 thType.style.cssText = 'width:120px;min-width:100px;font-size:0.72rem;';
-                thType.innerHTML = 'Type <span class="sort-arrow">&#9650;</span>';
+                thType.innerHTML = i18n.t('db.type') + ' <span class="sort-arrow">&#9650;</span>';
                 thType.style.cursor = 'pointer';
                 thType.addEventListener('click', function() {
                     if (sortCol === '_type') { sortAsc = !sortAsc; }
@@ -1613,7 +1613,7 @@
                 var thH = document.createElement('th');
                 thH.className = 'bom-col';
                 thH.dataset.col = 'harnais';
-                thH.innerHTML = 'Harnais<span class="sort-arrow">&#9650;</span>';
+                thH.innerHTML = i18n.t('db.th_harnais') + '<span class="sort-arrow">&#9650;</span>';
                 thH.addEventListener('click', function() {
                     if (sortCol === 'harnais') { sortAsc = !sortAsc; }
                     else { sortCol = 'harnais'; sortAsc = true; }
@@ -1623,7 +1623,7 @@
             }
             // Add Notes column — large en vue Tous (etire pour remplir l'espace), compact en vue type
             var thNotes = document.createElement('th');
-            thNotes.textContent = 'Notes';
+            thNotes.textContent = i18n.t('machine.notes_title');
             if (isAllTypes) {
                 thNotes.style.cssText = 'min-width:200px;text-align:left;font-size:0.65rem;';
             } else {
@@ -1646,7 +1646,7 @@
             currentSpecCols.forEach(function(col) {
                 var th = document.createElement('th');
                 th.dataset.col = col.key;
-                th.innerHTML = col.label + ' <span class="sort-arrow">&#9650;</span>';
+                th.innerHTML = i18n.tSpec(col.label) + ' <span class="sort-arrow">&#9650;</span>';
                 th.style.cursor = 'pointer';
                 th.addEventListener('click', function() {
                     if (sortCol === col.key) { sortAsc = !sortAsc; }
@@ -1773,7 +1773,7 @@
 
             // Update fab filter
             var fabSelect = document.getElementById('db-fab');
-            fabSelect.innerHTML = '<option value="">Tous</option>';
+            fabSelect.innerHTML = '<option value="">' + i18n.t('common.tous') + '</option>';
             Array.from(fabs).sort().forEach(function(f) {
                 var opt = document.createElement('option');
                 opt.value = f; opt.textContent = f;
@@ -1781,7 +1781,7 @@
             });
             // Update year filter
             var yearSelect = document.getElementById('db-annee');
-            yearSelect.innerHTML = '<option value="">Toutes</option>';
+            yearSelect.innerHTML = '<option value="">' + i18n.t('common.toutes') + '</option>';
             Array.from(years).sort().reverse().forEach(function(y) {
                 var opt = document.createElement('option');
                 opt.value = y; opt.textContent = y;
@@ -1943,8 +1943,8 @@
                                     '&year=' + encodeURIComponent(d.annee) +
                                     '&model=' + encodeURIComponent(d.modele);
                         var yearsLabel = d._yearsLabel || d.annee;
-                        link.title = 'Editer ' + d.fab + ' ' + d.modele + ' (' + yearsLabel + ')' +
-                                     (d._groupYears && d._groupYears.length > 1 ? ' — ouvre ' + d.annee : '');
+                        link.title = i18n.t('db.edit_title', {fab: d.fab, modele: d.modele, years: yearsLabel}) +
+                                     (d._groupYears && d._groupYears.length > 1 ? i18n.t('db.edit_opens', {annee: d.annee}) : '');
                         link.textContent = d.modele;
                         link.addEventListener('click', saveDbState);
                         td.appendChild(link);
@@ -1986,7 +1986,7 @@
                         var info = computeAutreState(d);
                         var cls = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
                         var label = info.state === 'na' ? '-' : '';
-                        var title = info.details.length ? info.details.join('\n') : 'Aucune autre option';
+                        var title = info.details.length ? info.details.join('\n') : i18n.t('db.no_other_option');
                         td.innerHTML = '<span class="' + cls + '" data-code="_AUTRE" data-idx="' + dataIdx + '" title="' + title.replace(/"/g, '&quot;') + '">' + label + '</span>';
                         tr.appendChild(td);
                         return;
@@ -2001,7 +2001,7 @@
                     }
                     var isRemoved = Array.isArray(d._removed) && d._removed.indexOf(code) >= 0;
                     if (isRemoved){
-                        td.innerHTML = '<span class="bom-token bom-na readonly" data-code="' + code + '" data-idx="' + dataIdx + '" title="Retire pour cette machine" style="opacity:0.4">&times;</span>';
+                        td.innerHTML = '<span class="bom-token bom-na readonly" data-code="' + code + '" data-idx="' + dataIdx + '" title="' + i18n.t('db.removed_for_machine') + '" style="opacity:0.4">&times;</span>';
                     } else {
                         var state = (d.bom && d.bom[code]) || 'na';
                         td.innerHTML = bomTokenHtml(state, code, dataIdx, canEdit);
@@ -2049,7 +2049,7 @@
                 noteDot.dataset.modele = d.modele;
                 noteDot.dataset.annee = d.annee;
                 noteDot.dataset.noteKey = 'notes_' + d.fab + '_' + d.modele + '_' + d.annee;
-                noteDot.title = 'Aucune note';
+                noteDot.title = i18n.t('db.no_note');
                 tdNotes.appendChild(noteDot);
                 if (isAllTypesRender){
                     var notePreview = document.createElement('span');
@@ -2072,7 +2072,7 @@
                     var flagBtn = document.createElement('button');
                     flagBtn.className = 'flag-btn' + (isActive ? ' active' : '');
                     flagBtn.textContent = isActive ? '\uD83D\uDEA9' : '\uD83C\uDFF3\uFE0F';
-                    flagBtn.title = isActive ? 'Signale par ' + fi.flaggedBy + '\n' + (fi.note || '') : 'Signaler pour verification';
+                    flagBtn.title = isActive ? i18n.t('db.flag_reported_by_name', {by: fi.flaggedBy}) + '\n' + (fi.note || '') : i18n.t('edit.flag_report_title');
                     flagBtn.dataset.flagkey = fk;
                     flagBtn.dataset.fab = d.fab;
                     flagBtn.dataset.modele = d.modele;
@@ -2090,8 +2090,8 @@
                     var f = col.key;
                     var td = document.createElement('td');
                     var val = d[f] || '';
-                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = 'A completer'; }
-                    else { td.textContent = val; }
+                    if (val === 'A completer') { td.className = 'incomplete'; td.textContent = i18n.t('js.complete'); }
+                    else { td.textContent = i18n.tVal(val); }
                     tr.appendChild(td);
                 });
 
@@ -2171,14 +2171,14 @@
                                 var info = computeAutreState(d);
                                 token.className = 'bom-token readonly' + (info.state === 'r' ? ' bom-r' : info.state === 'j' ? ' bom-j' : info.state === 'v' ? ' bom-v' : ' bom-na');
                                 token.textContent = info.state === 'na' ? '-' : '';
-                                token.title = info.details.length ? info.details.join('\n') : 'Aucune autre option';
+                                token.title = info.details.length ? info.details.join('\n') : i18n.t('db.no_other_option');
                                 return;
                             }
                             if (removed.indexOf(c) >= 0){
                                 token.className = 'bom-token bom-na readonly';
                                 token.textContent = '×';
                                 token.style.opacity = '0.4';
-                                token.title = 'Retire pour cette machine';
+                                token.title = i18n.t('db.removed_for_machine');
                                 return;
                             }
                             var st = d.bom[c] || 'na';
@@ -2206,7 +2206,7 @@
                                 var startCol = 2 + BOM_CODES.length + (d._type === 'Excavatrice' ? 1 : 0) + 2;
                                 currentSpecCols.forEach(function(col, i){
                                     var td = rowEl.children[startCol + i];
-                                    if (td) td.textContent = d[col.key] || '';
+                                    if (td) td.textContent = i18n.tVal(d[col.key] || '');
                                 });
                             }
                         }
@@ -2231,9 +2231,9 @@
                 return d.puissance === 'A completer' || d.poids === 'A completer' || !d.puissance || !d.poids;
             }).length;
             document.getElementById('db-stats').innerHTML =
-                '<strong>' + displayedRows + '</strong> / <strong>' + filtered.length + '</strong> resultats affiches' +
-                (incomplete > 0 ? ' | <span style="color:#FF8C00;">' + incomplete + ' incomplets</span>' : '') +
-                (displayedRows < filtered.length ? ' | <span style="color:#888;font-style:italic;">defilez pour charger plus</span>' : '');
+                '<strong>' + displayedRows + '</strong> / <strong>' + filtered.length + '</strong> ' + i18n.t('db.stats_shown') +
+                (incomplete > 0 ? ' | <span style="color:#FF8C00;">' + incomplete + ' ' + i18n.t('db.stats_incomplete') + '</span>' : '') +
+                (displayedRows < filtered.length ? ' | <span style="color:#888;font-style:italic;">' + i18n.t('db.stats_scroll_more') + '</span>' : '');
 
             document.getElementById('db-prev').disabled = true;
             document.getElementById('db-next').disabled = true;
@@ -2332,7 +2332,7 @@
                     input.classList.add('note-saved');
                     setTimeout(function() { input.classList.remove('note-saved'); }, 1500);
                     var machineType = document.getElementById('db-type') ? document.getElementById('db-type').value : '';
-                    logChange('Note modifiee', machineType, input.dataset.fab, input.dataset.modele, input.dataset.annee, prevNote);
+                    logChange(i18n.t('db.log_note_modified'), machineType, input.dataset.fab, input.dataset.modele, input.dataset.annee, prevNote);
                 }
             })
             .catch(function() {});
@@ -2366,7 +2366,7 @@
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: delKey, value: 'deleted', pin: portalToken() })
             }).then(function() {
-                logChange('Modele supprime', delType, d.fab, d.modele, d.annee);
+                logChange(i18n.t('db.log_model_deleted'), delType, d.fab, d.modele, d.annee);
             }).catch(function() {});
 
             // Remove from local data
@@ -2572,9 +2572,9 @@
                 }
             });
 
-            showExportProgress('Chargement des overrides... 0 / ' + filtered.length);
+            showExportProgress(i18n.t('db.loading_overrides', {done: 0, total: filtered.length}));
             ensureAllOverridesLoaded(filtered, function(done, total) {
-                showExportProgress('Chargement des overrides... ' + done + ' / ' + total);
+                showExportProgress(i18n.t('db.loading_overrides', {done: done, total: total}));
             }).then(function() {
                 // Appliquer overrides sur d.bom
                 filtered.forEach(function(d) {
@@ -2589,9 +2589,9 @@
                     if (d.bom['0009'] === 'j') d.bom['0009'] = 'r';
                     if (ov.harnais) d.harnais = ov.harnais;
                 });
-                showExportProgress('Chargement des notes...');
+                showExportProgress(i18n.t('db.loading_notes'));
                 return ensureAllNotesLoaded(filtered, function(done, total) {
-                    showExportProgress('Chargement des notes... ' + done + ' / ' + total);
+                    showExportProgress(i18n.t('db.loading_notes_count', {done: done, total: total}));
                 });
             }).then(function() {
                 // Construire le CSV enrichi
@@ -2721,11 +2721,11 @@
         toggleBtn.addEventListener('click', function() {
             if (body.style.display === 'none') {
                 body.style.display = '';
-                toggleBtn.innerHTML = '&#9650; Masquer';
+                toggleBtn.innerHTML = i18n.t('db.hide');
                 loadOptionCodes();
             } else {
                 body.style.display = 'none';
-                toggleBtn.innerHTML = '&#9660; Afficher';
+                toggleBtn.innerHTML = i18n.t('db.show');
             }
         });
 
@@ -2786,18 +2786,18 @@
                 if (name) optionCodes.push({name: name, codes: codes});
             });
 
-            saveBtn.textContent = 'Sauvegarde...';
+            saveBtn.textContent = i18n.t('admin.save_saving');
             // JSON comme partout ailleurs (l'ancien POST form-urlencoded n'etait pas parse par le backend)
             fetch(API_OPT, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain'},
                 body: JSON.stringify({ action: 'save', key: STORE_KEY, value: JSON.stringify(optionCodes), pin: PIN })
             }).then(function() {
-                saveBtn.innerHTML = '&#10004; Sauvegarde!';
-                setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
+                saveBtn.innerHTML = i18n.t('db.save_done');
+                setTimeout(function() { saveBtn.innerHTML = i18n.t('db.save_btn'); }, 2000);
             }).catch(function() {
-                saveBtn.textContent = 'Erreur!';
-                setTimeout(function() { saveBtn.innerHTML = '&#128190; Sauvegarder'; }, 2000);
+                saveBtn.textContent = i18n.t('admin.save_error');
+                setTimeout(function() { saveBtn.innerHTML = i18n.t('db.save_btn'); }, 2000);
             });
         });
     })();

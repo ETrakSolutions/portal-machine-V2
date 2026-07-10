@@ -251,10 +251,10 @@ function updateGearDeleteButton() {
         const fab = selectFabricant.value;
         const annee = selectAnnee.value;
         btn.disabled = false;
-        btn.textContent = '\uD83D\uDDD1 Supprimer ' + fab + ' ' + modele + ' (' + annee + ')';
+        btn.textContent = i18n.t('js.delete_btn', { fab: fab, modele: modele, annee: annee });
     } else {
         btn.disabled = true;
-        btn.textContent = '\uD83D\uDDD1 Aucun modele selectionne';
+        btn.textContent = i18n.t('js.no_model_selected');
     }
 }
 
@@ -413,74 +413,67 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
     // Memoriser pour redirection vers edit-machine.html depuis le bouton lock
     window.__currentMachine = { type: type, fab: fab, modele: modele, annee: annee };
     resultsTitle.textContent = `${fab} ${modele} (${annee})`;
-    resultsBadge.textContent = type;
+    resultsBadge.textContent = i18n.t('type.' + type);
 
     const poidsVal = specs['Poids operationnel (kg / lbs)'] || '';
     const poidsNum = parseInt((poidsVal.match(/^(\d+)/) || [])[1]) || 0;
-    let classMachine = '';
+    let classMachine = '', classKey = '';
     if (poidsNum > 0) {
-        if (poidsNum < 2000) classMachine = 'Ultra-micro';
-        else if (poidsNum < 6000) classMachine = 'Mini';
-        else if (poidsNum < 10000) classMachine = 'Compact';
-        else if (poidsNum < 20000) classMachine = 'Standard';
-        else if (poidsNum < 35000) classMachine = 'Moyen';
-        else if (poidsNum < 50000) classMachine = 'Grand';
-        else if (poidsNum < 80000) classMachine = 'Tres grand';
-        else classMachine = 'Mining';
+        if (poidsNum < 2000) { classMachine = 'Ultra-micro'; classKey = 'class.ultra_micro'; }
+        else if (poidsNum < 6000) { classMachine = 'Mini'; classKey = 'class.mini'; }
+        else if (poidsNum < 10000) { classMachine = 'Compact'; classKey = 'class.compact'; }
+        else if (poidsNum < 20000) { classMachine = 'Standard'; classKey = 'class.standard'; }
+        else if (poidsNum < 35000) { classMachine = 'Moyen'; classKey = 'class.moyen'; }
+        else if (poidsNum < 50000) { classMachine = 'Grand'; classKey = 'class.grand'; }
+        else if (poidsNum < 80000) { classMachine = 'Tres grand'; classKey = 'class.tres_grand'; }
+        else { classMachine = 'Mining'; classKey = 'class.mining'; }
     }
+    let classDisplay = classKey ? i18n.t(classKey) : '';
     const tractionVal = specs['Type de traction'] || '';
-    if (tractionVal === 'Roue') classMachine += ' (sur roues)';
+    if (tractionVal === 'Roue' && classDisplay) classDisplay += ' ' + i18n.t('class.on_wheels');
 
     let html = '<table class="specs-table">';
-    if (classMachine) {
-        html += `<tr><td>Classe machine</td><td><strong>${classMachine}</strong></td></tr>`;
+    if (classDisplay) {
+        html += `<tr><td>${i18n.tSpec('Classe machine')}</td><td><strong>${classDisplay}</strong></td></tr>`;
     }
     for (const [key, value] of Object.entries(specs)) {
         if (key.charAt(0) === '_' || key === 'Flag') continue;  // cacher les cles meta (_note_tech_*, _actif, _bom, etc.)
         const dk = ` data-spec-key="${key.replace(/"/g,'&quot;')}"`;
         if (key === 'Image') {
             if (value && value.trim() !== '') {
-                html += `<tr><td>${key}</td><td${dk}><img src="${value}" alt="${fab} ${modele}" style="max-width:300px;max-height:200px;border-radius:6px;"></td></tr>`;
+                html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><img src="${value}" alt="${fab} ${modele}" style="max-width:300px;max-height:200px;border-radius:6px;"></td></tr>`;
             } else {
-                html += `<tr><td>${key}</td><td${dk} class="text-muted">Image non disponible</td></tr>`;
+                html += `<tr><td>${i18n.tSpec(key)}</td><td${dk} class="text-muted">${i18n.t('js.image_unavailable')}</td></tr>`;
             }
         } else if (key === 'Type de traction' && value === 'Roue') {
-            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><span class="flash-yellow">${i18n.tVal(value)}</span></td></tr>`;
         } else if (key === 'Type de boom' && String(value).includes('2 parties')) {
-            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><span class="flash-yellow">${i18n.tVal(value)}</span></td></tr>`;
         } else if (key === 'Swing boom' && value === 'Oui') {
-            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><span class="flash-yellow">${i18n.tVal(value)}</span></td></tr>`;
         } else if (key === 'Voltage machine (V/type)' && String(value).includes('12V')) {
-            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><span class="flash-yellow">${i18n.tVal(value)}</span></td></tr>`;
         } else if (key === 'Section telescopique' && value === 'Oui') {
-            html += `<tr><td>${key}</td><td${dk}><span class="flash-yellow">${value}</span></td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><span class="flash-yellow">${i18n.tVal(value)}</span></td></tr>`;
         } else if (key === 'Test Robin' && value && value.trim() !== '') {
-            html += `<tr><td>${key}</td><td${dk}><span style="color:#FFD54F;font-weight:600;">${value}</span></td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}><span style="color:#FFD54F;font-weight:600;">${value}</span></td></tr>`;
         } else {
-            html += `<tr><td>${key}</td><td${dk}>${value}</td></tr>`;
+            html += `<tr><td>${i18n.tSpec(key)}</td><td${dk}>${i18n.tVal(value)}</td></tr>`;
         }
     }
     html += '</table>';
 
     if (isCustom) {
         const mailTo = getMailTo();
-        const mailSubject = encodeURIComponent('Demande Kit Machine \u2014 ' + fab + ' ' + modele + ' (' + annee + ')');
+        const mailSubject = encodeURIComponent(i18n.t('email.kit_request_subject', { fab: fab, modele: modele, annee: annee }));
         const mailBody = encodeURIComponent(
-            'Bonjour,\n\n' +
-            'Veuillez configurer le kit machine pour :\n\n' +
-            '- Type : ' + type + '\n' +
-            '- Fabricant : ' + fab + '\n' +
-            '- Modele : ' + modele + '\n' +
-            '- Annee : ' + annee + '\n\n' +
-            'Merci de selectionner les options necessaires (Obligatoire / Option) pour cette machine.\n\n' +
-            'Portail Machine e-Trak\n' +
-            'https://etraksolutions.github.io/portal-machine-V2/'
+            i18n.t('email.kit_request_body', { type: i18n.t('type.' + type), fab: fab, modele: modele, annee: annee })
         );
-        var _reqText = (typeof i18n !== 'undefined') ? i18n.t('js.kit_request_text') : '\u26A0 Ce modele n\'est pas dans la base de donnees. Les specifications sont a completer.';
-        var _reqDbLabel = (typeof i18n !== 'undefined') ? i18n.t('js.req_add_to_db') : '\uD83D\uDCCB Demander l\'ajout a la BD';
+        var _reqText = i18n.t('js.kit_request_text');
+        var _reqDbLabel = i18n.t('js.req_add_to_db');
         html += '<div class="kit-request-box">' +
             '<p class="kit-request-text">' + _reqText + '</p>' +
-            '<a href="mailto:' + mailTo + '?subject=' + mailSubject + '&body=' + mailBody + '" id="kit-email-request-btn" class="kit-request-btn">\uD83D\uDCE7 Demande kit machine</a>' +
+            '<a href="mailto:' + mailTo + '?subject=' + mailSubject + '&body=' + mailBody + '" id="kit-email-request-btn" class="kit-request-btn">' + i18n.t('js.kit_request_btn') + '</a>' +
             '<button type="button" id="db-request-btn" class="kit-request-btn kit-request-btn-db">' + _reqDbLabel + '</button>' +
             '</div>';
     }
@@ -514,8 +507,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             if (codes.length > 0) {
                 var pcDiv = document.createElement('div');
                 pcDiv.className = 'product-codes-section';
-                pcDiv.innerHTML = '<h4 class="pc-title">Codes produit</h4>' +
-                    '<table class="specs-table pc-table"><thead><tr><th>Code</th><th>Description</th><th>Qte</th></tr></thead><tbody>' +
+                pcDiv.innerHTML = '<h4 class="pc-title">' + i18n.t('machine.codes_title') + '</h4>' +
+                    '<table class="specs-table pc-table"><thead><tr><th>' + i18n.t('edit.ph_code') + '</th><th>' + i18n.t('edit.ph_description') + '</th><th>' + i18n.t('common.qty') + '</th></tr></thead><tbody>' +
                     codes.map(function(c) {
                         return '<tr><td><strong>' + c.code + '</strong></td><td>' + (c.desc || '') + '</td><td>' + (c.qty || 1) + '</td></tr>';
                     }).join('') +
@@ -588,7 +581,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                     if (statusCell) {
                         if (state === 'v') {
                             // A verifier : badge orange distinct (ni obligatoire ni optionnel)
-                            statusCell.innerHTML = '<span class="kit-verif-badge" style="display:inline-block;padding:2px 8px;border-radius:10px;background:#FFF1DC;color:#B25E00;border:1px solid #E07B00;font-size:0.72rem;font-weight:600;white-space:nowrap">&#128992; À vérifier</span>';
+                            statusCell.innerHTML = '<span class="kit-verif-badge" style="display:inline-block;padding:2px 8px;border-radius:10px;background:#FFF1DC;color:#B25E00;border:1px solid #E07B00;font-size:0.72rem;font-weight:600;white-space:nowrap">' + i18n.t('edit.status_v') + '</span>';
                         } else {
                             // Ensure radios exist
                             var radioName = statusCell.querySelector('input[type="radio"]');
@@ -756,7 +749,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 var rows = '';
                 var dotFor = function(st) {
                     if (st === 'r') return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#CC0000"></span>';
-                    if (st === 'v') return '<span class="kit-verif-badge" style="display:inline-block;padding:2px 8px;border-radius:10px;background:#FFF1DC;color:#B25E00;border:1px solid #E07B00;font-size:0.72rem;font-weight:600;white-space:nowrap">&#128992; À vérifier</span>';
+                    if (st === 'v') return '<span class="kit-verif-badge" style="display:inline-block;padding:2px 8px;border-radius:10px;background:#FFF1DC;color:#B25E00;border:1px solid #E07B00;font-size:0.72rem;font-weight:600;white-space:nowrap">' + i18n.t('edit.status_v') + '</span>';
                     return '<span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:#E6B400"></span>';
                 };
                 Object.keys(labelsG).forEach(function(key) {
@@ -779,7 +772,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                                 '<td class="kit-status-cell" style="text-align:center">' + dotFor(c.status === 'r' ? 'r' : (c.status === 'v' ? 'v' : 'j')) + '</td></tr>';
                     });
                 }
-                gBody.innerHTML = rows || '<tr><td colspan="3" style="color:#888;padding:0.6rem">Aucune option pour cette machine</td></tr>';
+                gBody.innerHTML = rows || '<tr><td colspan="3" style="color:#888;padding:0.6rem">' + i18n.t('machine.no_option') + '</td></tr>';
             };
             renderGeneric(null);  // defauts de la BD d'abord
             loadKitOverride(type, fab, modele, annee, function(overrides) { renderGeneric(overrides || {}); });
@@ -870,12 +863,12 @@ function renderKitFlagBtn(type, fab, modele, annee, fc) {
 
     var btn = document.createElement('button');
     btn.id = 'kit-flag-btn';
-    btn.title = isActive ? 'D\u00e9faut signal\u00e9 \u2014 cliquer pour g\u00e9rer' : 'Signaler un d\u00e9faut BOM';
+    btn.title = isActive ? i18n.t('machine.flag_btn_title_active') : i18n.t('machine.flag_btn_title');
     if (isActive) {
-        btn.innerHTML = '\uD83D\uDEA9 <span style="font-size:0.78rem;">V\u00e9rification requise</span>';
+        btn.innerHTML = '\uD83D\uDEA9 <span style="font-size:0.78rem;">' + i18n.t('machine.flag_verif_required') + '</span>';
         btn.style.cssText = 'background:#7f1d1d;border:1px solid #ef4444;color:#fca5a5;cursor:pointer;font-size:0.82rem;font-weight:700;padding:5px 12px;border-radius:7px;line-height:1.3;transition:all 0.15s;white-space:nowrap;';
     } else {
-        btn.innerHTML = '\uD83C\uDFF3\uFE0F <span style="font-size:0.82rem;">Red Flag</span>';
+        btn.innerHTML = '\uD83C\uDFF3\uFE0F <span style="font-size:0.82rem;">' + i18n.t('machine.flag_redflag') + '</span>';
         btn.style.cssText = 'background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.55);cursor:pointer;font-size:0.82rem;font-weight:600;padding:5px 12px;border-radius:7px;line-height:1.3;transition:all 0.15s;white-space:nowrap;';
         btn.addEventListener('mouseenter', function() { this.style.background='rgba(239,68,68,0.15)'; this.style.borderColor='rgba(239,68,68,0.5)'; this.style.color='#fca5a5'; });
         btn.addEventListener('mouseleave', function() { this.style.background='rgba(255,255,255,0.07)'; this.style.borderColor='rgba(255,255,255,0.18)'; this.style.color='rgba(255,255,255,0.55)'; });
@@ -899,16 +892,16 @@ function openKitFlagPopup(type, fab, modele, annee, fc) {
     var box = document.createElement('div');
     box.style.cssText = 'background:#1e1e2e;border:1px solid #333;border-radius:12px;padding:22px 20px;max-width:360px;width:90%;color:#e0e0e0;font-family:inherit;';
     box.innerHTML =
-        '<h4 style="margin:0 0 6px;color:#fff;font-size:1rem;">\uD83D\uDEA9 ' + (isActive ? 'Drapeau actif' : 'Signaler un d\u00e9faut BOM') + '</h4>' +
+        '<h4 style="margin:0 0 6px;color:#fff;font-size:1rem;">\uD83D\uDEA9 ' + (isActive ? i18n.t('machine.flag_popup_active') : i18n.t('machine.flag_btn_title')) + '</h4>' +
         '<p style="color:#888;font-size:0.8rem;margin:0 0 14px;">' + fab + ' ' + modele + ' (' + annee + ')</p>' +
         (isActive ? '<div style="background:#111;border-radius:6px;padding:10px 12px;font-size:0.82rem;margin-bottom:14px;color:#aaa;">' +
-            (fi.note ? '\u201C' + fi.note + '\u201D' : '<em style="color:#555;">Sans note</em>') +
-            '<br><span style="font-size:0.74rem;color:#555;">par ' + fi.flaggedBy + ' \u2014 ' + fi.flaggedAt + '</span></div>' : '') +
-        (!isActive ? '<textarea id="kit-flag-note" placeholder="Note (optionnel)..." style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#e0e0e0;border-radius:6px;padding:8px;font-size:0.82rem;resize:vertical;min-height:60px;margin-bottom:14px;font-family:inherit;"></textarea>' : '') +
+            (fi.note ? '\u201C' + fi.note + '\u201D' : '<em style="color:#555;">' + i18n.t('machine.flag_no_note') + '</em>') +
+            '<br><span style="font-size:0.74rem;color:#555;">' + i18n.t('machine.flag_by', { by: fi.flaggedBy, at: fi.flaggedAt }) + '</span></div>' : '') +
+        (!isActive ? '<textarea id="kit-flag-note" placeholder="' + i18n.t('machine.flag_note_ph') + '" style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;color:#e0e0e0;border-radius:6px;padding:8px;font-size:0.82rem;resize:vertical;min-height:60px;margin-bottom:14px;font-family:inherit;"></textarea>' : '') +
         '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
-            (!isActive ? '<button id="kit-flag-set-btn" style="flex:1;background:#e53935;color:#fff;border:none;padding:9px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:0.85rem;">\uD83D\uDEA9 Poser le drapeau</button>' : '') +
-            (isActive ? '<button id="kit-flag-resolve-btn" style="flex:1;background:#2e7d32;color:#fff;border:none;padding:9px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:0.85rem;">\u2705 Marqu\u00e9 comme v\u00e9rifi\u00e9</button>' : '') +
-            '<button id="kit-flag-cancel-btn" style="background:#222;color:#aaa;border:1px solid #444;padding:9px 14px;border-radius:7px;cursor:pointer;font-size:0.85rem;">Annuler</button>' +
+            (!isActive ? '<button id="kit-flag-set-btn" style="flex:1;background:#e53935;color:#fff;border:none;padding:9px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:0.85rem;">' + i18n.t('machine.flag_set_btn') + '</button>' : '') +
+            (isActive ? '<button id="kit-flag-resolve-btn" style="flex:1;background:#2e7d32;color:#fff;border:none;padding:9px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:0.85rem;">' + i18n.t('machine.flag_resolve_btn') + '</button>' : '') +
+            '<button id="kit-flag-cancel-btn" style="background:#222;color:#aaa;border:1px solid #444;padding:9px 14px;border-radius:7px;cursor:pointer;font-size:0.85rem;">' + i18n.t('common.annuler') + '</button>' +
         '</div>';
     overlay.appendChild(box);
     document.body.appendChild(overlay);
@@ -987,7 +980,7 @@ function saveNotes() {
     var now = new Date();
     var dateStr = now.toLocaleDateString('fr-CA') + ' ' + now.toLocaleTimeString('fr-CA');
 
-    notesStatus.textContent = 'Enregistrement...';
+    notesStatus.textContent = i18n.t('js.saving');
     // Met a jour la copie en memoire (BD = maitre)
     try { machinesData[typeM][fab][annee][modele]._notes = noteContent; } catch(e) {}
     fetch(API_URL, {
@@ -1003,7 +996,7 @@ function saveNotes() {
     .then(r => r.json())
     .then(data => {
         if (data.ok) {
-            notesStatus.textContent = 'Enregistre avec succes!';
+            notesStatus.textContent = i18n.t('js.saved');
             // Send email notification to notes emails
             if (noteContent.trim()) {
                 fetch(API_URL + '?action=get&key=notes_emails')
@@ -1012,30 +1005,30 @@ function saveNotes() {
                         var emails = [];
                         if (emailData.value) { try { emails = JSON.parse(emailData.value); } catch(e) {} }
                         if (emails.length > 0) {
-                            var subject = 'Note Portail e-Trak — ' + fab + ' ' + modele + ' (' + annee + ')';
-                            var body = 'Nouvelle note enregistree sur le Portail e-Trak\n\n' +
-                                '=== DETAILS ===\n' +
-                                'Type: ' + typeM + '\n' +
-                                'Fabricant: ' + fab + '\n' +
-                                'Modele: ' + modele + '\n' +
-                                'Annee: ' + annee + '\n' +
-                                'Ecrite par: ' + userName + '\n' +
-                                'Date/Heure: ' + dateStr + '\n\n' +
-                                '=== CONTENU DE LA NOTE ===\n' +
+                            var subject = i18n.t('email.note_subject', { fab: fab, modele: modele, annee: annee });
+                            var body = i18n.t('email.note_body_header') + '\n\n' +
+                                i18n.t('email.note_details') + '\n' +
+                                i18n.t('email.note_type', { type: i18n.t('type.' + typeM) }) + '\n' +
+                                i18n.t('email.note_fab', { fab: fab }) + '\n' +
+                                i18n.t('email.note_modele', { modele: modele }) + '\n' +
+                                i18n.t('email.note_annee', { annee: annee }) + '\n' +
+                                i18n.t('email.note_written_by', { name: userName }) + '\n' +
+                                i18n.t('email.note_datetime', { datetime: dateStr }) + '\n\n' +
+                                i18n.t('email.note_content_header') + '\n' +
                                 noteContent + '\n\n' +
                                 '---\n' +
-                                'Portail e-Trak — e-Trak Technology Solutions';
+                                i18n.t('email.note_footer');
                             window.location.href = 'mailto:' + emails.join(',') + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
                         }
                     })
                     .catch(function() {});
             }
         } else {
-            notesStatus.textContent = 'Erreur: ' + (data.error || 'inconnue');
+            notesStatus.textContent = i18n.t('js.save_error', { error: (data.error || i18n.t('common.unknown')) });
         }
     })
     .catch(() => {
-        notesStatus.textContent = 'Sauvegarde locale seulement (hors-ligne)';
+        notesStatus.textContent = i18n.t('js.offline_save');
     });
 }
 
@@ -1319,9 +1312,9 @@ function enterKitEditMode() {
         var select = document.createElement('select');
         select.className = 'kit-status-select';
         select.innerHTML =
-            '<option value="red"' + (currentStatus === 'red' ? ' selected' : '') + '>Obligatoire</option>' +
-            '<option value="yellow"' + (currentStatus === 'yellow' ? ' selected' : '') + '>Optionnel</option>' +
-            '<option value="na"' + (currentStatus === 'na' ? ' selected' : '') + '>N/A</option>';
+            '<option value="red"' + (currentStatus === 'red' ? ' selected' : '') + '>' + i18n.t('common.obligatoire') + '</option>' +
+            '<option value="yellow"' + (currentStatus === 'yellow' ? ' selected' : '') + '>' + i18n.t('common.optionnel') + '</option>' +
+            '<option value="na"' + (currentStatus === 'na' ? ' selected' : '') + '>' + i18n.t('db.legend_na') + '</option>';
         statusCell.innerHTML = '';
         statusCell.appendChild(select);
 
@@ -1331,7 +1324,7 @@ function enterKitEditMode() {
             var deleteBtn = document.createElement('button');
             deleteBtn.className = 'kit-delete-row-btn';
             deleteBtn.textContent = '\u2715';
-            deleteBtn.title = 'Supprimer cette option';
+            deleteBtn.title = i18n.t('js.option_delete_title');
             deleteBtn.addEventListener('click', function() { tr.remove(); });
             tr.cells[0].appendChild(deleteBtn);
         }
@@ -1348,10 +1341,10 @@ function enterKitEditMode() {
     var actions = document.createElement('div');
     actions.className = 'kit-edit-actions';
     actions.innerHTML =
-        '<button id="kit-add-row-btn" class="kit-add-row-btn">+ Ajouter une option</button>' +
+        '<button id="kit-add-row-btn" class="kit-add-row-btn">' + i18n.t('js.add_option') + '</button>' +
         '<div class="kit-edit-btns">' +
-        '<button id="kit-save-btn" class="kit-save-btn">Sauvegarder</button>' +
-        '<button id="kit-cancel-btn" class="kit-cancel-btn">Annuler</button>' +
+        '<button id="kit-save-btn" class="kit-save-btn">' + i18n.t('common.sauvegarder') + '</button>' +
+        '<button id="kit-cancel-btn" class="kit-cancel-btn">' + i18n.t('common.annuler') + '</button>' +
         '</div>';
     kitSection.appendChild(actions);
 
@@ -1361,13 +1354,13 @@ function enterKitEditMode() {
     addForm.className = 'kit-add-row-form';
     addForm.style.display = 'none';
     addForm.innerHTML =
-        '<input type="text" id="kit-new-label" class="kit-new-input" placeholder="Nom de l\'option">' +
-        '<input type="text" id="kit-new-code" class="kit-new-input" placeholder="Code produit (ex: 1500-XXXX)">' +
+        '<input type="text" id="kit-new-label" class="kit-new-input" placeholder="' + i18n.t('js.option_name_placeholder') + '">' +
+        '<input type="text" id="kit-new-code" class="kit-new-input" placeholder="' + i18n.t('js.option_code_placeholder') + '">' +
         '<select id="kit-new-status" class="kit-status-select">' +
-        '<option value="red">Obligatoire</option>' +
-        '<option value="yellow" selected>Optionnel</option>' +
+        '<option value="red">' + i18n.t('common.obligatoire') + '</option>' +
+        '<option value="yellow" selected>' + i18n.t('common.optionnel') + '</option>' +
         '</select>' +
-        '<button id="kit-new-add" class="kit-new-add-btn">Ajouter</button>';
+        '<button id="kit-new-add" class="kit-new-add-btn">' + i18n.t('common.ajouter') + '</button>';
     kitSection.insertBefore(addForm, actions);
 
     // Event listeners
@@ -1387,11 +1380,11 @@ function enterKitEditMode() {
         tr.setAttribute('data-custom', 'true');
         tr.setAttribute('data-custom-id', customId);
         var select = '<select class="kit-status-select">' +
-            '<option value="red"' + (status === 'red' ? ' selected' : '') + '>Obligatoire</option>' +
-            '<option value="yellow"' + (status === 'yellow' ? ' selected' : '') + '>Optionnel</option>' +
-            '<option value="na">N/A</option></select>';
+            '<option value="red"' + (status === 'red' ? ' selected' : '') + '>' + i18n.t('common.obligatoire') + '</option>' +
+            '<option value="yellow"' + (status === 'yellow' ? ' selected' : '') + '>' + i18n.t('common.optionnel') + '</option>' +
+            '<option value="na">' + i18n.t('db.legend_na') + '</option></select>';
         tr.innerHTML =
-            '<td>' + label + '<button class="kit-delete-row-btn" title="Supprimer">\u2715</button></td>' +
+            '<td>' + label + '<button class="kit-delete-row-btn" title="' + i18n.t('edit.t_delete') + '">\u2715</button></td>' +
             '<td class="kit-code">' + code + '</td>' +
             '<td class="kit-status-cell">' + select + '</td>' +
             '<td class="kit-check-cell"><input type="checkbox" class="kit-checkbox"></td>';
@@ -1449,7 +1442,7 @@ function saveKitEditMode() {
     saveKitOverride(overrideData);
 
     exitKitEditMode(true);
-    showKitToast('Configuration kit sauvegardee');
+    showKitToast(i18n.t('js.kit_saved'));
 }
 
 function exitKitEditMode(applyChanges) {
@@ -1525,7 +1518,7 @@ function renderEmailList() {
     targetEmails.forEach((email, i) => {
         const item = document.createElement('div');
         item.className = 'email-item';
-        item.innerHTML = '<span>' + email + '</span><button class="email-delete-btn ' + (canEdit ? 'visible' : '') + '" data-idx="' + i + '" title="Supprimer">\u2715</button>';
+        item.innerHTML = '<span>' + email + '</span><button class="email-delete-btn ' + (canEdit ? 'visible' : '') + '" data-idx="' + i + '" title="' + i18n.t('edit.t_delete') + '">\u2715</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.email-delete-btn').forEach(btn => {
@@ -1589,9 +1582,9 @@ function renderUserList() {
     AUTHORIZED_USERS.forEach(function(user, i) {
         var item = document.createElement('div');
         item.className = 'email-item';
-        var roleLabel = ROLES[user.role] ? ROLES[user.role].label : user.role;
+        var roleLabel = i18n.t('role.' + user.role);
         item.innerHTML = '<span>' + user.name + ' \u2014 ' + roleLabel + '</span>' +
-            '<button class="email-delete-btn user-delete-btn ' + (canEdit ? 'visible' : '') + '" data-idx="' + i + '" title="Supprimer">\u2715</button>';
+            '<button class="email-delete-btn user-delete-btn ' + (canEdit ? 'visible' : '') + '" data-idx="' + i + '" title="' + i18n.t('edit.t_delete') + '">\u2715</button>';
         list.appendChild(item);
     });
     list.querySelectorAll('.user-delete-btn').forEach(function(btn) {
@@ -1733,12 +1726,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (options.length === 0) return;
 
             var mailTo = getMailTo();
-            var subject = 'Soumission Kit Machine — ' + fab + ' ' + modele + ' (' + annee + ')';
+            var subject = i18n.t('email.kit_quote_subject', { fab: fab, modele: modele, annee: annee });
             var body =
-                'Demande de soumission Kit Machine e-Trak\n\n' +
-                'Machine: ' + fab + ' ' + modele + ' (' + annee + ')\n' +
-                'Demande par: ' + currentUser.username + '\n\n' +
-                'Options selectionnees:\n' +
+                i18n.t('email.kit_quote_header') + '\n\n' +
+                i18n.t('email.machine_header') + ' ' + fab + ' ' + modele + ' (' + annee + ')\n' +
+                i18n.t('email.requested_by', { name: currentUser.username }) + '\n\n' +
+                i18n.t('soumission.selected_options') + ':\n' +
                 options.map(function(o) { return '  - ' + o; }).join('\n') +
                 '\n\nPortail Machine e-Trak\nhttps://etraksolutions.github.io/portal-machine-V2/';
 
@@ -1885,7 +1878,7 @@ function lockKit() {
     var kitTable = document.querySelector('.kit-table');
     var btn = document.getElementById('kit-lock-btn');
     if (kitTable) kitTable.classList.add('kit-locked');
-    if (btn) { btn.innerHTML = '&#128274;'; btn.classList.remove('unlocked', 'editing'); btn.title = 'Deverrouiller'; }
+    if (btn) { btn.innerHTML = '&#128274;'; btn.classList.remove('unlocked', 'editing'); btn.title = i18n.t('machine.kit_unlock_title'); }
     lockNotes();
 }
 
@@ -1894,7 +1887,7 @@ function unlockKit() {
     var kitTable = document.querySelector('.kit-table');
     var btn = document.getElementById('kit-lock-btn');
     if (kitTable) kitTable.classList.remove('kit-locked');
-    if (btn) { btn.innerHTML = '&#128275;'; btn.classList.add('unlocked'); btn.classList.remove('editing'); btn.title = 'Cliquer pour modifier les jetons'; }
+    if (btn) { btn.innerHTML = '&#128275;'; btn.classList.add('unlocked'); btn.classList.remove('editing'); btn.title = i18n.t('machine.kit_edit_tokens_title'); }
     unlockNotes();
 }
 
@@ -1945,6 +1938,14 @@ window.addEventListener('langchange', function() {
     // Re-translate "Other model" option
     var otherOpt = selectModele.querySelector('option[value="__OTHER__"]');
     if (otherOpt) otherOpt.textContent = (typeof i18n !== 'undefined') ? i18n.t('js.other_model') : otherOpt.textContent;
+    // Si une machine est affichee, re-render la fiche (badge type, classe, specs) dans la nouvelle langue.
+    try {
+        var m = window.__currentMachine;
+        if (m && resultsSection && resultsSection.style.display !== 'none') {
+            var sp = machinesData[m.type][m.fab][m.annee][m.modele];
+            if (sp) showResults(m.modele, m.type, m.fab, m.annee, sp, false);
+        }
+    } catch (e) {}
 });
 
 // Auto-unlock if user has permission, otherwise lock

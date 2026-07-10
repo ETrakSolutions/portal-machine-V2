@@ -44,7 +44,7 @@
             var types = Object.keys(fullData).filter(function (k) { return k.charAt(0) !== '_'; }).sort();
             sel.innerHTML = '';
             types.forEach(function (ty) {
-                var o = document.createElement('option'); o.value = ty; o.textContent = ty; sel.appendChild(o);
+                var o = document.createElement('option'); o.value = ty; o.textContent = t('type.' + ty, ty); sel.appendChild(o);
             });
         }
 
@@ -87,7 +87,7 @@
             active.forEach(function (r) {
                 var exists = machineExists(r.type, r.fab, r.annee, r.modele);
                 html += '<tr data-id="' + esc(r.id) + '">' +
-                    '<td>' + esc(r.type) + '</td>' +
+                    '<td>' + esc(t('type.' + r.type, r.type)) + '</td>' +
                     '<td>' + esc(r.fab) + '</td>' +
                     '<td>' + esc(r.modele) + '</td>' +
                     '<td>' + esc(r.annee) + '</td>' +

@@ -152,7 +152,7 @@ function watermarkLabel() {
     var name = (u.name || '').trim();
     var mail = (u.email || u.username || '').trim();
     if (name && mail) return name + '  ·  ' + mail;
-    return name || mail || 'e-Trak — confidentiel';
+    return name || mail || i18n.t('common.confidential');
 }
 function watermarkBg() {
     var txt = watermarkLabel().replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -408,16 +408,16 @@ function showOptions() {
     // Update options title and description with machine info
     var titleEl = document.getElementById('options-title');
     if (titleEl) {
-        titleEl.textContent = 'Options pour ' + fab + ' ' + modele + ' (' + annee + ')';
+        titleEl.textContent = i18n.t('soumission.options_for', { fab: fab, modele: modele, annee: annee });
     }
     var descEl = document.getElementById('options-machine-desc');
     if (descEl) {
-        descEl.textContent = 'Selectionnez les produits souhaites pour cette machine.';
+        descEl.textContent = i18n.t('soumission.options_desc');
     }
 
     var infoEl = document.getElementById('soumission-machine-info');
     if (infoEl) {
-        infoEl.textContent = 'Machine : ' + fab + ' ' + modele + ' (' + annee + ') — ' + type;
+        infoEl.textContent = 'Machine : ' + fab + ' ' + modele + ' (' + annee + ') — ' + i18n.t('type.' + type);
     }
 
     // Reset all toggle boxes
@@ -613,18 +613,18 @@ function renderSpecsTable(type, fab, annee, modele) {
     var poidsStr = specs['Poids operationnel (kg / lbs)'] || '';
     var poidsMatch = poidsStr.match(/^(\d+)/);
     var poidsKg = poidsMatch ? parseInt(poidsMatch[1]) : 0;
-    var classe = '';
+    var classe = '', classeKey = '';
     if (poidsKg > 0) {
-        if (poidsKg < 2000) classe = 'Ultra-micro';
-        else if (poidsKg < 6000) classe = 'Mini';
-        else if (poidsKg < 10000) classe = 'Compact';
-        else if (poidsKg < 20000) classe = 'Standard';
-        else if (poidsKg < 35000) classe = 'Moyen';
-        else if (poidsKg < 50000) classe = 'Grand';
-        else if (poidsKg < 80000) classe = 'Tres grand';
-        else classe = 'Mining';
+        if (poidsKg < 2000) { classe = 'Ultra-micro'; classeKey = 'class.ultra_micro'; }
+        else if (poidsKg < 6000) { classe = 'Mini'; classeKey = 'class.mini'; }
+        else if (poidsKg < 10000) { classe = 'Compact'; classeKey = 'class.compact'; }
+        else if (poidsKg < 20000) { classe = 'Standard'; classeKey = 'class.standard'; }
+        else if (poidsKg < 35000) { classe = 'Moyen'; classeKey = 'class.moyen'; }
+        else if (poidsKg < 50000) { classe = 'Grand'; classeKey = 'class.grand'; }
+        else if (poidsKg < 80000) { classe = 'Tres grand'; classeKey = 'class.tres_grand'; }
+        else { classe = 'Mining'; classeKey = 'class.mining'; }
     }
-    if (classe) html += '<tr><td>Classe machine</td><td><strong>' + classe + '</strong></td></tr>';
+    if (classe) html += '<tr><td>' + i18n.tSpec('Classe machine') + '</td><td><strong>' + i18n.t(classeKey) + '</strong></td></tr>';
 
     for (var key in specs) {
         var val = specs[key];
@@ -639,14 +639,16 @@ function renderSpecsTable(type, fab, annee, modele) {
         if (key === 'Swing boom' && val === 'Oui') highlight = true;
         if (key === 'Voltage machine (V/type)' && String(val).includes('12V')) highlight = true;
 
+        var kLabel = i18n.tSpec(key);
+        var vLabel = i18n.tVal(val);
         if (highlight) {
-            html += '<tr><td>' + key + '</td><td><span class="flash-yellow">' + val + '</span></td></tr>';
+            html += '<tr><td>' + kLabel + '</td><td><span class="flash-yellow">' + vLabel + '</span></td></tr>';
         } else {
-            html += '<tr><td>' + key + '</td><td>' + val + '</td></tr>';
+            html += '<tr><td>' + kLabel + '</td><td>' + vLabel + '</td></tr>';
         }
     }
 
-    table.innerHTML = html || '<tr><td colspan="2" style="color:#666;">Aucune specification disponible</td></tr>';
+    table.innerHTML = html || '<tr><td colspan="2" style="color:#666;">' + i18n.t('soumission.no_specs') + '</td></tr>';
 }
 
 function loadNotesForModel(fab, modele, annee) {
@@ -866,7 +868,7 @@ function showSoumissionCustomModelModal(type, fab) {
     modal.innerHTML =
         '<div class="custom-modal">' +
         '<h3>' + t('soum.req_title', 'Machine absente de la liste') + '</h3>' +
-        '<p class="modal-desc">' + fab + ' — ' + type + '</p>' +
+        '<p class="modal-desc">' + fab + ' — ' + t('type.' + type, type) + '</p>' +
         '<input type="text" id="custom-model-name" class="modal-input" placeholder="' + t('soum.req_model_ph', 'Nom du modele') + '" autocomplete="off">' +
         '<input type="text" id="custom-model-year" class="modal-input" inputmode="numeric" placeholder="' + t('soum.req_year_ph', 'Annee (ex: 2026)') + '" autocomplete="off" style="margin-top:0.5rem">' +
         '<div class="modal-buttons">' +
@@ -1076,7 +1078,7 @@ if (submitBtn) {
         var nbSystemes = _fieldVal('soumission-nb-systemes');
         var lieuInstall = _fieldVal('soumission-lieu');
         var dateInstall = _fieldVal('soumission-date-install');
-        var userName = currentUser ? currentUser.name : 'Utilisateur non connecte';
+        var userName = currentUser ? currentUser.name : i18n.t('common.user_not_connected');
         // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
         var vendeurEmail = '';
         var vendeurName = '';
@@ -1102,7 +1104,7 @@ if (submitBtn) {
             .map(function(e) { return (e || '').trim(); })
             .filter(function(e) { return e; })
             .join(';');
-        var subject = 'Demande de soumission \u2014 ' + fab + ' ' + modele + ' (' + annee + ')';
+        var subject = i18n.t('email.soumission_subject', { fab: fab, modele: modele, annee: annee });
         // Get kit machine summary
         var specs = {};
         if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
@@ -1134,41 +1136,41 @@ if (submitBtn) {
             if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
             if (sKey === 'Voltage machine (V/type)' && String(sVal).indexOf('12V') >= 0) highlight = true;
             if (highlight) {
-                specsText += '  ' + sKey + ' : *** ' + sVal.toUpperCase() + ' ***\n';
+                specsText += '  ' + i18n.tSpec(sKey) + ' : *** ' + String(i18n.tVal(sVal)).toUpperCase() + ' ***\n';
             } else {
-                specsText += '  ' + sKey + ' : ' + sVal + '\n';
+                specsText += '  ' + i18n.tSpec(sKey) + ' : ' + i18n.tVal(sVal) + '\n';
             }
         });
 
         var body =
-            'Demande de soumission e-Trak\n' +
+            i18n.t('email.soumission_header') + '\n' +
             '================================\n\n';
 
         // Compagnie/dealer + installation + Notes (top of email)
         if (companyName) {
-            body += 'Concessionnaire et client: ' + companyName + '\n';
+            body += i18n.t('email.company', { name: companyName }) + '\n';
         }
         if (nbSystemes) {
-            body += 'Nombre d\'unite: ' + nbSystemes + '\n';
+            body += i18n.t('email.nb_units', { n: nbSystemes }) + '\n';
         }
         if (lieuInstall) {
-            body += 'Lieu d\'installation: ' + lieuInstall + '\n';
+            body += i18n.t('email.location', { loc: lieuInstall }) + '\n';
         }
         if (dateInstall) {
-            body += 'Date d\'installation souhaitee: ' + dateInstall + '\n';
+            body += i18n.t('email.install_date', { date: dateInstall }) + '\n';
         }
         if (currentNotes && currentNotes.trim()) {
-            body += 'Notes machine: ' + currentNotes.trim() + '\n';
+            body += i18n.t('email.notes_machine', { notes: currentNotes.trim() }) + '\n';
         }
         if (companyName || nbSystemes || lieuInstall || dateInstall || (currentNotes && currentNotes.trim())) {
             body += '\n';
         }
 
-        body += 'Machine:\n' +
-            '  Type : ' + type + '\n' +
-            '  Fabricant : ' + fab + '\n' +
-            '  Modele : ' + modele + '\n' +
-            '  Annee : ' + annee + '\n';
+        body += i18n.t('email.machine_header') + '\n' +
+            i18n.t('email.type', { type: i18n.t('type.' + type) }) + '\n' +
+            i18n.t('email.fabricant', { fab: fab }) + '\n' +
+            i18n.t('email.modele', { modele: modele }) + '\n' +
+            i18n.t('email.annee', { annee: annee }) + '\n';
 
         // Warning : items du kit a valider
         var _avItems = aValiderItems();
@@ -1184,7 +1186,7 @@ if (submitBtn) {
 
         // Specs machine
         if (specsText) {
-            body += '\nSpecifications:\n' + specsText;
+            body += '\n' + i18n.t('email.specs_header') + '\n' + specsText;
         }
 
         // Produits / kit demandes : EXACTEMENT la meme selection que l'ecran.
@@ -1201,7 +1203,7 @@ if (submitBtn) {
 
         if (selRows.length > 0) {
             var anyOblig = false;
-            body += '\nProduits / kit demandes:\n';
+            body += '\n' + i18n.t('email.products_header') + '\n';
             selRows.forEach(function (r) {
                 var pr = priceFor(r.code);
                 if (typeof pr.item === 'number') _totItem += pr.item;
@@ -1210,26 +1212,26 @@ if (submitBtn) {
                 var mark = r.oblig ? '* ' : '';
                 body += '  - ' + mark + (r.code ? r.code + '  ' : '') + r.name + '\n';
             });
-            if (anyOblig) body += '  (* inclus dans le kit, obligatoire)\n';
+            if (anyOblig) body += i18n.t('email.kit_included') + '\n';
         }
 
         // Une seule ligne de totaux en bas (prix indicatifs, hors taxes).
         if (_totItem > 0 || _totInstall > 0) {
-            body += '\nTotal pieces : ' + fmtPrice(_totItem) +
-                    '   |   Total installation : ' + fmtPrice(_totInstall) +
-                    '   (indicatif, hors taxes)\n';
+            body += '\n' + i18n.t('email.total_parts') + ' : ' + fmtPrice(_totItem) +
+                    '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(_totInstall) +
+                    '   ' + i18n.t('email.total_indicative') + '\n';
         }
 
         if (comment) {
-            body += '\nInformation supplementaire:\n  ' + comment + '\n';
+            body += '\n' + i18n.t('email.additional_info') + '\n  ' + comment + '\n';
         }
 
         if (vendeurName) {
-            body += '\nVendeur associe : ' + vendeurName + ' (' + vendeurEmail + ')\n';
+            body += '\n' + i18n.t('email.vendeur', { name: vendeurName, email: vendeurEmail }) + '\n';
         }
 
         body += '\n--------------------------------\n' +
-            'Demande par : ' + userName + '\n' +
+            i18n.t('email.requested_by', { name: userName }) + '\n' +
             'Portail e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine-V2/';
 
@@ -1663,21 +1665,21 @@ function updateSelectedSummary() {
         var totalRow = '';
         if (anyPrice) {
             totalRow = '<tr style="border-top:2px solid #555;font-weight:700">' +
-                '<td style="padding:6px 10px 4px 0">TOTAL <span style="font-weight:400;color:#aaa">(combiné : ' + fmtPrice(totItem + totInstall) + ')</span></td>' +
+                '<td style="padding:6px 10px 4px 0">' + i18n.t('soum.tbl_total') + ' <span style="font-weight:400;color:#aaa">(' + i18n.t('soum.tbl_combined', { total: fmtPrice(totItem + totInstall) }) + ')</span></td>' +
                 '<td style="padding:6px 8px 4px;text-align:right;color:#FF8C00">' + fmtPrice(totItem) + '</td>' +
                 '<td style="padding:6px 0 4px 8px;text-align:right;color:#FF8C00">' + fmtPrice(totInstall) + '</td>' +
                 '</tr>';
         }
         var noteRow = currentNotes
-            ? '<tr><td colspan="3" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">Note : ' + currentNotes + '</td></tr>'
+            ? '<tr><td colspan="3" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
             : '';
 
         list.innerHTML =
             '<table style="width:100%;border-collapse:collapse;font-size:0.9rem">' +
             '<thead><tr style="border-bottom:1px solid #555;color:#9fb4c8;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">' +
-            '<th style="text-align:left;padding:0 10px 5px 0">Produit</th>' +
-            '<th style="text-align:right;padding:0 8px 5px">Prix</th>' +
-            '<th style="text-align:right;padding:0 0 5px 8px">Installation</th>' +
+            '<th style="text-align:left;padding:0 10px 5px 0">' + i18n.t('soum.tbl_product') + '</th>' +
+            '<th style="text-align:right;padding:0 8px 5px">' + i18n.t('soum.tbl_price') + '</th>' +
+            '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_install') + '</th>' +
             '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>';
         // Filigrane du nom du user en fond du tableau de prix (dissuasion capture d'ecran).
         // Applique seulement si des prix sont reellement affiches.
@@ -1953,6 +1955,19 @@ window.addEventListener('langchange', function() {
         var first = sel.options[0];
         if (first && first.value === '') first.textContent = sel_txt;
     });
+    // Si une machine est deja affichee, re-render le contenu genere en JS
+    // (titre options, tableau de specs, resume/prix) dans la nouvelle langue.
+    if (selectType.value && selectFabricant.value && selectAnnee.value && selectModele.value) {
+        var _type = selectType.value, _fab = selectFabricant.value, _an = selectAnnee.value, _mod = selectModele.value;
+        var titleEl = document.getElementById('options-title');
+        if (titleEl) titleEl.textContent = i18n.t('soumission.options_for', { fab: _fab, modele: _mod, annee: _an });
+        var descEl = document.getElementById('options-machine-desc');
+        if (descEl) descEl.textContent = i18n.t('soumission.options_desc');
+        var infoEl = document.getElementById('soumission-machine-info');
+        if (infoEl) infoEl.textContent = 'Machine : ' + _fab + ' ' + _mod + ' (' + _an + ') — ' + i18n.t('type.' + _type);
+        try { renderSpecsTable(_type, _fab, _an, _mod); } catch (e) {}
+        try { updateSelectedSummary(); } catch (e) {}
+    }
 });
     if (cbLaser) cbLaser.addEventListener('change', updateCreusage);
 })();

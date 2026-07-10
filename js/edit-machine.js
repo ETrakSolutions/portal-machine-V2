@@ -150,9 +150,9 @@
   // s'affichera en soumission que si cette option est cochee ('' = toujours).
   // La liste depend du type (options reellement disponibles pour la machine).
   function optionsForType(type){
-    var o = [{key:'', label:'Toujours'}, {key:'limiteur', label:'Limiteur'}, {key:'camera', label:'Caméra'}];
-    if (type === 'Telehandler' || type === 'Loader' || type === 'Retrocaveuse') o.push({key:'balance', label:'Balance'});
-    if (type === 'Excavatrice'){ o.push({key:'idc', label:'Indicateur de charge'}); o.push({key:'creusage', label:'Guide de creusage'}); }
+    var o = [{key:'', label:i18n.t('edit.opt_toujours')}, {key:'limiteur', label:i18n.t('edit.opt_limiteur')}, {key:'camera', label:i18n.t('edit.opt_camera')}];
+    if (type === 'Telehandler' || type === 'Loader' || type === 'Retrocaveuse') o.push({key:'balance', label:i18n.t('edit.opt_balance')});
+    if (type === 'Excavatrice'){ o.push({key:'idc', label:i18n.t('edit.opt_idc')}); o.push({key:'creusage', label:i18n.t('edit.opt_creusage')}); }
     return o;
   }
   function optLabel(key){
@@ -169,8 +169,8 @@
   // proprement sous la description en edition/ajout.
   function customExtraControls(optId, optSel, qtyId, qtyVal){
     return '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;padding:6px 10px;background:rgba(255,255,255,0.045);border-radius:6px">' +
-      '<label style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9fb4c8;margin:0;font-weight:600;letter-spacing:0.02em">OPTION ' + optSelectHtml(optId, optSel) + '</label>' +
-      '<label style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9fb4c8;margin:0;font-weight:600;letter-spacing:0.02em">QTÉ <input type="number" id="' + qtyId + '" min="1" step="1" value="' + (parseInt(qtyVal) > 0 ? parseInt(qtyVal) : 1) + '" style="width:56px;padding:0.25rem 0.4rem;font-size:0.85rem;text-align:center"></label>' +
+      '<label style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9fb4c8;margin:0;font-weight:600;letter-spacing:0.02em">' + i18n.t('edit.custom_opt_label') + ' ' + optSelectHtml(optId, optSel) + '</label>' +
+      '<label style="display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#9fb4c8;margin:0;font-weight:600;letter-spacing:0.02em">' + i18n.t('edit.custom_qty_label') + ' <input type="number" id="' + qtyId + '" min="1" step="1" value="' + (parseInt(qtyVal) > 0 ? parseInt(qtyVal) : 1) + '" style="width:56px;padding:0.25rem 0.4rem;font-size:0.85rem;text-align:center"></label>' +
     '</div>';
   }
   // Badges compacts affiches sur une ligne custom (quantite + option rattachee).
@@ -180,7 +180,7 @@
       out += ' <span style="font-size:0.68rem;font-weight:700;background:#243a2a;color:#8fe0a0;padding:1px 7px;border-radius:8px;margin-left:5px;white-space:nowrap">×' + parseInt(row.qty) + '</span>';
     }
     if (row.opt) {
-      out += ' <span style="font-size:0.65rem;background:#22333f;color:#8fd6ff;padding:1px 7px;border-radius:8px;margin-left:5px;white-space:nowrap" title="Affiche seulement avec cette option">' + optLabel(row.opt) + '</span>';
+      out += ' <span style="font-size:0.65rem;background:#22333f;color:#8fd6ff;padding:1px 7px;border-radius:8px;margin-left:5px;white-space:nowrap" title="' + i18n.t('edit.opt_show_only_title') + '">' + optLabel(row.opt) + '</span>';
     }
     return out;
   }
@@ -446,7 +446,7 @@
       var dest = __pendingNavUrl;          // CAPTURER avant hideUnsavedModal() qui remet a null
       hideUnsavedModal();
       __bypassUnload = true;
-      showSavingOverlay('Sauvegarde en cours…');
+      showSavingOverlay(i18n.t('edit.saving'));
       // Attend la VRAIE fin de la sauvegarde (promesse) avant de naviguer.
       var p;
       try { p = commitChanges(); } catch(e){ p = Promise.resolve(false); }
@@ -510,10 +510,10 @@
     }
     var scopedCount = Object.keys(SCOPE_ALL_CODES).filter(function(k){ return SCOPE_ALL_CODES[k]; }).length;
     var scope = scopedCount > 0
-      ? ' &mdash; <strong>' + scopedCount + ' code(s)</strong> aussi appliques aux ' + (ALL_YEARS_FOR_MODEL.length - 1) + ' autres annees'
-      : ' sur <strong>annee ' + YEAR + '</strong> seulement';
+      ? i18n.t('edit.save_info_scoped', {n: scopedCount, years: (ALL_YEARS_FOR_MODEL.length - 1)})
+      : i18n.t('edit.save_info_year_only', {year: YEAR});
     document.getElementById('modal-save-info').innerHTML =
-      '<strong>' + countChanges() + ' modification(s)</strong>' + scope + '.';
+      i18n.t('edit.save_info_count', {n: countChanges()}) + scope + '.';
     document.getElementById('modal-save-content').textContent = JSON.stringify(changes, null, 2);
     // Case maitresse "appliquer toute la config a toutes les annees" (visible si plusieurs annees)
     var saveAllLabel = document.getElementById('save-allyears-label');
@@ -714,7 +714,7 @@
         '<div id="saving-overlay-msg" style="margin-top:0.7rem;color:#334;font-size:0.95rem;font-weight:600"></div></div>';
       document.body.appendChild(ov);
     }
-    document.getElementById('saving-overlay-msg').textContent = msg || 'Sauvegarde en cours…';
+    document.getElementById('saving-overlay-msg').textContent = msg || i18n.t('edit.saving');
     ov.style.display = 'flex';
   }
   function hideSavingOverlay(){
@@ -941,7 +941,8 @@
         var hPN = hCur ? 'Z03B-' + hCur.replace(/^H/, '') : 'Z03B-—';
         var hLabelObj = HARNAIS_OPTIONS.find(function(o){return o.v===hCur;}) || {l:'(aucun)'};
         var hOpts = HARNAIS_OPTIONS.map(function(o){
-          return '<option value="' + o.v + '"' + (o.v===hCur?' selected':'') + '>' + (o.v==='' ? i18n.t('edit.harnais_none') : o.l) + '</option>';
+          var oLabel = (o.v==='') ? i18n.t('edit.harnais_none') : (o.v==='H0043' ? '0043 — ' + i18n.t('edit.harnais_generic') : o.l);
+          return '<option value="' + o.v + '"' + (o.v===hCur?' selected':'') + '>' + oLabel + '</option>';
         }).join('');
         bomRows += '<tr class="harnais-bom-row ' + (hChanged?'row-changed':'') + '">' +
           '<td class="pn">' + hPN + '</td>' +
@@ -1302,11 +1303,11 @@
             BOM_NAMES[code] = desc;
             EDITING = null;
             logChange('Catalogue ' + code + ' -> ' + pn + ' / ' + desc, prev);
-            showToast('Catalogue mis a jour (toutes les machines)');
+            showToast(i18n.t('edit.catalog_updated'));
             render();
           }).catch(function(){
             btn.disabled = false;
-            showToast('Erreur : sauvegarde du catalogue echouee', 'var(--rouge)');
+            showToast(i18n.t('edit.catalog_error'), 'var(--rouge)');
           });
         });
       });

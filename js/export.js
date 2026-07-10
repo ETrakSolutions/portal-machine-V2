@@ -85,7 +85,7 @@
         // Texte du drapeau (warning) actif pour une machine
         function flagText(flag) {
             if (!flag || !flag.active) return '';
-            return '⚠ ' + (flag.note || '(sans note)') + ' — ' + (flag.flaggedBy || '?') + (flag.flaggedAt ? ' (' + flag.flaggedAt + ')' : '');
+            return '⚠ ' + (flag.note || i18n.t('exp.no_note')) + ' — ' + (flag.flaggedBy || '?') + (flag.flaggedAt ? ' (' + flag.flaggedAt + ')' : '');
         }
 
         // Harnais de coupure (item necessaire des excavatrices) : defaut + override
@@ -175,18 +175,18 @@
                 });
             });
 
-            var header = ['Type', 'Fabricant', 'Annee', 'Modele'];
+            var header = [i18n.t('exp.col_type'), i18n.t('exp.col_fabricant'), i18n.t('exp.col_annee'), i18n.t('exp.col_modele')];
             codes.forEach(function (c) { header.push(lm[c] || c); });
-            var cHarnais = isExc ? (header.push('Harnais') - 1) : -1;
+            var cHarnais = isExc ? (header.push(i18n.t('exp.col_harnais')) - 1) : -1;
             var cCustomStart = header.length;                 // 1re colonne piece custom
             customCols.forEach(function (cc) { header.push(cc.label); });
-            var cNotes = header.push('Notes') - 1;
-            var cFlag = header.push('Drapeau') - 1;
+            var cNotes = header.push(i18n.t('exp.col_notes')) - 1;
+            var cFlag = header.push(i18n.t('exp.col_drapeau')) - 1;
             var aoa = [header], fills = [], redCells = [];
             rows.sort(function (a, b) { return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an); });
             rows.forEach(function (r) {
                 var rowIdx = aoa.length;
-                var line = [typeName, r.fab, r.an, r.mod];
+                var line = [i18n.t('type.' + typeName), r.fab, r.an, r.mod];
                 codes.forEach(function (c, ci) {
                     var rgb = colorFor(r.state[c]);
                     if (rgb) { line.push('●'); fills.push({ r: rowIdx, c: 4 + ci, rgb: rgb }); }
@@ -223,11 +223,11 @@
                 }
             }
             var keys = Object.keys(keySet);
-            var header = ['Type', 'Fabricant', 'Annee', 'Modele'].concat(keys);
+            var header = [i18n.t('exp.col_type'), i18n.t('exp.col_fabricant'), i18n.t('exp.col_annee'), i18n.t('exp.col_modele')].concat(keys);
             var aoa = [header];
             rows.sort(function (a, b) { return (a.fab + a.mod + a.an).localeCompare(b.fab + b.mod + b.an); });
             rows.forEach(function (r) {
-                var line = [typeName, r.fab, r.an, r.mod];
+                var line = [i18n.t('type.' + typeName), r.fab, r.an, r.mod];
                 keys.forEach(function (k) { line.push(normVal(r.specs[k])); });
                 aoa.push(line);
             });
@@ -237,10 +237,10 @@
         // Ligne de legende (point rouge/jaune/gris) — affichee en haut de la feuille BOM
         function legendRichText() {
             return { richText: [
-                { text: 'Legende :  ', font: { bold: true, size: 11 } },
-                { text: '● ', font: { color: { argb: 'FFFF0000' }, bold: true, size: 14 } }, { text: 'obligatoire     ', font: { size: 11 } },
-                { text: '● ', font: { color: { argb: 'FFE6C000' }, bold: true, size: 14 } }, { text: 'option / recommande     ', font: { size: 11 } },
-                { text: '● ', font: { color: { argb: 'FFE07B00' }, bold: true, size: 14 } }, { text: 'a verifier', font: { size: 11 } }
+                { text: i18n.t('exp.legend_title') + '  ', font: { bold: true, size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFFF0000' }, bold: true, size: 14 } }, { text: i18n.t('exp.legend_obligatoire') + '     ', font: { size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFE6C000' }, bold: true, size: 14 } }, { text: i18n.t('exp.legend_option') + '     ', font: { size: 11 } },
+                { text: '● ', font: { color: { argb: 'FFE07B00' }, bold: true, size: 14 } }, { text: i18n.t('exp.legend_verifier'), font: { size: 11 } }
             ] };
         }
 
@@ -327,21 +327,21 @@
             var wb = new ExcelJS.Workbook();
             buildSheet(wb, safeName(typeName), x.aoa, x.fills, true, x.redCells);
             saveWorkbook(wb, 'BOM_' + (SLUGS[typeName] || safeName(typeName)) + '.xlsx');
-            toast('Export ' + typeName + ' (' + (x.aoa.length - 1) + ' lignes)');
+            toast(i18n.t('exp.toast_export', { typeName: i18n.t('type.' + typeName), n: (x.aoa.length - 1) }));
         }
 
         function downloadAllBom() {
             var wb = new ExcelJS.Workbook();
             TYPE_ORDER.forEach(function (t) { var x = bomAoa(t); buildSheet(wb, safeName(t), x.aoa, x.fills, true, x.redCells); });
             saveWorkbook(wb, 'BOM_tous_types.xlsx');
-            toast('Export combine BOM (8 onglets)');
+            toast(i18n.t('exp.toast_all_bom', { n: TYPE_ORDER.length }));
         }
 
         function downloadAllSpecs() {
             var wb = new ExcelJS.Workbook();
             TYPE_ORDER.forEach(function (t) { buildSheet(wb, safeName(t), specsAoa(t), null, false); });
             saveWorkbook(wb, 'Specifications_machines.xlsx');
-            toast('Export specifications (8 onglets)');
+            toast(i18n.t('exp.toast_all_specs', { n: TYPE_ORDER.length }));
         }
 
         function buildMenu() {
@@ -354,12 +354,12 @@
                 var info = document.createElement('div');
                 info.className = 'exp-row-info';
                 var hasKit = (typeCodes(t).length > 0);
-                info.innerHTML = '<div class="exp-row-title">' + t + '</div>' +
-                    '<div class="exp-row-sub">' + n + ' machine(s)' + (hasKit ? ' &middot; kit BOM' : ' &middot; sans kit (notes/drapeaux seulement)') + '</div>';
+                info.innerHTML = '<div class="exp-row-title">' + i18n.t('type.' + t) + '</div>' +
+                    '<div class="exp-row-sub">' + i18n.t('exp.machine_count', { n: n }) + (hasKit ? ' &middot; ' + i18n.t('exp.kit_bom') : ' &middot; ' + i18n.t('exp.no_kit')) + '</div>';
                 var btn = document.createElement('button');
                 btn.className = 'exp-btn';
-                btn.textContent = 'Exporter';
-                if (n === 0) { btn.disabled = true; btn.textContent = 'Vide'; }
+                btn.textContent = i18n.t('exp.export_btn');
+                if (n === 0) { btn.disabled = true; btn.textContent = i18n.t('exp.empty'); }
                 btn.addEventListener('click', refreshThen(function () { downloadType(t); }));
                 row.appendChild(info); row.appendChild(btn);
                 grid.appendChild(row);
@@ -392,19 +392,19 @@
             return function () {
                 if (exporting) return;                 // anti double-clic pendant la synchro
                 exporting = true;
-                toast('Synchronisation avec la base…');
+                toast(i18n.t('exp.toast_sync'));
                 loadData().then(function () {
                     action();
                 }).catch(function (err) {
                     console.error(err);
-                    toast('Erreur de synchronisation — export annule.');
+                    toast(i18n.t('exp.toast_sync_error'));
                 }).then(function () { exporting = false; });
             };
         }
 
         // Chargement initial : remplit le menu une seule fois.
         loadData().then(buildMenu).catch(function (err) {
-            document.getElementById('exp-loading').textContent = 'Erreur de chargement des donnees.';
+            document.getElementById('exp-loading').textContent = i18n.t('exp.load_error');
             console.error(err);
         });
     })();
