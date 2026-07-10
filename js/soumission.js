@@ -674,7 +674,7 @@ function loadNotesForModel(fab, modele, annee) {
 }
 
 // Rattachement des lignes custom (_custom) a une OPTION. Chaque ligne peut porter
-// un champ c.opt = 'limiteur' | 'camera' | 'balance' | 'creusage' | 'idc' (ou vide).
+// un champ c.opt = 'limiteur' | 'lim_hauteur' | 'lim_rotation' | 'camera' | 'balance' | 'creusage' | 'idc' (ou vide).
 // Elle ne s'affiche en soumission que si son option est selectionnee (ou toujours
 // si opt vide). Ainsi une meme machine peut avoir un fitting pour le limiteur, un
 // autre pour la balance, un autre pour la camera, chacun visible avec SON option.
@@ -687,6 +687,16 @@ function _boxSelected(el) {
     return !!el.querySelector('input:checked');
 }
 function optionIsSelected(optKey) {
+    // Sous-portee du limiteur : la piece ne s'affiche que si la HAUTEUR (resp. la
+    // ROTATION) fait partie de la selection du limiteur. Permet d'attacher une gear
+    // a "Rotation seulement" (elle ne sort pas si le client prend juste la Hauteur).
+    if (optKey === 'lim_hauteur' || optKey === 'lim_rotation') {
+        var vals = [];
+        document.querySelectorAll('#toggle-limiteur input[name="limiteur-type"]:checked').forEach(function(c){ vals.push(c.value); });
+        var hasH = vals.some(function(v){ return v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Hauteur + extension' || v === 'Multi-axe'; });
+        var hasR = vals.some(function(v){ return v === 'Rotation' || v === 'Hauteur + Rotation' || v === 'Multi-axe'; });
+        return optKey === 'lim_hauteur' ? hasH : hasR;
+    }
     var el;
     if (optKey === 'idc') el = document.querySelector('[data-option="Indicateur de charge"]');
     else el = document.getElementById('toggle-' + optKey);  // limiteur/camera/balance/creusage

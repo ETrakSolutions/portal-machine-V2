@@ -683,7 +683,7 @@
     </footer>
 
     <script src="js/config.js?v=1"></script>
-    <script src="js/translations.js?v=202"></script>
+    <script src="js/translations.js?v=205"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
@@ -1040,7 +1040,7 @@
             ],
             'Nacelle': [
                 {key: 'categorie', label: 'Catégorie'},
-                {key: 'hauteur', label: 'Hauteur travail (pi)'},
+                {key: 'hauteur', label: 'Hauteur plateforme (pi)'},
                 {key: 'voltage', label: 'Voltage / motorisation'},
                 {key: 'sections', label: 'Sections flèche'}
             ],
@@ -1725,7 +1725,7 @@
                 'Nacelle': function(s) {
                     return {
                         categorie: s['Categorie'] || '',
-                        hauteur: s['Hauteur travail (pi)'] || '',
+                        hauteur: s['Hauteur plateforme (pi)'] || '',
                         voltage: s['Voltage'] || '',
                         sections: s['Nb sections fleche'] || ''
                     };
@@ -2135,7 +2135,7 @@
                                     'Capacite de levage':'levage','Puissance moteur':'puissance','Poids operationnel':'poids'
                                 },
                                 'Nacelle': {
-                                    'Categorie':'categorie','Hauteur travail (pi)':'hauteur','Voltage':'voltage','Nb sections fleche':'sections'
+                                    'Categorie':'categorie','Hauteur plateforme (pi)':'hauteur','Voltage':'voltage','Nb sections fleche':'sections'
                                 },
                                 'Grue Mobile': {
                                     'Capacite max':'capacite','Fleche telescopique':'fleche','Hauteur max':'hauteur',

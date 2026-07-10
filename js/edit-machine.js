@@ -150,7 +150,7 @@
   // s'affichera en soumission que si cette option est cochee ('' = toujours).
   // La liste depend du type (options reellement disponibles pour la machine).
   function optionsForType(type){
-    var o = [{key:'', label:i18n.t('edit.opt_toujours')}, {key:'limiteur', label:i18n.t('edit.opt_limiteur')}, {key:'camera', label:i18n.t('edit.opt_camera')}];
+    var o = [{key:'', label:i18n.t('edit.opt_toujours')}, {key:'limiteur', label:i18n.t('edit.opt_limiteur')}, {key:'lim_hauteur', label:i18n.t('edit.opt_lim_hauteur')}, {key:'lim_rotation', label:i18n.t('edit.opt_lim_rotation')}, {key:'camera', label:i18n.t('edit.opt_camera')}];
     if (type === 'Telehandler' || type === 'Loader' || type === 'Retrocaveuse') o.push({key:'balance', label:i18n.t('edit.opt_balance')});
     if (type === 'Excavatrice'){ o.push({key:'idc', label:i18n.t('edit.opt_idc')}); o.push({key:'creusage', label:i18n.t('edit.opt_creusage')}); }
     return o;
