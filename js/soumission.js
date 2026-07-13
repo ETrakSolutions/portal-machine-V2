@@ -1490,6 +1490,19 @@ function updateSelectedSummary() {
     var _liR = limiteurRoleInfo(_selT, 'rotation');
     var _liM = limiteurRoleInfo(_selT, 'multi');
     var _selHasLabels = !!(machinesData[_selT] && machinesData[_selT]._bom_labels);
+    // Pompe a Beton : le limiteur est un ON/OFF maitre (base + sections obligatoires),
+    // Hauteur/Rotation etant des options. "Limiteur present" = la tuile est active,
+    // pas une sous-option cochee (un client peut vouloir seulement la camera).
+    var _isPompe0 = (_selT === 'Pompe a Beton');
+    var _limBox0 = document.getElementById('toggle-limiteur');
+    // "Limiteur present" = la tuile Limiteur est active. Signal universel (tous types) :
+    //  - Pompe : bascule ON/OFF via le header (base + sections obligatoires).
+    //  - Excavatrice / Vacuum / autres : active des qu'une sous-option (Hauteur/Rotation) est cochee.
+    var limiterOn = !!(_limBox0 && _limBox0.classList.contains('active'));
+    // Regle universelle (tout type) : ne rien afficher dans "Options selectionnees" tant que
+    // le client n'a coche AUCUNE option. Toute tuile active (limiteur, camera, balance, creusage,
+    // IDC, produits) porte la classe .active -> signal unique et fiable.
+    var hasUserSelection = document.querySelectorAll('.toggle-box.active').length > 0;
     // Avertissement : Multi-axe sur retrocaveuse -> doit etre approuve par l'ingenierie.
     var _maw = document.getElementById('multiaxe-retro-warning');
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
@@ -1510,6 +1523,14 @@ function updateSelectedSummary() {
         if (_vHE && _vHE.checked) items.push(fmtItem('1500-0505', 'Limitation Hauteur + extension'));
         else if (_vH && _vH.checked) items.push(fmtItem('1500-0501', 'Limitation Hauteur camion vac'));
         if (_vR && _vR.checked) items.push(fmtItem('1500-0502', 'Limitation Rotation camion vac'));
+    } else if (_isPompe0) {
+        // Pompe : la base (0200/0203) + les options de sections viennent du kit obligatoire
+        // (plus bas), uniquement si le limiteur est ON. Ici, on ajoute seulement les options
+        // Hauteur (0201) / Rotation (0202) que le client a choisies.
+        if (limiterOn) {
+            if ((limVal === 'Hauteur' || limVal === 'Hauteur + Rotation') && _liH) items.push(fmtItem(_liH.pn, i18n.tBom(_liH.desc)));
+            if ((limVal === 'Rotation' || limVal === 'Hauteur + Rotation') && _liR) items.push(fmtItem(_liR.pn, i18n.tBom(_liR.desc)));
+        }
     } else if (limVal === 'Hauteur') {
         pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');
@@ -1582,11 +1603,12 @@ function updateSelectedSummary() {
     }
 
     // Add kit machine items.
-    // Excavatrice : seulement quand un limiteur est selectionne (le kit s'articule autour du limiteur).
-    // Autres types (ex. Pompe a Beton) : toujours afficher les pieces obligatoires de la BD.
+    // Le kit obligatoire est la base du LIMITEUR e-Trak : il ne s'affiche QUE si le limiteur
+    // est ON — pour TOUS les types. Ainsi "camera seule" (ou toute autre option seule) n'entraine
+    // jamais la base de limiteur, et rien n'apparait avant qu'une option soit cochee.
     var obligItems = [];
-    var isExcType = (selectType.value === 'Excavatrice');
-    if (!isExcType || anyLim) {
+    var showKitOblig = limiterOn;
+    if (showKitOblig) {
         var kitAll = getKitAllItems();
         kitAll.forEach(function(item) {
             // Multi-axe remplace la base limiteur du type -> on masque la base.
@@ -1600,10 +1622,11 @@ function updateSelectedSummary() {
         });
     }
 
-    // Product codes from BD (manually added) — skip if code already listed
+    // Product codes from BD (manually added) — skip if code already listed.
+    // Gate sur hasUserSelection : ne rien afficher avant qu'une option soit cochee.
     var pcItems = [];
     var allListedSoFar = items.concat(obligItems);
-    if (currentProductCodes && currentProductCodes.length > 0) {
+    if (hasUserSelection && currentProductCodes && currentProductCodes.length > 0) {
         currentProductCodes.forEach(function(pc) {
             var alreadyIn = allListedSoFar.some(function(i) { return i.indexOf(pc.code) !== -1; });
             if (alreadyIn) return;
@@ -1613,9 +1636,9 @@ function updateSelectedSummary() {
         });
     }
 
-    // Notes from BD
+    // Notes from BD — affichees seulement une fois qu'une option est cochee (jamais avant).
     var noteHtml = '';
-    if (currentNotes) {
+    if (hasUserSelection && currentNotes) {
         noteHtml = '<li class="oblig note-item">Note: ' + currentNotes + '</li>';
     }
 
@@ -1645,7 +1668,7 @@ function updateSelectedSummary() {
         .concat(pcItems.map(function (l) { return _mkRow(l, true); }));
 
     var allItems = items.length + obligItems.length + pcItems.length;
-    if (allItems > 0 || currentNotes) {
+    if (allItems > 0 || noteHtml) {
         var totItem = 0, totInstall = 0, anyPrice = false;
         var cell = function(v) { return (v === null || v === undefined) ? '—' : fmtPrice(v); };
         var rowFor = function(lineStr, oblig) {
@@ -1743,6 +1766,21 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
         box.addEventListener('click', function(e) {
             // Don't toggle open/close when clicking inside sub-panel (checkboxes, labels)
             if (e.target.closest('.toggle-sub-panel') || e.target.closest('.sub-option') || e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
+            // Pompe a Beton : le limiteur est un ON/OFF maitre (base + sections). Le header
+            // bascule l'etat actif ET ouvre/ferme le panneau des sous-options (Hauteur/Rotation).
+            if (this.id === 'toggle-limiteur' && selectType.value === 'Pompe a Beton') {
+                var willActive = !this.classList.contains('active');
+                this.classList.toggle('active', willActive);
+                this.classList.toggle('open', willActive);
+                var st = this.querySelector('.toggle-status');
+                if (st) st.textContent = willActive ? 'ON' : 'OFF';
+                if (!willActive) {
+                    // OFF : on decoche les sous-options Hauteur/Rotation.
+                    this.querySelectorAll('input[name="limiteur-type"]').forEach(function(c){ c.checked = false; });
+                }
+                updateSelectedSummary();
+                return;
+            }
             this.classList.toggle('open');
         });
     } else {
@@ -1857,6 +1895,10 @@ function updateAValiderWarning() {
             if (checked.length) {
                 limBox.classList.add('active');
                 status.textContent = checked.map(function(c) { return c.value; }).join(' + ');
+            } else if (selectType.value === 'Pompe a Beton' && limBox.classList.contains('active')) {
+                // Pompe : le limiteur reste ON (base + sections) meme sans Hauteur/Rotation.
+                // L'etat maitre est gere par le header ; on ne l'eteint pas ici.
+                status.textContent = 'ON';
             } else {
                 limBox.classList.remove('active');
                 status.textContent = 'OFF';
