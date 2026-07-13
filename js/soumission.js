@@ -297,15 +297,10 @@ function populateModeles(type, fab, anneeFilter) {
             if (!modelesSet[m]) modelesSet[m] = machinesData[type][fab][y][m];
         });
     });
-    // Ordre par grosseur (Classe machine), puis alphabetique -- identique a app.js
-    var classeOrder = {'Mini':0,'Compact':1,'Standard':2,'100':3,'120':4,'200':5,'270':6,'300':7,'330':8,'400':9,'500':10,'700-800':11,'1000+':12};
+    // Tri alphabetique naturel (numerique) -- identique a app.js : CX17C avant CX130C,
+    // tous les CX groupes puis les WX, etc. Aide a retrouver un modele.
     Object.keys(modelesSet).sort(function(a, b) {
-        var ca = (modelesSet[a] && modelesSet[a]['Classe machine']) || 'Standard';
-        var cb = (modelesSet[b] && modelesSet[b]['Classe machine']) || 'Standard';
-        var oa = classeOrder[ca] !== undefined ? classeOrder[ca] : 99;
-        var ob = classeOrder[cb] !== undefined ? classeOrder[cb] : 99;
-        if (oa !== ob) return oa - ob;
-        return a.localeCompare(b);
+        return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
     }).forEach(function(modele) {
         const opt = document.createElement('option');
         opt.value = modele;
