@@ -16,6 +16,13 @@ Sortie : code 0 si tout est OK, 1 sinon (avec la liste des problemes).
 """
 import json, subprocess, sys, os
 
+# Force UTF-8 sur stdout : sinon les prints avec ✅ / ❌ plantent sur les consoles
+# Windows cp1252 (UnicodeEncodeError) et font echouer le hook a tort.
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 STAGED = "--staged" in sys.argv
 MIN_HTML_BYTES = 200  # un vrai gabarit de page fait des milliers d'octets
 

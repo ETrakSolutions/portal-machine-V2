@@ -1,7 +1,24 @@
 #!/bin/sh
 # Bloque un commit qui contiendrait un fichier HTML vide/casse ou un JSON invalide.
 # Active-le une seule fois par poste :  git config core.hooksPath .githooks
-python3 scripts/check_portal_integrity.py --staged || {
+
+# Detecte un interpreteur Python qui S'EXECUTE reellement. Tester la simple presence
+# sur le PATH ne suffit pas : sous Windows, `python3` est souvent le stub Microsoft
+# Store (present sur le PATH mais qui n'execute rien et retourne un code != 0).
+PY=""
+for c in python3 python py; do
+  if command -v "$c" >/dev/null 2>&1 && "$c" -c "import sys" >/dev/null 2>&1; then
+    PY="$c"
+    break
+  fi
+done
+
+if [ -z "$PY" ]; then
+  echo "Aucun interpreteur Python fonctionnel trouve (python3 / python / py). Hook ignore."
+  exit 0
+fi
+
+"$PY" scripts/check_portal_integrity.py --staged || {
   echo ""
   echo "Commit BLOQUE : integrite du portail non respectee (voir ci-dessus)."
   echo "Pour forcer malgre tout (deconseille) : git commit --no-verify"
