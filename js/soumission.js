@@ -1240,12 +1240,20 @@ if (submitBtn) {
             'Portail e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine-V2/';
 
-        var mailUrl = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        // Le vendeur attitre (dealer/distributeur) devient un DESTINATAIRE PRINCIPAL
+        // (dans le "A", avec les ventes) plutot qu'une simple copie : ainsi il part
+        // toujours avec la demande, y compris dans le texte du panneau "copier" si le
+        // client courriel ne s'ouvre pas. Dedoublonne (au cas ou le vendeur serait deja
+        // dans la liste de vente). Meme separateur ';' (Outlook).
+        var toAll = mailTo;
         if (vendeurEmail) {
-            mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
+            var _already = mailTo.split(';').some(function(e) { return e.trim().toLowerCase() === vendeurEmail.toLowerCase(); });
+            if (!_already) toAll = mailTo ? (mailTo + ';' + vendeurEmail) : vendeurEmail;
         }
-        // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours).
-        window.__lastSoumissionEmail = { to: mailTo, cc: vendeurEmail || '', subject: subject, body: body };
+        var mailUrl = 'mailto:' + toAll + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours) :
+        // le vendeur est dans le "A", donc visible aussi dans la version copiee.
+        window.__lastSoumissionEmail = { to: toAll, cc: '', subject: subject, body: body };
         // Cache un eventuel panneau de secours d'un envoi precedent.
         hideSoumissionFallback();
         // Detecte si le client courriel s'ouvre; sinon, affiche le panneau de secours.
