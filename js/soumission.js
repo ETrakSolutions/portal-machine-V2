@@ -1240,18 +1240,59 @@ if (submitBtn) {
             'Portail e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine-V2/';
 
-        var mailUrl = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        if (vendeurEmail) {
-            mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
-        }
         // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours).
         window.__lastSoumissionEmail = { to: mailTo, cc: vendeurEmail || '', subject: subject, body: body };
         // Cache un eventuel panneau de secours d'un envoi precedent.
         hideSoumissionFallback();
-        // Detecte si le client courriel s'ouvre; sinon, affiche le panneau de secours.
-        armMailtoFallback();
-        // Envoi via le client courriel de l'utilisateur (part de sa propre adresse).
-        window.location.href = mailUrl;
+
+        // --- Repli mailto : ouvre le client courriel de l'utilisateur (comportement
+        //     historique). Le vendeur associe reste en CC. Utilise si l'envoi serveur
+        //     echoue (invite sans jeton, backend indisponible/non deploye). ---
+        function _soumissionMailtoFallback() {
+            var mailUrl = 'mailto:' + mailTo + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+            if (vendeurEmail) mailUrl += '&cc=' + encodeURIComponent(vendeurEmail);
+            armMailtoFallback();   // affiche le panneau copier/coller si rien ne s'ouvre
+            window.location.href = mailUrl;
+        }
+
+        // --- Envoi SERVEUR (fiable) : le portail envoie lui-meme le courriel via
+        //     Apps Script (action 'sendsoumission'). Le vendeur associe part TOUJOURS
+        //     en CC, meme sans client courriel configure. replyTo = le demandeur, pour
+        //     que la reponse d'e-Trak lui revienne directement. Repli mailto si echec. ---
+        var _token = (currentUser && currentUser.token) || '';
+        if (!_token) { _soumissionMailtoFallback(); return; }   // invite : pas de jeton -> mailto
+
+        var _fr = soumissionLang() === 'fr';
+        var _prevLabel = submitBtn ? submitBtn.textContent : '';
+        if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = _fr ? 'Envoi en cours…' : 'Sending…'; }
+
+        fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'text/plain'},
+            body: JSON.stringify({
+                action: 'sendsoumission',
+                token: _token,
+                to: mailTo,
+                cc: vendeurEmail || '',
+                replyTo: (currentUser && currentUser.email) || '',
+                subject: subject,
+                text: body,
+                html: soumissionTextToHtml(body)
+            })
+        })
+        .then(function(r){ return r.json(); })
+        .then(function(res){
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = _prevLabel; }
+            if (res && res.ok) {
+                showSoumissionSent(vendeurEmail);   // confirmation visuelle (le serveur n'ouvre rien)
+            } else {
+                _soumissionMailtoFallback();         // serveur a refuse -> repli sans perte
+            }
+        })
+        .catch(function(){
+            if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = _prevLabel; }
+            _soumissionMailtoFallback();             // hors-ligne -> repli sans perte
+        });
         } // end sendEmail
     });
 }
@@ -1270,6 +1311,40 @@ function soumissionLang() {
 function hideSoumissionFallback() {
     var box = document.getElementById('soumission-fallback');
     if (box) { box.style.display = 'none'; box.classList.remove('is-auto'); }
+}
+
+// Confirmation visuelle apres un envoi SERVEUR reussi. Indispensable : contrairement
+// au mailto, l'envoi serveur n'ouvre aucune fenetre — sans ce retour, l'utilisateur ne
+// saurait pas si sa demande est partie. Reutilise le conteneur du panneau de secours.
+function showSoumissionSent(vendeurEmail) {
+    var fr = soumissionLang() === 'fr';
+    var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
+    var box = document.getElementById('soumission-fallback');
+    if (!box) { alert(fr ? 'Demande envoyée à e-Trak.' : 'Request sent to e-Trak.'); return; }
+    var vLine = vendeurEmail
+        ? '<p class="soumission-fallback-text">' +
+          (fr ? 'Ton vendeur (' : 'Your salesperson (') + esc(vendeurEmail) +
+          (fr ? ') en a reçu une copie.' : ') received a copy.') + '</p>'
+        : '';
+    box.className = 'soumission-fallback';
+    box.innerHTML =
+        '<p class="soumission-fallback-title">' + (fr ? '✅ Demande envoyée' : '✅ Request sent') + '</p>' +
+        '<p class="soumission-fallback-text">' +
+        (fr ? 'Ta demande de soumission a été transmise à e-Trak.'
+            : 'Your quote request has been sent to e-Trak.') + '</p>' +
+        vLine;
+    box.style.display = 'block';
+    try { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+}
+
+// Convertit le corps texte en HTML sur pour l'envoi serveur (MailApp htmlBody).
+// Sans HTML, le courriel partirait vide. Echappe le texte puis preserve les sauts
+// de ligne dans un bloc monospace lisible.
+function soumissionTextToHtml(text) {
+    var esc = String(text == null ? '' : text)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return '<pre style="font-family:Arial,Helvetica,sans-serif;font-size:14px;' +
+           'white-space:pre-wrap;line-height:1.5;color:#222;margin:0;">' + esc + '</pre>';
 }
 
 // Rend le panneau. auto=true => le courriel ne s'est pas ouvert (ton "alerte").
