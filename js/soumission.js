@@ -741,7 +741,8 @@ function getKitSummary(type, fab, modele, specs) {
                 kitP.push({
                     code: c.pn || c.code,
                     name: customName(c),
-                    status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel')
+                    status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel'),
+                    optExplicit: !!(c.opt && String(c.opt).trim())
                 });
             });
         }
@@ -773,7 +774,8 @@ function getKitSummary(type, fab, modele, specs) {
                 kitG.push({
                     code: c.pn || c.code,
                     name: customName(c),
-                    status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel')
+                    status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel'),
+                    optExplicit: !!(c.opt && String(c.opt).trim())
                 });
             });
         }
@@ -840,7 +842,8 @@ function getKitSummary(type, fab, modele, specs) {
             kit.push({
                 code: c.pn || c.code,
                 name: customName(c),
-                status: c.status === 'r' ? 'Obligatoire' : 'Optionnel'
+                status: c.status === 'r' ? 'Obligatoire' : 'Optionnel',
+                optExplicit: !!(c.opt && String(c.opt).trim())
             });
         });
     }
@@ -1606,24 +1609,28 @@ function updateSelectedSummary() {
     }
 
     // Add kit machine items.
-    // Le kit obligatoire est la base du LIMITEUR e-Trak : il ne s'affiche QUE si le limiteur
-    // est ON — pour TOUS les types. Ainsi "camera seule" (ou toute autre option seule) n'entraine
-    // jamais la base de limiteur, et rien n'apparait avant qu'une option soit cochee.
+    // Regle standard : le kit obligatoire est la base du LIMITEUR e-Trak -> il ne s'affiche
+    // QUE si le limiteur est ON (pour TOUS les types). Ainsi "camera seule" (ou toute autre
+    // option seule) n'entraine jamais la base de limiteur. Ceci couvre aussi les lignes custom
+    // LEGACY sans option (retrocompat) : elles gardent EXACTEMENT leur comportement historique.
+    // EXCEPTION : une ligne custom rattachee a une OPTION EXPLICITE (item.optExplicit, ex.
+    // opt:"balance") est deja filtree par customItemVisible dans getKitSummary -> elle doit
+    // sortir avec SON option meme si le limiteur est OFF (ex. fittings de balance sur un loader
+    // sans limiteur). Bornee a hasUserSelection pour ne rien afficher avant toute selection.
     var obligItems = [];
-    var showKitOblig = limiterOn;
-    if (showKitOblig) {
-        var kitAll = getKitAllItems();
-        kitAll.forEach(function(item) {
-            // Multi-axe remplace la base limiteur du type -> on masque la base.
-            // Excavatrice : 1500-0000 ; Retrocaveuse : 1500-0600 (via _liBase) ; etc.
-            var _baseSkip = (_liBase && _liBase.pn) || '';
-            if (limVal === 'Multi-axe' && (item.code === '1500-0000' || (_baseSkip && item.code === _baseSkip))) return;
-            var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
-            if (!alreadyListed && item.status === 'Obligatoire') {
-                obligItems.push(fmtItem(item.code, i18n.tBom(item.name)));
-            }
-        });
-    }
+    var kitAll = getKitAllItems();
+    kitAll.forEach(function(item) {
+        if (item.optExplicit) { if (!hasUserSelection) return; }
+        else { if (!limiterOn) return; }
+        // Multi-axe remplace la base limiteur du type -> on masque la base.
+        // Excavatrice : 1500-0000 ; Retrocaveuse : 1500-0600 (via _liBase) ; etc.
+        var _baseSkip = (_liBase && _liBase.pn) || '';
+        if (limVal === 'Multi-axe' && (item.code === '1500-0000' || (_baseSkip && item.code === _baseSkip))) return;
+        var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
+        if (!alreadyListed && item.status === 'Obligatoire') {
+            obligItems.push(fmtItem(item.code, i18n.tBom(item.name)));
+        }
+    });
 
     // Product codes from BD (manually added) — skip if code already listed.
     // Gate sur hasUserSelection : ne rien afficher avant qu'une option soit cochee.
