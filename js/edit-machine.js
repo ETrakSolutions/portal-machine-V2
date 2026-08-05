@@ -1078,7 +1078,8 @@
     var typeIcons = {
       'Excavatrice':'⛏️','Pompe a Beton':'🏗️','Camion Girafe (Boom Truck)':'🚛',
       'Telehandler':'🦒','Camion Vacuum':'💨','Retrocaveuse':'🔧',
-      'Foreuse':'⚙️','Grue Mobile':'🏗️','Loader':'🚜','Nacelle':'🛗'
+      'Foreuse':'⚙️','Grue Mobile':'🏗️','Loader':'🚜','Nacelle':'🛗',
+      'Tracteur de ferme':'🚜'
     };
     var typeIcon = typeIcons[TYPE] || '🏭';
 

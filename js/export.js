@@ -14,7 +14,8 @@
         // Ordre canonique des types (= slugs du loader)
         var TYPE_ORDER = [
             'Excavatrice', 'Pompe a Beton', 'Grue Mobile', 'Camion Girafe (Boom Truck)',
-            'Telehandler', 'Foreuse', 'Camion Vacuum', 'Retrocaveuse', 'Loader', 'Nacelle'
+            'Telehandler', 'Foreuse', 'Camion Vacuum', 'Retrocaveuse', 'Loader', 'Nacelle',
+            'Tracteur de ferme'
         ];
         var SLUGS = window.ETRAK_TYPE_SLUGS || {};
 

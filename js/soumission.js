@@ -39,7 +39,8 @@ var BALANCE_PRODUITS = {
     'Balance loader':       { code: '1200-0010', desc: 'Balance loader (installation e-Trak)' },
     'Balance valise':       { code: '1200-0011', desc: 'Balance en valise (installation client)' },
     'Imprimante thermique': { code: '1200-0014', desc: 'Imprimante thermique' },
-    'Imprimante carbone':   { code: '1200-0015', desc: 'Imprimante carbone' }
+    'Imprimante carbone':   { code: '1200-0015', desc: 'Imprimante carbone' },
+    'Balance Scale Lite':   { code: '1200-0020', desc: 'Balance Scale Lite (tracteur)' }
 };
 
 // Load option codes from API (override defaults)
@@ -559,7 +560,8 @@ function applyTypeRestrictions(type) {
     // La balance Scale Lite (1200-0020) est reservee au tracteur de ferme, type
     // de machine qui reste a creer : elle n'est donc pas encore proposee ici,
     // et elle n'aura pas d'option imprimante.
-    var isBalanceType = (type === 'Loader');
+    var isTracteur = (type === 'Tracteur de ferme');
+    var isBalanceType = (type === 'Loader' || isTracteur);
     var balBox = document.getElementById('toggle-balance');
     if (balBox) {
         balBox.style.display = isBalanceType ? '' : 'none';
@@ -568,6 +570,32 @@ function applyTypeRestrictions(type) {
             var balSt = balBox.querySelector('.toggle-status'); if (balSt) balSt.textContent = 'OFF';
             balBox.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
                   .forEach(function(c) { c.checked = false; });
+        } else {
+            // Tracteur de ferme : Scale Lite (1200-0020) SEULEMENT, sans imprimante.
+            // Loader : les deux balances 0010/0011 + le choix d'imprimante.
+            [['sub-bal-scalelite', 'bal-scalelite', isTracteur]].concat(
+                [['', 'bal-loader', !isTracteur], ['', 'bal-valise', !isTracteur],
+                 ['', 'bal-imp-therm', !isTracteur], ['', 'bal-imp-carb', !isTracteur]]
+            ).forEach(function(t) {
+                var cb = document.getElementById(t[1]);
+                if (!cb) return;
+                var lab = t[0] ? document.getElementById(t[0]) : cb.closest('.sub-option');
+                if (lab) lab.style.display = t[2] ? '' : 'none';
+                if (!t[2]) cb.checked = false;
+            });
+        }
+    }
+
+    // Limiteur de portee : sans objet sur un tracteur de ferme (catalogue limite
+    // a la balance Scale Lite). On masque la tuile pour eviter une selection qui
+    // n'emettrait aucun produit.
+    var limBoxT = document.getElementById('toggle-limiteur');
+    if (limBoxT) {
+        limBoxT.style.display = isTracteur ? 'none' : '';
+        if (isTracteur) {
+            limBoxT.classList.remove('active', 'open');
+            var limStT = limBoxT.querySelector('.toggle-status'); if (limStT) limStT.textContent = 'OFF';
+            limBoxT.querySelectorAll('input[name="limiteur-type"]').forEach(function(c) { c.checked = false; });
         }
     }
 

@@ -32,7 +32,11 @@
     'Camion Vacuum': 'camion-vacuum',
     'Retrocaveuse': 'retrocaveuse',
     'Loader': 'loader',
-    'Nacelle': 'nacelle'
+    'Nacelle': 'nacelle',
+    // Ajoute le 2026-08-05. RAPPEL : tout nouveau type doit AUSSI etre ajoute a
+    // OV_TYPE_SLUGS dans le backend Apps Script, sinon les specs se sauvegardent
+    // mais les BOM echouent (« erreur de sauvegarde »).
+    'Tracteur de ferme': 'tracteur-de-ferme'
   };
   window.ETRAK_TYPE_SLUGS = TYPE_SLUGS;
 
