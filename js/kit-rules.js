@@ -79,22 +79,41 @@
     };
   }
 
-  // Defauts Nacelle -> { code: etat }. Base selon la categorie :
-  //  - Flèche articulée  -> base = 0903 (Nacelle articulee), 0900 (telescopique) = na
-  //  - Flèche télescopique / Mât vertical -> base = 0900, 0903 = na
-  // Les autres (0901 Hauteur, 0902 Rotation, 0904 Gestion G-D, 0905 Drain) = option (j).
+  // Defauts Nacelle -> { code: etat }. Structure a TROIS niveaux (regle metier
+  // confirmee par Jacquot le 2026-08-05) :
+  //   1. 0900 = KIT DE BASE, obligatoire sur TOUTE nacelle, articulee comprise ;
+  //   2. options principales : 0901 Hauteur, 0902 Rotation ;
+  //   3. options secondaires : 0903 Articule, 0904 Gestion G-D, 0905 Drain...
+  //      Elles s'AJOUTENT au kit de base, elles ne le remplacent pas.
+  //
+  // Correction du 2026-08-05 : cette fonction mettait auparavant 0900 = 'na' et
+  // 0903 = 'r' sur les fleches articulees, donc supprimait le kit de base et
+  // facturait 1 190 $ au lieu de 3 430 $ sur 948 entrees (79 modeles). Elle
+  // contredisait aussi les valeurs 'def' du catalogue _bom_labels (0900 = r,
+  // le reste = j), d ou un jeton different entre la soumission et les autres
+  // tuiles. Les deux sources disent desormais la meme chose.
+  //
+  // Seule nuance conservee : « Articule » (0903) n est propose que sur une
+  // machine dont la categorie est une fleche articulee — l offrir sur une
+  // telescopique n aurait pas de sens.
   function nacelleDefaults(specs) {
     var cat = String((specs && (specs['Categorie'] || specs['Catégorie'])) || '').toLowerCase();
     var artic = cat.indexOf('articul') >= 0;
     return {
-      '0900': artic ? 'na' : 'r',
+      '0900': 'r',
       '0901': 'j',
       '0902': 'j',
-      '0903': artic ? 'r' : 'na',
+      '0903': artic ? 'j' : 'na',
       '0904': 'j',
-      '0905': 'j'
+      '0905': 'j',
+      '0906': 'j',
+      '0907': 'j'
     };
   }
+
+  // Options SECONDAIRES de la nacelle : elles s'ajoutent au kit de base et se
+  // cumulent librement (plusieurs peuvent etre choisies sur la meme machine).
+  var NACELLE_OPT_CODES = ['0903', '0904', '0905', '0906', '0907'];
 
   // Libelles canoniques du harnais par code d'override (H-code stocke dans _bom.harnais).
   // UNIQUE source pour TOUTES les tuiles + l'export. Ne pas dupliquer ailleurs.
@@ -169,6 +188,7 @@
     DRAIN_PREFIXES: DRAIN_PREFIXES,
     EXC_CODES: EXC_CODES,
     POMPE_CODES: POMPE_CODES,
+    NACELLE_OPT_CODES: NACELLE_OPT_CODES,
     HARNAIS_LABELS: HARNAIS_LABELS,
     poidsKg: poidsKg, isMini: isMini, isDrain: isDrain, isGC: isGC,
     excDefaults: excDefaults, pompeDefaults: pompeDefaults, nacelleDefaults: nacelleDefaults,

@@ -434,6 +434,8 @@ function showOptions() {
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
     // Reset sous-options Balance
     document.querySelectorAll('input[name="balance-type"]').forEach(function(r) { r.checked = false; });
+    // Reset options secondaires nacelle
+    document.querySelectorAll('input[name="nacelle-opt"]').forEach(function(r) { r.checked = false; });
     ['soumission-company','soumission-nb-systemes','soumission-lieu','soumission-date-install'].forEach(function(id){
         var el = document.getElementById(id);
         if (el) el.value = '';
@@ -452,6 +454,8 @@ function showOptions() {
     applyTypeRestrictions(type);
     // Telehandler sans base rotative -> pas d'option Rotation
     applyRotationRestriction(type, fab, modele, annee);
+    // Nacelle : options secondaires disponibles pour CETTE machine
+    applyNacelleOptions();
 
     // Show kit obligatory items immediately
     updateSelectedSummary();
@@ -487,6 +491,44 @@ function applyRotationRestriction(type, fab, modele, annee) {
     setVis(hrCb, allowHR);
     // Hauteur + extension (1500-0505) : Camion Vacuum seulement
     setVis(extCb, isVac);
+}
+
+// Options secondaires de la nacelle (0903 a 0907) : elles s'ajoutent au kit de
+// base 1500-0900 et se cumulent. Une option dont l'etat calcule vaut 'na' pour
+// CETTE machine est masquee — « Nacelle articulee » n'a pas de sens sur une
+// fleche telescopique. L'etat vient de kit-rules + override, donc un admin peut
+// l'ouvrir ou la fermer machine par machine.
+//
+// Appelee DEUX fois : a la selection de la machine, puis a chaque
+// updateSelectedSummary — car les overrides se chargent en asynchrone APRES la
+// selection et changeraient sinon l'etat sans que l'affichage suive.
+function applyNacelleOptions() {
+    var box = document.getElementById('toggle-nacelle-opts');
+    if (!box) return;
+    var type = selectType ? selectType.value : '';
+    if (type !== 'Nacelle') {
+        box.style.display = 'none';
+        box.classList.remove('active', 'open');
+        var st0 = box.querySelector('.toggle-status');
+        if (st0) st0.textContent = 'OFF';
+        box.querySelectorAll('input[name="nacelle-opt"]').forEach(function (c) { c.checked = false; });
+        return;
+    }
+    box.style.display = '';
+    var specsN = null;
+    try {
+        specsN = machinesData[type][selectFabricant.value][selectAnnee.value][selectModele.value];
+    } catch (ex) { specsN = null; }
+    var KRn = window.KitRules || {};
+    var defN = (KRn.nacelleDefaults && specsN) ? KRn.nacelleDefaults(specsN) : {};
+    var stN = KRn.applyOverride ? KRn.applyOverride(defN, currentBomOverrides || {}, false) : defN;
+    (KRn.NACELLE_OPT_CODES || ['0903', '0904', '0905', '0906', '0907']).forEach(function (code) {
+        var lab = document.getElementById('sub-nac-' + code);
+        var cb = document.getElementById('nac-' + code);
+        var dispo = specsN ? ((stN[code] || 'na') !== 'na') : true;
+        if (lab) lab.style.display = dispo ? '' : 'none';
+        if (!dispo && cb) cb.checked = false;
+    });
 }
 
 // Restrictions d'options par type de machine (tuile Soumission) :
@@ -1048,11 +1090,30 @@ if (submitBtn) {
             optionsOff.push('Camera');
         }
 
+        // Options secondaires nacelle (cumulables) — chacune part dans le courriel
+        // avec son PN, sinon le vendeur recevrait une soumission incomplete.
+        var _nacBoxE = document.getElementById('toggle-nacelle-opts');
+        if (_nacBoxE && _nacBoxE.style.display !== 'none') {
+            var _nacSel = _nacBoxE.querySelectorAll('input[name="nacelle-opt"]:checked');
+            if (_nacSel.length) {
+                _nacSel.forEach(function (cb) {
+                    var info = bomDescInfo('Nacelle', cb.value);
+                    var nom = (info && info.desc) ? info.desc : ('Option ' + cb.value);
+                    optionsOn.push(nom);
+                    accessoires.push({ code: (info && info.pn) ? info.pn : ('1500-' + cb.value), name: nom });
+                });
+            } else {
+                optionsOff.push('Options nacelle');
+            }
+        }
+
         // Other toggles (skip handled ones)
         document.querySelectorAll('.toggle-box').forEach(function(box) {
             if (box.id === 'toggle-limiteur') return;
             if (box.id === 'toggle-camera') return;
             if (box.id === 'toggle-balance') return;
+            // Nacelle : traite plus bas, sous-option par sous-option (cumulables).
+            if (box.id === 'toggle-nacelle-opts') return;
             if (box.dataset.option === 'Indicateur de charge') return;
             if (box.dataset.option === 'Guide de creusage') return;
             var name = box.dataset.option;
@@ -1477,6 +1538,10 @@ function limiteurRoleInfo(type, role) {
 
 function updateSelectedSummary() {
     try { updateAValiderWarning(); } catch (e) {}
+    // Les overrides arrivent en asynchrone : on reevalue ici la disponibilite
+    // des options nacelle, sinon un override recu apres la selection ne serait
+    // pas reflete a l'ecran.
+    try { applyNacelleOptions(); } catch (e) {}
     var wrap = document.getElementById('selected-options-summary');
     var list = document.getElementById('selected-options-list');
     if (!wrap || !list) return;
@@ -1555,6 +1620,19 @@ function updateSelectedSummary() {
             items.push(fmtItem(_liM.pn, _liM.desc));
         } else if (_selT === 'Excavatrice' || _selT === 'Retrocaveuse' || !_selHasLabels) {
             items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
+        }
+    }
+
+    // Options secondaires de la nacelle : cases independantes, montants cumules.
+    // PN et libelle viennent de _bom_labels (BD = maitre), jamais codes en dur.
+    if (_selT === 'Nacelle') {
+        var nacBoxS = document.getElementById('toggle-nacelle-opts');
+        if (nacBoxS && nacBoxS.style.display !== 'none') {
+            nacBoxS.querySelectorAll('input[name="nacelle-opt"]:checked').forEach(function (cb) {
+                var info = bomDescInfo('Nacelle', cb.value);
+                items.push(fmtItem((info && info.pn) ? info.pn : ('1500-' + cb.value),
+                                   i18n.tBom((info && info.desc) ? info.desc : cb.value)));
+            });
         }
     }
 
@@ -1939,6 +2017,30 @@ function updateAValiderWarning() {
                     balBox.classList.remove('active');
                     status.textContent = 'OFF';
                 }
+            }
+            updateSelectedSummary();
+        });
+    });
+})();
+
+// Options secondaires de la nacelle : cases CUMULATIVES (contrairement a la
+// camera et a la balance qui sont exclusives). Le client peut en prendre
+// plusieurs, les montants s'additionnent. Le statut affiche le nombre choisi.
+(function() {
+    var nacBox = document.getElementById('toggle-nacelle-opts');
+    if (!nacBox) return;
+    var cbs = nacBox.querySelectorAll('input[name="nacelle-opt"]');
+    var status = nacBox.querySelector('.toggle-status');
+    cbs.forEach(function(cb) {
+        cb.addEventListener('change', function() {
+            var n = 0;
+            cbs.forEach(function(c) { if (c.checked) n++; });
+            if (n) {
+                nacBox.classList.add('active');
+                status.textContent = (n === 1) ? '1 OPTION' : (n + ' OPTIONS');
+            } else {
+                nacBox.classList.remove('active');
+                status.textContent = 'OFF';
             }
             updateSelectedSummary();
         });
