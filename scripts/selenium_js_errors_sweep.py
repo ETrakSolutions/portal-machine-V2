@@ -103,7 +103,14 @@ try:
             print('  (interaction %s : %s %s)' % (page, type(e).__name__, str(e)[:120]))
 
         errs = dv.execute_script("return window.__errs || [];")
-        sev = [e for e in dv.get_log('browser') if e['level'] == 'SEVERE']
+        # Chrome classe SEVERE des avis de politique du navigateur qui ne sont
+        # PAS des erreurs de la page. Le plus frequent ici : le garde-fou
+        # « modifications non sauvegardees » de edit-machine.html declare un
+        # handler beforeunload, et Chrome refuse d'afficher la boite faute de
+        # geste utilisateur en mode automatise. Bruit de test, pas defaut.
+        BENINS = ('beforeunload',)
+        sev = [e for e in dv.get_log('browser')
+               if e['level'] == 'SEVERE' and not any(b in e.get('message', '') for b in BENINS)]
         # preuve que la page a vraiment rendu quelque chose (sinon « OK » ne veut rien dire)
         etat = dv.execute_script(
             "return {url: location.pathname.split('/').pop(), texte: (document.body.innerText||'').length,"

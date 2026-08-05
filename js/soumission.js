@@ -32,6 +32,16 @@ var OPTION_CODES = {
     'Camera 360 (6 cameras)': '1300-0005'
 };
 
+// Balance : produits derriere chaque sous-option. Deux groupes exclusifs — le
+// modele de balance, puis l'imprimante. La Scale Lite (1200-0020) est reservee
+// au tracteur de ferme (type de machine a creer) et n'a pas d'imprimante.
+var BALANCE_PRODUITS = {
+    'Balance loader':       { code: '1200-0010', desc: 'Balance loader (installation e-Trak)' },
+    'Balance valise':       { code: '1200-0011', desc: 'Balance en valise (installation client)' },
+    'Imprimante thermique': { code: '1200-0014', desc: 'Imprimante thermique' },
+    'Imprimante carbone':   { code: '1200-0015', desc: 'Imprimante carbone' }
+};
+
 // Load option codes from API (override defaults)
 (function() {
     fetch(API_URL + '?action=get&key=soumission_option_codes')
@@ -432,8 +442,9 @@ function showOptions() {
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
-    // Reset sous-options Balance
-    document.querySelectorAll('input[name="balance-type"]').forEach(function(r) { r.checked = false; });
+    // Reset sous-options Balance (modele + imprimante)
+    document.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
+            .forEach(function(r) { r.checked = false; });
     // Reset options secondaires nacelle
     document.querySelectorAll('input[name="nacelle-opt"]').forEach(function(r) { r.checked = false; });
     ['soumission-company','soumission-nb-systemes','soumission-lieu','soumission-date-install'].forEach(function(id){
@@ -539,17 +550,24 @@ function applyTypeRestrictions(type) {
     var isExc = (type === 'Excavatrice');
     var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
 
-    // Balance ST-7 (1200-0011) + sous-option Imprimante thermique (1200-0014).
-    // Types avec un godet chargeur (loader) : Telehandler, Loader et Retrocaveuse
-    // (la retrocaveuse a un godet avant -> balance pour le loader).
-    var isBalanceType = (type === 'Telehandler' || type === 'Loader' || type === 'Retrocaveuse');
+    // Balance : deux modeles au choix exclusif — 1200-0010 (balance loader,
+    // installee par les techniciens e-Trak) et 1200-0011 (balance en valise,
+    // installee par le client) — plus UNE imprimante au choix : 1200-0014
+    // thermique ou 1200-0015 carbone.
+    // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Auparavant le
+    // bloc s'affichait aussi sur Telehandler et Retrocaveuse.
+    // La balance Scale Lite (1200-0020) est reservee au tracteur de ferme, type
+    // de machine qui reste a creer : elle n'est donc pas encore proposee ici,
+    // et elle n'aura pas d'option imprimante.
+    var isBalanceType = (type === 'Loader');
     var balBox = document.getElementById('toggle-balance');
     if (balBox) {
         balBox.style.display = isBalanceType ? '' : 'none';
         if (!isBalanceType) {
             balBox.classList.remove('active', 'open');
             var balSt = balBox.querySelector('.toggle-status'); if (balSt) balSt.textContent = 'OFF';
-            balBox.querySelectorAll('input[name="balance-type"]').forEach(function(c) { c.checked = false; });
+            balBox.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
+                  .forEach(function(c) { c.checked = false; });
         }
     }
 
@@ -1126,20 +1144,23 @@ if (submitBtn) {
             }
         });
 
-        // Balance ST-7 (choix exclusif : Balance seule / Balance + imprimante)
+        // Balance : modele choisi + imprimante eventuelle, dans le courriel aussi.
         var _balBoxE = document.getElementById('toggle-balance');
         if (_balBoxE && _balBoxE.classList.contains('active')) {
             var _balSelE = _balBoxE.querySelector('input[name="balance-type"]:checked');
-            if (_balSelE) {
-                optionsOn.push('Balance ST-7');
-                accessoires.push({ code: '1200-0011', name: 'Balance ST-7' });
-                if (_balSelE.value === 'Balance + imprimante') {
-                    optionsOn.push('Imprimante thermique');
-                    accessoires.push({ code: '1200-0014', name: 'Imprimante thermique' });
-                }
+            if (_balSelE && BALANCE_PRODUITS[_balSelE.value]) {
+                var _bE = BALANCE_PRODUITS[_balSelE.value];
+                optionsOn.push(_bE.desc);
+                accessoires.push({ code: _bE.code, name: _bE.desc });
+            }
+            var _impSelE = _balBoxE.querySelector('input[name="balance-imp"]:checked');
+            if (_impSelE && BALANCE_PRODUITS[_impSelE.value]) {
+                var _iE = BALANCE_PRODUITS[_impSelE.value];
+                optionsOn.push(_iE.desc);
+                accessoires.push({ code: _iE.code, name: _iE.desc });
             }
         } else {
-            optionsOff.push('Balance ST-7');
+            optionsOff.push('Balance');
         }
 
         var comment = (document.getElementById('soumission-comment').value || '').trim();
@@ -1508,8 +1529,10 @@ var INDIVIDUAL_CODES = {
     'Camera Quad': [{code: '1300-0003', desc: 'Camera Quad'}],
     'Camera 360': [{code: '1300-0004', desc: 'Camera 360 (4 cameras)'}],
     'Camera 360 (6 cameras)': [{code: '1300-0005', desc: 'Camera 360 (set de 6 cameras)'}],
-    'Balance ST-7': [{code: '1200-0011', desc: 'Balance ST-7 (balance en valise)'}],
-    'Imprimante thermique': [{code: '1200-0014', desc: 'Imprimante thermique'}]
+    'Balance loader (installation e-Trak)': [{code: '1200-0010', desc: 'Balance loader (installation e-Trak)'}],
+    'Balance en valise (installation client)': [{code: '1200-0011', desc: 'Balance en valise (installation client)'}],
+    'Imprimante thermique': [{code: '1200-0014', desc: 'Imprimante thermique'}],
+    'Imprimante carbone': [{code: '1200-0015', desc: 'Imprimante carbone'}]
 };
 
 // Update selected options summary list — each code on its own line
@@ -1678,13 +1701,19 @@ function updateSelectedSummary() {
         }
     });
 
-    // Balance ST-7 (choix exclusif : Balance seule / Balance + imprimante)
+    // Balance : le modele choisi (0010 installee / 0011 valise) + l'imprimante
+    // eventuelle (0014 thermique / 0015 carbone), chacune en choix exclusif.
     var _balBoxS = document.getElementById('toggle-balance');
     if (_balBoxS && _balBoxS.classList.contains('active')) {
         var _balSelS = _balBoxS.querySelector('input[name="balance-type"]:checked');
         if (_balSelS) {
-            items.push(fmtItem('1200-0011', 'Balance ST-7 (balance en valise)'));
-            if (_balSelS.value === 'Balance + imprimante') items.push(fmtItem('1200-0014', 'Imprimante thermique'));
+            var _b = BALANCE_PRODUITS[_balSelS.value];
+            if (_b) items.push(fmtItem(_b.code, _b.desc));
+        }
+        var _impSelS = _balBoxS.querySelector('input[name="balance-imp"]:checked');
+        if (_impSelS) {
+            var _i = BALANCE_PRODUITS[_impSelS.value];
+            if (_i) items.push(fmtItem(_i.code, _i.desc));
         }
     }
 
@@ -1998,27 +2027,38 @@ function updateAValiderWarning() {
     });
 })();
 
-// Balance sub-options logic (choix exclusif : Balance seule / Balance + imprimante)
+// Balance : DEUX groupes exclusifs dans le meme bloc — le modele de balance
+// (0010 installee / 0011 valise) et l'imprimante (0014 thermique / 0015
+// carbone). Exclusif A L'INTERIEUR de chaque groupe, mais on peut prendre une
+// balance ET une imprimante. Le bloc reste actif tant qu'une case est cochee.
 (function() {
     var balBox = document.getElementById('toggle-balance');
     if (!balBox) return;
-    var cbs = balBox.querySelectorAll('input[name="balance-type"]');
     var status = balBox.querySelector('.toggle-status');
-    cbs.forEach(function(cb) {
+    var toutes = balBox.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]');
+
+    function rafraichir() {
+        var bal = balBox.querySelector('input[name="balance-type"]:checked');
+        var imp = balBox.querySelector('input[name="balance-imp"]:checked');
+        if (bal || imp) {
+            balBox.classList.add('active');
+            status.textContent = bal ? bal.value.toUpperCase() : imp.value.toUpperCase();
+        } else {
+            balBox.classList.remove('active');
+            status.textContent = 'OFF';
+        }
+        updateSelectedSummary();
+    }
+
+    toutes.forEach(function(cb) {
         cb.addEventListener('change', function() {
             if (this.checked) {
-                cbs.forEach(function(other) { if (other !== cb) other.checked = false; });
-                balBox.classList.add('active');
-                status.textContent = this.value;
-            } else {
-                var anyChecked = false;
-                cbs.forEach(function(c) { if (c.checked) anyChecked = true; });
-                if (!anyChecked) {
-                    balBox.classList.remove('active');
-                    status.textContent = 'OFF';
-                }
+                // exclusivite limitee au groupe de la case cochee
+                balBox.querySelectorAll('input[name="' + this.name + '"]').forEach(function(o) {
+                    if (o !== cb) o.checked = false;
+                });
             }
-            updateSelectedSummary();
+            rafraichir();
         });
     });
 })();

@@ -17,7 +17,7 @@
    "boutons": 4,
    "lignes": 33,
    "selects": 4,
-   "texte": 2058,
+   "texte": 2111,
    "url": "machine.html"
   }
  },
@@ -39,7 +39,7 @@
    "boutons": 7,
    "lignes": 10,
    "selects": 4,
-   "texte": 1701,
+   "texte": 1737,
    "url": "soumission.html"
   }
  },
@@ -47,10 +47,10 @@
   "window": [],
   "console": [],
   "etat": {
-   "boutons": 42,
-   "lignes": 10,
-   "selects": 10,
-   "texte": 1404,
+   "boutons": 15,
+   "lignes": 0,
+   "selects": 0,
+   "texte": 56,
    "url": "edit-machine.html"
   }
  },
@@ -58,10 +58,10 @@
   "window": [],
   "console": [],
   "etat": {
-   "boutons": 42,
-   "lignes": 10,
-   "selects": 10,
-   "texte": 1401,
+   "boutons": 15,
+   "lignes": 0,
+   "selects": 0,
+   "texte": 56,
    "url": "edit-machine.html"
   }
  },
@@ -91,10 +91,10 @@
   "window": [],
   "console": [],
   "etat": {
-   "boutons": 5,
-   "lignes": 2,
+   "boutons": 1,
+   "lignes": 0,
    "selects": 1,
-   "texte": 706,
+   "texte": 503,
    "url": "machine-requests.html"
   }
  }
