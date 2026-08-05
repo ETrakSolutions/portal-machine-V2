@@ -1,0 +1,101 @@
+{
+ "index.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 14,
+   "lignes": 0,
+   "selects": 2,
+   "texte": 156,
+   "url": "index.html"
+  }
+ },
+ "machine.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 4,
+   "lignes": 33,
+   "selects": 4,
+   "texte": 2058,
+   "url": "machine.html"
+  }
+ },
+ "database.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 110,
+   "lignes": 101,
+   "selects": 3,
+   "texte": 11440,
+   "url": "database.html"
+  }
+ },
+ "soumission.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 7,
+   "lignes": 10,
+   "selects": 4,
+   "texte": 1701,
+   "url": "soumission.html"
+  }
+ },
+ "edit-machine.html?type=Excavatrice&fab=Caterpillar&year=2024&model=336%20GC": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 42,
+   "lignes": 10,
+   "selects": 10,
+   "texte": 1404,
+   "url": "edit-machine.html"
+  }
+ },
+ "edit-machine.html?type=Excavatrice&fab=Yanmar&year=2017&model=ViO45-6A": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 42,
+   "lignes": 10,
+   "selects": 10,
+   "texte": 1401,
+   "url": "edit-machine.html"
+  }
+ },
+ "export.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 14,
+   "lignes": 0,
+   "selects": 0,
+   "texte": 711,
+   "url": "export.html"
+  }
+ },
+ "price-list.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 2,
+   "lignes": 0,
+   "selects": 0,
+   "texte": 283,
+   "url": "price-list.html"
+  }
+ },
+ "machine-requests.html": {
+  "window": [],
+  "console": [],
+  "etat": {
+   "boutons": 5,
+   "lignes": 2,
+   "selects": 1,
+   "texte": 706,
+   "url": "machine-requests.html"
+  }
+ }
+}
