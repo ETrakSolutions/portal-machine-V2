@@ -37,20 +37,24 @@ incluse).** Mesuré sur les 279 modèles où hauteur et flèche sont toutes deux
 renseignées : 249 ont une hauteur supérieure à la flèche, ratio médian 1,40, dans
 les 8 familles. C'est la convention retenue pour la campagne.
 
-Exception locale à corriger : **Altec**. Ses 6 valeurs existantes sont des hauteurs
-en flèche seule (ratios 1,06 à 1,19), sauf AC40E-152S qui, lui, inclut la fléchette
-(1,36 ; 63,1 m avec, 49,1 m sans). National Crane, même famille de boom trucks,
-est à 1,34–1,50. À normaliser :
+Exception locale : **Altec — ✅ NORMALISÉ le 2026-08-05** (31 entrées). Ses valeurs
+étaient des hauteurs en flèche seule ; relevées sur les spec sheets officielles
+Altec, confiance haute :
 
-| Modèle | En base (flèche seule) | Avec fléchette (Altec) |
-|---|---|---|
-| AC18-70B | 24.4 m | à relever |
-| AC23-95S | 32.0 m | à relever |
-| AC30-53T | 19.2 m | à relever |
-| AC38-127S | 41.8 m | à relever |
-| AC45E-127S | 41.1 m | à relever |
-| AC65E-155S | (vide) | **65.5 m** (Altec publie aussi 50.2 m flèche seule) |
-| AC40E-152S | 63.1 m — déjà avec fléchette | 63.1 m |
+| Modèle | Avant | Après | Fléchette |
+|---|---|---|---|
+| AC18-70B | 24.4 m | **36.6 m** | 2 pièces 24-40 pi (option) |
+| AC23-95S | 32.0 m | **45.4 m** | 1 pièce 26 pi / 2 pièces 26-44 pi |
+| AC38-127S | 41.8 m | **58.5 m** | 1 pièce 31 pi / 2 pièces 55 pi |
+| AC45E-127S | 41.1 m | **57.6 m** | IJ26 / 1 pièce 31 pi / 2 pièces 55 pi |
+| AC65E-155S | (vide) | **65.5 m** | deux fléchettes 2 étages de 50 pi |
+| AC30-53T | 19.2 m | 19.2 m — **inchangé** | **aucune fléchette au catalogue** : grue-tracteur à sellette, flèche 3 sections de 53 pi. Sa hauteur en flèche seule EST sa hauteur max atteignable (ratio 1,19 = vrai cas hors norme, à ne pas forcer). |
+| AC40E-152S | 63.1 m | 63.1 m — **inchangé** | était déjà le seul conforme |
+
+⚠️ PIÈGE à ne pas reprendre : les fiches AC40E-152S et AC65E-155S contiennent une
+table AERIAL SPECIFICATIONS (ANSI A92.2) avec des « Platform Working Height » de
+65.6 / 67.7 et 65.8 m — ce sont des hauteurs de **plancher de nacelle**, pas de
+poulie de grue.
 
 
 **SANY — « Contrepoids max » : deux règles cohabitent.** Les treillis déjà en base
