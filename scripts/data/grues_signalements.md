@@ -1,5 +1,27 @@
 # Signalements — specs Grue Mobile et Excavatrice (2026-08-05)
 
+## 0bis. Caterpillar mini — points laissés ouverts (2026-08-05)
+
+- **Années des modèles renommés.** Le renommage vers les noms Cat actuels (`305` →
+  `305 CR`, etc.) a été appliqué à TOUTES les années de chaque modèle. Or la
+  génération « CR » Next Generation date de 2019-2021 : pour les millésimes
+  antérieurs, la machine s'appelait en réalité `305E2 CR`, `302.7D CR`, etc.
+  Choix assumé : la base est un outil de soumission, pas un registre historique,
+  et le harnais Cat ne dépend pas de la génération (Z03B-0080 pour toute la
+  marque). À revoir si une distinction par génération devient nécessaire.
+- **Cat 310 : années incomplètes.** En base de 2023 à 2026, alors que le modèle
+  fait partie de la gamme Next Gen 7-10 t annoncée en octobre-novembre 2018.
+  Les millésimes 2019-2022 manquent probablement. Ses specs, elles, sont exactes
+  (10 432 kg, 51.8 kW — identiques à cat.com).
+- **Voltage des Cat 8-10 t : incohérent dans les données existantes.**
+  308 (9 380 kg) = 24V, 309 CR (9 565 kg) = 12V, 310 (10 432 kg) = 24V,
+  308 CR (8 146 kg) = 12V. La 307.5 ajoutée a repris le 12V de son voisin
+  immédiat (308 CR, 26 kg d'écart) — à confirmer en fiche si ça devient critique.
+- **`305.5`** n'a pas été renommée : selon le millésime il s'agit de la `305.5D CR`,
+  `305.5E CR` ou `305.5E2 CR`, ce qui demande une décision par génération.
+- **`308 CR (Fixed Boom)`** est un modèle distinct au catalogue Cat (il remplace la
+  307.5 depuis janvier 2026) et n'est pas en base.
+
 ## 0. Excavatrice — écart relevé sur une valeur importée le 2026-08-05
 
 | Marque | Modèle | Champ | Valeur en base | Fiche constructeur | Source |
