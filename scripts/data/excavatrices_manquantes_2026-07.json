@@ -1,0 +1,2072 @@
+[
+ {
+  "fab": "Case",
+  "modele": "CX12D",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "1330",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX140E",
+  "annees": "2022-2026",
+  "classe": "120",
+  "poids": "13100",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX15EV",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "1445",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX190E",
+  "annees": "2022-2026",
+  "classe": "200",
+  "poids": "18600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX19D",
+  "annees": "2024-2026",
+  "classe": "Mini",
+  "poids": "1880",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX25EV",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "2190",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX260E",
+  "annees": "2022-2026",
+  "classe": "270",
+  "poids": "25800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX290D (Material Handler / Scrap Handler - excavatrice specialisee, cabine elevatrice)",
+  "annees": "2016-2024",
+  "classe": "300",
+  "poids": "32700",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX30C",
+  "annees": "2017-2025",
+  "classe": "Mini",
+  "poids": "2730",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX35D",
+  "annees": "2024-2026",
+  "classe": "Mini",
+  "poids": "3480",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX365E SR",
+  "annees": "2022-2026",
+  "classe": "400",
+  "poids": "35650",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX42D",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "4200",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX500D (ME - Mass Excavation)",
+  "annees": "2016-2019",
+  "classe": "500",
+  "poids": "50700",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX50D",
+  "annees": "2024-2026",
+  "classe": "Mini",
+  "poids": "4950",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Case",
+  "modele": "CX60D",
+  "annees": "2024-2026",
+  "classe": "Mini",
+  "poids": "5970",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Caterpillar",
+  "modele": "336 GC",
+  "annees": "2018-2026",
+  "classe": "330",
+  "poids": "~37140",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Caterpillar",
+  "modele": "M314",
+  "annees": "2020-2026",
+  "classe": "120",
+  "poids": "~15000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Caterpillar",
+  "modele": "M315",
+  "annees": "2021-2026",
+  "classe": "150",
+  "poids": "15700-18000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Caterpillar",
+  "modele": "M319",
+  "annees": "2021-2026",
+  "classe": "200",
+  "poids": "19000-21000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX140LCR-5",
+  "annees": "2018-2021",
+  "classe": "120",
+  "poids": "14700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX225LC-5",
+  "annees": "2015-2019",
+  "classe": "200",
+  "poids": "22000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX230LC-9",
+  "annees": "2026",
+  "classe": "200",
+  "poids": "24000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX235LCR-5",
+  "annees": "2015-2019",
+  "classe": "200",
+  "poids": "23600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX255LC-5",
+  "annees": "2016-2019",
+  "classe": "270",
+  "poids": "26200",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX260LC-9",
+  "annees": "2026",
+  "classe": "270",
+  "poids": "26000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX300LC-5",
+  "annees": "2015-2019",
+  "classe": "300",
+  "poids": "31200",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX350LC-5",
+  "annees": "2015-2019",
+  "classe": "330",
+  "poids": "36600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX360LC-9",
+  "annees": "2026",
+  "classe": "330",
+  "poids": "36000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX380LC-5",
+  "annees": "2017-2021",
+  "classe": "400",
+  "poids": "40000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX400LC-9",
+  "annees": "2026",
+  "classe": "400",
+  "poids": "43000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX420LC-5",
+  "annees": "2015-2019",
+  "classe": "400",
+  "poids": "42600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX490LC-5",
+  "annees": "2015-2019",
+  "classe": "500",
+  "poids": "49000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Develon (Doosan)",
+  "modele": "DX530LC-5",
+  "annees": "2015-2019",
+  "classe": "500",
+  "poids": "52800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX210LC-7H SLF",
+  "annees": "2024-2026",
+  "classe": "200",
+  "poids": "24900",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX245USLC-5",
+  "annees": "2015-2016",
+  "classe": "270",
+  "poids": "25478",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX250LC-7H SLF",
+  "annees": "2024-2026",
+  "classe": "270",
+  "poids": "29300",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX30U-5N",
+  "annees": "2019-2026",
+  "classe": "Mini",
+  "poids": "3030",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX345USLC-6",
+  "annees": "2018-2026",
+  "classe": "330",
+  "poids": "34000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX345USLC-7 / -7H",
+  "annees": "2023-2026",
+  "classe": "330",
+  "poids": "36000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX350LC-7H SLF",
+  "annees": "2024-2026",
+  "classe": "330",
+  "poids": "36400",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX75US-7",
+  "annees": "2023-2026",
+  "classe": "Compact",
+  "poids": "8437",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX85USB-5N",
+  "annees": "2018-2026",
+  "classe": "Compact",
+  "poids": "8498",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hitachi",
+  "modele": "ZX85USB-7",
+  "annees": "2023-2026",
+  "classe": "Compact",
+  "poids": "8980",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HW100A",
+  "annees": "2025-2026",
+  "classe": "100 (compact roue)",
+  "poids": "11440",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HW160A",
+  "annees": "2021-2026",
+  "classe": "160/200",
+  "poids": "17000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HW170A CR",
+  "annees": "2021-2026",
+  "classe": "170/200 (rayon court)",
+  "poids": "18880",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX1000A L",
+  "annees": "2024-2026",
+  "classe": "1000 (mass excavator)",
+  "poids": "90700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX130A LCR",
+  "annees": "2022-2026",
+  "classe": "130 (rayon court)",
+  "poids": "13500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX180A L",
+  "annees": "2021-2026",
+  "classe": "180/200",
+  "poids": "18400",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX220A LR",
+  "annees": "2021-2026",
+  "classe": "220 (longue portee)",
+  "poids": "25420",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX220LR",
+  "annees": "2016-2020",
+  "classe": "220 (longue portee)",
+  "poids": "24820",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX260L",
+  "annees": "2016-2021",
+  "classe": "260/270",
+  "poids": "26000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX27AZ",
+  "annees": "2024-2026",
+  "classe": "Mini/Compact",
+  "poids": "2478",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX300L",
+  "annees": "2015-2020",
+  "classe": "300",
+  "poids": "30000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX330L",
+  "annees": "2015-2020",
+  "classe": "330",
+  "poids": "33500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX350A L",
+  "annees": "2022-2026",
+  "classe": "350",
+  "poids": "35600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX355A LCR",
+  "annees": "2024-2026",
+  "classe": "355 (rayon court)",
+  "poids": "36000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX40A",
+  "annees": "2023-2026",
+  "classe": "Mini/Compact",
+  "poids": "4300",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX480L",
+  "annees": "2016-2021",
+  "classe": "480/500",
+  "poids": "49500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX520A L",
+  "annees": "2022-2026",
+  "classe": "520 (mass excavator)",
+  "poids": "82100",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX520L",
+  "annees": "2016-2020",
+  "classe": "520 (mass excavator)",
+  "poids": "52400",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX800A L",
+  "annees": "2024-2026",
+  "classe": "800 (mass excavator)",
+  "poids": "74400",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "HX900L",
+  "annees": "2018-2020",
+  "classe": "900 (mass/mining)",
+  "poids": "88800",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "R17Z-9A",
+  "annees": "2015-2026",
+  "classe": "Mini/Compact",
+  "poids": "1780",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "R30Z-9AK",
+  "annees": "2020-2026",
+  "classe": "Mini/Compact",
+  "poids": "3000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "R55-9A",
+  "annees": "2015-2026",
+  "classe": "Mini/Compact",
+  "poids": "5700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Hyundai (HD Hyundai Construction Equipment)",
+  "modele": "R60CR-9A",
+  "annees": "2015-2026",
+  "classe": "Mini/Compact",
+  "poids": "6000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "100C-1",
+  "annees": "2015-2020",
+  "classe": "120",
+  "poids": "10000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "100C-2",
+  "annees": "2019-2026",
+  "classe": "120",
+  "poids": "10000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "45Z-1",
+  "annees": "2019-2022",
+  "classe": "Mini",
+  "poids": "4481",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "51R-1",
+  "annees": "2017-2021",
+  "classe": "Compact",
+  "poids": "5110",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "JCB",
+  "modele": "57C-1",
+  "annees": "2016-2021",
+  "classe": "Compact",
+  "poids": "5480",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "67C-1",
+  "annees": "2015-2022",
+  "classe": "Compact",
+  "poids": "6800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "8018 CTS",
+  "annees": "2015-2017",
+  "classe": "Mini",
+  "poids": "1900",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "JCB",
+  "modele": "8026 CTS",
+  "annees": "2015-2021",
+  "classe": "Mini",
+  "poids": "2870",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "86C-1",
+  "annees": "2015-2020",
+  "classe": "120",
+  "poids": "8525",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "86C-2",
+  "annees": "2019-2026",
+  "classe": "120",
+  "poids": "8600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "90Z-1",
+  "annees": "2015-2020",
+  "classe": "120",
+  "poids": "8608",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "90Z-2",
+  "annees": "2019-2026",
+  "classe": "120",
+  "poids": "8900",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "Hydradig 110W",
+  "annees": "2017-2026",
+  "classe": "120",
+  "poids": "11457",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "JS160 (tracked)",
+  "annees": "2023-2026",
+  "classe": "200",
+  "poids": "17000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "JCB",
+  "modele": "JZ141",
+  "annees": "2018-2026",
+  "classe": "150",
+  "poids": "15000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "John Deere",
+  "modele": "190G W",
+  "annees": "2018-2026",
+  "classe": "200",
+  "poids": "19700-20550",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "John Deere",
+  "modele": "230 P-Tier",
+  "annees": "2026",
+  "classe": "200",
+  "poids": "23950-25200",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "John Deere",
+  "modele": "230G W",
+  "annees": "2015-2022",
+  "classe": "200",
+  "poids": "23300-24140",
+  "traction": "Roue",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "John Deere",
+  "modele": "30 P-Tier",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "3275",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "John Deere",
+  "modele": "30G",
+  "annees": "2015-2022",
+  "classe": "Mini",
+  "poids": "3275",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK140SRD-5 (Car Demo)",
+  "annees": "2015-2020",
+  "classe": "120",
+  "poids": "14000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK140SRD-7 (Car Demo)",
+  "annees": "2021-2026",
+  "classe": "120",
+  "poids": "14000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK17SR-5E",
+  "annees": "2015-2019",
+  "classe": "Mini",
+  "poids": "1610",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK17SR-6E",
+  "annees": "2019-2026",
+  "classe": "Mini",
+  "poids": "1670",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK210D-10 (Car Demo)",
+  "annees": "2017-2021",
+  "classe": "200",
+  "poids": "21000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK210D-11 (Car Demo)",
+  "annees": "2021-2026",
+  "classe": "200",
+  "poids": "21000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK210D-9 (Car Demo)",
+  "annees": "2015-2017",
+  "classe": "200",
+  "poids": "21000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK25SR-6E",
+  "annees": "2018-2024",
+  "classe": "Mini",
+  "poids": "2690",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK26SR-7",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "2580",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK350DLC-10 (Building Demo)",
+  "annees": "2018-2021",
+  "classe": "330",
+  "poids": "35000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK350DLC-11 (Building Demo)",
+  "annees": "2021-2026",
+  "classe": "330",
+  "poids": "35000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK35SR-6E",
+  "annees": "2018-2023",
+  "classe": "Mini",
+  "poids": "3880",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK390LC-10",
+  "annees": "2017-2021",
+  "classe": "400",
+  "poids": "39000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK390LC-11",
+  "annees": "2021-2026",
+  "classe": "400",
+  "poids": "39000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK45SRX-6E",
+  "annees": "2016-2020",
+  "classe": "Compact",
+  "poids": "4540",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK45SRX-7",
+  "annees": "2022-2026",
+  "classe": "Compact",
+  "poids": "4673",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK500LC-9",
+  "annees": "2015-2020",
+  "classe": "500",
+  "poids": "50700",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK520LC-11",
+  "annees": "2024-2026",
+  "classe": "500",
+  "poids": "54885",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK75SR-3E",
+  "annees": "2015-2019",
+  "classe": "120",
+  "poids": "7540",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK850LC-10",
+  "annees": "2019-2026",
+  "classe": "700-800",
+  "poids": "84228",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kobelco",
+  "modele": "SK850LC-9",
+  "annees": "2015-2019",
+  "classe": "700-800",
+  "poids": "83500",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC138USLC-11",
+  "annees": "2016-2026",
+  "classe": "120",
+  "poids": "15680-17030 (34563-37547 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC220LCi-12",
+  "annees": "2025-2026",
+  "classe": "200",
+  "poids": "~22800 (classe 21-24 t)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC238USLC-11",
+  "annees": "2017-2026",
+  "classe": "200",
+  "poids": "24600-25250 (54230-55660 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC30MR-5",
+  "annees": "2018-2026",
+  "classe": "Mini",
+  "poids": "3100",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC35MR-5",
+  "annees": "2018-2026",
+  "classe": "Mini",
+  "poids": "3900",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC45MR-5",
+  "annees": "2018-2026",
+  "classe": "Mini",
+  "poids": "4870-4990 (canopy/cab)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC490HRD-11 (demolition/haute portee)",
+  "annees": "2024-2026",
+  "classe": "500",
+  "poids": "~60000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Komatsu",
+  "modele": "PC55MR-5",
+  "annees": "2018-2026",
+  "classe": "Mini",
+  "poids": "5150-5270 (canopy/cab)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Kubota",
+  "modele": "U48-5",
+  "annees": "2021-2026",
+  "classe": "500",
+  "poids": "5015",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "A 915 Compact Litronic",
+  "annees": "2020-2026",
+  "classe": "120",
+  "poids": "15400-17200",
+  "traction": "Roue",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "A 916 Compact Litronic",
+  "annees": "2020-2026",
+  "classe": "200",
+  "poids": "16100-17800",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "A 924 Heavy Lift Litronic",
+  "annees": "2016-2026",
+  "classe": "270",
+  "poids": "26500-28000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 915 Compact Litronic",
+  "annees": "2021-2026",
+  "classe": "120",
+  "poids": "15020-16960",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 917 Compact Litronic",
+  "annees": "2021-2026",
+  "classe": "200",
+  "poids": "16280-18430",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 920 Compact Litronic",
+  "annees": "2019-2026",
+  "classe": "200",
+  "poids": "18380-21030",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 926 Compact Litronic",
+  "annees": "2019-2026",
+  "classe": "270",
+  "poids": "25700-28950",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 940 Demolition Litronic",
+  "annees": "2021-2026",
+  "classe": "500",
+  "poids": "48700-63900",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 950 Demolition Litronic",
+  "annees": "2019-2026",
+  "classe": "700-800",
+  "poids": "53100-75850",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 960 Demolition Litronic",
+  "annees": "2019-2026",
+  "classe": "1000+",
+  "poids": "77300-97700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 9600",
+  "annees": "2021-2026",
+  "classe": "1000+",
+  "poids": "~600000 (classe 600 t)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 980 Demolition Litronic",
+  "annees": "2023-2026",
+  "classe": "1000+",
+  "poids": "180000-197500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Liebherr",
+  "modele": "R 998 SME Litronic",
+  "annees": "2022-2026",
+  "classe": "1000+",
+  "poids": "101500",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "145 X4S",
+  "annees": "2025-2026",
+  "classe": "120",
+  "poids": "15400",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "190 X4S",
+  "annees": "2023-2026",
+  "classe": "200",
+  "poids": "18900",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "240 X2",
+  "annees": "2019-2023",
+  "classe": "250",
+  "poids": "24900",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "290 X2",
+  "annees": "2017-2023",
+  "classe": "300",
+  "poids": "29200",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "370 X4S",
+  "annees": "2024-2026",
+  "classe": "400",
+  "poids": "38000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "470 X3",
+  "annees": "2015-2023",
+  "classe": "500",
+  "poids": "50600",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Link-Belt",
+  "modele": "80 X4",
+  "annees": "2026",
+  "classe": "80",
+  "poids": "8500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "9018F",
+  "annees": "2020-2026",
+  "classe": "Mini",
+  "poids": "1800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "9027FZTS",
+  "annees": "2021-2026",
+  "classe": "Mini",
+  "poids": "2700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "9051FZTS",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "5180",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "9057FZTS",
+  "annees": "2023-2026",
+  "classe": "Compact",
+  "poids": "5700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "909ECR",
+  "annees": "2020-2026",
+  "classe": "120",
+  "poids": "8700",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "913FCR",
+  "annees": "2023-2026",
+  "classe": "120",
+  "poids": "13880",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "915E",
+  "annees": "2015-2021",
+  "classe": "150",
+  "poids": "15000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "915FCR",
+  "annees": "2023-2026",
+  "classe": "200",
+  "poids": "15600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "920E",
+  "annees": "2016-2021",
+  "classe": "200",
+  "poids": "21500",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "922E",
+  "annees": "2015-2021",
+  "classe": "200",
+  "poids": "22000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "922FE",
+  "annees": "2025-2026",
+  "classe": "200",
+  "poids": "22000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "925E",
+  "annees": "2015-2021",
+  "classe": "270",
+  "poids": "25000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "926F",
+  "annees": "2022-2026",
+  "classe": "270",
+  "poids": "26500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "930E",
+  "annees": "2015-2021",
+  "classe": "300",
+  "poids": "30000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "933E",
+  "annees": "2017-2021",
+  "classe": "330",
+  "poids": "31800",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "933F",
+  "annees": "2023-2026",
+  "classe": "330",
+  "poids": "34300",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "936E",
+  "annees": "2015-2021",
+  "classe": "400",
+  "poids": "36000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "936F",
+  "annees": "2023-2026",
+  "classe": "400",
+  "poids": "38800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "950E",
+  "annees": "2016-2021",
+  "classe": "500",
+  "poids": "48000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "952F",
+  "annees": "2023-2026",
+  "classe": "500",
+  "poids": "51000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "LiuGong",
+  "modele": "995F",
+  "annees": "2023-2026",
+  "classe": "1000+",
+  "poids": "95000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Mecalac",
+  "modele": "11MWR",
+  "annees": "2023-2026",
+  "classe": "120",
+  "poids": "11000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Mecalac",
+  "modele": "7MWR",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "7000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Mecalac",
+  "modele": "9MWR",
+  "annees": "2023-2026",
+  "classe": "Compact",
+  "poids": "9000",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Mecalac",
+  "modele": "e12",
+  "annees": "2022-2026",
+  "classe": "120",
+  "poids": "11500",
+  "traction": "Roue",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "New Holland",
+  "modele": "E17C",
+  "annees": "2017-2022",
+  "classe": "Mini",
+  "poids": "1775",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "New Holland",
+  "modele": "E26C",
+  "annees": "2017-2022",
+  "classe": "Mini",
+  "poids": "2600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "New Holland",
+  "modele": "E33C",
+  "annees": "2017-2026",
+  "classe": "Mini",
+  "poids": "3300",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "New Holland",
+  "modele": "E42D",
+  "annees": "2025-2026",
+  "classe": "Mini",
+  "poids": "4350",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "New Holland",
+  "modele": "E50D",
+  "annees": "2025-2026",
+  "classe": "Mini",
+  "poids": "4950",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "New Holland",
+  "modele": "E57C",
+  "annees": "2017-2022",
+  "classe": "Compact",
+  "poids": "5465",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "SANY",
+  "modele": "SY20C",
+  "annees": "2018-2026",
+  "classe": "Mini",
+  "poids": "1975",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "SANY",
+  "modele": "SY235H",
+  "annees": "2024-2026",
+  "classe": "240",
+  "poids": "24400",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "SANY",
+  "modele": "SY265C Long Reach",
+  "annees": "2020-2026",
+  "classe": "300",
+  "poids": "31500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "SANY",
+  "modele": "SY60C",
+  "annees": "2018-2026",
+  "classe": "Compact",
+  "poids": "6100",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "SANY",
+  "modele": "SY60U",
+  "annees": "2023-2026",
+  "classe": "Compact",
+  "poids": "6000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "SANY",
+  "modele": "SY80U",
+  "annees": "2024-2026",
+  "classe": "Compact",
+  "poids": "8800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Takeuchi",
+  "modele": "TB250-2",
+  "annees": "2019-2026",
+  "classe": "500",
+  "poids": "4970",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Takeuchi",
+  "modele": "TB335R",
+  "annees": "2022-2026",
+  "classe": "330",
+  "poids": "3770",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Takeuchi",
+  "modele": "TB350R",
+  "annees": "2023-2026",
+  "classe": "500",
+  "poids": "5090",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Takeuchi",
+  "modele": "TB370",
+  "annees": "2020-2026",
+  "classe": "700-800",
+  "poids": "6710",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Takeuchi",
+  "modele": "TB395W",
+  "annees": "2024-2026",
+  "classe": "1000+",
+  "poids": "10625",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC210 (nouvelle generation)",
+  "annees": "2024-2026",
+  "classe": "200",
+  "poids": "~21000-22000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC230 (nouvelle generation)",
+  "annees": "2024-2026",
+  "classe": "200",
+  "poids": "~20700-26150 (45560-57640 lbs, page produit US)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC260 Hybrid",
+  "annees": "2025-2026",
+  "classe": "270",
+  "poids": "~26000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC300 Hybrid",
+  "annees": "2025-2026",
+  "classe": "300",
+  "poids": "~29700-38800 (65477-85539 lbs, page produit US)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC370 (nouvelle generation)",
+  "annees": "2024-2026",
+  "classe": "330",
+  "poids": "~37000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC370 Hybrid",
+  "annees": "2025-2026",
+  "classe": "330",
+  "poids": "~37000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC400 (nouvelle generation)",
+  "annees": "2024-2026",
+  "classe": "400",
+  "poids": "~40000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC400 Hybrid",
+  "annees": "2025-2026",
+  "classe": "400",
+  "poids": "~40000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC500 (nouvelle generation)",
+  "annees": "2024-2026",
+  "classe": "500",
+  "poids": "~50000-52600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC500 Hybrid",
+  "annees": "2025-2026",
+  "classe": "500",
+  "poids": "~50000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC530E / EC530EL",
+  "annees": "2021-2026",
+  "classe": "500",
+  "poids": "~52500-54200 (115830-119560 lbs, page produit US)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EC950F",
+  "annees": "2020-2026",
+  "classe": "1000+",
+  "poids": "~90000",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "ECR50 / ECR50F",
+  "annees": "2021-2026",
+  "classe": "Compact",
+  "poids": "~5050 (11133 lbs)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "ECR58 / ECR58F",
+  "annees": "2021-2026",
+  "classe": "Compact",
+  "poids": "~5840 (12875 lbs)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EW200E (Material Handler)",
+  "annees": "2021-2026",
+  "classe": "200",
+  "poids": "~20500 (22.6 tonnes US)",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EW240E (Material Handler)",
+  "annees": "2018-2026",
+  "classe": "270",
+  "poids": "~23600 (26 tonnes US)",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Volvo CE",
+  "modele": "EWR130E",
+  "annees": "2021-2026",
+  "classe": "120",
+  "poids": "~12900-14400",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "2503",
+  "annees": "2015-2018",
+  "classe": "270",
+  "poids": "2430",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "3503",
+  "annees": "2015-2018",
+  "classe": "330",
+  "poids": "3830",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "50Z3",
+  "annees": "2015-2017",
+  "classe": "500",
+  "poids": "5280",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "6003",
+  "annees": "2015",
+  "classe": "500",
+  "poids": "5500",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "6503",
+  "annees": "2015-2016",
+  "classe": "500",
+  "poids": "6030",
+  "traction": "Roue",
+  "conf": "haute"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "75Z3",
+  "annees": "2015-2016",
+  "classe": "700-800",
+  "poids": "7890",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "8003",
+  "annees": "2015",
+  "classe": "700-800",
+  "poids": "7630",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "ET40",
+  "annees": "2026",
+  "classe": "400",
+  "poids": "4040",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "EZ35",
+  "annees": "2026",
+  "classe": "330",
+  "poids": "3500",
+  "traction": "Chenille",
+  "conf": "basse"
+ },
+ {
+  "fab": "Wacker Neuson",
+  "modele": "EZ38",
+  "annees": "2015-2018",
+  "classe": "400",
+  "poids": "4100-4510",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE135U",
+  "annees": "2023-2026",
+  "classe": "120",
+  "poids": "13500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE150D",
+  "annees": "2017-2021",
+  "classe": "120",
+  "poids": "15000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE155U",
+  "annees": "2023-2026",
+  "classe": "120",
+  "poids": "15890",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE155UCR",
+  "annees": "2025-2026",
+  "classe": "120",
+  "poids": "16600",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE18U",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "1800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE215 / XE215C",
+  "annees": "2016-2021",
+  "classe": "200",
+  "poids": "21450",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE225U",
+  "annees": "2023-2026",
+  "classe": "200",
+  "poids": "23500",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE235UCR",
+  "annees": "2023-2026",
+  "classe": "200",
+  "poids": "23500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE250U",
+  "annees": "2022-2026",
+  "classe": "200",
+  "poids": "27300",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE27U",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "2780",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE300UF",
+  "annees": "2023-2026",
+  "classe": "300",
+  "poids": "30000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE335C",
+  "annees": "2017-2021",
+  "classe": "330",
+  "poids": "33800",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE45U",
+  "annees": "2023-2026",
+  "classe": "Mini",
+  "poids": "4800",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE75U",
+  "annees": "2023-2026",
+  "classe": "120",
+  "poids": "7500",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "XCMG",
+  "modele": "XE950G",
+  "annees": "2022-2026",
+  "classe": "1000+",
+  "poids": "95000",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "SV08-1D",
+  "annees": "2021-2026",
+  "classe": "Mini",
+  "poids": "1065 (2348 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "SV100-2A / SV100-2B",
+  "annees": "2022-2024",
+  "classe": "1000+",
+  "poids": "9775 (21550 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "SV40",
+  "annees": "2020-2026",
+  "classe": "400",
+  "poids": "4176 (9206 lb canopy)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "ViO17-1E",
+  "annees": "2022-2026",
+  "classe": "Mini",
+  "poids": "1825 (4023 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "ViO25-6B",
+  "annees": "2022-2026",
+  "classe": "270",
+  "poids": "2680 (5908 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "ViO35-6A",
+  "annees": "2015-2026",
+  "classe": "330",
+  "poids": "3726 (8214 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "ViO45-6A",
+  "annees": "2014-2019",
+  "classe": "400",
+  "poids": "4725 (10417 lb)",
+  "traction": "Chenille",
+  "conf": "moyenne"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "ViO50-6A",
+  "annees": "2015-2026",
+  "classe": "500",
+  "poids": "4895 (10792 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ },
+ {
+  "fab": "Yanmar",
+  "modele": "ViO80-1A",
+  "annees": "2022-2024",
+  "classe": "700-800",
+  "poids": "8226 (18136 lb)",
+  "traction": "Chenille",
+  "conf": "haute"
+ }
+]
