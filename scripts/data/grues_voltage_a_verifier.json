@@ -1,0 +1,731 @@
+[
+ {
+  "marque": "Broderson",
+  "modele": "RT-300",
+  "famille": "Carry-deck / industrielle",
+  "annees": "2015-2018",
+  "voltage_deduit": "12V DC",
+  "capacite": "14 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Broderson",
+  "modele": "RT-400",
+  "famille": "Carry-deck / industrielle",
+  "annees": "2017-2026",
+  "voltage_deduit": "12V DC",
+  "capacite": "18 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK3050-3",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "50 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK3060-2",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "59 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK4070L",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "68 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK4080-3",
+  "famille": "Tout-terrain",
+  "annees": "2022-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "80 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK4080L",
+  "famille": "Tout-terrain",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "77 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK4090",
+  "famille": "Tout-terrain",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "91 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK4090-1",
+  "famille": "Tout-terrain",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "91 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5120L",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "118 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5150-1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "159 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5150L-1",
+  "famille": "Tout-terrain",
+  "annees": "2017-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "159 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5180-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "191 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5200-1",
+  "famille": "Tout-terrain",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "218 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5250L-1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "272 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK5250XL-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "272 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK6300L-1",
+  "famille": "Tout-terrain",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "318 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK6450-1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "454 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Grove (Manitowoc)",
+  "modele": "GMK7550",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "499 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTC 1045-3.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "45 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTC 1050-3.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "50 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTC 1055-3.2",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "55 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1040-2.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "40 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1055-3.3",
+  "famille": "Tout-terrain",
+  "annees": "2019-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "55 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1060-3.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "60 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1090-4.2",
+  "famille": "Tout-terrain",
+  "annees": "2015-2023",
+  "voltage_deduit": "24V DC",
+  "capacite": "90 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1090-4.3",
+  "famille": "Tout-terrain",
+  "annees": "2023-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "90 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1110-5.2",
+  "famille": "Tout-terrain",
+  "annees": "2022-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "110 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1120-4.1",
+  "famille": "Tout-terrain",
+  "annees": "2018-2024",
+  "voltage_deduit": "24V DC",
+  "capacite": "120 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1120-4.2",
+  "famille": "Tout-terrain",
+  "annees": "2024-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "120 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 11200-9.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "1200 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1160-5.2",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "160 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1200-5.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "200 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1230-5.1",
+  "famille": "Tout-terrain",
+  "annees": "2019-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "230 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1300-6.2",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "300 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1350-6.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2023",
+  "voltage_deduit": "24V DC",
+  "capacite": "350 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1400-7.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "400 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1500-8.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "500 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1650-8.1",
+  "famille": "Tout-terrain",
+  "annees": "2019-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "700 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Liebherr",
+  "modele": "LTM 1750-9.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "800 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "120|HTLB",
+  "famille": "Camion (grue routiere)",
+  "annees": "2022-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "109 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "138 HSL",
+  "famille": "Chenilles treillis",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "73 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "218 HSL",
+  "famille": "Chenilles treillis",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "100 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "218|V",
+  "famille": "Chenilles treillis",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "100 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "228 HSL",
+  "famille": "Chenilles treillis",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "118 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "238 HSL",
+  "famille": "Chenilles treillis",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "136 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "298 Series 2 (298 HSL)",
+  "famille": "Chenilles treillis",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "227 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "348 Series 2",
+  "famille": "Chenilles treillis",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "272 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "40|HT",
+  "famille": "Camion (grue routiere)",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "36 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "65|HT",
+  "famille": "Camion (grue routiere)",
+  "annees": "2021-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "59 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTC-86100",
+  "famille": "Camion (grue routiere)",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "91 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTC-86110",
+  "famille": "Camion (grue routiere)",
+  "annees": "2018-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "100 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTC-8640",
+  "famille": "Camion (grue routiere)",
+  "annees": "2015-2018",
+  "voltage_deduit": "24V DC",
+  "capacite": "36 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTC-8660 II",
+  "famille": "Camion (grue routiere)",
+  "annees": "2015-2019",
+  "voltage_deduit": "24V DC",
+  "capacite": "54 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTC-8670",
+  "famille": "Camion (grue routiere)",
+  "annees": "2015-2019",
+  "voltage_deduit": "24V DC",
+  "capacite": "64 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTC-8675 Series II",
+  "famille": "Camion (grue routiere)",
+  "annees": "2015-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "68 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "Link-Belt",
+  "modele": "HTT-8660",
+  "famille": "Camion (grue routiere)",
+  "annees": "2015-2019",
+  "voltage_deduit": "24V DC",
+  "capacite": "54 t",
+  "priorite": "haute"
+ },
+ {
+  "marque": "SANY",
+  "modele": "SRA1000A",
+  "famille": "Rough-terrain",
+  "annees": "2019-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "91 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "SANY",
+  "modele": "SRA1200A",
+  "famille": "Rough-terrain",
+  "annees": "2019-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "109 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 2.040-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "40 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 3.060-2",
+  "famille": "Tout-terrain",
+  "annees": "2025-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "60 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 4.070-2",
+  "famille": "Tout-terrain",
+  "annees": "2023-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "70 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 4.070L-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "70 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 4.100L-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "100 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 5.130-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "130 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 5.250-2",
+  "famille": "Tout-terrain",
+  "annees": "2023-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "250 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 5.250L-2",
+  "famille": "Tout-terrain",
+  "annees": "2023-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "250 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 6.300-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "300 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "AC 8.500-1",
+  "famille": "Tout-terrain",
+  "annees": "2020-2026",
+  "voltage_deduit": "24V DC",
+  "capacite": "500 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "ATF 220-5.1",
+  "famille": "Tout-terrain",
+  "annees": "2015-2020",
+  "voltage_deduit": "24V DC",
+  "capacite": "220 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Tadano",
+  "modele": "ATF 400G-6",
+  "famille": "Tout-terrain",
+  "annees": "2015-2020",
+  "voltage_deduit": "24V DC",
+  "capacite": "400 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 100US",
+  "famille": "Rough-terrain",
+  "annees": "2018-2022",
+  "voltage_deduit": "24V DC",
+  "capacite": "91 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 190",
+  "famille": "Rough-terrain",
+  "annees": "2015-2016",
+  "voltage_deduit": "24V DC",
+  "capacite": "82 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 335",
+  "famille": "Rough-terrain",
+  "annees": "2015-2018",
+  "voltage_deduit": "24V DC",
+  "capacite": "32 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 335-1",
+  "famille": "Rough-terrain",
+  "annees": "2015-2018",
+  "voltage_deduit": "24V DC",
+  "capacite": "32 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 345",
+  "famille": "Rough-terrain",
+  "annees": "2015-2018",
+  "voltage_deduit": "24V DC",
+  "capacite": "41 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 345-1XL",
+  "famille": "Rough-terrain",
+  "annees": "2015-2018",
+  "voltage_deduit": "24V DC",
+  "capacite": "41 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 555",
+  "famille": "Rough-terrain",
+  "annees": "2015-2017",
+  "voltage_deduit": "24V DC",
+  "capacite": "50 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 555-1",
+  "famille": "Rough-terrain",
+  "annees": "2015-2017",
+  "voltage_deduit": "24V DC",
+  "capacite": "50 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 665",
+  "famille": "Rough-terrain",
+  "annees": "2015-2017",
+  "voltage_deduit": "24V DC",
+  "capacite": "59 t",
+  "priorite": "normale"
+ },
+ {
+  "marque": "Terex",
+  "modele": "RT 90",
+  "famille": "Rough-terrain",
+  "annees": "2018-2020",
+  "voltage_deduit": "24V DC",
+  "capacite": "82 t",
+  "priorite": "normale"
+ }
+]

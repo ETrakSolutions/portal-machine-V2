@@ -1,0 +1,713 @@
+{
+ "rejets": [
+  {
+   "marque": "SANY",
+   "modele": "SCA3000A",
+   "champ": "Voltage machine (V/type)",
+   "valeur": "24V DC",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Altec",
+   "modele": "AC65E-155S",
+   "champ": "Hauteur max",
+   "valeur": "50.2 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "National Crane",
+   "modele": "NBT50L",
+   "champ": "Hauteur max",
+   "valeur": "61.9 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "National Crane",
+   "modele": "NBT55L",
+   "champ": "Hauteur max",
+   "valeur": "61.9 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "1881TM",
+   "champ": "Hauteur max",
+   "valeur": "36.9 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "30105-D",
+   "champ": "Hauteur max",
+   "valeur": "49.4 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "34142",
+   "champ": "Hauteur max",
+   "valeur": "61.3 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "40105",
+   "champ": "Hauteur max",
+   "valeur": "51.8 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Grove (Manitowoc)",
+   "modele": "GCD20",
+   "champ": "Contrepoids max",
+   "valeur": "4.58 t",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK1200G-3 HDO",
+   "champ": "Hauteur max",
+   "valeur": "82.3 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "238 HSL",
+   "champ": "Hauteur max",
+   "valeur": "93.9 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "298 Series 2 (298 HSL)",
+   "champ": "Contrepoids max",
+   "valeur": "72.6 t",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "HTC-8640",
+   "champ": "Contrepoids max",
+   "valeur": "3.0 t",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "TCC-1800",
+   "champ": "Voltage machine (V/type)",
+   "valeur": "24V DC",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "TCC-550",
+   "champ": "Voltage machine (V/type)",
+   "valeur": "12V DC",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "TCC-750",
+   "champ": "Contrepoids max",
+   "valeur": "15.9 t",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "LC1385",
+   "champ": "Voltage machine (V/type)",
+   "valeur": "24V DC",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC104",
+   "champ": "Fleche telescopique",
+   "valeur": "1.85-5.30 m",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC285 CRME",
+   "champ": "Puissance moteur",
+   "valeur": "6.57 kW (Yanmar 2TNE68-MB diesel)",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC305-CRME",
+   "champ": "Voltage machine (V/type)",
+   "valeur": "12V DC",
+   "motif": "confiance moyenne"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC405C-2",
+   "champ": "Voltage machine (V/type)",
+   "valeur": "12V DC",
+   "motif": "confiance moyenne"
+  }
+ ],
+ "toujours_manquant": [
+  {
+   "marque": "Grove (Manitowoc)",
+   "modele": "YB4409-2",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Grove (Manitowoc)",
+   "modele": "YB4411",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Grove (Manitowoc)",
+   "modele": "GCD20",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Grove (Manitowoc)",
+   "modele": "GCD25",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Liebherr",
+   "modele": "LTC 1055-3.2",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Liebherr",
+   "modele": "LTC 1055-3.2",
+   "champ": "Fleche telescopique"
+  },
+  {
+   "marque": "Liebherr",
+   "modele": "LTC 1055-3.2",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Liebherr",
+   "modele": "LTC 1055-3.2",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "HTC-8640",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "TCC-750",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "298 Series 2 (298 HSL)",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "HTT-8660",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "238 HSL",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "TCC-550",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "90|RT 2",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Link-Belt",
+   "modele": "TCC-1800",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "SANY",
+   "modele": "SCA1000A",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "SANY",
+   "modele": "SCA1350A",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "SANY",
+   "modele": "SCA3000A",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "SANY",
+   "modele": "SCA3000A",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "SANY",
+   "modele": "SCA4000A",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "SANY",
+   "modele": "SCA3300A",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TM-ZR500XL",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TM-1882",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TM-20110",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TM-20110",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TR-500XL-4",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TR-500XL-4",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "GR-350XL",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "GR-550XL",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "GT-550E",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "TR-600XXL-4",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "CC 2800-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "GT-800XL-2",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Tadano",
+   "modele": "GT-1200XL-2",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Terex",
+   "modele": "BT 3670",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Terex",
+   "modele": "Explorer 5500",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Terex",
+   "modele": "Explorer 5600",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Terex",
+   "modele": "Explorer 5800",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitex",
+   "modele": "TM200",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "IC-80",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "IC-100",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "IC-200",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "IC-250",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "IC-280",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "IC-400",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Broderson",
+   "modele": "RT-400",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "National Crane",
+   "modele": "NBT50L",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "National Crane",
+   "modele": "NBT55L",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "34142",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "40105",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "45127",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "45142",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "1881TM",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Elliott",
+   "modele": "30105-D",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Altec",
+   "modele": "AC65E-155S",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "16000",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "18000",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC90A-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC90A-1",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC165",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC165-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC200",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC200",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC650 (VPC)",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC250",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC250",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC100A-1",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC100A-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC100A-1",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "31000",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "31000",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC80A-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC80A-1",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC100-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC100-1",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC150-1",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC150-1",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Manitowoc",
+   "modele": "MLC300 (VPC)",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT45_U",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT45_U",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCA150_U",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT35_U",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT35_U",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT40_U",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT60_U",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "XCMG",
+   "modele": "XCT60_U",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800-2",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800-2",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800-2",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800-2",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK1200G-3 HDO",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK2500G-2",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK2500G-2",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK2500G-2",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800G-3",
+   "champ": "Contrepoids max"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800G-3",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK800G-2",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Kobelco",
+   "modele": "CK3300G-2",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC104",
+   "champ": "Fleche telescopique"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC-275C",
+   "champ": "Fleche telescopique"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC-275C",
+   "champ": "Hauteur max"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC-275C",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC-275C",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "CC423S-1",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC285 CRME",
+   "champ": "Puissance moteur"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC305-CRME",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "LC785M-6",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "LC785",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "LC785B",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "LC1385",
+   "champ": "Voltage machine (V/type)"
+  },
+  {
+   "marque": "Maeda",
+   "modele": "MC405C-2",
+   "champ": "Voltage machine (V/type)"
+  }
+ ]
+}
