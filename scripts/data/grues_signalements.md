@@ -1,4 +1,17 @@
-# Signalements de la campagne specs Grue Mobile (2026-08-05)
+# Signalements — specs Grue Mobile et Excavatrice (2026-08-05)
+
+## 0. Excavatrice — écart relevé sur une valeur importée le 2026-08-05
+
+| Marque | Modèle | Champ | Valeur en base | Fiche constructeur | Source |
+|---|---|---|---|---|---|
+| LiuGong | 936E | Poids operationnel | 36000 kg | **37000 kg** | brochure combinée 933E/936E, p8 |
+
+Le 36 000 kg vient de l'estimation de l'audit du 2026-07-01 ; la brochure LiuGong
+donne 37 000 kg. Écart de 2,8 %, sous le seuil de tolérance du contrôle, donc non
+corrigé automatiquement. Les poids des 920E, 925E et 933E concordent, eux, avec
+leurs fiches.
+
+
 
 Relevés **en marge du mandat** par les agents de recherche : ce sont des valeurs
 DÉJÀ en base qui semblent fausses, ou des conventions incohérentes. Rien n'a été
