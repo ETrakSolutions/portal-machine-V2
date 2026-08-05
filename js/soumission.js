@@ -28,7 +28,8 @@ var OPTION_CODES = {
     'Camera Recul': '1300-0001',
     'Camera Recul + capteur': '1300-0012',
     'Camera Quad': '1300-0003',
-    'Camera 360': '1300-0004'
+    'Camera 360': '1300-0004',
+    'Camera 360 (6 cameras)': '1300-0005'
 };
 
 // Load option codes from API (override defaults)
@@ -1445,6 +1446,7 @@ var INDIVIDUAL_CODES = {
     'Camera Recul + capteur': [{code: '1300-0012', desc: 'Camera recul + capteur proximite'}],
     'Camera Quad': [{code: '1300-0003', desc: 'Camera Quad'}],
     'Camera 360': [{code: '1300-0004', desc: 'Camera 360 (4 cameras)'}],
+    'Camera 360 (6 cameras)': [{code: '1300-0005', desc: 'Camera 360 (set de 6 cameras)'}],
     'Balance ST-7': [{code: '1200-0011', desc: 'Balance ST-7 (balance en valise)'}],
     'Imprimante thermique': [{code: '1200-0014', desc: 'Imprimante thermique'}]
 };
