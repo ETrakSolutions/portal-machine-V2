@@ -1,0 +1,439 @@
+{
+ "marque": "Grove (Manitowoc)",
+ "nb_modeles": 27,
+ "nb_valeurs_a_trouver": 48,
+ "modeles": [
+  {
+   "modele": "GCD09",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "8.2 t",
+    "Fleche telescopique": "4.3-10.1 m",
+    "Hauteur max": "14.6 m",
+    "Puissance moteur": "74 hp (Cummins QSF 2.8L)"
+   }
+  },
+  {
+   "modele": "GCD15",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "14 t",
+    "Fleche telescopique": "12.5-15.4 m",
+    "Hauteur max": "21.2 m",
+    "Puissance moteur": "74 hp (Cummins QSF 3.8L)"
+   }
+  },
+  {
+   "modele": "GCD20",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "18 t",
+    "Fleche telescopique": "16.6 m",
+    "Hauteur max": "26.2 m",
+    "Puissance moteur": "130 hp (Cummins QSF 3.8L)"
+   }
+  },
+  {
+   "modele": "GCD25",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "23 t",
+    "Fleche telescopique": "7.2-21.6 m",
+    "Hauteur max": "29 m",
+    "Puissance moteur": "130 hp (Cummins QSB 4.5L)"
+   }
+  },
+  {
+   "modele": "GMK3060-2",
+   "famille": "Tout-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "10.2-40 m",
+    "Hauteur max": "42 m",
+    "Essieux": "3",
+    "Puissance moteur": "340 hp (Cummins QSL9)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "GMK4090-1",
+   "famille": "Tout-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "11-51 m",
+    "Hauteur max": "54 m",
+    "Essieux": "4",
+    "Puissance moteur": "315 kW (Mercedes-Benz)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "GMK5250L-1",
+   "famille": "Tout-terrain",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "272 t",
+    "Fleche telescopique": "13.4-78.5 m",
+    "Essieux": "5",
+    "Puissance moteur": "390 kW (Mercedes-Benz OM471LA)",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "80 t"
+   }
+  },
+  {
+   "modele": "GRT540",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Essieux",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "9.8-31 m",
+    "Puissance moteur": "173 hp (Cummins QSB6.7)",
+    "Contrepoids max": "4.3 t"
+   }
+  },
+  {
+   "modele": "GRT655",
+   "famille": "Rough-terrain",
+   "annees": "2017-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "34.8 m",
+    "Hauteur max": "51.8 m",
+    "Essieux": "2",
+    "Puissance moteur": "164 hp (Cummins QSB6.7)",
+    "Contrepoids max": "5.6 t"
+   }
+  },
+  {
+   "modele": "GRT655L",
+   "famille": "Rough-terrain",
+   "annees": "2017-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "10.8-43 m",
+    "Hauteur max": "59.7 m",
+    "Essieux": "2",
+    "Puissance moteur": "164 hp (Cummins QSB6.7)",
+    "Contrepoids max": "5.6 t"
+   }
+  },
+  {
+   "modele": "GRT765",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "11.9-38.5 m",
+    "Hauteur max": "58.5 m",
+    "Puissance moteur": "260 hp (Cummins B6.7L)",
+    "Contrepoids max": "9.3 t"
+   }
+  },
+  {
+   "modele": "GRT780",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "11.9-47 m",
+    "Hauteur max": "50 m",
+    "Puissance moteur": "Cummins B6.7L",
+    "Contrepoids max": "9.3 t"
+   }
+  },
+  {
+   "modele": "GRT8100-1",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12-47 m",
+    "Hauteur max": "72.9 m",
+    "Puissance moteur": "Cummins B6.7L",
+    "Contrepoids max": "12.2 t"
+   }
+  },
+  {
+   "modele": "GRT8120",
+   "famille": "Rough-terrain",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "11.3-60 m",
+    "Hauteur max": "80.8 m",
+    "Contrepoids max": "13.2 t"
+   }
+  },
+  {
+   "modele": "GRT9165",
+   "famille": "Rough-terrain",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "13.7-62.5 m",
+    "Hauteur max": "91.2 m",
+    "Puissance moteur": "300 hp (Cummins B6.7L)",
+    "Contrepoids max": "25.8 t"
+   }
+  },
+  {
+   "modele": "RT530E-2",
+   "famille": "Rough-terrain",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "8.8-29 m",
+    "Hauteur max": "45 m",
+    "Essieux": "2",
+    "Puissance moteur": "160 hp (Cummins QSB 6.7L)",
+    "Contrepoids max": "3.8 t"
+   }
+  },
+  {
+   "modele": "RT540E",
+   "famille": "Rough-terrain",
+   "annees": "2016-2022",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "9.8-31 m",
+    "Hauteur max": "47 m",
+    "Essieux": "2",
+    "Puissance moteur": "164 hp (Cummins QSB6.7)",
+    "Contrepoids max": "4.3 t"
+   }
+  },
+  {
+   "modele": "RT765E-2",
+   "famille": "Rough-terrain",
+   "annees": "2015-2024",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "11-33.5 m",
+    "Hauteur max": "53.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "240 hp (Cummins QSB 6.7L)",
+    "Contrepoids max": "6.5 t"
+   }
+  },
+  {
+   "modele": "RT9130E-2",
+   "famille": "Rough-terrain",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "118 t",
+    "Fleche telescopique": "12.8-48.8 m",
+    "Hauteur max": "85 m",
+    "Essieux": "2",
+    "Puissance moteur": "320 hp (Cummins)",
+    "Contrepoids max": "18.1 t"
+   }
+  },
+  {
+   "modele": "TMS500-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "9.8-31 m",
+    "Hauteur max": "42 m",
+    "Essieux": "3",
+    "Puissance moteur": "350 hp (Cummins ISL9)",
+    "Contrepoids max": "3.9 t"
+   }
+  },
+  {
+   "modele": "TMS800-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "12-39 m",
+    "Hauteur max": "59.2 m",
+    "Essieux": "4",
+    "Puissance moteur": "475 hp (Cummins X12)",
+    "Contrepoids max": "12.7 t"
+   }
+  },
+  {
+   "modele": "TMS875-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "12.2-39 m",
+    "Hauteur max": "41.8 m",
+    "Essieux": "4",
+    "Puissance moteur": "475 hp (Cummins X12)",
+    "Contrepoids max": "12.7 t"
+   }
+  },
+  {
+   "modele": "TMS9000-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "104 t",
+    "Fleche telescopique": "51.5 m",
+    "Essieux": "4",
+    "Puissance moteur": "Cummins X12",
+    "Contrepoids max": "22 t"
+   }
+  },
+  {
+   "modele": "TMS9000E",
+   "famille": "Camion (grue routiere)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "104 t",
+    "Fleche telescopique": "11.2-43.3 m",
+    "Hauteur max": "45.8 m",
+    "Essieux": "4",
+    "Puissance moteur": "450 hp (Cummins ISX)",
+    "Contrepoids max": "21.3 t"
+   }
+  },
+  {
+   "modele": "TTS9000-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2018-2024",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "104 t",
+    "Fleche telescopique": "11.2-51.6 m",
+    "Hauteur max": "80.3 m",
+    "Essieux": "4",
+    "Puissance moteur": "475 hp (Cummins X12)",
+    "Contrepoids max": "22 t"
+   }
+  },
+  {
+   "modele": "YB4409-2",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "8.2 t",
+    "Fleche telescopique": "4.2-9.75 m",
+    "Hauteur max": "11.6 m",
+    "Puissance moteur": "99 hp (Cummins)"
+   }
+  },
+  {
+   "modele": "YB4411",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "9.5 t",
+    "Fleche telescopique": "4.2-10 m",
+    "Hauteur max": "11.6 m",
+    "Puissance moteur": "85 hp (Cummins)"
+   }
+  }
+ ]
+}

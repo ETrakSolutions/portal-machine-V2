@@ -1,0 +1,311 @@
+{
+ "marque": "Kobelco",
+ "nb_modeles": 19,
+ "nb_valeurs_a_trouver": 52,
+ "modeles": [
+  {
+   "modele": "CK1100G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2023",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "60,9 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "285 hp (Hino J08E-UV)",
+    "Contrepoids max": "31,3 t"
+   }
+  },
+  {
+   "modele": "CK1100G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "282 hp / 210 kW (Isuzu 6HK1)"
+   }
+  },
+  {
+   "modele": "CK1200G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2023",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "70,1 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "285 hp (Hino J08E-UV)"
+   }
+  },
+  {
+   "modele": "CK1200G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "70,1 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "282 hp / 210 kW (Isuzu 6HK1)"
+   }
+  },
+  {
+   "modele": "CK1200G-3 HDO",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "70,1 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "282 hp / 210 kW (Isuzu 6HK1)"
+   }
+  },
+  {
+   "modele": "CK1600G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2023",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "145 t",
+    "Fleche telescopique": "76,2 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "365 hp (Hino P11C-VN)",
+    "Contrepoids max": "55 t"
+   }
+  },
+  {
+   "modele": "CK1600G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "145 t",
+    "Fleche telescopique": "76,2 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "362 hp / 270 kW (Isuzu 6UZ1)"
+   }
+  },
+  {
+   "modele": "CK2000-II",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "181 t",
+    "Fleche telescopique": "85,3 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "363 hp (Hino P11C)"
+   }
+  },
+  {
+   "modele": "CK2000G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "181 t",
+    "Fleche telescopique": "85,3 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "362 hp / 270 kW (Isuzu 6UZ1)"
+   }
+  },
+  {
+   "modele": "CK2500-II",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "227 t",
+    "Fleche telescopique": "91,4 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "363 hp (Hino P11C)",
+    "Contrepoids max": "90,4 t"
+   }
+  },
+  {
+   "modele": "CK2500G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "227 t",
+    "Fleche telescopique": "91,44 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "363 hp (Hino P11C-VN)"
+   }
+  },
+  {
+   "modele": "CK2750G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2018-2023",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "249 t",
+    "Fleche telescopique": "91,44 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "363 hp (Hino P11C-VN)"
+   }
+  },
+  {
+   "modele": "CK2750G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "249 t",
+    "Fleche telescopique": "91,44 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "362 hp / 270 kW (Isuzu 6UZ1)"
+   }
+  },
+  {
+   "modele": "CK3300G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "299 t",
+    "Fleche telescopique": "89,91 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "450 hp (Scania DC13)",
+    "Contrepoids max": "160 t"
+   }
+  },
+  {
+   "modele": "CK800-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2023",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles"
+   }
+  },
+  {
+   "modele": "CK800G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2023",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "285 hp (Hino J08E-UV)",
+    "Contrepoids max": "26,2 t"
+   }
+  },
+  {
+   "modele": "CK800G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "282 hp / 210 kW (Isuzu 6HK1)"
+   }
+  },
+  {
+   "modele": "CK850G-2",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2023",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "77 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "285 hp (Hino J08E-UV)",
+    "Contrepoids max": "26,1 t"
+   }
+  },
+  {
+   "modele": "CK850G-3",
+   "famille": "Chenilles treillis",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "77 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "282 hp / 210 kW (Isuzu 6HK1)"
+   }
+  }
+ ]
+}

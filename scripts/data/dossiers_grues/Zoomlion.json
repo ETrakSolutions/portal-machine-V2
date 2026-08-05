@@ -1,0 +1,23 @@
+{
+ "marque": "Zoomlion",
+ "nb_modeles": 1,
+ "nb_valeurs_a_trouver": 1,
+ "modeles": [
+  {
+   "modele": "ZRT850",
+   "famille": "Rough-terrain",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "85 t",
+    "Fleche telescopique": "11.2-47 m",
+    "Hauteur max": "65.7 m",
+    "Essieux": "2",
+    "Puissance moteur": "about 260 hp (194 kW, Cummins QSB6.7)",
+    "Contrepoids max": "5 t"
+   }
+  }
+ ]
+}

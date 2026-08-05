@@ -1,0 +1,167 @@
+{
+ "marque": "XCMG",
+ "nb_modeles": 10,
+ "nb_valeurs_a_trouver": 19,
+ "modeles": [
+  {
+   "modele": "XCA150_U",
+   "famille": "Tout-terrain",
+   "annees": "2026-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "136 t",
+    "Fleche telescopique": "13-62 m (6 sections)",
+    "Hauteur max": "92.5 m",
+    "Essieux": "5",
+    "Puissance moteur": "about 482 hp (Mercedes-Benz OM471)"
+   }
+  },
+  {
+   "modele": "XCA275_U",
+   "famille": "Tout-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "249 t",
+    "Fleche telescopique": "13.4-73 m (7 sections)",
+    "Hauteur max": "108 m",
+    "Essieux": "5",
+    "Puissance moteur": "523 hp (Mercedes-Benz OM471LA)"
+   }
+  },
+  {
+   "modele": "XCR100_U",
+   "famille": "Rough-terrain",
+   "annees": "2026-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12.4-48 m",
+    "Hauteur max": "48 m",
+    "Essieux": "2",
+    "Puissance moteur": "about 280 hp (Cummins B6.7)",
+    "Contrepoids max": "11.5 t"
+   }
+  },
+  {
+   "modele": "XCR130_U",
+   "famille": "Rough-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "118 t",
+    "Fleche telescopique": "12.9-50 m (5 sections)",
+    "Hauteur max": "68 m",
+    "Essieux": "2",
+    "Puissance moteur": "about 577 hp (Mercedes-Benz)"
+   }
+  },
+  {
+   "modele": "XCR60_U",
+   "famille": "Rough-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "54 t",
+    "Fleche telescopique": "11.3-43.6 m",
+    "Hauteur max": "43.7 m",
+    "Essieux": "2",
+    "Puissance moteur": "about 260 hp (Cummins QSB6.7)",
+    "Contrepoids max": "7.5 t"
+   }
+  },
+  {
+   "modele": "XCR75_U",
+   "famille": "Rough-terrain",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "11.8-45 m",
+    "Hauteur max": "45.3 m",
+    "Essieux": "2",
+    "Puissance moteur": "about 260 hp (Cummins QSB6.7)",
+    "Contrepoids max": "9 t"
+   }
+  },
+  {
+   "modele": "XCT35_U",
+   "famille": "Camion (grue routiere)",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "32 t",
+    "Fleche telescopique": "11.1-36.6 m (36.4-120 ft, 4 sections)",
+    "Hauteur max": "43.6 m (hauteur crochet 36.6 m)",
+    "Essieux": "3",
+    "Contrepoids max": "1.4 t"
+   }
+  },
+  {
+   "modele": "XCT40_U",
+   "famille": "Camion (grue routiere)",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "10.9-43.3 m (5 sections)",
+    "Hauteur max": "60 m (avec flechette; 45 m fleche)",
+    "Essieux": "4",
+    "Contrepoids max": "2 t"
+   }
+  },
+  {
+   "modele": "XCT45_U",
+   "famille": "Camion (grue routiere)",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "43.3 m (5 sections)",
+    "Hauteur max": "60 m (avec flechette)"
+   }
+  },
+  {
+   "modele": "XCT60_U",
+   "famille": "Camion (grue routiere)",
+   "annees": "2026-2026",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "54 t",
+    "Fleche telescopique": "47 m (5 sections)",
+    "Hauteur max": "63.3 m (avec flechette)",
+    "Essieux": "5",
+    "Contrepoids max": "7.3 t"
+   }
+  }
+ ]
+}

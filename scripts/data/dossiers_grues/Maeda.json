@@ -1,0 +1,391 @@
+{
+ "marque": "Maeda",
+ "nb_modeles": 24,
+ "nb_valeurs_a_trouver": 40,
+ "modeles": [
+  {
+   "modele": "CC1485S-1",
+   "famille": "Chenilles telescopique",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "6 t",
+    "Hauteur max": "16.7 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "(Isuzu 4LE2XDPC diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "CC1908S-1",
+   "famille": "Chenilles telescopique",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "8.1 t",
+    "Hauteur max": "20.1 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "(Yanmar diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "CC423S-1",
+   "famille": "Chenilles telescopique",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.9 t",
+    "Hauteur max": "9.46 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "17.5 kW (Yanmar 3TNV88F-EPMBA diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "CC985S-1",
+   "famille": "Chenilles telescopique",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.9 t",
+    "Hauteur max": "16.5 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "44.6 kW (Isuzu 4LE2 diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC1385",
+   "famille": "Chenilles telescopique",
+   "annees": "2016-2022",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "6 t",
+    "Fleche telescopique": "16.25 m",
+    "Hauteur max": "16.7 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "68.4 kW (diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC1385M-8B",
+   "famille": "Chenilles telescopique",
+   "annees": "2016-2022",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "6 t",
+    "Fleche telescopique": "16.25 m",
+    "Hauteur max": "16.7 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "68.4 kW (diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC383M-5",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2022",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Hauteur max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.9 t",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC785",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2021",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.9 t",
+    "Fleche telescopique": "4.63-15.63 m",
+    "Hauteur max": "16.35 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "40 kW / 55 PS (Komatsu S4D95LE-3-A diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC785B",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2021",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.9 t",
+    "Fleche telescopique": "4.63-15.63 m",
+    "Hauteur max": "16.35 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "40 kW / 55 PS (Komatsu S4D95LE-3-A diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC785M-6",
+   "famille": "Mini / araignee",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.9 t",
+    "Fleche telescopique": "5 sections (4.63-15.63 m)",
+    "Hauteur max": "16.35 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "54 hp (Komatsu diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC785M-8",
+   "famille": "Chenilles telescopique",
+   "annees": "2018-2023",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.9 t",
+    "Fleche telescopique": "4.63-15.63 m",
+    "Hauteur max": "16.35 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "40 kW / 55 PS (Komatsu S4D95LE-3-A diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "LC785M-8B",
+   "famille": "Chenilles telescopique",
+   "annees": "2018-2023",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.9 t",
+    "Fleche telescopique": "4.63-15.63 m",
+    "Hauteur max": "16.35 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "40 kW / 55 PS (Komatsu S4D95LE-3-A diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC-275C",
+   "famille": "Mini / araignee",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Hauteur max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.8 t",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC104",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "1 t",
+    "Hauteur max": "5.5 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "Moteur electrique 380 V",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC104C",
+   "famille": "Mini / araignee",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Fleche telescopique"
+   ],
+   "deja_connu": {
+    "Capacite max": "1.0 t",
+    "Hauteur max": "5.5 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "5.5 kW (électrique)",
+    "Voltage machine (V/type)": "Électrique (380V triphasé)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC285 CRM-2",
+   "famille": "Chenilles telescopique",
+   "annees": "2016-2021",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.8 t",
+    "Fleche telescopique": "2.535-8.575 m",
+    "Hauteur max": "8.7 m",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC285 CRME",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.8 t",
+    "Fleche telescopique": "2.535-8.575 m",
+    "Hauteur max": "8.7 m",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC285-2",
+   "famille": "Chenilles telescopique",
+   "annees": "2016-2021",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.8 t",
+    "Fleche telescopique": "2.535-8.575 m",
+    "Hauteur max": "8.7 m",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC285C-2",
+   "famille": "Mini / araignee",
+   "annees": "2018-2022",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.8 t",
+    "Fleche telescopique": "2.535-8.575 m",
+    "Hauteur max": "8.7 m",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC285C-3",
+   "famille": "Mini / araignee",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.8 t",
+    "Fleche telescopique": "2.535-8.575 m",
+    "Hauteur max": "8.7 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "7.4 kW (Yanmar 2TNV70-NMBA diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC305-CRME",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "3 t",
+    "Fleche telescopique": "3.695-12.485 m",
+    "Hauteur max": "12.52 m",
+    "Essieux": "Chenilles",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC305C-2",
+   "famille": "Mini / araignee",
+   "annees": "2018-2023",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "3 t",
+    "Fleche telescopique": "3.695-12.485 m",
+    "Hauteur max": "12.52 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "15.2 kW (Yanmar 3TNV80F diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC405 CRME",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "3.8 t",
+    "Fleche telescopique": "4.735-16.475 m",
+    "Hauteur max": "16.8 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "21.8 kW (Yanmar 3TNV88-PMB diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  },
+  {
+   "modele": "MC405C-2",
+   "famille": "Mini / araignee",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "3.8 t",
+    "Fleche telescopique": "4.735-16.475 m",
+    "Hauteur max": "16.8 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "17.4 kW (Yanmar 3TNV88F-EPMB diesel)",
+    "Contrepoids max": "Aucun"
+   }
+  }
+ ]
+}

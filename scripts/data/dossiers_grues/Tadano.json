@@ -1,0 +1,583 @@
+{
+ "marque": "Tadano",
+ "nb_modeles": 36,
+ "nb_valeurs_a_trouver": 61,
+ "modeles": [
+  {
+   "modele": "AC 3.060-2",
+   "famille": "Tout-terrain",
+   "annees": "2025-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Fleche telescopique",
+    "Puissance moteur"
+   ],
+   "deja_connu": {
+    "Capacite max": "60 t",
+    "Hauteur max": "69 m",
+    "Essieux": "3",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "AC 4.100L-1",
+   "famille": "Tout-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Fleche telescopique",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Essieux": "4",
+    "Puissance moteur": "340 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "24.5 t"
+   }
+  },
+  {
+   "modele": "AC 5.130-1",
+   "famille": "Tout-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Puissance moteur"
+   ],
+   "deja_connu": {
+    "Capacite max": "130 t",
+    "Fleche telescopique": "12.5-59.8 m",
+    "Hauteur max": "89 m",
+    "Essieux": "5",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "42.2 t"
+   }
+  },
+  {
+   "modele": "AC 6.300-1",
+   "famille": "Tout-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Puissance moteur"
+   ],
+   "deja_connu": {
+    "Capacite max": "300 t",
+    "Fleche telescopique": "14.5-80 m",
+    "Hauteur max": "123 m",
+    "Essieux": "6",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "93.8 t"
+   }
+  },
+  {
+   "modele": "AC 8.500-1",
+   "famille": "Tout-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Fleche telescopique",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "500 t",
+    "Essieux": "8",
+    "Puissance moteur": "460 kW",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "ATF 220-5.1",
+   "famille": "Tout-terrain",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "220 t",
+    "Fleche telescopique": "13.2-68 m",
+    "Hauteur max": "108 m",
+    "Essieux": "5",
+    "Puissance moteur": "390 kW",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "CC 2400-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "400 t",
+    "Fleche telescopique": "126 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "260 kW",
+    "Contrepoids max": "240 t"
+   }
+  },
+  {
+   "modele": "CC 2800-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "600 t",
+    "Fleche telescopique": "138 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "390 kW",
+    "Contrepoids max": "240 t"
+   }
+  },
+  {
+   "modele": "CC 3800-1 (Superlift)",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "650 t",
+    "Fleche telescopique": "144 m treillis",
+    "Hauteur max": "192 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "390 kW",
+    "Contrepoids max": "375 t"
+   }
+  },
+  {
+   "modele": "CC 6800-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "1250 t",
+    "Fleche telescopique": "96 m treillis",
+    "Hauteur max": "260 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "320 kW",
+    "Contrepoids max": "180 t"
+   }
+  },
+  {
+   "modele": "CC 8800-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "1600 t",
+    "Fleche telescopique": "156 m treillis",
+    "Hauteur max": "240 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "2 x 380 kW",
+    "Contrepoids max": "295 t"
+   }
+  },
+  {
+   "modele": "CC 8800-1 TWIN",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "3200 t",
+    "Fleche telescopique": "156 m treillis",
+    "Hauteur max": "234 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "2 x 380 kW"
+   }
+  },
+  {
+   "modele": "GR-1000XL-4",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12-47 m",
+    "Hauteur max": "64.4 m",
+    "Essieux": "2",
+    "Puissance moteur": "280 hp"
+   }
+  },
+  {
+   "modele": "GR-1000XLL-4",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12.8-51 m",
+    "Hauteur max": "68.3 m",
+    "Essieux": "2",
+    "Puissance moteur": "280 hp"
+   }
+  },
+  {
+   "modele": "GR-1200XL",
+   "famille": "Rough-terrain",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "11-56 m",
+    "Hauteur max": "73.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "362 hp",
+    "Contrepoids max": "11.5 t"
+   }
+  },
+  {
+   "modele": "GR-1300XL-4",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "118 t",
+    "Fleche telescopique": "-56 m",
+    "Hauteur max": "76 m",
+    "Essieux": "2",
+    "Puissance moteur": "280 hp",
+    "Contrepoids max": "18 t"
+   }
+  },
+  {
+   "modele": "GR-1450EX",
+   "famille": "Rough-terrain",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "132 t",
+    "Fleche telescopique": "13.1-61 m",
+    "Hauteur max": "92.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "200 kW",
+    "Contrepoids max": "29.3 t"
+   }
+  },
+  {
+   "modele": "GR-1600XL",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "145 t",
+    "Fleche telescopique": "13.1-61 m",
+    "Hauteur max": "78 m",
+    "Essieux": "3",
+    "Puissance moteur": "270 hp",
+    "Contrepoids max": "29.3 t"
+   }
+  },
+  {
+   "modele": "GR-350XL",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "35 t",
+    "Fleche telescopique": "9.7-31 m",
+    "Hauteur max": "44 m",
+    "Essieux": "2",
+    "Puissance moteur": "235 hp"
+   }
+  },
+  {
+   "modele": "GR-550XL",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "10.7-34.7 m",
+    "Hauteur max": "50.3 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp"
+   }
+  },
+  {
+   "modele": "GR-750XL",
+   "famille": "Rough-terrain",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "11-43 m",
+    "Hauteur max": "61 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp",
+    "Contrepoids max": "5.7 t"
+   }
+  },
+  {
+   "modele": "GR-800XL-4",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "12-47 m",
+    "Hauteur max": "64.4 m",
+    "Essieux": "2",
+    "Puissance moteur": "280 hp"
+   }
+  },
+  {
+   "modele": "GR-800XLL-4",
+   "famille": "Rough-terrain",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "12.8-51 m",
+    "Hauteur max": "64.4 m",
+    "Essieux": "2",
+    "Puissance moteur": "280 hp"
+   }
+  },
+  {
+   "modele": "GR-900XL-4",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "12-47 m",
+    "Hauteur max": "64.4 m",
+    "Essieux": "2",
+    "Contrepoids max": "10 t"
+   }
+  },
+  {
+   "modele": "GR-900XLL-4",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "12.8-51 m",
+    "Hauteur max": "68.3 m",
+    "Essieux": "2"
+   }
+  },
+  {
+   "modele": "GT-1200XL-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "12.5-51 m",
+    "Essieux": "4",
+    "Puissance moteur": "373 kW",
+    "Contrepoids max": "25 t"
+   }
+  },
+  {
+   "modele": "GT-550E",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2022",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "11.1-42 m",
+    "Essieux": "2",
+    "Puissance moteur": "260 kW",
+    "Contrepoids max": "4.2 t"
+   }
+  },
+  {
+   "modele": "GT-800XL-2",
+   "famille": "Camion (grue routiere)",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "12-47 m",
+    "Essieux": "4",
+    "Puissance moteur": "500 hp",
+    "Contrepoids max": "8.1 t"
+   }
+  },
+  {
+   "modele": "GTC-1600",
+   "famille": "Chenilles telescopique",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "145 t",
+    "Fleche telescopique": "13-61 m",
+    "Hauteur max": "93 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "243 kW",
+    "Contrepoids max": "43 t"
+   }
+  },
+  {
+   "modele": "GTC-800",
+   "famille": "Chenilles telescopique",
+   "annees": "2016-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "80 t",
+    "Fleche telescopique": "11.5-43 m",
+    "Hauteur max": "58 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "231 kW",
+    "Contrepoids max": "29.5 t"
+   }
+  },
+  {
+   "modele": "TM-1882",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "5.5-25.1 m",
+    "Hauteur max": "28.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TM-20110",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "18 t",
+    "Fleche telescopique": "8.2-33.5 m",
+    "Essieux": "5",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TM-ZR500XL",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.5 t",
+    "Fleche telescopique": "3.4-15.5 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TR-500XL-4",
+   "famille": "Rough-terrain",
+   "annees": "2015-2024",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "10.2-33 m",
+    "Essieux": "2",
+    "Puissance moteur": "166 kW"
+   }
+  },
+  {
+   "modele": "TR-600XXL-4",
+   "famille": "Rough-terrain",
+   "annees": "2015-2024",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "54 t",
+    "Fleche telescopique": "11.1-42 m",
+    "Essieux": "2",
+    "Puissance moteur": "166 kW",
+    "Contrepoids max": "41.1 t"
+   }
+  },
+  {
+   "modele": "eGR-1000XLL-1",
+   "famille": "Rough-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12.8-51 m",
+    "Hauteur max": "68.3 m",
+    "Essieux": "2",
+    "Puissance moteur": "electrique (batterie 226 kWh)",
+    "Contrepoids max": "11.2 t"
+   }
+  }
+ ]
+}

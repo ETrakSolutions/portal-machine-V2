@@ -1,0 +1,167 @@
+{
+ "marque": "SANY",
+ "nb_modeles": 10,
+ "nb_valeurs_a_trouver": 20,
+ "modeles": [
+  {
+   "modele": "SAT700A-3.1",
+   "famille": "Tout-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "64 t",
+    "Fleche telescopique": "10.7-50 m",
+    "Hauteur max": "66.5 m",
+    "Essieux": "3",
+    "Puissance moteur": "about 365 hp (Cummins L9)"
+   }
+  },
+  {
+   "modele": "SCA1000A",
+   "famille": "Chenilles treillis",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "64 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 334 hp (Cummins QSL9-C334)"
+   }
+  },
+  {
+   "modele": "SCA1100TB",
+   "famille": "Chenilles telescopique",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "53.1 m telescopique",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 325 hp (Cummins L9-C325)"
+   }
+  },
+  {
+   "modele": "SCA1350A",
+   "famille": "Chenilles treillis",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "136 t",
+    "Fleche telescopique": "76 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 325 hp (Cummins QSL9-C325)"
+   }
+  },
+  {
+   "modele": "SCA1600TB",
+   "famille": "Chenilles telescopique",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "145 t",
+    "Fleche telescopique": "59.9 m telescopique",
+    "Hauteur max": "75.3 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 325 hp (Cummins QSL9-C325)"
+   }
+  },
+  {
+   "modele": "SCA3000A",
+   "famille": "Chenilles treillis",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "272 t",
+    "Fleche telescopique": "92 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 450 hp (Cummins QSG12)",
+    "Contrepoids max": "146 t"
+   }
+  },
+  {
+   "modele": "SCA3300A",
+   "famille": "Chenilles treillis",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "272 t",
+    "Fleche telescopique": "92 m treillis",
+    "Hauteur max": "164.6 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 400 hp (Cummins)",
+    "Contrepoids max": "188 t"
+   }
+  },
+  {
+   "modele": "SCA4000A",
+   "famille": "Chenilles treillis",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "399 t",
+    "Fleche telescopique": "84 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 400 hp (Cummins X12-C400)",
+    "Contrepoids max": "146 t"
+   }
+  },
+  {
+   "modele": "SCA900TB",
+   "famille": "Chenilles telescopique",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "12.2-47 m telescopique",
+    "Hauteur max": "60.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "about 325 hp (Cummins QSL9-C325)",
+    "Contrepoids max": "26 t"
+   }
+  },
+  {
+   "modele": "SRA1000A",
+   "famille": "Rough-terrain",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12.65-47 m",
+    "Hauteur max": "65.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "about 284 hp (Cummins QSB6.7)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  }
+ ]
+}

@@ -1,0 +1,119 @@
+{
+ "marque": "National Crane",
+ "nb_modeles": 7,
+ "nb_valeurs_a_trouver": 9,
+ "modeles": [
+  {
+   "modele": "NBT30",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "8.83-33.52 m",
+    "Hauteur max": "49.68 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "NBT30H-2",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "8.83-33.52 m",
+    "Hauteur max": "49.68 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "NBT36",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "33 t",
+    "Fleche telescopique": "31.4-38.7 m",
+    "Hauteur max": "57.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "NBT36-1",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "33 t",
+    "Fleche telescopique": "31.4-38.7 m",
+    "Hauteur max": "57.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "NBT50L",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "45.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "NBT55L",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "45.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "NBT60L",
+   "famille": "Boom truck (camion client)",
+   "annees": "2016-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "54 t",
+    "Fleche telescopique": "46.0 m",
+    "Hauteur max": "59.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  }
+ ]
+}

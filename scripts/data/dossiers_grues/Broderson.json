@@ -1,0 +1,183 @@
+{
+ "marque": "Broderson",
+ "nb_modeles": 11,
+ "nb_valeurs_a_trouver": 12,
+ "modeles": [
+  {
+   "modele": "IC-100",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "9.1 t",
+    "Fleche telescopique": "15.0 m",
+    "Hauteur max": "18.1 m",
+    "Essieux": "2",
+    "Puissance moteur": "59 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-20",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "2.3 t",
+    "Fleche telescopique": "4.6 m",
+    "Hauteur max": "8.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "49.6 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-200",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "13.6 t",
+    "Fleche telescopique": "15.2 m",
+    "Hauteur max": "22.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "120 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-250",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16.3 t",
+    "Fleche telescopique": "15.2 m",
+    "Hauteur max": "24.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "110 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-280",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "18.1 t",
+    "Fleche telescopique": "19.5 m",
+    "Hauteur max": "27.0 m",
+    "Essieux": "2",
+    "Puissance moteur": "120 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-35",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "3.6 t",
+    "Fleche telescopique": "5.8 m",
+    "Hauteur max": "10.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "42 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-40",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "4.1 t",
+    "Fleche telescopique": "5.8 m",
+    "Hauteur max": "10.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "44 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-400",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "22.7 t",
+    "Fleche telescopique": "23.0 m",
+    "Hauteur max": "30.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "160 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "IC-80",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "8.2 t",
+    "Fleche telescopique": "9.1 m",
+    "Hauteur max": "14.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "74.3 hp",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "RT-300",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "14 t",
+    "Fleche telescopique": "3.0-18.3 m",
+    "Essieux": "2",
+    "Puissance moteur": "John Deere 6059D",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  },
+  {
+   "modele": "RT-400",
+   "famille": "Carry-deck / industrielle",
+   "annees": "2017-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "18 t",
+    "Fleche telescopique": "19.8 m",
+    "Hauteur max": "30.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "163 hp (Cummins QSB4.5)",
+    "Voltage machine (V/type)": "12V DC"
+   }
+  }
+ ]
+}

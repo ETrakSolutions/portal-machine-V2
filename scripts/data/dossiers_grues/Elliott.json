@@ -1,0 +1,503 @@
+{
+ "marque": "Elliott",
+ "nb_modeles": 31,
+ "nb_valeurs_a_trouver": 61,
+ "modeles": [
+  {
+   "modele": "1039",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "9.1 t",
+    "Fleche telescopique": "11.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1047",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "9.1 t",
+    "Fleche telescopique": "14.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1056",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "9.1 t",
+    "Fleche telescopique": "17.1 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1560",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "14 t",
+    "Fleche telescopique": "18.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "18125",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "38.1 m",
+    "Hauteur max": "41.8 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1838",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "11.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1860",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "18.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1870",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "21.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1870CP",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "21.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "1881TM",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "24.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "26105",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "24 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "26105-D",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "24 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "2651F",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "24 t",
+    "Fleche telescopique": "15.5 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "2695",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "24 t",
+    "Fleche telescopique": "29.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "2695-D",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "24 t",
+    "Fleche telescopique": "29.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "30105-D",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "30105F",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "30105R",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "3095F",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "29.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "3095R",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "29.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "34127",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "31 t",
+    "Fleche telescopique": "38.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "34142",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "31 t",
+    "Fleche telescopique": "43.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "36127F",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "33 t",
+    "Fleche telescopique": "38.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "36127R",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "33 t",
+    "Fleche telescopique": "38.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "36142",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "33 t",
+    "Fleche telescopique": "43.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "40105",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "40142",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "43.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "45127",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "38.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "45142",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "43.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "50105",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "50105R",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  }
+ ]
+}

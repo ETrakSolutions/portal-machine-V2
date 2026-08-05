@@ -1,0 +1,567 @@
+{
+ "marque": "Link-Belt",
+ "nb_modeles": 35,
+ "nb_valeurs_a_trouver": 46,
+ "modeles": [
+  {
+   "modele": "100|RT",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "12.3-47.2 m",
+    "Hauteur max": "79.7 m",
+    "Essieux": "2",
+    "Puissance moteur": "232 hp (Cummins QSB6.7)",
+    "Contrepoids max": "13.1 t"
+   }
+  },
+  {
+   "modele": "120|RT",
+   "famille": "Rough-terrain",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "11.7-50 m",
+    "Hauteur max": "79.8 m",
+    "Essieux": "2",
+    "Puissance moteur": "232 hp (Cummins)",
+    "Contrepoids max": "13.1 t"
+   }
+  },
+  {
+   "modele": "175|AT",
+   "famille": "Tout-terrain",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "159 t",
+    "Fleche telescopique": "13-60 m",
+    "Hauteur max": "96 m",
+    "Essieux": "5",
+    "Puissance moteur": "548 hp (Cummins QSX15)",
+    "Contrepoids max": "36.7 t"
+   }
+  },
+  {
+   "modele": "225|AT",
+   "famille": "Tout-terrain",
+   "annees": "2025-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "204 t",
+    "Fleche telescopique": "14-62 m",
+    "Hauteur max": "101.8 m",
+    "Essieux": "5",
+    "Puissance moteur": "554 hp (Cummins X15)",
+    "Contrepoids max": "53.5 t"
+   }
+  },
+  {
+   "modele": "238 HSL",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "136 t",
+    "Fleche telescopique": "73.2 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "270 hp (Cummins QSB6.7)",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "48.8 t"
+   }
+  },
+  {
+   "modele": "298 Series 2 (298 HSL)",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "227 t",
+    "Fleche telescopique": "88.4 m treillis",
+    "Hauteur max": "104.3 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "320 hp (Cummins QSL9)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "300|AT",
+   "famille": "Tout-terrain",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "272 t",
+    "Fleche telescopique": "13-72.5 m",
+    "Hauteur max": "111 m",
+    "Essieux": "5",
+    "Puissance moteur": "548 hp (Cummins QSX15)",
+    "Contrepoids max": "73.5 t"
+   }
+  },
+  {
+   "modele": "40|HT",
+   "famille": "Camion (grue routiere)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "11.2-35 m",
+    "Essieux": "4",
+    "Puissance moteur": "370 hp (Cummins L9)",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "8.5 t"
+   }
+  },
+  {
+   "modele": "65|RT",
+   "famille": "Rough-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "11.6-35 m",
+    "Hauteur max": "64.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins)"
+   }
+  },
+  {
+   "modele": "75|RT",
+   "famille": "Rough-terrain",
+   "annees": "2022-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "11.6-43.3 m",
+    "Hauteur max": "63.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins)",
+    "Contrepoids max": "6.6 t"
+   }
+  },
+  {
+   "modele": "85|RT",
+   "famille": "Rough-terrain",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "77 t",
+    "Fleche telescopique": "11.6-43.3 m",
+    "Hauteur max": "63.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins)",
+    "Contrepoids max": "8.7 t"
+   }
+  },
+  {
+   "modele": "90|RT",
+   "famille": "Rough-terrain",
+   "annees": "2024-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "12.3-47.2 m",
+    "Hauteur max": "72.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins)",
+    "Contrepoids max": "13.1 t"
+   }
+  },
+  {
+   "modele": "90|RT 2",
+   "famille": "Rough-terrain",
+   "annees": "2026-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "12.3-47.2 m",
+    "Hauteur max": "72.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins)",
+    "Contrepoids max": "13.1 t"
+   }
+  },
+  {
+   "modele": "ATC-3210",
+   "famille": "Tout-terrain",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "191 t",
+    "Fleche telescopique": "13.5-61 m",
+    "Hauteur max": "99.6 m",
+    "Essieux": "5",
+    "Puissance moteur": "550 hp (Cummins ISX15)",
+    "Contrepoids max": "52.4 t"
+   }
+  },
+  {
+   "modele": "ATC-3250",
+   "famille": "Tout-terrain",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "227 t",
+    "Fleche telescopique": "13.2-68 m",
+    "Essieux": "5",
+    "Puissance moteur": "530 hp (Mercedes-Benz)",
+    "Contrepoids max": "62.6 t"
+   }
+  },
+  {
+   "modele": "ATC-3275",
+   "famille": "Tout-terrain",
+   "annees": "2016-2024",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "249 t",
+    "Fleche telescopique": "13.3-68 m",
+    "Hauteur max": "106.7 m",
+    "Essieux": "5",
+    "Puissance moteur": "550 hp (Cummins ISX15)",
+    "Contrepoids max": "71 t"
+   }
+  },
+  {
+   "modele": "HTC-8640",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "32 m",
+    "Hauteur max": "49.4 m",
+    "Essieux": "3",
+    "Puissance moteur": "350 hp (Cummins)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "HTC-8675 Series II",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "12.5-38.7 m",
+    "Essieux": "4",
+    "Puissance moteur": "450 hp (Cummins X12)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "HTT-8660",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "54 t",
+    "Fleche telescopique": "34 m",
+    "Essieux": "4",
+    "Puissance moteur": "365 hp (Detroit Diesel Series 60)",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "6.8 t"
+   }
+  },
+  {
+   "modele": "RTC-80110 Series II",
+   "famille": "Rough-terrain",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "12.2-45.7 m",
+    "Essieux": "2",
+    "Puissance moteur": "350 hp (Cummins QSL)"
+   }
+  },
+  {
+   "modele": "RTC-80130 II",
+   "famille": "Rough-terrain",
+   "annees": "2016-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "118 t",
+    "Fleche telescopique": "12.6-49.3 m",
+    "Hauteur max": "84.7 m",
+    "Essieux": "3",
+    "Puissance moteur": "270 hp (Cummins QSL)"
+   }
+  },
+  {
+   "modele": "RTC-80160 Series II",
+   "famille": "Rough-terrain",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "145 t",
+    "Fleche telescopique": "12.9-59.5 m",
+    "Hauteur max": "94.8 m",
+    "Essieux": "2",
+    "Puissance moteur": "345 hp (Cummins QSL)",
+    "Contrepoids max": "26.7 t"
+   }
+  },
+  {
+   "modele": "RTC-8030",
+   "famille": "Rough-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "11-31 m",
+    "Hauteur max": "43.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "156 hp (Caterpillar C6.6)"
+   }
+  },
+  {
+   "modele": "RTC-8050 II",
+   "famille": "Rough-terrain",
+   "annees": "2015-2020",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "11-33.5 m",
+    "Hauteur max": "52.4 m",
+    "Essieux": "2",
+    "Puissance moteur": "215 hp (Cummins)",
+    "Contrepoids max": "5.7 t"
+   }
+  },
+  {
+   "modele": "RTC-8065 Series II",
+   "famille": "Rough-terrain",
+   "annees": "2015-2024",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "11.6-35 m",
+    "Hauteur max": "51.2 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins QSB6.7)"
+   }
+  },
+  {
+   "modele": "RTC-8075",
+   "famille": "Rough-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "61.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "235 hp (Caterpillar C6.6)"
+   }
+  },
+  {
+   "modele": "RTC-8090 Series II",
+   "famille": "Rough-terrain",
+   "annees": "2015-2024",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "42.7 m",
+    "Hauteur max": "72.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "270 hp (Cummins QSL)",
+    "Contrepoids max": "13.1 t"
+   }
+  },
+  {
+   "modele": "TCC-1100",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2022",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "12.2-45.7 m",
+    "Hauteur max": "64.3 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "261 hp (Cummins QSL9)",
+    "Contrepoids max": "34 t"
+   }
+  },
+  {
+   "modele": "TCC-1200",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "109 t",
+    "Fleche telescopique": "12.2-45.7 m",
+    "Hauteur max": "64.3 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "320 hp (Cummins QSL9)",
+    "Contrepoids max": "34.5 t"
+   }
+  },
+  {
+   "modele": "TCC-1400",
+   "famille": "Chenilles telescopique",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "127 t",
+    "Fleche telescopique": "12.9-59.5 m",
+    "Hauteur max": "78.3 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "320 hp (Cummins QSL9)",
+    "Contrepoids max": "25.9 t"
+   }
+  },
+  {
+   "modele": "TCC-1800",
+   "famille": "Chenilles telescopique",
+   "annees": "2026-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "163 t",
+    "Fleche telescopique": "13-60.1 m",
+    "Hauteur max": "95.8 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "310 hp (Cummins QSB6.7)",
+    "Contrepoids max": "34.9 t"
+   }
+  },
+  {
+   "modele": "TCC-2500",
+   "famille": "Chenilles telescopique",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "227 t",
+    "Fleche telescopique": "13.3-68 m",
+    "Hauteur max": "107 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "320 hp (Cummins QSL)",
+    "Contrepoids max": "69.9 t"
+   }
+  },
+  {
+   "modele": "TCC-550",
+   "famille": "Chenilles telescopique",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "11.1-35 m",
+    "Hauteur max": "50.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "215 hp (Cummins QSB6.7)",
+    "Contrepoids max": "11.3 t"
+   }
+  },
+  {
+   "modele": "TCC-750",
+   "famille": "Chenilles telescopique",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "11.7-35.2 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "215 hp (Cummins QSB6.7)"
+   }
+  },
+  {
+   "modele": "TCC-800",
+   "famille": "Chenilles telescopique",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "11.8-36.5 m",
+    "Hauteur max": "56.2 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "232 hp (Cummins QSB6.7)",
+    "Contrepoids max": "17.5 t"
+   }
+  }
+ ]
+}

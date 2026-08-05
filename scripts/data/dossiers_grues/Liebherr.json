@@ -1,0 +1,119 @@
+{
+ "marque": "Liebherr",
+ "nb_modeles": 7,
+ "nb_valeurs_a_trouver": 10,
+ "modeles": [
+  {
+   "modele": "LRT 1090-2.1",
+   "famille": "Rough-terrain",
+   "annees": "2016-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "90 t",
+    "Fleche telescopique": "12-47 m",
+    "Hauteur max": "66 m",
+    "Essieux": "2",
+    "Puissance moteur": "188 kW (Cummins diesel)",
+    "Contrepoids max": "13 t"
+   }
+  },
+  {
+   "modele": "LRT 1100-2.1",
+   "famille": "Rough-terrain",
+   "annees": "2016-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "12.6-50 m",
+    "Hauteur max": "69 m",
+    "Essieux": "2",
+    "Puissance moteur": "188 kW (Cummins diesel)",
+    "Contrepoids max": "15 t"
+   }
+  },
+  {
+   "modele": "LRT 1130-2.1",
+   "famille": "Rough-terrain",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "130 t",
+    "Fleche telescopique": "11.5-60 m",
+    "Hauteur max": "85 m",
+    "Essieux": "2",
+    "Puissance moteur": "188 kW (Cummins diesel)",
+    "Contrepoids max": "20.6 t"
+   }
+  },
+  {
+   "modele": "LTC 1055-3.2",
+   "famille": "Tout-terrain",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Fleche telescopique",
+    "Hauteur max",
+    "Puissance moteur"
+   ],
+   "deja_connu": {
+    "Capacite max": "55 t",
+    "Essieux": "3",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "LTF 1045-4.1",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "10.5-35 m",
+    "Hauteur max": "44 m",
+    "Essieux": "4",
+    "Puissance moteur": "129 kW (Liebherr diesel, superstructure)",
+    "Contrepoids max": "9 t"
+   }
+  },
+  {
+   "modele": "LTF 1060-4.1",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "60 t",
+    "Fleche telescopique": "10.2-40 m",
+    "Hauteur max": "56 m",
+    "Essieux": "4",
+    "Puissance moteur": "129 kW (Liebherr diesel, superstructure)",
+    "Contrepoids max": "10.2 t"
+   }
+  },
+  {
+   "modele": "LTM 1090-4.3",
+   "famille": "Tout-terrain",
+   "annees": "2023-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "90 t",
+    "Fleche telescopique": "11-60 m",
+    "Hauteur max": "76 m",
+    "Essieux": "4",
+    "Puissance moteur": "335 kW (Liebherr diesel)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  }
+ ]
+}

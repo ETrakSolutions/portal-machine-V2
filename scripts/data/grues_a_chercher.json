@@ -1,0 +1,1937 @@
+{
+ "Grove (Manitowoc)": {
+  "GCD09": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "YB4409-2": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "YB4411": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GCD15": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GCD20": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GCD25": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GMK4090-1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "GMK3060-2": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "GRT765": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT8100-1": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT9165": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT540": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Essieux",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT780": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Essieux",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT8120": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TMS9000-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GMK5250L-1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Hauteur max"
+   ]
+  },
+  "RT530E-2": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TMS500-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RT765E-2": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TMS875-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TMS800-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RT9130E-2": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RT540E": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT655": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GRT655L": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TTS9000-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TMS9000E": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Liebherr": {
+  "LTC 1055-3.2": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Fleche telescopique",
+    "Hauteur max",
+    "Puissance moteur"
+   ]
+  },
+  "LTM 1090-4.3": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "LTF 1045-4.1": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LTF 1060-4.1": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LRT 1090-2.1": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LRT 1100-2.1": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LRT 1130-2.1": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Link-Belt": {
+  "RTC-8030": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "HTC-8640": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "RTC-8065 Series II": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RTC-8075": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "HTC-8675 Series II": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "TCC-750": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RTC-80110 Series II": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "298 Series 2 (298 HSL)": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "RTC-80130 II": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "65|RT": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "HTT-8660": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Hauteur max"
+   ]
+  },
+  "238 HSL": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max"
+   ]
+  },
+  "ATC-3250": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "40|HT": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Hauteur max"
+   ]
+  },
+  "RTC-8050 II": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RTC-8090 Series II": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-1100": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-1200": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "ATC-3210": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "ATC-3275": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-550": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-1400": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-2500": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-800": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RTC-80160 Series II": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "175|AT": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "100|RT": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "85|RT": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "120|RT": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "75|RT": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "300|AT": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "90|RT": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "225|AT": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "90|RT 2": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TCC-1800": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "SANY": {
+  "SRA1000A": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "SCA1000A": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA1350A": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA1100TB": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA1600TB": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SAT700A-3.1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA3000A": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA4000A": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA900TB": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "SCA3300A": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Tadano": {
+  "TM-ZR500XL": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "TM-1882": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "TM-20110": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "TR-500XL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "ATF 220-5.1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "CC 8800-1 TWIN": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-350XL": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-550XL": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-800XL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-800XLL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-1000XL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-1000XLL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-900XLL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "AC 8.500-1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Fleche telescopique",
+    "Hauteur max"
+   ]
+  },
+  "AC 3.060-2": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Fleche telescopique",
+    "Puissance moteur"
+   ]
+  },
+  "AC 4.100L-1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Fleche telescopique",
+    "Hauteur max"
+   ]
+  },
+  "GT-550E": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TR-600XXL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC 2400-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC 2800-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GT-800XL-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GT-1200XL-2": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-900XL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "AC 5.130-1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Puissance moteur"
+   ]
+  },
+  "AC 6.300-1": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Puissance moteur"
+   ]
+  },
+  "GR-750XL": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-1200XL": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-1450EX": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC 3800-1 (Superlift)": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC 6800-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC 8800-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GTC-800": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GTC-1600": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-1300XL-4": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "GR-1600XL": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "eGR-1000XLL-1": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Terex": {
+  "BT 3470": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 3670": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 3870": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 4792": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 5092": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 28106": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 60100": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "RS 60100": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "BT 70100": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "RS 70100": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "T 340-1": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RT 345": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "RT 345-1XL": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "T 560-1": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "RT 90": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "RT 100US": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "T 340-1 XL": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "T 775": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "T 780": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "Explorer 5500": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "Explorer 5600": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "Explorer 5800": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Manitex": {
+  "22101S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "35100C": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "40100S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "40100SHL": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "2892C": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "TC700": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TC450": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TC40142": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "TM200": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "26101C": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "30100C": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "30102C": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "30112S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "35124C": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "38124S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "40124S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "40124SHL": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "50128S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "50128SHL": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "TC45131": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "TC50155S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "TC50155HL": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "TC65159": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  }
+ },
+ "Broderson": {
+  "IC-20": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-35": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-40": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-80": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-100": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-200": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-250": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-280": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "IC-400": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "RT-300": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "RT-400": {
+   "famille": "Carry-deck / industrielle",
+   "champs": [
+    "Contrepoids max"
+   ]
+  }
+ },
+ "National Crane": {
+  "NBT30": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "NBT30H-2": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "NBT36": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "NBT36-1": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "NBT50L": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "NBT55L": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "NBT60L": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  }
+ },
+ "Elliott": {
+  "1039": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1047": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1056": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1560": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1838": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1860": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1870": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "2695": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "18125": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "26105": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "34127": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "34142": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "36142": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "40105": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "40142": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "45127": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "45142": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "50105": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1870CP": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "1881TM": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "2651F": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "2695-D": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "26105-D": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "3095F": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "3095R": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "30105F": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "30105R": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "30105-D": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "36127F": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "36127R": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  },
+  "50105R": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  }
+ },
+ "Altec": {
+  "AC18-70B": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "AC23-95S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "AC38-127S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "AC40E-152S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "AC45E-127S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "AC30-53T": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max"
+   ]
+  },
+  "AC65E-155S": {
+   "famille": "Boom truck (camion client)",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max"
+   ]
+  }
+ },
+ "Manitowoc": {
+  "16000": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "18000": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC90A-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC165": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC165-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC200": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC650 (VPC)": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC250": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC100A-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "31000": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC80A-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC100-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC150-1": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MLC300 (VPC)": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "XCMG": {
+  "XCT45_U": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCR130_U": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCA275_U": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCA150_U": {
+   "famille": "Tout-terrain",
+   "champs": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCT35_U": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCT40_U": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCT60_U": {
+   "famille": "Camion (grue routiere)",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCR75_U": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCR60_U": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "XCR100_U": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Kobelco": {
+  "CK800-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1200G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1200G-3 HDO": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK2000-II": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK2500G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK2750G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK800G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK850G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1100G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1200G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1600G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK2000G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK2750G-3": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK800G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK850G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1100G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK1600G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK2500-II": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CK3300G-2": {
+   "famille": "Chenilles treillis",
+   "champs": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Maeda": {
+  "MC104C": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Fleche telescopique"
+   ]
+  },
+  "MC104": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC383M-5": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Fleche telescopique",
+    "Hauteur max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC-275C": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Fleche telescopique",
+    "Hauteur max",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC423S-1": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC985S-1": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC1485S-1": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "CC1908S-1": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Fleche telescopique",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC285 CRME": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC305-CRME": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC285-2": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC285 CRM-2": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC285C-2": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC785M-6": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC405 CRME": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC785": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC785B": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC1385": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC1385M-8B": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC305C-2": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC405C-2": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC785M-8": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "LC785M-8B": {
+   "famille": "Chenilles telescopique",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  },
+  "MC285C-3": {
+   "famille": "Mini / araignee",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ },
+ "Zoomlion": {
+  "ZRT850": {
+   "famille": "Rough-terrain",
+   "champs": [
+    "Voltage machine (V/type)"
+   ]
+  }
+ }
+}

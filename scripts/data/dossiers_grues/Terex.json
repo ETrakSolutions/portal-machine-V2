@@ -1,0 +1,359 @@
+{
+ "marque": "Terex",
+ "nb_modeles": 22,
+ "nb_valeurs_a_trouver": 27,
+ "modeles": [
+  {
+   "modele": "BT 28106",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "25 t",
+    "Fleche telescopique": "9.8-32.3 m",
+    "Hauteur max": "35.1 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 3470",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "15 t",
+    "Fleche telescopique": "8.2-21.3 m",
+    "Hauteur max": "36.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 3670",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "8.2-21.3 m",
+    "Hauteur max": "36.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "240 hp (Cummins)",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 3870",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "17 t",
+    "Fleche telescopique": "8.2-21.3 m",
+    "Hauteur max": "36.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 4792",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "21 t",
+    "Fleche telescopique": "8.84-28.04 m",
+    "Hauteur max": "43.9 m",
+    "Essieux": "2",
+    "Puissance moteur": "300 hp (Caterpillar C-7)",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 5092",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "23 t",
+    "Fleche telescopique": "8.84-28.04 m",
+    "Hauteur max": "43.9 m",
+    "Essieux": "2",
+    "Puissance moteur": "300 hp (Caterpillar C-7)",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 60100",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "9.3-30.5 m",
+    "Hauteur max": "33.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "BT 70100",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "32 t",
+    "Fleche telescopique": "9.3-30.5 m",
+    "Hauteur max": "33.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "Explorer 5500",
+   "famille": "Tout-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "127 t",
+    "Fleche telescopique": "12.7-60 m",
+    "Hauteur max": "86.5 m",
+    "Essieux": "5",
+    "Puissance moteur": "368 kW (Scania)",
+    "Contrepoids max": "40 t"
+   }
+  },
+  {
+   "modele": "Explorer 5600",
+   "famille": "Tout-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "163 t",
+    "Fleche telescopique": "12.5-68 m",
+    "Hauteur max": "94.6 m",
+    "Essieux": "5",
+    "Puissance moteur": "550 hp (Scania)",
+    "Contrepoids max": "46 t"
+   }
+  },
+  {
+   "modele": "Explorer 5800",
+   "famille": "Tout-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "200 t",
+    "Fleche telescopique": "13.4-70 m",
+    "Hauteur max": "90.2 m",
+    "Essieux": "5",
+    "Puissance moteur": "550 hp (Scania DC13)",
+    "Contrepoids max": "70.2 t"
+   }
+  },
+  {
+   "modele": "RS 60100",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "9.3-30.5 m",
+    "Hauteur max": "33.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "RS 70100",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "32 t",
+    "Fleche telescopique": "9.3-30.5 m",
+    "Hauteur max": "33.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "RT 100US",
+   "famille": "Rough-terrain",
+   "annees": "2018-2022",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "11.9-47 m",
+    "Essieux": "2",
+    "Puissance moteur": "262 hp (Cummins)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "RT 345",
+   "famille": "Rough-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "10.1-32 m",
+    "Hauteur max": "34.1 m",
+    "Essieux": "2",
+    "Puissance moteur": "160 hp (Cummins)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "RT 345-1XL",
+   "famille": "Rough-terrain",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "10.1-32 m",
+    "Hauteur max": "34.1 m",
+    "Essieux": "2",
+    "Puissance moteur": "160 hp (Cummins)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "RT 90",
+   "famille": "Rough-terrain",
+   "annees": "2018-2020",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "11.9-47 m",
+    "Essieux": "2",
+    "Puissance moteur": "225 hp (Cummins)",
+    "Voltage machine (V/type)": "24V DC"
+   }
+  },
+  {
+   "modele": "T 340-1",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "10.6-28.6 m",
+    "Essieux": "2",
+    "Puissance moteur": "300 hp (Cummins)"
+   }
+  },
+  {
+   "modele": "T 340-1 XL",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "10.6-32 m",
+    "Hauteur max": "48.1 m",
+    "Essieux": "2",
+    "Puissance moteur": "300 hp (Cummins)",
+    "Contrepoids max": "5 t"
+   }
+  },
+  {
+   "modele": "T 560-1",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "54 t",
+    "Fleche telescopique": "10.7-33.5 m",
+    "Hauteur max": "51.6 m",
+    "Essieux": "3",
+    "Puissance moteur": "455 hp"
+   }
+  },
+  {
+   "modele": "T 775",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "68 t",
+    "Fleche telescopique": "10.7-38.4 m",
+    "Hauteur max": "57.6 m",
+    "Essieux": "3",
+    "Puissance moteur": "452 hp",
+    "Contrepoids max": "6.8 t"
+   }
+  },
+  {
+   "modele": "T 780",
+   "famille": "Camion (grue routiere)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "10.7-38.4 m",
+    "Hauteur max": "57.6 m",
+    "Essieux": "3",
+    "Puissance moteur": "500 hp (Cummins)",
+    "Contrepoids max": "6.9 t"
+   }
+  }
+ ]
+}

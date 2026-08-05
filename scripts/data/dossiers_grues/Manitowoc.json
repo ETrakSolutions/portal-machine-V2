@@ -1,0 +1,231 @@
+{
+ "marque": "Manitowoc",
+ "nb_modeles": 14,
+ "nb_valeurs_a_trouver": 37,
+ "modeles": [
+  {
+   "modele": "16000",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "399 t",
+    "Fleche telescopique": "96 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "500 hp (Cummins QSX15)"
+   }
+  },
+  {
+   "modele": "18000",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "599 t",
+    "Fleche telescopique": "97,5 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "600 hp (Cummins QSX15)"
+   }
+  },
+  {
+   "modele": "31000",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "2300 t",
+    "Fleche telescopique": "105 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "2 x 600 hp (Cummins QSX15)",
+    "Contrepoids max": "964 t"
+   }
+  },
+  {
+   "modele": "MLC100-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "300 hp (Cummins QSB6.7)",
+    "Contrepoids max": "43,6 t"
+   }
+  },
+  {
+   "modele": "MLC100A-1",
+   "famille": "Chenilles treillis",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "91 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "300 hp (Cummins)"
+   }
+  },
+  {
+   "modele": "MLC150-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "78 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "325 hp (Cummins QSB6.7)",
+    "Contrepoids max": "66 t"
+   }
+  },
+  {
+   "modele": "MLC165",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "165 t",
+    "Fleche telescopique": "84 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "320 hp (Cummins QSL9)"
+   }
+  },
+  {
+   "modele": "MLC165-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "165 t",
+    "Fleche telescopique": "84 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "300 hp (Cummins QSL9-300)"
+   }
+  },
+  {
+   "modele": "MLC200",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "200 t",
+    "Fleche telescopique": "89 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "340 hp (Cummins QSL9)"
+   }
+  },
+  {
+   "modele": "MLC250",
+   "famille": "Chenilles treillis",
+   "annees": "2016-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "249 t",
+    "Fleche telescopique": "88,4 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "340 hp (Cummins QSL9)"
+   }
+  },
+  {
+   "modele": "MLC300 (VPC)",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "350 t",
+    "Fleche telescopique": "96 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "470 hp (Cummins QSX15)",
+    "Contrepoids max": "200 t"
+   }
+  },
+  {
+   "modele": "MLC650 (VPC)",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "650 t",
+    "Fleche telescopique": "104 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "600 hp (Cummins QSX15)"
+   }
+  },
+  {
+   "modele": "MLC80A-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "73 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "300 hp (Cummins QSB6.7)",
+    "Contrepoids max": "43,6 t"
+   }
+  },
+  {
+   "modele": "MLC90A-1",
+   "famille": "Chenilles treillis",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "82 t",
+    "Fleche telescopique": "61 m treillis",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "300 hp (Cummins)"
+   }
+  }
+ ]
+}

@@ -1,0 +1,119 @@
+{
+ "marque": "Altec",
+ "nb_modeles": 7,
+ "nb_valeurs_a_trouver": 8,
+ "modeles": [
+  {
+   "modele": "AC18-70B",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2018",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "16 t",
+    "Fleche telescopique": "21.3 m",
+    "Hauteur max": "24.4 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "AC23-95S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2019",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "21 t",
+    "Fleche telescopique": "29.0 m",
+    "Hauteur max": "32.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "AC30-53T",
+   "famille": "Boom truck (camion client)",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "27 t",
+    "Fleche telescopique": "16.2 m",
+    "Hauteur max": "19.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "AC38-127S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2021",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "34 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "41.8 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "AC40E-152S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "46.3 m",
+    "Hauteur max": "63.1 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "AC45E-127S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2018-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "41.1 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "AC65E-155S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2021-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Hauteur max"
+   ],
+   "deja_connu": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "47.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  }
+ ]
+}

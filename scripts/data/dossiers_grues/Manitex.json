@@ -1,0 +1,375 @@
+{
+ "marque": "Manitex",
+ "nb_modeles": 23,
+ "nb_valeurs_a_trouver": 32,
+ "modeles": [
+  {
+   "modele": "22101S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "20 t",
+    "Fleche telescopique": "30.8 m",
+    "Hauteur max": "42.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "26101C",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "26 t",
+    "Fleche telescopique": "30.8 m",
+    "Hauteur max": "43.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "2892C",
+   "famille": "Boom truck (camion client)",
+   "annees": "2017-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "25 t",
+    "Fleche telescopique": "8.5-28.0 m",
+    "Hauteur max": "45.4 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "30100C",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "30 t",
+    "Fleche telescopique": "30.5 m",
+    "Hauteur max": "44.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "30102C",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "30 t",
+    "Fleche telescopique": "31.1 m",
+    "Hauteur max": "47.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "30112S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "30 t",
+    "Fleche telescopique": "34.1 m",
+    "Hauteur max": "51.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "35100C",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2022",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "32 t",
+    "Fleche telescopique": "30.5 m",
+    "Hauteur max": "50.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "35124C",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "35 t",
+    "Fleche telescopique": "37.8 m",
+    "Hauteur max": "50.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "38124S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "38 t",
+    "Fleche telescopique": "37.8 m",
+    "Hauteur max": "50.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "40100S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2021",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "30.5 m",
+    "Hauteur max": "57.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "40100SHL",
+   "famille": "Boom truck (camion client)",
+   "annees": "2015-2021",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "36 t",
+    "Fleche telescopique": "30.5 m",
+    "Hauteur max": "57.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "40124S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "40 t",
+    "Fleche telescopique": "37.8 m",
+    "Hauteur max": "57.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "40124SHL",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "40 t",
+    "Fleche telescopique": "37.8 m",
+    "Hauteur max": "56.7 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "50128S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "39.0 m",
+    "Hauteur max": "57.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "50128SHL",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "39.0 m",
+    "Hauteur max": "57.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TC40142",
+   "famille": "Camion (grue routiere)",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "43.3 m",
+    "Hauteur max": "62.1 m"
+   }
+  },
+  {
+   "modele": "TC450",
+   "famille": "Camion (grue routiere)",
+   "annees": "2019-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "41 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "57.9 m"
+   }
+  },
+  {
+   "modele": "TC45131",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "39.9 m",
+    "Hauteur max": "58.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TC50155HL",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "47.2 m",
+    "Hauteur max": "61.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TC50155S",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "47.2 m",
+    "Hauteur max": "61.6 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TC65159",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "65 t",
+    "Fleche telescopique": "48.5 m",
+    "Hauteur max": "62.8 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  },
+  {
+   "modele": "TC700",
+   "famille": "Camion (grue routiere)",
+   "annees": "2017-2026",
+   "champs_manquants": [
+    "Contrepoids max",
+    "Essieux",
+    "Puissance moteur",
+    "Voltage machine (V/type)"
+   ],
+   "deja_connu": {
+    "Capacite max": "64 t",
+    "Fleche telescopique": "11.7-35.0 m",
+    "Hauteur max": "56.4 m"
+   }
+  },
+  {
+   "modele": "TM200",
+   "famille": "Boom truck (camion client)",
+   "annees": "2020-2026",
+   "champs_manquants": [
+    "Contrepoids max"
+   ],
+   "deja_connu": {
+    "Capacite max": "20 t",
+    "Fleche telescopique": "25.9 m",
+    "Hauteur max": "29.0 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)"
+   }
+  }
+ ]
+}
