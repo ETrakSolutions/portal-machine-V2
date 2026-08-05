@@ -48,7 +48,9 @@ _DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-
 CAS = []
 for _fab, _an, _mod in [('Kobelco', '2024', 'SK210D-11'), ('Yanmar', '2024', 'ViO35-6A'),
                         ('Volvo CE', '2024', 'EC500'), ('Hyundai', '2024', 'HX130A LCR'),
-                        ('Caterpillar', '2024', '336 GC')]:
+                        ('Caterpillar', '2024', '336 GC'),
+                        # lot 2 (decisions 2026-08-05)
+                        ('Bobcat', '2024', 'E48'), ('Yanmar', '2017', 'ViO45-6A')]:
     _e = _DB[_fab][_an][_mod]
     CAS.append(('Excavatrice', _fab, _an, _mod,
                 [_e['Poids operationnel (kg / lbs)'].split(' ')[0], _e['Classe machine']]))
