@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Test de la charpente du type « Tracteur de ferme » (avant tout modele).
+"""Test de la charpente du type « Tracteur » (avant tout modele).
 
 Verifie que le type est cable partout cote frontend et que la soumission se
 comporte comme decide : Scale Lite seule, sans imprimante, sans limiteur.
@@ -27,7 +27,7 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
 threading.Thread(target=httpd.serve_forever, daemon=True).start()
 
-TYPE = 'Tracteur de ferme'
+TYPE = 'Tracteur'
 MJ = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-8'))
 
 opts = Options()
@@ -58,7 +58,7 @@ try:
     check('catalogue = 1200-0020 Scale Lite',
           any((v or {}).get('pn') == '1200-0020' for v in MJ[TYPE]['_bom_labels'].values()))
     check('fichier overrides cree',
-          os.path.exists(os.path.join(REPO, 'data', 'overrides', 'tracteur-de-ferme.json')))
+          os.path.exists(os.path.join(REPO, 'data', 'overrides', 'tracteur.json')))
 
     dv.get(BASE + '/index.html')
     dv.execute_script("localStorage.setItem('portal_user', JSON.stringify("
@@ -70,7 +70,7 @@ try:
     WebDriverWait(dv, 40).until(lambda d: d.execute_script(
         "return (typeof machinesData !== 'undefined') && Object.keys(machinesData).length > 0;"))
     slug = dv.execute_script("return (window.ETRAK_TYPE_SLUGS || {})['%s'];" % TYPE)
-    check('slug = tracteur-de-ferme (%s)' % slug, slug == 'tracteur-de-ferme')
+    check('slug = tracteur (%s)' % slug, slug == 'tracteur')
     lib = dv.execute_script("return (typeof i18n!=='undefined') ? i18n.t('type.%s') : null;" % TYPE)
     check('libelle FR resolu (%s)' % lib, lib == TYPE)
 

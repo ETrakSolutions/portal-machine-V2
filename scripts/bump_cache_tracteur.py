@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Bump du cache pour la creation du type « Tracteur de ferme ».
+"""Bump du cache pour la creation du type « Tracteur ».
 
 Fichiers modifies : admin.js, export.js, edit-machine.js, overrides-loader.js.
 On ne touche QUE les attributs src/href (lecon du bump precedent, qui avait

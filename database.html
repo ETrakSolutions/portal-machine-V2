@@ -1021,8 +1021,8 @@
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'}
             ],
-            // Tracteur de ferme : memes champs que le Loader (decision 2026-08-05)
-            'Tracteur de ferme': [
+            // Tracteur : memes champs que le Loader (decision 2026-08-05)
+            'Tracteur': [
                 {key: 'levage', label: 'Capacité de levage'},
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'}
@@ -1705,7 +1705,7 @@
                         poids: s['Poids operationnel'] || ''
                     };
                 },
-                'Tracteur de ferme': function(s) {
+                'Tracteur': function(s) {
                     return {
                         levage: s['Capacite de levage'] || '',
                         puissance: s['Puissance moteur'] || '',
@@ -2147,7 +2147,7 @@
                                 'Loader': {
                                     'Capacite de levage':'levage','Puissance moteur':'puissance','Poids operationnel':'poids'
                                 },
-                                'Tracteur de ferme': {
+                                'Tracteur': {
                                     'Capacite de levage':'levage','Puissance moteur':'puissance','Poids operationnel':'poids'
                                 },
                                 'Nacelle': {

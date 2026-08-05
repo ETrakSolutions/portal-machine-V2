@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Cree le type de machine « Tracteur de ferme » (charpente vide).
+"""Cree le type de machine « Tracteur » (charpente vide).
 
 Decisions (Jacquot, 2026-08-05) :
   - perimetre : toute la gamme, compacts inclus (les modeles viendront ensuite) ;
@@ -21,8 +21,8 @@ MJ = os.path.join(ROOT, 'data', 'machines.json')
 OVDIR = os.path.join(ROOT, 'data', 'overrides')
 WRITE = '--write' in sys.argv
 
-TYPE = 'Tracteur de ferme'
-SLUG = 'tracteur-de-ferme'
+TYPE = 'Tracteur'
+SLUG = 'tracteur'
 CATALOGUE = {
     '0020 Balance Scale Lite': {
         'pn': '1200-0020',

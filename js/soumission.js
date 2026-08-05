@@ -34,7 +34,7 @@ var OPTION_CODES = {
 
 // Balance : produits derriere chaque sous-option. Deux groupes exclusifs — le
 // modele de balance, puis l'imprimante. La Scale Lite (1200-0020) est reservee
-// au tracteur de ferme (type de machine a creer) et n'a pas d'imprimante.
+// au tracteur (type de machine a creer) et n'a pas d'imprimante.
 var BALANCE_PRODUITS = {
     'Balance loader':       { code: '1200-0010', desc: 'Balance loader (installation e-Trak)' },
     'Balance valise':       { code: '1200-0011', desc: 'Balance en valise (installation client)' },
@@ -557,10 +557,10 @@ function applyTypeRestrictions(type) {
     // thermique ou 1200-0015 carbone.
     // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Auparavant le
     // bloc s'affichait aussi sur Telehandler et Retrocaveuse.
-    // La balance Scale Lite (1200-0020) est reservee au tracteur de ferme, type
+    // La balance Scale Lite (1200-0020) est reservee au tracteur, type
     // de machine qui reste a creer : elle n'est donc pas encore proposee ici,
     // et elle n'aura pas d'option imprimante.
-    var isTracteur = (type === 'Tracteur de ferme');
+    var isTracteur = (type === 'Tracteur');
     var isBalanceType = (type === 'Loader' || isTracteur);
     var balBox = document.getElementById('toggle-balance');
     if (balBox) {
@@ -571,7 +571,7 @@ function applyTypeRestrictions(type) {
             balBox.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
                   .forEach(function(c) { c.checked = false; });
         } else {
-            // Tracteur de ferme : Scale Lite (1200-0020) SEULEMENT, sans imprimante.
+            // Tracteur : Scale Lite (1200-0020) SEULEMENT, sans imprimante.
             // Loader : les deux balances 0010/0011 + le choix d'imprimante.
             [['sub-bal-scalelite', 'bal-scalelite', isTracteur]].concat(
                 [['', 'bal-loader', !isTracteur], ['', 'bal-valise', !isTracteur],
@@ -586,7 +586,7 @@ function applyTypeRestrictions(type) {
         }
     }
 
-    // Limiteur de portee : sans objet sur un tracteur de ferme (catalogue limite
+    // Limiteur de portee : sans objet sur un tracteur (catalogue limite
     // a la balance Scale Lite). On masque la tuile pour eviter une selection qui
     // n'emettrait aucun produit.
     var limBoxT = document.getElementById('toggle-limiteur');

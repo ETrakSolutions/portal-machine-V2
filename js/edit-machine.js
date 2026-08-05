@@ -1079,7 +1079,7 @@
       'Excavatrice':'⛏️','Pompe a Beton':'🏗️','Camion Girafe (Boom Truck)':'🚛',
       'Telehandler':'🦒','Camion Vacuum':'💨','Retrocaveuse':'🔧',
       'Foreuse':'⚙️','Grue Mobile':'🏗️','Loader':'🚜','Nacelle':'🛗',
-      'Tracteur de ferme':'🚜'
+      'Tracteur':'🚜'
     };
     var typeIcon = typeIcons[TYPE] || '🏭';
 

@@ -15,7 +15,7 @@
         var TYPE_ORDER = [
             'Excavatrice', 'Pompe a Beton', 'Grue Mobile', 'Camion Girafe (Boom Truck)',
             'Telehandler', 'Foreuse', 'Camion Vacuum', 'Retrocaveuse', 'Loader', 'Nacelle',
-            'Tracteur de ferme'
+            'Tracteur'
         ];
         var SLUGS = window.ETRAK_TYPE_SLUGS || {};
 

@@ -17,7 +17,7 @@
    "boutons": 4,
    "lignes": 33,
    "selects": 4,
-   "texte": 2111,
+   "texte": 2129,
    "url": "machine.html"
   }
  },
@@ -28,7 +28,7 @@
    "boutons": 110,
    "lignes": 101,
    "selects": 3,
-   "texte": 11440,
+   "texte": 11458,
    "url": "database.html"
   }
  },
@@ -47,10 +47,10 @@
   "window": [],
   "console": [],
   "etat": {
-   "boutons": 15,
-   "lignes": 0,
-   "selects": 0,
-   "texte": 56,
+   "boutons": 42,
+   "lignes": 10,
+   "selects": 10,
+   "texte": 1404,
    "url": "edit-machine.html"
   }
  },
@@ -58,10 +58,10 @@
   "window": [],
   "console": [],
   "etat": {
-   "boutons": 15,
-   "lignes": 0,
-   "selects": 0,
-   "texte": 56,
+   "boutons": 42,
+   "lignes": 10,
+   "selects": 10,
+   "texte": 1401,
    "url": "edit-machine.html"
   }
  },
@@ -69,10 +69,10 @@
   "window": [],
   "console": [],
   "etat": {
-   "boutons": 14,
+   "boutons": 15,
    "lignes": 0,
    "selects": 0,
-   "texte": 711,
+   "texte": 757,
    "url": "export.html"
   }
  },
@@ -94,7 +94,7 @@
    "boutons": 1,
    "lignes": 0,
    "selects": 1,
-   "texte": 503,
+   "texte": 521,
    "url": "machine-requests.html"
   }
  }

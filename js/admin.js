@@ -1636,7 +1636,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var ALL_MACHINE_TYPES = [
     'Camion Girafe (Boom Truck)', 'Camion Vacuum', 'Excavatrice', 'Foreuse',
     'Grue Mobile', 'Loader', 'Nacelle', 'Pompe a Beton', 'Retrocaveuse', 'Telehandler',
-    'Tracteur de ferme'
+    'Tracteur'
 ];
 
 function loadAllowedTypes() {
