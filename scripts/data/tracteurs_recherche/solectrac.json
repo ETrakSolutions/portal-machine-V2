@@ -1,0 +1,38 @@
+{
+  "marque": "Solectrac",
+  "modeles": [
+    {
+      "modele": "e25",
+      "annees": "2018-2025",
+      "puissance": "25 hp",
+      "poids": "2 300 lb",
+      "levage": "992 lb",
+      "source_url": "https://irp.cdn-website.com/47e7e80d/files/uploaded/Solectrac%20E25G%20Brochure.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Compact electrique 4RM, modele le plus vendu de la marque (350 unites en 2022). UN SEUL MODELE DE BASE : vendu successivement sous les noms e25 puis e25G (Gear, boite constant mesh 3 gammes), avec une variante e25H hydrostatique devoilee en juin 2023 - transmissions donc configurations, pas modeles distincts. Le e25 Backhoe n'est pas un modele non plus : la fiche officielle designe le e25B comme une retrocaveuse 4 points concue pour le e25G, donc un accessoire. Specs relevees sur la brochure officielle Solectrac e25G (c) 2022 : 25 hp (18 kW) categorie, poids 2300 lb (3600 lb avec chargeur), levage = Lift Capacity @ lower link end 992 lb (450 kg), attelage 1N/1, PTO sous 20 hp (15 kW). La fiche produit officielle e25 du 02/03/2022 donne exactement les memes chiffres. Puissance publiee directement en hp par le fabricant - aucune conversion depuis les kW n'a ete necessaire. Mise en production limitee vers 2018; borne haute = extinction de la marque."
+    },
+    {
+      "modele": "e70N",
+      "annees": "2021-2025",
+      "puissance": "70 hp",
+      "poids": "6 655 lb",
+      "levage": "2 000 lb",
+      "source_url": "https://www.electrive.com/2021/08/08/soletrac-launches-the-e70n-electric-tractor-for-narrow-farms/",
+      "source_type": "aucune",
+      "confiance": "moyenne",
+      "note": "MODELE CONFIRME - leve le doute de la fiche marque interne. Tracteur electrique etroit (54 po) pour vigne et verger, lance officiellement le 10 aout 2021 par communique Ideanomics/Solectrac. Le site solectrac.com etant hors service (403 Cloudflare) et solectrac.store renvoyant une erreur de base de donnees, les specs proviennent de la couverture de presse specialisee et des fiches de revendeurs reprenant le communique : 70 hp (52 kW) categorie, PTO 55 hp (41 kW), poids brut 6655 lb, capacite de relevage 2000 lb - convention de mesure non precisee par la source. Batterie LFP 60 kWh, pack echangeable en option. Prix de lancement 75 000 USD. Puissance publiee en hp ET en kW; aucune conversion n'a ete appliquee."
+    },
+    {
+      "modele": "eUtility",
+      "annees": "2017-2025",
+      "puissance": "40 hp",
+      "poids": "4 400 lb",
+      "levage": "",
+      "source_url": "https://newatlas.com/environment/solectrac-eutility-electric-tractor/",
+      "source_type": "aucune",
+      "confiance": "moyenne",
+      "note": "MODELE CONFIRME - leve le doute de la fiche marque interne. Premier modele de production de Solectrac, et donc le premier tracteur electrique commercialise par un constructeur nord-americain. Traction arriere (contrairement aux e25 et e70N, 4RM), batterie LFP 28 kWh, garde au sol au choix 12 ou 18 po, prix de base 45 000 USD. Puissance de 40 hp donnee comme equivalent-diesel par le constructeur, pas comme puissance moteur mesuree - a lire avec cette reserve. Poids 4400 lb. LEVAGE LAISSE VIDE : aucune capacite de relevage 3 points arriere n'est publiee; les 1000 lb qui circulent sont la capacite du chargeur frontal optionnel. Site officiel hors service, specs issues de la couverture de presse. Fenetre : borne basse = fenetre de marque, borne haute = extinction de la marque; la date d'arret de ce modele precis n'est pas documentee."
+    }
+  ]
+}

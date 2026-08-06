@@ -1,0 +1,16 @@
+{
+  "marque": "Monarch Tractor",
+  "modeles": [
+    {
+      "modele": "MK-V",
+      "annees": "2022-2025",
+      "puissance": "70 hp",
+      "poids": "5 750 lb",
+      "levage": "1 650 lb",
+      "source_url": "https://6743557.fs1.hubspotusercontent-na1.net/hubfs/6743557/Monarch_SpecSheet_v.2023.7-Jul-12-2023-01-44-57-0052-PM.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Tracteur 100% electrique a conduite optionnelle, fabrique a Livermore CA. UN SEUL MODELE DE BASE : Monarch commercialisait MK-V Standard, MK-V Dairy et MK-V Utility, qui sont des habillages d'equipement de la meme plateforme (la Founder Series est l'edition de lancement 2022), donc des configurations au sens de la regle de comptage - pas trois modeles. Specs relevees sur la fiche technique officielle MK-V Hardware Specifications v.2023.4 : puissance moteur de crete 70 hp (52 kW), puissance nominale 40 hp (30 kW), PTO 40 hp; poids de base 5750 lb (2610 kg); levage = Hitch Lift Capacity a 24 po derriere le point de levage, 1650 lb (750 kg), attelage CAT I/II. Les variantes XLR et LR ne different que par l'autonomie batterie. Conversion kW->hp non necessaire : la fiche publie directement les hp. MARQUE ETEINTE : production arretee apres la vente par Foxconn de l'usine de Lordstown (aout 2025); preavis WARN de 89 a 102 postes depose le 19 nov. 2025; siege de Livermore vide le 3 avril 2026 apres mise aux encheres des equipements de R-D; technologie coeur rachetee par un grand equipementier mondial (Caterpillar selon la presse). Aucune preuve de distribution canadienne n'a ete trouvee - presence US seulement."
+    }
+  ]
+}

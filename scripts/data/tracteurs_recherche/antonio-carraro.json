@@ -1,0 +1,258 @@
+{
+  "marque": "Antonio Carraro",
+  "modeles": [
+    {
+      "modele": "TGF 7800 S",
+      "annees": "2018-2026",
+      "puissance": "70 hp",
+      "poids": "4 608 lb",
+      "levage": "5 071 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Tracteur bas profil verger. Puissance 70,3 hp d'apres la feuille de commande officielle du distributeur NA MGH Equipment (arrondie a 70) - moteur Yanmar Tier 4 Final. Poids 2090 kg (arceau) et capacite 2300 kg convertis depuis la fiche technique constructeur antoniocarraro.it/en/catalogue/tgf-ergit-s (1 kg = 2,20462 lb, arrondi a l'entier). ATTENTION CONVENTION : Antonio Carraro publie un champ unique intitule Capacity (KG) sans preciser le point de mesure du relevage - retenu comme capacite de relevage arriere. Versions cabine plus lourdes (2400 kg Protector, 2200 kg Starlight) traitees comme configurations. Fenetre = fenetre de distribution NA de MGH Equipment; aucune date d'introduction par modele n'est publiee."
+    },
+    {
+      "modele": "TGF 8900 R",
+      "annees": "2018-2026",
+      "puissance": "74 hp",
+      "poids": "4 916 lb",
+      "levage": "5 291 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Puissance 74,2 hp d'apres la feuille de commande officielle MGH Equipment (arrondie a 74) - moteur Kubota Tier 4 Final. Poids 2230 kg (arceau, borne basse) et capacite 2400 kg convertis depuis antoniocarraro.it/en/catalogue/tgf-ergit-r. Meme reserve de convention que les autres modeles AC : champ unique Capacity (KG) sans point de mesure. Versions cabine Protector 100 : 2360-2585 kg."
+    },
+    {
+      "modele": "TRX 7800 S",
+      "annees": "2018-2026",
+      "puissance": "70 hp",
+      "poids": "4 586 lb",
+      "levage": "4 740 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Isodiametrique a poste reversible (RGS). Puissance 70,3 hp d'apres la feuille de commande MGH Equipment (arrondie a 70) - moteur Yanmar Tier 4 Final. Poids 2080 kg (arceau) et capacite 2150 kg convertis depuis antoniocarraro.it/en/catalogue/trx-ergit-s. Meme reserve de convention sur le champ Capacity (KG). Cabines EasyStar 2130 kg / Starlight 2220 kg = configurations."
+    },
+    {
+      "modele": "TRX 8900 R",
+      "annees": "2018-2026",
+      "puissance": "74 hp",
+      "poids": "4 696 lb",
+      "levage": "5 732 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Puissance 74,2 hp d'apres la feuille de commande MGH Equipment (arrondie a 74) - moteur Kubota Stage 5 / Tier 4 Final. Poids 2130 kg (arceau, borne basse) et capacite 2600 kg convertis depuis antoniocarraro.it/en/catalogue/trx-ergit-r. Meme reserve de convention sur le champ Capacity (KG). Cabine AIR : 2320-2420 kg."
+    },
+    {
+      "modele": "TRG 8900 R",
+      "annees": "2018-2026",
+      "puissance": "74 hp",
+      "poids": "5 093 lb",
+      "levage": "5 732 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Reversible a roues inegales (voie large). Puissance 74,2 hp d'apres la feuille de commande MGH Equipment (arrondie a 74) - moteur Kubota. Poids 2310 kg (arceau, borne basse) et capacite 2600 kg convertis depuis antoniocarraro.it/en/catalogue/trg-ergit-r - champ verifie directement dans le HTML de la page, intitule Capacity (KG). Cabine AIR : 2550-2620 kg."
+    },
+    {
+      "modele": "SX 7800 S",
+      "annees": "2018-2026",
+      "puissance": "70 hp",
+      "poids": "4 773 lb",
+      "levage": "5 335 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Articule isodiametrique super-etroit. Puissance 70,3 hp d'apres la feuille de commande MGH Equipment (arrondie a 70) - moteur Yanmar Tier 4 Final. Poids 2165 kg (arceau) et capacite 2420 kg convertis depuis antoniocarraro.it/en/catalogue/sx-ergit-s - champ verifie dans le HTML, intitule Capacity (KG). Cabine Starlight 2255 kg. NOTE : chez Antonio Carraro, articule designe un chassis isodiametrique pivotant, pas un articule de type Steiger."
+    },
+    {
+      "modele": "SRX 7800",
+      "annees": "2018-2026",
+      "puissance": "70 hp",
+      "poids": "4 674 lb",
+      "levage": "4 630 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Articule isodiametrique reversible. Puissance 70,3 hp d'apres la feuille de commande MGH Equipment (arrondie a 70) - moteur Yanmar Tier 4 Final. Poids 2120 kg (borne basse de la plage 2120-2450 kg selon cabine) et capacite 2100 kg convertis depuis antoniocarraro.it/en/catalogue/srx. Meme reserve de convention sur le champ Capacity (KG)."
+    },
+    {
+      "modele": "SRX 8900 R",
+      "annees": "2018-2026",
+      "puissance": "74 hp",
+      "poids": "4 729 lb",
+      "levage": "5 291 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Puissance 74,2 hp d'apres la feuille de commande MGH Equipment (arrondie a 74) - moteur Kubota Stage 5. Poids 2145 kg (arceau, borne basse) et capacite 2400 kg convertis depuis antoniocarraro.it/en/catalogue/srx-ergit-r. Largeur minimale 1060 mm. Cabine AIR : 2335-2535 kg."
+    },
+    {
+      "modele": "TR 7600 INFINITY",
+      "annees": "2018-2026",
+      "puissance": "75 hp",
+      "poids": "4 861 lb",
+      "levage": "5 291 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Transmission hydrostatique Infinity, poste reversible. Puissance 75 hp confirmee par la feuille de commande MGH Equipment - moteur Kohler Tier 4 Final. Poids 2205 kg (arceau, borne basse) et capacite 2400 kg convertis depuis antoniocarraro.it/en/catalogue/tr-infinity. Cabine : 2365-2475 kg."
+    },
+    {
+      "modele": "TTR 7600 INFINITY",
+      "annees": "2018-2026",
+      "puissance": "75 hp",
+      "poids": "4 773 lb",
+      "levage": "5 291 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Hydrostatique reversible a voie large, pneus TERRA. Puissance 75 hp confirmee par la feuille de commande MGH Equipment - moteur Kohler. Poids 2165 kg (arceau, borne basse) et capacite 2400 kg convertis depuis antoniocarraro.it/en/catalogue/ttr-7600-infinity. Cabine : 2295-2485 kg."
+    },
+    {
+      "modele": "SR 7600 INFINITY",
+      "annees": "2018-2026",
+      "puissance": "75 hp",
+      "poids": "4 707 lb",
+      "levage": "5 071 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Articule hydrostatique reversible. Puissance 75 hp confirmee par la feuille de commande MGH Equipment - moteur Kohler. Poids 2135 kg (arceau) et capacite 2300 kg convertis depuis antoniocarraro.it/en/catalogue/sr-7600-Infinity."
+    },
+    {
+      "modele": "MACH 4 8900 R",
+      "annees": "2018-2026",
+      "puissance": "74 hp",
+      "poids": "7 055 lb",
+      "levage": "5 291 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Quadrichenille caoutchouc articule reversible - seul chenille de la gamme NA. Puissance 74,2 hp d'apres la feuille de commande MGH Equipment (arrondie a 74) - moteur Kubota Stage 5. Poids a vide 3200 kg (arceau) et capacite 2400 kg convertis depuis antoniocarraro.it/en/catalogue/mach-4-r. Version cabine 3380 kg."
+    },
+    {
+      "modele": "TIGRE 3800",
+      "annees": "2018-2026",
+      "puissance": "25 hp",
+      "poids": "2 315 lb",
+      "levage": "1 874 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Plus petit de la gamme NA, designe tracteur de pepiniere (SPECIALTY NURSERY TRACTOR) sur la feuille de commande MGH Equipment, qui annonce 25 hp - retenu comme puissance NA. La fiche constructeur antoniocarraro.it/en/catalogue/tigre-3800 publie 25,7 ch pour le moteur Yanmar 3 cylindres Stage V; ecart non resolu, valeur NA retenue. Poids 1050 kg et capacite 850 kg convertis depuis cette meme fiche."
+    },
+    {
+      "modele": "TN 5800 TORA",
+      "annees": "2018-2026",
+      "puissance": "52 hp",
+      "poids": "3 990 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA. Puissance 51,5 hp d'apres la feuille de commande MGH Equipment (arrondie a 52) - moteur Yanmar. Poids 1810 kg (arceau, borne basse) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/TN_5800_6800. Version RedCab : 1960-2110 kg."
+    },
+    {
+      "modele": "TN 6800 TORA",
+      "annees": "2018-2026",
+      "puissance": "66 hp",
+      "poids": "3 990 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA. Puissance 66 hp confirmee par la feuille de commande MGH Equipment - moteur Yanmar turbo intercooler. Poids 1810 kg (arceau, borne basse) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/TN_5800_6800 - la fiche donne la meme plage de poids pour le TN 5800 et le TN 6800. Version RedCab : 1960-2110 kg."
+    },
+    {
+      "modele": "TC 6800 F TORA",
+      "annees": "2018-2026",
+      "puissance": "66 hp",
+      "poids": "4 123 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA, version F (fruitiere, roues inegales). Puissance 66 hp confirmee par la feuille de commande MGH Equipment - moteur Yanmar Tier 4. Poids 1870 kg (arceau, borne basse de 1870-2075 kg) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/TC_6800_F."
+    },
+    {
+      "modele": "SN 6800 V TORA",
+      "annees": "2018-2026",
+      "puissance": "66 hp",
+      "poids": "3 913 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA, version V (vigne, articule etroit). Puissance 66 hp confirmee par la feuille de commande MGH Equipment - moteur Yanmar Tier 4. Poids 1775 kg (arceau, borne basse de 1775-2115 kg selon cabine) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/SN_6800V."
+    },
+    {
+      "modele": "TRX 5800 TORA",
+      "annees": "2018-2026",
+      "puissance": "52 hp",
+      "poids": "3 968 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA, isodiametrique reversible. Puissance 52 hp d'apres la feuille de commande MGH Equipment; la fiche constructeur publie 51,5 hp (37,9 kW a 2600 tr/min) - valeur NA retenue. Poids 1800 kg (arceau, borne basse de 1800-2015 kg) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/TRX_5800. Version RedCab : 1950-2165 kg."
+    },
+    {
+      "modele": "SRX 5800 TORA",
+      "annees": "2018-2026",
+      "puissance": "52 hp",
+      "poids": "3 913 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA, articule reversible. Puissance 52 hp d'apres la feuille de commande MGH Equipment; la fiche constructeur publie 51,5 ch - valeur NA retenue. Poids 1775 kg (arceau, borne basse de 1775-1965 kg) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/SRX_TORA. Version RedCab : 1925-2115 kg."
+    },
+    {
+      "modele": "SRX 6800 TORA",
+      "annees": "2018-2026",
+      "puissance": "66 hp",
+      "poids": "3 913 lb",
+      "levage": "4 828 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme TORA, articule reversible. Puissance 66 hp confirmee par la feuille de commande MGH Equipment - moteur Yanmar turbo intercooler. Poids 1775 kg (arceau, borne basse) et capacite 2190 kg convertis depuis antoniocarraro.it/en/catalogue/SRX_TORA - la fiche donne la meme plage de poids pour le SRX 5800 et le SRX 6800."
+    },
+    {
+      "modele": "TC 5800 F MAJOR",
+      "annees": "2018-2026",
+      "puissance": "52 hp",
+      "poids": "3 880 lb",
+      "levage": "4 850 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme MAJOR, version F (fruitiere). Puissance 52 hp d'apres la feuille de commande MGH Equipment (moteur Yanmar Tier 4); la fiche constructeur publie 49,7 hp - ecart non resolu, valeur NA retenue. Poids 1760 kg et capacite 2200 kg convertis depuis antoniocarraro.it/en/catalogue/tc-f-major. Sur cette fiche, la capacite est explicitement donnee aux points d'attelage (aux rotules)."
+    },
+    {
+      "modele": "SN 5800 V MAJOR",
+      "annees": "2018-2026",
+      "puissance": "52 hp",
+      "poids": "3 527 lb",
+      "levage": "3 748 lb",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Gamme MAJOR, version V (vigne, articule etroit - 98 cm de large). Puissance 52 hp d'apres la feuille de commande MGH Equipment; la fiche constructeur publie 49,7 hp - ecart non resolu, valeur NA retenue. Poids 1600 kg et capacite 1700 kg convertis depuis antoniocarraro.it/en/catalogue/sn-v-major."
+    },
+    {
+      "modele": "TIGRECAR 5800 PL",
+      "annees": "2018-2026",
+      "puissance": "52 hp",
+      "poids": "4 343 lb",
+      "levage": "",
+      "source_url": "https://www.antoniocarrarous.com/dealers/quotes/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "TRANSPORTEUR a plateau de chargement, pas un tracteur a attelage 3 points classique - version PL. Puissance 51,5 hp d'apres la feuille de commande MGH Equipment (arrondie a 52) - moteur Yanmar Stage 5, boite 8AV/8AR. Poids 1970 kg (a vide) converti depuis antoniocarraro.it/en/catalogue/tigrecar-5800. LEVAGE LAISSE VIDE VOLONTAIREMENT : la seule capacite publiee (4500 kg) est une charge utile de plateau, pas une capacite de relevage 3 points arriere - aucune valeur de relevage n'est publiee."
+    }
+  ]
+}

@@ -1,0 +1,302 @@
+{
+  "marque": "Deutz-Fahr",
+  "modeles": [
+    {
+      "modele": "3060",
+      "annees": "2016-2026",
+      "puissance": "59 hp",
+      "poids": "4 155 lb",
+      "levage": "2 645 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/3-Series-Brochure-SpecsOnly.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max power. Poids = total unladen weight, version cabine. Levage = rear lift capacity. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "4065",
+      "annees": "2016-2026",
+      "puissance": "65 hp",
+      "poids": "5 500 lb",
+      "levage": "3 525 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/4065_4080_5080D-Keyline_brochure_spec_pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Gross power at 2 000 rpm (puissance nominale a 2 200 rpm : 65 hp pour le 4065, 75 hp pour le 4080). Poids = base shipping weight. Levage = lifting capacity du relevage arriere. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "4080",
+      "annees": "2016-2026",
+      "puissance": "80 hp",
+      "poids": "6 600 lb",
+      "levage": "5 500 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/4065_4080_5080D-Keyline_brochure_spec_pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Gross power at 2 000 rpm (puissance nominale a 2 200 rpm : 65 hp pour le 4065, 75 hp pour le 4080). Poids = base shipping weight. Levage = 5 500 lb (POWER LIFT de la fiche 4080 GS, confirme par la page produit US : 'up to 5,500 lb lift capacity on the 4080'). La ligne HYDRAULICS de la meme fiche indique 3 525 lb, valeur reprise de la fiche 4065 : incoherence signalee. Les suffixes GS et E sont des configurations. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5080D",
+      "annees": "2016-2026",
+      "puissance": "80 hp",
+      "poids": "6 800 lb",
+      "levage": "5 500 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/4065_4080_5080D-Keyline_brochure_spec_pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche '5080D GS Keyline'. Puissance = Gross power at 2 000 rpm (nominale 75 hp). Poids = base shipping weight. Levage = lifting capacity du relevage arriere. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5100D",
+      "annees": "2016-2026",
+      "puissance": "102 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://deutz-fahramerica.com/tractors/5d-keyline/",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Page produit Deutz-Fahr America '5D Keyline' : Rated / Gross Horsepower 97 / 102. Puissance = puissance brute (gross). Aucun poids ni capacite de relevage publie pour ce modele : la fiche technique telechargeable ne couvre que le 5080D. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5105",
+      "annees": "2016-2026",
+      "puissance": "106 hp",
+      "poids": "8 820 lb",
+      "levage": "7 935 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/5-Series-Brochure-Specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power @ 2 000 rpm (nominale : 101 hp / 120 hp). Poids = Weight. Levage = rear lifting capacity. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5125",
+      "annees": "2016-2026",
+      "puissance": "126 hp",
+      "poids": "9 590 lb",
+      "levage": "11 900 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/5-Series-Brochure-Specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power @ 2 000 rpm (nominale : 101 hp / 120 hp). Poids = Weight. Levage = rear lifting capacity. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5080G TB",
+      "annees": "2016-2026",
+      "puissance": "80 hp",
+      "poids": "7 050 lb",
+      "levage": "7 900 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/5G-TB-brochure-specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Serie bas profil (verger). Puissance = Max. power @ 2 000 rpm de la fiche technique ; la page produit US affiche 'Rated / Max. Horsepower 75 / 75' - divergence signalee, la fiche technique a ete retenue. Poids = 'Max. weight with roll bar'. Levage = rear lift capacity (standard). Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5115G TB",
+      "annees": "2016-2026",
+      "puissance": "116 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://deutz-fahramerica.com/tractors/5g-tb-series-home/",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Page produit Deutz-Fahr America '5G TB Series' : Rated / Max. Horsepower 110 / 116. Puissance = puissance max. Aucun poids ni capacite de relevage publie : la fiche technique telechargeable ne couvre que le 5080G TB. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5080 DF",
+      "annees": "2016-2026",
+      "puissance": "80 hp",
+      "poids": "",
+      "levage": "6 170 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/5D-F-V-ECOLINE-80F-Keyline-brochure-specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Serie specialisee verger-vigne (F = profil bas et etroit, V = ultra-etroit). Puissance = Maximum power (ECE R120) @ 2 000 rpm de la fiche technique ; la page produit US affiche 'Rated / Max. 75 / 75' - divergence signalee. La fiche designe ces machines '5080.4 DF' et '5080.4 DV' ; la page produit US les nomme '5080 DF' et '5080 DV'. Poids laisse vide : la fiche ne publie qu'une fourchette de poids de base (min-max selon equipement). Fourchette publiee : 6 056 - 6 889 lb. Levage = rear lift capacity. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5080 DV",
+      "annees": "2016-2026",
+      "puissance": "80 hp",
+      "poids": "",
+      "levage": "5 730 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/5D-F-V-ECOLINE-80F-Keyline-brochure-specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Serie specialisee verger-vigne (F = profil bas et etroit, V = ultra-etroit). Puissance = Maximum power (ECE R120) @ 2 000 rpm de la fiche technique ; la page produit US affiche 'Rated / Max. 75 / 75' - divergence signalee. La fiche designe ces machines '5080.4 DF' et '5080.4 DV' ; la page produit US les nomme '5080 DF' et '5080 DV'. Poids laisse vide : la fiche ne publie qu'une fourchette de poids de base (min-max selon equipement). Fourchette publiee : 6 237 - 6 768 lb. Levage = rear lift capacity. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5115 DF",
+      "annees": "2016-2026",
+      "puissance": "113 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://deutz-fahramerica.com/tractors/5df-series-home/",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Page produit Deutz-Fahr America '5D F/V Series' : Rated / Max. Horsepower 107 / 113. Puissance = puissance max. Aucun poids ni capacite de relevage publie : la fiche technique telechargeable ne couvre que les modeles 5080.4. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "5115 DV",
+      "annees": "2016-2026",
+      "puissance": "113 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://deutz-fahramerica.com/tractors/5df-series-home/",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Page produit Deutz-Fahr America '5D F/V Series' : Rated / Max. Horsepower 107 / 113. Puissance = puissance max. Aucun poids ni capacite de relevage publie : la fiche technique telechargeable ne couvre que les modeles 5080.4. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "80F Keyline",
+      "annees": "2016-2026",
+      "puissance": "80 hp",
+      "poids": "5 750 lb",
+      "levage": "5 952 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/5D-F-V-ECOLINE-80F-Keyline-brochure-specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Tracteur specialise verger (gamme Agroplus F). Puissance = Maximum power (ECE R120) @ 2 000 rpm (nominale 75 hp). Poids = approx. base weight. Levage = rear lift capacity. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6135C",
+      "annees": "2019-2026",
+      "puissance": "136 hp",
+      "poids": "10 450 lb",
+      "levage": "15 400 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/6-Series-Brochure-Spec-Pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power @ 2 000 rpm. Poids = total unladen weight. Levage = rear hitch lift capacity. RV Shift et TTV sont des transmissions, donc des configurations d'un meme modele. La page produit US ecrit '6135C', la fiche technique '6135'. Succede aux 6130 / 6140 lances au NFMS 2019 ; date exacte de bascule non sourcee. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6155",
+      "annees": "2016-2026",
+      "puissance": "156 hp",
+      "poids": "14 875 lb",
+      "levage": "20 250 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/6-Series-Agrotron-brochure-spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power (ECE R 120). Poids = total unladen weight, version Power Shift ; les versions TTV sont plus lourdes. Levage = rear lift capacity. Power Shift, RC Shift et TTV sont des transmissions, donc des configurations d'un meme modele. Version TTV : 17 262 lb. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6175",
+      "annees": "2016-2026",
+      "puissance": "176 hp",
+      "poids": "16 755 lb",
+      "levage": "20 250 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/6-Series-Agrotron-brochure-spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power (ECE R 120). Poids = total unladen weight, version Power Shift ; les versions TTV sont plus lourdes. Levage = rear lift capacity. Power Shift, RC Shift et TTV sont des transmissions, donc des configurations d'un meme modele. Version TTV : 18 275 lb. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6215",
+      "annees": "2016-2026",
+      "puissance": "212 hp",
+      "poids": "18 364 lb",
+      "levage": "22 025 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/6-Series-Agrotron-brochure-spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power (ECE R 120). Poids = total unladen weight, version Power Shift ; les versions TTV sont plus lourdes. Levage = rear lift capacity. Power Shift, RC Shift et TTV sont des transmissions, donc des configurations d'un meme modele. Puissance max avec boost : 226 hp. Version TTV : 18 900 lb. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6190 TTV",
+      "annees": "2021-2026",
+      "puissance": "192 hp",
+      "poids": "19 150 lb",
+      "levage": "20 280 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/7250-Spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche 'Compound TTV 190-280 HP' de Deutz-Fahr America. Puissance = Max. power (ECE R120). Poids = total unladen weight (minimum) ; maximum publie egalement. Levage = lifting capacity rear. Poids max publie 21 770 lb. Levage : la cellule 9 200 kg / 20 280 lb est fusionnee sur les colonnes 6190 et 6230. Confiance moyenne : ce modele n'a pas de page produit dediee sur le site US, il n'apparait que dans la fiche Compound TTV hebergee par Deutz-Fahr America. Fenetre estimee (generation Stage V), non sourcee. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6230 TTV",
+      "annees": "2021-2026",
+      "puissance": "230 hp",
+      "poids": "19 500 lb",
+      "levage": "20 280 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/7250-Spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche 'Compound TTV 190-280 HP' de Deutz-Fahr America. Puissance = Max. power (ECE R120). Poids = total unladen weight (minimum) ; maximum publie egalement. Levage = lifting capacity rear. Poids max publie 22 100 lb. Levage : cellule fusionnee 6190/6230. Confiance moyenne : pas de page produit dediee sur le site US, modele present uniquement dans la fiche Compound TTV hebergee par Deutz-Fahr America. Fenetre estimee, non sourcee. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "7250 TTV",
+      "annees": "2016-2026",
+      "puissance": "247 hp",
+      "poids": "20 944 lb",
+      "levage": "24 471 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/7250-Spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche 'Compound TTV 190-280 HP' de Deutz-Fahr America. Puissance = Max. power (ECE R120). Poids = total unladen weight (minimum) ; maximum publie egalement. Levage = lifting capacity rear. Poids max publie 22 487 lb. La page produit US annonce 230/246 hp (autre norme de mesure) : divergence signalee. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "8280 TTV",
+      "annees": "2016-2026",
+      "puissance": "287 hp",
+      "poids": "20 944 lb",
+      "levage": "24 471 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/7250-Spec-pages.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche 'Compound TTV 190-280 HP' de Deutz-Fahr America. Puissance = Max. power (ECE R120). Poids = total unladen weight (minimum) ; maximum publie egalement. Levage = lifting capacity rear. Poids max publie 22 487 lb. Puissance nominale 268 hp. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "9340",
+      "annees": "2016-2026",
+      "puissance": "336 hp",
+      "poids": "26 450 lb",
+      "levage": "26 450 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/9-Series-Specs.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Puissance = Max. power (ECE R120) ; nominale 316 hp. Poids = total unladen weight (12 000 kg). Levage = rear lift capacity (12 000 kg egalement - coincidence, les deux valeurs sont bien publiees a 12 000 kg). Modele plafond de la gamme NA. Modele au catalogue Deutz-Fahr America 2026. Date d'introduction NA du modele non sourcee : la fenetre reprise est celle de la marque en Amerique du Nord (la gamme 6 Series Agrotron y est offerte depuis 2016 d'apres la communication de PFG America au NFMS 2019). Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6165",
+      "annees": "2016-2022",
+      "puissance": "164 hp",
+      "poids": "14 875 lb",
+      "levage": "20 250 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/PFGA-6-Series-Letter-Size-USA-Spec-Sheet-web.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche 6 Series Agrotron (c) 2018 PFG America, retiree du catalogue actuel. Puissance = Max. power (ECE R 120). Poids = total unladen weight. Levage = rear lift capacity. Fenetre 2016-2022 : modele present dans la fiche 2018 et absent de la fiche courante ; date de retrait non sourcee. Puissance max avec boost : 171 hp. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6185",
+      "annees": "2016-2022",
+      "puissance": "188 hp",
+      "poids": "17 850 lb",
+      "levage": "20 250 lb",
+      "source_url": "https://deutz-fahramerica.com/wp-content/uploads/PFGA-6-Series-Letter-Size-USA-Spec-Sheet-web.pdf",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Fiche technique publiee par PFG America / Deutz-Fahr America, unites imperiales d'origine (aucune conversion). Fiche 6 Series Agrotron (c) 2018 PFG America, retiree du catalogue actuel. Puissance = Max. power (ECE R 120). Poids = total unladen weight. Levage = rear lift capacity. Fenetre 2016-2022 : modele present dans la fiche 2018 et absent de la fiche courante ; date de retrait non sourcee. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6130",
+      "annees": "2019-2022",
+      "puissance": "126 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://agwired.com/2019/02/18/deutz-fahr-introduces-new-6-series-tractors-at-nfms19/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Nouveaux 6 Series petit chassis devoiles par PFG America au National Farm Machinery Show de fevrier 2019, explicitement pour le marche americain. Puissance = puissance moteur annoncee au lancement. Aucun poids ni capacite de relevage publie dans la source. Remplaces par le 6135C ; fenetre de fin non sourcee. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    },
+    {
+      "modele": "6140",
+      "annees": "2019-2022",
+      "puissance": "136 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://agwired.com/2019/02/18/deutz-fahr-introduces-new-6-series-tractors-at-nfms19/",
+      "source_type": "deux_sources",
+      "confiance": "moyenne",
+      "note": "Nouveaux 6 Series petit chassis devoiles par PFG America au National Farm Machinery Show de fevrier 2019, explicitement pour le marche americain. Puissance = puissance moteur annoncee au lancement. Aucun poids ni capacite de relevage publie dans la source. Remplaces par le 6135C ; fenetre de fin non sourcee. Distribution nord-americaine assuree par PFG America LLC (Dacula, GA), distributeur exclusif de la marque aux ETATS-UNIS uniquement : la page 'About PFG America' du site officiel enumere trois pays - Nouvelle-Zelande, Australie et USA - sans mention du Canada, et le locator ne renvoie aucun concessionnaire canadien. Aucun canal canadien distinct n'a ete trouve."
+    }
+  ]
+}

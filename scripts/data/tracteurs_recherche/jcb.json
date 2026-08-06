@@ -1,0 +1,71 @@
+{
+  "marque": "JCB",
+  "modeles": [
+    {
+      "modele": "Fastrac 4160",
+      "annees": "2015-2026",
+      "puissance": "178 hp",
+      "poids": "",
+      "levage": "17 637 lb",
+      "source_url": "https://www.jcb.com/en-us/products/machines/agricultural-tractors/4000-series",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche jcb.com/en-US, serie Fastrac 4000 iCON (tracteur a chassis suspendu et grande vitesse routiere). puissance = Max power; rated power 167 hp. levage = valeur publiee par JCB US au niveau de la serie (17 637 lb = 8 000 kg); la fiche precise '7,000 or 8,000 kg options available' : la version 7 000 kg (15 432 lb) existe aussi. Poids non publie par JCB sur le site NA ni dans une fiche NA accessible : laisse vide. Presence NA confirmee par les pages en-US et en-CA; pages produit /4160-agri, /4190-agri, /4220-agri presentes sur jcb.com/en-us des 2019."
+    },
+    {
+      "modele": "Fastrac 4190",
+      "annees": "2015-2026",
+      "puissance": "210 hp",
+      "poids": "",
+      "levage": "17 637 lb",
+      "source_url": "https://www.jcb.com/en-us/products/machines/agricultural-tractors/4000-series",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche jcb.com/en-US, serie Fastrac 4000 iCON (tracteur a chassis suspendu et grande vitesse routiere). puissance = Max power; rated power 189 hp. levage = valeur publiee par JCB US au niveau de la serie (17 637 lb = 8 000 kg); la fiche precise '7,000 or 8,000 kg options available' : la version 7 000 kg (15 432 lb) existe aussi. Poids non publie par JCB sur le site NA ni dans une fiche NA accessible : laisse vide. Presence NA confirmee par les pages en-US et en-CA; pages produit /4160-agri, /4190-agri, /4220-agri presentes sur jcb.com/en-us des 2019."
+    },
+    {
+      "modele": "Fastrac 4220",
+      "annees": "2015-2026",
+      "puissance": "235 hp",
+      "poids": "",
+      "levage": "17 637 lb",
+      "source_url": "https://www.jcb.com/en-us/products/machines/agricultural-tractors/4000-series",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche jcb.com/en-US, serie Fastrac 4000 iCON (tracteur a chassis suspendu et grande vitesse routiere). puissance = Max power; rated power 218 hp. levage = valeur publiee par JCB US au niveau de la serie (17 637 lb = 8 000 kg); la fiche precise '7,000 or 8,000 kg options available' : la version 7 000 kg (15 432 lb) existe aussi. Poids non publie par JCB sur le site NA ni dans une fiche NA accessible : laisse vide. Presence NA confirmee par les pages en-US et en-CA; pages produit /4160-agri, /4190-agri, /4220-agri presentes sur jcb.com/en-us des 2019."
+    },
+    {
+      "modele": "Fastrac 8290",
+      "annees": "2015-2021",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://web.archive.org/web/20190818182130/https://www.jcb.com/en-us/products/agricultural-tractors/8290",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Page produit /en-us/products/agricultural-tractors/8290 presente sur jcb.com en 2019, disparue de la gamme NA actuelle (seul le 8330 subsiste). Aucune specification fiable : la vignette archivee du 8290 affichait 306 hp, valeur qui duplique celle du 8310 (erreur de contenu JCB); les trois champs restent donc vides plutot que de reprendre une donnee douteuse. Fenetre de fin non etablie."
+    },
+    {
+      "modele": "Fastrac 8310",
+      "annees": "2015-2021",
+      "puissance": "306 hp",
+      "poids": "",
+      "levage": "22 046 lb",
+      "source_url": "https://web.archive.org/web/20190819132223/https://www.jcb.com/en-us/products/agricultural-tractors/8310",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Page produit jcb.com/en-us archivee (2019) : 'Maximum Engine Power 306hp (228kW)', couple 966 lbf (1310 Nm), moteur Sisu 8,4 L, relevage arriere 10 000 kg converti en 22 046 lb. Poids non publie. Modele retire de la gamme NA actuelle; date d'arret non etablie."
+    },
+    {
+      "modele": "Fastrac 8330",
+      "annees": "2015-2026",
+      "puissance": "359 hp",
+      "poids": "",
+      "levage": "22 046 lb",
+      "source_url": "https://www.jcb.com/en-us/products/machines/agricultural-tractors/8000-series",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Fiche jcb.com/en-US, serie Fastrac 8000 iCON. puissance = Max power; rated power 338 hp. levage = 10 000 kg convertis (22 046 lb), valeur confirmee telle quelle en livres dans le texte JCB ('A 22,046lb rear lift capacity'). Poids non publie sur le site NA : laisse vide."
+    }
+  ]
+}

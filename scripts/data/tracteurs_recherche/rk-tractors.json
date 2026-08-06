@@ -1,0 +1,82 @@
+{
+  "marque": "RK Tractors",
+  "modeles": [
+    {
+      "modele": "RK19",
+      "annees": "2016-2022",
+      "puissance": "19 hp",
+      "poids": "1 433 lb",
+      "levage": "1 100 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk19-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Specs relevees sur la fiche officielle RK19-Specifications.png (rktractors.com), version RK19H hydrostatique. Levage = Hitch Lift Capacity 1100 lb; la fiche publie aussi 679 lb a 2 pi derriere les rotules. Moteur Yanmar 3TNV74F. Modele sorti de la gamme courante (remplace par le RK21) : encore au sitemap et aux brochures 2019, mais absent des pages produit actuelles. Rural King ne publie aucune date d'introduction ni de retrait - fenetre estimee d'apres la fenetre de marque et la brochure officielle 2019."
+    },
+    {
+      "modele": "RK21",
+      "annees": "2020-2026",
+      "puissance": "22 hp",
+      "poids": "1 472 lb",
+      "levage": "1 100 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk21-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Specs relevees sur la fiche tarifaire officielle rk21specsnew.png (prix valides au 16/04/2026), version RK21H hydrostatique. Puissance publiee 21,5 hp - arrondie a 22 hp pour respecter le format entier. Levage = Hitch Lift Capacity 1100 lb; la fiche publie aussi 679 lb a 24 po derriere les rotules. Moteur Yanmar Tier 4. Absent des brochures officielles 2019 et du sitemap : introduit apres 2019, date exacte non publiee par Rural King - borne basse prudente."
+    },
+    {
+      "modele": "RK24",
+      "annees": "2016-2026",
+      "puissance": "24 hp",
+      "poids": "1 610 lb",
+      "levage": "1 323 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk24-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Specs relevees sur la fiche officielle RK24-Specifications.png, version RK24H hydrostatique (seule configuration de la serie). Levage = Hitch Lift Capacity 1323 lb; la fiche publie aussi 1058 lb a 2 pi derriere les rotules. Moteur Yanmar 3TNV80F. Present dans les brochures officielles 2019; Rural King ne publie aucune date d'introduction NA - fenetre de marque retenue."
+    },
+    {
+      "modele": "RK25",
+      "annees": "2020-2026",
+      "puissance": "25 hp",
+      "poids": "1 881 lb",
+      "levage": "1 534 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk25-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Specs relevees sur la fiche officielle RK25SPECS.png, version RK25H hydrostatique. Puissance publiee 24,7 hp - arrondie a 25 hp pour respecter le format entier. Levage = Hitch lift capacity 1534 lb; la fiche publie aussi 1102 lb a 24 po derriere les rotules. Moteur Yanmar 3TNV80F. Absent des brochures officielles 2019 et du sitemap : introduit apres 2019, date exacte non publiee par Rural King - borne basse prudente."
+    },
+    {
+      "modele": "RK37",
+      "annees": "2017-2026",
+      "puissance": "37 hp",
+      "poids": "3 065 lb",
+      "levage": "2 646 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk37-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Specs relevees sur la fiche officielle RK37-Specifications.png. Puissance publiee 37,4 hp brute - arrondie a 37 hp. Poids = RK37S arceau (3065 lb); la fiche donne 3106 lb pour le RK37H, 3417 lb RK37SC cabine, 3450 lb RK37HC - variantes de transmission et cabine traitees comme configurations. Levage = Hitch Lift Capacity 2646 lb, identique sur les 4 configurations; la fiche publie aussi 1764 lb a 2 pi derriere les rotules. Moteur Yanmar 3TNV88-CR."
+    },
+    {
+      "modele": "RK55",
+      "annees": "2016-2026",
+      "puissance": "55 hp",
+      "poids": "3 814 lb",
+      "levage": "3 314 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk55-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Specs relevees sur la fiche officielle RK55-Specifications.png. Puissance publiee 55,1 hp brute - arrondie a 55 hp. Poids = versions arceau RK55S/RK55H (3814 lb); les versions cabine RK55SC/RK55HC pesent 4233 lb - traitees comme configurations. Levage = Hitch Lift Capacity 3314 lb, identique sur les 4 configurations; la fiche publie aussi 2945 lb a 2 pi derriere les rotules. Moteur Yanmar 4TNV86T-CR turbo."
+    },
+    {
+      "modele": "RK74",
+      "annees": "2019-2026",
+      "puissance": "74 hp",
+      "poids": "6 052 lb",
+      "levage": "5 115 lb",
+      "source_url": "https://www.rktractors.com/products-tractors-rk74-series-rk-tractors.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Seul utilitaire de la gamme et seul RK a attelage categorie 2. Specs relevees sur la fiche officielle RK74SPECIFICATIONS.png, unique configuration RK74PSC (power shuttle, cabine). Levage = Hitch Lift Capacity 5115 lb; la fiche publie aussi 3414 lb a 2 pi derriere les rotules. Moteur Deutz TCD2.9 L4 turbo - seul RK non motorise Yanmar. Brochure officielle datee 2019 (dossier /pdf/brochures/2019/)."
+    }
+  ]
+}

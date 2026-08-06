@@ -1,0 +1,93 @@
+{
+  "marque": "Bad Boy Tractors",
+  "modeles": [
+    {
+      "modele": "1022",
+      "annees": "2021-2026",
+      "puissance": "22 hp",
+      "poids": "1 433 lb",
+      "levage": "679 lb",
+      "source_url": "https://badboycountry.com/tractors/1022-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Sous-compact serie 10. Puissance publiee 21,5 hp au tableau Engine HP @ RPM, commercialisee comme 22 Horsepower - arrondie a 22 hp. Levage = 3-Point Hitch Lift Capacity a 24 po derriere le point de levage (seule convention publiee par Bad Boy sur les series 10 a 40); la capacite aux rotules n'est pas publiee. PTO 15,4 hp. Ne pas confondre avec la capacite chargeur (617 lb aux axes)."
+    },
+    {
+      "modele": "1025",
+      "annees": "2022-2026",
+      "puissance": "25 hp",
+      "poids": "1 638 lb",
+      "levage": "1 101 lb",
+      "source_url": "https://badboycountry.com/tractors/1025-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Sous-compact serie 10. Puissance publiee 24,6 hp, commercialisee comme 25 Horsepower - arrondie a 25 hp. Levage = 3-Point Hitch Lift Capacity a 24 po derriere le point de levage; capacite aux rotules non publiee. PTO 18,8 hp. Ne pas confondre avec la capacite chargeur (992 lb aux axes)."
+    },
+    {
+      "modele": "2024",
+      "annees": "2021-2023",
+      "puissance": "24 hp",
+      "poids": "1 829 lb",
+      "levage": "",
+      "source_url": "https://www.tractordata.com/farm-tractors/011/5/8/11583-bad-boy-2024.html",
+      "source_type": "aucune",
+      "confiance": "moyenne",
+      "note": "SERIE 20 DISCONTINUEE - a valider. Page fabricant morte (badboycountry.com/tractors/2024-tractor renvoie 404) et modele absent du sitemap; il ne subsiste que des annonces de concessionnaires et la fiche TractorData. Puissance et poids repris de ces sources concordantes (24 hp, 1829 lb); aucune capacite de relevage 3 points fiable - le chiffre de 1314 lb qui circule est la capacite du CHARGEUR, pas de l'attelage, donc levage laisse vide. La distribution NA de la marque est par ailleurs etablie; c'est l'existence de ce modele precis qui repose sur des sources secondaires. NOTE : la fiche marque interne mentionnait un modele 6045 disparu - aucune trace n'en a ete trouvee sur aucune source, il s'agit vraisemblablement d'une confusion avec ce modele 2024."
+    },
+    {
+      "modele": "3026",
+      "annees": "2021-2026",
+      "puissance": "25 hp",
+      "poids": "2 106 lb",
+      "levage": "974 lb",
+      "source_url": "https://badboycountry.com/tractors/3026-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Compact serie 30. Levage = 3-Point Hitch Capacity a 24 po derriere le point de levage; capacite aux rotules non publiee. PTO 18 hp. Ne pas confondre avec la capacite chargeur (1314 lb aux axes)."
+    },
+    {
+      "modele": "4025",
+      "annees": "2021-2026",
+      "puissance": "25 hp",
+      "poids": "2 970 lb",
+      "levage": "2 425 lb",
+      "source_url": "https://badboycountry.com/tractors/4025-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Compact serie 40. Levage = 3-Point Hitch Lift Capacity a 24 po derriere le point de levage; capacite aux rotules non publiee. PTO 19,1 hp. Valeur de levage identique a celle du 4035 - verifie directement dans le tableau de specs de chaque page, ce n'est pas une erreur de report. Ne pas confondre avec la capacite chargeur (2200 lb aux axes). Plateforme jumelle du Branson 2515H selon la fiche marque interne."
+    },
+    {
+      "modele": "4035",
+      "annees": "2021-2026",
+      "puissance": "35 hp",
+      "poids": "3 164 lb",
+      "levage": "2 425 lb",
+      "source_url": "https://badboycountry.com/tractors/4035-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Compact serie 40. Poids = version 4035H arceau (3164 lb); la version cabine 4035CH pese 3551 lb - traitee comme configuration. Levage = 3-Point Hitch Lift Capacity a 24 po derriere le point de levage; capacite aux rotules non publiee. PTO 29,5 hp. Ne pas confondre avec la capacite chargeur (2200 lb aux axes)."
+    },
+    {
+      "modele": "5045",
+      "annees": "2024-2026",
+      "puissance": "48 hp",
+      "poids": "3 831 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://badboycountry.com/tractors/5045-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Utilitaire compact serie 50. Puissance = Rated Engine Power 48 hp (la designation 5045 ne correspond pas a la puissance). Poids = versions arceau 5045S/H (3831 lb); les versions cabine 5045CS/CH pesent 4349 lb - traitees comme configurations. Levage = Hitch Lift Capacity aux rotules 3306 lb; Bad Boy publie aussi 2425 lb a 24 po derriere les rotules sur cette serie. PTO max 38,4 hp. Ne pas confondre avec la capacite chargeur (2700 lb)."
+    },
+    {
+      "modele": "5055",
+      "annees": "2024-2026",
+      "puissance": "55 hp",
+      "poids": "3 836 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://badboycountry.com/tractors/5055-tractor",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Utilitaire compact serie 50, plus puissant de la gamme. Poids = versions arceau 5055S/H (3836 lb); les versions cabine 5055CS/CH pesent 4349 lb - traitees comme configurations. Levage = Hitch Lift Capacity aux rotules 3306 lb; Bad Boy publie aussi 2425 lb a 24 po derriere les rotules. PTO max 44 hp. Moteur A2300T3-UTR_4 turbo. Ne pas confondre avec la capacite chargeur (2700 lb)."
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "marque": "Farmtrac",
+  "modeles": [
+    {
+      "modele": "25 HDX",
+      "annees": "2025-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://farmtracus.com/",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Affiche comme modele 2025 sur farmtracus.com, seul site se presentant comme vendeur Farmtrac aux Etats-Unis. CREDIBILITE FAIBLE : ce site donne une adresse incoherente (San Francisco 88/90 NY, seconde adresse Laguna Hills CA), un courriel gmail et un telephone en 555 - il ne peut pas etre traite comme un distributeur officiel. Aucune spec publiee. Modele retenu uniquement parce que la marque a ete incluse sur decision du client malgre l'absence de distribution NA prouvee."
+    },
+    {
+      "modele": "6050E",
+      "annees": "2025-2026",
+      "puissance": "50 hp",
+      "poids": "4 597 lb",
+      "levage": "1 764 lb",
+      "source_url": "https://farmtrac.pl/en/produkty/farmtrac-6050c/",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Affiche comme modele 2025 sur farmtracus.com (site NA non credible, voir 25 HDX). Les specs viennent de la fiche constructeur Farmtrac EUROPEENNE (farmtrac.pl), pas d'une source NA : puissance 49,6 hp a 2000 tr/min (36,53 kW) arrondie a 50 hp, poids 2085 kg sans masses et relevage arriere 800 kg convertis en livres (1 kg = 2,20462 lb, arrondi a l'entier). Moteur Farmtrac 3 cylindres. La configuration NA n'est pas necessairement identique a la configuration europeenne - a valider si un exemplaire se presente."
+    },
+    {
+      "modele": "6075E",
+      "annees": "2025-2026",
+      "puissance": "75 hp",
+      "poids": "",
+      "levage": "6 614 lb",
+      "source_url": "https://farmtrac.pl/en/produkty/farmtrac-6075nets-2/",
+      "source_type": "aucune",
+      "confiance": "moyenne",
+      "note": "Affiche comme modele 2025 sur farmtracus.com (site NA non credible, voir 25 HDX), avec moteur Escorts Kubota E4.286 TCI, 2RM ou 4RM. Puissance 75 hp a 2000 tr/min et relevage 3000 kg (converti, 1 kg = 2,20462 lb) repris des fiches Farmtrac non nord-americaines (farmtracglobal.com / farmtrac.pl); moteur CRDI 3460 cc, transmission Carraro 24+24. Poids non publie. La fiche europeenne 6075E PRO annonce 73 hp (54,43 kW), ce qui suggere plusieurs declinaisons sous le meme code - ecart non resolu."
+    },
+    {
+      "modele": "FT6050",
+      "annees": "2015-2026",
+      "puissance": "47 hp",
+      "poids": "",
+      "levage": "1 500 lb",
+      "source_url": "https://www.tractorhouse.com/listings/for-sale/farmtrac/tractors/1100",
+      "source_type": "aucune",
+      "confiance": "moyenne",
+      "note": "Seul Farmtrac trouve annonce comme NEUF chez un concessionnaire nord-americain sur TractorHouse : 47 hp, 4RM, PDF 540/540e, freins a bain d'huile, attelage cat. 1/2, capacite de relevage 1500 lb. Specs issues d'une annonce de concessionnaire, pas d'une fiche constructeur - a verifier. Poids non publie. Fenetre inconnue : bornes de la periode retenues faute de source."
+    },
+    {
+      "modele": "22",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.machinio.com/farmtrac/tractors/united-states",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele recense dans le parc nord-americain via les annonces de concessionnaires et places de marche (Machinio, TractorHouse). AUCUNE PREUVE DE VENTE NEUVE en Amerique du Nord sur la periode et aucune spec publiee par une source fiable. Entree au catalogue pour permettre de coter une machine deja detenue par un client, conformement au motif d'inclusion de la marque. Fenetre inconnue : bornes de la periode retenues faute de source."
+    },
+    {
+      "modele": "25G",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.machinio.com/farmtrac/25g/tractors",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele recense dans le parc nord-americain via les annonces de concessionnaires et places de marche. AUCUNE PREUVE DE VENTE NEUVE en Amerique du Nord sur la periode et aucune spec publiee par une source fiable. Entree au catalogue pour permettre de coter une machine deja detenue par un client. Fenetre inconnue : bornes de la periode retenues faute de source."
+    },
+    {
+      "modele": "25H",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.tractorhouse.com/listings/for-sale/farmtrac/tractors/1100",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele recense parmi les Farmtrac les plus annonces sur TractorHouse en Amerique du Nord. Vraisemblablement la variante hydrostatique du 25G - a confirmer; si c'est le cas, il s'agit d'une configuration et non d'un modele de base, et les deux entrees devront etre fusionnees. AUCUNE spec publiee par une source fiable. Fenetre inconnue : bornes de la periode retenues faute de source."
+    },
+    {
+      "modele": "26",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.machinio.com/farmtrac/tractors/united-states",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele recense dans le parc nord-americain via les annonces de concessionnaires et places de marche (apparait aussi sous le code FT26). AUCUNE PREUVE DE VENTE NEUVE en Amerique du Nord sur la periode et aucune spec publiee par une source fiable. Entree au catalogue pour permettre de coter une machine deja detenue par un client. Fenetre inconnue : bornes de la periode retenues faute de source."
+    },
+    {
+      "modele": "35",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.machinio.com/farmtrac/tractors/united-states",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele recense dans le parc nord-americain via les annonces de concessionnaires et places de marche. Issu de la gamme distribuee par Farmtrac North America (ex-Long Agribusiness) avant sa faillite de 2008 - donc probablement anterieur a la periode 2015-2026. AUCUNE spec publiee par une source fiable. Entree au catalogue pour permettre de coter une machine deja detenue par un client."
+    },
+    {
+      "modele": "45",
+      "annees": "2015-2026",
+      "puissance": "45 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.tractorhouse.com/listings/for-sale/farmtrac/45/tractors/1100",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Un des Farmtrac les plus presents dans le parc nord-americain (3 annonces sur TractorHouse). Puissance 45 hp a 2000 tr/min, moteur diesel 3 cylindres 2868 cc, injection directe - donnee reprise de fiches secondaires non nord-americaines, non verifiee sur une source constructeur; a traiter comme indicative. Poids et relevage non publies. Issu de la gamme Farmtrac North America (ex-Long Agribusiness) d'avant 2008, donc probablement anterieur a la periode."
+    },
+    {
+      "modele": "60",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.tractorhouse.com/listings/for-sale/farmtrac/tractors/1100",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Un des Farmtrac les plus presents dans le parc nord-americain sur TractorHouse. Une fiche de specifications Escorts Farmtrac 60 circule mais provient d'un importateur tanzanien, pas d'une source NA - aucune spec retenue. Issu de la gamme Farmtrac North America (ex-Long Agribusiness) d'avant 2008, donc probablement anterieur a la periode."
+    },
+    {
+      "modele": "675",
+      "annees": "2015-2026",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.machinio.com/farmtrac/tractors/united-states",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele le mieux rattache a la periode : des unites de millesime 2016 sont localisees aux Etats-Unis et un contrat de fourniture de Farmtrac 675 DT vers les Etats-Unis est mentionne pour ces annees-la. C'est l'indice le plus concret d'une entree de Farmtrac neufs en Amerique du Nord apres 2015, mais il n'a pas pu etre confirme par une source constructeur ou un communique Escorts Kubota. Aucune spec publiee par une source fiable."
+    },
+    {
+      "modele": "5345M",
+      "annees": "2015-2026",
+      "puissance": "50 hp",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.tractorhouse.com/listings/for-sale/farmtrac/tractors/1100",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele recense dans le parc nord-americain via TractorHouse : 50 hp diesel, boite 8 vitesses avec gammes Hi-Low, attelage 3 points, PDF 540 - donnees issues d'une annonce de concessionnaire, non verifiees sur une fiche constructeur. Issu de la gamme Farmtrac North America (ex-Long Agribusiness) d'avant 2008, donc probablement anterieur a la periode."
+    }
+  ]
+}

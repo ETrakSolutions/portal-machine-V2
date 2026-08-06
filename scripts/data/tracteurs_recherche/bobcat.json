@@ -1,0 +1,225 @@
+{
+  "marque": "Bobcat",
+  "modeles": [
+    {
+      "modele": "CT1021",
+      "annees": "2019-2026",
+      "puissance": "21 hp",
+      "poids": "1 521 lb",
+      "levage": "700 lb",
+      "source_url": "https://web.archive.org/web/20260731190730/https://www.bobcat.com/na/en/equipment/tractors/sub-compact-tractors/1000-platform-sub-compact-tractors/ct1021",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 1000 (sous-compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 21 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 16,3 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/sub-compact-tractors/1000-platform-sub-compact-tractors/ct1021"
+    },
+    {
+      "modele": "CT1025",
+      "annees": "2019-2026",
+      "puissance": "25 hp",
+      "poids": "1 521 lb",
+      "levage": "700 lb",
+      "source_url": "https://web.archive.org/web/20260731052233/https://www.bobcat.com/na/en/equipment/tractors/sub-compact-tractors/1000-platform-sub-compact-tractors/ct1025",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 1000 (sous-compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 24,5 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 18,8 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/sub-compact-tractors/1000-platform-sub-compact-tractors/ct1025"
+    },
+    {
+      "modele": "CT2025",
+      "annees": "2019-2026",
+      "puissance": "25 hp",
+      "poids": "2 634 lb",
+      "levage": "1 631 lb",
+      "source_url": "https://web.archive.org/web/20260731174440/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2025",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 2000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 24,5 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 21,8 (HST) / 22,2 (manuelle) hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). La fiche publie deux colonnes de configuration (hydrostatique 3 gammes et manuelle 9x3) : puissance, poids et levage sont identiques, seule la PDF differe. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2025"
+    },
+    {
+      "modele": "CT2035",
+      "annees": "2019-2026",
+      "puissance": "35 hp",
+      "poids": "3 005 lb",
+      "levage": "1 631 lb",
+      "source_url": "https://web.archive.org/web/20260731174650/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2035",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 2000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 34,9 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 29,4 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2035"
+    },
+    {
+      "modele": "CT2040",
+      "annees": "2019-2026",
+      "puissance": "40 hp",
+      "poids": "3 005 lb",
+      "levage": "1 631 lb",
+      "source_url": "https://web.archive.org/web/20260701070532/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2040",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 2000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 39,6 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 31,9 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-01 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2040"
+    },
+    {
+      "modele": "CT2535",
+      "annees": "2019-2026",
+      "puissance": "35 hp",
+      "poids": "3 585 lb",
+      "levage": "1 631 lb",
+      "source_url": "https://web.archive.org/web/20260731174332/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2535",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 2000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 34,9 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 29,4 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2535"
+    },
+    {
+      "modele": "CT2540",
+      "annees": "2019-2026",
+      "puissance": "40 hp",
+      "poids": "3 585 lb",
+      "levage": "1 631 lb",
+      "source_url": "https://web.archive.org/web/20260731174330/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2540",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 2000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 39,6 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 31,9 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). ECART SUR LA FICHE BOBCAT : le bandeau 'Horsepower' affiche 37,6 hp alors que le bloc moteur 'Gross HP' affiche 39,6 hp sur la meme page. La valeur retenue est le Gross HP (39,6 hp), conforme a la definition puissance moteur brute. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/2000-platform-compact-tractors/ct2540"
+    },
+    {
+      "modele": "CT4045",
+      "annees": "2019-2026",
+      "puissance": "45 hp",
+      "poids": "3 745 lb",
+      "levage": "2 716 lb",
+      "source_url": "https://web.archive.org/web/20260731181738/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4045",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 4000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 44,9 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 32,8 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4045"
+    },
+    {
+      "modele": "CT4050",
+      "annees": "2019-2026",
+      "puissance": "50 hp",
+      "poids": "3 745 lb",
+      "levage": "2 716 lb",
+      "source_url": "https://web.archive.org/web/20260731181630/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4050",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 4000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 50,3 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 45,6 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4050"
+    },
+    {
+      "modele": "CT4055",
+      "annees": "2019-2026",
+      "puissance": "50 hp",
+      "poids": "3 745 lb",
+      "levage": "2 716 lb",
+      "source_url": "https://web.archive.org/web/20260530190422/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4055",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 4000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 50,3 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 49,6 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). SEUL MODELE RETIRE DE LA GAMME : encore liste sur la page plateforme 4000 le 2 decembre 2025, absent de cette meme page et de la page compact-tractors le 31 juillet 2026, et bascule dans la section 'Non-Current Models' de bobcat.com. Fin de commercialisation situee en 2026. Specs relevees sur la derniere capture exploitable de sa fiche produit (30 mai 2026). Fiche produit bobcat.com lue via la capture Wayback du 2026-05-30 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4055"
+    },
+    {
+      "modele": "CT4058",
+      "annees": "2019-2026",
+      "puissance": "58 hp",
+      "poids": "3 745 lb",
+      "levage": "2 716 lb",
+      "source_url": "https://web.archive.org/web/20260701070814/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4058",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 4000 (compact). Poste operateur : ROPS. Puissance = 'Gross HP' publiee par Bobcat : 57,7 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 45,1 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-01 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4058"
+    },
+    {
+      "modele": "CT4545",
+      "annees": "2025-2026",
+      "puissance": "45 hp",
+      "poids": "4 300 lb",
+      "levage": "2 716 lb",
+      "source_url": "https://web.archive.org/web/20260701070952/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4545",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 4000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 44,9 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 32,8 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Absent de la page plateforme 4000 de bobcat.com au 3 avril 2025, present au 31 mai 2025 ; premiere capture de sa fiche produit le 8 mai 2025. Lancement 2025 borne par ces deux captures. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-01 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4545"
+    },
+    {
+      "modele": "CT4558",
+      "annees": "2025-2026",
+      "puissance": "58 hp",
+      "poids": "4 300 lb",
+      "levage": "2 716 lb",
+      "source_url": "https://web.archive.org/web/20260731175207/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4558",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 4000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 57,7 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 45,1 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Absent de la page plateforme 4000 de bobcat.com au 3 avril 2025, present au 31 mai 2025 ; premiere capture de sa fiche produit le 8 mai 2025. Lancement 2025 borne par ces deux captures. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/4000-platform-compact-tractors/ct4558"
+    },
+    {
+      "modele": "CT5545",
+      "annees": "2019-2026",
+      "puissance": "45 hp",
+      "poids": "4 685 lb",
+      "levage": "3 177 lb",
+      "source_url": "https://web.archive.org/web/20260731175520/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5545",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 5000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 45 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 33,9 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5545"
+    },
+    {
+      "modele": "CT5550",
+      "annees": "2019-2026",
+      "puissance": "50 hp",
+      "poids": "4 685 lb",
+      "levage": "3 177 lb",
+      "source_url": "https://web.archive.org/web/20260731175732/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5550",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 5000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 50 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 38,9 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5550"
+    },
+    {
+      "modele": "CT5555",
+      "annees": "2019-2026",
+      "puissance": "55 hp",
+      "poids": "4 685 lb",
+      "levage": "3 177 lb",
+      "source_url": "https://web.archive.org/web/20260701072642/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5555",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 5000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 55 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 43,1 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-07-01 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5555"
+    },
+    {
+      "modele": "CT5558",
+      "annees": "2019-2026",
+      "puissance": "58 hp",
+      "poids": "4 685 lb",
+      "levage": "3 177 lb",
+      "source_url": "https://web.archive.org/web/20260630224821/https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5558",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme 5000 (compact). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 57,7 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 48,3 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. Presence sur bobcat.com documentee des octobre-novembre 2019 : le modele figure dans la navigation de la page heritee bobcat.com/en/tractors/models/ct1021/specs-options capturee le 23 octobre 2019, qui liste les 15 modeles du lancement (CT1021, CT1025, CT2025, CT2035, CT2040, CT2535, CT2540, CT4045, CT4050, CT4055, CT4058, CT5545, CT5550, CT5555, CT5558). Fiche produit bobcat.com lue via la capture Wayback du 2026-06-30 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/compact-tractors/5000-platform-compact-tractors/ct5558"
+    },
+    {
+      "modele": "UT6066",
+      "annees": "2024-2026",
+      "puissance": "66 hp",
+      "poids": "5 440 lb",
+      "levage": "3 594 lb",
+      "source_url": "https://web.archive.org/web/20260731180912/https://www.bobcat.com/na/en/equipment/tractors/utility-tractors/ut6066",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme serie UT (utilitaire). Poste operateur : poste ouvert (ROPS). Puissance = 'Gross HP' publiee par Bobcat : 66,4 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 57,4 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. La section utility-tractors de bobcat.com et les trois fiches UT n'apparaissent dans l'archive qu'a partir du 13 juin 2024 (premiere capture). Un lancement fin 2023 n'est pas exclu : la date retenue est celle de la premiere trace documentee. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/utility-tractors/ut6066"
+    },
+    {
+      "modele": "UT6566",
+      "annees": "2024-2026",
+      "puissance": "66 hp",
+      "poids": "5 830 lb",
+      "levage": "3 594 lb",
+      "source_url": "https://web.archive.org/web/20260731180910/https://www.bobcat.com/na/en/equipment/tractors/utility-tractors/ut6566",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme serie UT (utilitaire). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 66,4 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 57,4 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. La section utility-tractors de bobcat.com et les trois fiches UT n'apparaissent dans l'archive qu'a partir du 13 juin 2024 (premiere capture). Un lancement fin 2023 n'est pas exclu : la date retenue est celle de la premiere trace documentee. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/utility-tractors/ut6566"
+    },
+    {
+      "modele": "UT6573",
+      "annees": "2024-2026",
+      "puissance": "73 hp",
+      "poids": "5 960 lb",
+      "levage": "3 898 lb",
+      "source_url": "https://web.archive.org/web/20260731111049/https://www.bobcat.com/na/en/equipment/tractors/utility-tractors/ut6573",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Plateforme serie UT (utilitaire). Poste operateur : cabine. Puissance = 'Gross HP' publiee par Bobcat : 73,1 hp, arrondie a l'entier. Puissance a la PDF arriere publiee : 62,1 hp. Levage = relevage 3 points arriere, convention Bobcat 'Lift Capacity at 24\" Behind Lift Point' (a 24 po derriere le point de relevage). REBADGE : tracteur construit par Daedong/Kioti pour Bobcat ; le modele Kioti equivalent n'a pas ete documente dans cette collecte et n'est donc pas indique. La section utility-tractors de bobcat.com et les trois fiches UT n'apparaissent dans l'archive qu'a partir du 13 juin 2024 (premiere capture). Un lancement fin 2023 n'est pas exclu : la date retenue est celle de la premiere trace documentee. Fiche produit bobcat.com lue via la capture Wayback du 2026-07-31 (bobcat.com bloque l'acces automatise par captcha). URL canonique : https://www.bobcat.com/na/en/equipment/tractors/utility-tractors/ut6573"
+    }
+  ]
+}

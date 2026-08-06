@@ -1,0 +1,617 @@
+{
+  "meta": {
+    "sujet": "Marques de tracteurs agricoles vendus neufs en Amerique du Nord (US + Canada), 2015-2026",
+    "date_recherche": "2026-08-05",
+    "perimetre": "Tracteurs agricoles sous-compacts, compacts, utilitaires, row-crop, articules, chenilles et specialises (verger/vigne). Exclus : tondeuses autoportees lawn & garden, VTT/UTV, chargeuses et retrocaveuses de construction, pulverisateurs automoteurs, motoculteurs 2 roues.",
+    "regle_de_comptage": "Un modele = une designation de modele de base distincte (ex. Steiger 620 et Steiger 620 Quadtrac comptent comme un seul modele de base; cabine vs ROPS = configuration, pas modele). Au niveau configuration, les totaux seraient environ 2x plus eleves.",
+    "total_marques_retenues": 27,
+    "total_modeles_estime": 1460,
+    "fourchette_total_modeles": "1300-1600",
+    "total_modeles_lineup_courant_2026": 752,
+    "note_fiabilite": "Les lineups courants sont comptes sur les sites constructeurs NA (sitemaps XML, configurateurs, fiches produits officielles). Les modeles historiques 2015-2020 sont estimes : web.archive.org etait bloque durant la recherche. Aucun agregateur (TractorData, MachineryTrader, LECTURA) n'a servi de preuve de distribution NA.",
+    "maj": "2026-08-06 : Farmtrac ajoutee et MF serie 3 specialisee incluse, sur decision de Jacquot."
+  },
+  "marques": [
+    {
+      "nom": "John Deere",
+      "groupe": "Deere & Company",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 235,
+      "nb_modeles_courants": 127,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire",
+        "row-crop",
+        "articule",
+        "chenille",
+        "specialise"
+      ],
+      "source_url": "https://www.deere.com/en/tractors/",
+      "confiance": "haute",
+      "note": "Gamme la plus large du marche NA : series 1/2/3/4 (sous-compact et compact), 5E/5M, 6E/6M/6R, 7R, 8R/8RT/8RX, 9R/9RT/9RX, plus les specialises 5EN/5EL/5MH/5ML/6EH/6MH (verger, vigne, high-crop). Serie 1 en transition : 1023E/1025R et les nouveaux 1E-23/1M-25/1R-25 coexistent sur le site. Multiplicateur historique 1,85x du au re-etagement complet des series 6/7/8/9 pendant la periode (6D, ancien 6M 6105M-6195M, ancien 6R 6105R-6250R, 9370R-9620R, 8245R-8400R, 7200R-7310R tous disparus)."
+    },
+    {
+      "nom": "Case IH",
+      "groupe": "CNH Industrial",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 145,
+      "nb_modeles_courants": 89,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire",
+        "row-crop",
+        "articule",
+        "chenille",
+        "specialise"
+      ],
+      "source_url": "https://www.caseih.com/en-us/unitedstates/products/tractors",
+      "confiance": "haute",
+      "note": "NE PAS confondre avec Case Construction (chantier). Series NA : Farmall 25SC, Farmall A/C/M/100A Pro, Farmall N/V/CL (specialises vigne-verger-bas profil), Vestrum, Maxxum, Puma / AFS Connect Puma, Optum, Magnum (+ Magnum Rowtrac), Steiger (+ Quadtrac, Rowtrac). Farmall a lui seul = 48 modeles courants. Le sitemap Case IH expose encore l'ancienne generation Steiger 370-620, ce qui confirme le lineup articule pre-2024 par la source constructeur."
+    },
+    {
+      "nom": "New Holland Agriculture",
+      "groupe": "CNH Industrial",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 150,
+      "nb_modeles_courants": 82,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire",
+        "row-crop",
+        "articule",
+        "chenille",
+        "specialise"
+      ],
+      "source_url": "https://agriculture.newholland.com/en-us/northamerica/products/tractors-telehandlers",
+      "confiance": "haute",
+      "note": "NE PAS confondre avec New Holland Construction. Series NA : Workmaster 25S / Compact / utilitaire / Plus, Boomer, PowerStar, T5, TS6 Series II, T6 (+ T6.180 Methane Power), T7, Genesis T8 (+ SmartTrax), T9 (+ SmartTrax), et l'offre specialisee la plus profonde du marche NA (~22 modeles : T4 F/V/N, T4F S, T3F, et la chenillette TK4 que ni Deere ni Case IH n'offrent en NA). Reset complet de la ligne Boomer vers 2016 et remplacement des T4 utilitaires par Workmaster/PowerStar."
+    },
+    {
+      "nom": "Massey Ferguson",
+      "groupe": "AGCO",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 145,
+      "nb_modeles_courants": 62,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire",
+        "row-crop",
+        "specialise"
+      ],
+      "source_url": "https://www.masseyferguson.com/en_us/tractors.html",
+      "confiance": "haute",
+      "note": "14 series courantes : 1GC, 1E/2E, 1M/2M, 2600H, 4700 Global, 3 Series (specialise), 5700/6700 Global, 5M, 5S, 6S, 7S, 8S, 9S. PAS de tracteur a chenilles ni d'articule : le plafond NA est le 9S.425 (425 hp, chassis fixe). Le churn generationnel du haut de gamme domine le compte historique : 7700 (9) puis 7700S (7) puis 7S (5) = 21 designations pour un meme creneau; 8700 (5) puis 8700S (6) puis 8S (6) = 17. Les MF 2600H sont fabriques par TAFE (Inde), les GC/1500 par Iseki. La serie 3 specialisee (7 modeles) est en zone grise, voir a_valider."
+    },
+    {
+      "nom": "Fendt",
+      "groupe": "AGCO",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 48,
+      "nb_modeles_courants": 36,
+      "segments": [
+        "utilitaire",
+        "row-crop",
+        "chenille",
+        "specialise"
+      ],
+      "source_url": "https://www.fendt.com/us/tractors",
+      "confiance": "haute",
+      "note": "PAS de sous-compact ni de compact : le plus petit Fendt en NA fait 94 hp. Pas d'articule. Series NA verifiees via le configurateur US Build & Quote : 200 Vario Gen3 (+ variantes V/F/P verger-vigne), 300 Vario Gen4 (bien vendu en NA depuis 2021, contrairement a ce qu'on croit souvent), 500 Vario, 600 Vario (arrive sept. 2025), 700 Vario Gen7.1, 900 Vario, 900 Vario MT (chenille), 1000 Vario Gen4, 1100 Vario MT (chenille). Le 800 Vario a ete RETIRE du marche NA debut 2024 (822/824/826/828 vendus 2015 a oct. 2023); le 800 Gen5 affiche aujourd'hui sur fendt.com/us est du contenu global (specs metriques, pas de brochure NA, pas de configurateur). 48 designations distinctes, ou 70 si on compte chaque changement de generation comme un produit neuf."
+    },
+    {
+      "nom": "Challenger",
+      "groupe": "AGCO",
+      "annees_na": "2015-2023",
+      "nb_modeles_estime": 70,
+      "nb_modeles_courants": 0,
+      "segments": [
+        "utilitaire",
+        "row-crop",
+        "articule",
+        "chenille"
+      ],
+      "source_url": "https://news.agcocorp.com/news/agco-introduces-all-new-challenger-mt800-series-track-tractors",
+      "confiance": "haute",
+      "note": "MARQUE DISPARUE PENDANT LA PERIODE - a traiter comme historique. Contrairement a l'Europe (bascule en livree Fendt des 2017), AGCO a maintenu Challenger en NA jusqu'a l'annee-modele 2023. Il n'y a JAMAIS eu d'evenement de rebranding en NA : Fendt MT et Challenger MT ont coexiste comme jumeaux mecaniques d'environ MY2021 a MY2023, puis Challenger s'est eteint sans communique. Jalons : dernier lancement Challenger = serie MT800 (MT851/856/862/867) annoncee le 17 dec. 2020 pour 2021; commandes retail uniquement des mai 2021; challenger-ag.us redirige vers applylikeapro.com des fev. 2022; derniere mention dans le 10-K FY2021 (depose 25 fev. 2022), zero mention dans le 10-K FY2022. Dernier lineup MY2023 = 7 modeles (MT738/740/743 + MT851/856/862/867). Series 2015-2026 : MT400 (10), MT500 (18), MT600 (10), MT700 (8), MT800 (13), MT900 articule (7), 1000 Series (4, jumeau du Fendt 1000). 40 modeles si on ne compte que les generations E et posterieures."
+    },
+    {
+      "nom": "Kubota",
+      "groupe": "Kubota Corporation (Kubota Tractor Corporation, US)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 85,
+      "nb_modeles_courants": 45,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire",
+        "specialise"
+      ],
+      "source_url": "https://www.kubotausa.com/equipment-series/tractors",
+      "confiance": "haute",
+      "note": "Tracteurs agricoles uniquement - NE PAS confondre avec les excavatrices KX/U, les chargeuses SVL ni les RTV. Series courantes : BX80 (sous-compact), B01, LX, L standard (L02), Grand L70 (nouveau MY2026, remplace le L60), MX, M60, M4, M5, M6, M6S, M7 Gen4, M8, plus les etroits M5N/M6H/M5L/M6L. Le M8 (M8-181/M8-201) est construit par Buhler Versatile pour Kubota. Le M7 a connu QUATRE generations sur la periode (131/151/171, 132/152/172, 133/173, 134/154/174). Les L3200/L3800/L4600 se sont arretes en 2014, juste hors periode. Fourchette defendable 75-90 selon le traitement du reliquat 2015-2016. Les TLB (BX23S, B26, L47, M62) ajoutent 4-8 modeles si on les inclut."
+    },
+    {
+      "nom": "Kioti",
+      "groupe": "Daedong Corporation (Kioti Tractor Division, Wendell NC)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 60,
+      "nb_modeles_courants": 35,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.kioti.com/tractors/",
+      "confiance": "haute",
+      "note": "Huit series courantes (et non six) : CS, CX, CK, DK, NS, NX, RX, HX. La serie CK40 anniversaire lancee en mai 2026 s'ajoute a la CK20 sans la remplacer, d'ou six modeles CK simultanes. Exclure les UTV K9/Mechron et les tondeuses zero-turn. Fourchette 55-69 selon l'inclusion du reliquat DK/DS 2015-2019 et de la serie PX (non presente sur le site NA actuel). Kioti/Daedong fabrique aussi les tracteurs compacts Bobcat CT, comptes separement."
+    },
+    {
+      "nom": "Mahindra",
+      "groupe": "Mahindra & Mahindra (Mahindra USA, Houston TX)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 77,
+      "nb_modeles_courants": 14,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.mahindrausa.com/tractors",
+      "confiance": "haute",
+      "note": "Ecart courant/historique le plus marque du panel : 14 modeles aujourd'hui contre 77 sur la periode. La gamme a ete massivement rationalisee. Les series eMax et Max N'EXISTENT PLUS - remplacees en 2024 par les series 1100 et 2100. Il n'y a PAS de serie XTD en NA (Inde seulement) et PAS de gamme de tracteurs Oja (OJA n'est qu'une marque logicielle sur les 1100/2100). Lineup courant : 1100, 2100, 1600, 4500, 5100, 6000. Historique : eMax/1100 (10), Max/2100 (6), 16 Series (4), 1500/1600 (6), 2500/2600 (10), 3500/3600 (5), 4000 (5), 4500 (3), 5000 (4), 5500/5100 (5), 6000 (6), 7000 (3), 8000 (3), 9000 (2), mForce/mPower (5). Exclure le Roxor (UTV)."
+    },
+    {
+      "nom": "LS Tractor",
+      "groupe": "LS Mtron (LS Tractor USA, Battleboro NC)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 59,
+      "nb_modeles_courants": 20,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.lstractorusa.com/tractors",
+      "confiance": "haute",
+      "note": "Le compte historique le plus solide du panel : LS publie sa propre liste de manuels de modeles discontinues. 26 modeles de base ere MT + 33 modeles legacy pre-MT vendus neufs de 2015 a ~2022 (XR 10, XG 5, XU 5, XP 3, P 3, R 2, G 2, U 2, J 1). Series courantes : MT1, XJ, MT2, MT3, MT4 (63/73 hp), MT5, MT7 - noter que MT4 et MT3E sont souvent oublies. Au niveau SKU (suffixes H/C/E/PS/PCT) le cumul monte a 115-125."
+    },
+    {
+      "nom": "TYM",
+      "groupe": "TYM Corporation (TYM North America, Rome GA)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 51,
+      "nb_modeles_courants": 34,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.tym.world/en-us/tractors",
+      "confiance": "haute",
+      "note": "PIEGE DE COMPTAGE : TYM est en pleine renomenclature et affiche cote a cote les anciens et les nouveaux codes du meme tracteur (T25 = T2025P, T654 = T5068, T754 = T5075, T1104 = T115 = T6115). Les 34 modeles de base ne representent qu'environ 30 machines uniques. Cumul 51 nomenclatures = 11 generation x3, 18 generation x4, 11 codes post-fusion, 11 anciens designs Branson recodes TYM. Il n'y a PAS de serie K en NA (Coree seulement). TYM fabrique en marque blanche pour Bad Boy Tractors, et vraisemblablement pour RK Tractors."
+    },
+    {
+      "nom": "Branson",
+      "groupe": "Kukje Machinery / TYM Corporation",
+      "annees_na": "2015-2022",
+      "nb_modeles_estime": 32,
+      "nb_modeles_courants": 0,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.newswire.com/news/tym-usa-and-branson-tractors-merge-to-become-tym-north-america-21933182",
+      "confiance": "haute",
+      "note": "MARQUE DISPARUE PENDANT LA PERIODE. Fusion TYM USA + Branson Tractors effective le 1er janvier 2023, siege NA a Rome GA, marque Branson entierement retiree. 32 nomenclatures de base (62 SKU avec suffixes H/R/C/CH), du 1905 au 8050. ATTENTION : 9 de ces designs ont migre dans le catalogue TYM sous de nouveaux codes, donc seulement 23 sont exclusivement Branson. L'union TYM+Branson dedoublonnee = 74 nomenclatures / ~69 machines uniques (et non 83)."
+    },
+    {
+      "nom": "Yanmar",
+      "groupe": "Yanmar Holdings (Yanmar America, Adairsville GA)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 26,
+      "nb_modeles_courants": 14,
+      "segments": [
+        "sous-compact",
+        "compact"
+      ],
+      "source_url": "https://www.yanmartractor.com/tractors/",
+      "confiance": "haute",
+      "note": "Yanmar N'A PAS quitte le marche NA des tracteurs compacts - c'est une idee recue. Le site est actif avec configurateur et de NOUVELLES series SM (SM240/SM240H/SM475) et YM2 (YM225/YM232/YM238) : expansion, pas retrait. La confusion vient du cote construction (fusion Yanmar CE + ASV en Yanmar Compact Equipment North America). Series courantes : SA, YT2, YM2, YT3, YM3, SM (21 a 59 hp). Cumul 26 incluant la ligne legacy derivee de Cub Cadet encore vendue apres 2015 (Ex450, Ex3200, Lx410/450/490/4100/4500/4900, Sx3100)."
+    },
+    {
+      "nom": "Bobcat",
+      "groupe": "Doosan Bobcat (tracteurs construits par Daedong/Kioti)",
+      "annees_na": "2019-2026",
+      "nb_modeles_estime": 17,
+      "nb_modeles_courants": 16,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.bobcat.com/na/en/equipment/compact-tractors",
+      "confiance": "haute",
+      "note": "PRESENCE PARTIELLE : Bobcat n'a vendu AUCUN tracteur neuf en NA de 2014 a 2018. Sortie du marche apres la generation CT120/CT225/CT335/CT445 (2008-2013), re-entree en 2019 avec la ligne construite par Daedong/Kioti. Le compte 2015-2026 egale donc le compte 2019-2026. Plateformes 1000, 2000, 4000, 5000 (il n'y a PAS de plateforme 3000 ni de serie CT2500 : les modeles en 25xx sont les versions cabine de la plateforme 2000). Seul CT4055 discontinue (remplace par CT4058). CAS DE REBADGE : les 17 modeles Bobcat dupliquent largement des plateformes Kioti deja comptees."
+    },
+    {
+      "nom": "Versatile",
+      "groupe": "Buhler Versatile Inc. (Winnipeg) - ASKO Holding / Basak Traktor depuis dec. 2023 (ex-Rostselmash)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 36,
+      "nb_modeles_courants": 19,
+      "segments": [
+        "utilitaire",
+        "row-crop",
+        "articule",
+        "chenille"
+      ],
+      "source_url": "https://www.versatile-ag.com/NA/pages/product_4wd.php",
+      "confiance": "haute",
+      "note": "Seul constructeur de tracteurs agricoles canadien du panel. Lineup courant : 4WD articule 405/430/460/530/580/620 (400-616 hp), DeltaTrack 530DT/580DT/620DT (articule chenille), row-crop MFWD 275/295/315/335/365, Nemesis 175/195/210/235/255. Pas de compact ni de specialise. Versatile publie ses fiches techniques archivees, ce qui rend le cumul 2015-2026 (34-39) plus fiable que la moyenne. Changement de proprietaire pendant la periode : Rostselmash (russe) a cede 97% de Buhler Industries a ASKO Holding / Basak Traktor (Turquie) en dec. 2023, dans le contexte des sanctions. Versatile construit aussi le Kubota M8."
+    },
+    {
+      "nom": "McCormick",
+      "groupe": "Argo Tractors (McCormick North America, Duluth GA)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 65,
+      "nb_modeles_courants": 42,
+      "segments": [
+        "compact",
+        "utilitaire",
+        "row-crop",
+        "specialise",
+        "chenille"
+      ],
+      "source_url": "https://www.mccormick-tractors.com/us/en/products.html",
+      "confiance": "moyenne",
+      "note": "Distribution NA confirmee US ET Canada : le locator dealers.argotractors.com/us/mccormick renvoie plus de 350 concessionnaires, dont QC, ON, MB, SK, AB, BC. 12 series / ~42 configurations hp de 24 a 313 hp : X1, X4, X4F CAB, X4F PLAT, X4T (chenille), X5, X6, X6.6, X7 SWB, X7.6 P6-Drive, X7.6 VT-Drive, X8 VT-Drive. Pas d'articule. Le cumul 2015-2026 est une fourchette large (60-90) : les generations anterieures ne sont pas sourcables sur le site constructeur. Argo opere une usine d'assemblage SKD a Duluth GA."
+    },
+    {
+      "nom": "Deutz-Fahr",
+      "groupe": "SDF Group (distribue en NA par PFG America LLC, Dacula GA)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 28,
+      "nb_modeles_courants": 21,
+      "segments": [
+        "compact",
+        "utilitaire",
+        "row-crop",
+        "specialise"
+      ],
+      "source_url": "https://deutz-fahramerica.com/tractors/",
+      "confiance": "moyenne",
+      "note": "ETATS-UNIS SEULEMENT : le locator PFG America affiche 111 concessionnaires sur ~30-35 etats et ZERO concessionnaire canadien. Reseau en forte croissance (Linder Industrial Machinery a ajoute 22 points de vente dans le Sud-Est au 1er avril 2024). 21 designations distinctes / 25 avec variantes de transmission, sur 12 series : 3060, 4065/4080, 5080D/5100D, 5105/5125, 5080G TB/5115G TB, 5080DF/DV + 5115DF/DV (etroits verger-vigne), 80F, 6135C, 6155/6175/6215 (std + TTV), 7250 TTV, 8280 TTV, 9340 TTV. Plafond NA a 340 hp. Pas d'articule ni de chenille. La date de reprise de la distribution par PFG America n'a pas pu etre sourcee - d'ou la confiance moyenne sur les annees 2015-2019."
+    },
+    {
+      "nom": "CLAAS",
+      "groupe": "CLAAS KGaA (CLAAS of America, Omaha NE)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 20,
+      "nb_modeles_courants": 13,
+      "segments": [
+        "utilitaire",
+        "row-crop",
+        "chenille"
+      ],
+      "source_url": "https://www.claas.com/en-us/agricultural-machinery/tractors/series",
+      "confiance": "haute",
+      "note": "Les tracteurs CLAAS SONT toujours vendus neufs en NA, US et Canada - la page promotionnelle US en cours s'intitule 'CLAAS Early Action 2027' et nomme explicitement AXION et ARION. Lineup verifie : ARION 630/650/660 CMATIC (165-205 hp), AXION 820/840/860/880 (215-295), AXION 930/960 + 930 TT/960 TT Terra Trac (355-445, chenille), XERION 4500/5000 TRAC et TRAC VC (462-530), XERION 12.590/12.650 (585-653). Ce qui a change : retrecissement par le bas, les pages ARION 400 et ARION 500 renvoient 404 sur le site US. La DATE de ce retrait n'a pas pu etre etablie (Wayback bloque) - voir a_valider. Le XERION est offert en NA depuis 2015. Note : le XERION n'est pas un articule au sens Steiger (chassis rigide, 4 roues egales)."
+    },
+    {
+      "nom": "JCB",
+      "groupe": "J.C. Bamford Excavators Ltd (JCB North America)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 10,
+      "nb_modeles_courants": 4,
+      "segments": [
+        "utilitaire",
+        "row-crop"
+      ],
+      "source_url": "https://www.jcb.com/en-US/products/machines/agricultural-tractors/4000-series/",
+      "confiance": "moyenne",
+      "note": "Gamme Fastrac uniquement : tracteurs a chassis suspendu et grande vitesse routiere (jusqu'a 43 mph, freins ABS norme camion). 4 modeles courants : Fastrac 4160, 4190, 4220 (serie 4000) et 8330 (serie 8000), tous en version iCON. Presence confirmee US et Canada (pages en-US et en-CA). Le cumul 2015-2026 (~10) inclut les generations pre-iCON et la serie 3000 (3230 Xtra) offerte plus tot dans la periode - composition pre-2026 non verifiee, d'ou la confiance moyenne. NE PAS confondre avec les retrocaveuses et telescopiques JCB de construction."
+    },
+    {
+      "nom": "Zetor",
+      "groupe": "Zetor Tractors a.s. (Zetor North America, Jacksonville FL)",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 25,
+      "nb_modeles_courants": 20,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.zetorna.com/",
+      "confiance": "moyenne",
+      "note": "Toujours actif en 2026, contrairement a l'hypothese d'un retrait : zetorna.com est vivant (copyright 2020-2026), zetor.com geo-sert une page 'Zetor North America', et le directeur des ventes NA Mike Boucher etait cite dans une annonce de nouveaux modeles en nov. 2025. Plus de 27 000 Zetor vendus aux Etats-Unis en pres de 40 ans. ~19-20 SKU sur 8-9 plateformes : famille M22/M25 sous-compacte (7 SKU), M25HTL/M40SS/M40HTC, M60SS/M60HTC, M70PSC, M88SSC, serie P (P100 SS, P100-P130 PS), serie HD 148 hp. SIGNAL : la ligne M22-M60 sort completement de la gamme historique de Zetor Brno et aucune origine moteur n'est declaree - il s'agit tres probablement de machines OEM rebadgees par Zetor NA. Le roster de concessionnaires est charge en JS et n'a pas pu etre denombre."
+    },
+    {
+      "nom": "Solis",
+      "groupe": "International Tractors Ltd / Sonalika (International Tractors USA Corporation, Rome GA)",
+      "annees_na": "~2021-2026",
+      "nb_modeles_estime": 12,
+      "nb_modeles_courants": 8,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://solistractorusa.com/",
+      "confiance": "moyenne",
+      "note": "Presence confirmee US ET Canada, les deux operees par International Tractors USA Corporation (Rome, GA). US : 3 plateformes / 8 configurations (S24 mecanique + shuttle, H24, H24+, H24+ Cab, S75 ROPS, S75 Cab). Canada (solistractor.ca) : H24, H24 Cabin, S24, S24 Shuttle XL, plus C35/C50/C70 et l'electrique SV-24 annonces 'coming soon'. ATTENTION : les modeles S20/S26/H26/S50/N75 n'apparaissent QUE sur le site global solisworld.com, pas sur les pages NA - ne pas les inscrire au catalogue NA. L'ANNEE DE LANCEMENT NA n'est declaree sur aucune page officielle : ~2021 est une estimation, voir a_valider. 73 concessionnaires recenses."
+    },
+    {
+      "nom": "RK Tractors",
+      "groupe": "Rural King (marque maison, tracteurs construits en Coree - TYM tres probable)",
+      "annees_na": "~2016-2026",
+      "nb_modeles_estime": 18,
+      "nb_modeles_courants": 18,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://www.ruralking.com/rktractors",
+      "confiance": "moyenne",
+      "note": "ETATS-UNIS SEULEMENT (aucun magasin Rural King au Canada). Marque de detaillant, pas de constructeur : vendue en magasin Rural King, pas via un reseau de concessionnaires agricoles. 5 familles / 18 variantes : RK21H, RK24H, RK25H, RK37 (S/H/SC/HC), RK55 (S/H/SC/HC). Configurateur actif et garantie 2025 en ligne. CAS DE REBADGE : la construction par TYM est largement rapportee mais N'EST CONFIRMEE PAR AUCUNE PAGE OFFICIELLE - Rural King ne mentionne que les moteurs Yanmar. Annee de lancement non documentee officiellement."
+    },
+    {
+      "nom": "Bad Boy Tractors",
+      "groupe": "Bad Boy Mowers (tracteurs construits par TYM/Branson)",
+      "annees_na": "~2019-2026",
+      "nb_modeles_estime": 10,
+      "nb_modeles_courants": 7,
+      "segments": [
+        "sous-compact",
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "https://badboycountry.com/tractors",
+      "confiance": "moyenne",
+      "note": "Toujours offert en 2026 : la categorie Tracteurs est dans la nav principale, 7 URL modeles vivantes au sitemap, copyright 2026, financement actif, aucun avis de liquidation. 7 modeles / 10 configurations : 1022, 1025, 3026, 4025, 4035 (H/CH), 5045 (ROPS/Cab), 5055 (ROPS/Cab). Le 6045 a disparu (404, absent du sitemap). CAS DE REBADGE : le constructeur n'est pas divulgue officiellement, mais le Branson 2515H et le Bad Boy 4025 sont la meme machine - les modeles Bad Boy dupliquent des plateformes TYM/Branson deja comptees. NE PAS confondre avec les tondeuses zero-turn Bad Boy Mowers, hors perimetre."
+    },
+    {
+      "nom": "Antonio Carraro",
+      "groupe": "Antonio Carraro SpA (distribue en NA par MGH Equipment LLC, Okanogan WA)",
+      "annees_na": "2018-2026 (confirme; 2015-2017 non verifie)",
+      "nb_modeles_estime": 28,
+      "nb_modeles_courants": 23,
+      "segments": [
+        "specialise",
+        "compact",
+        "utilitaire",
+        "chenille"
+      ],
+      "source_url": "https://antoniocarraro.us/dealers/",
+      "confiance": "moyenne",
+      "note": "Specialiste du verger, de la vigne et des terrains en pente - segment ou ni Deere ni CNH n'offrent d'equivalent isodiametrique. Distribution US + Ouest canadien (20 concessionnaires, dont Pape Machinery aux US et Dennison Ag Repair a Oliver BC). 23 modeles cotables sur la feuille de commande officielle du distributeur : TGF 7800S/8900R, TRX 7800S/8900R/5800 TORA, TRG 8900R, SX 7800S, SRX 7800/8900R/5800 TORA/6800 TORA, TR 7600 INFINITY, TTR 7600 INFINITY, SR 7600 INFINITY, MACH 4 8900R (quadrichenille), TIGRE 3800, TIGRECAR 5800 PL, TN 5800/6800 TORA, TC 6800F TORA, TC 5800F MAJOR, SN 6800V TORA, SN 5800V MAJOR. ATTENTION : les gammes Ergit et SP n'apparaissent PAS sur la liste NA - ne pas les inscrire. Le terme 'articule' chez Antonio Carraro designe un chassis isodiametrique pivotant, pas un articule type Steiger."
+    },
+    {
+      "nom": "Monarch Tractor",
+      "groupe": "Monarch Tractor Inc. (Livermore CA)",
+      "annees_na": "2022-2026",
+      "nb_modeles_estime": 3,
+      "nb_modeles_courants": 3,
+      "segments": [
+        "compact",
+        "utilitaire",
+        "specialise"
+      ],
+      "source_url": "https://www.monarchtractor.com/mk-v-electric-tractor",
+      "confiance": "moyenne",
+      "note": "Premier tracteur electrique autonome commercialise en NA. Disponibilite commerciale attestee par son propre communique du 1er dec. 2022, confirmee jusqu'en 2025. 1 plateforme / 3 configurations : MK-V Standard, MK-V Dairy, MK-V Utility (70 hp crete / 40 hp nominal). La 'Founder Series' est l'edition de lancement 2022, pas un modele distinct. Marche coeur : cultures a haute valeur en Californie (vigne, vergers, maraichage) et fermes laitieres. Presence US confirmee, Canada non verifie. STATUT 2026 INCERTAIN : le site est pleinement commercial mais rien n'a ete publie apres le 27 oct. 2025 - voir a_valider."
+    },
+    {
+      "nom": "Solectrac",
+      "groupe": "Solectrac Inc. / Ideanomics (Windsor CA)",
+      "annees_na": "2017-2025",
+      "nb_modeles_estime": 5,
+      "nb_modeles_courants": 0,
+      "segments": [
+        "compact",
+        "specialise"
+      ],
+      "source_url": "https://www.solectrac.com/",
+      "confiance": "moyenne",
+      "note": "MARQUE PROBABLEMENT DISPARUE PENDANT LA PERIODE. Premiere entreprise nord-americaine a commercialiser des tracteurs electriques, en vente directe et par concessionnaires (10 concessionnaires certifies / 18 points de vente ajoutes au T2 2023 en TN, KS, ME, NE, IL, TX, FL). Le domaine officiel portait encore du contenu commercial authentique le 28 fev. 2025 et du contenu tiers sans rapport le 9 avril 2025; solectrac.com renvoie aujourd'hui un 403 Cloudflare. Signaux de detresse anterieurs : eviction des locaux le 20 mars 2024. Seuls 2 modeles sont confirmes officiellement (e25 / e25G Gear, e25 Backhoe); les e70N et eUtility n'ont PAS pu etre confirmes. Le volet faillite d'Ideanomics n'a pas pu etre source. Estimation 5 modeles au total sur la periode, a valider."
+    },
+    {
+      "nom": "Farmtrac",
+      "groupe": "Escorts Kubota",
+      "annees_na": "2015-2026",
+      "nb_modeles_estime": 15,
+      "nb_modeles_courants": 0,
+      "segments": [
+        "compact",
+        "utilitaire"
+      ],
+      "source_url": "",
+      "confiance": "faible",
+      "note": "INCLUSE SUR DECISION DE JACQUOT (2026-08-06) : distribution NA officielle non prouvee (domaines morts), mais ~18 concessionnaires recenses et des agriculteurs peuvent encore en posseder. A rechercher avec la meme rigueur que les autres; laisser les specs vides plutot que de deviner."
+    }
+  ],
+  "ecartees": [
+    {
+      "nom": "Valtra",
+      "raison": "AGCO. Jamais distribuee en NA sur 2015-2026. Le selecteur de marches valtra.com ne comporte aucun groupe Amerique du Nord et les chaines 'United States', 'Canada' et 'North America' y apparaissent zero fois. AGCO en a vendu une gamme de niche aux US/Canada apres l'acquisition de 2004, mais cela precede la periode."
+    },
+    {
+      "nom": "Landini",
+      "raison": "Argo Tractors. Pas de reseau NA, contrairement a sa marque soeur McCormick. Preuve en trois temps : dealers.argotractors.com/us/landini renvoie 404 alors que /it/landini et /us/mccormick fonctionnent sur la meme plateforme; le selecteur pays de landini-tractors.com liste exactement 15 regions, aucune n'etant les Etats-Unis ou le Canada."
+    },
+    {
+      "nom": "Steyr",
+      "raison": "CNH Industrial. Marque europeenne uniquement, aucun reseau de concessionnaires NA."
+    },
+    {
+      "nom": "SAME",
+      "raison": "SDF Group. Europe et international; seul Deutz-Fahr est distribue en NA par PFG America."
+    },
+    {
+      "nom": "Lamborghini Trattori",
+      "raison": "SDF Group. Europe et international, aucune distribution NA."
+    },
+    {
+      "nom": "Hurlimann",
+      "raison": "SDF Group. Europe uniquement."
+    },
+    {
+      "nom": "Valpadana",
+      "raison": "Argo Tractors. Marche italien, aucune distribution NA."
+    },
+    {
+      "nom": "TAFE",
+      "raison": "Tractors and Farm Equipment Ltd (Inde). N'exploite AUCUNE marque propre en NA : TAFE a abandonne son projet de reseau americain et fabrique la gamme Massey Ferguson 2600 pour AGCO, vendue sous marque Massey Ferguson (deja comptee). TAFE est par ailleurs le premier actionnaire d'AGCO. Le litige de marque AGCO-TAFE regle en 2025 donne a TAFE la marque Massey Ferguson pour l'Inde, le Nepal et le Bhoutan seulement."
+    },
+    {
+      "nom": "Belarus / MTZ",
+      "raison": "Minsk Tractor Works. Aucune distribution NA officielle attestee : belarus-tractor.com ne nomme aucun concessionnaire, importateur ou distributeur americain ou canadien. Precision importante : Minsk Tractor Works n'est PAS sur la liste OFAC SDN (ce sont Minsk Wheel Tractor Plant/MZKT et MAZ qui le sont) - l'argument defendable est l'absence de reseau, pas les sanctions."
+    },
+    {
+      "nom": "Cub Cadet (tracteurs compacts)",
+      "raison": "MTD/Stanley Black & Decker. La gamme de tracteurs compacts Cub Cadet Yanmar (SC/EX) s'est arretee vers 2014-2015. La page cubcadet.com/en_US/compact-tractors/ renvoie un HTTP 410 Gone (retrait delibere) et la nav actuelle ne contient plus aucune categorie tracteur. Gamme actuelle = tondeuses, souffleuses, UTV : hors perimetre."
+    },
+    {
+      "nom": "Case Construction",
+      "raison": "CNH Industrial. Equipement de chantier (retrocaveuses, chargeuses, excavatrices) - marque distincte de Case IH, hors perimetre agricole."
+    },
+    {
+      "nom": "New Holland Construction",
+      "raison": "CNH Industrial. Equipement de chantier - marque distincte de New Holland Agriculture, hors perimetre."
+    },
+    {
+      "nom": "Caterpillar",
+      "raison": "A vendu la ligne de tracteurs agricoles Challenger a AGCO en 2002. Aucun tracteur agricole Cat sur la periode."
+    },
+    {
+      "nom": "White / AGCO-Allis / Deutz-Allis",
+      "raison": "Lignes de tracteurs arretees bien avant 2015 (White Farm Equipment jusqu'en ~2001)."
+    },
+    {
+      "nom": "Ford (tracteurs)",
+      "raison": "Marque de tracteurs eteinte dans les annees 1990, absorbee par New Holland."
+    },
+    {
+      "nom": "Iseki",
+      "raison": "Aucune marque propre en NA. Iseki fabrique pour AGCO (series Massey Ferguson GC/1500), deja comptees sous Massey Ferguson."
+    },
+    {
+      "nom": "Kubota KX / U / SVL / RTV",
+      "raison": "Excavatrices compactes, chargeuses compactes et vehicules utilitaires Kubota - hors perimetre tracteurs agricoles. A ne pas confondre avec les tracteurs Kubota BX/B/L/M."
+    },
+    {
+      "nom": "Mahindra Roxor",
+      "raison": "Vehicule utilitaire tout-terrain (UTV), pas un tracteur agricole."
+    },
+    {
+      "nom": "Kioti K9 / Mechron",
+      "raison": "UTV, hors perimetre."
+    },
+    {
+      "nom": "Fendt Momentum / Rogator / TerraGator",
+      "raison": "Semoirs et pulverisateurs automoteurs, pas des tracteurs. Note : la marque Challenger a survecu sur ces equipements d'application jusqu'en 2022, apres l'arret des tracteurs, avant de migrer vers Fendt."
+    },
+    {
+      "nom": "Bobcat UT6573 et AT450",
+      "raison": "Le UT6573 est un tracteur utilitaire rebadge Kioti RX hors categorie tracteur compact, et l'AT450 une chargeuse articulee - a traiter separement des CT."
+    },
+    {
+      "nom": "BCS / Grillo / Goldoni",
+      "raison": "Motoculteurs a deux roues ou absence de reseau NA pour les tracteurs a quatre roues."
+    },
+    {
+      "nom": "Ventrac / Steiner / Power Trac",
+      "raison": "Tracteurs articules d'entretien de terrain (turf, municipal, pentes), pas des tracteurs agricoles."
+    },
+    {
+      "nom": "Toro / Husqvarna / Craftsman / Simplicity / John Deere series X et Z",
+      "raison": "Tondeuses autoportees lawn & garden, explicitement hors perimetre."
+    },
+    {
+      "nom": "Arbos / Lovol / YTO / Jinma / Foton",
+      "raison": "Constructeurs chinois sans distribution officielle NA sur la periode; les machines trouvees sur les agregateurs sont des imports gris ou des rebadges de marques maison."
+    },
+    {
+      "nom": "Fendt 800 Vario Gen5",
+      "raison": "Affiche sur fendt.com/us mais c'est du contenu global : tableau de specs metrique uniquement, aucune brochure NA, absent du configurateur Build & Quote. Le 800 Vario a ete retire du marche NA debut 2024. Les 822/824/826/828 vendus 2015-2023 sont comptes sous Fendt."
+    }
+  ],
+  "a_valider": [
+    {
+      "nom": "Farmtrac",
+      "ce_qui_manque": "Confirmation d'une distribution NA officielle active. Tous les domaines NA sont morts : farmtracnorthamerica.com et farmtracamerica.com ne resolvent pas (DNS), farmtrac.us redirige vers une page GoDaddy de domaine a vendre, farmtracusa.com est vide. farmtrac.escortskubota.com est exclusivement marche indien, sans section ni lien NA, et escortskubota.com ne mentionne aucune filiale americaine. Le site farmtracus.com liste des modeles 2025 mais avec une adresse gmail et une adresse a San Francisco : non credible comme distributeur officiel. En sens inverse, TractorHouse recense ~18 concessionnaires Farmtrac (PA 6, OH 3, MI 2, WI 2, GA, KS, MS, MO, TX). IL FAUT : une reference dans le rapport annuel ou la communication investisseurs d'Escorts Kubota, ou une page distributeur NA vivante. Ordre de grandeur si confirme : 12-15 modeles.",
+      "tranche": "INCLUSE (Jacquot, 2026-08-06) : marque deplacee dans « marques »."
+    },
+    {
+      "nom": "NorTrac (Northern Tool)",
+      "ce_qui_manque": "Impossible de determiner si Northern Tool vend encore des tracteurs (par opposition aux outils portes de marque NorTrac, eux toujours au catalogue) ni la date d'arret. Le site est protege contre les robots : WebFetch renvoie 403 et un curl avec user-agent navigateur ne renvoie qu'un shell JavaScript de 13 Ko sans aucune occurrence de 'NorTrac'. IL FAUT : une page categorie Northern Tool exploitable ou un instantane d'archive. Machines construites par Jinma (Chine). Ordre de grandeur si confirme : 8 modeles avant ~2017."
+    },
+    {
+      "nom": "Montana Tractors",
+      "ce_qui_manque": "montanatractors.com resolve mais sert une page parquee 'This domain may be for sale' - aucun produit, aucun contenu d'entreprise. Impossible d'etablir si la marque (rebadge LS/Kukje) a vendu du neuf en NA apres 2015 ni sa date d'arret. IL FAUT : un communique, une archive du site, ou un contact du distributeur historique."
+    },
+    {
+      "nom": "Massey Ferguson serie 3 specialisee (3SP/3GE/3VI)",
+      "ce_qui_manque": "Les 7 modeles figurent sur masseyferguson.com/en_us mais AUCUN communique de lancement NA ni confirmation concessionnaire n'a ete trouve. Meme piege que Fendt : du contenu europeen peut etre miroite sur le site US. IMPACT : si Europe seulement, le lineup MF courant tombe de 62 a 55 et le cumul 2015-2026 de 145 a 138. IL FAUT : une verification directe aupres d'un concessionnaire MF nord-americain.",
+      "tranche": "INCLUSE (Jacquot, 2026-08-06) : les 7 modeles 3SP/3GE/3VI entrent au catalogue meme sans confirmation de communique NA."
+    },
+    {
+      "nom": "Massey Ferguson 4700M (4708M/4709M/4710M)",
+      "ce_qui_manque": "Marche de destination non etabli; comptes dans les 145. -3 modeles si Europe uniquement."
+    },
+    {
+      "nom": "CLAAS - date de retrait des ARION 400 et 500 en NA",
+      "ce_qui_manque": "Les pages /tractors/arion-400 et /arion-500 renvoient 404 sur le site US alors que ces series etaient offertes plus tot dans la periode. La date du retrait n'a pas pu etre etablie : web.archive.org etait bloque puis rate-limite, et claasofamerica.com redirige desormais en 301 vers claas.com/en-us. IMPACT : ~7 modeles supplementaires a placer correctement dans le temps."
+    },
+    {
+      "nom": "Deutz-Fahr au Canada",
+      "ce_qui_manque": "Le locator PFG America renvoie 111 concessionnaires, tous americains, zero au Canada. A confirmer s'il existe un canal canadien distinct (importateur, concession CLAAS ou autre longline) ou si la marque est strictement US."
+    },
+    {
+      "nom": "Deutz-Fahr - date de reprise par PFG America",
+      "ce_qui_manque": "La date du transfert de la distribution NA de SDF vers PFG America n'a pas pu etre sourcee, ce qui laisse un flou sur la composition de la gamme NA 2015-2019."
+    },
+    {
+      "nom": "Monarch Tractor - statut 2026",
+      "ce_qui_manque": "Le site est pleinement commercial mais aucune publication apres le 27 oct. 2025. Confirmer que la production et les livraisons se poursuivent en 2026, et si le Canada est desservi."
+    },
+    {
+      "nom": "Solectrac - date exacte de cessation",
+      "ce_qui_manque": "Le basculement du site se situe entre le 28 fev. 2025 (contenu commercial authentique) et le 9 avril 2025 (contenu tiers sans rapport); solectrac.com renvoie aujourd'hui un 403 Cloudflare illisible. Aucun depot de faillite, communique de liquidation ou acquisition n'a pu etre source cote Ideanomics. A confirmer aussi l'existence des modeles e70N et eUtility en NA (seuls e25/e25G et e25 Backhoe sont confirmes officiellement)."
+    },
+    {
+      "nom": "Solis, RK Tractors, Bad Boy Tractors - annee de lancement NA",
+      "ce_qui_manque": "Aucune de ces trois marques ne declare son annee d'entree sur le marche NA sur une page officielle. Les annees inscrites (~2021, ~2016, ~2019) sont des estimations. Impact limite sur le nombre de modeles, mais a corriger si le catalogue affiche des annees."
+    },
+    {
+      "nom": "Zetor North America - origine de la gamme M22-M60",
+      "ce_qui_manque": "Cette ligne sous-compacte et compacte sort completement de la gamme historique de Zetor Brno et aucune origine moteur n'est declaree sur les fiches. Il s'agit tres probablement de machines OEM rebadgees par le distributeur nord-americain. A confirmer avant de traiter ces modeles comme des Zetor tcheques. Le roster de concessionnaires NA n'a pas pu etre denombre (charge en JavaScript)."
+    },
+    {
+      "nom": "Fendt 1100 MT non-Vario (1149/1154/1159/1165)",
+      "ce_qui_manque": "Presentes a Agritechnica en sept. 2017 mais aucune preuve qu'ils aient ete vendus badges Fendt en NA - ces machines etaient badgees Challenger ici jusqu'a l'arrivee du 1100 Vario MT en MY2021. Exclus des 48. +4 modeles si confirme."
+    },
+    {
+      "nom": "Kioti serie PX",
+      "ce_qui_manque": "Absente du site NA actuel. Si elle a ete vendue neuve en NA plus tot dans la periode, +6 modeles environ (cumul Kioti passerait de ~60 a ~69)."
+    },
+    {
+      "nom": "Antonio Carraro 2015-2017",
+      "ce_qui_manque": "La distribution par MGH Equipment est documentee de 2018 a 2026. Le canal NA anterieur a 2018 n'a pas ete verifie."
+    },
+    {
+      "nom": "RK Tractors - constructeur reel",
+      "ce_qui_manque": "La fabrication par TYM est largement rapportee mais Rural King ne le confirme sur aucune page officielle (seuls les moteurs Yanmar sont mentionnes). Idem pour Bad Boy Tractors, dont le constructeur n'est pas divulgue. Important pour le dedoublonnage des plateformes."
+    },
+    {
+      "nom": "Modeles historiques 2015-2020, toutes marques",
+      "ce_qui_manque": "web.archive.org etait bloque durant toute la recherche, donc aucun catalogue anterieur a 2021 n'a pu etre lu directement sur une source constructeur. Les portions 'modeles discontinues' de chaque estimation reposent sur une modelisation du churn generationnel, pas sur un comptage. Exception : Versatile et LS Tractor publient eux-memes leurs fiches ou manuels archives - leurs cumuls sont les plus solides. Incertitude globale sur le total : environ +/-15%."
+    }
+  ]
+}

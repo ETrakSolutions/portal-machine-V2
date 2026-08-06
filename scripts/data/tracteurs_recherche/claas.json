@@ -1,0 +1,258 @@
+{
+  "marque": "CLAAS",
+  "modeles": [
+    {
+      "modele": "AXION 920",
+      "annees": "2015-2026",
+      "puissance": "325 hp",
+      "poids": "",
+      "levage": "24 140 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 320 hp; PTO annonce 263 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 578 lb). Poids laisse vide : la brochure publie une fourchette (27 557-29 762 lb), pas de valeur unique. Fenetre : la famille AXION 960-920 figure dans la navigation produits de claasofamerica.com de 2019 a 2024 au moins; l'annee exacte d'entree en NA n'est pas etablie. Le tableau comparatif actuel de claas.com/en-us n'affiche plus que 930 et 960 (+ Terra Trac), mais la brochure NA en ligne couvre encore 920 a 960."
+    },
+    {
+      "modele": "AXION 930",
+      "annees": "2015-2026",
+      "puissance": "355 hp",
+      "poids": "",
+      "levage": "24 140 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 350 hp; PTO annonce 296 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 578 lb). Poids laisse vide : la brochure publie une fourchette (27 557-29 762 lb), pas de valeur unique. Fenetre : la famille AXION 960-920 figure dans la navigation produits de claasofamerica.com de 2019 a 2024 au moins; l'annee exacte d'entree en NA n'est pas etablie. Le tableau comparatif actuel de claas.com/en-us n'affiche plus que 930 et 960 (+ Terra Trac), mais la brochure NA en ligne couvre encore 920 a 960."
+    },
+    {
+      "modele": "AXION 940",
+      "annees": "2015-2026",
+      "puissance": "385 hp",
+      "poids": "",
+      "levage": "24 802 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 380 hp; PTO annonce 334 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 953 lb). Poids laisse vide : la brochure publie une fourchette (28 660-30 864 lb), pas de valeur unique. Fenetre : la famille AXION 960-920 figure dans la navigation produits de claasofamerica.com de 2019 a 2024 au moins; l'annee exacte d'entree en NA n'est pas etablie. Le tableau comparatif actuel de claas.com/en-us n'affiche plus que 930 et 960 (+ Terra Trac), mais la brochure NA en ligne couvre encore 920 a 960."
+    },
+    {
+      "modele": "AXION 950",
+      "annees": "2015-2026",
+      "puissance": "410 hp",
+      "poids": "",
+      "levage": "24 802 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 405 hp; PTO annonce 357 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 953 lb). Poids laisse vide : la brochure publie une fourchette (28 660-30 864 lb), pas de valeur unique. Fenetre : la famille AXION 960-920 figure dans la navigation produits de claasofamerica.com de 2019 a 2024 au moins; l'annee exacte d'entree en NA n'est pas etablie. Le tableau comparatif actuel de claas.com/en-us n'affiche plus que 930 et 960 (+ Terra Trac), mais la brochure NA en ligne couvre encore 920 a 960."
+    },
+    {
+      "modele": "AXION 960",
+      "annees": "2015-2026",
+      "puissance": "445 hp",
+      "poids": "",
+      "levage": "24 802 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 440 hp; PTO annonce 391 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 953 lb). Poids laisse vide : la brochure publie une fourchette (28 660-30 864 lb), pas de valeur unique. Fenetre : la famille AXION 960-920 figure dans la navigation produits de claasofamerica.com de 2019 a 2024 au moins; l'annee exacte d'entree en NA n'est pas etablie. Le tableau comparatif actuel de claas.com/en-us n'affiche plus que 930 et 960 (+ Terra Trac), mais la brochure NA en ligne couvre encore 920 a 960."
+    },
+    {
+      "modele": "AXION 930 TERRA TRAC",
+      "annees": "2022-2026",
+      "puissance": "355 hp",
+      "poids": "35 714 lb",
+      "levage": "24 140 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 350 hp; PTO annonce 296 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 578 lb). poids = valeur unique publiee. Version semi-chenillee TERRA TRAC. Fenetre : present dans la brochure CLAAS of America (c)2022; annee exacte de lancement NA non etablie."
+    },
+    {
+      "modele": "AXION 960 TERRA TRAC",
+      "annees": "2022-2026",
+      "puissance": "445 hp",
+      "poids": "35 714 lb",
+      "levage": "24 802 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/66280",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America AXION 900 (CL99881069, 8/2024), unites imperiales. puissance = Max. engine power; rated engine power 440 hp; PTO annonce 391 hp (SAE, OECD-2). levage = Max. rear lift capacity (capacite continue OECD code 2 : 16 953 lb). poids = valeur unique publiee. Version semi-chenillee TERRA TRAC. Fenetre : present dans la brochure CLAAS of America (c)2022; annee exacte de lancement NA non etablie."
+    },
+    {
+      "modele": "AXION 820",
+      "annees": "2015-2026",
+      "puissance": "215 hp",
+      "poids": "",
+      "levage": "21 385 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/1145046",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure AXION 800 liee depuis claas.com/en-us, unites imperiales. puissance = Max. output (ECE R 120); rated output 205 hp. Valeurs d'homologation des modeles CMATIC (seuls vendus en NA) : rated 225 hp / max 235 hp. levage = Max. lift capacity at ball ends (capacite continue a 24 po : 13 669 lb). Poids laisse vide : la brochure publie deux valeurs (18 298 / 19 952 lb) sans en designer une seule. La navigation produits de CLAAS of America a affiche 'AXION 880-810 (210-290 hp)' de 2019 a 2024, ce qui laisse supposer des modeles 810/830/850/870 offerts plus tot dans la periode : aucune source ne les documente, ils ne sont donc pas inscrits."
+    },
+    {
+      "modele": "AXION 840",
+      "annees": "2015-2026",
+      "puissance": "235 hp",
+      "poids": "",
+      "levage": "21 385 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/1145046",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure AXION 800 liee depuis claas.com/en-us, unites imperiales. puissance = Max. output (ECE R 120); rated output 225 hp. Valeurs d'homologation des modeles CMATIC (seuls vendus en NA) : rated 240 hp / max 252 hp. levage = Max. lift capacity at ball ends (capacite continue a 24 po : 13 669 lb). Poids laisse vide : la brochure publie deux valeurs (18 519 / 20 172 lb) sans en designer une seule. La navigation produits de CLAAS of America a affiche 'AXION 880-810 (210-290 hp)' de 2019 a 2024, ce qui laisse supposer des modeles 810/830/850/870 offerts plus tot dans la periode : aucune source ne les documente, ils ne sont donc pas inscrits."
+    },
+    {
+      "modele": "AXION 860",
+      "annees": "2015-2026",
+      "puissance": "264 hp",
+      "poids": "",
+      "levage": "22 487 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/1145046",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure AXION 800 liee depuis claas.com/en-us, unites imperiales. puissance = Max. output (ECE R 120); rated output 250 hp. Valeurs d'homologation des modeles CMATIC (seuls vendus en NA) : rated 257 hp / max 273 hp. levage = Max. lift capacity at ball ends (capacite continue a 24 po : 13 669 lb). Poids laisse vide : la brochure publie deux valeurs (19 180 / 20 834 lb) sans en designer une seule. La navigation produits de CLAAS of America a affiche 'AXION 880-810 (210-290 hp)' de 2019 a 2024, ce qui laisse supposer des modeles 810/830/850/870 offerts plus tot dans la periode : aucune source ne les documente, ils ne sont donc pas inscrits."
+    },
+    {
+      "modele": "AXION 880",
+      "annees": "2015-2026",
+      "puissance": "280 hp",
+      "poids": "",
+      "levage": "22 487 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/1145046",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure AXION 800 liee depuis claas.com/en-us, unites imperiales. puissance = Max. output (ECE R 120); rated output 270 hp ; max. output avec CPM 295 hp. Valeurs d'homologation des modeles CMATIC (seuls vendus en NA) : rated 280 hp / max 296 hp. levage = Max. lift capacity at ball ends (capacite continue a 24 po : 13 669 lb). Poids laisse vide : la brochure publie deux valeurs (19 952 / 20 834 lb) sans en designer une seule. La navigation produits de CLAAS of America a affiche 'AXION 880-810 (210-290 hp)' de 2019 a 2024, ce qui laisse supposer des modeles 810/830/850/870 offerts plus tot dans la periode : aucune source ne les documente, ils ne sont donc pas inscrits."
+    },
+    {
+      "modele": "ARION 630",
+      "annees": "2023-2026",
+      "puissance": "165 hp",
+      "poids": "",
+      "levage": "17 637 lb",
+      "source_url": "https://web.archive.org/web/20240420015839/https://www.claasofamerica.com/blueprint/servlet/resource/blob/2863820/ba3adeb6e69df4550d7d84408ff8a21a/cl99881068_arion-600-series_en_web-v2-data.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America ARION 600 Series (CL99881068, 01/2024), unites imperiales. puissance = Max. output (ECE R 120); rated output 155 hp. levage = Max. lifting capacity at ball ends (capacite continue a 610 mm : 11 244 lb). Poids laisse vide : fourchette publiee (14 859-16 755 lb). Fenetre : la serie ARION n'apparait dans la navigation produits de CLAAS of America qu'a partir de 2023 (lancement nord-americain a Saskatoon, SK, en meme temps que la serie XERION 12); elle est absente des captures 2019, 2020, 2022 et janvier 2023."
+    },
+    {
+      "modele": "ARION 650",
+      "annees": "2023-2026",
+      "puissance": "185 hp",
+      "poids": "",
+      "levage": "17 637 lb",
+      "source_url": "https://web.archive.org/web/20240420015839/https://www.claasofamerica.com/blueprint/servlet/resource/blob/2863820/ba3adeb6e69df4550d7d84408ff8a21a/cl99881068_arion-600-series_en_web-v2-data.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America ARION 600 Series (CL99881068, 01/2024), unites imperiales. puissance = Max. output (ECE R 120); rated output 175 hp. levage = Max. lifting capacity at ball ends (capacite continue a 610 mm : 11 244 lb). Poids laisse vide : fourchette publiee (15 388-17 262 lb). Fenetre : la serie ARION n'apparait dans la navigation produits de CLAAS of America qu'a partir de 2023 (lancement nord-americain a Saskatoon, SK, en meme temps que la serie XERION 12); elle est absente des captures 2019, 2020, 2022 et janvier 2023."
+    },
+    {
+      "modele": "ARION 660",
+      "annees": "2023-2026",
+      "puissance": "185 hp",
+      "poids": "",
+      "levage": "17 637 lb",
+      "source_url": "https://web.archive.org/web/20240420015839/https://www.claasofamerica.com/blueprint/servlet/resource/blob/2863820/ba3adeb6e69df4550d7d84408ff8a21a/cl99881068_arion-600-series_en_web-v2-data.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America ARION 600 Series (CL99881068, 01/2024), unites imperiales. puissance = Max. output (ECE R 120); rated output 175 hp ; max. output avec CPM 205 hp. levage = Max. lifting capacity at ball ends (capacite continue a 610 mm : 11 244 lb). Poids laisse vide : fourchette publiee (17 328-18 376 lb). Fenetre : la serie ARION n'apparait dans la navigation produits de CLAAS of America qu'a partir de 2023 (lancement nord-americain a Saskatoon, SK, en meme temps que la serie XERION 12); elle est absente des captures 2019, 2020, 2022 et janvier 2023."
+    },
+    {
+      "modele": "XERION 4500",
+      "annees": "2015-2026",
+      "puissance": "490 hp",
+      "poids": "",
+      "levage": "22 480 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/68138",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America XERION 5000-4500 ((c)2024). puissance = Max. output (ECE R 120); output at rated engine speed 476 hp. levage = capacite de relevage CONTINUE aux rotules (22 480 lbf, categorie IV N double effet); CLAAS ne publie ni capacite maximale arriere ni poids pour cette serie. Les versions TRAC et TRAC VC (cabine reversible) partagent une seule colonne de specifications : traitees comme des configurations d'un meme modele de base."
+    },
+    {
+      "modele": "XERION 5000",
+      "annees": "2015-2026",
+      "puissance": "530 hp",
+      "poids": "",
+      "levage": "22 480 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/68138",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America XERION 5000-4500 ((c)2024). puissance = Max. output (ECE R 120); output at rated engine speed 517 hp. levage = capacite de relevage CONTINUE aux rotules (22 480 lbf, categorie IV N double effet); CLAAS ne publie ni capacite maximale arriere ni poids pour cette serie. Les versions TRAC et TRAC VC (cabine reversible) partagent une seule colonne de specifications : traitees comme des configurations d'un meme modele de base."
+    },
+    {
+      "modele": "XERION 4000",
+      "annees": "2015-2023",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://web.archive.org/web/20240228195319/https://www.claasofamerica.com/product/tractors",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Modele deduit de la navigation produits de CLAAS of America, qui a affiche 'XERION 5000-4000 / 435-530 hp' de 2019 a 2024. Aucune fiche ni brochure NA propre au 4000 n'a pu etre recuperee : les trois champs restent vides. Le bas de la plage annoncee (435 hp) correspond vraisemblablement a ce modele mais n'est attribue explicitement a aucun modele. Fenetre a valider."
+    },
+    {
+      "modele": "XERION 3300",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://web.archive.org/web/20140203211648/http://www.claasofamerica.com/product/tractor/tractors",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Seuls tracteurs CLAAS au catalogue nord-americain lors de la capture du 3 fevrier 2014 de claasofamerica.com (page produit /product/tractor/xerion3800_3300). Disparus de la navigation NA au plus tard en 2019. Date d'arret non etablie : la fenetre 2015-2016 est la lecture la plus defendable, a valider. Aucune specification NA recuperee."
+    },
+    {
+      "modele": "XERION 3800",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://web.archive.org/web/20140203211648/http://www.claasofamerica.com/product/tractor/tractors",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Seuls tracteurs CLAAS au catalogue nord-americain lors de la capture du 3 fevrier 2014 de claasofamerica.com (page produit /product/tractor/xerion3800_3300). Disparus de la navigation NA au plus tard en 2019. Date d'arret non etablie : la fenetre 2015-2016 est la lecture la plus defendable, a valider. Aucune specification NA recuperee."
+    },
+    {
+      "modele": "XERION 12.590 TRAC",
+      "annees": "2023-2026",
+      "puissance": "585 hp",
+      "poids": "43 120 lb",
+      "levage": "29 983 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/90090",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America XERION 12 ((c)2023), unites imperiales. puissance = Max. output (ECE R 120); rated output 578 hp. poids = Curb weight (avec pneus/chenilles, plein de carburant, conducteur de 165 lb). levage = Max. lift capacity arriere, categorie 4N double effet (capacite continue : 22 046 lb). Serie lancee en Amerique du Nord en 2023 (evenement de lancement mondial a Saskatoon, SK)."
+    },
+    {
+      "modele": "XERION 12.590 TERRA TRAC",
+      "annees": "2023-2026",
+      "puissance": "585 hp",
+      "poids": "55 997 lb",
+      "levage": "29 983 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/90090",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America XERION 12 ((c)2023), unites imperiales. puissance = Max. output (ECE R 120); rated output 578 hp. poids = Curb weight (avec pneus/chenilles, plein de carburant, conducteur de 165 lb). levage = Max. lift capacity arriere, categorie 4N double effet (capacite continue : 22 046 lb). Serie lancee en Amerique du Nord en 2023 (evenement de lancement mondial a Saskatoon, SK)."
+    },
+    {
+      "modele": "XERION 12.650 TRAC",
+      "annees": "2023-2026",
+      "puissance": "653 hp",
+      "poids": "43 120 lb",
+      "levage": "29 983 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/90090",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America XERION 12 ((c)2023), unites imperiales. puissance = Max. output (ECE R 120); rated output 612 hp. poids = Curb weight (avec pneus/chenilles, plein de carburant, conducteur de 165 lb). levage = Max. lift capacity arriere, categorie 4N double effet (capacite continue : 22 046 lb). Serie lancee en Amerique du Nord en 2023 (evenement de lancement mondial a Saskatoon, SK)."
+    },
+    {
+      "modele": "XERION 12.650 TERRA TRAC",
+      "annees": "2023-2026",
+      "puissance": "653 hp",
+      "poids": "55 997 lb",
+      "levage": "29 983 lb",
+      "source_url": "https://www.claas.com/caas/claas/media/stable/90090",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brochure CLAAS of America XERION 12 ((c)2023), unites imperiales. puissance = Max. output (ECE R 120); rated output 612 hp. poids = Curb weight (avec pneus/chenilles, plein de carburant, conducteur de 165 lb). levage = Max. lift capacity arriere, categorie 4N double effet (capacite continue : 22 046 lb). Serie lancee en Amerique du Nord en 2023 (evenement de lancement mondial a Saskatoon, SK)."
+    }
+  ]
+}

@@ -1,0 +1,291 @@
+{
+  "marque": "Yanmar",
+  "modeles": [
+    {
+      "modele": "SA223",
+      "annees": "2019-2026",
+      "puissance": "22 hp",
+      "poids": "1 537 lb",
+      "levage": "660 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/Updated%202022%20EDA%20Files/SA223-Spec-Sheet-06282022-web.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 21,5 hp. Serie SA (sous-compacts). Poids avec ROPS et pneus R4. Levage = capacite de relevage 3 points arriere a 24 po derriere les points de relevage. Puissance = puissance brute selon la reglementation EPA publiee par Yanmar America. ATTENTION : sur la fiche SA223, la valeur 660 lb figure entre les lignes 'Maximum Lift Force Lift Point' et '24 in Behind Lift Point'; l'attribution retenue est '24 po derriere' par analogie avec les fiches SA325/SA425 ou la ligne 'Lift Point' est vide. A reverifier. La finition SA223 KURO est une serie speciale, comptee comme configuration."
+    },
+    {
+      "modele": "SA325",
+      "annees": "2019-2026",
+      "puissance": "24 hp",
+      "poids": "1 715 lb",
+      "levage": "1 209 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/SA325-Spec-Sheet%20No%20rear%20remote-11142022-web.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 23,9 hp. Serie SA (sous-compacts). Poids avec ROPS et pneus R4. Levage = capacite de relevage 3 points arriere a 24 po derriere les points de relevage. Puissance = puissance brute selon la reglementation EPA publiee par Yanmar America."
+    },
+    {
+      "modele": "SA425",
+      "annees": "2019-2026",
+      "puissance": "24 hp",
+      "poids": "1 830 lb",
+      "levage": "1 209 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/SA425-Spec-Sheet-No%20rear%20remote%2011142022-web.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 23,9 hp. Serie SA (sous-compacts). Poids avec ROPS et pneus R4. Levage = capacite de relevage 3 points arriere a 24 po derriere les points de relevage. Puissance = puissance brute selon la reglementation EPA publiee par Yanmar America. La version SA425DHX est une configuration du SA425 (meme fiche technique chez Yanmar)."
+    },
+    {
+      "modele": "SA221",
+      "annees": "2016-2019",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.yanmartractor.com/webres/File/1A8330-95951_SA%20Quick%20Guide.pdf",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Generation precedente de la serie SA, remplacee par les SA223 / SA325 / SA425. Existence sur le marche nord-americain attestee par le guide d'operation et d'entretien Yanmar America couvrant les SA221, SA324 et SA424, mais aucune fiche technique de ces modeles n'est encore publiee : puissance, poids et levage laisses vides. Fenetre d'annees a confirmer."
+    },
+    {
+      "modele": "SA324",
+      "annees": "2016-2019",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.yanmartractor.com/webres/File/1A8330-95951_SA%20Quick%20Guide.pdf",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Generation precedente de la serie SA, remplacee par les SA223 / SA325 / SA425. Existence sur le marche nord-americain attestee par le guide d'operation et d'entretien Yanmar America couvrant les SA221, SA324 et SA424, mais aucune fiche technique de ces modeles n'est encore publiee : puissance, poids et levage laisses vides. Fenetre d'annees a confirmer."
+    },
+    {
+      "modele": "SA424",
+      "annees": "2016-2019",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "https://www.yanmartractor.com/webres/File/1A8330-95951_SA%20Quick%20Guide.pdf",
+      "source_type": "fabricant",
+      "confiance": "nulle",
+      "note": "Generation precedente de la serie SA, remplacee par les SA223 / SA325 / SA425. Existence sur le marche nord-americain attestee par le guide d'operation et d'entretien Yanmar America couvrant les SA221, SA324 et SA424, mais aucune fiche technique de ces modeles n'est encore publiee : puissance, poids et levage laisses vides. Fenetre d'annees a confirmer."
+    },
+    {
+      "modele": "YT235",
+      "annees": "2016-2026",
+      "puissance": "34 hp",
+      "poids": "2 558 lb",
+      "levage": "1 764 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/Updated%202022%20EDA%20Files/2022%20YT2%20Spec%20Sheet%20061322.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 34,2 hp. Serie YT2, transmission hydrostatique i-HMT. Poids avec ROPS, pneus R4 et pleins faits; la version cabine YT235C pese 2 910 lb et est comptee comme configuration. Levage = capacite 3 points arriere a 24 po (61 cm). Annee d'introduction NA non confirmee par un communique Yanmar : les documents fabricant les plus anciens consultes datent de 2019."
+    },
+    {
+      "modele": "YT347",
+      "annees": "2016-2026",
+      "puissance": "46 hp",
+      "poids": "3 880 lb",
+      "levage": "2 756 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/2023%20YT3%20Sell%20Sheet%20100323.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 46,0 hp. Serie YT3, transmission a variation continue i-HMT. Poids avec ROPS, pneus R4 et pleins faits; les versions cabine YT347C (4 284 lb) et YT359C (4 442 lb) sont comptees comme configurations. Levage = capacite 3 points arriere a 24 po (61 cm), valeur commune aux deux modeles. Annee d'introduction NA non confirmee par un communique Yanmar : les documents fabricant les plus anciens consultes datent de 2019."
+    },
+    {
+      "modele": "YT359",
+      "annees": "2016-2026",
+      "puissance": "59 hp",
+      "poids": "4 039 lb",
+      "levage": "2 756 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/2023%20YT3%20Sell%20Sheet%20100323.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 58,9 hp. Serie YT3, transmission a variation continue i-HMT. Poids avec ROPS, pneus R4 et pleins faits; les versions cabine YT347C (4 284 lb) et YT359C (4 442 lb) sont comptees comme configurations. Levage = capacite 3 points arriere a 24 po (61 cm), valeur commune aux deux modeles. Annee d'introduction NA non confirmee par un communique Yanmar : les documents fabricant les plus anciens consultes datent de 2019."
+    },
+    {
+      "modele": "YM225",
+      "annees": "2023-2026",
+      "puissance": "24 hp",
+      "poids": "2 800 lb",
+      "levage": "1 609 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/tractors/YM/2025%20YAN_YM2%20Sale%20Sheet%20update.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 24,4 hp. Serie YM2 (compacts a boite mecanique). Poids total publie. Levage = capacite 3 points arriere a 24 po (61 cm), valeur commune aux trois modeles de la serie. Documents fabricant dates de 2023 a 2025 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "YM232",
+      "annees": "2023-2026",
+      "puissance": "32 hp",
+      "poids": "2 866 lb",
+      "levage": "1 609 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/tractors/YM/2025%20YAN_YM2%20Sale%20Sheet%20update.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 31,8 hp. Serie YM2 (compacts a boite mecanique). Poids total publie. Levage = capacite 3 points arriere a 24 po (61 cm), valeur commune aux trois modeles de la serie. Documents fabricant dates de 2023 a 2025 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "YM238",
+      "annees": "2023-2026",
+      "puissance": "38 hp",
+      "poids": "2 866 lb",
+      "levage": "1 609 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/tractors/YM/2025%20YAN_YM2%20Sale%20Sheet%20update.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Brute 38,2 hp. Seul modele de la serie a moteur turbo. Serie YM2 (compacts a boite mecanique). Poids total publie. Levage = capacite 3 points arriere a 24 po (61 cm), valeur commune aux trois modeles de la serie. Documents fabricant dates de 2023 a 2025 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "YM342",
+      "annees": "2020-2026",
+      "puissance": "41 hp",
+      "poids": "3 916 lb",
+      "levage": "2 750 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/YM3%20brochure.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance moteur 41,4 hp. Serie YM3 (utilitaires a boite mecanique 8 AV / 8 AR). Poids ROPS. Levage = capacite 3 points arriere a 24 po derriere les rotules, valeur commune aux trois modeles. Brochure fabricant datee de 2020 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "YM347",
+      "annees": "2020-2026",
+      "puissance": "46 hp",
+      "poids": "3 916 lb",
+      "levage": "2 750 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/YM3%20brochure.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance moteur 46,0 hp. Serie YM3 (utilitaires a boite mecanique 8 AV / 8 AR). Poids ROPS. Levage = capacite 3 points arriere a 24 po derriere les rotules, valeur commune aux trois modeles. Brochure fabricant datee de 2020 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "YM359",
+      "annees": "2020-2026",
+      "puissance": "59 hp",
+      "poids": "4 158 lb",
+      "levage": "2 750 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/YM3%20brochure.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance moteur 58,9 hp. Serie YM3 (utilitaires a boite mecanique 8 AV / 8 AR). Poids ROPS. Levage = capacite 3 points arriere a 24 po derriere les rotules, valeur commune aux trois modeles. Brochure fabricant datee de 2020 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "SM240",
+      "annees": "2023-2026",
+      "puissance": "37 hp",
+      "poids": "3 020 lb",
+      "levage": "1 558 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/SM240-Sales-Sheet.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance moteur brute 36,9 hp (moteur Yanmar). La version SM240H (transmission hydrostatique) partage la meme fiche technique et est comptee comme configuration. Serie SM, la plus recente de la gamme tracteurs Yanmar en Amerique du Nord. Poids total publie. Levage = capacite 3 points arriere a 24 po (61 cm). Fiches fabricant datees de 2023-2024 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "SM475",
+      "annees": "2023-2026",
+      "puissance": "74 hp",
+      "poids": "6 052 lb",
+      "levage": "3 418 lb",
+      "source_url": "https://www.yanmartractor.com/webres/File/SM475-Sales-Sheet.pdf",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance moteur brute 74 hp. Modele le plus puissant de la gamme tracteurs Yanmar NA; moteur Deutz (et non Yanmar). Attelage categorie 2. Serie SM, la plus recente de la gamme tracteurs Yanmar en Amerique du Nord. Poids total publie. Levage = capacite 3 points arriere a 24 po (61 cm). Fiches fabricant datees de 2023-2024 : annee d'introduction NA a confirmer."
+    },
+    {
+      "modele": "EX450",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "EX3200",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "LX410",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "LX450",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "LX490",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "LX4100",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "LX4500",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "LX4900",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    },
+    {
+      "modele": "SX3100",
+      "annees": "2015-2016",
+      "puissance": "",
+      "poids": "",
+      "levage": "",
+      "source_url": "",
+      "source_type": "aucune",
+      "confiance": "nulle",
+      "note": "Modele de la gamme heritee du partenariat Cub Cadet - Yanmar, ensuite vendue sous la seule marque YANMAR par Yanmar America. Presence au catalogue neuf nord-americain apres 2015 NON CONFIRMEE par une source constructeur consultee (aucune page ni fiche de ces modeles ne subsiste sur yanmartractor.com) : modele retenu sans specs, fenetre d'annees a valider avant import definitif."
+    }
+  ]
+}

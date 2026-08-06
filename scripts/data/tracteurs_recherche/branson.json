@@ -1,0 +1,291 @@
+{
+  "marque": "Branson",
+  "modeles": [
+    {
+      "modele": "1905",
+      "annees": "2018-2022",
+      "puissance": "19 hp",
+      "poids": "1 433 lb",
+      "levage": "1 100 lb",
+      "source_url": "https://web.archive.org/web/20210125210515/https://bransontractors.com/product/1905hst/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 25 janvier 2021). Serie 05, publie uniquement en 1905H / 1905HST (hydrostatique). Levage 1 100 lb aux rotules, 679 lb a 24 po derriere. PDF 13,4 hp. Fiche produit archivee d'avril 2018 a 2022."
+    },
+    {
+      "modele": "2205",
+      "annees": "2020-2022",
+      "puissance": "22 hp",
+      "poids": "1 433 lb",
+      "levage": "1 100 lb",
+      "source_url": "https://web.archive.org/web/20220820063453/https://bransontractors.com/product/2205h/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance brute publiee par Branson : 21,5 hp (arrondie a l'entier dans le champ). Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 20 aout 2022). Serie 05, publie en 2205H. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 15,1 hp. Fiche archivee d'aout 2020 a decembre 2022."
+    },
+    {
+      "modele": "2400",
+      "annees": "2016-2022",
+      "puissance": "24 hp",
+      "poids": "1 792 lb",
+      "levage": "1 499 lb",
+      "source_url": "https://web.archive.org/web/20220606161652/https://bransontractors.com/product/2400/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 6 juin 2022). Serie 00. Valeurs de la version 2400 a engrenages ; la 2400H hydrostatique est publiee a 1 829 lb. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 21 hp. Fiche archivee d'aout 2016 a 2022. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "2505",
+      "annees": "2020-2022",
+      "puissance": "25 hp",
+      "poids": "1 638 lb",
+      "levage": "1 214 lb",
+      "source_url": "https://web.archive.org/web/20221017194944/https://bransontractors.com/product/2505h/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Puissance brute publiee par Branson : 24,7 hp (arrondie a l'entier dans le champ). Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 17 octobre 2022). Serie 05, publie en 2505H. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 18,8 hp. Meme machine que le TYM T254 de generation courante."
+    },
+    {
+      "modele": "2510",
+      "annees": "2019-2021",
+      "puissance": "25 hp",
+      "poids": "1 810 lb",
+      "levage": "1 500 lb",
+      "source_url": "https://web.archive.org/web/20210125201053/https://bransontractors.com/product/test-2510/",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 25 janvier 2021). Serie 10, publie en 2510H. La fiche est publiee par Branson sous l'URL /product/test-2510/ (seule adresse existante) ; specs sommaires, sans tableau detaille : 25 hp, 1 810 lb, levage 1 500 lb au point de relevage. Fiche archivee de juillet 2019 a janvier 2021."
+    },
+    {
+      "modele": "2515",
+      "annees": "2020-2022",
+      "puissance": "24 hp",
+      "poids": "2 989 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220924063147/https://bransontractors.com/product/2515r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 24 septembre 2022). Serie 15. Valeurs de la version 2515R (synchro-navette) ; la 2515H hydrostatique est publiee a 2 969 lb. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). Levage a 24 po derriere : 2 425 lb. PDF 21 hp. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "2610",
+      "annees": "2020-2022",
+      "puissance": "24 hp",
+      "poids": "2 106 lb",
+      "levage": "1 499 lb",
+      "source_url": "https://web.archive.org/web/20220607080717/https://bransontractors.com/product/2610h/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 7 juin 2022). Serie 10, publie en 2610H. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 18 hp. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "3015",
+      "annees": "2016-2022",
+      "puissance": "30 hp",
+      "poids": "3 183 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220922003059/https://bransontractors.com/product/3015r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 22 septembre 2022). Serie 15. Valeurs de la version 3015R ; la 3015H hydrostatique est publiee a 3 163 lb. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 25 hp. Fiche archivee d'aout 2016 a 2022. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "3120",
+      "annees": "2016-2016",
+      "puissance": "31 hp",
+      "poids": "4 053 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20161106201453/http://bransontractors.com/Series/20-Series/Tractor/3120R.aspx",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com, ancienne version .aspx du site (capture du 6 novembre 2016). Serie 20, publie en 3120R. Levage 3 306 lb. PDF 26,5 hp. Seules deux captures de la fiche existent, en aout et novembre 2016 : la fenetre de commercialisation reelle est probablement plus large mais n'est pas documentee."
+    },
+    {
+      "modele": "3515",
+      "annees": "2016-2022",
+      "puissance": "35 hp",
+      "poids": "3 183 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220606073015/https://bransontractors.com/product/3515r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 6 juin 2022). Serie 15. Valeurs de la version 3515R ; la 3515H est publiee au meme poids. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 30 hp. Fiche archivee d'aout 2016 a 2022. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "3520",
+      "annees": "2016-2021",
+      "puissance": "35 hp",
+      "poids": "4 053 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210415050935/https://bransontractors.com/product/3520r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 15 avril 2021). Serie 20, publie en 3520R et 3520H. Levage 3 306 lb. PDF 29 hp. Remplace par le 3620 en 2021 : Branson a reutilise l'URL /product/3520r/ pour la fiche du 3620R."
+    },
+    {
+      "modele": "3620",
+      "annees": "2021-2022",
+      "puissance": "35 hp",
+      "poids": "3 754 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220606204804/https://bransontractors.com/es/product/3520r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 6 juin 2022). Serie 20 renouvelee, remplacant du 3520. Branson a conserve l'ancienne URL /product/3520r/ pour la fiche du 3620R : la page consultee porte bien le titre 3620R. Valeurs de la version 3620R ; Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 28 hp. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "3725",
+      "annees": "2018-2021",
+      "puissance": "37 hp",
+      "poids": "4 113 lb",
+      "levage": "3 637 lb",
+      "source_url": "https://web.archive.org/web/20210126202230/https://bransontractors.com/product/3725r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 26 janvier 2021). Serie 25. Valeurs de la version 3725R ; la 3725H est publiee a 4 153 lb. Levage 3 637 lb. PDF 33 hp. Fiche archivee d'avril 2018 a janvier 2021."
+    },
+    {
+      "modele": "4015",
+      "annees": "2016-2021",
+      "puissance": "40 hp",
+      "poids": "3 014 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210415052044/https://bransontractors.com/product/4015r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 15 avril 2021). Serie 15 ancienne generation. Levage publie 3 306 lb aux rotules (on ball ends), 2 420 lb a 24 po derriere. PDF 35 hp. Fiche archivee d'aout 2016 a avril 2021."
+    },
+    {
+      "modele": "4020",
+      "annees": "2016-2021",
+      "puissance": "40 hp",
+      "poids": "4 063 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210415053153/https://bransontractors.com/product/4020r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 15 avril 2021). Serie 20, publie en 4020R. Levage 3 306 lb. PDF 35,5 hp. Fiche archivee d'aout 2016 a juin 2021."
+    },
+    {
+      "modele": "4215",
+      "annees": "2021-2022",
+      "puissance": "42 hp",
+      "poids": "3 278 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220923105242/https://bransontractors.com/product/4215r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 23 septembre 2022). Serie 15 renouvelee. Valeurs de la version 4215R ; la 4215H est publiee a 3 258 lb. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 36 hp. Fiche archivee de juillet 2021 a 2022. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "4225",
+      "annees": "2018-2022",
+      "puissance": "42 hp",
+      "poids": "4 113 lb",
+      "levage": "3 637 lb",
+      "source_url": "https://web.archive.org/web/20220119091935/https://bransontractors.com/product/4225r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 19 janvier 2022). Serie 25, publie en 4225R. Levage 3 637 lb. PDF 36 hp. Fiche archivee d'avril 2018 a juin 2022."
+    },
+    {
+      "modele": "4520",
+      "annees": "2016-2021",
+      "puissance": "48 hp",
+      "poids": "3 717 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210415051844/https://bransontractors.com/product/4520r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 15 avril 2021). Serie 20, publie en 4520R et 4520C. Poids publie 3 717 lb avec pneus AG20, plein de carburant, siege, barre de traction et ROPS. Levage 3 306 lb. PDF 42 hp. A signaler : Branson publiait 48 hp brut (moteur A2300N2) pour le 4520 comme pour le 4720, malgre la difference de designation. Remplace par le 4820 en 2021 : Branson a reutilise l'URL /product/4520r/ pour la fiche du 4820R."
+    },
+    {
+      "modele": "4720",
+      "annees": "2016-2021",
+      "puissance": "48 hp",
+      "poids": "4 118 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210415055351/https://bransontractors.com/product/4720h/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 15 avril 2021). Serie 20, publie en 4720H et 4720CH. Levage 3 306 lb. PDF 42 hp. Meme moteur A2300N2 a 48 hp brut que le 4520, sur un chassis plus lourd. Remplace par le 4820 en 2021 : Branson a reutilise l'URL /product/4720h/ pour la fiche du 4820H."
+    },
+    {
+      "modele": "4815",
+      "annees": "2019-2022",
+      "puissance": "48 hp",
+      "poids": "3 278 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220605071418/https://bransontractors.com/product/4815r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 5 juin 2022). Serie 15 renouvelee. Valeurs de la version 4815R. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 40 hp. Fiche archivee d'aout 2019 a 2022. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "4820",
+      "annees": "2021-2022",
+      "puissance": "48 hp",
+      "poids": "3 831 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210921023331/https://bransontractors.com/product/4520r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 21 septembre 2021). Serie 20 renouvelee, remplacant des 4520 et 4720. Branson a conserve les anciennes URL /product/4520r/ et /product/4720h/ pour les fiches 4820R et 4820H : la page consultee porte bien le titre 4820R. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 38,4 hp. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "5220",
+      "annees": "2016-2021",
+      "puissance": "55 hp",
+      "poids": "4 123 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20210415051057/https://bransontractors.com/product/5220r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 15 avril 2021). Serie 20, publie en 5220R, 5220H, 5220C et 5220CH. Levage 3 306 lb. PDF 47,5 hp. Remplace par le 5520 en 2021 : Branson a reutilise l'URL /product/5220r/ pour la fiche du 5520R."
+    },
+    {
+      "modele": "5520",
+      "annees": "2021-2022",
+      "puissance": "55 hp",
+      "poids": "3 836 lb",
+      "levage": "3 306 lb",
+      "source_url": "https://web.archive.org/web/20220606200718/https://bransontractors.com/ko/product/5220r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 6 juin 2022). Serie 20 renouvelee, remplacant du 5220. Branson a conserve l'ancienne URL /product/5220r/ pour la fiche du 5520R : la page consultee porte bien le titre 5520R. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 44 hp. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "5835",
+      "annees": "2020-2022",
+      "puissance": "58 hp",
+      "poids": "4 299 lb",
+      "levage": "4 409 lb",
+      "source_url": "https://web.archive.org/web/20220922235624/https://bransontractors.com/product/5835r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 22 septembre 2022). Serie 35, publie en 5835R. Poids = weight without front weights publie par Branson. Levage = capacite de relevage 3 points arriere a l'extremite des rotules (lift capacity at lift link ends). PDF 48 hp. Fiche archivee de septembre 2020 a 2022. Designation reprise par TYM apres la fusion."
+    },
+    {
+      "modele": "7845",
+      "annees": "2016-2019",
+      "puissance": "78 hp",
+      "poids": "5 752 lb",
+      "levage": "",
+      "source_url": "https://web.archive.org/web/20191121053455/https://www.bransontractors.com/product/7845r/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 21 novembre 2019). Serie 45, publie en 7845R et 7845C. Moteur 4 cylindres turbo 3 409 cm3. PDF 64 hp. LEVAGE NON RENSEIGNE : la ligne Lift Capacity de la fiche Branson est vide, aucune valeur de relevage 3 points n'a ete publiee sur cette page. Fiche archivee d'aout 2016 a novembre 2019."
+    },
+    {
+      "modele": "8050",
+      "annees": "2016-2019",
+      "puissance": "78 hp",
+      "poids": "7 910 lb",
+      "levage": "3 311 lb",
+      "source_url": "https://web.archive.org/web/20191118010501/https://www.bransontractors.com/product/8050/",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Marque retiree du marche apres la fusion TYM USA + Branson Tractors, effective le 1er janvier 2023. Valeurs relevees sur la fiche produit archivee de bransontractors.com (capture du 18 novembre 2019). Serie 50, le plus gros Branson. Meme moteur turbo 3 409 cm3 a 78 hp que le 7845 malgre la designation 8050. Levage publie 3 311 lb au point d'attelage, valeur etonnamment basse pour ce gabarit mais c'est celle publiee par Branson. PDF 65 hp. Fiche archivee d'aout 2016 a novembre 2019."
+    }
+  ]
+}

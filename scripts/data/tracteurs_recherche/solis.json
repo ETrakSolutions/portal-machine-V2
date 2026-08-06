@@ -1,0 +1,49 @@
+{
+  "marque": "Solis",
+  "modeles": [
+    {
+      "modele": "S24",
+      "annees": "2021-2026",
+      "puissance": "24 hp",
+      "poids": "2 293 lb",
+      "levage": "1 323 lb",
+      "source_url": "https://solistractorusa.com/content/sportsman/s24-mechanical.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Compact sous-compact, moteur Mitsubishi S3L2 3 cylindres, 24 hp a 2500 tr/min. Poids exact publie 2292,8 lb pour la S24 Mechanical 6F+2R (modele de base) ; la S24 Shuttle XL 9F+9R est publiee a 2513 lb. Levage = relevage 3 points arriere publie par Solis (1 323 lb) ; le catalogue S75 du meme site precise que la convention Solis est \"3 point lift capacity @ ball ends\" (aux rotules). Offerte aux Etats-Unis (S24 Mechanical, S24 Shuttle) et au Canada (S24, S24 Shuttle XL). Fenetre NA : aucune page officielle Solis ne declare l'annee d'entree en Amerique du Nord. La premiere capture de solistractorusa.com par l'Internet Archive date du 25 aout 2021 et presentait deja les S24, H24 et S75 avec un concessionnaire americain (Muddy Waters LLC, Moulton, AL) ; le site canadien solistractor.ca n'est archive qu'a partir du 19 aout 2023. 2021 est donc la premiere annee documentee, pas une date de lancement confirmee par le fabricant."
+    },
+    {
+      "modele": "H24",
+      "annees": "2021-2026",
+      "puissance": "24 hp",
+      "poids": "2 513 lb",
+      "levage": "1 323 lb",
+      "source_url": "https://solistractorusa.com/content/sportsman/h24-hydro.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Compact hydrostatique (HST 2 gammes), moteur Mitsubishi 3 cylindres, 24 hp a 2500 tr/min. Poids publie 2513 lb (station ouverte) ; la version cabine H24+ Cab est publiee a 2776 lb. Levage = relevage 3 points arriere publie par Solis (1 323 lb), convention Solis \"@ ball ends\" (aux rotules). Offert aux Etats-Unis et au Canada (H24, H24 Cabin). Fenetre NA : aucune page officielle Solis ne declare l'annee d'entree en Amerique du Nord. La premiere capture de solistractorusa.com par l'Internet Archive date du 25 aout 2021 et presentait deja les S24, H24 et S75 avec un concessionnaire americain (Muddy Waters LLC, Moulton, AL) ; le site canadien solistractor.ca n'est archive qu'a partir du 19 aout 2023. 2021 est donc la premiere annee documentee, pas une date de lancement confirmee par le fabricant."
+    },
+    {
+      "modele": "H24+",
+      "annees": "2025-2026",
+      "puissance": "24 hp",
+      "poids": "2 513 lb",
+      "levage": "1 323 lb",
+      "source_url": "https://solistractorusa.com/content/sportsman/h24plus.php",
+      "source_type": "fabricant",
+      "confiance": "moyenne",
+      "note": "Declinaison H24+ (versions H24+ HST et H24+ Cab) presentee comme un produit distinct dans la navigation de solistractorusa.com. Solis publie exactement les memes caracteristiques que pour la H24 (24 hp, 2513 lb, 1323 lb) ; seule la version cabine differe par le poids (2776 lb). Premiere trace de la page /compact-tractor-h24-plus/ dans l'Internet Archive : 18 janvier 2025. Absente du site canadien. Confiance moyenne : rien sur le site du fabricant n'explique en quoi la H24+ differe techniquement de la H24."
+    },
+    {
+      "modele": "S75",
+      "annees": "2021-2026",
+      "puissance": "75 hp",
+      "poids": "7 771 lb",
+      "levage": "5 512 lb",
+      "source_url": "https://solistractorusa.com/content/sportsman/s75-rops.php",
+      "source_type": "fabricant",
+      "confiance": "haute",
+      "note": "Utilitaire 4 cylindres turbocompresse ITL, 75 hp, transmission synchro shuttle 12+12, Tier 4. Poids et levage confirmes par le catalogue PDF S75 du fabricant (https://solistractorusa.com/content/sportsman/brochures/s75tractor-catalog.pdf) : WEIGHT 7,771 LBS et 3 POINT LIFT CAPACITY @ BALL ENDS 5,511.55 LBS (option 6 613,86 lb). Valeur de levage arrondie a 5 512 lb. Versions S75 ROPS et S75 Cab, memes caracteristiques publiees. Non offert au Canada (solistractor.ca ne liste que les S24 et H24). Fenetre NA : aucune page officielle Solis ne declare l'annee d'entree en Amerique du Nord. La premiere capture de solistractorusa.com par l'Internet Archive date du 25 aout 2021 et presentait deja les S24, H24 et S75 avec un concessionnaire americain (Muddy Waters LLC, Moulton, AL) ; le site canadien solistractor.ca n'est archive qu'a partir du 19 aout 2023. 2021 est donc la premiere annee documentee, pas une date de lancement confirmee par le fabricant."
+    }
+  ]
+}
