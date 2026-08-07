@@ -270,6 +270,19 @@ main {
 .selector-group select option {
     background: #1A1A1A;
     color: #fff;
+    /* Le haut des majuscules etait rase dans la liste ouverte (signale par
+       Jacquot le 2026-08-07 : « Camion Vacuum » et les autres types).
+       Cause : Chrome sous Windows dessine la liste deroulante avec son widget
+       NATIF, en hauteurs de ligne fixes calculees sur les metriques declarees
+       de la police. L ascendante declaree d Acumin Pro est plus courte que
+       l encre reelle de ses capitales, d ou l amputation. Le champ ferme, lui,
+       a du rembourrage et s affiche correctement — c est pourquoi le defaut
+       n apparait qu une fois le menu ouvert, et seulement sur les pages dont
+       les selects heritent de la police de marque (la base de donnees, qui
+       reste en Arial, n a jamais eu le probleme).
+       On garde donc Acumin Pro sur le champ ferme, pour la marque, et on
+       laisse la liste a une police systeme dont Chrome gere bien les metriques. */
+    font-family: system-ui, "Segoe UI", Arial, sans-serif;
 }
 
 .btn-reset {
