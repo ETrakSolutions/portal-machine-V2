@@ -1432,6 +1432,18 @@ function renderSoumissionFallback(auto) {
     if (copyBtn) copyBtn.addEventListener('click', copySoumissionRequest);
 }
 
+// Ce panneau est construit en JS au moment du clic : il n a donc aucun attribut
+// data-i18n, et translatePage() ne le voit pas. Sans ce reabonnement, un
+// panneau ouvert en francais y restait apres une bascule vers l anglais
+// (signale par Jacquot le 2026-08-06). On le reconstruit dans la nouvelle
+// langue, en conservant son etat « auto » (declenche par un courriel qui ne
+// s est pas ouvert) plutot que son etat « ouvert a la main ».
+window.addEventListener('langchange', function () {
+    var box = document.getElementById('soumission-fallback');
+    if (!box || box.style.display === 'none' || !box.innerHTML) return;
+    renderSoumissionFallback(box.classList.contains('is-auto'));
+});
+
 // Construit le texte complet (destinataires + objet + corps) et le copie.
 function copySoumissionRequest() {
     var m = window.__lastSoumissionEmail;
