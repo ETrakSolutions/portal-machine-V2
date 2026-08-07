@@ -235,4 +235,18 @@
             populateTypes();
             renderTable();  // re-render pour afficher l'etat "existe deja"
         });
+
+        // Le tableau des demandes et la liste des types sont construits en JS :
+        // aucun data-i18n, donc translatePage() ne les voit pas. Sans ce
+        // reabonnement, ils restaient dans la langue d origine apres une
+        // bascule (audit du 2026-08-07). On preserve le type selectionne :
+        // populateTypes() vide la liste avant de la reconstruire.
+        window.addEventListener('langchange', function () {
+            if (!fullData) return;
+            var sel = document.getElementById('mr-type');
+            var choisi = sel ? sel.value : '';
+            populateTypes();
+            if (sel && choisi) sel.value = choisi;
+            renderTable();
+        });
     })();

@@ -345,6 +345,9 @@
             toast(i18n.t('exp.toast_all_specs', { n: TYPE_ORDER.length }));
         }
 
+        var boutonsGlobauxCables = false;   // voir buildMenu()
+        var menuConstruit = false;          // arme le reabonnement langchange
+
         function buildMenu() {
             var grid = document.getElementById('exp-bom-grid');
             grid.innerHTML = '';
@@ -365,11 +368,26 @@
                 row.appendChild(info); row.appendChild(btn);
                 grid.appendChild(row);
             });
-            document.getElementById('exp-all-bom').addEventListener('click', refreshThen(downloadAllBom));
-            document.getElementById('exp-all-specs').addEventListener('click', refreshThen(downloadAllSpecs));
+            // Ces deux boutons vivent hors de la grille reconstruite : les
+            // recabler a chaque appel dupliquerait le gestionnaire et lancerait
+            // deux exports par clic.
+            if (!boutonsGlobauxCables) {
+                document.getElementById('exp-all-bom').addEventListener('click', refreshThen(downloadAllBom));
+                document.getElementById('exp-all-specs').addEventListener('click', refreshThen(downloadAllSpecs));
+                boutonsGlobauxCables = true;
+            }
             document.getElementById('exp-loading').style.display = 'none';
             document.getElementById('exp-content').style.display = 'block';
+            menuConstruit = true;
         }
+
+        // La grille est construite en JS (noms de types, compteurs, libelles de
+        // boutons) : aucun data-i18n, donc translatePage() l ignore. Sans ce
+        // reabonnement, elle restait en francais apres une bascule vers
+        // l anglais (audit du 2026-08-07).
+        window.addEventListener('langchange', function () {
+            if (menuConstruit) buildMenu();
+        });
 
         // ---- Chargement des donnees (toujours frais : tout est cache-buste) ----
         function loadData() {

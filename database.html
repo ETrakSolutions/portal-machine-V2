@@ -1445,7 +1445,10 @@
                 sortedTypes.forEach(function(t) {
                     var opt = document.createElement('option');
                     opt.value = t;
-                    opt.textContent = t;
+                    // Les autres pages affichent i18n.t('type.<type>') ; ici on
+                    // posait la valeur brute de la base, donc « Pompe a Beton »
+                    // restait en francais meme en anglais (audit 2026-08-07).
+                    opt.textContent = i18n.t('type.' + t);
                     typeSelect.appendChild(opt);
                 });
 
@@ -1534,7 +1537,7 @@
                 if (fabHeader) fabHeader.style.display = '';
                 document.getElementById('db-table').classList.remove('fab-hidden');
                 var tbody = document.getElementById('db-tbody');
-                if (tbody) tbody.innerHTML = '<tr><td colspan="2" style="text-align:center;color:#666;padding:3rem;font-style:italic">' + i18n.t('db.select_type_hint') + '</td></tr>';
+                if (tbody) tbody.innerHTML = '<tr class="db-hint-row"><td colspan="2" style="text-align:center;color:#666;padding:3rem;font-style:italic">' + i18n.t('db.select_type_hint') + '</td></tr>';
                 // Reset fab and annee dropdowns
                 var fabSel = document.getElementById('db-fab');
                 if (fabSel) { fabSel.innerHTML = '<option value="">' + i18n.t('common.tous') + '</option>'; }
@@ -2957,6 +2960,31 @@
         }
         window.addEventListener('resize', syncViewMode);
         window.addEventListener('langchange', function(){ applyForcedView(document.body.classList.contains('force-mobile')); });
+
+        // Les listes deroulantes et l invite du tableau sont construites en JS :
+        // aucun data-i18n, donc translatePage() ne les voit pas et elles
+        // restaient en francais apres une bascule (audit 2026-08-07). On
+        // reecrit le libelle de chaque option a partir de sa VALEUR, qui reste
+        // le nom de type de la base — la selection courante est donc preservee.
+        window.addEventListener('langchange', function(){
+            var sel = document.getElementById('db-type');
+            if (sel) {
+                Array.prototype.forEach.call(sel.options, function(o){
+                    o.textContent = o.value ? i18n.t('type.' + o.value)
+                                            : i18n.t('db.select_type_placeholder');
+                });
+            }
+            var vide = document.querySelector('#db-tbody tr.db-hint-row td');
+            if (vide) vide.textContent = i18n.t('db.select_type_hint');
+            var fabSel = document.getElementById('db-fab');
+            if (fabSel && fabSel.options.length && fabSel.options[0].value === '') {
+                fabSel.options[0].textContent = i18n.t('common.tous');
+            }
+            var annSel = document.getElementById('db-annee');
+            if (annSel && annSel.options.length && annSel.options[0].value === '') {
+                annSel.options[0].textContent = i18n.t('common.toutes');
+            }
+        });
         // Inject Fabricant sublabel into Modele cells (for mobile)
         function injectFabSublabels() {
             var rows = document.querySelectorAll('#db-tbody tr');

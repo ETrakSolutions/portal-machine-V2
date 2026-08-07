@@ -123,14 +123,25 @@
   var YEAR = qs.get('year') || '';
   var MODEL= qs.get('model')|| '';
 
+  // Ces deux ecrans sortent avant que render() n existe : ils sont construits
+  // en JS, donc sans data-i18n, et translatePage() ne les voit pas. Sans le
+  // reabonnement ci-dessous ils restaient dans la langue d origine apres une
+  // bascule (audit du 2026-08-07).
+  function ecranFige(icone, cle){
+    var peindre = function(){
+      document.getElementById('root').innerHTML =
+        '<div class="empty"><div class="big">' + icone + '</div><div>' + i18n.t(cle) + '</div></div>';
+    };
+    peindre();
+    window.addEventListener('langchange', peindre);
+  }
+
   if (!hasAccess){
-    document.getElementById('root').innerHTML =
-      '<div class="empty"><div class="big">&#128274;</div><div>' + i18n.t('edit.unauthorized') + '</div></div>';
+    ecranFige('&#128274;', 'edit.unauthorized');
     return;
   }
   if (!TYPE || !FAB || !YEAR || !MODEL){
-    document.getElementById('root').innerHTML =
-      '<div class="empty"><div class="big">!</div><div>' + i18n.t('edit.missing_params') + '</div></div>';
+    ecranFige('!', 'edit.missing_params');
     return;
   }
 
