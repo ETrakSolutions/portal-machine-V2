@@ -12,11 +12,23 @@ valeurs incertaines**. Validation finale = humaine. NE JAMAIS écrire des specs 
 à l'aveugle.
 
 ## Emplacement du dépôt
-Clone local de `ETrakSolutions/portal-machine-V2` :
-- Poste installé (Steve / Jacquot) : `%USERPROFILE%\CLAUDE_CODE\portal-machine-v2`
-- Poste Robin : `C:\Users\ryb086\OneDrive - Groupe R.Y. Beaudoin\Bureau\CLAUDE_CODE\portal-machine-v2`
+Clone local de `ETrakSolutions/portal-machine-V2`. Utiliser le **répertoire de travail
+courant** (le clone ouvert dans Claude Code), jamais un chemin codé en dur — il diffère
+d'un poste à l'autre. Sur le poste `jcaron` : `C:\Users\jcaron\CLAUDE_CODE\portal-machine-v2`.
 
 ⚠️ Tout passe par la **V2** (la V1 `portal-machine` est gelée).
+
+## Ce qui compte comme source vérifiée
+Règle posée par Jacquot le 2026-08-10 : rien ne va en ligne sans validation contre
+**l'information technique du fabricant**.
+- Ouvrir la page produit ou la fiche technique du constructeur. Un **résumé de résultats de
+  recherche n'est pas une preuve** : un résumé a déjà attribué à Mecalac une gamme
+  « compact wheel excavators » que sa page officielle contredit, ce qui inversait la
+  conclusion.
+- Un **rapport d'agent n'est pas une preuve** non plus (31 modèles inventés détectés lors
+  de l'import Tracteur) : recouper par échantillon.
+- **Source inaccessible = ne pas deviner.** Laisser vide, signaler, et lister le cas comme
+  non vérifiable.
 
 ## Modèle de données
 `data/machines.json` : `data[type][fabricant][annee][modele] = { specs... }`.
