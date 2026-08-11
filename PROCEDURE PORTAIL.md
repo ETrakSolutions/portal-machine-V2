@@ -8,11 +8,11 @@ Ce document decrit l'etat actuel du projet, son architecture et les procedures p
 
 **Portail Machine** est un outil web interne pour consulter les specifications techniques de machines (excavatrices, grues, foreuses, etc.) et configurer les kits e-Trak associes.
 
-- **Repo GitHub** : `ETrakSolutions/portal-machine-V2` (V2 = banc d'essai ; V1 `portal-machine` reste l'outil en place, intact)
+- **Repo GitHub** : `ETrakSolutions/portal-machine-V2` — c'est **l'outil maintenu**. La V1 (`portal-machine`) est **gelee** : ne plus y toucher.
 - **Deploiement** : GitHub Pages — `etraksolutions.github.io/portal-machine-V2/`
 - **Stack** : HTML/CSS/JS vanilla (aucun framework)
 - **Backend** : Google Apps Script (`apps-script/Api.gs`) qui ecrit directement sur GitHub via l'API Contents (notes, BOM, suppressions). Voir section 4.3.
-- **8 types de machines** : Excavatrice, Pompe a Beton, Grue Mobile, Camion Girafe (Boom Truck), Telehandler, Foreuse, Camion Vacuum, Retrocaveuse.
+- **11 types de machines** : Excavatrice, Pompe a Beton, Grue Mobile, Camion Girafe (Boom Truck), Telehandler, Foreuse, Camion Vacuum, Retrocaveuse, Loader, Nacelle, Tracteur.
 
 ---
 
@@ -36,12 +36,12 @@ portal-machine-V2/
 │   └── ...                 # i18n, translations, heartbeat, version-check...
 ├── css/style.css           # Styles
 ├── data/
-│   ├── machines.json       # Specs de base, 8 types (~12 MB) — rarement ecrit
+│   ├── machines.json       # Specs de base, 11 types (~13 MB) — rarement ecrit
 │   └── overrides/          # BOM + notes editables, UN fichier par type :
 │       ├── excavatrice.json        (~300 KB)
 │       ├── pompe-a-beton.json
 │       ├── grue-mobile.json
-│       └── ... (8 fichiers, voir slugs en 4.4)
+│       └── ... (11 fichiers, voir slugs en 4.2)
 ├── scripts/split_overrides_by_type.py  # Migration : split overrides.json -> par type
 └── PROCEDURE PORTAIL.md    # Ce fichier
 ```
@@ -62,8 +62,8 @@ Table dynamique avec 10 champs (puissance, traction, boom, etc.)
 
 ### 3.3 Kit Machine (Excavatrice seulement)
 Table d'options avec radio buttons (Obligatoire / Option)
-- **Protege par NIP** `1400` via le cadenas
-- Logique automatique : mini excavatrice < 5000 kg, drain hydraulique pour modeles specifiques, etc.
+- **Protege par NIP** via le cadenas (valeur dans `PIN Portail.txt`, gitignore)
+- Logique automatique : drain hydraulique pour modeles specifiques, boite GC, swing boom, etc. L'option mini (`0004`) suit la classification du FABRICANT et vit dans les overrides (voir 4.6).
 
 ### 3.4 Notes par modele
 Textarea pour notes specifiques a chaque combinaison fabricant/modele/annee
@@ -71,7 +71,7 @@ Textarea pour notes specifiques a chaque combinaison fabricant/modele/annee
 
 ### 3.5 Gestion des emails (menu engrenage)
 - Liste d'emails cibles pour les demandes de kit
-- **Protege par NIP** `1400`
+- **Protege par NIP** (valeur dans `PIN Portail.txt`, gitignore)
 - Ajouter / supprimer des emails
 
 ### 3.6 Suppression de modele (menu engrenage)
@@ -97,7 +97,7 @@ Textarea pour notes specifiques a chaque combinaison fabricant/modele/annee
 }
 ```
 Hierarchie : Type → Fabricant → Annee → Modele → Specs.
-`machines.json` ne contient QUE les specs de base (8 types, ~12 MB). Les donnees editables (`_bom`, `_notes`) ne sont PAS ici : elles vivent dans les fichiers overrides (4.2).
+`machines.json` ne contient QUE les specs de base (11 types, ~13 MB). Les donnees editables (`_bom`, `_notes`) ne sont PAS ici : elles vivent dans les fichiers overrides (4.2).
 
 ### 4.2 Overrides editables — decoupes par type
 Le BOM (kit e-Trak) et les notes sont stockes a part, dans **un fichier par type** sous `data/overrides/<slug>.json`. Structure miroir : `{ "<Type>": { fab: { annee: { modele: { _bom, _notes } } } } }`.
@@ -116,8 +116,11 @@ Pourquoi par type : reste loin du plafond 1 Mo de l'API Contents (chaque fichier
 | Foreuse | `data/overrides/foreuse.json` |
 | Camion Vacuum | `data/overrides/camion-vacuum.json` |
 | Retrocaveuse | `data/overrides/retrocaveuse.json` |
+| Loader | `data/overrides/loader.json` |
+| Nacelle | `data/overrides/nacelle.json` |
+| Tracteur | `data/overrides/tracteur.json` |
 
-**Lecture** : `js/overrides-loader.js` expose `window.loadMergedOverrides()` qui fetch les 8 fichiers + le repli `data/overrides.json`, fusionne en un seul objet, puis `applyOverrides()` greffe `_bom`/`_notes` sur `machines.json` en memoire. Utilise par app.js, soumission.js, database.html, edit-machine.html et data-refresh.js.
+**Lecture** : `js/overrides-loader.js` expose `window.loadMergedOverrides()` qui fetch les 11 fichiers + le repli `data/overrides.json`, fusionne en un seul objet, puis `applyOverrides()` greffe `_bom`/`_notes` sur `machines.json` en memoire. Utilise par app.js, soumission.js, database.html, edit-machine.html et data-refresh.js.
 
 ### 4.3 API Google Apps Script (Option B)
 ```
@@ -135,7 +138,7 @@ Backend = `apps-script/Api.gs` (ne PAS garder l'ancien `Code.gs` dans le projet)
 **Redeploiement** : apres toute modif d'`Api.gs`, console Apps Script (compte `etrak.portail@gmail.com`) → Deploy → Manage deployments → Edit → New version. L'URL ne change pas.
 
 ### 4.4 Protection NIP
-- **PIN** : `1400`
+- **NIP** : JAMAIS en clair dans ce depot — il est **public**. Valeur dans `PIN Portail.txt` a la racine (gitignore), transmise en prive.
 - Zones protegees : Kit machine, Emails, Suppression de modele.
 
 ### 4.5 Cache busting
@@ -147,7 +150,7 @@ Les fichiers CSS et JS sont charges avec un parametre de version (`?v=XX`).
 ### 4.6 Regles metier du KIT — source UNIQUE `js/kit-rules.js`
 Toutes les regles de pre-remplissage des jetons du kit vivent dans `js/kit-rules.js` (`window.KitRules`), chargee par machine.html, database.html, edit-machine.html, soumission.html et export.html. **Modifier une regle (ex. ajouter un modele drain) = UN SEUL fichier.**
 Expose : `DRAIN_PREFIXES` (77 prefixes), `excDefaults(specs, modele)`, `pompeDefaults(specs)`, `harnais(fab, modele)`, `applyOverride(defaults, bom, isExc)`.
-- **Excavatrice** : `0000` Cabine = **r toujours** ; `0001`/`0002`/`0005` = j ; `0004` Mini = r si poids <= 5000 kg ; `0009` Drain = r si le modele commence par un `DRAIN_PREFIXES` (jamais jaune) ; `0008`/`0070` = na ; `0304` = r si modele = TB216.
+- **Excavatrice** : `0000` Cabine = **r toujours** ; `0001`/`0002`/`0005` = j ; `0004` Mini = r si poids <= 5000 kg (PRE-REMPLISSAGE des nouvelles entrees SEULEMENT : le vrai critere est la gamme mini/compacte du FABRICANT, porte par les overrides depuis le 2026-08-10 — voir le skill portal-kit-options) ; `0009` Drain = r si le modele commence par un `DRAIN_PREFIXES` (jamais jaune) ; `0008`/`0070` = na ; `0304` = r si modele = TB216.
 - **Pompe a Beton** : `0201`/`0202` = j ; `0204`/`0205`/`0206` = r si `Nombre de sections` >= 4/5/6 ; reste na.
 - **Jeton affiche = defauts + overrides** (corrections manuelles par machine). C'est LA verite, identique dans fiche / BD / export. Jamais re-persiste.
 
@@ -205,7 +208,7 @@ Ou via Claude Code : `preview_start` avec la config `.claude/launch.json`
 - **Solution** : 1 fichier overrides par type (`data/overrides/<slug>.json`) + ecriture backend en compact.
 - **Detail** :
   - `scripts/split_overrides_by_type.py` : split sans perte (verifie : fusion == original ; excavatrices intactes).
-  - `js/overrides-loader.js` : `loadMergedOverrides()` fusionne les 8 fichiers + repli legacy (rollout sans casse).
+  - `js/overrides-loader.js` : `loadMergedOverrides()` fusionne les fichiers par type + repli legacy (rollout sans casse). [8 types a l epoque, 11 aujourd hui]
   - `Api.gs` : ecriture compacte (`JSON.stringify(data)`) + routage par type (`OV_TYPE_SLUGS`, `_ovFilePath`, `ohReadFile/Write/UpdateJson(type)`).
   - **Frontend DEPLOYE** (commit f240791) + **Api.gs REDEPLOYE et verifie** (test machine factice : commit ecrit dans `data/overrides/excavatrice.json`, compact). Decoupage par type COMPLET de bout en bout.
 - **Bonus** : editer un type ne peut plus toucher le fichier d'un autre (excavatrices structurellement protegees).
