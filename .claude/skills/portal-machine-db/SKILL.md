@@ -5,6 +5,23 @@ description: "Gestion complete de la base de donnees Portal Machine e-Trak V2 : 
 
 # Portal Machine V2 — Base de données
 
+**Ce skill est la référence canonique du projet.** Les autres skills du portail décrivent
+un workflow et renvoient ici pour le modèle de données et les pièges. Un fait technique
+n'est écrit qu'à **un** endroit : c'est ce qui a manqué avant le 2026-08-10, quand la même
+règle vivait dans trois fichiers et n'était corrigée que dans un.
+
+## Quel skill utiliser
+
+| Situation | Skill |
+|---|---|
+| Modèle de données, pièges, harnais, audit qualité | **ce skill** |
+| Une machine à créer/compléter depuis une demande | `portal-fill-specs` |
+| Un **type** complet à monter (tous fabricants, toutes années) | `ajout-type-de-machine` |
+| Modèles ou millésimes manquants dans un type existant | `portal-add-models` |
+| États de kit / jetons BOM (`r`, `j`, `v`, `na`) | `portal-kit-options` |
+| Renommer ou réordonner un champ de specs | `portal-rename-field` |
+| Tester, bumper les caches, pousser, vérifier le live | `portal-deploy` |
+
 ## Dépôt
 
 **Répertoire de travail courant** (le clone ouvert dans Claude Code). Ne jamais coder un
@@ -57,25 +74,14 @@ Jeton affiché = défaut de `kit-rules.js` **+** override de `data/overrides/<ty
 Une **décision métier va dans les overrides**, pas en dur dans la règle : le pré-remplissage
 en masse est un point de départ que les admins ajustent ensuite machine par machine.
 
-### Codes BOM Excavatrice
+Le tableau complet des codes BOM et de leurs défauts vit dans le skill
+**`portal-kit-options`** — ne pas le recopier ici, il doit avoir un seul domicile.
 
-| Code | Nom | Défaut |
-|---|---|---|
-| `0000` | Cabine | `r` |
-| `0001` | Hauteur | `j` |
-| `0002` | Rotation | `j` |
-| `0004` | Option mini excavatrice | `r` si ≤ 5000 kg — **filet pour les nouvelles entrées seulement**, voir ci-dessous |
-| `0005` | Multi Axes | `j` |
-| `0008` | Swing boom | `j` si spec « Swing boom » = Oui |
-| `0009` | Drain hyd | `r` si préfixe `DRAIN_PREFIXES`. **JAMAIS jaune** |
-| `0070` | Boîte GC | `r` si le modèle contient « GC » (Caterpillar) |
-| `0304` | Crémaillère | `r` pour TB216 seulement |
-
-Le `1500-0004` est **du temps de main-d'œuvre**, pas un kit (`prices.json` : `item: null,
-install: 790 $`) : le technicien travaille dans un espace restreint. Le vrai critère est la
-gamme dans laquelle le **fabricant** classe la machine, pas le poids. 991 entrées corrigées
-le 2026-08-10 via les overrides. Détail par marque : mémoire
-`project-portal-option-0004-mini`; règles d'application : skill `portal-kit-options`.
+Un point à connaître même sans ouvrir ce skill : le `1500-0004` est **du temps de
+main-d'œuvre**, pas un kit (`prices.json` : `item: null, install: 790 $`). Son critère est
+la gamme dans laquelle le **fabricant** classe la machine, pas le poids. 991 entrées
+corrigées le 2026-08-10 via les overrides. Détail par marque : mémoire
+`project-portal-option-0004-mini`.
 
 ### Harnais de coupure
 
