@@ -1447,6 +1447,30 @@ function hideSoumissionFallback() {
     if (box) { box.style.display = 'none'; box.classList.remove('is-auto'); }
 }
 
+// Ouvre un brouillon PRE-REMPLI dans le webmail de l'utilisateur (Outlook 365
+// web ou Gmail), a partir de la derniere demande generee. Le courriel part alors
+// de SA PROPRE boite (donc livre) sans dependre d'un logiciel courriel installe
+// -> depanne les postes sans client par defaut (cas de Gord). On evite l'envoi
+// serveur (compte Gmail gratuit -> Google supprime les envois en silence, voir
+// commit 027cc61). NB : l'URL a une limite de longueur; pour une tres longue
+// demande, "Copier la demande" reste le repli sur.
+function openWebmail(provider) {
+    var m = window.__lastSoumissionEmail;
+    var fr = soumissionLang() === 'fr';
+    if (!m) {
+        alert(fr ? 'Aucune demande a envoyer. Clique d\'abord sur "Envoyer la demande".'
+                 : 'Nothing to send. Click "Send the request" first.');
+        return;
+    }
+    var to = String(m.to || '').replace(/;/g, ',');   // webmail : separateur virgule
+    var subj = encodeURIComponent(m.subject || '');
+    var body = encodeURIComponent(m.body || '');
+    var url = (provider === 'gmail')
+        ? 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + subj + '&body=' + body
+        : 'https://outlook.office.com/mail/deeplink/compose?to=' + encodeURIComponent(to) + '&subject=' + subj + '&body=' + body;
+    window.open(url, '_blank');
+}
+
 // Rend le panneau. auto=true => le courriel ne s'est pas ouvert (ton "alerte").
 function renderSoumissionFallback(auto) {
     var box = document.getElementById('soumission-fallback');
@@ -1456,12 +1480,14 @@ function renderSoumissionFallback(auto) {
         ? (fr ? '📭 Le courriel ne s\'est pas ouvert ?' : '📭 Email didn\'t open?')
         : (fr ? '📋 Envoyer autrement' : '📋 Send another way');
     var text = auto
-        ? (fr ? 'On dirait qu\'aucun logiciel de courriel n\'est configure sur cet appareil. Copie la demande ci-dessous et colle-la dans un nouveau courriel adresse a e-Trak.'
-              : 'It looks like no email app is set up on this device. Copy the request below and paste it into a new email addressed to e-Trak.')
-        : (fr ? 'Si le courriel ne s\'ouvre pas automatiquement, copie la demande et colle-la dans un nouveau courriel.'
-              : 'If the email does not open automatically, copy the request and paste it into a new email.');
+        ? (fr ? 'Aucun logiciel de courriel par defaut sur cet appareil. Ouvre ta demande directement dans ton webmail (Outlook ou Gmail) avec les boutons ci-dessous — elle partira de ta propre boite. Ou copie-la pour la coller dans un courriel.'
+              : 'No default email app on this device. Open your request directly in your webmail (Outlook or Gmail) with the buttons below — it will be sent from your own mailbox. Or copy it to paste into an email.')
+        : (fr ? 'Envoie ta demande directement dans ton webmail (Outlook ou Gmail), ou copie-la pour la coller dans un courriel.'
+              : 'Send your request directly in your webmail (Outlook or Gmail), or copy it to paste into an email.');
     var copyLabel = fr ? '📋 Copier la demande' : '📋 Copy the request';
     var epicorLabel = fr ? '📋 Copier pour Epicor' : '📋 Copy for Epicor';
+    var outlookLabel = fr ? '📧 Ouvrir dans Outlook (web)' : '📧 Open in Outlook (web)';
+    var gmailLabel = fr ? '📧 Ouvrir dans Gmail' : '📧 Open in Gmail';
     var helpSummary = fr ? 'Configurer mon courriel par defaut' : 'Set up my default email';
     var helpItems = fr ? [
         '<b>Windows</b> : Parametres → Applications → Applications par defaut → choisir Outlook (ou Courrier) pour le courriel.',
@@ -1479,10 +1505,16 @@ function renderSoumissionFallback(auto) {
     box.innerHTML =
         '<p class="soumission-fallback-title">' + title + '</p>' +
         '<p class="soumission-fallback-text">' + text + '</p>' +
-        '<button type="button" id="soumission-copy-btn" class="soumission-copy-btn">' + copyLabel + '</button>' +
+        '<button type="button" id="soumission-outlook-btn" class="soumission-copy-btn">' + outlookLabel + '</button>' +
+        '<button type="button" id="soumission-gmail-btn" class="soumission-copy-btn" style="margin-top:8px;">' + gmailLabel + '</button>' +
+        '<button type="button" id="soumission-copy-btn" class="soumission-copy-btn" style="margin-top:8px;">' + copyLabel + '</button>' +
         '<button type="button" id="soumission-copy-epicor-btn" class="soumission-copy-btn" style="margin-top:8px;">' + epicorLabel + '</button>' +
         '<details class="soumission-fallback-help"><summary>' + helpSummary + '</summary><ul>' + itemsHtml + '</ul></details>';
     box.style.display = 'block';
+    var olBtn = document.getElementById('soumission-outlook-btn');
+    if (olBtn) olBtn.addEventListener('click', function () { openWebmail('outlook'); });
+    var gmBtn = document.getElementById('soumission-gmail-btn');
+    if (gmBtn) gmBtn.addEventListener('click', function () { openWebmail('gmail'); });
     var copyBtn = document.getElementById('soumission-copy-btn');
     if (copyBtn) copyBtn.addEventListener('click', copySoumissionRequest);
     var epiBtn = document.getElementById('soumission-copy-epicor-btn');
