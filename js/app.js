@@ -728,11 +728,51 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 });
             }
 
+            // Inclinometre magnetique (0208) : il s'en pose UN par section de fleche.
+            // Quand la ligne 0208 est presente : si le nombre de sections est NON
+            // ambigu (une seule des options 4/5/6 = 0204/0205/0206 est affichee), on
+            // montre automatiquement "×N" a cote du code ; sinon (0 ou plusieurs
+            // sections) on affiche une note d'ajustement. Idempotent -> jamais de
+            // doublon. (Retour de Steve, 2026-08.)
+            function updatePompeInclinoQty() {
+                var incTr = kitPompeSection.querySelector('tr[data-kit="pompe-inclinometre"]');
+                if (!incTr) return;
+                var codeCell = incTr.querySelector('.kit-code');
+                if (!codeCell) return;
+                // Nettoie un ancien indicateur (idempotence, pas de doublon)
+                var old = codeCell.querySelector('.incli-qty');
+                if (old) old.remove();
+                if (incTr.style.display === 'none') return;   // 0208 absent du kit -> rien
+                var secMap = { 'pompe-4sec': 4, 'pompe-5sec': 5, 'pompe-6sec': 6 };
+                var ns = [];
+                Object.keys(secMap).forEach(function(k){
+                    var tr = kitPompeSection.querySelector('tr[data-kit="' + k + '"]');
+                    if (tr && tr.style.display !== 'none' && ns.indexOf(secMap[k]) === -1) ns.push(secMap[k]);
+                });
+                var fr = (typeof i18n === 'undefined') || i18n.getLang() !== 'en';
+                var span = document.createElement('span');
+                span.className = 'incli-qty';
+                if (ns.length === 1) {
+                    span.innerHTML = ' <strong style="color:#0062CC">×' + ns[0] + '</strong>' +
+                        ' <span style="color:#888;font-size:0.82em">' +
+                        (fr ? '(= nb de sections)' : '(= no. of sections)') + '</span>';
+                } else {
+                    span.innerHTML = ' <span style="color:#E07B00;font-size:0.82em" title="' +
+                        (fr ? 'Ajuster la quantite au nombre de sections de la machine'
+                            : 'Adjust the quantity to the machine\'s number of sections') + '">&#9888; ' +
+                        (fr ? 'qte = nb de sections' : 'qty = no. of sections') + '</span>';
+                }
+                codeCell.appendChild(span);
+            }
+
             // Apply defaults first
             applyBomToPompeKit(pompeBomDefaults);
 
             // BD maitre : libelles + PN depuis _bom_labels (map pompe 1:1)
             applyBdKitLabels(kitPompeSection, POMPE_KIT_MAP, type);
+            // APRES les libelles : applyBdKitLabels reecrit la cellule code (PN), il faut
+            // donc (re)poser l'indicateur de quantite de l'inclinometre ensuite.
+            updatePompeInclinoQty();
 
             // Then load overrides (BD is master : lus depuis machines.json)
             loadKitOverride(type, fab, modele, annee, function(overrides) {
@@ -745,6 +785,7 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                         overrides._removed.forEach(function(c){ pompeBomDefaults[c] = 'na'; });
                     }
                     applyBomToPompeKit(pompeBomDefaults);
+                    updatePompeInclinoQty();
                     if (Array.isArray(overrides._custom) && overrides._custom.length){
                         applyKitOverrides({ customRows: (normalizeKitOverrides(overrides) || {}).customRows || [] });
                     }
