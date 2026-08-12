@@ -1697,8 +1697,13 @@ function getCode(name) {
 }
 
 // Format item: code before description
+// Assemble « code — description ». La description est traduite via i18n.tBom :
+// les libellés codes en dur (creusage, laser, IDC, camera, balance...) etaient
+// sinon laisses en francais dans un courriel/ecran en anglais. tBom renvoie le
+// texte tel quel en FR et pour toute chaine sans traduction -> sans effet de bord.
 function fmtItem(code, desc) {
-    return code ? code + ' — ' + desc : desc;
+    var d = (typeof i18n !== 'undefined' && i18n.tBom) ? i18n.tBom(desc) : desc;
+    return code ? code + ' — ' + d : d;
 }
 
 // Code du creusage 2D selon le limiteur de portee — REGLE FIXE excavatrice (non-overridable) :
