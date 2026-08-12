@@ -251,6 +251,7 @@ function showAdminSection() {
     loadSalesEmails();
     loadKitEmails();
     loadNotesEmails();
+    loadMachineReqEmails();
     renderPermTable();
     loadAllowedTypes();
 }
@@ -958,6 +959,48 @@ function renderNotesEmails() {
     });
 }
 
+// ---- MACHINE REQUEST EMAILS (demande d'ajout de machine) ----
+let machineReqEmails = [];
+
+function loadMachineReqEmails() {
+    fetch(API_URL + '?action=get&key=machine_request_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) { try { machineReqEmails = JSON.parse(data.value); } catch(e) {} }
+            renderMachineReqEmails();
+        })
+        .catch(function() { renderMachineReqEmails(); });
+}
+
+function saveMachineReqEmails() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'machine_request_emails', value: JSON.stringify(machineReqEmails), pin: portalToken() })
+    }).catch(function() {});
+}
+
+function renderMachineReqEmails() {
+    var list = document.getElementById('admin-machinereq-email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    machineReqEmails.forEach(function(email, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">✕ Supprimer</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            machineReqEmails.splice(idx, 1);
+            saveMachineReqEmails();
+            renderMachineReqEmails();
+            showToast(i18n.t('admin.machinereq_email_deleted'));
+        });
+    });
+}
+
 // ---- USERS ----
 // Liste chargee par l'action authentifiee 'listusers' : les mots de passe ne sont
 // retournes que pour un token admin (UI de gestion des comptes).
@@ -1521,6 +1564,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderNotesEmails();
                 input.value = '';
                 showToast(i18n.t('admin.notes_email_added'));
+            }
+        };
+    }
+
+    // ADD MACHINE REQUEST EMAIL
+    var addMachineReqEmailBtn = document.getElementById('admin-add-machinereq-email-btn');
+    if (addMachineReqEmailBtn) {
+        addMachineReqEmailBtn.onclick = function() {
+            var input = document.getElementById('admin-add-machinereq-email');
+            var email = input.value.trim();
+            if (email && email.includes('@')) {
+                machineReqEmails.push(email);
+                saveMachineReqEmails();
+                renderMachineReqEmails();
+                input.value = '';
+                showToast(i18n.t('admin.machinereq_email_added'));
             }
         };
     }

@@ -76,12 +76,50 @@ function submitMachineRequest(info, btnEl) {
                 body: JSON.stringify({ action: 'save', key: 'machine_requests', value: JSON.stringify(list), pin: portalToken() })
             }).then(function(r) { return r.json(); }).then(function() {
                 if (btnEl) { btnEl.textContent = t('js.req_done', '✓ Demande enregistrée'); }
+                notifyMachineRequest(info, u.name || u.username || '');
             });
         })
         .catch(function() {
             if (btnEl) { btnEl.disabled = false; btnEl.textContent = prev; }
             alert(t('js.req_error', 'Erreur lors de l\'envoi de la demande. Réessayez.'));
         });
+}
+
+// Notifie par courriel (envoi backend sendsoumission) les adresses de la liste
+// 'machine_request_emails' quand une nouvelle demande de machine est enregistree.
+// Liste geree dans l'admin ; si vide, aucun courriel n'est envoye. Echec silencieux
+// (la demande est deja enregistree cote KV, la notif est un bonus).
+function notifyMachineRequest(info, requesterName) {
+    var tt = function(k, p) { return (typeof i18n !== 'undefined') ? i18n.t(k, p) : k; };
+    fetch(API_URL + '?action=get&key=machine_request_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var emails = [];
+            if (data && data.value) { try { emails = JSON.parse(data.value) || []; } catch(e) { emails = []; } }
+            if (!Array.isArray(emails) || !emails.length) return;
+            var typeLabel = (typeof i18n !== 'undefined') ? i18n.t('type.' + info.type) : info.type;
+            var lines = [
+                tt('email.machinereq_body_header'),
+                '',
+                tt('email.note_details'),
+                tt('email.note_type', { type: typeLabel }),
+                tt('email.note_fab', { fab: info.fab }),
+                tt('email.note_modele', { modele: info.modele }),
+                tt('email.note_annee', { annee: info.annee }),
+                tt('email.machinereq_requester', { name: requesterName || '—' }),
+                '',
+                '---',
+                tt('email.note_footer')
+            ];
+            var text = lines.join('\n');
+            var html = '<div style="font-family:Arial,sans-serif;font-size:14px;white-space:pre-line">' + lines.join('\n') + '</div>';
+            var subject = tt('email.machinereq_subject', { fab: info.fab, modele: info.modele, annee: info.annee });
+            fetch(API_URL, {
+                method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'sendsoumission', to: emails.join(','), subject: subject, html: html, text: text, pin: portalToken() })
+            }).catch(function() {});
+        })
+        .catch(function() {});
 }
 
 const selectType = document.getElementById('select-type');
