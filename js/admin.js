@@ -1001,6 +1001,30 @@ function renderMachineReqEmails() {
     });
 }
 
+// ---- CARTE UTILISATEURS REPLIABLE (+/-) ----
+// La liste des utilisateurs s'allonge ; on la replie pour atteindre vite les
+// cartes suivantes (Vendeurs...). Etat memorise dans localStorage. Repliee par
+// defaut (aucune valeur stockee) pour resoudre le scroll signale.
+function initUsersCollapse() {
+    var btn = document.getElementById('admin-users-toggle');
+    var body = document.getElementById('admin-users-body');
+    if (!btn || !body) return;
+    function apply(collapsed) {
+        body.style.display = collapsed ? 'none' : '';
+        btn.textContent = collapsed ? '+' : '−';   // + / − (signe moins)
+        btn.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    }
+    var stored = null;
+    try { stored = localStorage.getItem('admin_users_collapsed'); } catch(e) {}
+    var collapsed = (stored === null) ? true : (stored === '1');
+    apply(collapsed);
+    btn.onclick = function() {
+        collapsed = !collapsed;
+        apply(collapsed);
+        try { localStorage.setItem('admin_users_collapsed', collapsed ? '1' : '0'); } catch(e) {}
+    };
+}
+
 // ---- USERS ----
 // Liste chargee par l'action authentifiee 'listusers' : les mots de passe ne sont
 // retournes que pour un token admin (UI de gestion des comptes).
@@ -1583,6 +1607,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         };
     }
+
+    // Carte Utilisateurs repliable (+/-)
+    initUsersCollapse();
 
     // Show/hide vendeur dropdown based on role
     var roleSelect = document.getElementById('admin-new-role');

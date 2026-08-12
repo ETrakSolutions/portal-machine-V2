@@ -113,6 +113,29 @@
     margin: 0 0 1rem;
 }
 
+/* Carte repliable (+/-) — ex. Utilisateurs autorises */
+.admin-card.collapsible { position: relative; }
+.admin-card.collapsible .admin-card-header { padding-right: 2.75rem; }
+.admin-collapse-btn {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: #fff;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+}
+.admin-collapse-btn:hover { border-color: #0062CC; background: rgba(0,98,204,0.12); }
+
 /* Lists */
 .admin-list {
     margin-bottom: 1rem;

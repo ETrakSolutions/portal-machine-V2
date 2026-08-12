@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
     <link rel="stylesheet" href="css/style.css?v=174">
-    <link rel="stylesheet" href="css/admin.css?v=174">
+    <link rel="stylesheet" href="css/admin.css?v=175">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -102,11 +102,13 @@
             </div>
 
             <!-- Utilisateurs -->
-            <section class="admin-card">
+            <section class="admin-card collapsible" id="admin-users-card">
+                <button id="admin-users-toggle" class="admin-collapse-btn" type="button" data-i18n-title="admin.toggle_users" title="Reduire / agrandir la liste" aria-expanded="true">&#8722;</button>
                 <div class="admin-card-header">
                     <h2 data-i18n-html="admin.users_title">&#128101; Utilisateurs autorises</h2>
                     <p class="admin-card-desc" data-i18n="admin.users_desc">Comptes pouvant se connecter au portail. Chaque compte a un role et des permissions.</p>
                 </div>
+                <div id="admin-users-body">
                 <div class="admin-table-wrap">
                     <table class="admin-table" id="admin-user-table">
                         <thead>
@@ -156,6 +158,7 @@
                     <p class="admin-card-desc" style="margin-top:0.5rem;color:#999;font-size:0.75rem;" data-i18n-html="admin.temp_password">Mot de passe temporaire : <strong style="color:#FF8C00;">0000</strong> — l'utilisateur devra le changer a sa premiere connexion.</p>
                     <p id="admin-add-user-error" class="login-error" style="display:none;"></p>
                     <button id="admin-add-user-btn" class="admin-btn-add admin-btn-wide" data-i18n="admin.add_user_btn">+ Ajouter l'utilisateur</button>
+                </div>
                 </div>
             </section>
 
@@ -294,11 +297,11 @@
     </footer>
 
     <script src="js/config.js?v=1"></script>
-    <script src="js/translations.js?v=210"></script>
+    <script src="js/translations.js?v=211"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/admin.js?v=196"></script>
+    <script src="js/admin.js?v=197"></script>
     <script>
     // Affiche la version (V2 + date) dans le pied de page, depuis version.json
     fetch('version.json?t=' + Date.now()).then(function(r){ return r.json(); }).then(function(d){
