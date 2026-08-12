@@ -1381,6 +1381,14 @@ if (submitBtn) {
                     '   ' + i18n.t('email.total_indicative') + '\n';
         }
 
+        // Bloc Epicor (point 1) : une ligne par item, colonnes separees par une
+        // tabulation (Code / Qte / Description / Prix). Luna le copie depuis le
+        // courriel et le colle directement dans la grille de commande Epicor.
+        var _epiBlock = epicorBlockText();
+        if (_epiBlock) {
+            body += '\n' + i18n.t('email.epicor_header') + '\n' + _epiBlock + '\n';
+        }
+
         if (comment) {
             body += '\n' + i18n.t('email.additional_info') + '\n  ' + comment + '\n';
         }
@@ -1408,9 +1416,13 @@ if (submitBtn) {
         // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours) :
         // le vendeur est dans le "A", donc visible aussi dans la version copiee.
         window.__lastSoumissionEmail = { to: toAll, cc: '', subject: subject, body: body };
+        window.__lastSoumissionEpicor = _epiBlock;
         // Cache un eventuel panneau de secours d'un envoi precedent.
         hideSoumissionFallback();
-        // Detecte si le client courriel s'ouvre; sinon, affiche le panneau de secours.
+        // Point 2 : le panneau de copie (Copier la demande / Copier pour Epicor) est
+        // TOUJOURS affiche apres une generation, pas seulement si le courriel echoue.
+        renderSoumissionFallback(false);
+        // Detecte si le client courriel s'ouvre; sinon, bascule le panneau en mode "alerte".
         armMailtoFallback();
         // Envoi via le client courriel de l'utilisateur (part de sa propre adresse).
         window.location.href = mailUrl;
@@ -1448,6 +1460,7 @@ function renderSoumissionFallback(auto) {
         : (fr ? 'Si le courriel ne s\'ouvre pas automatiquement, copie la demande et colle-la dans un nouveau courriel.'
               : 'If the email does not open automatically, copy the request and paste it into a new email.');
     var copyLabel = fr ? '📋 Copier la demande' : '📋 Copy the request';
+    var epicorLabel = fr ? '📋 Copier pour Epicor' : '📋 Copy for Epicor';
     var helpSummary = fr ? 'Configurer mon courriel par defaut' : 'Set up my default email';
     var helpItems = fr ? [
         '<b>Windows</b> : Parametres → Applications → Applications par defaut → choisir Outlook (ou Courrier) pour le courriel.',
@@ -1466,10 +1479,13 @@ function renderSoumissionFallback(auto) {
         '<p class="soumission-fallback-title">' + title + '</p>' +
         '<p class="soumission-fallback-text">' + text + '</p>' +
         '<button type="button" id="soumission-copy-btn" class="soumission-copy-btn">' + copyLabel + '</button>' +
+        '<button type="button" id="soumission-copy-epicor-btn" class="soumission-copy-btn" style="margin-top:8px;">' + epicorLabel + '</button>' +
         '<details class="soumission-fallback-help"><summary>' + helpSummary + '</summary><ul>' + itemsHtml + '</ul></details>';
     box.style.display = 'block';
     var copyBtn = document.getElementById('soumission-copy-btn');
     if (copyBtn) copyBtn.addEventListener('click', copySoumissionRequest);
+    var epiBtn = document.getElementById('soumission-copy-epicor-btn');
+    if (epiBtn) epiBtn.addEventListener('click', copyEpicorBlock);
 }
 
 // Ce panneau est construit en JS au moment du clic : il n a donc aucun attribut
@@ -1528,6 +1544,58 @@ function legacyCopy(text, cb) {
         alert((soumissionLang() === 'fr')
             ? 'Impossible de copier automatiquement. Selectionne le texte manuellement.'
             : 'Automatic copy failed. Please select the text manually.');
+    }
+}
+
+// ===========================================================================
+// Bloc "Epicor" (point 1) — Luna colle la soumission dans l'ERP Epicor.
+// On produit une ligne par item, colonnes separees par une TABULATION :
+//   CODE <tab> QTE <tab> DESCRIPTION <tab> PRIX
+// (prix = prix piece unitaire, nombre brut sans mise en forme -> colle propre
+//  dans une grille). La quantite est extraite du nom (ex. "... x2" / "... ×2").
+// ===========================================================================
+function _splitQty(name) {
+    var m = String(name || '').match(/\s*[x×]\s*(\d+)\s*$/i);
+    if (m) return { qty: parseInt(m[1], 10) || 1, desc: String(name).slice(0, m.index).trim() };
+    return { qty: 1, desc: String(name || '').trim() };
+}
+function buildEpicorRows() {
+    var rows = window.__selectionRows || [];
+    return rows
+        .filter(function (r) { return r && (r.code || r.name); })
+        .map(function (r) {
+            var sq = _splitQty(r.name);
+            var pr = priceFor(r.code);
+            return { code: r.code || '', qty: sq.qty, desc: sq.desc,
+                     price: (typeof pr.item === 'number') ? pr.item : null };
+        });
+}
+function epicorBlockText() {
+    return buildEpicorRows().map(function (r) {
+        return [r.code, r.qty, r.desc, (r.price === null ? '' : r.price)].join('\t');
+    }).join('\n');
+}
+function copyEpicorBlock() {
+    var fr = soumissionLang() === 'fr';
+    var btn = document.getElementById('soumission-copy-epicor-btn');
+    var text = (window.__lastSoumissionEpicor && window.__lastSoumissionEpicor.trim())
+        ? window.__lastSoumissionEpicor : epicorBlockText();
+    if (!text || !text.trim()) {
+        alert(fr ? 'Aucun item a copier. Selectionne au moins une option.'
+                 : 'Nothing to copy. Select at least one option.');
+        return;
+    }
+    var prev = btn ? btn.textContent : '';
+    var done = function () {
+        if (!btn) return;
+        btn.classList.add('is-copied');
+        btn.textContent = fr ? '✓ Copie !' : '✓ Copied!';
+        setTimeout(function () { btn.classList.remove('is-copied'); btn.textContent = prev; }, 2500);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () { legacyCopy(text, done); });
+    } else {
+        legacyCopy(text, done);
     }
 }
 

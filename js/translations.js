@@ -652,6 +652,7 @@ fr: {
     'email.total_parts': 'Total pieces',
     'email.total_install': 'Total installation',
     'email.total_indicative': '(indicatif, hors taxes)',
+    'email.epicor_header': '--- Lignes pour Epicor (Code / Qte / Description / Prix) — copier/coller ---',
     // -- Tableau prix soumission (ecran) --
     'soum.tbl_product': 'Produit',
     'soum.tbl_price': 'Prix',
@@ -1622,6 +1623,7 @@ en: {
     'email.total_parts': 'Total parts',
     'email.total_install': 'Total installation',
     'email.total_indicative': '(indicative, before taxes)',
+    'email.epicor_header': '--- Lines for Epicor (Code / Qty / Description / Price) — copy/paste ---',
     // -- Quote price table (screen) --
     'soum.tbl_product': 'Product',
     'soum.tbl_price': 'Price',
