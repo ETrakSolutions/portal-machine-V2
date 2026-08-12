@@ -743,25 +743,21 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
                 var old = codeCell.querySelector('.incli-qty');
                 if (old) old.remove();
                 if (incTr.style.display === 'none') return;   // 0208 absent du kit -> rien
-                var secMap = { 'pompe-4sec': 4, 'pompe-5sec': 5, 'pompe-6sec': 6 };
-                var ns = [];
+                // Nombre de sections = le PLUS GRAND code section present
+                // (0203=3, 0204=4, 0205=5, 0206=6). Meme regle que la soumission.
+                var secMap = { 'pompe-sans-coffre': 3, 'pompe-4sec': 4, 'pompe-5sec': 5, 'pompe-6sec': 6 };
+                var maxN = null;
                 Object.keys(secMap).forEach(function(k){
                     var tr = kitPompeSection.querySelector('tr[data-kit="' + k + '"]');
-                    if (tr && tr.style.display !== 'none' && ns.indexOf(secMap[k]) === -1) ns.push(secMap[k]);
+                    if (tr && tr.style.display !== 'none' && (maxN === null || secMap[k] > maxN)) maxN = secMap[k];
                 });
+                if (maxN === null) return;   // aucune section connue -> pas d'indicateur
                 var fr = (typeof i18n === 'undefined') || i18n.getLang() !== 'en';
                 var span = document.createElement('span');
                 span.className = 'incli-qty';
-                if (ns.length === 1) {
-                    span.innerHTML = ' <strong style="color:#0062CC">×' + ns[0] + '</strong>' +
-                        ' <span style="color:#888;font-size:0.82em">' +
-                        (fr ? '(= nb de sections)' : '(= no. of sections)') + '</span>';
-                } else {
-                    span.innerHTML = ' <span style="color:#E07B00;font-size:0.82em" title="' +
-                        (fr ? 'Ajuster la quantite au nombre de sections de la machine'
-                            : 'Adjust the quantity to the machine\'s number of sections') + '">&#9888; ' +
-                        (fr ? 'qte = nb de sections' : 'qty = no. of sections') + '</span>';
-                }
+                span.innerHTML = ' <strong style="color:#0062CC">×' + maxN + '</strong>' +
+                    ' <span style="color:#888;font-size:0.82em">' +
+                    (fr ? '(= nb de sections)' : '(= no. of sections)') + '</span>';
                 codeCell.appendChild(span);
             }
 

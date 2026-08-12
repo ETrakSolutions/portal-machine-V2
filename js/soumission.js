@@ -1365,8 +1365,9 @@ if (submitBtn) {
             body += '\n' + i18n.t('email.products_header') + '\n';
             selRows.forEach(function (r) {
                 var pr = priceFor(r.code);
-                if (typeof pr.item === 'number') _totItem += pr.item;
-                if (typeof pr.install === 'number') _totInstall += pr.install;
+                var q = lineQty(r.code, r.name);   // inclinometre pompe x nb sections, sinon 1
+                if (typeof pr.item === 'number') _totItem += pr.item * q;
+                if (typeof pr.install === 'number') _totInstall += pr.install * q;
                 if (r.oblig) anyOblig = true;
                 var mark = r.oblig ? '* ' : '';
                 body += '  - ' + mark + (r.code ? r.code + '  ' : '') + r.name + '\n';
@@ -1558,6 +1559,14 @@ function _splitQty(name) {
     var m = String(name || '').match(/\s*[x×]\s*(\d+)\s*$/i);
     if (m) return { qty: parseInt(m[1], 10) || 1, desc: String(name).slice(0, m.index).trim() };
     return { qty: 1, desc: String(name || '').trim() };
+}
+// Suffixe 4 chiffres d'un code produit (ex. "1500-0208" -> "0208").
+function _codeSuffix(c) { var m = String(c || '').match(/(\d{4})\s*$/); return m ? m[1] : ''; }
+// Quantite d'une ligne : pour l'inclinometre pompe (…0208), la quantite = nombre
+// de sections encode dans le nom via "×N" ; sinon 1. Sert au prix etendu (ecran +
+// courriel) ET a la colonne Qte du bloc Epicor.
+function lineQty(code, name) {
+    return (_codeSuffix(code) === '0208') ? _splitQty(name).qty : 1;
 }
 function buildEpicorRows() {
     var rows = window.__selectionRows || [];
@@ -1876,6 +1885,19 @@ function updateSelectedSummary() {
     // sans limiteur). Bornee a hasUserSelection pour ne rien afficher avant toute selection.
     var obligItems = [];
     var kitAll = getKitAllItems();
+    // Pompe a Beton : l'inclinometre magnetique (…0208) se pose UN par section de
+    // fleche. Le nombre de sections = le PLUS GRAND code section present
+    // (0203=3, 0204=4, 0205=5, 0206=6). On l'encode via "×N" dans le nom -> repris
+    // par l'ecran, le courriel, le prix (etendu via lineQty) et le bloc Epicor.
+    // Regle confirmee (Steve/Jacquot, 2026-08).
+    var _pompeSecN = null;
+    if (_selT === 'Pompe a Beton') {
+        var _SECVAL = { '0203': 3, '0204': 4, '0205': 5, '0206': 6 };
+        kitAll.forEach(function (it) {
+            var v = _SECVAL[_codeSuffix(it.code)];
+            if (v && (_pompeSecN === null || v > _pompeSecN)) _pompeSecN = v;
+        });
+    }
     kitAll.forEach(function(item) {
         if (item.optExplicit) { if (!hasUserSelection) return; }
         else { if (!limiterOn) return; }
@@ -1885,7 +1907,12 @@ function updateSelectedSummary() {
         if (limVal === 'Multi-axe' && (item.code === '1500-0000' || (_baseSkip && item.code === _baseSkip))) return;
         var alreadyListed = items.some(function(i) { return i.indexOf(item.code) !== -1; });
         if (!alreadyListed && item.status === 'Obligatoire') {
-            obligItems.push(fmtItem(item.code, i18n.tBom(item.name)));
+            var _nm = i18n.tBom(item.name);
+            // Inclinometre pompe : quantite = nombre de sections. Idempotent -> pas de doublon.
+            if (_pompeSecN && _codeSuffix(item.code) === '0208' && !/[x×]\s*\d+\s*$/i.test(_nm)) {
+                _nm = _nm + ' ×' + _pompeSecN;
+            }
+            obligItems.push(fmtItem(item.code, _nm));
         }
     });
 
@@ -1943,10 +1970,15 @@ function updateSelectedSummary() {
             var code = idx >= 0 ? lineStr.slice(0, idx).trim() : '';
             var name = idx >= 0 ? lineStr.slice(idx + 3) : lineStr;
             var pr = priceFor(code);
+            // Prix ETENDU : inclinometre pompe (…0208) x nombre de sections (encode
+            // dans le nom via "×N"). lineQty renvoie 1 pour toutes les autres lignes.
+            var q = lineQty(code, name);
+            var itemExt = (typeof pr.item === 'number') ? pr.item * q : pr.item;
+            var instExt = (typeof pr.install === 'number') ? pr.install * q : pr.install;
             if (pr.item !== null || pr.install !== null) {
                 anyPrice = true;
-                if (typeof pr.item === 'number') totItem += pr.item;
-                if (typeof pr.install === 'number') totInstall += pr.install;
+                if (typeof pr.item === 'number') totItem += pr.item * q;
+                if (typeof pr.install === 'number') totInstall += pr.install * q;
             }
             var prod = code
                 ? '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">' + code + '</span> ' + name
@@ -1954,8 +1986,8 @@ function updateSelectedSummary() {
             var dot = oblig ? '<span style="color:#FF4444">&#9679; </span>' : '';
             return '<tr>' +
                 '<td style="padding:4px 10px 4px 0;vertical-align:top">' + dot + prod + '</td>' +
-                '<td style="padding:4px 8px;text-align:right;white-space:nowrap">' + cell(pr.item) + '</td>' +
-                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">' + cell(pr.install) + '</td>' +
+                '<td style="padding:4px 8px;text-align:right;white-space:nowrap">' + cell(itemExt) + '</td>' +
+                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">' + cell(instExt) + '</td>' +
                 '</tr>';
         };
         var rows = items.map(function(i) { return rowFor(i, false); }).join('');
