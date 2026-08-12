@@ -537,9 +537,15 @@ function applyNacelleOptions() {
     (KRn.NACELLE_OPT_CODES || ['0903', '0904', '0905', '0906', '0907']).forEach(function (code) {
         var lab = document.getElementById('sub-nac-' + code);
         var cb = document.getElementById('nac-' + code);
-        var dispo = specsN ? ((stN[code] || 'na') !== 'na') : true;
+        var state = specsN ? (stN[code] || 'na') : 'j';
+        var dispo = state !== 'na';
         if (lab) lab.style.display = dispo ? '' : 'none';
-        if (!dispo && cb) cb.checked = false;
+        if (!cb) return;
+        if (!dispo) { cb.checked = false; cb.disabled = false; return; }
+        // Option OBLIGATOIRE (r) — ex. « Articule » sur une nacelle articulee :
+        // cochee d'office et verrouillee -> toujours incluse et facturee.
+        if (state === 'r') { cb.checked = true; cb.disabled = true; }
+        else { cb.disabled = false; }
     });
 }
 

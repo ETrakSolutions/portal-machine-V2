@@ -93,9 +93,14 @@
   // le reste = j), d ou un jeton different entre la soumission et les autres
   // tuiles. Les deux sources disent desormais la meme chose.
   //
-  // Seule nuance conservee : « Articule » (0903) n est propose que sur une
-  // machine dont la categorie est une fleche articulee — l offrir sur une
-  // telescopique n aurait pas de sens.
+  // « Articule » (0903) ne concerne QUE les fleches articulees (na ailleurs).
+  // 2026-08-12 (confirme par Jacquot en connaissance de l impact facturation ;
+  // A FAIRE VALIDER par Mathieu Robillard a son retour de vacances) : sur une
+  // fleche articulee, 0903 passe de « option » (j) a « OBLIGATOIRE » (r) ->
+  // l Articule (~1190$) s ajoute automatiquement au kit de base (3430$) et est
+  // facture sans choix du vendeur. Ceci revient en partie sur la decision du
+  // 2026-08-05 qui l avait mis a « j ». La base 0900 reste obligatoire sur toute
+  // nacelle ; le mat vertical garde le kit complet (statu quo).
   function nacelleDefaults(specs) {
     var cat = String((specs && (specs['Categorie'] || specs['Catégorie'])) || '').toLowerCase();
     var artic = cat.indexOf('articul') >= 0;
@@ -103,7 +108,7 @@
       '0900': 'r',
       '0901': 'j',
       '0902': 'j',
-      '0903': artic ? 'j' : 'na',
+      '0903': artic ? 'r' : 'na',
       '0904': 'j',
       '0905': 'j',
       '0906': 'j',
