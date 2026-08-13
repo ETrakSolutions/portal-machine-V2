@@ -1882,7 +1882,7 @@ function updateSelectedSummary() {
             if (camData) {
                 items.push(fmtItem(camData[0].code, camData[0].desc));
             } else {
-                items.push(camRadio.value);
+                items.push(fmtItem('', camRadio.value));   // repli : passe par tBom (pas de fuite FR)
             }
         }
     }
@@ -1897,7 +1897,7 @@ function updateSelectedSummary() {
         if (box.classList.contains('active')) {
             var od = INDIVIDUAL_CODES[box.dataset.option];
             if (od) items.push(fmtItem(od[0].code, od[0].desc));
-            else items.push(box.dataset.option);
+            else items.push(fmtItem('', box.dataset.option));   // repli : passe par tBom
         }
     });
 

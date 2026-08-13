@@ -369,14 +369,15 @@ function showCustomModelModal(type, fab, annee) {
     const modal = document.createElement('div');
     modal.id = 'custom-model-modal';
     modal.className = 'custom-modal-overlay';
+    var _t = function (k, fb) { return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
     modal.innerHTML = `
         <div class="custom-modal">
-            <h3>Nouveau modele</h3>
+            <h3>${_t('modal.new_model_title', 'Nouveau modele')}</h3>
             <p class="modal-desc">${fab} \u2014 ${annee}</p>
-            <input type="text" id="custom-model-name" class="modal-input" placeholder="Nom du modele (ex: CX250D)" autocomplete="off">
+            <input type="text" id="custom-model-name" class="modal-input" placeholder="${_t('modal.new_model_ph', 'Nom du modele (ex: CX250D)')}" autocomplete="off">
             <div class="modal-buttons">
-                <button id="modal-cancel" class="modal-btn modal-btn-cancel">Annuler</button>
-                <button id="modal-create" class="modal-btn modal-btn-create">Creer la fiche</button>
+                <button id="modal-cancel" class="modal-btn modal-btn-cancel">${_t('common.annuler', 'Annuler')}</button>
+                <button id="modal-create" class="modal-btn modal-btn-create">${_t('modal.create_fiche', 'Creer la fiche')}</button>
             </div>
         </div>
     `;
