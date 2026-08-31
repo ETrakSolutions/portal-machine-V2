@@ -1388,9 +1388,9 @@ if (submitBtn) {
                     '   ' + i18n.t('email.total_indicative') + '\n';
         }
 
-        // Bloc Epicor (point 1) : une ligne par item, colonnes separees par une
-        // tabulation (Code / Qte / Description / Prix). Luna le copie depuis le
-        // courriel et le colle directement dans la grille de commande Epicor.
+        // Bloc Epicor (point 1) : une ligne par item, deux colonnes separees par
+        // une tabulation (Code / Qte). Luna le copie depuis le courriel et le
+        // colle directement dans la grille de commande Epicor.
         var _epiBlock = epicorBlockText();
         if (_epiBlock) {
             body += '\n' + i18n.t('email.epicor_header') + '\n' + _epiBlock + '\n';
@@ -1589,9 +1589,14 @@ function legacyCopy(text, cb) {
 // ===========================================================================
 // Bloc "Epicor" (point 1) — Luna colle la soumission dans l'ERP Epicor.
 // On produit une ligne par item, colonnes separees par une TABULATION :
-//   CODE <tab> QTE <tab> DESCRIPTION <tab> PRIX
-// (prix = prix piece unitaire, nombre brut sans mise en forme -> colle propre
-//  dans une grille). La quantite est extraite du nom (ex. "... x2" / "... ×2").
+//   CODE <tab> QTE
+// DEUX COLONNES SEULEMENT, depuis le 2026-08-31 : verification faite par Steve,
+// la grille de commande Epicor n'attend que le code et la quantite. La
+// description et le prix qu'on envoyait avant decalaient le collage d'autant de
+// colonnes. Le courriel continue d'afficher la liste complete des items, avec
+// descriptions et prix, juste au-dessus de ce bloc — ce n'est donc pas une perte
+// d'information pour le lecteur, seulement un artefact de collage remis droit.
+// La quantite est extraite du nom (ex. "... x2" / "... ×2").
 // ===========================================================================
 function _splitQty(name) {
     var m = String(name || '').match(/\s*[x×]\s*(\d+)\s*$/i);
@@ -1611,15 +1616,12 @@ function buildEpicorRows() {
     return rows
         .filter(function (r) { return r && (r.code || r.name); })
         .map(function (r) {
-            var sq = _splitQty(r.name);
-            var pr = priceFor(r.code);
-            return { code: r.code || '', qty: sq.qty, desc: sq.desc,
-                     price: (typeof pr.item === 'number') ? pr.item : null };
+            return { code: r.code || '', qty: _splitQty(r.name).qty };
         });
 }
 function epicorBlockText() {
     return buildEpicorRows().map(function (r) {
-        return [r.code, r.qty, r.desc, (r.price === null ? '' : r.price)].join('\t');
+        return [r.code, r.qty].join('\t');
     }).join('\n');
 }
 function copyEpicorBlock() {
