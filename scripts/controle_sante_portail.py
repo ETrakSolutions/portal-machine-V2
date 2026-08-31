@@ -105,7 +105,16 @@ for t in types:
         vus = collections.defaultdict(set)
         for y, mods in annees.items():
             for m in mods:
-                vus[re.sub(r'[^a-z0-9]', '', m.lower())].add(m)
+                # Le « + » est CONSERVE : chez plusieurs fabricants c'est un vrai
+                # suffixe de modele, pas une coquille. Manitou vend l'ATJ 46 ET
+                # l'ATJ 46+ (gammes NA verifiees sur manitou.com le 2026-08-31 :
+                # ATJ 46 / ATJ 46+ / ATJ 60, et TJ 65 / TJ 65+ / TJ 80+ / TJ 85),
+                # Solis vend le H24 et le H24+. Les fondre donnait trois fausses
+                # alertes permanentes, et une alerte qu'on apprend a ignorer ne
+                # protege plus de rien.
+                # Tirets, espaces et casse restent effaces : c'est ce qui a permis
+                # d'attraper le vrai doublon « S-65 XC » / « S65 XC » chez Genie.
+                vus[re.sub(r'[^a-z0-9+]', '', m.lower())].add(m)
         for cle, noms in vus.items():
             if len(noms) > 1:
                 n_dbl += 1
