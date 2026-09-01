@@ -61,6 +61,12 @@ var BALANCE_PRODUITS = {
         .catch(function() {}); // Keep defaults on error
 })();
 
+// Valeur sentinelle du type « sans machine ». Volontairement impossible a
+// confondre avec un vrai type : elle ne doit jamais servir de cle dans
+// machinesData, et tout code qui indexe la base doit sortir avant.
+const SANS_MACHINE = '__sans_machine__';
+function estSansMachine() { return selectType && selectType.value === SANS_MACHINE; }
+
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
 const selectAnnee = document.getElementById('select-annee');
@@ -237,6 +243,16 @@ function populateTypes() {
         opt.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + type) : type;
         selectType.appendChild(opt);
     });
+
+    // « Sans machine », en DERNIER : c'est une sortie de secours, pas un type de
+    // machine. Un distributeur qui achete une camera pour un lift, un camion benne
+    // ou une betonniere n'a aucune machine a choisir ici — avant, il devait en
+    // inventer une, ce qui salissait la soumission et la donnee.
+    const optSM = document.createElement('option');
+    optSM.value = SANS_MACHINE;
+    optSM.textContent = (typeof i18n !== 'undefined')
+        ? i18n.t('soumission.sans_machine') : 'Sans machine (autre equipement)';
+    selectType.appendChild(optSM);
 }
 
 // Check if user has manually selected any options (not just auto-displayed obligatory items)
@@ -258,9 +274,66 @@ function confirmReset(onConfirm) {
 }
 
 // Cascading selects
+// Bascule l'affichage entre le mode machine (cascade a 4 selecteurs) et le mode
+// sans machine (un champ libre). Une seule fonction pour les deux sens : deux
+// fonctions symetriques finissent toujours par diverger.
+function afficherModeSansMachine(actif) {
+    ['select-fabricant', 'select-modele', 'select-annee'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && el.closest('.selector-group')) el.closest('.selector-group').style.display = actif ? 'none' : '';
+    });
+    var box = document.getElementById('sans-machine-box');
+    if (box) box.style.display = actif ? '' : 'none';
+    var qte = document.getElementById('cam-qte-box');
+    if (qte) qte.style.display = actif ? '' : 'none';
+    var ic = document.getElementById('install-client-box');
+    if (ic) ic.style.display = actif ? '' : 'none';
+    var specs = document.getElementById('specs-section');
+    if (specs && actif) specs.style.display = 'none';
+    if (!actif) {
+        var eq = document.getElementById('soumission-equipement');
+        if (eq) eq.value = '';
+        var q = document.getElementById('cam-qte');
+        if (q) q.value = '1';
+        // Decocher en quittant le mode : laisser « installee par le client » actif
+        // sur une soumission machine retirerait l'installation sans que personne
+        // ne voie la case, qui est masquee.
+        var icc = document.getElementById('soumission-install-client');
+        if (icc) icc.checked = false;
+    }
+}
+
+// La case change le PRIX : il faut redessiner le tableau, pas seulement l'etat.
+document.addEventListener('DOMContentLoaded', function () {
+    ['soumission-install-client', 'cam-qte'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('change', function () {
+            if (typeof updateSelectedSummary === 'function') updateSelectedSummary();
+        });
+    });
+});
+
 function doTypeChange() {
     resetFrom('fabricant');
     const type = selectType.value;
+
+    // Sans machine : on court-circuite toute la cascade. Rien ici ne doit indexer
+    // machinesData avec cette valeur — elle n'y existe pas.
+    if (type === SANS_MACHINE) {
+        afficherModeSansMachine(true);
+        applyTypeRestrictions(SANS_MACHINE);
+        optionsSection.style.display = 'block';
+        emptyState.style.display = 'none';
+        var _sb = document.getElementById('soumission-submit'); if (_sb) _sb.style.display = '';
+        var titleEl = document.getElementById('options-title');
+        if (titleEl) titleEl.textContent = i18n.t('soumission.options_sans_machine');
+        var descEl = document.getElementById('options-machine-desc');
+        if (descEl) descEl.textContent = i18n.t('soumission.options_sans_machine_desc');
+        btnReset.style.display = 'inline-block';
+        return;
+    }
+
+    afficherModeSansMachine(false);
     if (!type) return;
     const fabricants = Object.keys(machinesData[type]).filter(f => f.charAt(0) !== '_').sort();
     fabricants.forEach(fab => {
@@ -554,6 +627,30 @@ function applyNacelleOptions() {
 //  - sous-option "Multi-axe" du Limiteur : Excavatrice ou Retrocaveuse seulement
 // Les options non admissibles sont masquees ET reinitialisees (donc non comptees dans la soumission).
 function applyTypeRestrictions(type) {
+    // SANS MACHINE : seule la tuile Camera reste. Les 5 cameras sont des codes
+    // fixes (1300-0001/0012/0003/0004/0005) qui ne dependent d'aucune machine.
+    // Tout le reste en depend d'une facon ou d'une autre : le limiteur tire son
+    // drain de DRAIN_PREFIXES, son harnais du fabricant et son 1500-0004 de la
+    // gamme. L'offrir sans machine produirait un kit que personne ne peut
+    // valider — pire que le blocage qu'on corrige. On masque donc, et on
+    // reinitialise, pour qu'aucune case laissee cochee ne parte dans la demande.
+    if (type === SANS_MACHINE) {
+        document.querySelectorAll('.toggle-box').forEach(function (box) {
+            var garder = (box.id === 'toggle-camera');
+            box.style.display = garder ? '' : 'none';
+            if (garder) return;
+            box.classList.remove('active', 'open');
+            var st = box.querySelector('.toggle-status');
+            if (st) st.textContent = 'OFF';
+            box.querySelectorAll('input[type="checkbox"], input[type="radio"]')
+               .forEach(function (c) { c.checked = false; c.disabled = false; });
+        });
+        return;
+    }
+    // Retour au mode machine : rendre les tuiles masquees par le mode sans
+    // machine, avant que les regles par type ci-dessous ne rejouent.
+    document.querySelectorAll('.toggle-box').forEach(function (box) { box.style.display = ''; });
+
     var isExc = (type === 'Excavatrice');
     var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
 
@@ -1094,7 +1191,9 @@ if (submitBtn) {
         var fab = selectFabricant.value;
         var annee = selectAnnee.value;
         var modele = selectModele.value;
-        if (!fab || !modele || !annee) return;
+        // Sans machine, fabricant/modele/annee sont vides PAR CONCEPTION : ce garde
+        // renvoyait donc en silence et le bouton paraissait mort.
+        if (!estSansMachine() && (!fab || !modele || !annee)) return;
 
         // Champs obligatoires : le courriel ne part pas si un seul est vide.
         // Chaque case vide passe en encadre rouge; redevient normale des qu'on la remplit.
@@ -1103,6 +1202,23 @@ if (submitBtn) {
             { id: 'soumission-nb-systemes',  reqKey: 'soumission.nb_required',       phKey: 'soumission.nb_systemes_placeholder' },
             { id: 'soumission-lieu',         reqKey: 'soumission.lieu_required',     phKey: 'soumission.lieu_placeholder' }
         ];
+        // Sans machine, dire CE QU'EST l'equipement est obligatoire — c'est la seule
+        // chose qui remplace les quatre selecteurs pour les ventes internes. Laisser
+        // ce champ facultatif rendrait la soumission moins lisible qu'avant, alors
+        // que le but est l'inverse.
+        if (estSansMachine()) {
+            REQUIRED_FIELDS.unshift({ id: 'soumission-equipement',
+                                      reqKey: 'soumission.equipement_required',
+                                      phKey: 'soumission.equipement_placeholder' });
+            // Le client installe : il n'y a plus de site e-Trak a declarer. Exiger
+            // un lieu le forcerait a ecrire « n/a » — inventer une donnee pour
+            // passer un champ, precisement ce que ce mode elimine.
+            if (installParClient()) {
+                REQUIRED_FIELDS = REQUIRED_FIELDS.filter(function (f) {
+                    return f.id !== 'soumission-lieu';
+                });
+            }
+        }
         var _firstEmpty = null;
         REQUIRED_FIELDS.forEach(function(f) {
             var el = document.getElementById(f.id);
@@ -1172,9 +1288,10 @@ if (submitBtn) {
             var _camRadio = _camBox.querySelector('input[name="camera-type"]:checked');
             if (_camRadio) {
                 var _camName = 'Camera ' + _camRadio.value;
-                var _camCode = getCode(_camName);
-                optionsOn.push(_camName);
-                accessoires.push({ code: _camCode, name: _camName });
+                var _camCode = getCode(_camName);      // code cherche SANS le suffixe
+                var _camAff = _camName + camQteSuffixe();
+                optionsOn.push(_camAff);
+                accessoires.push({ code: _camCode, name: _camAff });
             } else {
                 optionsOn.push('Camera');
             }
@@ -1331,11 +1448,22 @@ if (submitBtn) {
             body += '\n';
         }
 
-        body += i18n.t('email.machine_header') + '\n' +
-            i18n.t('email.type', { type: i18n.t('type.' + type) }) + '\n' +
-            i18n.t('email.fabricant', { fab: fab }) + '\n' +
-            i18n.t('email.modele', { modele: modele }) + '\n' +
-            i18n.t('email.annee', { annee: annee }) + '\n';
+        if (estSansMachine()) {
+            // Le champ libre REMPLACE les quatre lignes de machine. Ecrire « Type :
+            // __sans_machine__ » ou quatre lignes vides serait pire que rien pour
+            // les ventes internes.
+            body += i18n.t('email.machine_header') + '\n' +
+                i18n.t('email.equipement', { eq: _fieldVal('soumission-equipement') || '—' }) + '\n';
+            // Le dire explicitement : sans cette ligne, une soumission sans montant
+            // d'installation se lit comme un oubli de prix, pas comme un choix.
+            if (installParClient()) body += i18n.t('email.install_client') + '\n';
+        } else {
+            body += i18n.t('email.machine_header') + '\n' +
+                i18n.t('email.type', { type: i18n.t('type.' + type) }) + '\n' +
+                i18n.t('email.fabricant', { fab: fab }) + '\n' +
+                i18n.t('email.modele', { modele: modele }) + '\n' +
+                i18n.t('email.annee', { annee: annee }) + '\n';
+        }
 
         // Warning : items du kit a valider
         var _avItems = aValiderItems();
@@ -1370,8 +1498,8 @@ if (submitBtn) {
             var anyOblig = false;
             body += '\n' + i18n.t('email.products_header') + '\n';
             selRows.forEach(function (r) {
-                var pr = priceFor(r.code);
-                var q = lineQty(r.code, r.name);   // inclinometre pompe x nb sections, sinon 1
+                var pr = prixLigne(r.code);        // installation neutralisee si le client installe
+                var q = lineQty(r.code, r.name);   // quantite encodee dans le nom via « ×N »
                 if (typeof pr.item === 'number') _totItem += pr.item * q;
                 if (typeof pr.install === 'number') _totInstall += pr.install * q;
                 if (r.oblig) anyOblig = true;
@@ -1605,11 +1733,46 @@ function _splitQty(name) {
 }
 // Suffixe 4 chiffres d'un code produit (ex. "1500-0208" -> "0208").
 function _codeSuffix(c) { var m = String(c || '').match(/(\d{4})\s*$/); return m ? m[1] : ''; }
-// Quantite d'une ligne : pour l'inclinometre pompe (…0208), la quantite = nombre
-// de sections encode dans le nom via "×N" ; sinon 1. Sert au prix etendu (ecran +
-// courriel) ET a la colonne Qte du bloc Epicor.
+// Quantite d'une ligne : elle est encodee dans le nom par un suffixe « ×N ».
+// Deux emetteurs aujourd'hui — l'inclinometre pompe (…0208), ou N = le nombre de
+// sections, et la camera achetee sans machine, ou N = ce que le distributeur
+// commande. La regle etait restreinte au code 0208 ; elle honore desormais le
+// suffixe partout ou il est present, parce que restreindre par code obligeait a
+// modifier cette fonction a chaque nouvel emetteur — et un oubli s'y serait vu
+// comme une quantite 1 silencieuse dans Epicor.
+// Aucun libelle du catalogue ne se termine par « xN » par accident : verifie sur
+// INDIVIDUAL_CODES le 2026-09-01.
+// Sert au prix etendu (ecran + courriel) ET a la colonne Qte du bloc Epicor.
 function lineQty(code, name) {
-    return (_codeSuffix(code) === '0208') ? _splitQty(name).qty : 1;
+    var q = _splitQty(name).qty;
+    return q > 1 ? q : 1;
+}
+// Suffixe « ×N » a coller au libelle de la camera, en mode sans machine seulement.
+// Rien au-dessus de 1 ne doit pouvoir sortir du mode machine : c'est la seule
+// garantie que les soumissions existantes gardent exactement le comportement
+// qu'elles avaient.
+// Le client installe lui-meme : uniquement possible en mode sans machine, et
+// seulement s'il l'a coche. Retourner true hors de ce mode changerait le prix de
+// toutes les soumissions existantes.
+function installParClient() {
+    if (!estSansMachine()) return false;
+    var el = document.getElementById('soumission-install-client');
+    return !!(el && el.checked);
+}
+// Prix d'une ligne, installation neutralisee si le client installe. Un seul point
+// de passage : l'ecran, le courriel et les totaux doivent dire le meme prix, et
+// deux calculs paralleles auraient fini par diverger.
+function prixLigne(code) {
+    var pr = priceFor(code);
+    if (installParClient()) return { item: pr.item, install: null };
+    return pr;
+}
+function camQteSuffixe() {
+    if (!estSansMachine()) return '';
+    var el = document.getElementById('cam-qte');
+    var n = el ? parseInt(el.value, 10) : 1;
+    if (!isFinite(n) || n < 1) n = 1;
+    return n > 1 ? ' ×' + n : '';
 }
 function buildEpicorRows() {
     var rows = window.__selectionRows || [];
@@ -1881,10 +2044,13 @@ function updateSelectedSummary() {
         if (camRadio) {
             var camKey = 'Camera ' + camRadio.value;
             var camData = INDIVIDUAL_CODES[camKey];
+            // Quantite : seulement en mode sans machine. Sur une machine donnee, la
+            // camera va sur CETTE machine — la quantite est 1 et le champ est masque.
+            var _sfx = camQteSuffixe();
             if (camData) {
-                items.push(fmtItem(camData[0].code, camData[0].desc));
+                items.push(fmtItem(camData[0].code, camData[0].desc + _sfx));
             } else {
-                items.push(fmtItem('', camRadio.value));   // repli : passe par tBom (pas de fuite FR)
+                items.push(fmtItem('', camRadio.value + _sfx));   // repli : passe par tBom (pas de fuite FR)
             }
         }
     }
@@ -2014,7 +2180,7 @@ function updateSelectedSummary() {
             var idx = lineStr.indexOf(' — ');
             var code = idx >= 0 ? lineStr.slice(0, idx).trim() : '';
             var name = idx >= 0 ? lineStr.slice(idx + 3) : lineStr;
-            var pr = priceFor(code);
+            var pr = prixLigne(code);
             // Prix ETENDU : inclinometre pompe (…0208) x nombre de sections (encode
             // dans le nom via "×N"). lineQty renvoie 1 pour toutes les autres lignes.
             var q = lineQty(code, name);
