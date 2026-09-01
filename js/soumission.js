@@ -286,8 +286,8 @@ function afficherModeSansMachine(actif) {
     if (box) box.style.display = actif ? '' : 'none';
     var qte = document.getElementById('cam-qte-box');
     if (qte) qte.style.display = actif ? '' : 'none';
-    var ic = document.getElementById('install-client-box');
-    if (ic) ic.style.display = actif ? '' : 'none';
+    var ic = document.getElementById('cam-install-box');
+    if (ic) ic.style.display = actif ? 'flex' : 'none';
     var specs = document.getElementById('specs-section');
     if (specs && actif) specs.style.display = 'none';
     if (!actif) {
@@ -295,22 +295,24 @@ function afficherModeSansMachine(actif) {
         if (eq) eq.value = '';
         var q = document.getElementById('cam-qte');
         if (q) q.value = '1';
-        // Decocher en quittant le mode : laisser « installee par le client » actif
-        // sur une soumission machine retirerait l'installation sans que personne
-        // ne voie la case, qui est masquee.
-        var icc = document.getElementById('soumission-install-client');
-        if (icc) icc.checked = false;
+        // Remettre la question a blanc en quittant le mode : une reponse « non »
+        // restee active sur une soumission machine retirerait l'installation sans
+        // que personne ne voie les boutons, qui sont masques.
+        document.querySelectorAll('input[name="cam-install"]')
+                .forEach(function (r) { r.checked = false; });
     }
 }
 
-// La case change le PRIX : il faut redessiner le tableau, pas seulement l'etat.
+// La reponse et la quantite changent le PRIX : il faut redessiner le tableau,
+// pas seulement retenir l'etat.
 document.addEventListener('DOMContentLoaded', function () {
-    ['soumission-install-client', 'cam-qte'].forEach(function (id) {
-        var el = document.getElementById(id);
-        if (el) el.addEventListener('change', function () {
-            if (typeof updateSelectedSummary === 'function') updateSelectedSummary();
-        });
-    });
+    var redessiner = function () {
+        if (typeof updateSelectedSummary === 'function') updateSelectedSummary();
+    };
+    var q = document.getElementById('cam-qte');
+    if (q) q.addEventListener('change', redessiner);
+    document.querySelectorAll('input[name="cam-install"]')
+            .forEach(function (r) { r.addEventListener('change', redessiner); });
 });
 
 function doTypeChange() {
@@ -1243,6 +1245,28 @@ if (submitBtn) {
                 el.addEventListener('change', _clear);
             }
         });
+        // « Installation par e-Trak ? » n'a pas de valeur par defaut : sans reponse,
+        // la soumission ne part pas. C'est ce qui garantit qu'aucun prix n'est
+        // publie sans que le vendeur ait tranche — un defaut par defaut aurait
+        // forcement ete faux pour la moitie des cas.
+        if (estSansMachine() && !reponseInstall()) {
+            var _boite = document.getElementById('cam-install-box');
+            if (_boite) {
+                _boite.style.border = '2px solid #ff4444';
+                _boite.style.borderRadius = '6px';
+                _boite.style.padding = '.4rem .6rem';
+                _boite.scrollIntoView({ block: 'center' });
+                var _clr = function () {
+                    _boite.style.border = ''; _boite.style.padding = '';
+                    document.querySelectorAll('input[name="cam-install"]')
+                            .forEach(function (r) { r.removeEventListener('change', _clr); });
+                };
+                document.querySelectorAll('input[name="cam-install"]')
+                        .forEach(function (r) { r.addEventListener('change', _clr); });
+            }
+            return;
+        }
+
         if (_firstEmpty) { _firstEmpty.focus(); return; }
 
         // No limiteur check — options obligatoires only shown when limiteur selected
@@ -1751,13 +1775,21 @@ function lineQty(code, name) {
 // Rien au-dessus de 1 ne doit pouvoir sortir du mode machine : c'est la seule
 // garantie que les soumissions existantes gardent exactement le comportement
 // qu'elles avaient.
-// Le client installe lui-meme : uniquement possible en mode sans machine, et
-// seulement s'il l'a coche. Retourner true hors de ce mode changerait le prix de
+// Reponse a « Installation par e-Trak ? » : 'oui', 'non', ou '' si le vendeur n'a
+// pas encore repondu. Hors du mode sans machine la question ne se pose pas —
+// e-Trak installe — et renvoyer autre chose que 'oui' changerait le prix de
 // toutes les soumissions existantes.
+function reponseInstall() {
+    if (!estSansMachine()) return 'oui';
+    var r = document.querySelector('input[name="cam-install"]:checked');
+    return r ? r.value : '';
+}
+// Le client installe lui-meme. Tant que la question est sans reponse, on ne
+// facture PAS l'installation : afficher un prix que le vendeur n'a pas choisi
+// serait pire que d'en afficher un incomplet, et le garde-fou d'envoi l'oblige
+// de toute facon a repondre avant que la soumission parte.
 function installParClient() {
-    if (!estSansMachine()) return false;
-    var el = document.getElementById('soumission-install-client');
-    return !!(el && el.checked);
+    return reponseInstall() !== 'oui';
 }
 // Prix d'une ligne, installation neutralisee si le client installe. Un seul point
 // de passage : l'ecran, le courriel et les totaux doivent dire le meme prix, et

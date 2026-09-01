@@ -146,6 +146,26 @@
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-quad" value="Quad"> <span data-i18n="soumission.cam_quad">Quad</span></label>
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-360" value="360"> <span data-i18n="soumission.cam_360">360 (4 cameras)</span></label>
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-360-6" value="360 (6 cameras)"> <span data-i18n="soumission.cam_360_6">360 (set de 6 cameras)</span></label>
+                        <!-- INSTALLATION, juste apres le modele (demande de Jacquot) :
+                             la question se pose au moment ou on choisit la camera, pas
+                             en bas de page. Oui/Non explicite plutot qu'une case a
+                             cocher : deux boutons n'ont pas de valeur par defaut, donc
+                             aucun prix ne peut partir faux par oubli. La reponse ajoute
+                             ou retire l'installation du prix immediatement.
+                             Sans machine seulement : sur une machine, e-Trak installe. -->
+                        <div class="sub-option" id="cam-install-box" style="display:none;flex-direction:column;align-items:flex-start;gap:.3rem;">
+                            <span data-i18n="soumission.cam_install_q">Installation par e-Trak ?</span>
+                            <span style="display:flex;gap:1rem;">
+                                <label style="display:flex;align-items:center;gap:.35rem;">
+                                    <input type="radio" name="cam-install" id="cam-install-oui" value="oui">
+                                    <span data-i18n="common.oui">Oui</span>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:.35rem;">
+                                    <input type="radio" name="cam-install" id="cam-install-non" value="non">
+                                    <span data-i18n="soumission.cam_install_non">Non — installee par le client</span>
+                                </label>
+                            </span>
+                        </div>
                         <!-- Quantite : n'apparait qu'en mode sans machine. Sur une
                              machine, une camera va sur CETTE machine et la quantite
                              est 1 ; c'est le distributeur qui achete du stock qui a
@@ -223,19 +243,6 @@
 
             <div class="soumission-install-box">
                 <h4 class="soumission-install-title" data-i18n="soumission.install_box_title">Installation</h4>
-                <!-- Sans machine seulement. Un distributeur qui achete du stock pour
-                     un equipement hors base l'installe le plus souvent lui-meme : lui
-                     facturer la pose x quantite donnerait une soumission fausse, et
-                     lui imposer un lieu d'installation le forcerait a inventer une
-                     donnee — exactement ce que ce mode existe pour eviter.
-                     Non cochee par defaut : le prix reste celui d'aujourd'hui tant
-                     que le vendeur n'a pas tranche. -->
-                <div class="options-comment" id="install-client-box" style="display:none;">
-                    <label class="sub-option" style="display:flex;align-items:center;gap:.5rem;">
-                        <input type="checkbox" id="soumission-install-client">
-                        <span data-i18n="soumission.install_client">Installee par le client (aucune installation e-Trak)</span>
-                    </label>
-                </div>
                 <div class="options-comment">
                     <label for="soumission-nb-systemes" data-i18n="soumission.nb_systemes">Nombre d'unite (obligatoire)</label>
                     <input type="number" min="1" id="soumission-nb-systemes" class="soumission-input" required data-i18n-placeholder="soumission.nb_systemes_placeholder" placeholder="Ex. 2">
@@ -301,13 +308,13 @@
     </footer>
 
     <script src="js/config.js?v=1"></script>
-    <script src="js/translations.js?v=216"></script>
+    <script src="js/translations.js?v=217"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=6"></script>
     <script src="js/kit-rules.js?v=9"></script>
-    <script src="js/soumission.js?v=275"></script>
+    <script src="js/soumission.js?v=276"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>
