@@ -305,15 +305,27 @@ function afficherModeSansMachine(actif) {
 
 // La reponse et la quantite changent le PRIX : il faut redessiner le tableau,
 // pas seulement retenir l'etat.
-document.addEventListener('DOMContentLoaded', function () {
-    var redessiner = function () {
-        if (typeof updateSelectedSummary === 'function') updateSelectedSummary();
+// ⚠️ NE PAS se fier a DOMContentLoaded seul : ce fichier est charge en FIN de page,
+// donc l'evenement est deja passe quand il s'execute et l'ecouteur ne s'attachait
+// jamais. Symptome observe le 2026-09-01 : cocher « Oui » ne rajoutait pas
+// l'installation au tableau — et « Non » paraissait fonctionner, puisqu'il n'y
+// avait jamais eu d'installation a retirer.
+(function brancherRecalcul() {
+    var poser = function () {
+        var redessiner = function () {
+            if (typeof updateSelectedSummary === 'function') updateSelectedSummary();
+        };
+        var q = document.getElementById('cam-qte');
+        if (q) q.addEventListener('change', redessiner);
+        document.querySelectorAll('input[name="cam-install"]')
+                .forEach(function (r) { r.addEventListener('change', redessiner); });
     };
-    var q = document.getElementById('cam-qte');
-    if (q) q.addEventListener('change', redessiner);
-    document.querySelectorAll('input[name="cam-install"]')
-            .forEach(function (r) { r.addEventListener('change', redessiner); });
-});
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', poser);
+    } else {
+        poser();
+    }
+})();
 
 function doTypeChange() {
     resetFrom('fabricant');
@@ -1796,8 +1808,8 @@ function installParClient() {
 // deux calculs paralleles auraient fini par diverger.
 function prixLigne(code) {
     var pr = priceFor(code);
-    if (installParClient()) return { item: pr.item, install: null };
-    return pr;
+    if (installParClient()) return { item: pr.item, install: null, installCode: null };
+    return { item: pr.item, install: pr.install, installCode: pr.installCode || null };
 }
 function camQteSuffixe() {
     if (!estSansMachine()) return '';
@@ -2223,38 +2235,67 @@ function updateSelectedSummary() {
                 if (typeof pr.item === 'number') totItem += pr.item * q;
                 if (typeof pr.install === 'number') totInstall += pr.install * q;
             }
-            var prod = code
-                ? '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">' + code + '</span> ' + name
-                : name;
+            // UNE LIGNE PAR CHOSE VENDUE, un seul prix au bout (demande de Jacquot,
+            // 2026-09-01). Avant : deux colonnes de prix et un total « combine » entre
+            // parentheses a cote du mot TOTAL — on ne savait plus quel chiffre lire.
+            // L'installation est une ligne facturable a part entiere, avec son propre
+            // code produit (`installCode`, repris de la liste de prix maitresse) : elle
+            // merite sa ligne, comme dans une vraie soumission.
+            var mono = function (c) {
+                return '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">'
+                       + c + '</span> ';
+            };
             var dot = oblig ? '<span style="color:#FF4444">&#9679; </span>' : '';
-            return '<tr>' +
-                '<td style="padding:4px 10px 4px 0;vertical-align:top">' + dot + prod + '</td>' +
-                '<td style="padding:4px 8px;text-align:right;white-space:nowrap">' + cell(itemExt) + '</td>' +
-                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">' + cell(instExt) + '</td>' +
-                '</tr>';
+            var ligne = function (libelle, montant) {
+                return '<tr>' +
+                    '<td style="padding:4px 10px 4px 0;vertical-align:top">' + libelle + '</td>' +
+                    '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
+                    + cell(montant) + '</td>' +
+                    '</tr>';
+            };
+            // Article de MAIN-D'OEUVRE PURE (pas de prix piece, seulement une pose) :
+            // le 1500-0004 en est un — c'est du temps, pas un kit, et la liste de prix
+            // ne lui donne d'ailleurs aucun code d'installation. Le scinder en une
+            // ligne produit vide plus une ligne d'installation afficherait un tiret
+            // pour rien. Une seule ligne, sous son propre code.
+            if (pr.item === null && typeof instExt === 'number' && instExt !== 0) {
+                return ligne(dot + (code ? mono(code) : '') + name, instExt);
+            }
+            var html = ligne(dot + (code ? mono(code) : '') + name, itemExt);
+            if (typeof instExt === 'number' && instExt !== 0) {
+                // Pas de code d'installation dans la liste de prix (cas du 1500-0004,
+                // qui EST deja de la main-d'oeuvre) : on nomme la ligne sans code
+                // plutot que d'en inventer un.
+                var ic = pr.installCode ? mono(pr.installCode) : '';
+                html += ligne('<span style="color:#9aa7b2">' + ic
+                              + i18n.t('soum.tbl_install_line', { name: name }) + '</span>', instExt);
+            }
+            return html;
         };
         var rows = items.map(function(i) { return rowFor(i, false); }).join('');
         rows += obligItems.map(function(i) { return rowFor(i, true); }).join('');
         rows += pcItems.map(function(i) { return rowFor(i, true); }).join('');
 
+        // UN SEUL total, sous le trait, en face de la colonne de prix. Le « combine »
+        // entre parentheses n'a plus lieu d'etre : produit et installation sont
+        // maintenant des lignes du meme tableau, donc leur somme EST le total.
         var totalRow = '';
         if (anyPrice) {
             totalRow = '<tr style="border-top:2px solid #555;font-weight:700">' +
-                '<td style="padding:6px 10px 4px 0">' + i18n.t('soum.tbl_total') + ' <span style="font-weight:400;color:#aaa">(' + i18n.t('soum.tbl_combined', { total: fmtPrice(totItem + totInstall) }) + ')</span></td>' +
-                '<td style="padding:6px 8px 4px;text-align:right;color:#FF8C00">' + fmtPrice(totItem) + '</td>' +
-                '<td style="padding:6px 0 4px 8px;text-align:right;color:#FF8C00">' + fmtPrice(totInstall) + '</td>' +
+                '<td style="padding:8px 10px 4px 0">' + i18n.t('soum.tbl_total') + '</td>' +
+                '<td style="padding:8px 0 4px 8px;text-align:right;color:#FF8C00">'
+                + fmtPrice(totItem + totInstall) + '</td>' +
                 '</tr>';
         }
         var noteRow = currentNotes
-            ? '<tr><td colspan="3" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
+            ? '<tr><td colspan="2" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
             : '';
 
         list.innerHTML =
             '<table style="width:100%;border-collapse:collapse;font-size:0.9rem">' +
             '<thead><tr style="border-bottom:1px solid #555;color:#9fb4c8;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">' +
             '<th style="text-align:left;padding:0 10px 5px 0">' + i18n.t('soum.tbl_product') + '</th>' +
-            '<th style="text-align:right;padding:0 8px 5px">' + i18n.t('soum.tbl_price') + '</th>' +
-            '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_install') + '</th>' +
+            '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_price') + '</th>' +
             '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>';
         // Filigrane du nom du user en fond du tableau de prix (dissuasion capture d'ecran).
         // Applique seulement si des prix sont reellement affiches.
