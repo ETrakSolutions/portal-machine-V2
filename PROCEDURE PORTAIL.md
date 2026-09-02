@@ -126,16 +126,16 @@ Pourquoi par type : reste loin du plafond 1 Mo de l'API Contents (chaque fichier
 ```
 URL : https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec
 ```
-Backend = `apps-script/Api.gs` (ne PAS garder l'ancien `Code.gs` dans le projet). Il ecrit directement sur GitHub via l'API Contents (~6 s), en **compact** (`JSON.stringify(data)`), avec retry sur conflit de SHA (verrou optimiste). Les ecritures BOM/notes/suppression ciblent le fichier `data/overrides/<slug>.json` du type concerne (route par `_ovFilePath(type)`).
+Backend = `apps-script/Code.gs` dans ce depot (le fichier qui porte `doPost` et `updateMachineNotes` ; c'est LUI la copie de reference, quel que soit le nom du fichier cote console Apps Script). Il ecrit directement sur GitHub via l'API Contents (~6 s), en **compact** (`JSON.stringify(data)`), avec retry sur conflit de SHA (verrou optimiste). Les ecritures BOM/notes/suppression ciblent le fichier `data/overrides/<slug>.json` du type concerne (route par `_ovFilePath(type)`).
 
 | Action | Usage |
 |--------|-------|
 | `get` / `list` (GET) | Notes legacy, emails, drapeaux (Script Properties) |
 | `updateMachineBom` / `updateMachineBomBulk` | Ecrit `_bom` dans `overrides/<type>.json` |
-| `updateMachineNotes` | Ecrit `_notes` dans `overrides/<type>.json` |
+| `updateMachineNotes` | Ecrit `_notes`, `_warning` et leurs versions anglaises `_notes_en` / `_warning_en` dans `overrides/<type>.json` |
 | `deleteMachine` | Retire l'override + la machine de machines.json |
 
-**Redeploiement** : apres toute modif d'`Api.gs`, console Apps Script (compte `etrak.portail@gmail.com`) → Deploy → Manage deployments → Edit → New version. L'URL ne change pas.
+**Redeploiement** : apres toute modif du backend, console Apps Script (compte `etrak.portail@gmail.com`) → Deploy → Manage deployments → Edit → New version. L'URL ne change pas.
 
 ### 4.4 Protection NIP
 - **NIP** : JAMAIS en clair dans ce depot — il est **public**. Valeur dans `PIN Portail.txt` a la racine (gitignore), transmise en prive.

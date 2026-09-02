@@ -136,7 +136,8 @@ function applyOverrides(machines, ov) {
     for (var t in ov) { for (var f in ov[t]) { for (var y in ov[t][f]) { for (var m in ov[t][f][y]) {
         var o = ov[t][f][y][m];
         var e = machines[t] && machines[t][f] && machines[t][f][y] && machines[t][f][y][m];
-        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; if (o._warning !== undefined) e._warning = o._warning; }
+        if (e && o) { if (o._bom !== undefined) e._bom = o._bom; if (o._notes !== undefined) e._notes = o._notes; if (o._warning !== undefined) e._warning = o._warning;
+                      if (o._notes_en !== undefined) e._notes_en = o._notes_en; if (o._warning_en !== undefined) e._warning_en = o._warning_en; }
     }}}}
     return machines;
 }
@@ -195,7 +196,9 @@ window.__onOverridesChanged = function(ov) {
             var o = (ov[t] && ov[t][f] && ov[t][f][a] && ov[t][f][a][m]) || {};
             if (e) { if (o._bom !== undefined) e._bom = o._bom; else delete e._bom;
                      if (o._notes !== undefined) e._notes = o._notes; else delete e._notes;
-                     if (o._warning !== undefined) e._warning = o._warning; else delete e._warning; }
+                     if (o._warning !== undefined) e._warning = o._warning; else delete e._warning;
+                     if (o._notes_en !== undefined) e._notes_en = o._notes_en; else delete e._notes_en;
+                     if (o._warning_en !== undefined) e._warning_en = o._warning_en; else delete e._warning_en; }
         } catch (err) {}
         try { loadBomOverrides(f, m, a); loadNotesForModel(f, m, a); } catch (e) {}  // rafraichit kit/notes, pas le formulaire
     }
@@ -852,6 +855,18 @@ function renderSpecsTable(type, fab, annee, modele) {
     table.innerHTML = html || '<tr><td colspan="2" style="color:#666;">' + i18n.t('soumission.no_specs') + '</td></tr>';
 }
 
+// Texte libre de la BD : l'anglais s'il existe ET que la page est en anglais,
+// sinon le francais. La BD n'a jamais eu qu'une langue (3 290 textes au
+// 2026-09-02) : le repli est la regle, pas l'exception, et il vaut dans les deux
+// sens — une note saisie seulement en anglais s'affiche aussi en francais,
+// plutot que de laisser un vide la ou il y a une information.
+function texteBD(fr, en) {
+    var lang = (typeof i18n !== 'undefined' && i18n.getLang) ? i18n.getLang() : 'fr';
+    fr = (typeof fr === 'string') ? fr : '';
+    en = (typeof en === 'string') ? en : '';
+    if (lang === 'en') return en || fr;
+    return fr || en;
+}
 function loadNotesForModel(fab, modele, annee) {
     // BD = MAITRE : la note (_notes) et l'avertissement (_warning) sont lus directement dans machines.json.
     currentNotes = '';
@@ -859,8 +874,8 @@ function loadNotesForModel(fab, modele, annee) {
     var type = selectType ? selectType.value : '';
     var entry = null;
     try { entry = machinesData[type][fab][annee][modele]; } catch(e) { entry = null; }
-    currentNotes = (entry && typeof entry._notes === 'string') ? entry._notes : '';
-    currentWarning = (entry && typeof entry._warning === 'string') ? entry._warning : '';
+    currentNotes = texteBD(entry && entry._notes, entry && entry._notes_en);
+    currentWarning = texteBD(entry && entry._warning, entry && entry._warning_en);
     // Bandeau d'avertissement par machine (donnee _warning, editable dans edit-machine).
     var mw = document.getElementById('machine-warning');
     if (mw) {
@@ -917,7 +932,8 @@ function customItemVisible(c, type) {
 // Nom d'un item custom avec sa quantite (ex. "Raccord hydraulique  ×2").
 function customName(c) {
     var q = parseInt(c && c.qty);
-    return ((c && (c.desc || c.code)) || '') + (q > 1 ? '  ×' + q : '');
+    var d = texteBD(c && c.desc, c && c.desc_en) || (c && c.code) || '';
+    return d + (q > 1 ? '  ×' + q : '');
 }
 
 // Determine kit machine options based on specs (same logic as app.js)
@@ -1825,6 +1841,17 @@ function prixLigne(code) {
 // pas « oui », donc s'en servir ici ferait disparaitre la question a l'instant
 // meme ou on repond « non ». Sert a n'afficher la question que si elle a un objet,
 // et a ne bloquer l'envoi que dans ce cas.
+// « Lieu d'installation (obligatoire) » ment des que le client installe lui-meme :
+// le champ n'est alors plus exige. L'etiquette suit la reponse. On change aussi
+// l'attribut data-i18n, sinon la prochaine bascule de langue remettrait
+// « obligatoire » par-dessus (translatePage relit l'attribut, pas le texte).
+function majEtiquetteLieu() {
+    var lbl = document.querySelector('label[for="soumission-lieu"]');
+    if (!lbl) return;
+    var cle = (reponseInstall() === 'non') ? 'soumission.lieu_optionnel' : 'soumission.lieu';
+    lbl.setAttribute('data-i18n', cle);
+    lbl.textContent = i18n.t(cle);
+}
 function selectionAInstallation() {
     return (window.__selectionRows || []).some(function (r) {
         var pr = priceFor(r.code);
@@ -2365,6 +2392,7 @@ function updateSelectedSummary() {
         // paye le 2026-09-01.
         var _qBox = document.getElementById('install-question-box');
         if (_qBox) _qBox.style.display = selectionAInstallation() ? 'flex' : 'none';
+        majEtiquetteLieu();
         wrap.style.display = 'block';
     } else {
         list.innerHTML = '';
@@ -2683,6 +2711,9 @@ window.addEventListener('langchange', function() {
         var infoEl = document.getElementById('soumission-machine-info');
         if (infoEl) infoEl.textContent = 'Machine : ' + _fab + ' ' + _mod + ' (' + _an + ') — ' + i18n.t('type.' + _type);
         try { renderSpecsTable(_type, _fab, _an, _mod); } catch (e) {}
+        // La note et l'avertissement ont eux aussi une version anglaise : les
+        // relire ici, sinon ils restent dans la langue d'avant la bascule.
+        try { loadNotesForModel(_fab, _mod, _an); } catch (e) {}
         try { updateSelectedSummary(); } catch (e) {}
     }
 });

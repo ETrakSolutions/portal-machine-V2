@@ -29,7 +29,8 @@
  *   { action:'delete', key, token|pin }
  *   { action:'updateMachineBom',   type, fab, modele, annee, bomOverride, harnais?, token|pin }
  *   { action:'updateMachineSpecs', type, fab, modele, annee, specs, token|pin }
- *   { action:'updateMachineNotes', type, fab, modele, annee, notes, token|pin }
+ *   { action:'updateMachineNotes', type, fab, modele, annee, notes, warning,
+ *     notes_en, warning_en, token|pin }
  *   { action:'deleteMachine',      type, fab, modele, annee, token|pin }
  *   Le PIN (Script Property PIN) reste accepte pour les scripts d'automatisation (valeur secrete,
  *   jamais dans le code frontend).
@@ -675,6 +676,19 @@ function updateMachineNotes(body) {
         if (!body.warning) delete entry._warning;
         else entry._warning = body.warning;
       }
+    // Version anglaise, facultative (decision Jacquot, 2026-09-02). Le portail
+    // affiche _notes_en / _warning_en quand la page est en anglais ET que le champ
+    // est rempli ; sinon il retombe sur le francais. Le garde « !== undefined » est
+    // essentiel : machine.html n'envoie que `notes`, et sans lui chaque sauvegarde
+    // depuis cette page effacerait la traduction sans que personne le voie.
+    if (body.notes_en !== undefined) {
+      if (!body.notes_en) delete entry._notes_en;
+      else entry._notes_en = body.notes_en;
+    }
+    if (body.warning_en !== undefined) {
+      if (!body.warning_en) delete entry._warning_en;
+      else entry._warning_en = body.warning_en;
+    }
     // Nettoie l'entree si plus rien dedans
     if (Object.keys(entry).length === 0) delete data[body.type][body.fab][body.annee][body.modele];
   }, 'UI: notes ' + body.fab + ' ' + body.modele + ' (' + body.annee + ')');
