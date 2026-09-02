@@ -936,6 +936,21 @@ fr: {
     'bom.Option swing boom': 'Option swing boom',
     'bom.Rotation': 'Rotation',
     'bom.Rotation crémaillère camion vac': 'Rotation crémaillère camion vac',
+    'bom.Option rotation pignon et cremaillere': 'Option rotation pignon et cremaillere',
+    'bom.Option fleche de nacelle': 'Option fleche de nacelle',
+    // Harnais de coupure : le libelle est construit dans js/kit-rules.js
+    // (« Harnais » + le nom du harnais), il n'existe donc dans aucun catalogue —
+    // c'est pour ca qu'il etait reste en francais en mode anglais.
+    'bom.Harnais Hitachi -7': 'Harnais Hitachi -7',
+    'bom.Harnais Hitachi -5/-6': 'Harnais Hitachi -5/-6',
+    'bom.Harnais Hitachi/JD': 'Harnais Hitachi/JD',
+    'bom.Harnais Komatsu': 'Harnais Komatsu',
+    'bom.Harnais Doosan': 'Harnais Doosan',
+    'bom.Harnais Volvo': 'Harnais Volvo',
+    'bom.Harnais Link-Belt/Case': 'Harnais Link-Belt/Case',
+    'bom.Harnais Caterpillar': 'Harnais Caterpillar',
+    'bom.Harnais Caterpillar (ECU)': 'Harnais Caterpillar (ECU)',
+    'bom.Harnais Generique': 'Harnais Generique',
     'val.Chenilles': 'Chenilles',
     'val.360 continu': '360 continu',
     'val.360° continu': '360° continu',
@@ -1941,6 +1956,21 @@ en: {
     'bom.Imprimante thermique': 'Thermal printer',
     'bom.Imprimante carbone': 'Carbon printer',
     'bom.Balance Scale Lite (tracteur)': 'Scale Lite (tractor)',
+    'bom.Option rotation pignon et cremaillere': 'Rack-and-pinion rotation option',
+    'bom.Option fleche de nacelle': 'Boom lift jib option',
+    // Harnais de coupure : le libelle est construit dans js/kit-rules.js
+    // (« Harnais » + le nom du harnais), il n'existe donc dans aucun catalogue —
+    // c'est pour ca qu'il etait reste en francais en mode anglais.
+    'bom.Harnais Hitachi -7': 'Harness Hitachi -7',
+    'bom.Harnais Hitachi -5/-6': 'Harness Hitachi -5/-6',
+    'bom.Harnais Hitachi/JD': 'Harness Hitachi/JD',
+    'bom.Harnais Komatsu': 'Harness Komatsu',
+    'bom.Harnais Doosan': 'Harness Doosan',
+    'bom.Harnais Volvo': 'Harness Volvo',
+    'bom.Harnais Link-Belt/Case': 'Harness Link-Belt/Case',
+    'bom.Harnais Caterpillar': 'Harness Caterpillar',
+    'bom.Harnais Caterpillar (ECU)': 'Harness Caterpillar (ECU)',
+    'bom.Harnais Generique': 'Generic harness',
     'val.Chenilles': 'Crawlers',
     'val.360 continu': '360 continuous',
     'val.360° continu': '360° continuous',

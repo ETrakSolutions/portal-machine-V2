@@ -12,7 +12,7 @@
         var hasAccess = user && user.role && DB_ROLES[user.role];
         if (!hasAccess) {
             document.querySelector('main').innerHTML =
-                '<section class="selector-section"><p style="color:#FF4444;text-align:center;padding:2rem;">' +
+                '<section class="selector-section"><p data-i18n="mr.unauthorized" style="color:#FF4444;text-align:center;padding:2rem;">' +
                 t('mr.unauthorized', 'Acces non autorise. Connectez-vous avec un compte administrateur ou ingenierie.') +
                 '</p></section>';
             return;  // ne PAS executer le reste (les elements #mr-* n'existent plus)
