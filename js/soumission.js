@@ -286,8 +286,10 @@ function afficherModeSansMachine(actif) {
     if (box) box.style.display = actif ? '' : 'none';
     var qte = document.getElementById('cam-qte-box');
     if (qte) qte.style.display = actif ? '' : 'none';
-    var ic = document.getElementById('cam-install-box');
-    if (ic) ic.style.display = actif ? 'flex' : 'none';
+    // La question « Installation par e-Trak ? » ne depend PLUS du mode : elle est
+    // posee sur toute soumission (2026-09-02) et vit au-dessus du tableau de prix.
+    // C'est updateSelectedSummary qui l'affiche, selon qu'il y ait ou non quelque
+    // chose a installer dans la selection.
     var specs = document.getElementById('specs-section');
     if (specs && actif) specs.style.display = 'none';
     if (!actif) {
@@ -295,11 +297,9 @@ function afficherModeSansMachine(actif) {
         if (eq) eq.value = '';
         var q = document.getElementById('cam-qte');
         if (q) q.value = '1';
-        // Remettre la question a blanc en quittant le mode : une reponse « non »
-        // restee active sur une soumission machine retirerait l'installation sans
-        // que personne ne voie les boutons, qui sont masques.
-        document.querySelectorAll('input[name="cam-install"]')
-                .forEach(function (r) { r.checked = false; });
+        // La reponse a « Installation par e-Trak ? » n'est PLUS remise a blanc ici :
+        // la boite est visible en tout mode, donc une reponse ne peut plus agir en
+        // cachette. L'effacer ferait perdre un choix deja pose a l'ecran.
     }
 }
 
@@ -317,7 +317,7 @@ function afficherModeSansMachine(actif) {
         };
         var q = document.getElementById('cam-qte');
         if (q) q.addEventListener('change', redessiner);
-        document.querySelectorAll('input[name="cam-install"]')
+        document.querySelectorAll('input[name="install-etrak"]')
                 .forEach(function (r) { r.addEventListener('change', redessiner); });
     };
     if (document.readyState === 'loading') {
@@ -1209,6 +1209,11 @@ if (submitBtn) {
         // renvoyait donc en silence et le bouton paraissait mort.
         if (!estSansMachine() && (!fab || !modele || !annee)) return;
 
+        // La liste canonique (window.__selectionRows) doit refleter la selection
+        // AVANT les garde-fous : c'est elle qui dit s'il y a une installation a
+        // facturer, donc si la question doit avoir une reponse.
+        try { updateSelectedSummary(); } catch (e) {}
+
         // Champs obligatoires : le courriel ne part pas si un seul est vide.
         // Chaque case vide passe en encadre rouge; redevient normale des qu'on la remplit.
         var REQUIRED_FIELDS = [
@@ -1224,14 +1229,17 @@ if (submitBtn) {
             REQUIRED_FIELDS.unshift({ id: 'soumission-equipement',
                                       reqKey: 'soumission.equipement_required',
                                       phKey: 'soumission.equipement_placeholder' });
-            // Le client installe : il n'y a plus de site e-Trak a declarer. Exiger
-            // un lieu le forcerait a ecrire « n/a » — inventer une donnee pour
-            // passer un champ, precisement ce que ce mode elimine.
-            if (installParClient()) {
-                REQUIRED_FIELDS = REQUIRED_FIELDS.filter(function (f) {
-                    return f.id !== 'soumission-lieu';
-                });
-            }
+        }
+        // Le client installe : il n'y a plus de site e-Trak a declarer. Exiger un
+        // lieu d'installation le forcerait a ecrire « n/a » — inventer une donnee
+        // pour passer un champ. Vaut pour TOUT mode depuis le 2026-09-02, la
+        // question etant desormais posee sur toute soumission. On exige le « non »
+        // explicite : sans reponse, le lieu reste obligatoire (et le garde-fou
+        // suivant arrete l'envoi de toute facon).
+        if (reponseInstall() === 'non') {
+            REQUIRED_FIELDS = REQUIRED_FIELDS.filter(function (f) {
+                return f.id !== 'soumission-lieu';
+            });
         }
         var _firstEmpty = null;
         REQUIRED_FIELDS.forEach(function(f) {
@@ -1261,8 +1269,11 @@ if (submitBtn) {
         // la soumission ne part pas. C'est ce qui garantit qu'aucun prix n'est
         // publie sans que le vendeur ait tranche — un defaut par defaut aurait
         // forcement ete faux pour la moitie des cas.
-        if (estSansMachine() && !reponseInstall()) {
-            var _boite = document.getElementById('cam-install-box');
+        // Depuis le 2026-09-02 la question est posee sur TOUTE soumission — mais
+        // seulement quand il y a quelque chose a installer, sinon on bloquerait
+        // l'envoi sur une boite que personne ne voit.
+        if (selectionAInstallation() && !reponseInstall()) {
+            var _boite = document.getElementById('install-question-box');
             if (_boite) {
                 _boite.style.border = '2px solid #ff4444';
                 _boite.style.borderRadius = '6px';
@@ -1270,10 +1281,10 @@ if (submitBtn) {
                 _boite.scrollIntoView({ block: 'center' });
                 var _clr = function () {
                     _boite.style.border = ''; _boite.style.padding = '';
-                    document.querySelectorAll('input[name="cam-install"]')
+                    document.querySelectorAll('input[name="install-etrak"]')
                             .forEach(function (r) { r.removeEventListener('change', _clr); });
                 };
-                document.querySelectorAll('input[name="cam-install"]')
+                document.querySelectorAll('input[name="install-etrak"]')
                         .forEach(function (r) { r.addEventListener('change', _clr); });
             }
             return;
@@ -1282,9 +1293,6 @@ if (submitBtn) {
         if (_firstEmpty) { _firstEmpty.focus(); return; }
 
         // No limiteur check — options obligatoires only shown when limiteur selected
-
-        // S'assurer que la liste canonique (window.__selectionLines) reflete la selection courante
-        try { updateSelectedSummary(); } catch (e) {}
 
         // Collect toggle box states with codes (same logic as summary)
         var optionsOn = [];
@@ -1490,9 +1498,6 @@ if (submitBtn) {
             // les ventes internes.
             body += i18n.t('email.machine_header') + '\n' +
                 i18n.t('email.equipement', { eq: _fieldVal('soumission-equipement') || '—' }) + '\n';
-            // Le dire explicitement : sans cette ligne, une soumission sans montant
-            // d'installation se lit comme un oubli de prix, pas comme un choix.
-            if (installParClient()) body += i18n.t('email.install_client') + '\n';
         } else {
             body += i18n.t('email.machine_header') + '\n' +
                 i18n.t('email.type', { type: i18n.t('type.' + type) }) + '\n' +
@@ -1500,6 +1505,11 @@ if (submitBtn) {
                 i18n.t('email.modele', { modele: modele }) + '\n' +
                 i18n.t('email.annee', { annee: annee }) + '\n';
         }
+
+        // Le dire explicitement, quel que soit le mode : sans cette ligne, une
+        // soumission sans montant d'installation se lit comme un oubli de prix,
+        // pas comme un choix du vendeur.
+        if (reponseInstall() === 'non') body += i18n.t('email.install_client') + '\n';
 
         // Warning : items du kit a valider
         var _avItems = aValiderItems();
@@ -1534,16 +1544,19 @@ if (submitBtn) {
             var anyOblig = false;
             body += '\n' + i18n.t('email.products_header') + '\n';
             selRows.forEach(function (r) {
-                var pr = prixLigne(r.code);        // installation neutralisee si le client installe
-                var q = lineQty(r.code, r.name);   // quantite encodee dans le nom via « ×N »
-                if (typeof pr.item === 'number') _totItem += pr.item * q;
-                if (typeof pr.install === 'number') _totInstall += pr.install * q;
                 if (r.oblig) anyOblig = true;
                 var mark = r.oblig ? '* ' : '';
                 body += '  - ' + mark + (r.code ? r.code + '  ' : '') + r.name + '\n';
             });
             if (anyOblig) body += i18n.t('email.kit_included') + '\n';
         }
+
+        // Totaux calcules sur les MEMES lignes que le tableau a l'ecran et que le
+        // bloc Epicor (lignesFacturables) — plus de calcul parallele ici.
+        lignesFacturables().forEach(function (l) {
+            if (typeof l.montant !== 'number') return;
+            if (l.kind === 'install') _totInstall += l.montant; else _totItem += l.montant;
+        });
 
         // Une seule ligne de totaux en bas (prix indicatifs, hors taxes).
         if (_totItem > 0 || _totInstall > 0) {
@@ -1783,17 +1796,13 @@ function lineQty(code, name) {
     var q = _splitQty(name).qty;
     return q > 1 ? q : 1;
 }
-// Suffixe « ×N » a coller au libelle de la camera, en mode sans machine seulement.
-// Rien au-dessus de 1 ne doit pouvoir sortir du mode machine : c'est la seule
-// garantie que les soumissions existantes gardent exactement le comportement
-// qu'elles avaient.
 // Reponse a « Installation par e-Trak ? » : 'oui', 'non', ou '' si le vendeur n'a
-// pas encore repondu. Hors du mode sans machine la question ne se pose pas —
-// e-Trak installe — et renvoyer autre chose que 'oui' changerait le prix de
-// toutes les soumissions existantes.
+// pas encore repondu. La question vaut pour TOUTE soumission depuis le 2026-09-02
+// (demande de Jacquot). Avant, le mode machine renvoyait 'oui' EN DUR : la pose
+// etait facturee d'office et rien ne permettait de la retirer, meme quand le
+// client installe lui-meme.
 function reponseInstall() {
-    if (!estSansMachine()) return 'oui';
-    var r = document.querySelector('input[name="cam-install"]:checked');
+    var r = document.querySelector('input[name="install-etrak"]:checked');
     return r ? r.value : '';
 }
 // Le client installe lui-meme. Tant que la question est sans reponse, on ne
@@ -1811,6 +1820,56 @@ function prixLigne(code) {
     if (installParClient()) return { item: pr.item, install: null, installCode: null };
     return { item: pr.item, install: pr.install, installCode: pr.installCode || null };
 }
+// Y a-t-il quelque chose a installer dans la selection ? Lu sur la liste de prix
+// BRUTE, pas via prixLigne : celle-ci neutralise la pose des que la reponse n'est
+// pas « oui », donc s'en servir ici ferait disparaitre la question a l'instant
+// meme ou on repond « non ». Sert a n'afficher la question que si elle a un objet,
+// et a ne bloquer l'envoi que dans ce cas.
+function selectionAInstallation() {
+    return (window.__selectionRows || []).some(function (r) {
+        var pr = priceFor(r.code);
+        return typeof pr.install === 'number' && pr.install !== 0;
+    });
+}
+// LIGNES FACTURABLES — une par chose vendue, produit ET installation. UN SEUL
+// point de verite, consomme par le tableau a l'ecran, les totaux du courriel et le
+// bloc Epicor. Son absence est exactement ce qui a fait que les installations
+// s'affichaient a l'ecran mais ne partaient JAMAIS dans le collage Epicor (signale
+// par Jacquot le 2026-09-02) : le bloc etait bati a part, depuis les seuls codes
+// produits. Une ligne sans code produit (ligne custom d'un kit) reste affichee
+// mais ne descend pas dans Epicor : il n'y a rien a y coller.
+function lignesFacturables() {
+    var out = [];
+    (window.__selectionRows || []).forEach(function (r) {
+        var pr = prixLigne(r.code);     // pose neutralisee si le client installe
+        var brut = priceFor(r.code);    // liste de prix telle quelle
+        var q = lineQty(r.code, r.name);
+        var itemExt = (typeof pr.item === 'number') ? pr.item * q : pr.item;
+        var instExt = (typeof pr.install === 'number') ? pr.install * q : pr.install;
+        // MAIN-D'OEUVRE PURE — le 1500-0004 « option mini » : aucun prix piece,
+        // seulement du temps de pose plus long. La ligne EST l'installation, donc
+        // elle sort sous le code d'installation, et elle n'existe pas du tout si
+        // e-Trak n'installe pas : il n'y a alors aucun temps a facturer.
+        if (brut.item === null && typeof brut.install === 'number' && brut.install !== 0) {
+            if (typeof instExt === 'number' && instExt !== 0) {
+                out.push({ code: pr.installCode || r.code, name: r.name, qty: q,
+                           montant: instExt, kind: 'install', oblig: r.oblig, seule: true });
+            }
+            return;
+        }
+        out.push({ code: r.code, name: r.name, qty: q, montant: itemExt,
+                   kind: 'item', oblig: r.oblig, seule: false });
+        if (typeof instExt === 'number' && instExt !== 0) {
+            out.push({ code: pr.installCode || '', name: r.name, qty: q,
+                       montant: instExt, kind: 'install', oblig: r.oblig, seule: false });
+        }
+    });
+    return out;
+}
+// Suffixe « ×N » a coller au libelle de la camera, en mode sans machine seulement.
+// Rien au-dessus de 1 ne doit pouvoir sortir du mode machine : c'est la seule
+// garantie que les soumissions existantes gardent exactement le comportement
+// qu'elles avaient.
 function camQteSuffixe() {
     if (!estSansMachine()) return '';
     var el = document.getElementById('cam-qte');
@@ -1818,13 +1877,15 @@ function camQteSuffixe() {
     if (!isFinite(n) || n < 1) n = 1;
     return n > 1 ? ' ×' + n : '';
 }
+// Installations COMPRISES depuis le 2026-09-02 : Jacquot ne les voyait pas dans le
+// collage alors qu'elles etaient au tableau. Chaque pose part sous SON code
+// (`installCode`) avec la meme quantite que le produit pose. Une ligne sans code
+// est ecartee : elle produisait avant une ligne « <tab>1 » que rien ne pouvait
+// coller dans la grille.
 function buildEpicorRows() {
-    var rows = window.__selectionRows || [];
-    return rows
-        .filter(function (r) { return r && (r.code || r.name); })
-        .map(function (r) {
-            return { code: r.code || '', qty: _splitQty(r.name).qty };
-        });
+    return lignesFacturables()
+        .filter(function (l) { return l.code; })
+        .map(function (l) { return { code: l.code, qty: l.qty }; });
 }
 function epicorBlockText() {
     return buildEpicorRows().map(function (r) {
@@ -2218,63 +2279,43 @@ function updateSelectedSummary() {
 
     var allItems = items.length + obligItems.length + pcItems.length;
     if (allItems > 0 || noteHtml) {
-        var totItem = 0, totInstall = 0, anyPrice = false;
-        var cell = function(v) { return (v === null || v === undefined) ? '—' : fmtPrice(v); };
-        var rowFor = function(lineStr, oblig) {
-            var idx = lineStr.indexOf(' — ');
-            var code = idx >= 0 ? lineStr.slice(0, idx).trim() : '';
-            var name = idx >= 0 ? lineStr.slice(idx + 3) : lineStr;
-            var pr = prixLigne(code);
-            // Prix ETENDU : inclinometre pompe (…0208) x nombre de sections (encode
-            // dans le nom via "×N"). lineQty renvoie 1 pour toutes les autres lignes.
-            var q = lineQty(code, name);
-            var itemExt = (typeof pr.item === 'number') ? pr.item * q : pr.item;
-            var instExt = (typeof pr.install === 'number') ? pr.install * q : pr.install;
-            if (pr.item !== null || pr.install !== null) {
-                anyPrice = true;
-                if (typeof pr.item === 'number') totItem += pr.item * q;
-                if (typeof pr.install === 'number') totInstall += pr.install * q;
-            }
-            // UNE LIGNE PAR CHOSE VENDUE, un seul prix au bout (demande de Jacquot,
-            // 2026-09-01). Avant : deux colonnes de prix et un total « combine » entre
-            // parentheses a cote du mot TOTAL — on ne savait plus quel chiffre lire.
-            // L'installation est une ligne facturable a part entiere, avec son propre
-            // code produit (`installCode`, repris de la liste de prix maitresse) : elle
-            // merite sa ligne, comme dans une vraie soumission.
-            var mono = function (c) {
-                return '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">'
-                       + c + '</span> ';
-            };
-            var dot = oblig ? '<span style="color:#FF4444">&#9679; </span>' : '';
-            var ligne = function (libelle, montant) {
-                return '<tr>' +
-                    '<td style="padding:4px 10px 4px 0;vertical-align:top">' + libelle + '</td>' +
-                    '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
-                    + cell(montant) + '</td>' +
-                    '</tr>';
-            };
-            // Article de MAIN-D'OEUVRE PURE (pas de prix piece, seulement une pose) :
-            // le 1500-0004 en est un — c'est du temps, pas un kit, et la liste de prix
-            // ne lui donne d'ailleurs aucun code d'installation. Le scinder en une
-            // ligne produit vide plus une ligne d'installation afficherait un tiret
-            // pour rien. Une seule ligne, sous son propre code.
-            if (pr.item === null && typeof instExt === 'number' && instExt !== 0) {
-                return ligne(dot + (code ? mono(code) : '') + name, instExt);
-            }
-            var html = ligne(dot + (code ? mono(code) : '') + name, itemExt);
-            if (typeof instExt === 'number' && instExt !== 0) {
-                // Pas de code d'installation dans la liste de prix (cas du 1500-0004,
-                // qui EST deja de la main-d'oeuvre) : on nomme la ligne sans code
-                // plutot que d'en inventer un.
-                var ic = pr.installCode ? mono(pr.installCode) : '';
-                html += ligne('<span style="color:#9aa7b2">' + ic
-                              + i18n.t('soum.tbl_install_line', { name: name }) + '</span>', instExt);
-            }
-            return html;
+        // Le tableau se dessine desormais depuis lignesFacturables() : la MEME
+        // liste que les totaux du courriel et que le bloc Epicor. Deux
+        // constructions paralleles avaient fini par dire deux choses differentes
+        // — les poses au tableau, absentes du collage Epicor.
+        var _lignes = lignesFacturables();
+        var anyPrice = _lignes.some(function (l) { return typeof l.montant === 'number'; });
+        var total = 0;
+        _lignes.forEach(function (l) { if (typeof l.montant === 'number') total += l.montant; });
+        var cell = function (v) { return (v === null || v === undefined) ? '—' : fmtPrice(v); };
+        var mono = function (c) {
+            return '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">'
+                   + c + '</span> ';
         };
-        var rows = items.map(function(i) { return rowFor(i, false); }).join('');
-        rows += obligItems.map(function(i) { return rowFor(i, true); }).join('');
-        rows += pcItems.map(function(i) { return rowFor(i, true); }).join('');
+        var ligne = function (libelle, montant) {
+            return '<tr>' +
+                '<td style="padding:4px 10px 4px 0;vertical-align:top">' + libelle + '</td>' +
+                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
+                + cell(montant) + '</td>' +
+                '</tr>';
+        };
+        // UNE LIGNE PAR CHOSE VENDUE, un seul prix au bout (demande de Jacquot,
+        // 2026-09-01). L'installation est une ligne facturable a part entiere, avec
+        // son propre code produit (`installCode`, repris de la liste de prix
+        // maitresse). Le point rouge du kit obligatoire reste sur la ligne PRODUIT,
+        // et sur une ligne de pose seulement quand elle est seule (main-d'oeuvre
+        // pure : le 1500-0004), sinon il paraitrait deux fois pour un seul item.
+        var rows = _lignes.map(function (l) {
+            var dot = (l.oblig && (l.kind === 'item' || l.seule))
+                      ? '<span style="color:#FF4444">&#9679; </span>' : '';
+            var code = l.code ? mono(l.code) : '';
+            if (l.kind === 'install') {
+                return ligne('<span style="color:#9aa7b2">' + dot + code
+                             + i18n.t('soum.tbl_install_line', { name: l.name }) + '</span>',
+                             l.montant);
+            }
+            return ligne(dot + code + l.name, l.montant);
+        }).join('');
 
         // UN SEUL total, sous le trait, en face de la colonne de prix. Le « combine »
         // entre parentheses n'a plus lieu d'etre : produit et installation sont
@@ -2284,7 +2325,7 @@ function updateSelectedSummary() {
             totalRow = '<tr style="border-top:2px solid #555;font-weight:700">' +
                 '<td style="padding:8px 10px 4px 0">' + i18n.t('soum.tbl_total') + '</td>' +
                 '<td style="padding:8px 0 4px 8px;text-align:right;color:#FF8C00">'
-                + fmtPrice(totItem + totInstall) + '</td>' +
+                + fmtPrice(total) + '</td>' +
                 '</tr>';
         }
         var noteRow = currentNotes
@@ -2318,6 +2359,12 @@ function updateSelectedSummary() {
         } else {
             list.style.minHeight = '';
         }
+        // La question « Installation par e-Trak ? » ne s'affiche que s'il y a
+        // quelque chose a installer dans la selection : sinon elle n'a pas d'objet.
+        // Et une question invisible qui bloque l'envoi est precisement le defaut
+        // paye le 2026-09-01.
+        var _qBox = document.getElementById('install-question-box');
+        if (_qBox) _qBox.style.display = selectionAInstallation() ? 'flex' : 'none';
         wrap.style.display = 'block';
     } else {
         list.innerHTML = '';
