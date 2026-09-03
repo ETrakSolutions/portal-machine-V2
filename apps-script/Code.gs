@@ -296,9 +296,16 @@ function authListUsers(body) {
 }
 
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
-   de courriels (scope script.send_mail). Envoie un courriel de test a Robin. */
+   de courriels (scope script.send_mail). Le courriel de test part a la personne
+   qui execute la fonction.
+   L'adresse etait ecrite EN DUR ici (robin@gryb.ca) : Robin n'est plus chez
+   e-Trak et ne doit plus recevoir de courriel du portail (Jacquot, 2026-09-03).
+   Session.getEffectiveUser() ne peut pas se perimer — c'est toujours celui qui
+   lance la fonction, donc celui qui a besoin de voir le resultat. */
 function _authMail() {
-  MailApp.sendEmail('robin@gryb.ca', 'Autorisation e-Trak', 'Autorisation MailApp OK — l\'envoi de soumissions est maintenant actif.');
+  var moi = Session.getEffectiveUser().getEmail();
+  MailApp.sendEmail(moi, 'Autorisation e-Trak', 'Autorisation MailApp OK — l\'envoi de soumissions est maintenant actif.');
+  return moi;
 }
 
 /* ============================ ENVOI SOUMISSION ============================ */
