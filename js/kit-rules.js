@@ -196,15 +196,50 @@
   // le fichier source « liste fitting sur loader.xls » ne donnait aucun numero
   // (regle de Jacquot, 2026-09-03 : obligatoire, mais a confirmer). Elle doit
   // etre VUE, jamais collee.
-  var CODES_NON_COMMANDABLES = { 'À CONFIRMER': true };
+  var CODE_A_CONFIRMER = 'À CONFIRMER';
+  var CODES_NON_COMMANDABLES = {};
+  CODES_NON_COMMANDABLES[CODE_A_CONFIRMER] = true;
   function estCommandable(code) {
     return !!code && !CODES_NON_COMMANDABLES[code];
+  }
+
+  // Une balance ne s'installe pas sans raccord hydraulique. Sur les types ci-dessous,
+  // si la machine choisie ne porte AUCUN raccord au dossier, la soumission doit le
+  // DIRE au lieu de rester muette : 1 906 chargeuses sur 2 022 sont dans ce cas
+  // (94 %), et jusqu'au 2026-09-03 elles ne montraient rien du tout.
+  // Demande de Jacquot : « je ne vois pas le commentaire a verifier a la commande
+  // obligatoirement s'il n'y en a pas de prevu. »
+  //
+  // C'est une REGLE, pas une donnee : ecrire 1 906 lignes identiques dans
+  // machines.json aurait gonfle le fichier, et une machine ajoutee demain n'en
+  // aurait pas herite. La regle se retire d'elle-meme des qu'un vrai numero est
+  // saisi pour la machine.
+  //
+  // Tracteur volontairement ABSENT : on ne sait pas si la Scale Lite demande un
+  // raccord, et aucune des 8 708 entrees n'en documente un. A trancher par Jacquot
+  // avant de l'ajouter — pas devine.
+  var TYPES_RACCORD_BALANCE = { 'Loader': true };
+  function raccordBalanceRequis(type) {
+    return !!TYPES_RACCORD_BALANCE[type];
+  }
+  // La ligne a afficher quand rien n'est au dossier. Meme forme qu'une ligne
+  // `_custom`, pour traverser l'affichage, le courriel et les prix a l'identique.
+  function ligneRaccordAConfirmer() {
+    return {
+      code: CODE_A_CONFIRMER, pn: '',
+      desc: 'Raccord hydraulique — numéro à confirmer à la commande',
+      desc_en: 'Hydraulic fitting — part number to be confirmed at order',
+      status: 'r', opt: 'balance', qty: 2
+    };
   }
 
   window.KitRules = {
     DRAIN_PREFIXES: DRAIN_PREFIXES,
     CODES_NON_COMMANDABLES: CODES_NON_COMMANDABLES,
+    CODE_A_CONFIRMER: CODE_A_CONFIRMER,
     estCommandable: estCommandable,
+    raccordBalanceRequis: raccordBalanceRequis,
+    ligneRaccordAConfirmer: ligneRaccordAConfirmer,
     EXC_CODES: EXC_CODES,
     POMPE_CODES: POMPE_CODES,
     NACELLE_OPT_CODES: NACELLE_OPT_CODES,

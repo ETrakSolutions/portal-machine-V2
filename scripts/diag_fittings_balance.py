@@ -101,5 +101,13 @@ try:
 
     cas('CAS F - aucun PN a la source -> a confirmer a la commande',
         'Loader', 'Kubota', '2004', 'R420', ['bal-loader'], 'À CONFIRMER')
+
+    # Ajoutes le 2026-09-03 avec la quantite 2 et le filet de securite.
+    cas('CAS G - chargeuse SANS AUCUN fitting au dossier (1 906 cas sur 2 022) :'
+        ' le filet doit poser la ligne « a confirmer »',
+        'Loader', 'Caterpillar', '2015', '910K', ['bal-loader'], 'À CONFIRMER')
+
+    cas('CAS H - meme machine, balance NON cochee : aucune ligne de raccord',
+        'Loader', 'Caterpillar', '2015', '910K', [], 'À CONFIRMER')
 finally:
     dv.quit(); httpd.shutdown()

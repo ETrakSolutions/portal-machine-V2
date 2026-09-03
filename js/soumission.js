@@ -1001,8 +1001,30 @@ function getKitSummary(type, fab, modele, specs) {
                     code: c.pn || c.code,
                     name: customName(c),
                     status: c.status === 'r' ? 'Obligatoire' : (c.status === 'v' ? 'À vérifier' : 'Optionnel'),
-                    optExplicit: !!(c.opt && String(c.opt).trim())
+                    optExplicit: !!(c.opt && String(c.opt).trim()),
+                    // marque les lignes rattachees a la balance : le filet de securite
+                    // juste en dessous s'en sert pour savoir s'il doit intervenir.
+                    optBalance: c.opt === 'balance'
                 });
+            });
+        }
+        // FILET DE SECURITE (Jacquot, 2026-09-03) : une balance ne s'installe pas
+        // sans raccord hydraulique. Si la machine choisie n'en porte AUCUN au
+        // dossier, la soumission doit le DIRE au lieu de rester muette — 1 906
+        // chargeuses sur 2 022 (94 %) sont dans ce cas et n'affichaient rien.
+        // Regle et libelles dans js/kit-rules.js, la source unique ; elle se retire
+        // d'elle-meme des qu'un vrai numero est saisi pour la machine.
+        var KRb = window.KitRules || {};
+        if (KRb.raccordBalanceRequis && KRb.raccordBalanceRequis(type)
+            && optionIsSelected('balance')
+            && !kitG.some(function (it) { return it.optBalance; })) {
+            var rc = KRb.ligneRaccordAConfirmer();
+            kitG.push({
+                code: rc.code,
+                name: customName(rc),
+                status: 'Obligatoire',
+                optExplicit: true,
+                optBalance: true
             });
         }
         return kitG;
