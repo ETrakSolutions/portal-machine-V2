@@ -3,6 +3,20 @@
 Ce document sert à démarrer quelqu'un qui va travailler sur le portail. Il se lit en
 cinq minutes; la mise en route elle-même se fait par Claude Code (prompt à la fin).
 
+> ## ⚠️ À SAVOIR AVANT TOUT LE RESTE
+>
+> **Une fois le poste configuré, ouvre Claude Code DANS le dossier du dépôt**
+> (`…\CLAUDE_CODE\portal-machine-v2`), jamais ailleurs.
+>
+> Les **sept skills** du projet vivent dans `.claude/skills/` et ne se chargent que
+> dans ce contexte, `CLAUDE.md` non plus. Ouvert ailleurs, Claude n'a aucun de ces
+> repères : il pose des questions au lieu de chercher, et il ignore les règles du
+> projet. Trois skills n'existent QUE là — dont **`portal-fill-specs`**, celui qui
+> sert à créer ou compléter une machine, la tâche la plus fréquente.
+>
+> C'est un piège qui a déjà coûté une session complète. Si Claude te semble perdu
+> ou trop bavard, la première chose à vérifier est le dossier d'ouverture.
+
 ## Le projet en trois phrases
 
 Le **Portal Machine V2** est l'outil interne e-Trak pour consulter les spécifications de
@@ -29,14 +43,12 @@ Script écrit directement dans le dépôt quand un admin sauvegarde depuis l'int
 4. **Jamais `git add -A`.** Plusieurs sessions travaillent parfois dans le même clone.
 5. **Une décision métier va dans les overrides**, pas en dur dans le code.
 
-## Où travailler
-
-**Ouvrir Claude Code directement dans le dossier du dépôt.** Les sept skills du projet
-vivent dans `.claude/skills/` et ne se chargent que dans ce contexte. Ouvrir Claude Code
-ailleurs les rend invisibles — c'est un piège qui a déjà coûté une session complète.
+## Par quoi commencer, dans le dépôt
 
 Le skill **`portal-machine-db` est la référence canonique** : modèle de données, pièges,
-règle de validation. `CLAUDE.md` à la racine donne l'aiguillage vers les six autres.
+règle de validation du fabricant. `CLAUDE.md` à la racine donne l'aiguillage vers les six
+autres — dont **`portal-fill-specs`** pour créer ou compléter une machine, et
+**`portal-deploy`** pour tester et mettre en ligne.
 
 ## Ce qu'il faut demander à Jacquot
 
@@ -54,9 +66,20 @@ Coller tel quel dans Claude Code, depuis n'importe quel dossier :
 Tu vas me configurer ce poste pour travailler sur le Portal Machine V2 d'e-Trak. Fais
 tout toi-même, étape par étape, et arrête-toi en me l'expliquant si quelque chose bloque.
 
-1. Vérifie les prérequis et dis-moi ce qui manque : `git`, Python 3, Google Chrome, et le
-   paquet Python `selenium` (installe-le avec pip s'il est absent). Vérifie aussi si la
-   CLI GitHub `gh` est présente — utile, pas obligatoire.
+1. Vérifie les prérequis et dis-moi ce qui manque : `git`, Python 3, Google Chrome, et la
+   CLI GitHub `gh` (utile, pas obligatoire).
+
+   Pour Python, attention : sur un poste Windows il y a souvent **plusieurs
+   installations**, et `python` ne pointe pas forcément sur celle qui a les paquets.
+   Liste-les avec `py -0`, puis pour chacune vérifie `selenium` et `openpyxl` —
+   par exemple `py -3.13 -c "import selenium, openpyxl"`. Installe ce qui manque avec
+   le `py -3.xx -m pip` de l'interpréteur retenu, puis **dis-moi la commande exacte à
+   utiliser pour lancer les scripts de ce dépôt** (ce sera `py -3.xx` et pas forcément
+   `python`) et emploie-la partout ensuite.
+
+   Ça vaut la peine : sur le poste de Jacquot, `python` est un Python 3.13 **sans**
+   selenium alors qu'un autre 3.13 l'a — les tests navigateur échouaient avec
+   `ModuleNotFoundError` sur un environnement parfaitement sain.
 
 2. Clone le dépôt public https://github.com/ETrakSolutions/portal-machine-V2 dans
    `%USERPROFILE%\CLAUDE_CODE\portal-machine-v2` s'il n'y est pas déjà. S'il y est déjà,
@@ -72,11 +95,13 @@ tout toi-même, étape par étape, et arrête-toi en me l'expliquant si quelque 
 
 5. Lance les deux contrôles en lecture seule pour confirmer que l'environnement est
    fonctionnel, et rapporte-moi le résultat sans rien corriger :
-   `python scripts/check_portal_integrity.py`
-   `python scripts/controle_sante_portail.py`
+   `<python> scripts/check_portal_integrity.py`
+   `<python> scripts/controle_sante_portail.py`
+
+   `<python>` = la commande retenue à l'étape 1 (souvent `py -3.13`, pas `python`).
 
 6. Lance le test navigateur de bout en bout, qui tourne contre le site en ligne et ne
-   modifie rien : `python scripts/selenium_mini_fabricant_test.py`. Il doit se terminer
+   modifie rien : `<python> scripts/selenium_mini_fabricant_test.py`. Il doit se terminer
    par `RESULTAT: OK`. S'il échoue, dis-moi précisément quelle vérification a lâché.
 
 7. Termine en me listant ce que je dois obtenir de Jacquot : accès en écriture au dépôt,

@@ -26,6 +26,12 @@ Un fait technique n'a qu'**un seul domicile**. Si tu dois le corriger, corrige-l
 nulle part ailleurs — la duplication entre skills est ce qui a laissé passer l'erreur du
 1500-0004 pendant des mois.
 
+`PROMPT_TRAVAIL.md` à la racine porte les **façons de travailler** attendues sur ce
+projet (chercher avant de demander, auditer avant de livrer, éprouver ses contrôles en
+les cassant, ce qui exige un accord explicite). À coller en début de séance. Il ne
+répète pas les règles ci-dessous : si une règle technique manque, elle va ici ou dans
+le skill concerné, pas là-bas.
+
 ## Les cinq règles dures
 
 1. **Rien en ligne sans validation à la source fabricant.** Sa page produit ou sa fiche
