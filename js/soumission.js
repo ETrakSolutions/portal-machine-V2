@@ -1821,6 +1821,23 @@ function reponseInstall() {
     var r = document.querySelector('input[name="install-etrak"]:checked');
     return r ? r.value : '';
 }
+// Liseré ambré + mention « reponse requise » sur la boite d'installation, poses
+// DES qu'elle apparait et retires au premier clic. La question etait deja
+// bloquante a l'envoi (encadre rouge + defilement), mais elle ne se signalait
+// qu'au clic sur « Envoyer » : le vendeur remplissait tout le formulaire avant
+// d'apprendre qu'il lui manquait une reponse. Le rouge de l'envoi refuse reste
+// pose en style inline, donc il l'emporte sur la classe ambre — et l'ambre
+// revient de lui-meme quand le rouge est retire, tant que rien n'est repondu.
+// offsetParent : la boite peut garder display:flex alors que tout le panneau
+// « Options selectionnees » est masque — on ne signale que ce qui est a l'ecran.
+function majLisereInstall() {
+    var box = document.getElementById('install-question-box');
+    if (!box) return;
+    var manque = (box.offsetParent !== null) && !reponseInstall();
+    box.classList.toggle('install-q-required', manque);
+    var hint = document.getElementById('install-q-hint');
+    if (hint) hint.hidden = !manque;
+}
 // Le client installe lui-meme. Tant que la question est sans reponse, on ne
 // facture PAS l'installation : afficher un prix que le vendeur n'a pas choisi
 // serait pire que d'en afficher un incomplet, et le garde-fou d'envoi l'oblige
@@ -2400,6 +2417,10 @@ function updateSelectedSummary() {
         list.style.minHeight = '';
         wrap.style.display = 'none';
     }
+    // APRES l'affichage du panneau, jamais avant : majLisereInstall se fie a
+    // offsetParent, et la boite d'installation est fille de ce panneau — appele
+    // plus haut, il concluait « invisible » sur une boite qui allait paraitre.
+    majLisereInstall();
 }
 
 // Get all kit machine items for current selection

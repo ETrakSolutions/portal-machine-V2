@@ -584,3 +584,39 @@
     .soumission-textarea { font-size: 16px !important; }
     .soumission-submit-btn { min-height: 48px; font-size: 16px; }
 }
+
+/* « Installation par e-Trak ? » — la question etait deja bloquante a l'envoi, mais
+   elle ne se signalait qu'au clic sur « Envoyer » : le vendeur remplissait tout le
+   formulaire avant d'apprendre qu'il lui manquait une reponse. Le liseré ambré et
+   la mention « reponse requise » paraissent DES l'apparition de la boite et
+   disparaissent au premier clic (js/soumission.js, majLisereInstall).
+   L'encadre ROUGE de l'envoi refuse reste pose en style inline : il l'emporte donc
+   sur cette classe, et l'ambre revient de lui-meme quand le rouge est retire. */
+.install-q-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .35rem;
+    margin: 0 0 .8rem;
+    padding: .5rem .65rem;
+    border: 1px solid #4a5a6a;
+    border-radius: 6px;
+    transition: border-color .2s ease, background-color .2s ease;
+}
+.install-q-box.install-q-required {
+    border-color: #FFAA00;
+    background: rgba(255, 170, 0, 0.10);
+}
+.install-q-line {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    flex-wrap: wrap;
+}
+.install-q-hint {
+    color: #FFD580;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
