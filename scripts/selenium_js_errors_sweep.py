@@ -60,7 +60,7 @@ except Exception as e:
     print('(CDP indisponible : %s)' % e)
 
 SESSION = ("localStorage.setItem('portal_user', JSON.stringify({role:'super_admin',"
-           "email:'robin@gryb.ca', name:'Test', token:'x',"
+           "email:'test@e-trak.ca', name:'Test', token:'x',"
            "permissions:{modifBom:true, modifAccounts:true, voirPrix:true}}));"
            "localStorage.setItem('portal_consent_v', '99');")
 

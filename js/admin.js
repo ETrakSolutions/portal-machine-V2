@@ -44,7 +44,11 @@ function _genTempPassword() {
     }
     return out;
 }
-const DEFAULT_EMAILS = ['robin@gryb.ca', 'k.berube@e-trak.ca'];
+// Repli utilise SEULEMENT si la cle serveur `target_emails` est vide ou
+// injoignable. Aligne sur la liste serveur le 2026-09-03, apres le depart de
+// Robin : son adresse etait ici en dur ET dans la cle serveur, donc chaque
+// soumission — prix compris — partait a un ancien employe.
+const DEFAULT_EMAILS = ['jacquot@gryb.ca', 'k.berube@e-trak.ca'];
 let targetEmails = [...DEFAULT_EMAILS];
 const DEFAULT_SALES_EMAILS = [];
 let salesEmails = [...DEFAULT_SALES_EMAILS];
