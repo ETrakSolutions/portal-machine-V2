@@ -80,6 +80,24 @@ les URL dont j'ai besoin.
 `git status` avant toute modification, et stage tes fichiers nommément — jamais
 `git add -A`.
 
+**Ce dépôt EST la production.** `main` n'est pas protégée et GitHub Pages déploie
+dans les minutes qui suivent : un push va directement devant les vendeurs, sans
+revue. Alors pour toute modification de CODE — une page, un script, une règle :
+
+- travaille sur une **branche** (`git switch -c` avec un nom parlant), jamais
+  directement sur `main` ;
+- pousse la branche et ouvre une **pull request**. La validation automatique du
+  dépôt tourne sur les pull requests : elle attrape un HTML vidé ou un JSON
+  invalide avant que ça touche le site ;
+- laisse-moi approuver et fusionner. Dis-moi le lien de la PR et ce qu'elle change.
+
+Deux nuances à connaître. Les sauvegardes faites depuis l'**interface** du portail
+(specs, BOM, notes) écrivent sur `main` par le backend et ne passent pas par une
+PR — c'est normal, ce n'est pas du code. Et `main` n'est pas protégée par un réglage
+GitHub **exprès** : la protéger bloquerait justement ces écritures du backend. La
+discipline de la branche tient donc à la convention, pas à un verrou — d'où
+l'importance de la respecter.
+
 **Ce que tu ne fais pas sans mon accord explicite** : pousser en production,
 redéployer le backend Apps Script, écrire des specs non validées à la source,
 supprimer des données, et changer quelque permission que ce soit — dépôt,
