@@ -1926,9 +1926,16 @@ function camQteSuffixe() {
 // (`installCode`) avec la meme quantite que le produit pose. Une ligne sans code
 // est ecartee : elle produisait avant une ligne « <tab>1 » que rien ne pouvait
 // coller dans la grille.
+// Une ligne sans code — et depuis le 2026-09-03 une ligne dont le code n'est pas
+// COMMANDABLE (voir KitRules.estCommandable) — est ecartee du bloc : elle
+// produisait une ligne que rien ne pouvait coller dans la grille Epicor. Elle
+// reste au tableau et dans le courriel, ou elle doit justement etre vue.
 function buildEpicorRows() {
+    var commandable = (window.KitRules && window.KitRules.estCommandable)
+        ? window.KitRules.estCommandable
+        : function (c) { return !!c; };
     return lignesFacturables()
-        .filter(function (l) { return l.code; })
+        .filter(function (l) { return commandable(l.code); })
         .map(function (l) { return { code: l.code, qty: l.qty }; });
 }
 function epicorBlockText() {

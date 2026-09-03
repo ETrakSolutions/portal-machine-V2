@@ -189,8 +189,22 @@
     return st;
   }
 
+  // Codes qui paraissent au tableau et au courriel mais qui ne sont PAS
+  // commandables : Luna colle le bloc Epicor tel quel dans la grille de commande,
+  // et un code inconnu y fait echouer le collage. Aujourd'hui un seul cas — la
+  // ligne « Raccord a confirmer a la commande », posee sur les 11 chargeuses dont
+  // le fichier source « liste fitting sur loader.xls » ne donnait aucun numero
+  // (regle de Jacquot, 2026-09-03 : obligatoire, mais a confirmer). Elle doit
+  // etre VUE, jamais collee.
+  var CODES_NON_COMMANDABLES = { 'À CONFIRMER': true };
+  function estCommandable(code) {
+    return !!code && !CODES_NON_COMMANDABLES[code];
+  }
+
   window.KitRules = {
     DRAIN_PREFIXES: DRAIN_PREFIXES,
+    CODES_NON_COMMANDABLES: CODES_NON_COMMANDABLES,
+    estCommandable: estCommandable,
     EXC_CODES: EXC_CODES,
     POMPE_CODES: POMPE_CODES,
     NACELLE_OPT_CODES: NACELLE_OPT_CODES,

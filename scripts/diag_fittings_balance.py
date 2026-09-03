@@ -91,5 +91,15 @@ try:
 
     cas('CAS D - Tracteur avec balance Scale Lite',
         'Tracteur', 'John Deere', '2024', '6155M', ['bal-scalelite'], '1200-0020')
+
+    # Ajoutes le 2026-09-03, apres la promotion des 101 chargeuses muettes
+    # (scripts/promouvoir_fittings_loader.py). Ils verifient les deux cas que la
+    # regle de Jacquot a crees : le decoupage « une ligne par numero » et le
+    # « a confirmer a la commande » quand le fichier source n avait aucun PN.
+    cas('CAS E - PN multiples decoupes en une ligne par numero',
+        'Loader', 'Volvo', '2015', 'L150H', ['bal-loader'], 'ASX-12-GP')
+
+    cas('CAS F - aucun PN a la source -> a confirmer a la commande',
+        'Loader', 'Kubota', '2004', 'R420', ['bal-loader'], 'À CONFIRMER')
 finally:
     dv.quit(); httpd.shutdown()
