@@ -894,7 +894,11 @@ function loadNotesForModel(fab, modele, annee) {
 // Elle ne s'affiche en soumission que si son option est selectionnee (ou toujours
 // si opt vide). Ainsi une meme machine peut avoir un fitting pour le limiteur, un
 // autre pour la balance, un autre pour la camera, chacun visible avec SON option.
-var BALANCE_TYPES = { 'Telehandler': true, 'Loader': true, 'Retrocaveuse': true };
+// « Tracteur » ajoute le 2026-09-03, par prevention : ce type n'a AUCUNE ligne
+// custom aujourd'hui, donc aucun changement de comportement — mais le jour ou on
+// y pose un fitting sans etiquette, il sortirait avec n'importe quelle option
+// alors que le seul produit e-Trak du tracteur est la balance Scale Lite.
+var BALANCE_TYPES = { 'Telehandler': true, 'Loader': true, 'Retrocaveuse': true, 'Tracteur': true };
 // Une bascule d'option est "selectionnee" si elle porte la classe 'active' OU
 // contient un input coche (radio/checkbox de sous-option).
 function _boxSelected(el) {
@@ -1447,12 +1451,16 @@ if (submitBtn) {
             .filter(function(e) { return e; })
             .join(';');
         var subject = i18n.t('email.soumission_subject', { fab: fab, modele: modele, annee: annee });
-        // Get kit machine summary
+        // Specs de la machine, pour le bloc de specs du courriel (EMAIL_SPEC_FIELDS).
+        // Il y avait ici un `var kitItems = getKitSummary(...)` jamais lu : les
+        // produits du courriel viennent des lignes A L'ECRAN (window.__selectionRows),
+        // pas d'un second calcul. Retire le 2026-09-03 — un appel mort qui refaisait
+        // tout le kit a chaque construction de courriel, et qui invitait a croire que
+        // le courriel avait sa propre source de verite.
         var specs = {};
         if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
             specs = machinesData[type][fab][annee][modele];
         }
-        var kitItems = getKitSummary(type, fab, modele, specs);
 
         // Load product codes then build email
         var pcApiKey = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;

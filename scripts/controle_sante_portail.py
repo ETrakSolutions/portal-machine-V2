@@ -230,8 +230,18 @@ for p in glob.glob(os.path.join(ROOT, 'js', '*.js')) + glob.glob(os.path.join(RO
     if os.path.basename(p) == 'kit-rules.js':
         continue
     s = open(p, encoding='utf-8').read()
-    if 'DRAIN_PREFIXES' in s and 'KitRules.DRAIN_PREFIXES' not in s:
-        alerte('%s semble redefinir DRAIN_PREFIXES hors de kit-rules.js' % os.path.basename(p))
+    # Le seul vrai signal de duplication est une affectation a un TABLEAU LITTERAL
+    # (`DRAIN_PREFIXES = [ ... ]`). Deux ecritures voisines sont legitimes et ne
+    # doivent pas sonner :
+    #   - la simple MENTION du nom dans un commentaire (js/soumission.js explique
+    #     ou le limiteur prend son drain) — c'est ce que l'ancienne regle, qui
+    #     testait la presence du nom, prenait pour une faute. Un avertissement
+    #     permanent apprend a ignorer le rapport de sante ;
+    #   - l'ALIAS LOCAL qui lit la source unique
+    #     (`var DRAIN_PREFIXES = window.KitRules.DRAIN_PREFIXES`), dans
+    #     js/edit-machine.js et database.html : c'est l'usage correct.
+    if re.search(r'\bDRAIN_PREFIXES\s*=\s*\[', s):
+        alerte('%s redefinit DRAIN_PREFIXES hors de kit-rules.js' % os.path.basename(p))
 
 print('\n' + '=' * 60)
 print('BILAN : %d probleme(s) bloquant(s), %d avertissement(s)' % (len(pb), len(av)))
