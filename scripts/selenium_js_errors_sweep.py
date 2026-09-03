@@ -7,6 +7,12 @@ Pour chaque page : charge, attend le rendu, exerce les interactions de base
   - les erreurs console SEVERE ;
   - les window.onerror / unhandledrejection captures des le debut du chargement.
 
+Les ECHECS D APPEL AU BACKEND Apps Script sont comptes A PART ([NET]) et ne font
+pas echouer le balayage : ils viennent du reseau ou d un quota Google, pas du
+portail, et melanges au reste ils faisaient varier le compteur de 7 a 0 sur un
+code identique. Ils sont quand meme affiches — une page dont l appel backend a
+echoue a rendu des donnees INCOMPLETES, et son « OK » ne vaut rien.
+
 Sert le repo LOCAL par defaut ; passer une URL en argument pour tester le live.
 """
 import sys, io, os, json, threading, http.server, socketserver, time
@@ -66,6 +72,7 @@ PAGES = ['index.html', 'machine.html', 'database.html', 'soumission.html',
          'export.html', 'price-list.html', 'machine-requests.html']
 
 total = 0
+total_res = 0     # echecs d appel au backend : comptes A PART, jamais melanges au code
 rapport = {}
 try:
     dv.get(BASE + '/index.html')
@@ -109,19 +116,37 @@ try:
         # handler beforeunload, et Chrome refuse d'afficher la boite faute de
         # geste utilisateur en mode automatise. Bruit de test, pas defaut.
         BENINS = ('beforeunload',)
-        sev = [e for e in dv.get_log('browser')
-               if e['level'] == 'SEVERE' and not any(b in e.get('message', '') for b in BENINS)]
+        # ⚠️ LE COMPTEUR MENTAIT (corrige le 2026-09-03). Les pages appellent le
+        # backend Apps Script en direct ; quand cet appel echoue — coupure reseau,
+        # quota Google, lenteur — Chrome journalise un SEVERE et le balayage
+        # l'annoncait comme un defaut du portail. Vu le meme jour : 7 problemes,
+        # puis 1, puis 0 deux fois de suite, sur un code IDENTIQUE. Un compteur qui
+        # varie sans que rien ne change n'est pas un compteur.
+        # Ces echecs sont donc comptes A PART : ils sont reels et ils meritent d'etre
+        # vus (la page a rendu des donnees INCOMPLETES), mais ce n'est pas du code —
+        # et ils ne doivent jamais faire echouer le balayage.
+        RESEAU = ('script.google', 'script.googleusercontent', 'net::', 'ERR_NETWORK',
+                  'ERR_INTERNET', 'ERR_CONNECTION', 'ERR_NAME_NOT_RESOLVED',
+                  'ERR_TIMED_OUT', 'Failed to fetch')
+        _sev_tous = [e for e in dv.get_log('browser')
+                     if e['level'] == 'SEVERE' and not any(b in e.get('message', '') for b in BENINS)]
+        res = [e for e in _sev_tous if any(r in e.get('message', '') for r in RESEAU)]
+        sev = [e for e in _sev_tous if e not in res]
         # preuve que la page a vraiment rendu quelque chose (sinon « OK » ne veut rien dire)
         etat = dv.execute_script(
             "return {url: location.pathname.split('/').pop(), texte: (document.body.innerText||'').length,"
             " selects: document.querySelectorAll('select').length,"
             " lignes: document.querySelectorAll('table tbody tr').length,"
             " boutons: document.querySelectorAll('button').length};")
-        rapport[page] = {'window': errs, 'console': sev, 'etat': etat}
+        rapport[page] = {'window': errs, 'console': sev, 'reseau': res, 'etat': etat}
         n = len(errs) + len(sev)
         total += n
+        total_res += len(res)
+        etiquette = ('OK' if n == 0 else '%d probleme(s)' % n)
+        if res:
+            etiquette += ' (+%d appel(s) backend echoue(s) : donnees INCOMPLETES)' % len(res)
         print('%-24s %-16s [rendu: page=%s texte=%d car., %d select, %d lignes, %d boutons]'
-              % (page, 'OK' if n == 0 else '%d probleme(s)' % n,
+              % (page, etiquette,
                  etat['url'], etat['texte'], etat['selects'], etat['lignes'], etat['boutons']))
         for e in errs:
             print('   [JS ] %s  (%s)' % (e['msg'], e['src']))
@@ -129,10 +154,16 @@ try:
                 print('         %s' % e['stack'].replace('\n', ' | ')[:300])
         for e in sev:
             print('   [CON] %s' % e['message'][:400])
+        for e in res:
+            print('   [NET] %s' % e['message'][:200])
 finally:
     dv.quit()
 
-print('\nTOTAL : %d probleme(s) sur %d pages' % (total, len(PAGES)))
+print('\nTOTAL : %d probleme(s) de code sur %d pages' % (total, len(PAGES)))
+if total_res:
+    print('        + %d appel(s) au backend Apps Script en echec — environnement, pas code.' % total_res)
+    print('        Les pages concernees ont rendu des donnees incompletes : relancer avant')
+    print('        de conclure quoi que ce soit sur elles.')
 out = os.path.join(REPO, 'scripts', 'data', 'js_errors_sweep.json')
 os.makedirs(os.path.dirname(out), exist_ok=True)
 json.dump(rapport, open(out, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
