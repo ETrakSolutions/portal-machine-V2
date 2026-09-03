@@ -1307,11 +1307,18 @@ function saveKitOverride(overrideData) {
     var prev = (entry && entry._bom) ? entry._bom : {};
 
     // Convertit l'override de l'editeur inline (legacy) en format plat, puis preserve
-    // les champs riches que cet editeur ne gere pas (specs, lignes retirees, harnais).
+    // les champs riches que cet editeur ne gere pas (specs, lignes retirees, harnais,
+    // lignes custom).
+    // `_custom` MANQUAIT a cette liste (corrige le 2026-09-03). L'editeur inline de
+    // machine.html AFFICHE les lignes custom mais ne les collecte pas au moment de
+    // sauver : toute sauvegarde de kit depuis cette page effacait donc les fittings
+    // poses dans edit-machine — les 101 chargeuses venues de « liste fitting sur
+    // loader.xls » comme les 15 saisies a la main (980 XE, 844 P-Tier, 835HV).
     var flat = toFlatOverride(overrideData) || {};
     if (prev._specs && !flat._specs) flat._specs = prev._specs;
     if (prev._removed && !flat._removed) flat._removed = prev._removed;
     if (prev.harnais && !flat.harnais) flat.harnais = prev.harnais;
+    if (prev._custom && !flat._custom) flat._custom = prev._custom;
 
     currentKitOverrides = flat;
     try { localStorage.setItem(getKitOverrideKey(currentKitFab, currentKitModele, currentKitAnnee), JSON.stringify(flat)); } catch(e) {}
