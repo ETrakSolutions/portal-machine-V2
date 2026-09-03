@@ -1,0 +1,1710 @@
+[
+ {
+  "id": 1,
+  "occ": 1116,
+  "champs": "_notes",
+  "exemple": "Telehandler / Dieci / 2015 / Dedalus 30.7 GD",
+  "fr": "Coupure électrique (type de coupure : élec — voir doc e-Trak)."
+ },
+ {
+  "id": 2,
+  "occ": 276,
+  "champs": "_warning",
+  "exemple": "Camion Girafe (Boom Truck) / Atlas / 2015 / 240.2e",
+  "fr": "Cette soumission doit passer par l'ingénierie avant d'être finalisée."
+ },
+ {
+  "id": 3,
+  "occ": 189,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 330F L",
+  "fr": "Limiteur de portée — installation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 4,
+  "occ": 101,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 1997 / IT38F",
+  "fr": "Boulons"
+ },
+ {
+  "id": 5,
+  "occ": 44,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX470LCH-5G",
+  "fr": "Support de prox"
+ },
+ {
+  "id": 6,
+  "occ": 37,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hyundai / 2021 / HX220AL",
+  "fr": "Limiteur de portée — installation standard. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 7,
+  "occ": 22,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / Wacker Neuson / 2016 / EW100",
+  "fr": "Encodeur pour rotation"
+ },
+ {
+  "id": 8,
+  "occ": 21,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / John Deere / 2018 / 245G / 245P",
+  "fr": "Prox 70mm"
+ },
+ {
+  "id": 9,
+  "occ": 21,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / John Deere / 2018 / 245G / 245P",
+  "fr": "Plaque prox soudé"
+ },
+ {
+  "id": 10,
+  "occ": 18,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 938G",
+  "fr": "Raccord hydraulique (GPFS2406-1212-4)"
+ },
+ {
+  "id": 11,
+  "occ": 17,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L150H",
+  "fr": "Raccord hydraulique (ASX-20)"
+ },
+ {
+  "id": 12,
+  "occ": 13,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L150H",
+  "fr": "Raccord hydraulique (ASX-12)"
+ },
+ {
+  "id": 13,
+  "occ": 13,
+  "champs": "_custom.desc",
+  "exemple": "Camion Girafe (Boom Truck) / Rotobec / 2015 / ELITE 915-F",
+  "fr": "ROTOBEC ELITE 915 M26"
+ },
+ {
+  "id": 14,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2015 / CX300C",
+  "fr": "Câble de coupure Case standard. Installation standard limiteur de portée hauteur et rotation. Données limitées (un seul bon de travail). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 15,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 308",
+  "fr": "Coupure magnétique CAT (Z03A-0100). Utiliser équerre et aimants pour stabiliser les proxs sous la cabine face aux dents. Certaines installations limitées à la hauteur seulement. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 16,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 374",
+  "fr": "Option Guide Pro avec laser documentée. Calibration parfois incomplète si attache rapide non fonctionnelle ou godet absent — prévoir attachements avant RDV. Eau dans compartiment moteur de rotation signalée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 17,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 440",
+  "fr": "Coupure via solénoïde (comme dummer). Installation limiteur de portée — données limitées, un seul bon de travail. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 18,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 450",
+  "fr": "Coupure via bobine dummer (solénoïde). Installation standard limiteur de portée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 19,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 302.4",
+  "fr": "Travaux hydrauliques complexes documentés : ajout points de graissage, remplacement bloc (105→75), multiples fittings HP (hose 20 pi, coudes JIC). Intervention spécialisée non standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 20,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 315FL",
+  "fr": "Couronne de 360 dents (à programmer). Câble de coupure CAT standard. Installation LP standard, calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 21,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 320LU",
+  "fr": "Coupure hydraulique requise — à compléter en deuxième passage. Installation initiale sans coupure hydraulique. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 22,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / M320D2/F",
+  "fr": "Installé avec inclinomètres à 1 connecteur. Remplacement Limit PRAN par Limit Pro + Guide Pro documenté. Installation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 23,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / EX200LC-5",
+  "fr": "Coupure hydraulique requise; pièce absente lors de l'intervention initiale (site isolé en forêt). Prévoir coupure hydraulique au kit avant déplacement. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 24,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX130-6",
+  "fr": "Coupure hydraulique — à grande vitesse, la reprise de contrôle nécessite de désactiver puis réactiver le bras de coupure. Particularité récurrente à signaler à l'opérateur. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 25,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX180LC-5B / -5G",
+  "fr": "Limiteur de portée — installation standard. Calibration documentée avec bucket 1015 kg. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 26,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX190LC-7H",
+  "fr": "Coupure par relais en série (pas de coupure hydraulique) — branchement sur connecteur 8 broches à l'arrière du banc côté gauche. Câble d'alimentation Hitachi standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 27,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX210LC-5 / -5G",
+  "fr": "Installation avec guide pro PRAN. Remplacement fréquent des inclinomètres (jusqu'à 3x). Support laser à installer à droite. Calibration du godet requise (bucket 2). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 28,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX210LC-6",
+  "fr": "Nouvelle génération : coupure requiert valve hydraulique (câble électrique seul insuffisant). Écran reste allumé après coupure clé — éteindre en retirant la clé. Calibration à compléter si godet/attache rapide absents. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 29,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX210LC-8",
+  "fr": "Coupure hydraulique requise. Câble de coupure Hitachi + connecteur d'alimentation Hitachi. Harnais principal à vérifier lors de l'installation. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 30,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX220W-5B",
+  "fr": "Limiteur de portée — installation standard (données très limitées dans les bons de travail). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 31,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX350LC-5G",
+  "fr": "Compatibilité écran PRAN problématique signalée en road test sur ce modèle (écran non fonctionnel). Contacter Keven avant installation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 32,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX350LC-6",
+  "fr": "Câble de coupure Hitachi + câble d'alimentation Hitachi requis. Coupure hydraulique fréquemment demandée (installée par technicien secondaire). Vérifier quick attach disponible avant calibration — sinon calibrer avec attache originale et aviser client. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 33,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX50U-5N",
+  "fr": "Câble de coupure Hitachi. Équerre avec aimants au néodyme requise pour capteurs de proximité (mini-pelle, petites dents). Coupure sur relais. Installation standard hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 34,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX75US-5A / -5B",
+  "fr": "Limiteur de portée — entretien documenté : réparation harnais écran, remplacement support d'écran, réparation connexion relais de coupure. Installation standard hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 35,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 350",
+  "fr": "Câble de coupure et alimentation John Deere standards. Check valve hydraulique peut tomber en erreur — prévoir désactivation si nécessaire. Vérifier facteur de prévention (swing). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 36,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 410",
+  "fr": "Coupure hydraulique requise avec bobine/reel. Connecteur Deutsch 6 pattes : patte 5 = alimentation, patte 4 (noir) = mise à la terre. Connecteur 90° recommandé pour accès au reel. Câblage en deux étapes fréquent (reel posé séparément). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 37,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 135C",
+  "fr": "Coupure hydraulique uniquement (pas de coupure électrique disponible). Remplacement inclinomètre boom + câble 10 m (1 connecteur). Proxs de type « langue » utilisés en remplacement (dents incompatibles avec proxs standard). Vérifier fonctionnement coupure hydraulique à la mise en service. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 38,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 200CLC",
+  "fr": "Coupure hydraulique requise; peut rester en attente de complétion par un second technicien. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 39,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 330X",
+  "fr": "Coupure hydraulique requise; peut nécessiter une intervention distincte (complétion le lendemain). Installation avec câble de coupure John Deere. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 40,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 470G LC",
+  "fr": "Support de capteurs de proximité à fabriquer/souder sur mesure (brackette spéciale). Séquence prox difficile à calibrer — nombreux essais. Inclinomètre de godet et câble 3 m 2 connecteurs requis. Vérifier facteur de prévention (coupure hydraulique lors de swing rapide). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 41,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 490D",
+  "fr": "Coupure hydraulique requise; peut rester en attente de complétion lors de l'installation initiale. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 42,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kobelco / 2015 / SK210LC-9 / -10 / -11",
+  "fr": "Problèmes de calibration récurrents : le système ne garde pas son zéro (contrôleur ou écran défectueux à tester). Particules métalliques dans la graisse de la couronne de rotation signalées; aviser le client. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 43,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kobelco / 2015 / SK270SRLC-5",
+  "fr": "Limiteur de portée PRAN. Option Guide Pro avec laser documentée (calibration 2 godets). Installation standard hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 44,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC160LC-8",
+  "fr": "Remplacement de capteur de proximité défectueux signalé; vérifier séquence des proxs et limitation H/R après toute réinstallation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 45,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC200LC-8",
+  "fr": "Câble de coupure Komatsu standard (hydraulique ou électrique selon version). Remplacement fréquent des prox (2×). Capteur 5M1C remplacé sur certaines unités. Inclinomètre à vérifier côté lors de travaux avec marteau (risque de mauvaise orientation). Calibration avec godet disponible sur place. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 46,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC78MR-5",
+  "fr": "Capteurs de proximité à ajuster en verticalité pour obtenir la séquence correcte. Remplacement des deux prox documenté. Vérifier limitation hauteur et rotation après tout réglage. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 47,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC78US",
+  "fr": "Câble de coupure Komatsu. Coupure hydraulique présente sur certaines unités. Quelques installations en hauteur seulement. Vérification du zéro systématique. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 48,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kubota / 2015 / KX040-4",
+  "fr": "Souvent configuré en hauteur seulement. Capteurs de proximité installés au plancher intérieur — accès difficile, espace restreint. Vérifier limitation et coupure à la livraison. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 49,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kubota / 2015 / KX080-4",
+  "fr": "Installation standard hauteur et rotation. Couronne de 400 dents (noter 401 pour stabilité du paramètre Maximum Teeth). Dents plus étroites : utiliser équerre de proxs à positionnement latéral variable. Problème connu : système ne retient pas sa dernière position au redémarrage — signaler à PRAN. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 50,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kubota / 2015 / U17",
+  "fr": "Nécessite équerre de capteurs de proximité usinée sur mesure pour cette machine. Calibration hauteur et rotation. Demande fréquente de lettre de certification d'ingénieur. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 51,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2015 / A 924",
+  "fr": "Seule mention : installation d'une caméra de recul. Aucune donnée d'installation de limiteur de portée dans les bons de travail disponibles. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 52,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2015 / R920 K LC",
+  "fr": "Coupure hydraulique présente; relais de coupure hydraulique sujet à défaillance (remplacement documenté lors d'une vérification annuelle). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 53,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2015 / 145 X3",
+  "fr": "Câble de coupure Case utilisé sur Link-Belt 145 X3. Installation standard limiteur de portée hauteur et rotation. Option Guide Pro + laser calibrée sur certaines unités. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 54,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2015 / 210 X3 / X4",
+  "fr": "Limiteur de portée — installation standard. Entretien récurrent : remplacement inclinomètre et fusible, réajustement capteurs de proximité, remise à zéro. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 55,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB216 R",
+  "fr": "Limitation en hauteur seulement documentée — rotation non complétée lors de l'installation initiale. Prévoir deuxième visite pour rotation si requise. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 56,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB225",
+  "fr": "Limiteur de portée — câble de coupure Takeuchi standard. Calibration et vérification hauteur et rotation. Installation standard sans particularité récurrente. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 57,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB230",
+  "fr": "Coupure Danfoss (particularité vs standard). Rotation parfois désactivée sur écran selon le mandat (hauteur seulement). Réactiver/désactiver rotation selon configuration demandée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 58,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB235",
+  "fr": "Câble de coupure Takeuchi standard. Cas de hauteur seulement (rotation désactivée) documentés. Réinstallations depuis TB245-2 ou TB-240 compatibles. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 59,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB240",
+  "fr": "Petite machine : installation des capteurs de proximité avec équerre et deux aimants pour assurer la visibilité des dents. Installation standard hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 60,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB260",
+  "fr": "Limitation en hauteur seulement fréquente sur ce modèle ; rotation désactivée dans plusieurs installations. Guide Pro calibré avec laser et multiples godets possible. Vérifier si rotation requise avant installation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 61,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2015 / TB290",
+  "fr": "Câble de coupure Takeuchi — fabriquer les connexions avec connecteurs à deux terminaux. Calibration hauteur et rotation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 62,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / Case / 2015 / 580SN",
+  "fr": "Limiteur de portée avec rotation : e-Trak coupe et capte la rotation du boom (petit réel pour la rotation). Coupure par relais 12V (MINI-ATO). Inclinomètre avec offset (ex. +90° = +900). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 63,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / Case / 2015 / 590SN",
+  "fr": "Limiteur de portée avec rotation (réel + coupure/capteurs de rotation). Coupure par relais 12V. NB : sur certaines unités le relais seul coupe mal — valve hydraulique requise. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 64,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / JCB / 2015 / 3CX",
+  "fr": "Seule intervention e-Trak connue : système de graissage (2020). Pas de limiteur posé à ce jour. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 65,
+  "occ": 12,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / John Deere / 2015 / 410 P-Tier",
+  "fr": "Limiteur de portée déjà installé. Coupure IN-LINE par relais 12V (bornier). Fil de coupure dans le plancher → boîte avec bobine pour émuler la coupure. Connecteur Deutsch 6 pattes (patte 5 = alim, patte 4 = masse). Petit réel, connecteur 90° requis. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 66,
+  "occ": 12,
+  "champs": "_custom.desc",
+  "exemple": "Camion Girafe (Boom Truck) / HIAB / 2015 / Hiab 192",
+  "fr": "HIAB X-Hipro 192 EP-5"
+ },
+ {
+  "id": 67,
+  "occ": 12,
+  "champs": "_custom.desc",
+  "exemple": "Camion Girafe (Boom Truck) / HIAB / 2015 / X-HiPro 362EP-5",
+  "fr": "HIAB X-Hipro 362 EP-5"
+ },
+ {
+  "id": 68,
+  "occ": 12,
+  "champs": "_custom.desc",
+  "exemple": "Camion Girafe (Boom Truck) / HIAB / 2015 / T-HiDuo 038",
+  "fr": "HIAB T-Hiduo 038 (Rotation crémaillère)"
+ },
+ {
+  "id": 69,
+  "occ": 12,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / John Deere / 2019 / 345G / 345P",
+  "fr": "Cable prox 5M droit"
+ },
+ {
+  "id": 70,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Bobcat / 2016 / E20",
+  "fr": "Installation des capteurs de proximité non réalisable : dents trop courtes/petites et espace insuffisant pour l'équerre. Limitation en rotation impossible — confirmer faisabilité avant déplacement. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 71,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2016 / 302.7 CR",
+  "fr": "Coupure magnétique Caterpillar (réf. Z03B-0086). Dents petites : usiner équerre de proxs adaptée. Installation standard hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 72,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX490LC-6",
+  "fr": "Câble de coupure et d'alimentation Hitachi. Coupure hydraulique recommandée : en rotation rapide plein régime, le système hydraulique gèle et nécessite abaissement du bras de sécurité pour reprendre contrôle. Harnais principal défectueux documenté. Installation valve hydraulique (boom + swing) réglant le problème. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 73,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2016 / ZX245USLC-6",
+  "fr": "Coupure hydraulique requise (valve hydraulique, raccords O-ring boss 6/JIC 6, ASX16 sur tige stick). Installation souvent en deux étapes : limiteur d'abord, valve hydraulique ensuite. Option IDC disponible. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 74,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2016 / ZX300LC-6",
+  "fr": "Utilisation de l'auxiliaire + pour l'alimentation électrique. Vérifier disponibilité du support d'écran et état de l'inclinomètre avant installation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 75,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2016 / ZX470LC-6",
+  "fr": "Bracket de proxs spéciale fabriquée pour ce modèle. Calibration parfois faite avec mauvais attaches — recalibration nécessaire au bon godet. Coupure hydraulique non completée lors d'une réinstallation (MC non programmé). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 76,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2016 / 200G",
+  "fr": "Câble de coupure John Deere + câble d'alimentation John Deere requis. Calibration hauteur et rotation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 77,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kobelco / 2016 / SK140SRLC-5 / -7",
+  "fr": "Limiteur de portée — installation standard. Données limitées dans les bons de travail consultés. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 78,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kobelco / 2016 / SK75SR",
+  "fr": "Rotation non installable par voie standard (aucun accès sur engrenage). Encodeur requis comme seule option pour la rotation — prévoir sous-traitant. Installation hauteur seulement lors du premier RDV. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 79,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2016 / PC228US-10",
+  "fr": "Remplacement proxs récurrent. Guide pro laser avec calibration multi-bucket documenté. Installation et inspection annuelle standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 80,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kubota / 2016 / U35-4",
+  "fr": "Installation des capteurs de proximité nécessite deux techniciens (un en cabine, un sous machine). Les prox peuvent lâcher après deux tours de rotation complets — calibrer attentivement. Inclinomètre du boom sujet aux défaillances. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 81,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Wacker Neuson / 2016 / EW100",
+  "fr": "Rotation via encodeur (pas de capteurs de proximité standards). Particularité à noter lors de la configuration : sélectionner encodeur pour la rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 82,
+  "occ": 11,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Wacker Neuson / 2016 / EW65",
+  "fr": "Encodeur au lieu des capteurs de proximité standard sur ce modèle. Tenir compte lors de l'installation de la rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 83,
+  "occ": 11,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 1988 / 644E",
+  "fr": "Raccord hydraulique (GPFS2406-1616-4)"
+ },
+ {
+  "id": 84,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2017 / CX145D",
+  "fr": "Deux câbles de coupure Case (électrique + hydraulique). Drain hydraulique systématiquement présent. Recalibration fréquente (jusqu'à 3 inclinomètres remplacés, remplacement écran). Eau dans swing signalée sur plusieurs unités — aviser client. Calibration 3 godets + attache rapide. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 85,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2017 / CX350D",
+  "fr": "Câble de coupure Case avec coupure hydraulique et électrique combinées. Proxs longs requis dans couvercle sur certaines unités; gabarit fabriqué pour positionnement. Câble inclinomètre rabouté à remplacer si présent. Relais Tyco à remplacer par prévention. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 86,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2017 / 304",
+  "fr": "Précision de rotation aléatoire (pins loose sur la machine). Installation 2D uniquement documentée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 87,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2017 / 320",
+  "fr": "Coupure CAT avec relais 24V. Capteurs de proximité courts (prox court 2x); ajustement de l'équerre récurrent pour obtenir bonne séquence. Inclinomètre Pran remplacé par Axiomatique (adresse 113). Présence d'un système de graissage automatique sur certaines unités — vérifier filage alimentation pompe. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 88,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2017 / 323",
+  "fr": "Limiteur de portée — installation standard. Calibration et vérification limitation hauteur/rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 89,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2017 / 336",
+  "fr": "Câble de coupure CAT standard. Remplacement fréquent inclinomètre boom (trouble intermittent) et câble 3M2C. Couvercle proxs parfois installé à 180° (à vérifier orientation). Option Guide Pro 2D + laser disponible. Proxs Omron longs utilisés sur certaines unités. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 90,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2017 / 303 CR",
+  "fr": "Mini-pelle : coupure magnétique CAT (Z03B-0080). Guide Pro installable mais calibration dépend de la disponibilité de l'attache rapide et des godets. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 91,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hyundai / 2017 / HW140A",
+  "fr": "Installation en deux étapes : pose du limiteur PRAN par un technicien, calibration et finalisation par un second technicien (Pierre ou Éric). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 92,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2017 / PC210LC-11",
+  "fr": "Câble de coupure Komatsu standard. Remplacement de Limitronic fréquent (démonter avant installation). Cas de hauteur seulement documentés. Vérifier câblage relais (problème de continuité sur fils gris rapporté). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 93,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2017 / PC360LC-11",
+  "fr": "Câble de coupure Komatsu requis. Calibré à 16 000 lbs avec pièces spécifiques (T JIC4, adaptateurs BSP/JIC, coude MPT). Vérifier option IDC si Guide Pro. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 94,
+  "occ": 10,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2017 / 235 X3 LF",
+  "fr": "Lors des transferts (Hitachi ou Komatsu vers Link-Belt 235), remplacement systématique du câble de coupure avec relais, des capteurs de proximité et du support d'écran. Calibration complète après chaque réinstallation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 95,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2018 / CX245D SR",
+  "fr": "Câble de coupure Case. Option coupure hydraulique documentée sur plusieurs unités. Câble d'inclinomètre de 5 m recommandé (câble standard trop court lors d'une réinstallation). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 96,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2018 / CX26C",
+  "fr": "Câble de coupure Case. Couronne à petites dents nécessite une équerre de proxs usinée sur mesure (hauteur et slot latérale ajustables) ainsi qu'un support d'écran métallique fabriqué sur place. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 97,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2018 / CX490D",
+  "fr": "Coupure hydraulique sur boom up. Point particulier : la coupure en montée de flèche est de type hydraulique (non électrique). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 98,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2018 / ZX130-7",
+  "fr": "Câble d'alimentation Hitachi requis. Installation standard limiteur de portée; calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 99,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2018 / ZX210LC-7",
+  "fr": "Câble de coupure hydraulique Hitachi + câble d'alimentation Hitachi requis. Calibration hauteur et rotation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 100,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2018 / ZX300LC-7",
+  "fr": "Câble de coupure Hitachi 7H + câble d'alimentation Hitachi. Installation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 101,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2018 / ZX350LC-7",
+  "fr": "Câble d'alimentation Hitachi + câble de coupure Hitachi. Cas noté : machine non déplaçable lors d'une intervention (calibration sur place). Recalibration nécessaire si attache rapide changée après installation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 102,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2018 / ZX490LC-7",
+  "fr": "Câble de coupure Hitachi + câble d'alimentation Hitachi + support de proxs Hitachi requis. Calibration hauteur et rotation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 103,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hyundai / 2018 / HX145AL CR",
+  "fr": "Câble de coupure Hyundai standard. Installation standard limiteur de portée hauteur et rotation. Données limitées (un seul bon de travail). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 104,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2018 / 245G / 245P",
+  "fr": "Câble de coupure John Deere + câble d'alimentation. Check valve à enlever/remettre à zéro lors de l'installation. Reprise des commandes hydrauliques parfois nécessaire en relevant puis rabaissant le bras de sécurité après coupure en rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 105,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2018 / 380G / 380P",
+  "fr": "Limiteur de portée — installation standard. Câble de coupure John Deere. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 106,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2018 / PC138US-11",
+  "fr": "Câble de coupure Komatsu + relais 24V requis. Inclinomètre axe 73 utilisé. Plaques acier pour fixation de l'inclinomètre. Inclino du boom sujet aux défaillances de connexion — refaire les fils brisés. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 107,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2018 / PC170LC-11",
+  "fr": "Câble de coupure Komatsu standard. Réinstallations fréquentes avec remplacement de capteurs de proximité, câbles et support d'inclinomètre. Calibration et vérification hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 108,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2018 / PC290LC-11",
+  "fr": "Sur les modèles 2018+, les dents de couronne sont très reculées : rallonger l'équerre de deux trous supplémentaires avec capteurs de proximité longs. Option Guide Pro avec laser documentée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 109,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2018 / PC390LC-11",
+  "fr": "Câble de coupure Komatsu standard. Remplacement récurrent d'inclinomètre godet (support + câble 3M) et proxs. Vérification annuelle documentée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 110,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2018 / PC490LC-11",
+  "fr": "Câble de coupure Komatsu. Présence de Limitronic à démonter avant installation (~3 h). Câble d'écran court : prévoir longueur suffisante. Option strobe disponible. Capteurs 10M2C signalés pour remplacement lors de vérifications GP. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 111,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2018 / PC650LC-11",
+  "fr": "Installation avec option Guide Pro. Calibration impossible si le godet n'est pas disponible sur place — prévoir les attachements avant le rendez-vous. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 112,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2018 / 245 X3 SR",
+  "fr": "Installation avec IDC (indicateur de charge). Boulons ASX16 M12×80 utilisés au boom. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 113,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / SANY / 2018 / SY135C",
+  "fr": "Installation LP + Guide Pro + laser. Coupure standard (relais en série avec interrupteur levier sécurité, comme excavatrices standard — ne pas confondre avec anciennes SANY). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 114,
+  "occ": 9,
+  "champs": "_notes",
+  "exemple": "Excavatrice / SANY / 2018 / SY16C",
+  "fr": "Limiteur de portée — données insuffisantes pour dégager une particularité d'installation au niveau du modèle. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 115,
+  "occ": 9,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / John Deere / 2018 / 245G / 245P",
+  "fr": "Cable prox droit 5M"
+ },
+ {
+  "id": 116,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2019 / 335",
+  "fr": "Câble de coupure CAT spécifique (réf. 335-07H). Capteurs de proximité à espacer avec bracket courte + 2 noix pour atteindre le centre des dents. Remplacement fréquent des 2 proxs. Vérifier humidité sous couvercle. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 117,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2019 / 340",
+  "fr": "Câble de coupure Hitachi 08D utilisé sur ce modèle CAT. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 118,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2019 / 349",
+  "fr": "Option Guide Pro avec laser fréquente. Calibration parfois reportée (godet ou attache rapide absents). Remplacement inclinomètre 73 documenté. Prévoir attachements complets avant intervention. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 119,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 250G LC",
+  "fr": "Couvercle du swing à surveiller — orientation inversée possible lors de transfert (prox doivent rester alignées avec pignon). Transferts entre machines identiques documentés. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 120,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2015 / 130 P-Tier",
+  "fr": "Coupure hydraulique requise (harnais de coupure John Deere). Après coupure sur rotation, relever le bras hydraulique pour reprendre les commandes (pas systématique). Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 121,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2019 / PC220LC-11 / -12",
+  "fr": "Check valve désactivée par programmation (inversion du switch inopérante). Fil d'alimentation (brun power) mal crimpé signalé. Calibration 3 axes (hauteur, rotation, check valve). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 122,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2019 / R 926",
+  "fr": "Coupure standard Liebherr. Remplacement d'inclinomètre PRAN défectueux noté à plusieurs reprises. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 123,
+  "occ": 8,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2019 / 160 X4",
+  "fr": "Limiteur de portée — installation standard. By-pass effectué sous l'appuis-bras. Remplacement de capteurs de proximité (2x) et du module 72 qui gelait le réseau CAN noté lors d'un SAV. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 124,
+  "occ": 8,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Case / 2015 / 621F",
+  "fr": "Raccord hydraulique (JIC-16 / JIC-16 (port ORB 4) also known as 16-4-LOHL665TP)"
+ },
+ {
+  "id": 125,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2020 / 314",
+  "fr": "Deux générations de systèmes documentées : Danfoss et PRAN. Vérifier le type de système installé avant intervention. Inclinomètre défectueux signalé sur au moins une unité. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 126,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2020 / 315",
+  "fr": "Boîte GC obligatoire pour la coupure hydraulique (CAT 315GC). Câble de coupure Caterpillar requis. Prévoir la boîte GC dès la préparation du kit. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 127,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2020 / 345",
+  "fr": "Présence d'eau dans le boîtier de swing récurrente sur plusieurs unités — inspecter et aviser le mécanicien avant de fermer. LP et Guide Pro installables. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 128,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2020 / 352",
+  "fr": "Câble de coupure CAT (Z03A-0100). Après coupure hydraulique sur limitation, nécessite de désactiver et réactiver le bras de sécurité pour reprendre les commandes — comportement récurrent signalé. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 129,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2020 / PC290LCi-11",
+  "fr": "Requiert des capteurs spéciaux Komatsu (modèle i-series). Câble de coupure Komatsu. Installation standard sinon. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 130,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2020 / PC300LC-11",
+  "fr": "Installation avec gyrophare (strobe). Vérification annuelle documentée. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 131,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2020 / PC360LCi-11",
+  "fr": "Câble de coupure Komatsu requis. Reprogrammer la check valve lors de certaines installations. Fusible entre siège et mur droit. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 132,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2020 / PC450LC-11",
+  "fr": "Câble de coupure Komatsu standard. IDC installé — vérification pression stick et boom. Zéro et limites (hauteur + rotation) à valider. Flash sur limiteur activé documenté. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 133,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2020 / PC490LCi-11",
+  "fr": "Limiteur de portée — installation standard. Position écran contrainte par présence d'un autre écran existant (autorisation client requise). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 134,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kubota / 2020 / U55-5",
+  "fr": "Installation Guide Pro et relais de limitation. Installation standard mini-pelle. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 135,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2015 / R 914 Compact Litronic",
+  "fr": "Installation standard avec capteurs de proximité neufs sur équerre et aimants. Modèle documenté pour usage limiteur sur excavatrice à 2 flèches (pompe à béton). Vérification calibration et limitation hauteur/rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 136,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 190",
+  "fr": "Installation avec coupure hydraulique. Très peu de données (2 entrées); installation réalisée en équipe. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 137,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 130 X4",
+  "fr": "Limiteur de portée — installation standard. Aucun commentaire technique spécifique au modèle dans les bons de travail disponibles. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 138,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 170X4",
+  "fr": "Câble de coupure hydraulique Link Belt. Installation standard hauteur et rotation. Un bon de travail mentionne Guide Pro seulement (sans LP). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 139,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 210 X4",
+  "fr": "Câble de coupure Link Belt standard. Lors d'une réinstallation, capteurs trop proches des dents (ont touché) — repositionner et loomer câbles proxs et inclinomètre. Relais Tyco intermittent signalé (remplacer). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 140,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 245X4",
+  "fr": "Câble de coupure Link Belt standard. Coupure électrique et hydraulique possibles (relais). Remplacement fréquent des proxs. Problème harnais d'écran documenté (capteur restant allumé). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 141,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 250 X4",
+  "fr": "Limiteur de portée — installation standard. Calibration et vérification hauteur/rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 142,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Link-Belt / 2020 / 490 X4",
+  "fr": "Remplacement de harnais principal signalé. Installation standard avec câble de coupure Link-Belt. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 143,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2020 / TB210R",
+  "fr": "Coupure hydraulique Takeuchi. Équerre de capteurs de proximité à usiner spécifiquement pour TB210R. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 144,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2020 / TB2150",
+  "fr": "Limiteur de portée — installation standard avec câble de coupure Takeuchi. Calibration et vérification hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 145,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Takeuchi / 2020 / TW65C2HS",
+  "fr": "Câble de coupure localisé sous le circuit imprimé du bloc fusible, identifié par tie-wrap jaune. Harnais principal sujet aux troubles de communication CAN — vérifier lors de toute réinstallation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 146,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / Caterpillar / 2020 / 420",
+  "fr": "Limiteur de portée pour rétrocaveuse déjà installé par e-Trak. Coupure par relais 12V, avec coupure + capteurs de rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 147,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / Caterpillar / 2020 / 430",
+  "fr": "e-Trak n'a PAS posé de limiteur sur ce modèle. Seule intervention connue : caméra de recul (2023) — problème signalé en marche arrière (mode automatique). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 148,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / Caterpillar / 2020 / 440",
+  "fr": "Limiteur de portée pour pépine déjà installé (2022, 2024). Coupure par relais 12V ; coupure émulée par solénoïde/bobine « dummer ». [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 149,
+  "occ": 7,
+  "champs": "_notes",
+  "exemple": "Retrocaveuse / Caterpillar / 2020 / 450",
+  "fr": "Limiteur de portée déjà installé. Coupure par relais 12V ; sur modèles récents, coupure émulée par bobine « dummer ». [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 150,
+  "occ": 7,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 938G",
+  "fr": "Raccord hydraulique (AS-12-GP)"
+ },
+ {
+  "id": 151,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2016 / CX130D",
+  "fr": "Limiteur de portée — installation standard. Calibration machine et vérification limitation hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 152,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2021 / CX300E",
+  "fr": "Coupure hydraulique obligatoire. Après déclenchement, la reprise des commandes hydrauliques nécessite d'abaisser puis relever le bras de coupure. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 153,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2021 / CX80C",
+  "fr": "Coupure hydraulique systématiquement mentionnée sur toutes les installations. Câble de coupure Case requis. Certaines unités combinent coupure électrique et hydraulique. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 154,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2021 / 316",
+  "fr": "Câble de coupure Caterpillar standard. Coupure hydraulique possible (rebrancher relais sur harnais hydraulique). Remplacement inclinomètre noté. Vérifier inclinomètre stick (3e axe ajouté sur certaines unités). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 155,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2021 / 309 CR",
+  "fr": "Coupure sur relais magnétique — montage différent du standard (voir Mathieu/Keven). Proxs très difficiles d'accès; une plaque pré-percée est prévue. Machine 12 V : ne garde pas son zéro à l'extinction. Problèmes de communication CAN signalés sur certaines unités. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 156,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hyundai / 2021 / HX235LCR",
+  "fr": "Humidité dans le swing bearing signalée (aviser client). Check valve désactivée par programmation. Calibration et vérification des 3 points de limitation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 157,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / JCB / 2021 / 245XR",
+  "fr": "Limitation en hauteur seulement (rotation non installée). Valve hydraulique requise dans le swing; fils courant au fuse box (#1 courant, #2 ground). Branchement courant et valve hydraulique à compléter en deux étapes. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 158,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2017 / 135G",
+  "fr": "Câble de coupure John Deere / Hitachi interchangeable selon version. Harnais principal à vérifier. Quelques machines avec système ISOGARDE préexistant à déposer avant installation. Calibration 3 godets possible. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 159,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2017 / 210G LC",
+  "fr": "Câble de coupure John Deere + câble d'alimentation John Deere requis. Inclinomètre Axiomatic (8120, Z01B-0008) utilisé en remplacement. Câbles de proxs à vérifier; inclino du stick sujet aux défaillances. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 160,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2017 / 300G LC",
+  "fr": "Limiteur de portée PRAN. Entretien récurrent : remplacement inclinomètre, capteur de rotation, support d'écran. Correction erreur check valve documentée. Vérification annuelle prévue. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 161,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2017 / 75G",
+  "fr": "Installation standard coupure John Deere. Remplacement fréquent des capteurs de proximité et inclinomètres défectueux (jusqu'à 3 inclinomètres). Vérification hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 162,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2015 / R 936",
+  "fr": "Coupure hydraulique via switch avec modification du harnais (3 fils sur relais 1S2P). Nécessite 2 relais additionnels pour éviter les codes d'erreurs — filage non standard à valider avec le chef d'équipe. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 163,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2021 / R 930",
+  "fr": "Limiteur de portée — installation standard. Reprogrammation MC avec support technique Keven documentée. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 164,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2021 / R 938",
+  "fr": "Harnais de coupure spécifique Liebherr G8. Installation standard limiteur de portée, calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 165,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Liebherr / 2021 / R 945",
+  "fr": "Limiteur de portée — installation standard (transfert depuis autre machine documenté). Calibration complète, vérification hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 166,
+  "occ": 6,
+  "champs": "_notes",
+  "exemple": "Excavatrice / SANY / 2021 / SY155U",
+  "fr": "Coupure en série avec l'interrupteur du levier de sécurité (comme excavatrice standard, contrairement aux anciennes SANY). Coupure n.c. à vérifier. Fusible 15 A recommandé (impulsions brèves font sauter 5 A). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 167,
+  "occ": 6,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 950G",
+  "fr": "Raccord hydraulique (AS-16-GP)"
+ },
+ {
+  "id": 168,
+  "occ": 6,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Develon (Doosan) / 2015 / DL-300",
+  "fr": "Raccord hydraulique"
+ },
+ {
+  "id": 169,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2017 / CX160D",
+  "fr": "Limiteur de portée — installation standard. Vérification limitation hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 170,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2017 / CX210D",
+  "fr": "Double relais de coupure : un hydraulique et un électrique. Installations avec Guide Pro (laser) également documentées. Installation standard Case sinon. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 171,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2022 / CX145C SR",
+  "fr": "Installation standard hauteur et rotation. Option Guide Pro + laser fréquente. Remplacement proxs 2x et câbles (risque d'étincelles en atelier signalé). Eau dans swing sur plusieurs unités — aviser client. Déplacer inclinomètre sur côté du boom si nécessaire. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 172,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2022 / CX220E",
+  "fr": "Double coupure : électrique (câble Case) et hydraulique. Coupure hydraulique V2 confirmée sur boom up (S1, S2) et swing. La coupure hydraulique est parfois complétée en deuxième visite. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 173,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 320F L",
+  "fr": "Proxs sujets à l'humidité sous le couvercle — inspecter et remplacer au besoin. Inclinomètre et fusible à remplacer régulièrement. Installation standard coupure CAT, calibration hauteur et rotation, formation opérateur sur les 3 modes. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 174,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 325F L",
+  "fr": "Câble de coupure CAT standard. Remplacement prox Omron documenté. Certaines unités sans rotation (hauteur seulement). Formation opérateurs incluse à l'installation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 175,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 336F L",
+  "fr": "Installations incluant Guide Pro avec réf laser et calibration godet. LP standard Caterpillar. Attention : recalibration requise si la lame du godet est pivotée après installation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 176,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2015 / 349F L",
+  "fr": "Câble de coupure CAT. Plusieurs installations en hauteur seulement (rotation à prévoir en 2e phase). Remplacement inclinomètre GQ-0895. Kit de changement long sur certaines unités. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 177,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2022 / 318",
+  "fr": "Limiteur de portée — installation standard (Guide Pro seulement documenté). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 178,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2022 / ZX160LC-7",
+  "fr": "Câble de coupure Hitachi + câble d'alimentation Hitachi. Installation standard hauteur et rotation. Historique : transferts fréquents depuis/vers d'autres modèles (Doosan). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 179,
+  "occ": 5,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2022 / ZX245USLC-7",
+  "fr": "Câble de coupure Hitachi 7H + câble d'alimentation Hitachi requis. Attention : câbles de coupure filages peuvent être montés à l'envers (vérifier polarité). Recalibration si quick attach changé. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 180,
+  "occ": 5,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2022 / 844 P-Tier",
+  "fr": "Gageport code 62 ASX #20"
+ },
+ {
+  "id": 181,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2015 / CX75C SR",
+  "fr": "Limiteur de portée — installation standard avec option Guide Pro et laser. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 182,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2023 / CX170E",
+  "fr": "Coupure électrique suffisante — coupure hydraulique non requise malgré l'année du modèle (confirmé 2023). Installation standard, calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 183,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2023 / 310",
+  "fr": "Limiteur de portée — installation standard. Calibration GP multi-godets (jusqu'à 4 godets, dont certains à l'envers). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 184,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2023 / 319",
+  "fr": "Limiteur de portée — installation standard. Option Guide Pro + laser documentée. Remplacement de proxs (2×) en entretien. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 185,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2023 / 210 P-Tier",
+  "fr": "Câble de coupure John Deere + câble d'alimentation John Deere. Coupure sur préventif : bras de sécurité doit être ré-initialisé après limitation en rotation (facteur de prévention ~51, 366 dents). Harnais d'écran susceptible de provoquer courts-circuits à la coupure — vérifier ou remplacer. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 186,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2023 / 300 P-Tier",
+  "fr": "Limiteur de portée — câble de coupure et câble d'alimentation John Deere standards. Calibration et vérification hauteur et rotation. Installation standard sans particularité récurrente. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 187,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2023 / 345 P-Tier",
+  "fr": "Système Danfoss utilisé (non PRAN). Installation standard avec calibration et vérification limitation hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 188,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2023 / 35 P-Tier",
+  "fr": "Câble de coupure John Deere + câble d'alimentation John Deere. Cas noté : bras de sécurité à relever manuellement après coupure hydraulique (survenu une fois). Installation standard hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 189,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2023 / 75 P-Tier",
+  "fr": "Coupure John Deere : fil jaune à ligne rouge, connecteur 8 broches. Câble d'alimentation John Deere standard. Calibration hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 190,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / John Deere / 2023 / 85 P-Tier",
+  "fr": "Câble d'alimentation John Deere + câble de coupure Hitachi utilisé sur cette machine (compatibilité confirmée). Calibration et vérification hauteur/rotation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 191,
+  "occ": 4,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kubota / 2015 / KX080-3",
+  "fr": "Limiteur en hauteur seulement (pas de rotation). Calibration IDC selon charte de levage interne : couronne 400 dents, mât orientable à pivot décentré, 3 capteurs de pression 6000 psi, pressions valves à 85 % (3889 psi). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 192,
+  "occ": 4,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 1997 / IT38F",
+  "fr": "Raccord hydraulique (ORF#12 / ORF#12)"
+ },
+ {
+  "id": 193,
+  "occ": 4,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 1988 / 644E",
+  "fr": "Raccord hydraulique (C02A-0021)"
+ },
+ {
+  "id": 194,
+  "occ": 4,
+  "champs": "_custom.desc",
+  "exemple": "Loader / LiuGong / 2023 / 835HV",
+  "fr": "METRIC O-RING M27x2.0 male - JIC 12 male - 90 DEG"
+ },
+ {
+  "id": 195,
+  "occ": 4,
+  "champs": "_custom.desc",
+  "exemple": "Loader / LiuGong / 2023 / 835HV",
+  "fr": "NPTF 12 male - NPTF 04 femelle - STR"
+ },
+ {
+  "id": 196,
+  "occ": 4,
+  "champs": "_custom.desc",
+  "exemple": "Loader / LiuGong / 2023 / 835HV",
+  "fr": "NPTF 12 femelle - JIC 12 femelle - STR - SWIVELL"
+ },
+ {
+  "id": 197,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2015 / CX235C SR",
+  "fr": "Câble de coupure Case/Link-Belt (interchangeable). Problèmes intermittents d'inclinomètre et de harnais signalés (vérifier câble inclino, remplacer 7120 si nécessaire). Calibration hauteur et rotation standard. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 198,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2017 / CX300D",
+  "fr": "Limiteur de portée — installation standard avec option Guide Pro et laser. Calibration deux godets requise. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 199,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2018 / CX37C",
+  "fr": "Câble de coupure Case standard. Une réinstallation documentée avec remplacement de la coupure hydraulique par relais et ajout de capteurs boom tournant; proxs montés par dessous la machine. Vérification annuelle courante. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 200,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX210LC-5N",
+  "fr": "Limiteur de portée — installation standard. Recalibration requise si inclinomètre relocalisé par le client. Vérification limitation hauteur et rotation. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 201,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Kobelco / 2024 / SK85CS-7",
+  "fr": "Limitation en hauteur seulement — coupure hydraulique Kobelco. Rotation non activée sur ces installations. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 202,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC210LC-10",
+  "fr": "Câble de coupure Komatsu. Option IDC documentée. Capteurs de proximité difficiles d'accès (bracket à entrer dans trou, repositionnement requis). Vérifier zéro après redémarrage (problème MC historique corrigé par logiciel USB). [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 203,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC290LC-10",
+  "fr": "Installation guide pro avec système de creusage 2D. Problèmes de câblage inclinomètre godet/stick documentés (manquants). Vérification limitation hauteur, rotation et système 2D. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 204,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC360LC-10",
+  "fr": "Câble d'écran trop court — prévoir minimum 10 pieds. Problèmes de calibration récurrents (inclinomètre à remplacer jusqu'à 3x). Proxs à remplacer régulièrement. Positionner l'écran loin du coin de la pelle. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 205,
+  "occ": 3,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Komatsu / 2015 / PC490LC-10",
+  "fr": "Câble de coupure Komatsu standard. Couronne à 360 dents confirmée. Attache rapide non fonctionnelle au moment de la calibration sur plusieurs unités — calibrer avec godet à dents et recalibrer à l'ajout de l'attache rapide. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 206,
+  "occ": 3,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 938H",
+  "fr": "Raccord hydraulique (AS-12-GP / AS-12-GP)"
+ },
+ {
+  "id": 207,
+  "occ": 3,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L180E",
+  "fr": "Raccord hydraulique (ASX-20-GP (M14x90))"
+ },
+ {
+  "id": 208,
+  "occ": 3,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L180E",
+  "fr": "Raccord hydraulique (ASX-16-GP (M12x75))"
+ },
+ {
+  "id": 209,
+  "occ": 3,
+  "champs": "_custom.desc",
+  "exemple": "Excavatrice / Hitachi / 2015 / ZX490LC-5N",
+  "fr": "Support de Prox HIT-JD"
+ },
+ {
+  "id": 210,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2011 / 950E",
+  "fr": "Raccord hydraulique (AS-16-GP / AS-16-GP)"
+ },
+ {
+  "id": 211,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 1988 / 644",
+  "fr": "Raccord hydraulique (ORF # 16)"
+ },
+ {
+  "id": 212,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2003 / 724J",
+  "fr": "Raccord hydraulique (ORF#16)"
+ },
+ {
+  "id": 213,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2015 / 544J",
+  "fr": "Raccord hydraulique (GPFS2406-1010-4)"
+ },
+ {
+  "id": 214,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2015 / 644J",
+  "fr": "Raccord hydraulique (ORF # 16 ORF # 12)"
+ },
+ {
+  "id": 215,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L180",
+  "fr": "Raccord hydraulique (ASX-16)"
+ },
+ {
+  "id": 216,
+  "occ": 2,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Komatsu / 2007 / WA200-5L",
+  "fr": "Raccord hydraulique (ORF#12 long /ORF#12 long)"
+ },
+ {
+  "id": 217,
+  "occ": 1,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2026 / 301.8",
+  "fr": "Installation des capteurs de proximité impossible sur cette machine (proxs non réalisables). Hydro exige limiteur complet — confirmer faisabilité avec le client avant déplacement. [Source : bons de travail ProgressionLive]"
+ },
+ {
+  "id": 218,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 930G",
+  "fr": "Raccord hydraulique (ORF#16 /ORF#16)"
+ },
+ {
+  "id": 219,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 938K",
+  "fr": "Raccord hydraulique (ORF#10 / ORF#10)"
+ },
+ {
+  "id": 220,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 980G",
+  "fr": "Raccord hydraulique (AS-16-GP ; AS-16-GP / AS-16-GP)"
+ },
+ {
+  "id": 221,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Caterpillar / 2015 / 930H",
+  "fr": "Raccord hydraulique (ORF#12 /ORF#12)"
+ },
+ {
+  "id": 222,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 1988 / 644",
+  "fr": "Raccord hydraulique (ORF # 12)"
+ },
+ {
+  "id": 223,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 1988 / 644E",
+  "fr": "Raccord hydraulique (C02A-0022)"
+ },
+ {
+  "id": 224,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2003 / 724J",
+  "fr": "Raccord hydraulique (ORF#12   (Parker))"
+ },
+ {
+  "id": 225,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2015 / 644H",
+  "fr": "Raccord hydraulique (ORF#12)"
+ },
+ {
+  "id": 226,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / John Deere / 2015 / 544 6H",
+  "fr": "Raccord hydraulique (ORF #12)"
+ },
+ {
+  "id": 227,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Develon (Doosan) / 2011 / DL-250",
+  "fr": "Raccord hydraulique (AS-12 /AS-12 (M10x1.5x70mm))"
+ },
+ {
+  "id": 228,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Develon (Doosan) / 2011 / DL-450",
+  "fr": "Raccord hydraulique (ASX-16/ASX-16 (M12x1.75x90))"
+ },
+ {
+  "id": 229,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Case / 1985 / W36",
+  "fr": "Raccord hydraulique (JIC #16)"
+ },
+ {
+  "id": 230,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Case / 2015 / 621D",
+  "fr": "Raccord hydraulique (ORF#16 court /ORF#16 court)"
+ },
+ {
+  "id": 231,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Case / 2015 / 721D",
+  "fr": "Raccord hydraulique (JIC # 12)"
+ },
+ {
+  "id": 232,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2010 / L60",
+  "fr": "Raccord hydraulique (ASX-16 / ASX-16 (M12x90))"
+ },
+ {
+  "id": 233,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2013 / 250G",
+  "fr": "Raccord hydraulique (ASX-20 (M14x90mm))"
+ },
+ {
+  "id": 234,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2013 / 250G",
+  "fr": "Raccord hydraulique (ASX-16 (M12x45))"
+ },
+ {
+  "id": 235,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L150",
+  "fr": "Raccord hydraulique ('T'' JIC-12 / ''T''-JIC-12)"
+ },
+ {
+  "id": 236,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Volvo / 2015 / L180C",
+  "fr": "Raccord hydraulique (JIC-12 / JIC-12)"
+ },
+ {
+  "id": 237,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / Hyundai / 2008 / HL760-7",
+  "fr": "Raccord hydraulique (AS-16 / AS-16 (M10x1.5x55))"
+ },
+ {
+  "id": 238,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / New Holland / 2008 / W170B",
+  "fr": "Raccord hydraulique (ORF#16 / ORF#16)"
+ },
+ {
+  "id": 239,
+  "occ": 1,
+  "champs": "_custom.desc",
+  "exemple": "Loader / New Holland / 2015 / W80B",
+  "fr": "Raccord hydraulique (TN121-15L / TN121-15L)"
+ },
+ {
+  "id": 240,
+  "occ": 1,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2024 / CX145D SR",
+  "fr": "Drain ok une personne"
+ },
+ {
+  "id": 241,
+  "occ": 1,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2026 / CX145D SR",
+  "fr": "coupure 1 gars OK"
+ },
+ {
+  "id": 242,
+  "occ": 1,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Case / 2026 / CX90E",
+  "fr": "Modèle 2026 pas besoin de drain , accès au connecteur X140 sur le body valve pour couper l’apport hydraulique aux fonctions. C’est un deutsch 2S qui se branche dans un coil. Accès par panneau barré arrière gauche. Machine avec cabine qui se lève."
+ },
+ {
+  "id": 243,
+  "occ": 1,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Caterpillar / 2026 / 301.8",
+  "fr": "elle ne se crée pas"
+ },
+ {
+  "id": 244,
+  "occ": 1,
+  "champs": "_notes",
+  "exemple": "Excavatrice / Hitachi / 2026 / ZX490LC-6",
+  "fr": "Mettre valve hydraulique et la plaque pour les prox"
+ }
+]
