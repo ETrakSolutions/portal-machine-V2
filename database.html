@@ -22,6 +22,45 @@
             margin-bottom: 0.75rem;
             align-items: flex-end;
         }
+        /* ---- Boite "Machines a creer" (js/db-requests-box.js) ---- */
+        #db-requests-box {
+            border: 1px solid #3d5a80;
+            border-left: 3px solid #2f86e8;
+            border-radius: 8px;
+            background: rgba(47, 134, 232, 0.07);
+            padding: 0.6rem 0.85rem;
+            margin: 0 0 0.85rem;
+        }
+        #db-requests-box.dbr-busy { opacity: 0.55; pointer-events: none; }
+        .dbr-head {
+            display: flex; align-items: center; gap: 0.75rem;
+            flex-wrap: wrap; margin-bottom: 0.45rem;
+        }
+        .dbr-title { font-size: 0.85rem; font-weight: 800; color: #cfe0f5; letter-spacing: 0.3px; }
+        .dbr-link { margin-left: auto; font-size: 0.75rem; color: #6fb1ff; text-decoration: none; }
+        .dbr-link:hover { text-decoration: underline; }
+        .dbr-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+        .dbr-item {
+            background: var(--bg-input, #1a2332);
+            border: 1px solid #2a3a4a; border-radius: 6px;
+            padding: 0.5rem 0.65rem;
+        }
+        .dbr-item.dbr-claimed { border-color: #b07d2b; background: rgba(176, 125, 43, 0.10); }
+        .dbr-machine { font-size: 0.86rem; color: #e8eef5; }
+        .dbr-type { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #8aa; }
+        .dbr-meta { font-size: 0.72rem; color: #8fa3b5; margin-top: 2px; }
+        .dbr-claim { font-size: 0.74rem; color: #f0b849; margin-top: 3px; font-weight: 600; }
+        .dbr-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.45rem; }
+        .dbr-btn {
+            padding: 4px 10px; font-size: 0.73rem; font-weight: 700;
+            border: 1px solid #2a3a4a; border-radius: 5px;
+            background: transparent; color: #cfe0f5; cursor: pointer;
+            text-decoration: none; display: inline-block; line-height: 1.5;
+        }
+        .dbr-btn:hover { border-color: #2f86e8; color: #fff; }
+        .dbr-btn-take { background: #0062CC; border-color: #0062CC; color: #fff; }
+        .dbr-btn-done { color: #7ddba1; }
+        body.mobile-view #db-requests-box { padding: 0.5rem 0.6rem; }
         .db-control-group {
             display: flex;
             flex-direction: column;
@@ -559,6 +598,10 @@
                 </div>
             </div>
 
+            <!-- Machines a creer : rempli par js/db-requests-box.js (roles a databaseAccess
+                 seulement, masque s'il n'y a aucune demande active). -->
+            <div id="db-requests-box" style="display:none;"></div>
+
             <div class="db-controls">
                 <div class="db-control-group">
                     <label data-i18n="db.type">Type</label>
@@ -687,12 +730,13 @@
     </footer>
 
     <script src="js/config.js?v=1"></script>
-    <script src="js/translations.js?v=222"></script>
+    <script src="js/translations.js?v=223"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=6"></script>
     <script src="js/kit-rules.js?v=11"></script>
+    <script src="js/db-requests-box.js?v=1"></script>
     <script>
     // Token de session (renvoye par l'API au login, stocke dans portal_user).
     // Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.

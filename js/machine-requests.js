@@ -83,6 +83,7 @@
                 '<th>' + t('mr.f_year', 'Annee') + '</th>' +
                 '<th>' + t('mr.col_requester', 'Demandeur') + '</th>' +
                 '<th>' + t('mr.col_date', 'Date') + '</th>' +
+                '<th>' + t('mr.col_claim', 'Prise en charge') + '</th>' +
                 '<th></th></tr></thead><tbody>';
             active.forEach(function (r) {
                 var exists = machineExists(r.type, r.fab, r.annee, r.modele);
@@ -93,9 +94,13 @@
                     '<td>' + esc(r.annee) + '</td>' +
                     '<td>' + esc(r.requester) + '</td>' +
                     '<td>' + esc(r.date) + '</td>' +
+                    '<td>' + (r.claimedBy
+                        ? '<span class="mr-claim">&#128274; ' + esc(r.claimedBy) + '</span>'
+                        : '<span class="mr-claim-none">&mdash;</span>') + '</td>' +
                     '<td><div class="mr-actions">' +
                     '<button class="mr-btn mr-btn-gen" data-act="gen" data-id="' + esc(r.id) + '"' + (exists ? ' title="' + t('mr.already_exists', 'Cette machine existe deja') + '"' : '') + '>' +
                     (exists ? t('mr.gen_exists', 'Existe deja') : t('mr.gen_btn', 'Generer')) + '</button>' +
+                    '<button class="mr-btn mr-btn-done" data-act="done" data-id="' + esc(r.id) + '">&#10003; ' + t('dbr.done', 'Terminee') + '</button>' +
                     '<button class="mr-btn mr-btn-reject" data-act="reject" data-id="' + esc(r.id) + '">' + t('mr.reject_btn', 'Rejeter') + '</button>' +
                     '</div></td></tr>';
             });
@@ -106,7 +111,9 @@
                     var id = b.getAttribute('data-id');
                     var req = requests.filter(function (x) { return x.id === id; })[0];
                     if (!req) return;
-                    if (b.getAttribute('data-act') === 'gen') generateMachine(req);
+                    var act = b.getAttribute('data-act');
+                    if (act === 'gen') generateMachine(req);
+                    else if (act === 'done') doneRequest(req);
                     else rejectRequest(req);
                 });
             });
@@ -189,12 +196,27 @@
             createMachine(req.type, req.fab, req.annee, req.modele)
                 .then(function (res) {
                     if (!res || res.ok === false) throw new Error((res && res.error) || 'echec');
-                    // Marquer la demande comme traitee, puis rediriger vers l'edition.
-                    req.status = 'done'; req.doneDate = new Date().toISOString().slice(0, 10);
+                    // La demande RESTE active : generer le squelette ne remplit AUCUNE spec.
+                    // La fermer ici rendait la liste mensongere (12 demandes 'done' dont 2 avec
+                    // 11 champs sur 11 vides, audit du 2026-09-08). Elle se ferme via "Terminee".
+                    // On note qui s'en occupe : c'est ce que la boite en haut de database.html
+                    // affiche a l'autre personne.
+                    req.claimedBy = (user && (user.name || user.username)) || '';
+                    req.claimedAt = new Date().toISOString();
                     return saveRequests(requests);
                 })
                 .then(function () { hideOverlay(); showClaudePrompt(req.type, req.fab, req.modele, req.annee); })
                 .catch(function () { hideOverlay(); alert(t('mr.gen_error', 'Erreur lors de la generation. Reessayez.')); });
+        }
+
+        // Ferme la demande. C'est le SEUL passage a 'done' desormais : generer le squelette
+        // ne suffit plus, il faut que quelqu'un constate que les specs sont la.
+        function doneRequest(req) {
+            if (!confirm(t('dbr.confirm_done', 'Marquer cette demande comme terminee ?'))) return;
+            req.status = 'done';
+            req.doneDate = new Date().toISOString().slice(0, 10);
+            req.doneBy = (user && (user.name || user.username)) || '';
+            saveRequests(requests).then(function () { renderTable(); toast(t('dbr.done', 'Terminee')); });
         }
 
         function rejectRequest(req) {
