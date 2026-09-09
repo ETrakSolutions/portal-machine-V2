@@ -407,6 +407,15 @@
     box-sizing: border-box;
 }
 .soumission-input:focus { outline: none; border-color: #0062CC; }
+/* Precision sous un champ facultatif : dit ce que la donnee devient, pour qu'on
+   ne suppose pas que l'adresse saisie recevra le courriel. */
+.soumission-hint {
+    margin-top: 6px;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    color: var(--text-muted, #9aa4b2);
+}
+.soumission-input.champ-invalide { border-color: #ff4444; }
 
 /* Machine info */
 .options-info {

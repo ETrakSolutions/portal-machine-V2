@@ -330,6 +330,56 @@ function afficherModeSansMachine(actif) {
     }
 })();
 
+// ===========================================================================
+// Courriel du client final (dealer / distributeur)
+// ---------------------------------------------------------------------------
+// Un distributeur vend a un client final qu'e-Trak ne connait pas. Le nom de
+// l'entreprise etait deja demande; l'adresse manquait, donc personne chez e-Trak
+// ne pouvait joindre ce client sans repasser par le distributeur.
+//
+// ⚠️ C'est une DONNEE de la demande, PAS un destinataire. Le courriel de
+// soumission porte les totaux e-Trak (voir la ligne « email.total_parts ») :
+// mettre le client du distributeur en copie lui montrerait la marge de son
+// fournisseur. Et comme l'envoi passe par un mailto:, il n'y a qu'un seul corps
+// de message — impossible d'en envoyer une version sans prix au client et une
+// version avec prix a e-Trak. Le champ reste donc informatif.
+// ===========================================================================
+var COURRIEL_CLIENT_ROLES = ['dealer', 'distributeur'];
+
+function estRoleAvecClientFinal() {
+    var r = (currentUser && currentUser.role) ? String(currentUser.role).toLowerCase() : '';
+    return COURRIEL_CLIENT_ROLES.indexOf(r) !== -1;
+}
+
+// Volontairement permissif : on ecarte les fautes de frappe evidentes, pas les
+// adresses exotiques mais legitimes. Un filtre trop strict bloquerait un envoi
+// pour une adresse qui marche.
+function courrielClientValide() {
+    var el = document.getElementById('soumission-client-email');
+    var v = el ? (el.value || '').trim() : '';
+    if (!v) return true;                       // facultatif
+    return /^[^\s@,;]+@[^\s@,;.]+(\.[^\s@,;.]+)+$/.test(v);
+}
+
+function valeurCourrielClient() {
+    if (!estRoleAvecClientFinal()) return '';
+    var el = document.getElementById('soumission-client-email');
+    return el ? (el.value || '').trim() : '';
+}
+
+(function brancherCourrielClient() {
+    var poser = function () {
+        var box = document.getElementById('soumission-client-email-box');
+        if (!box) return;
+        box.style.display = estRoleAvecClientFinal() ? '' : 'none';
+    };
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', poser);
+    } else {
+        poser();
+    }
+})();
+
 function doTypeChange() {
     resetFrom('fabricant');
     const type = selectType.value;
@@ -1334,6 +1384,25 @@ if (submitBtn) {
 
         if (_firstEmpty) { _firstEmpty.focus(); return; }
 
+        // Courriel du client : FACULTATIF, mais s'il est rempli il doit etre
+        // plausible. Une adresse fautive ici ne fait pas rebondir un courriel
+        // (le client n'est pas destinataire), elle donne a e-Trak un moyen de
+        // rappel qui ne marche pas — le defaut se decouvrirait bien plus tard.
+        var _elClient = document.getElementById('soumission-client-email');
+        if (_elClient && !courrielClientValide()) {
+            _elClient.classList.add('champ-invalide');
+            _elClient.focus();
+            alert((typeof i18n !== 'undefined')
+                  ? i18n.t('soumission.client_email_invalid')
+                  : "L'adresse courriel du client n'est pas valide.");
+            var _clrCl = function () {
+                _elClient.classList.remove('champ-invalide');
+                _elClient.removeEventListener('input', _clrCl);
+            };
+            _elClient.addEventListener('input', _clrCl);
+            return;
+        }
+
         // No limiteur check — options obligatoires only shown when limiteur selected
 
         // Collect toggle box states with codes (same logic as summary)
@@ -1443,6 +1512,9 @@ if (submitBtn) {
         var comment = (document.getElementById('soumission-comment').value || '').trim();
         function _fieldVal(id){ var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; }
         var companyName = _fieldVal('soumission-company');
+        // Vide si le role n'a pas de client final : le champ n'existe alors pas a
+        // l'ecran, et une valeur restee en cache ne doit pas partir quand meme.
+        var clientEmail = valeurCourrielClient();
         var nbSystemes = _fieldVal('soumission-nb-systemes');
         var lieuInstall = _fieldVal('soumission-lieu');
         var dateInstall = _fieldVal('soumission-date-install');
@@ -1522,6 +1594,10 @@ if (submitBtn) {
         if (companyName) {
             body += i18n.t('email.company', { name: companyName }) + '\n';
         }
+        // Juste sous le nom de l'entreprise : les deux se lisent ensemble.
+        if (clientEmail) {
+            body += i18n.t('email.client_email', { email: clientEmail }) + '\n';
+        }
         if (nbSystemes) {
             body += i18n.t('email.nb_units', { n: nbSystemes }) + '\n';
         }
@@ -1534,7 +1610,7 @@ if (submitBtn) {
         if (currentNotes && currentNotes.trim()) {
             body += i18n.t('email.notes_machine', { notes: currentNotes.trim() }) + '\n';
         }
-        if (companyName || nbSystemes || lieuInstall || dateInstall || (currentNotes && currentNotes.trim())) {
+        if (companyName || clientEmail || nbSystemes || lieuInstall || dateInstall || (currentNotes && currentNotes.trim())) {
             body += '\n';
         }
 
