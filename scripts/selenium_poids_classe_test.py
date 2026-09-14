@@ -20,7 +20,7 @@ Trois niveaux de controle :
 
 Les valeurs attendues sont LUES DANS LA BD -- rien n'est code en dur.
 """
-import sys, io, os, json, threading, http.server, socketserver
+import sys, io, os, re, json, threading, http.server, socketserver
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -37,6 +37,7 @@ LOTS = {
     'Liebherr': ['R 922 Litronic G8', 'R 924 Litronic G8', 'R 926 Litronic G8',
                  'R 928 Litronic G8', 'R 930 Litronic G8', 'R 934 Litronic G8',
                  'R 938 Litronic G8', 'R 945 Litronic G8'],
+    'Bobcat': ['E10e - electrique', 'E19e - electrique'],
     'Volvo CE': ['EC140D/E', 'EC180D/E', 'EC200D/E', 'EC220D/E', 'EC250D/E',
                  'EC300D/E', 'EC350D/E', 'EC380D/E', 'EC480D/E', 'EC750D/E',
                  'EW160D/E', 'EW180D/E', 'EW205D/E', 'EW220D/E'],
@@ -67,6 +68,12 @@ def check(label, cond):
         print('  [X ] ' + label)
         fails.append(label)
     return cond
+
+
+def poids_kg(v):
+    """Borne basse en kg, exactement comme kit-rules.js poidsKg()."""
+    m = re.match(r'\s*(\d[\d\s]*)', str(v or ''))
+    return int(m.group(1).replace(' ', '')) if m else 0
 
 
 def annees_de(fab, mod):
@@ -163,10 +170,19 @@ try:
     for fab, modeles in LOTS.items():
         for mod in modeles:
             an = annees_de(fab, mod)[-1]
+            e = _DB[fab][an][mod]
             dft = dv.execute_script(JS, fab, an, mod)
-            # aucun modele de ces lots ne pese moins de 5 t
-            check('%s %s : 0004 = na (pas un mini)' % (fab, mod),
-                  dft.get('0004') == 'na')
+            # attendus DEDUITS de la BD, jamais codes en dur : le 0004 suit le
+            # seuil mini de 5 t de kit-rules.js, le 0008 suit la spec Swing boom.
+            kg = poids_kg(e['Poids operationnel (kg / lbs)'])
+            att4 = 'r' if 0 < kg <= 5000 else 'na'
+            check('%s %s : 0004 = %s (poids %d kg)' % (fab, mod, att4, kg),
+                  dft.get('0004') == att4)
+            swing = str(e.get('Swing boom') or '').strip().lower() == 'oui'
+            att8 = 'j' if swing else 'na'
+            check('%s %s : 0008 = %s (Swing boom %r)'
+                  % (fab, mod, att8, e.get('Swing boom')),
+                  dft.get('0008') == att8)
             check('%s %s : 0000 cabine = r' % (fab, mod), dft.get('0000') == 'r')
     charger('soumission.html')
     for fab, modeles in LOTS.items():
