@@ -36,7 +36,10 @@ os.chdir(REPO)
 LOTS = {
     'Liebherr': ['R 922 Litronic G8', 'R 924 Litronic G8', 'R 926 Litronic G8',
                  'R 928 Litronic G8', 'R 930 Litronic G8', 'R 934 Litronic G8',
-                 'R 938 Litronic G8', 'R 945 Litronic G8'],
+                 'R 938 Litronic G8', 'R 945 Litronic G8',
+                 'A 914 Compact Litronic', 'A 914 Litronic',
+                 'A 918 Compact Litronic', 'A 920 Litronic'],
+    'JCB': ['420X', '520X'],
     'Bobcat': ['E10e - electrique', 'E19e - electrique'],
     'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4', '225 Spin Ace',
                   '245 X3 SR', '250 X3 / X4', '300 X3 / X4', '350 X3 / X4',
