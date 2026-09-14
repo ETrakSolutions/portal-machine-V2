@@ -46,6 +46,10 @@ LOTS = {
                  'EW160D/E', 'EW180D/E', 'EW205D/E', 'EW220D/E'],
 }
 
+# Modeles retires de la BD parce qu'ils ne correspondent a aucun modele du
+# fabricant -- ils ne doivent revenir ni en base ni a l'ecran.
+RETIRES = [('Link-Belt', '170 X3'), ('Link-Belt', '235 X3 LF')]
+
 _DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'),
                      encoding='utf-8'))['Excavatrice']
 
@@ -121,6 +125,18 @@ try:
                 check('%s %s %s : poids exploitable' % (fab, mod, an),
                       bool(vu) and vu != 'A completer' and vu[0].isdigit())
     print('  %d entrees-annees verifiees' % n_tot)
+
+    print('--- A bis) modeles retires de la BD ---')
+    for fab, mod in RETIRES:
+        check('%s %s : absent de machines.json' % (fab, mod),
+              not any(mod in _DB[fab][a] for a in _DB[fab]))
+        an_vu = dv.execute_script(
+            "var f=machinesData['Excavatrice'][arguments[0]];"
+            "for (var a in f) { if (f[a][arguments[1]]) return a; } return null;",
+            fab, mod)
+        check('%s %s : absent des donnees servies au navigateur (%r)'
+              % (fab, mod, an_vu), an_vu is None)
+    print('  %d modeles retires verifies' % len(RETIRES))
 
     print('--- B) rendu navigateur, 3 annees par modele ---')
     n_ech = 0
