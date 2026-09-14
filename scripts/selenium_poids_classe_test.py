@@ -41,6 +41,11 @@ LOTS = {
     'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4', '225 Spin Ace',
                   '245 X3 SR', '250 X3 / X4', '300 X3 / X4', '350 X3 / X4',
                   '460 X2'],
+    # PC220LC-12 (2026) n'est PAS dans ce lot : ses specs vivent dans un override
+    # `_specs` pose par l'interface, qui masque machines.json a l'affichage. Un lot
+    # ne doit contenir que des modeles dont la BD de base porte la verite.
+    'Komatsu': ['PW160-10 / -11'],
+    'Mecalac': ['15MWR'],
     'Volvo CE': ['EC140D/E', 'EC180D/E', 'EC200D/E', 'EC220D/E', 'EC250D/E',
                  'EC300D/E', 'EC350D/E', 'EC380D/E', 'EC480D/E', 'EC750D/E',
                  'EW160D/E', 'EW180D/E', 'EW205D/E', 'EW220D/E'],
