@@ -42,7 +42,8 @@ LOTS = {
                  'R 914 Compact Litronic', 'R 918 Litronic', 'R 920 Litronic',
                  'R 922 Litronic', 'R 924 Litronic', 'R 926 Litronic',
                  'R 934 Litronic', 'R 938 Litronic', 'R 945 Litronic',
-                 'R 946 Litronic'],
+                 'R 946 Litronic', 'A 922 Litronic', 'R 960 Litronic',
+                 'R 970 Litronic', 'R 936 Litronic'],
     'JCB': ['420X', '520X'],
     'Bobcat': ['E10e - electrique', 'E19e - electrique'],
     'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4', '225 Spin Ace',
@@ -53,7 +54,7 @@ LOTS = {
     # ne doit contenir que des modeles dont la BD de base porte la verite.
     'Komatsu': ['PW160-10 / -11'],
     'Mecalac': ['15MWR'],
-    'Volvo CE': ['EC140D/E', 'EC180D/E', 'EC200D/E', 'EC220D/E', 'EC250D/E',
+    'Volvo CE': ['EW140D/E', 'EC140D/E', 'EC180D/E', 'EC200D/E', 'EC220D/E', 'EC250D/E',
                  'EC300D/E', 'EC350D/E', 'EC380D/E', 'EC480D/E', 'EC750D/E',
                  'EW160D/E', 'EW180D/E', 'EW205D/E', 'EW220D/E'],
 }
