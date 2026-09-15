@@ -56,7 +56,8 @@ LOTS = {
 
 # Modeles retires de la BD parce qu'ils ne correspondent a aucun modele du
 # fabricant -- ils ne doivent revenir ni en base ni a l'ecran.
-RETIRES = [('Link-Belt', '170 X3'), ('Link-Belt', '235 X3 LF')]
+RETIRES = [('Link-Belt', '170 X3'), ('Link-Belt', '235 X3 LF'),
+           ('JCB', '27Z-1'), ('JCB', '38Z-1'), ('JCB', '75Z-2')]
 
 _DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'),
                      encoding='utf-8'))['Excavatrice']
