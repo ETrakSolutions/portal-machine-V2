@@ -139,6 +139,14 @@ header {
     width: auto;
 }
 
+.logo-section a {
+    display: flex;
+    align-items: center;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+.logo-section a:hover { opacity: 0.8; }
+
 .header-title {
     color: var(--white);
     font-size: 1.3rem;

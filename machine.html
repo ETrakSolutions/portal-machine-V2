@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail Machine</title>
-    <link rel="stylesheet" href="css/style.css?v=174">
+    <link rel="stylesheet" href="css/style.css?v=175">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -15,7 +15,9 @@
         <div class="header-content">
             <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
             <div class="logo-section">
-                <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+                <a href="index.html" title="Retour au hub" data-i18n-title="common.back_hub">
+                    <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+                </a>
             </div>
             <div class="lang-switch" style="position:absolute;right:0;">
                 <button class="lang-btn" data-lang="fr">FR</button>
