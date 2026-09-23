@@ -76,8 +76,9 @@ function doPost(e) {
     if (writeActions.indexOf(action) >= 0) {
       var auth = _authCheck(body);
       if (!auth.ok) return jsonOut({ error: 'invalid PIN' });   // meme message qu'avant (compat frontend)
-      // La liste des utilisateurs ne peut etre reecrite que par un admin (ou le PIN)
-      if ((action === 'save' || action === 'delete') && SENSITIVE_KEYS.indexOf(body.key) >= 0 && !auth.admin) {
+      // Liste des utilisateurs, permissions des roles et configuration de l'admin :
+      // reecriture reservee a un admin (ou au PIN)
+      if ((action === 'save' || action === 'delete') && _isAdminOnlyKey(body.key) && !auth.admin) {
         return jsonOut({ error: 'admin role required' });
       }
       // #3 : autorisation par role pour les ecritures machine (le PIN = admin, bypasse ce controle)
@@ -120,6 +121,19 @@ function jsonOut(obj) {
 // L'ecriture (save/delete) de ces cles exige un token admin (voir doPost).
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH'];
+// Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
+// l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
+// compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
+// admin aux yeux de _isAdminRole() et lire les mots de passe via 'listusers' ;
+// ou detourner les courriels de soumission vers sa propre adresse.
+// Toutes ces cles ne sont ecrites que depuis la page Administration (modifAccounts).
+var ADMIN_WRITE_KEYS = ['roles_permissions', 'target_emails', 'sales_emails',
+                        'kit_emails', 'notes_emails', 'machine_request_emails',
+                        'vendeurs_list', 'soumission_allowed_types'];
+
+function _isAdminOnlyKey(key) {
+  return SENSITIVE_KEYS.indexOf(key) >= 0 || ADMIN_WRITE_KEYS.indexOf(key) >= 0;
+}
 var SESSION_PREFIX = 'session_';
 var SESSION_TTL_MS  = 90 * 24 * 3600 * 1000;       // 90 jours
 var SESSION_RENEW_MS = 45 * 24 * 3600 * 1000;      // renouvele si < 45 jours restants
