@@ -5,13 +5,13 @@
 const API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 
 const ROLES = {
-    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Super Admin' },
-    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Administrateur' },
-    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Vente interne' },
-    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Technicien' },
-    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Distributeur' },
-    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, label: 'Dealer' },
-    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, label: 'Ingenierie' }
+    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, label: 'Super Admin' },
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, label: 'Vente interne' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, label: 'Technicien' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, label: 'Ingenierie' }
 };
 
 // Les comptes vivent UNIQUEMENT cote serveur (Apps Script, cle authorized_users_v2).
@@ -271,8 +271,8 @@ function showHubSection() {
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
-var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom'];
-var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag'};
+var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess'];
+var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire'};
 
 function renderPermTable() {
     var tbody = document.getElementById('admin-perm-tbody');

@@ -70,6 +70,7 @@ function doPost(e) {
     if (action === 'changepassword') return jsonOut(authChangePassword(body));
     if (action === 'listusers')      return jsonOut(authListUsers(body));
     if (action === 'acceptconsent')  return jsonOut(authAcceptConsent(body));
+    if (action === 'getinventory')   return jsonOut(getInventory(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -120,7 +121,8 @@ function jsonOut(obj) {
 //  - liste des comptes (mots de passe) — lisible seulement via 'listusers' admin
 // L'ecriture (save/delete) de ces cles exige un token admin (voir doPost).
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
-                      'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH'];
+                      'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
+                      'inventory_etrak'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -307,6 +309,39 @@ function authListUsers(body) {
   if (!auth.ok) return { error: 'authentication required' };
   var users = _users();
   return { users: auth.admin ? users : users.map(_publicUser) };
+}
+
+/* ============================ INVENTAIRE (Epicor) ============================ */
+// Photo de la quantite en main (Epicor, societe ETRAK, entrepot ETRAK) des pieces
+// du portail. Ecrite par scripts/sync_inventaire_epicor.py via
+// { action:'save', key:'inventory_etrak', value, pin } — cle dans SENSITIVE_KEYS :
+// jamais lisible par le GET public, ecriture admin/PIN seulement.
+// Valeur : { updated: ISO, company, warehouse, qty: { "<PN>": <quantite en main> } }
+var INVENTORY_KEY = 'inventory_etrak';
+// Roles autorises tant que la permission n'a jamais ete touchee dans l'UI admin
+// (roles_permissions sans inventoryAccess). Decision Steve, 2026-09-23.
+var INVENTORY_DEFAULT_ROLES = ['administrateur', 'vente_interne'];
+
+function _canSeeInventory(role) {
+  if (role === 'super_admin') return true;
+  var perms = _permsForRole(role);
+  if (perms && perms.inventoryAccess !== undefined) return !!perms.inventoryAccess;
+  return INVENTORY_DEFAULT_ROLES.indexOf(role) >= 0;
+}
+
+// { action:'getinventory', token } -> { ok, inventory } | { error }
+// Le role est relu dans authorized_users_v2 (pas celui fige dans la session) :
+// un compte retrograde perd l'acces tout de suite.
+function getInventory(body) {
+  var sess = _getSession(body.token) || _getSession(body.pin);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (!_canSeeInventory(user.role)) return { error: 'forbidden' };
+  var raw = PROPS.getProperty(INVENTORY_KEY);
+  if (!raw) return { ok: true, inventory: null };
+  try { return { ok: true, inventory: JSON.parse(raw) }; }
+  catch (e) { return { error: 'inventory unreadable' }; }
 }
 
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi

@@ -98,6 +98,58 @@ fetch(API_URL, {
     })
     .catch(function() {});
 
+// ---- INVENTAIRE (quantite en main, Epicor ETRAK / entrepot ETRAK) ----
+// Le serveur decide qui le voit (permission « Inventaire » par role) : un role non
+// autorise recoit 'forbidden' et n'a jamais les chiffres dans son navigateur.
+// Photo { updated, company, warehouse, qty:{ PN: quantite } } ecrite par
+// scripts/sync_inventaire_epicor.py. null = pas d'acces ou pas encore de photo.
+var INVENTAIRE = null;
+
+function fmtQteInventaire(q) {
+    var n = Math.round(q * 100) / 100;
+    return n.toLocaleString(i18n.getLang && i18n.getLang() === 'en' ? 'en-CA' : 'fr-CA');
+}
+
+function escAttrInv(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Pastille : vert = en stock (quantite reelle), rouge = pas en stock (0).
+function badgeInventaire(q, titre) {
+    var enStock = q > 0;
+    var fg = enStock ? '#3ddc84' : '#ff6b6b';
+    var bg = enStock ? 'rgba(46,204,113,0.16)' : 'rgba(231,76,60,0.18)';
+    return '<span class="inv-badge ' + (enStock ? 'inv-ok' : 'inv-zero') + '"' +
+        (titre ? ' title="' + escAttrInv(titre) + '"' : '') +
+        ' style="display:inline-flex;align-items:center;gap:4px;padding:1px 9px;border-radius:999px;' +
+        'background:' + bg + ';color:' + fg + ';font-weight:600;font-size:0.8rem;line-height:1.5">' +
+        '<span style="font-size:0.6rem">&#9679;</span>' + fmtQteInventaire(enStock ? q : 0) + '</span>';
+}
+
+function libelleMajInventaire() {
+    var d = INVENTAIRE && INVENTAIRE.updated ? new Date(INVENTAIRE.updated) : null;
+    var quand = (d && !isNaN(d)) ? d.toLocaleString(i18n.getLang && i18n.getLang() === 'en' ? 'en-CA' : 'fr-CA',
+        { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '?';
+    return i18n.t('soum.inv_updated', { date: quand, wh: (INVENTAIRE && INVENTAIRE.warehouse) || 'ETRAK' });
+}
+
+function chargerInventaire() {
+    if (!currentUser || !currentUser.token) return;
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'getinventory', token: currentUser.token })
+    })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (!data || !data.ok || !data.inventory || !data.inventory.qty) return;
+            INVENTAIRE = data.inventory;
+            try { updateSelectedSummary(); } catch (e) {}
+        })
+        .catch(function() {});
+}
+chargerInventaire();
+
 // Load emails
 fetch(API_URL + '?action=get&key=sales_emails')
     .then(function(r) { return r.json(); })
@@ -2449,8 +2501,27 @@ function updateSelectedSummary() {
             return '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">'
                    + c + '</span> ';
         };
-        var ligne = function (libelle, montant) {
+        // Colonne « Inventaire » (a gauche) : seulement si le serveur a remis
+        // l'inventaire (roles autorises). invCode = PN de la ligne produit ;
+        // false = pose/service (tiret) ; null = case vide (total).
+        // Deux couleurs seulement : vert = en stock, rouge = pas en stock. Une piece
+        // absente de l'entrepot ETRAK n'y est pas en stock -> rouge 0.
+        var showInv = !!(INVENTAIRE && INVENTAIRE.qty);
+        var invTd = function (invCode) {
+            if (!showInv) return '';
+            var inner = '';
+            if (invCode === false) {
+                inner = '<span style="color:#6b7785">—</span>';
+            } else if (invCode) {
+                var q = INVENTAIRE.qty[invCode];
+                if (typeof q !== 'number') q = 0;
+                inner = badgeInventaire(q, libelleMajInventaire());
+            }
+            return '<td style="padding:4px 12px 4px 0;text-align:center;white-space:nowrap;vertical-align:top">' + inner + '</td>';
+        };
+        var ligne = function (libelle, montant, invCode) {
             return '<tr>' +
+                invTd(invCode) +
                 '<td style="padding:4px 10px 4px 0;vertical-align:top">' + libelle + '</td>' +
                 '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
                 + cell(montant) + '</td>' +
@@ -2469,9 +2540,9 @@ function updateSelectedSummary() {
             if (l.kind === 'install') {
                 return ligne('<span style="color:#9aa7b2">' + dot + code
                              + i18n.t('soum.tbl_install_line', { name: l.name }) + '</span>',
-                             l.montant);
+                             l.montant, false);
             }
-            return ligne(dot + code + l.name, l.montant);
+            return ligne(dot + code + l.name, l.montant, l.code || null);
         }).join('');
 
         // UN SEUL total, sous le trait, en face de la colonne de prix. Le « combine »
@@ -2480,21 +2551,34 @@ function updateSelectedSummary() {
         var totalRow = '';
         if (anyPrice) {
             totalRow = '<tr style="border-top:2px solid #555;font-weight:700">' +
+                invTd(null) +
                 '<td style="padding:8px 10px 4px 0">' + i18n.t('soum.tbl_total') + '</td>' +
                 '<td style="padding:8px 0 4px 8px;text-align:right;color:#FF8C00">'
                 + fmtPrice(total) + '</td>' +
                 '</tr>';
         }
         var noteRow = currentNotes
-            ? '<tr><td colspan="2" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
+            ? '<tr><td colspan="' + (showInv ? 3 : 2) + '" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
+            : '';
+        var invTh = showInv
+            ? '<th style="text-align:center;padding:0 12px 5px 0;white-space:nowrap" title="' + escAttrInv(i18n.t('soum.tbl_onhand_title')) + '">' + i18n.t('soum.tbl_onhand') + '</th>'
+            : '';
+        // Legende sous le tableau ; l'heure du dernier import est au survol des pastilles.
+        var invNote = showInv
+            ? '<div class="inv-legende" style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font-size:0.74rem;color:#9aa7b2">' +
+                  '<span>' + badgeInventaire(12, '') + ' ' + i18n.t('soum.inv_leg_stock') + '</span>' +
+                  '<span>' + badgeInventaire(0, '') + ' ' + i18n.t('soum.inv_leg_none') + '</span>' +
+                  '<span><span style="color:#6b7785">—</span> ' + i18n.t('soum.inv_leg_service') + '</span>' +
+              '</div>'
             : '';
 
         list.innerHTML =
             '<table style="width:100%;border-collapse:collapse;font-size:0.9rem">' +
             '<thead><tr style="border-bottom:1px solid #555;color:#9fb4c8;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">' +
+            invTh +
             '<th style="text-align:left;padding:0 10px 5px 0">' + i18n.t('soum.tbl_product') + '</th>' +
             '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_price') + '</th>' +
-            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>';
+            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>' + invNote;
         // Filigrane du nom du user en fond du tableau de prix (dissuasion capture d'ecran).
         // Applique seulement si des prix sont reellement affiches.
         list.style.backgroundImage = '';   // ancienne approche (fond direct) retiree
