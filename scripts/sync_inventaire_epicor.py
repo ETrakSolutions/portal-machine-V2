@@ -7,7 +7,8 @@ le PIN seulement, jamais lisible par le GET public). La page Soumission l'affich
 aux roles qui ont la permission « Inventaire » (action 'getinventory').
 
 Liste des pieces : relue a chaque execution sur le site en ligne (data/prices.json,
-_bom_labels de data/machines.json, lignes _custom des data/overrides/<type>.json).
+_bom_labels de data/machines.json, lignes _custom des data/overrides/<type>.json,
+PN ecrits en dur dans js/kit-rules.js et js/soumission.js, dont les harnais).
 Aucune liste a tenir a jour ici.
 
 Usage :
@@ -65,6 +66,10 @@ def portal_part_numbers():
         except Exception:
             continue
         pns.update(p.strip() for p in re.findall(r'"pn":"([^"]+)"', ov))
+    # PN ecrits en dur dans le code du kit (harnais Z03B-..., bases, options) :
+    # absents des fichiers de donnees, ils sortiraient en « pas en stock » a tort.
+    for js in ('js/kit-rules.js', 'js/soumission.js'):
+        pns.update(re.findall(r'\b(?:\d{4}-\d{4}|[A-Z]\d{2}[A-Z]-\d{4}(?:_R\d+)?)\b', fetch(js)))
     return sorted(p for p in pns if p and PN_RE.match(p))
 
 
@@ -120,8 +125,18 @@ def read_on_hand(conn, pns):
     return qty
 
 
+def read_pin(pin_file):
+    # « PIN Portail.txt » porte des lignes d'explication + le NIP seul sur sa ligne.
+    # On retient l'unique ligne sans espace ; sinon on s'arrete plutot que deviner.
+    lines = [l.strip() for l in Path(pin_file).read_text(encoding='utf-8-sig').splitlines()]
+    cands = [l for l in lines if l and ' ' not in l]
+    if len(cands) != 1:
+        sys.exit('NIP introuvable sans ambiguite dans %s (%d ligne(s) candidate(s))' % (pin_file, len(cands)))
+    return cands[0]
+
+
 def send(snapshot, pin_file):
-    pin = Path(pin_file).read_text(encoding='utf-8').strip().splitlines()[0].strip()
+    pin = read_pin(pin_file)
     cfg = fetch('js/config.js')
     api = re.search(r"https://script\.google\.com/macros/s/[^'\"]+", cfg).group(0)
     body = json.dumps({'action': 'save', 'key': INVENTORY_KEY,
