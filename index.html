@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Portail e-Trak</title>
     <link rel="stylesheet" href="css/style.css?v=175">
-    <link rel="stylesheet" href="css/admin.css?v=175">
+    <link rel="stylesheet" href="css/admin.css?v=176">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -111,6 +111,9 @@
                     <p class="admin-card-desc" data-i18n="admin.users_desc">Comptes pouvant se connecter au portail. Chaque compte a un role et des permissions.</p>
                 </div>
                 <div id="admin-users-body">
+                <div class="admin-user-filter-row">
+                    <input type="search" id="admin-user-filter" class="admin-input" autocomplete="off" data-i18n-placeholder="admin.users_filter_placeholder" placeholder="Filtrer par nom, courriel ou rôle…">
+                </div>
                 <div class="admin-table-wrap">
                     <table class="admin-table" id="admin-user-table">
                         <thead>
@@ -299,11 +302,11 @@
     </footer>
 
     <script src="js/config.js?v=1"></script>
-    <script src="js/translations.js?v=224"></script>
+    <script src="js/translations.js?v=225"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/admin.js?v=198"></script>
+    <script src="js/admin.js?v=199"></script>
     <script>
     // Affiche la version (V2 + date) dans le pied de page, depuis version.json
     fetch('version.json?t=' + Date.now()).then(function(r){ return r.json(); }).then(function(d){

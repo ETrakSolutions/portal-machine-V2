@@ -250,6 +250,7 @@ function showAdminSection() {
         hb.style.display = '';
         hb.onclick = function(e) { e.preventDefault(); showHubSection(); };
     }
+    resetUserFilter();
     loadUsers();
     loadVendeurs();
     loadSalesEmails();
@@ -266,6 +267,7 @@ function showHubSection() {
     document.querySelector('.admin-hero').style.display = '';
     var hb = document.getElementById('admin-header-back');
     if (hb) hb.style.display = 'none';
+    resetUserFilter();
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
@@ -1029,6 +1031,31 @@ function initUsersCollapse() {
     };
 }
 
+// ---- FILTRE UTILISATEURS ----
+// Filtre texte sur nom, courriel ou role. Volontairement NON memorise (ni
+// localStorage ni sessionStorage) : il est vide a chaque entree et sortie de la
+// page Administration.
+function getUserFilterValue() {
+    var input = document.getElementById('admin-user-filter');
+    return input ? input.value : '';
+}
+
+// Minuscules et sans accents : « role » trouve « Rôle », « ingenierie » trouve « Ingénierie ».
+function normalizeUserFilter(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+}
+
+function resetUserFilter() {
+    var input = document.getElementById('admin-user-filter');
+    if (input) input.value = '';
+}
+
+function initUsersFilter() {
+    var input = document.getElementById('admin-user-filter');
+    if (!input) return;
+    input.addEventListener('input', renderUsers);
+}
+
 // ---- USERS ----
 // Liste chargee par l'action authentifiee 'listusers' : les mots de passe ne sont
 // retournes que pour un token admin (UI de gestion des comptes).
@@ -1073,10 +1100,24 @@ function renderUsers() {
     if (!tbody) return;
     tbody.innerHTML = '';
     var SUPER_ADMIN = 'robin@gryb.ca';
-    USERS.forEach(function(user, i) {
+    // Affichage trie par nom (A-Z). On trie une liste d'index sans toucher a USERS :
+    // data-idx doit rester l'index reel pour l'edition et la suppression.
+    var order = USERS.map(function(u, i) { return i; });
+    order.sort(function(a, b) {
+        return String(USERS[a].name || '').localeCompare(String(USERS[b].name || ''), 'fr', { sensitivity: 'base' });
+    });
+    var q = normalizeUserFilter(getUserFilterValue());
+    var shown = 0;
+    order.forEach(function(i) {
+        var user = USERS[i];
         // Masquer les comptes Super Admin sauf pour un viewer super_admin
         if (user.role === 'super_admin' && (!currentUser || currentUser.role !== 'super_admin')) return;
         var roleLabel = i18n.t('role.' + user.role);
+        if (q) {
+            var hay = normalizeUserFilter([user.name, user.email, roleLabel, user.role].join(' '));
+            if (hay.indexOf(q) === -1) return;
+        }
+        shown++;
         var isSuperAdmin = user.email && user.email.toLowerCase() === SUPER_ADMIN;
         var tr = document.createElement('tr');
         tr.style.cursor = 'pointer';
@@ -1090,6 +1131,10 @@ function renderUsers() {
             '<td>' + (!isSuperAdmin && currentUser && currentUser.permissions && currentUser.permissions.modifAccounts ? '<button class="admin-delete-btn" data-idx="' + i + '">\u2715</button>' : '') + '</td>';
         tbody.appendChild(tr);
     });
+    if (q && shown === 0) {
+        renderUsersMessage(i18n.t('admin.users_filter_empty'));
+        return;
+    }
     // Charger les statuts d'activite (heartbeat) pour chaque user
     loadUserActiveStatus();
     // Click row to edit user
@@ -1614,6 +1659,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Carte Utilisateurs repliable (+/-)
     initUsersCollapse();
+    initUsersFilter();
 
     // Show/hide vendeur dropdown based on role
     var roleSelect = document.getElementById('admin-new-role');
@@ -1791,5 +1837,8 @@ window.addEventListener('langchange', function() {
     if (typeof i18n !== 'undefined') {
         i18n.translatePage();
         if (currentUser) updateHubUI();
+        // Libelles de role (et donc le filtre par role) dans la nouvelle langue
+        var ac = document.getElementById('admin-content');
+        if (ac && ac.style.display !== 'none' && USERS.length) renderUsers();
     }
 });

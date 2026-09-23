@@ -216,6 +216,12 @@
     margin-bottom: 0.3rem;
 }
 
+/* Filtre de la liste des utilisateurs */
+.admin-user-filter-row {
+    display: flex;
+    margin-bottom: 0.75rem;
+}
+
 /* Tables */
 .admin-table-wrap {
     overflow-x: auto;
