@@ -399,12 +399,25 @@ function userAdd(body) {
   });
 }
 
-// { action:'listmyusers', token } -> { users: [ comptes crees par l'appelant, sans mot de passe ] }
+// Un vendeur gere un client qu'il a cree OU dont il est le vendeur associe (vendeurEmail
+// = son courriel de connexion). Decision Steve, 2026-09-24.
+function _clientGerable(u, moi) {
+  return String(u.createdBy || '').toLowerCase() === moi ||
+         String(u.vendeurEmail || '').toLowerCase() === moi;
+}
+
+// { action:'listmyusers', token } -> { users: [ tous les Dealers / Distributeurs, sans mot de passe ] }
+// Decision Steve, 2026-09-24 : liste complete des clients en consultation ; « mine » = gerable
+// par l'appelant (_clientGerable), seuls ceux-la sont modifiables (verifie dans userUpdateMine).
 function userListMine(body) {
   var me = _delegCaller(body);
   if (!me) return { error: 'permission denied' };
   var moi = _uname(me);
-  return { users: _users().filter(function (u) { return String(u.createdBy || '').toLowerCase() === moi; }).map(_publicUser) };
+  return { users: _users().filter(function (u) { return DELEGATED_ROLES.indexOf(u.role) >= 0; }).map(function (u) {
+    var p = _publicUser(u);
+    p.mine = _clientGerable(u, moi);
+    return p;
+  }) };
 }
 
 // { action:'updatemyuser', token, email, name?, role?, vendeurEmail?, active?, resetPassword? }
@@ -417,7 +430,7 @@ function userUpdateMine(body) {
     var users = _users(), u = null;
     for (var i = 0; i < users.length; i++) { if (_uname(users[i]) === cible) { u = users[i]; break; } }
     if (!u) return { error: 'user not found' };
-    if (String(u.createdBy || '').toLowerCase() !== moi || _uname(u) === moi) return { error: 'not your user' };
+    if (!_clientGerable(u, moi) || _uname(u) === moi) return { error: 'not your user' };
     if (DELEGATED_ROLES.indexOf(u.role) < 0) return { error: 'role not allowed' };
     if (body.name !== undefined) {
       var n = String(body.name).trim(); if (!n) return { error: 'name required' }; u.name = n;

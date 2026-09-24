@@ -3,7 +3,10 @@
 // Pour les roles non admin qui ont la permission « Ajout usagers » (addUsers),
 // ex. Vente externe. Le serveur applique toutes les regles (actions adduser,
 // listmyusers, updatemyuser) : roles Dealer / Distributeur seulement, gestion
-// limitee aux comptes crees par l'appelant, vendeur pris dans la liste.
+// limitee a ses clients (crees par lui OU dont il est le vendeur associe),
+// vendeur pris dans la liste. La liste montre TOUS les Dealers / Distributeurs
+// (consultation) ; seuls ses clients (u.mine) s'ouvrent en modification.
+// Decision Steve, 2026-09-24.
 // Depend de admin.js : API_URL, portalToken, escHtml, showCredentialsPopup,
 // showToast, i18n.
 // =====================================================================
@@ -67,6 +70,7 @@ function showMesUsagersSection() {
         hb.onclick = function(e) { e.preventDefault(); showHubSection(); };
     }
     var err = document.getElementById('mu-add-error'); if (err) err.style.display = 'none';
+    var filtre = document.getElementById('mu-filter'); if (filtre) filtre.value = '';
     fetch(API_URL + '?action=get&key=vendeurs_list')
         .then(function(r) { return r.json(); })
         .then(function(d) { try { muVendeurs = JSON.parse(d.value || '[]'); } catch (e) { muVendeurs = []; } })
@@ -90,27 +94,52 @@ function muCharger() {
         .catch(function() { tbody.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:#E07B00;text-align:center">' + escHtml(i18n.t('mu.err_generic')) + '</td></tr>'; });
 }
 
+// Filtre texte (nom, courriel, role, vendeur, statut) — jamais memorise, vide a chaque ouverture
+function muNormaliser(s) {
+    return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+}
+
 function muRendre() {
     var tbody = document.getElementById('mu-tbody');
+    var compte = document.getElementById('mu-count');
+    var fEl = document.getElementById('mu-filter');
+    var q = muNormaliser(fEl ? fEl.value : '');
     if (!muUsers.length) {
         tbody.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:#8aa;text-align:center">' + escHtml(i18n.t('mu.none')) + '</td></tr>';
+        if (compte) compte.textContent = '';
         return;
     }
     tbody.innerHTML = '';
+    var montres = 0;
     muUsers.forEach(function(u, i) {
-        var tr = document.createElement('tr');
-        tr.style.cursor = 'pointer';
-        tr.dataset.idx = i;
         var actif = u.active !== false;
+        if (q) {
+            var hay = muNormaliser([u.name, u.email, i18n.t('role.' + u.role), u.role,
+                u.vendeurEmail, u.vendeurEmail ? muNomVendeur(u.vendeurEmail) : '',
+                actif ? i18n.t('mu.active') : i18n.t('mu.inactive')].join(' '));
+            if (hay.indexOf(q) === -1) return;
+        }
+        montres++;
+        var tr = document.createElement('tr');
+        tr.dataset.idx = i;
+        // Seuls ses clients (crees par lui ou vendeur associe) sont modifiables ; le serveur le verifie aussi
+        if (u.mine) tr.style.cursor = 'pointer';
+        else { tr.title = i18n.t('mu.readonly_title'); tr.style.opacity = '0.85'; }
         tr.innerHTML =
-            '<td><strong>' + escHtml(u.name) + '</strong></td>' +
+            '<td><strong>' + escHtml(u.name) + '</strong>' +
+                (u.mine ? ' <span style="font-size:0.62rem;font-weight:700;color:#8fb4e0;background:rgba(20,80,144,0.25);padding:1px 6px;border-radius:4px;margin-left:4px;vertical-align:middle">' + escHtml(i18n.t('mu.mine_tag')) + '</span>' : '') +
+            '</td>' +
             '<td>' + escHtml(u.email || '') + '</td>' +
             '<td><span class="role-badge role-' + escHtml(u.role) + '">' + escHtml(i18n.t('role.' + u.role)) + '</span></td>' +
             '<td>' + (u.vendeurEmail ? escHtml(muNomVendeur(u.vendeurEmail)) : '<span style="color:#555">—</span>') + '</td>' +
             '<td>' + (actif ? '<span class="admin-active-yes">' + escHtml(i18n.t('mu.active')) + '</span>' : '<span class="admin-active-no">' + escHtml(i18n.t('mu.inactive')) + '</span>') + '</td>';
-        tr.addEventListener('click', function() { muOuvrirEdition(parseInt(this.dataset.idx, 10)); });
+        if (u.mine) tr.addEventListener('click', function() { muOuvrirEdition(parseInt(this.dataset.idx, 10)); });
         tbody.appendChild(tr);
     });
+    if (q && montres === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="padding:1rem;color:#E07B00;text-align:center">' + escHtml(i18n.t('mu.filter_empty')) + '</td></tr>';
+    }
+    if (compte) compte.textContent = i18n.t('mu.count', { n: montres, total: muUsers.length });
 }
 
 function muAjouter() {
@@ -191,6 +220,8 @@ function muOuvrirEdition(idx) {
 document.addEventListener('DOMContentLoaded', function() {
     var b = document.getElementById('mu-add-btn');
     if (b) b.addEventListener('click', muAjouter);
+    var f = document.getElementById('mu-filter');
+    if (f) f.addEventListener('input', muRendre);
 });
 
 // Contenu genere en JS : retraduit au changement de langue
