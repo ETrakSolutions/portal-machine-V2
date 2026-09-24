@@ -221,7 +221,13 @@ function _authCheck(body) {
   // Le token de session peut arriver dans body.token OU body.pin (le frontend remplace
   // simplement l'ancienne valeur du PIN par le token -> diff minimal, zero cle oubliee).
   var sess = _getSession(body.token) || _getSession(body.pin);
-  if (sess) return { ok: true, admin: _isAdminRole(sess.role), role: sess.role, perms: _permsForRole(sess.role) };
+  if (sess) {
+    // Role relu dans authorized_users_v2 a chaque appel (pas celui fige dans la
+    // session) : un changement de role ou une desactivation prend effet tout de suite.
+    var u = _findUser(sess.u);
+    if (!u || u.active === false) return { ok: false, admin: false };
+    return { ok: true, admin: _isAdminRole(u.role), role: u.role, perms: _permsForRole(u.role) };
+  }
   return { ok: false, admin: false };
 }
 
