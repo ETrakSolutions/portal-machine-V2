@@ -5,14 +5,14 @@
 const API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 
 const ROLES = {
-    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, label: 'Super Admin' },
-    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, label: 'Administrateur' },
-    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, label: 'Vente interne' },
-    vente_externe:  { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: true, label: 'Vente externe' },
-    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, label: 'Technicien' },
-    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, label: 'Distributeur' },
-    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, label: 'Dealer' },
-    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, label: 'Ingenierie' }
+    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, label: 'Super Admin' },
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, addUsers: false, label: 'Vente interne' },
+    vente_externe:  { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: true, addUsers: true, label: 'Vente externe' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, label: 'Technicien' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, addUsers: false, label: 'Ingenierie' }
 };
 
 // Les comptes vivent UNIQUEMENT cote serveur (Apps Script, cle authorized_users_v2).
@@ -91,7 +91,8 @@ function updateHubUI() {
         }
         // Don't show hub-nav if admin section is open
         var adminOpen = document.getElementById('admin-content');
-        if (hubNav && !(adminOpen && adminOpen.style.display === 'block')) {
+        var muOpen = document.getElementById('mes-usagers-content');
+        if (hubNav && !(adminOpen && adminOpen.style.display === 'block') && !(muOpen && muOpen.style.display === 'block')) {
             hubNav.style.display = 'grid';
         }
         if (hubEmpty) hubEmpty.style.display = 'none';
@@ -115,6 +116,12 @@ function updateHubUI() {
         }
         if (tileAdmin) {
             tileAdmin.style.display = currentUser.permissions.modifAccounts ? 'block' : 'none';
+        }
+        // Tuile « Mes utilisateurs » : ajout delegue (Dealer / Distributeur) pour les roles
+        // non admin qui ont la permission « Ajout usagers » (les admins ont la page Admin).
+        var tileMU = document.getElementById('hub-tile-mesusagers');
+        if (tileMU) {
+            tileMU.style.display = (currentUser.permissions.addUsers && !currentUser.permissions.modifAccounts) ? 'block' : 'none';
         }
         // Tuile Export : Super Admin + Administrateur
         var tileExport = document.getElementById('hub-tile-export');
@@ -265,6 +272,8 @@ function showAdminSection() {
 function showHubSection() {
     document.getElementById('hub-nav').style.display = '';
     document.getElementById('admin-content').style.display = 'none';
+    var mu = document.getElementById('mes-usagers-content');
+    if (mu) mu.style.display = 'none';
     document.querySelector('.admin-hero').style.display = '';
     var hb = document.getElementById('admin-header-back');
     if (hb) hb.style.display = 'none';
@@ -272,8 +281,8 @@ function showHubSection() {
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
-var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess'];
-var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire'};
+var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess', 'addUsers'];
+var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire','addUsers':'Ajout usagers'};
 
 function renderPermTable() {
     var tbody = document.getElementById('admin-perm-tbody');
@@ -1539,6 +1548,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (venteBackBtn) {
         venteBackBtn.addEventListener('click', function() {
             hideVenteSection();
+        });
+    }
+
+    // TUILE MES UTILISATEURS (js/mes-usagers.js)
+    var tileMU = document.getElementById('hub-tile-mesusagers');
+    if (tileMU) {
+        tileMU.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (typeof showMesUsagersSection === 'function') showMesUsagersSection();
         });
     }
 

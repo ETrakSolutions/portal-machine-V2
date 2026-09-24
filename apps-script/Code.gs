@@ -71,6 +71,9 @@ function doPost(e) {
     if (action === 'listusers')      return jsonOut(authListUsers(body));
     if (action === 'acceptconsent')  return jsonOut(authAcceptConsent(body));
     if (action === 'getinventory')   return jsonOut(getInventory(body));
+    if (action === 'adduser')        return jsonOut(userAdd(body));
+    if (action === 'listmyusers')    return jsonOut(userListMine(body));
+    if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -242,7 +245,7 @@ function _permsForRole(role) {
     super_admin:    { modifBom:true,  flagBom:true,  writeNotes:true,  modifAccounts:true },
     administrateur: { modifBom:true,  flagBom:true,  writeNotes:true,  modifAccounts:true },
     vente_interne:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
-    vente_externe:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
+    vente_externe:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false, addUsers:true },
     technicien:     { modifBom:false, flagBom:false, writeNotes:true,  modifAccounts:false },
     distributeur:   { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     dealer:         { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
@@ -316,6 +319,127 @@ function authListUsers(body) {
   if (!auth.ok) return { error: 'authentication required' };
   var users = _users();
   return { users: auth.admin ? users : users.map(_publicUser) };
+}
+
+/* ===================== AJOUT D'USAGERS DELEGUE (hors admins) ===================== */
+// Permission « Ajout usagers » (addUsers) : un role non admin peut CREER des comptes
+// Dealer / Distributeur, puis gerer UNIQUEMENT les comptes qu'il a lui-meme crees
+// (createdBy). Il ne touche jamais aux autres comptes, ni au sien, et ne peut
+// attribuer aucun autre role. Tout est verifie ici : la page n'est pas une barriere.
+// Decision Steve, 2026-09-24 : roles Dealer + Distributeur, vendeur choisi dans la
+// liste des vendeurs, gestion (modifier / desactiver / reinitialiser) de ses comptes.
+var DELEGATED_ROLES = ['dealer', 'distributeur'];
+var ADDUSERS_DEFAULT_ROLES = ['vente_externe'];   // tant que la permission n'a pas ete touchee dans l'UI
+
+function _canAddUsers(role) {
+  if (_isAdminRole(role)) return true;
+  var perms = _permsForRole(role);
+  if (perms && perms.addUsers !== undefined) return !!perms.addUsers;
+  return ADDUSERS_DEFAULT_ROLES.indexOf(role) >= 0;
+}
+
+// Session -> compte appelant (role relu dans authorized_users_v2), ou null
+function _delegCaller(body) {
+  var sess = _getSession(body.token) || _getSession(body.pin);
+  if (!sess) return null;
+  var u = _findUser(sess.u);
+  if (!u || u.active === false || !_canAddUsers(u.role)) return null;
+  return u;
+}
+
+function _uname(u) { return String((u && (u.username || u.email)) || '').toLowerCase(); }
+
+// Meme jeu de caracteres que le frontend (sans O/0/I/l/1), aleatoire via UUID
+function _tempPassword() {
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  var hex = (Utilities.getUuid() + Utilities.getUuid()).replace(/-/g, '');
+  var out = '';
+  for (var i = 0; i < 10; i++) out += chars.charAt(parseInt(hex.substr(i * 2, 2), 16) % chars.length);
+  return out;
+}
+
+function _vendeurValide(email) {
+  if (!email) return true;
+  try {
+    var list = JSON.parse(PROPS.getProperty('vendeurs_list') || '[]');
+    for (var i = 0; i < list.length; i++) {
+      if (String(list[i].email || '').toLowerCase() === String(email).toLowerCase()) return true;
+    }
+  } catch (e) {}
+  return false;
+}
+
+function _avecVerrou(fn) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(15000);
+  try { return fn(); } finally { lock.releaseLock(); }
+}
+
+// { action:'adduser', token, name, email, role, vendeurEmail } -> { ok, user, tempPassword }
+function userAdd(body) {
+  var me = _delegCaller(body);
+  if (!me) return { error: 'permission denied' };
+  var name = String(body.name || '').trim();
+  var email = String(body.email || '').trim().toLowerCase();
+  var role = String(body.role || '');
+  var vend = String(body.vendeurEmail || '').trim().toLowerCase();
+  if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: 'name and valid email required' };
+  if (DELEGATED_ROLES.indexOf(role) < 0) return { error: 'role not allowed' };
+  if (!_vendeurValide(vend)) return { error: 'unknown vendeur' };
+  return _avecVerrou(function () {
+    if (_findUser(email)) return { error: 'user exists' };
+    var users = _users();
+    var pwd = _tempPassword();
+    var nu = { username: email, email: email, password: pwd, role: role, name: name, active: true,
+               mustChangePassword: true, createdBy: _uname(me), createdAt: new Date().toISOString() };
+    if (vend) nu.vendeurEmail = vend;
+    users.push(nu);
+    PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    return { ok: true, user: _publicUser(nu), tempPassword: pwd };
+  });
+}
+
+// { action:'listmyusers', token } -> { users: [ comptes crees par l'appelant, sans mot de passe ] }
+function userListMine(body) {
+  var me = _delegCaller(body);
+  if (!me) return { error: 'permission denied' };
+  var moi = _uname(me);
+  return { users: _users().filter(function (u) { return String(u.createdBy || '').toLowerCase() === moi; }).map(_publicUser) };
+}
+
+// { action:'updatemyuser', token, email, name?, role?, vendeurEmail?, active?, resetPassword? }
+function userUpdateMine(body) {
+  var me = _delegCaller(body);
+  if (!me) return { error: 'permission denied' };
+  var moi = _uname(me);
+  var cible = String(body.email || '').trim().toLowerCase();
+  return _avecVerrou(function () {
+    var users = _users(), u = null;
+    for (var i = 0; i < users.length; i++) { if (_uname(users[i]) === cible) { u = users[i]; break; } }
+    if (!u) return { error: 'user not found' };
+    if (String(u.createdBy || '').toLowerCase() !== moi || _uname(u) === moi) return { error: 'not your user' };
+    if (DELEGATED_ROLES.indexOf(u.role) < 0) return { error: 'role not allowed' };
+    if (body.name !== undefined) {
+      var n = String(body.name).trim(); if (!n) return { error: 'name required' }; u.name = n;
+    }
+    if (body.role !== undefined) {
+      if (DELEGATED_ROLES.indexOf(String(body.role)) < 0) return { error: 'role not allowed' };
+      u.role = String(body.role);
+    }
+    if (body.vendeurEmail !== undefined) {
+      var v = String(body.vendeurEmail || '').trim().toLowerCase();
+      if (!_vendeurValide(v)) return { error: 'unknown vendeur' };
+      if (v) u.vendeurEmail = v; else delete u.vendeurEmail;
+    }
+    if (body.active !== undefined) u.active = !!body.active;
+    var pwd = null;
+    if (body.resetPassword) { pwd = _tempPassword(); u.password = pwd; u.mustChangePassword = true; }
+    u.updatedBy = moi; u.updatedAt = new Date().toISOString();
+    PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    var out = { ok: true, user: _publicUser(u) };
+    if (pwd) out.tempPassword = pwd;
+    return out;
+  });
 }
 
 /* ============================ INVENTAIRE (Epicor) ============================ */
