@@ -632,7 +632,8 @@ fr: {
     'edit.unsaved_count_post': 'modification(s) non sauvegardee(s).',
 
     // -- Admin (toasts + alertes + partage) --
-    'admin.cannot_delete_super': 'Impossible de supprimer le super administrateur.',
+    'admin.cannot_delete_super': 'Impossible de supprimer un compte Super Admin.',
+    'admin.owner_locked': 'Ce compte est verrouillé : seul son propriétaire peut le modifier.',
     'admin.confirm_delete_user': 'Supprimer l\'utilisateur "{name}" ?',
     'admin.user_deleted': 'Utilisateur "{name}" supprime',
     'admin.user_modified': 'Utilisateur "{name}" modifie',
@@ -1701,7 +1702,8 @@ en: {
     'edit.unsaved_count_post': 'unsaved change(s).',
 
     // -- Admin (toasts + alerts + share) --
-    'admin.cannot_delete_super': 'Cannot delete the super administrator.',
+    'admin.cannot_delete_super': 'Cannot delete a Super Admin account.',
+    'admin.owner_locked': 'This account is locked: only its owner can edit it.',
     'admin.confirm_delete_user': 'Delete user "{name}"?',
     'admin.user_deleted': 'User "{name}" deleted',
     'admin.user_modified': 'User "{name}" modified',
