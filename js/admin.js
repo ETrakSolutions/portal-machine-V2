@@ -1108,7 +1108,15 @@ function saveUsers() {
 // Compte protege = role Super Admin (plus d'adresse ecrite en dur : Jacquot, 2026-09-24).
 // Il porte l'etoile, ne peut pas etre supprime et son courriel est fige.
 function isProtectedAccount(user) {
-    return !!user && user.role === 'super_admin';
+    return !!user && (user.role === 'super_admin' || isOwnerAccount(user));
+}
+
+// Compte proprietaire (Jacquot, DG e-Trak, 2026-09-24) : intouchable meme par un autre
+// Super Admin. Lui seul peut ouvrir sa fiche (nom, mot de passe) et son role est fige,
+// y compris pour lui-meme, pour qu'il ne puisse pas se retirer l'acces par erreur.
+var OWNER_EMAIL = 'jcaron@gryb.com';
+function isOwnerAccount(user) {
+    return !!user && String(user.email || '').toLowerCase() === OWNER_EMAIL;
 }
 
 function renderUsers() {
@@ -1157,6 +1165,10 @@ function renderUsers() {
         tr.addEventListener('click', function(e) {
             if (e.target.classList.contains('admin-delete-btn')) return;
             var idx = parseInt(this.dataset.idx);
+            if (isOwnerAccount(USERS[idx]) && !isOwnerAccount(currentUser)) {
+                alert(i18n.t('admin.owner_locked'));
+                return;
+            }
             openEditUserModal(idx);
         });
     });
@@ -1263,7 +1275,9 @@ setInterval(function() {
 function openEditUserModal(idx) {
     var user = USERS[idx];
     if (!user) return;
+    if (isOwnerAccount(user) && !isOwnerAccount(currentUser)) return;
     var isSuperAdmin = isProtectedAccount(user);
+    var isOwner = isOwnerAccount(user);
 
     // Remove existing modal
     var existing = document.getElementById('edit-user-modal');
@@ -1295,7 +1309,7 @@ function openEditUserModal(idx) {
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.password_label') + '</label>' +
         '<input type="text" id="edit-user-password" class="login-input" value="' + (user.password || '') + '"></div>' +
         '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.role_label') + '</label>' +
-        '<select id="edit-user-role" class="login-input">' + roleOptions + '</select></div>' +
+        '<select id="edit-user-role" class="login-input"' + (isOwner ? ' disabled style="opacity:0.5;"' : '') + '>' + roleOptions + '</select></div>' +
         '<div class="admin-form-group" id="edit-user-vendeur-group" style="margin-bottom:0.75rem;display:' + (showVendeur ? 'block' : 'none') + ';"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.vendeur_label') + '</label>' +
         '<select id="edit-user-vendeur" class="login-input">' + vendeurOptions + '</select></div>' +
         '<button type="button" id="edit-user-save" class="login-submit">' + i18n.t('admin.enregistrer') + '</button>' +
@@ -1333,7 +1347,7 @@ function openEditUserModal(idx) {
             USERS[idx].email = newEmail.toLowerCase();
             USERS[idx].username = newEmail.toLowerCase();
         }
-        USERS[idx].role = newRole;
+        if (!isOwner) USERS[idx].role = newRole;
         // Vendeur associe : seulement pour dealer/distributeur, sinon on retire
         if (newRole === 'dealer' || newRole === 'distributeur') {
             var vsel = document.getElementById('edit-user-vendeur');
