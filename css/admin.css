@@ -266,6 +266,7 @@
 .role-dealer { background: rgba(255,152,0,0.15); color: #FFB74D; }
 .role-vendeur_etrak { background: rgba(0,204,102,0.15); color: #66FF99; }
 .role-vente_interne { background: rgba(100,100,100,0.15); color: #999; }
+.role-vente_externe { background: rgba(20,80,144,0.18); color: #8fb4e0; }
 
 .admin-active-yes { color: #00CC66; }
 .admin-active-no { color: #FF4444; }

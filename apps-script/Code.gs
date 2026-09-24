@@ -236,6 +236,7 @@ function _permsForRole(role) {
     super_admin:    { modifBom:true,  flagBom:true,  writeNotes:true,  modifAccounts:true },
     administrateur: { modifBom:true,  flagBom:true,  writeNotes:true,  modifAccounts:true },
     vente_interne:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
+    vente_externe:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     technicien:     { modifBom:false, flagBom:false, writeNotes:true,  modifAccounts:false },
     distributeur:   { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     dealer:         { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
@@ -320,7 +321,7 @@ function authListUsers(body) {
 var INVENTORY_KEY = 'inventory_etrak';
 // Roles autorises tant que la permission n'a jamais ete touchee dans l'UI admin
 // (roles_permissions sans inventoryAccess). Decision Steve, 2026-09-23.
-var INVENTORY_DEFAULT_ROLES = ['administrateur', 'vente_interne'];
+var INVENTORY_DEFAULT_ROLES = ['administrateur', 'vente_interne', 'vente_externe'];
 
 function _canSeeInventory(role) {
   if (role === 'super_admin') return true;
