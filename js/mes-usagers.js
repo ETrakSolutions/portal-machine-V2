@@ -30,6 +30,7 @@ function muErreur(code) {
         'role not allowed': 'mu.err_role',
         'user exists': 'mu.err_exists',
         'unknown vendeur': 'mu.err_vendeur',
+        'vendeur required': 'admin.vendeur_required',
         'name and valid email required': 'mu.err_name_email',
         'name required': 'mu.err_name_email',
         'not your user': 'mu.err_not_yours'
@@ -150,6 +151,7 @@ function muAjouter() {
     var err = document.getElementById('mu-add-error');
     err.style.display = 'none';
     if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = i18n.t('mu.err_name_email'); err.style.display = 'block'; return; }
+    if (!vendeur) { err.textContent = i18n.t('admin.vendeur_required'); err.style.display = 'block'; return; }
     var btn = document.getElementById('mu-add-btn'); btn.disabled = true;
     muPost({ action: 'adduser', name: name, email: email, role: role, vendeurEmail: vendeur })
         .then(function(d) {
@@ -194,6 +196,7 @@ function muOuvrirEdition(idx) {
     document.getElementById('mu-edit-save').onclick = function() {
         var n = document.getElementById('mu-edit-name').value.trim();
         if (!n) { montrerErreur('name required'); return; }
+        if (!document.getElementById('mu-edit-vendeur').value) { montrerErreur('vendeur required'); return; }
         muPost({ action: 'updatemyuser', email: u.email, name: n,
                  role: document.getElementById('mu-edit-role').value,
                  vendeurEmail: document.getElementById('mu-edit-vendeur').value,

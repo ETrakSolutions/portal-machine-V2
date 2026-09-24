@@ -1339,6 +1339,12 @@ function openEditUserModal(idx) {
             alert(i18n.t('admin.required_fields'));
             return;
         }
+        // Vendeur associe obligatoire pour un Dealer / Distributeur
+        var vselChk = document.getElementById('edit-user-vendeur');
+        if ((newRole === 'dealer' || newRole === 'distributeur') && !(vselChk && vselChk.value)) {
+            alert(i18n.t('admin.vendeur_required'));
+            return;
+        }
 
         USERS[idx].name = newName;
         // Compte Super Admin : le courriel (identifiant de connexion) reste fige, le role
@@ -1744,6 +1750,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!name || !email || !email.includes('@')) {
                 if (errorEl) { errorEl.textContent = i18n.t('admin.add_user_err_name_email'); errorEl.style.display = 'block'; }
+                return;
+            }
+            // Vendeur associe obligatoire pour un Dealer / Distributeur (decision Steve, 2026-09-24)
+            if ((role === 'dealer' || role === 'distributeur') && !vendeurEmail) {
+                if (errorEl) { errorEl.textContent = i18n.t('admin.vendeur_required'); errorEl.style.display = 'block'; }
                 return;
             }
             var exists = USERS.find(function(u) { return (u.email && u.email.toLowerCase() === email.toLowerCase()) || u.username.toLowerCase() === email.toLowerCase(); });

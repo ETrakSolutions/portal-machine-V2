@@ -24,14 +24,25 @@
  *
  * Fichier autonome : s'ajoute au projet a cote de API.gs (memes _users, PROPS).
  * A executer depuis l'editeur :
+ *  - apercuVendeurParDefaut() / appliquerVendeurParDefaut() : clients sans vendeur -> Simon Tartre
  *  - apercuRappelsInactivite()   : simulation, n'envoie RIEN (journal d'execution)
- *  - installerRappelsInactivite() : active l'envoi quotidien (8 h)
+ *  - installerRappelsInactivite() : active l'envoi quotidien (8 h) ; le premier envoi
+ *    (clients deja inactifs) est etale en 4 lots sur 14 jours (INACTIVITE_LOTS_JOURS)
  *  - retirerRappelsInactivite()   : desactive l'envoi quotidien
  */
 
 var INACTIVITE_PALIERS = [30, 45, 60];   // jours ; le dernier est le rappel final
 var INACTIVITE_ROLES = ['dealer', 'distributeur'];
 var INACTIVITE_HEURE = 8;   // heure de l'envoi quotidien (fuseau du projet Apps Script)
+var INACTIVITE_LOTS_JOURS = [0, 5, 9, 14];   // premier envoi etale : 4 lots sur 14 jours
+var VENDEUR_PAR_DEFAUT = 'startre@e-trak.ca';   // Simon Tartre : clients existants sans vendeur (decision Steve, 2026-09-24)
+
+// Date de mise en service (posee par installerRappelsInactivite), ou null
+function _debutDeploiement() {
+  var v = PROPS.getProperty('inactivite_deploiement');
+  var d = v ? new Date(v) : null;
+  return (d && !isNaN(d)) ? d : null;
+}
 
 function _cleCourriel(email) {
   return String(email || '').toLowerCase().replace(/[^a-zA-Z0-9]/g, '_');
@@ -84,12 +95,12 @@ function _html(s) {
  * Coeur du traitement. envoyer=false : simulation (rien n'est envoye ni note).
  * Retourne un resume : { vendeurs:[{vendeur, courriel, clients:[...]}], sansVendeur:[...], sansTrace:n, envoyes:n }
  */
-function rappelsInactivite(envoyer, maintenant) {
+function rappelsInactivite(envoyer, maintenant, debutSimule) {
   var now = maintenant || new Date();
   var vendeurs = {};
   try { JSON.parse(PROPS.getProperty('vendeurs_list') || '[]').forEach(function (v) { vendeurs[String(v.email || '').toLowerCase()] = v.name; }); } catch (e) {}
 
-  var parVendeur = {}, sansVendeur = [], sansTrace = 0;
+  var candidats = [], sansTrace = 0;
   _users().forEach(function (u) {
     if (INACTIVITE_ROLES.indexOf(u.role) < 0 || u.active === false) return;
     var t = _derniereTrace(u);
@@ -104,15 +115,41 @@ function rappelsInactivite(envoyer, maintenant) {
       var n = JSON.parse(PROPS.getProperty('inactivity_notice_' + _cleCourriel(email)) || 'null');
       if (n && n.depuis === depuis) deja = n.palier || 0;         // meme absence
     } catch (e) {}
-    if (palier <= deja) return;                                   // palier deja rappele
-    var client = { nom: u.name, courriel: email, role: u.role, derniere: _fmtDate(t.date), jours: jours,
-                   jamaisConnecte: t.jamaisConnecte, palier: palier, rappel: _libelleRappel(palier), depuis: depuis };
-    var vend = String(u.vendeurEmail || '').toLowerCase();
-    if (!vend) { sansVendeur.push(client); return; }
-    (parVendeur[vend] = parVendeur[vend] || []).push(client);
+    // deja = ce palier a deja ete rappele : garde pour le calcul des lots, retire plus bas
+    candidats.push({ deja: palier <= deja, nom: u.name, courriel: email, role: u.role, derniere: _fmtDate(t.date), jours: jours,
+                     jamaisConnecte: t.jamaisConnecte, palier: palier, rappel: _libelleRappel(palier), depuis: depuis,
+                     vend: String(u.vendeurEmail || '').toLowerCase(), _trace: t.date });
   });
 
-  var resume = { vendeurs: [], sansVendeur: sansVendeur, sansTrace: sansTrace, envoyes: 0 };
+  // Etalement du premier envoi (decision Steve, 2026-09-24) : les clients DEJA inactifs
+  // (30 jours et plus) au demarrage sont repartis en lots (INACTIVITE_LOTS_JOURS) ; les
+  // clients qui atteignent un palier plus tard suivent le rythme normal. Les lots sont
+  // calcules sur TOUS ces clients, deja rappeles ou non, pour que chacun garde son lot.
+  var reportes = [];
+  var debut = debutSimule || _debutDeploiement();
+  if (debut) {
+    var finEtalement = debut.getTime() + INACTIVITE_LOTS_JOURS[INACTIVITE_LOTS_JOURS.length - 1] * 24 * 3600 * 1000;
+    var arriere = candidats.filter(function (c) { return c._trace.getTime() <= debut.getTime() - INACTIVITE_PALIERS[0] * 24 * 3600 * 1000; })
+                           .sort(function (a, b) { return a.courriel < b.courriel ? -1 : 1; });
+    if (now.getTime() < finEtalement) {
+      arriere.forEach(function (c, i) {
+        var lot = i % INACTIVITE_LOTS_JOURS.length;
+        var dateLot = new Date(debut.getTime() + INACTIVITE_LOTS_JOURS[lot] * 24 * 3600 * 1000);
+        if (now.getTime() < dateLot.getTime()) { c.lot = lot + 1; c.dateLot = _fmtDate(dateLot); c.reporte = true; }
+      });
+    }
+    reportes = candidats.filter(function (c) { return c.reporte && !c.deja; });
+    candidats = candidats.filter(function (c) { return !c.reporte; });
+  }
+  candidats = candidats.filter(function (c) { return !c.deja; });
+
+  var parVendeur = {}, sansVendeur = [];
+  candidats.forEach(function (c) {
+    if (!c.vend) { sansVendeur.push(c); return; }
+    (parVendeur[c.vend] = parVendeur[c.vend] || []).push(c);
+  });
+
+  var resume = { vendeurs: [], sansVendeur: sansVendeur, sansTrace: sansTrace, reportes: reportes, envoyes: 0 };
   Object.keys(parVendeur).sort().forEach(function (vend) {
     var clients = parVendeur[vend].sort(function (a, b) { return b.jours - a.jours; });
     var nomVendeur = vendeurs[vend] || vend;
@@ -175,13 +212,22 @@ function _courrielRappel(nomVendeur, clients) {
 /* ---------- A lancer depuis l'editeur Apps Script ---------- */
 
 // Simulation : qui recevrait quoi aujourd'hui. N'envoie rien, ne note rien.
+// Avant la mise en service, montre aussi le plan d'etalement comme si on demarrait aujourd'hui.
 function apercuRappelsInactivite() {
-  var r = rappelsInactivite(false);
-  Logger.log('Vendeurs a prevenir : ' + r.vendeurs.length + ' | clients sans vendeur associe : ' + r.sansVendeur.length +
-             ' | comptes sans aucune trace datable (ignores) : ' + r.sansTrace);
+  var debut = _debutDeploiement();
+  var r = rappelsInactivite(false, new Date(), debut || new Date());
+  Logger.log((debut ? 'Mise en service le ' + _fmtDate(debut) : 'PAS ENCORE EN SERVICE — plan si on demarre aujourd\'hui') +
+             ' | vendeurs a prevenir aujourd\'hui : ' + r.vendeurs.length + ' | clients reportes (lots suivants) : ' + r.reportes.length +
+             ' | clients sans vendeur associe : ' + r.sansVendeur.length + ' | comptes sans aucune trace datable (ignores) : ' + r.sansTrace);
   r.vendeurs.forEach(function (v) {
-    Logger.log('> ' + v.vendeur + ' <' + v.courriel + '> : ' + v.clients.length + ' client(s)');
+    Logger.log('> AUJOURD\'HUI ' + v.vendeur + ' <' + v.courriel + '> : ' + v.clients.length + ' client(s)');
     v.clients.forEach(function (c) { Logger.log('    - ' + c.nom + ' (' + c.courriel + ') : ' + c.jours + ' j — ' + c.rappel + (c.jamaisConnecte ? ' (jamais connecte)' : '')); });
+  });
+  var lots = {};
+  r.reportes.forEach(function (c) { (lots[c.lot] = lots[c.lot] || []).push(c); });
+  Object.keys(lots).sort().forEach(function (k) {
+    Logger.log('> LOT ' + k + ' le ' + lots[k][0].dateLot + ' : ' + lots[k].length + ' client(s)');
+    lots[k].forEach(function (c) { Logger.log('    - ' + c.nom + ' (' + c.courriel + ') vendeur ' + (c.vend || 'AUCUN') + ' : ' + c.jours + ' j aujourd\'hui'); });
   });
   r.sansVendeur.forEach(function (c) { Logger.log('  [sans vendeur] ' + c.nom + ' (' + c.courriel + ') : ' + c.jours + ' j — ' + c.rappel); });
   return r;
@@ -190,18 +236,57 @@ function apercuRappelsInactivite() {
 // Declenche par le minuteur quotidien
 function rappelsInactiviteQuotidien() {
   var r = rappelsInactivite(true);
-  Logger.log('Rappels inactivite : ' + r.envoyes + ' courriel(s) envoye(s).');
+  Logger.log('Rappels inactivite : ' + r.envoyes + ' courriel(s) envoye(s), ' + r.reportes.length + ' client(s) reporte(s) aux lots suivants.');
 }
 
-// Active l'envoi quotidien (une seule fois ; remplace un minuteur existant)
+// Active l'envoi quotidien (remplace un minuteur existant). La date de mise en service
+// (depart de l'etalement en lots) n'est posee qu'a la premiere installation.
 function installerRappelsInactivite() {
   retirerRappelsInactivite();
+  if (!_debutDeploiement()) PROPS.setProperty('inactivite_deploiement', new Date().toISOString());
   ScriptApp.newTrigger('rappelsInactiviteQuotidien').timeBased().everyDays(1).atHour(INACTIVITE_HEURE).create();
-  Logger.log('Rappels d\'inactivite actives : chaque jour vers ' + INACTIVITE_HEURE + ' h.');
+  Logger.log('Rappels d\'inactivite actives : chaque jour vers ' + INACTIVITE_HEURE + ' h. Mise en service : ' + _fmtDate(_debutDeploiement()) +
+             ' (premier envoi etale sur ' + INACTIVITE_LOTS_JOURS[INACTIVITE_LOTS_JOURS.length - 1] + ' jours).');
 }
 
 function retirerRappelsInactivite() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
     if (t.getHandlerFunction() === 'rappelsInactiviteQuotidien') ScriptApp.deleteTrigger(t);
   });
+}
+
+/* ---------- Mise a niveau ponctuelle : vendeur associe obligatoire ---------- */
+// Tout Dealer / Distributeur sans vendeur associe recoit VENDEUR_PAR_DEFAUT (Simon Tartre).
+// apercuVendeurParDefaut() : liste les comptes concernes, ne modifie rien.
+// appliquerVendeurParDefaut() : fait la modification (une seule fois suffit).
+function _vendeurParDefaut(appliquer) {
+  var ok = false;
+  try { ok = JSON.parse(PROPS.getProperty('vendeurs_list') || '[]').some(function (v) { return String(v.email || '').toLowerCase() === VENDEUR_PAR_DEFAUT; }); } catch (e) {}
+  if (!ok) throw new Error('Vendeur par defaut absent de la liste des vendeurs : ' + VENDEUR_PAR_DEFAUT);
+  var lock = LockService.getScriptLock(); lock.waitLock(15000);
+  try {
+    var users = _users(), touches = [];
+    users.forEach(function (u) {
+      if (INACTIVITE_ROLES.indexOf(u.role) >= 0 && !String(u.vendeurEmail || '').trim()) {
+        touches.push(u.name + ' <' + (u.email || u.username) + '>' + (u.active === false ? ' (desactive)' : ''));
+        if (appliquer) u.vendeurEmail = VENDEUR_PAR_DEFAUT;
+      }
+    });
+    if (appliquer && touches.length) PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    return touches;
+  } finally { lock.releaseLock(); }
+}
+
+function apercuVendeurParDefaut() {
+  var t = _vendeurParDefaut(false);
+  Logger.log(t.length + ' client(s) sans vendeur associe recevraient ' + VENDEUR_PAR_DEFAUT + ' :');
+  t.forEach(function (x) { Logger.log('  - ' + x); });
+  return t;
+}
+
+function appliquerVendeurParDefaut() {
+  var t = _vendeurParDefaut(true);
+  Logger.log(t.length + ' client(s) associe(s) a ' + VENDEUR_PAR_DEFAUT + '.');
+  t.forEach(function (x) { Logger.log('  - ' + x); });
+  return t;
 }

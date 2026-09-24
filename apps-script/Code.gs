@@ -385,6 +385,8 @@ function userAdd(body) {
   var vend = String(body.vendeurEmail || '').trim().toLowerCase();
   if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: 'name and valid email required' };
   if (DELEGATED_ROLES.indexOf(role) < 0) return { error: 'role not allowed' };
+  // Vendeur associe obligatoire pour tout client (decision Steve, 2026-09-24)
+  if (!vend) return { error: 'vendeur required' };
   if (!_vendeurValide(vend)) return { error: 'unknown vendeur' };
   return _avecVerrou(function () {
     if (_findUser(email)) return { error: 'user exists' };
@@ -444,6 +446,9 @@ function userUpdateMine(body) {
       if (!_vendeurValide(v)) return { error: 'unknown vendeur' };
       if (v) u.vendeurEmail = v; else delete u.vendeurEmail;
     }
+    // Vendeur associe obligatoire : un client sans vendeur doit en recevoir un pour etre
+    // enregistre (rien n'est ecrit tant que ce n'est pas le cas)
+    if (!u.vendeurEmail) return { error: 'vendeur required' };
     if (body.active !== undefined) u.active = !!body.active;
     var pwd = null;
     if (body.resetPassword) { pwd = _tempPassword(); u.password = pwd; u.mustChangePassword = true; }
