@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Cédule des techniciens</title>
+    <link rel="stylesheet" href="css/style.css?v=175">
+    <link rel="stylesheet" href="css/admin.css?v=175">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .ced-wrap { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+        .ced-sub { color: var(--text-secondary, #999); font-size: 0.85rem; margin: 0.2rem 0 1rem; }
+        .ced-bar { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+        .ced-week { color: #fff; font-weight: 700; font-size: 1rem; }
+        .ced-nav button {
+            background: #2A2A2A; color: #ddd; border: 1px solid #444; border-radius: 8px;
+            padding: 8px 14px; font-size: 0.85rem; cursor: pointer; margin-left: 6px;
+        }
+        .ced-nav button:disabled { opacity: 0.35; cursor: default; }
+        .ced-scroll { overflow-x: auto; border: 1px solid rgba(192,192,192,0.18); border-radius: 12px; background: #1f1f1f; }
+        table.ced { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 0.82rem; }
+        table.ced th, table.ced td { border-bottom: 1px solid #2c2c2c; padding: 6px 4px; text-align: center; }
+        table.ced th { color: #9fb4c8; font-weight: 600; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.03em; }
+        table.ced th.ced-day { border-left: 1px solid #333; }
+        table.ced td.ced-name { text-align: left; color: #eee; padding-left: 12px; white-space: nowrap; font-weight: 600; }
+        table.ced td.ced-name small { display: block; color: #8a97a3; font-weight: 400; font-size: 0.72rem; }
+        .ced-cell { display: inline-block; text-align: center; width: 100%; min-width: 34px; padding: 5px 0; border-radius: 6px; font-weight: 700; font-size: 0.72rem; }
+        .ced-open   { background: rgba(46,204,113,0.16); color: #3ddc84; }
+        .ced-closed { background: rgba(231,76,60,0.20); color: #ff7b6b; }
+        .ced-none   { color: #555; }
+        td.ced-am { border-left: 1px solid #333; }
+        tr.ced-today-row th.ced-today { color: #FF8C00; }
+        .ced-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; color: #9aa7b2; font-size: 0.78rem; align-items: center; }
+        .ced-legend .ced-cell { width: 58px; }
+        .ced-msg { text-align: center; color: #bbb; padding: 3rem 1rem; }
+        .pl-btn { display:inline-block; background:#FF8C00; color:#1a1a1a; text-decoration:none; border-radius:10px; padding:12px 22px; font-weight:800; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Retour au hub" data-i18n-title="common.back_hub">&larr; <span data-i18n="common.retour">Retour</span></a>
+            <div class="logo-section">
+                <a href="index.html" title="Retour au hub" data-i18n-title="common.back_hub">
+                    <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+                </a>
+            </div>
+            <div class="lang-switch" style="position:absolute;right:0;">
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="ced-wrap">
+            <div id="ced-denied" class="ced-msg" style="display:none;">
+                <div style="font-size:2.4rem">&#128274;</div>
+                <h2 style="color:#fff;" data-i18n="ced.denied_title">Accès réservé à l'équipe e-Trak</h2>
+                <p data-i18n="ced.denied_desc">La cédule des techniciens est réservée aux comptes internes.</p>
+                <a href="index.html" class="pl-btn" data-i18n="common.back_hub">Retour au hub</a>
+            </div>
+
+            <div id="ced-root" style="display:none;">
+                <div class="admin-hero" style="padding-bottom:0.2rem;">
+                    <h1 class="admin-hero-title" data-i18n="ced.title">Cédule des techniciens</h1>
+                </div>
+                <p class="ced-sub" data-i18n="ced.subtitle">Disponibilités par demi-journée, 4 semaines, tirées de ProgressionLive.</p>
+                <div class="ced-bar">
+                    <div class="ced-week" id="ced-week"></div>
+                    <div class="ced-nav">
+                        <button type="button" id="ced-prev" data-i18n="ced.prev">&larr; Semaine précédente</button>
+                        <button type="button" id="ced-next" data-i18n="ced.next">Semaine suivante &rarr;</button>
+                    </div>
+                </div>
+                <div class="ced-scroll"><div id="ced-grid" class="ced-msg"><span data-i18n="ced.loading">Chargement…</span></div></div>
+                <div class="ced-legend">
+                    <span><span class="ced-cell ced-open" data-i18n="ced.open">Ouvert</span></span>
+                    <span><span class="ced-cell ced-closed" data-i18n="ced.closed">Fermé</span></span>
+                    <span data-i18n="ced.legend_hours">AM : 7 h 30 – 12 h · PM : 12 h – 16 h 30</span>
+                    <span id="ced-updated"></span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js?v=1"></script>
+    <script src="js/translations.js?v=232"></script>
+    <script src="js/i18n.js?v=167"></script>
+    <script src="js/heartbeat.js?v=5"></script>
+    <script src="js/version-check.js?v=2"></script>
+    <script src="js/cedule.js?v=1"></script>
+</body>
+</html>
