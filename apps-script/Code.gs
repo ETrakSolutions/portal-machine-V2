@@ -71,6 +71,9 @@ function doPost(e) {
     if (action === 'listusers')      return jsonOut(authListUsers(body));
     if (action === 'acceptconsent')  return jsonOut(authAcceptConsent(body));
     if (action === 'getinventory')   return jsonOut(getInventory(body));
+    if (action === 'getprices')      return jsonOut(getPrices(body));
+    if (action === 'setprices')      return jsonOut(setPrices(body));
+    if (action === 'getpriceslog')   return jsonOut(getPricesLog(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
@@ -576,6 +579,109 @@ function getInventory(body) {
   catch (e) { return { error: 'inventory unreadable' }; }
 }
 
+/* ============================ LISTE DE PRIX ============================ */
+// Decision Jacquot, 2026-09-25 : les prix ne sont plus publies sur le site (l'ancien
+// data/prices.json se telechargeait sans connexion, et l'acces invite ?guest=1 les
+// montrait sans mot de passe). Ils vivent ici, en Script Properties, et ne sortent
+// que vers une VRAIE session dont le role a acces a la Soumission. L'invite du code
+// QR n'a pas de session serveur : il ne recoit jamais un prix.
+// Liste maitresse : SharePoint E-Trak Production > General > _Portail e-Trak.
+// Publiee par scripts/publier_prix.py (PIN). Valeur = { "<PN>": { item, install,
+// installCode } } ; decoupee en tranches (limite de 9 Ko par propriete).
+// Chaque remise est comptee par compte (prices_log) : si une liste circule, on sait
+// qui l'a obtenue et quand.
+var PRICES_PREFIX = 'price_list_';          // price_list_n = nb de tranches, price_list_0..
+var PRICES_LOG_KEY = 'price_list_log';
+var PRICES_CHUNK = 8000;
+var SOUMISSION_DEFAULT_ROLES = ['administrateur', 'vente_interne', 'vente_externe',
+                                'distributeur', 'dealer'];
+
+function _isPriceKey(key) { return String(key || '').indexOf(PRICES_PREFIX) === 0; }
+
+function _canSeePrices(role) {
+  if (role === 'super_admin') return true;
+  var perms = _permsForRole(role);
+  if (perms && perms.soumissionAccess !== undefined) return !!perms.soumissionAccess;
+  return SOUMISSION_DEFAULT_ROLES.indexOf(role) >= 0;
+}
+
+function _readPrices() {
+  var n = parseInt(PROPS.getProperty(PRICES_PREFIX + 'n') || '0', 10);
+  if (!n) return null;
+  var raw = '';
+  for (var i = 0; i < n; i++) raw += (PROPS.getProperty(PRICES_PREFIX + i) || '');
+  return JSON.parse(raw);
+}
+
+// Compte par utilisateur : { "<courriel>": { n, first, last } }. Borne a 150 comptes
+// (les plus anciens sortent) pour rester sous la limite d'une propriete.
+function _logPrices(uname) {
+  try {
+    var log = JSON.parse(PROPS.getProperty(PRICES_LOG_KEY) || '{}');
+    var now = new Date().toISOString();
+    var e = log[uname] || { n: 0, first: now };
+    e.n++; e.last = now; log[uname] = e;
+    var keys = Object.keys(log);
+    if (keys.length > 150) {
+      keys.sort(function (a, b) { return String(log[a].last).localeCompare(String(log[b].last)); });
+      for (var i = 0; i < keys.length - 150; i++) delete log[keys[i]];
+    }
+    PROPS.setProperty(PRICES_LOG_KEY, JSON.stringify(log));
+  } catch (err) { Logger.log('_logPrices : ' + err); }
+}
+
+// { action:'getprices', token } -> { ok, prices } | { error }
+// Role relu dans authorized_users_v2 a chaque appel (un compte retrograde ou
+// desactive perd l'acces tout de suite). Le PIN ne donne PAS les prix : les scripts
+// qui ont besoin des codes lisent data/price-codes.json (sans montants).
+function getPrices(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (!_canSeePrices(user.role)) return { error: 'forbidden' };
+  var prices;
+  try { prices = _readPrices(); } catch (e) { return { error: 'prices unreadable' }; }
+  _avecVerrou(function () { _logPrices(_uname(user)); });
+  return { ok: true, prices: prices || {} };
+}
+
+// { action:'setprices', prices, pin|token admin } -> { ok, codes, chunks }
+function setPrices(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var p = body.prices;
+  if (typeof p === 'string') { try { p = JSON.parse(p); } catch (e) { p = null; } }
+  if (!p || typeof p !== 'object' || Array.isArray(p)) return { error: 'invalid prices' };
+  var codes = Object.keys(p);
+  if (!codes.length) return { error: 'invalid prices' };
+  for (var i = 0; i < codes.length; i++) {
+    var v = p[codes[i]];
+    if (!v || typeof v !== 'object') return { error: 'invalid price for ' + codes[i] };
+    var okNum = function (x) { return x === null || x === undefined || typeof x === 'number'; };
+    if (!okNum(v.item) || !okNum(v.install)) return { error: 'invalid price for ' + codes[i] };
+  }
+  var raw = JSON.stringify(p);
+  return _avecVerrou(function () {
+    var old = parseInt(PROPS.getProperty(PRICES_PREFIX + 'n') || '0', 10);
+    var n = Math.ceil(raw.length / PRICES_CHUNK);
+    for (var j = 0; j < n; j++) PROPS.setProperty(PRICES_PREFIX + j, raw.substr(j * PRICES_CHUNK, PRICES_CHUNK));
+    for (var k = n; k < old; k++) PROPS.deleteProperty(PRICES_PREFIX + k);
+    PROPS.setProperty(PRICES_PREFIX + 'n', String(n));
+    PROPS.setProperty(PRICES_PREFIX + 'updated', new Date().toISOString());
+    return { ok: true, codes: codes.length, chunks: n };
+  });
+}
+
+// { action:'getpriceslog', pin|token admin } -> { ok, log, updated }
+function getPricesLog(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var log = {};
+  try { log = JSON.parse(PROPS.getProperty(PRICES_LOG_KEY) || '{}'); } catch (e) {}
+  return { ok: true, log: log, updated: PROPS.getProperty(PRICES_PREFIX + 'updated') || null };
+}
+
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
    de courriels (scope script.send_mail). Le courriel de test part a la personne
    qui execute la fonction.
@@ -630,19 +736,19 @@ function kvGet(key) {
   if (!key) return '';
   // Cles sensibles (mots de passe) et sessions : jamais lisibles par le GET public.
   // Les clients authentifies passent par action=listusers.
-  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0) return '';
+  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) return '';
   return PROPS.getProperty(key) || '';
 }
 function kvSave(key, value) {
   if (!key) throw new Error('key required');
-  if (key.indexOf(SESSION_PREFIX) === 0) throw new Error('reserved key');
+  if (key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) throw new Error('reserved key');
   var v = (typeof value === 'string') ? value : JSON.stringify(value);
   PROPS.setProperty(key, v);
   return true;
 }
 function kvDelete(key) {
   if (!key) throw new Error('key required');
-  if (key.indexOf(SESSION_PREFIX) === 0) throw new Error('reserved key');
+  if (key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) throw new Error('reserved key');
   PROPS.deleteProperty(key);
   return true;
 }
@@ -652,7 +758,7 @@ function kvList(prefix) {
   for (var k in all) {
     if (k.indexOf(prefix) !== 0) continue;
     // Les tokens de session sont DANS le nom de cle -> exclus de tout listing
-    if (k.indexOf(SESSION_PREFIX) === 0 || SENSITIVE_KEYS.indexOf(k) >= 0) continue;
+    if (k.indexOf(SESSION_PREFIX) === 0 || SENSITIVE_KEYS.indexOf(k) >= 0 || _isPriceKey(k)) continue;
     keys.push(k);
   }
   return keys.sort();
