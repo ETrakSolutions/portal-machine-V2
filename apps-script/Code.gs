@@ -91,6 +91,14 @@ function doPost(e) {
       }
     }
 
+    // Liste des comptes : jamais effacee d'un bloc, et les comptes proteges
+    // (Super Admin, proprietaire) sont reimposes par le serveur (_guardUsersSave).
+    if (action === 'delete' && body.key === USERS_KEY) return jsonOut({ error: 'users list cannot be deleted' });
+    if (action === 'save' && body.key === USERS_KEY) {
+      var g = _guardUsersSave(auth, body.value);
+      if (g.error) return jsonOut({ error: g.error });
+      return jsonOut({ ok: kvSave(USERS_KEY, JSON.stringify(g.users)), restored: g.restored });
+    }
     if (action === 'save')               return jsonOut({ ok: kvSave(body.key, body.value) });
     if (action === 'delete')             return jsonOut({ ok: kvDelete(body.key) });
     if (action === 'list')               return jsonOut({ keys: kvList(body.prefix || '') });
@@ -163,6 +171,9 @@ function _findUser(username) {
 // Roles avec gestion de comptes : lit roles_permissions (modifiable via l'UI admin),
 // repli sur les deux roles admin connus.
 function _isAdminRole(role) {
+  // Un Super Admin reste admin quoi que dise roles_permissions (modifiable par un
+  // simple administrateur depuis l'UI) : sinon on pourrait lui retirer ses droits.
+  if (role === 'super_admin') return true;
   try {
     var roles = JSON.parse(PROPS.getProperty('roles_permissions') || '{}');
     if (roles[role] && roles[role].modifAccounts !== undefined) return !!roles[role].modifAccounts;
@@ -229,7 +240,7 @@ function _authCheck(body) {
     // session) : un changement de role ou une desactivation prend effet tout de suite.
     var u = _findUser(sess.u);
     if (!u || u.active === false) return { ok: false, admin: false };
-    return { ok: true, admin: _isAdminRole(u.role), role: u.role, perms: _permsForRole(u.role) };
+    return { ok: true, admin: _isAdminRole(u.role), role: u.role, perms: _permsForRole(u.role), user: u };
   }
   return { ok: false, admin: false };
 }
@@ -319,6 +330,83 @@ function authListUsers(body) {
   if (!auth.ok) return { error: 'authentication required' };
   var users = _users();
   return { users: auth.admin ? users : users.map(_publicUser) };
+}
+
+/* ===================== COMPTES PROTEGES (Super Admin, proprietaire) ===================== */
+// Decision Jacquot, 2026-09-24/25. Le portail renvoie la liste COMPLETE des comptes a
+// chaque sauvegarde ; l'interface cache et verrouille les comptes proteges, mais seul le
+// serveur fait foi. Regles :
+//  - Proprietaire (OWNER_EMAIL) : personne d'autre que lui ne le modifie ni ne le retire ;
+//    lui-meme peut changer son nom et son mot de passe, jamais son role, son identifiant
+//    ni son statut actif (pas de verrouillage par erreur).
+//  - Super Admin : seul un Super Admin connecte (session, pas le PIN) peut en retirer un,
+//    le retrograder, le modifier, ou promouvoir quelqu'un Super Admin.
+// Un compte protege envoye par un appelant non autorise est remplace par la version
+// stockee (restauration silencieuse : une page restee ouverte ne casse pas la sauvegarde
+// d'un admin). Une promotion non autorisee est refusee.
+var USERS_KEY = 'authorized_users_v2';
+var OWNER_EMAIL = 'jcaron@gryb.com';
+
+function _idsOf(u) {
+  var ids = [];
+  if (u && u.username) ids.push(String(u.username).toLowerCase());
+  if (u && u.email) ids.push(String(u.email).toLowerCase());
+  return ids;
+}
+function _isOwner(u) { return _idsOf(u).indexOf(OWNER_EMAIL) >= 0; }
+function _copy(o) { return JSON.parse(JSON.stringify(o)); }
+
+// auth = retour de _authCheck ; raw = liste envoyee (texte JSON ou tableau).
+// -> { users, restored } | { error }
+function _guardUsersSave(auth, raw) {
+  var incoming;
+  try { incoming = (typeof raw === 'string') ? JSON.parse(raw) : raw; } catch (e) { incoming = null; }
+  if (!Array.isArray(incoming)) return { error: 'invalid users list' };
+
+  var caller = auth && auth.user;
+  var callerSuper = !!caller && caller.role === 'super_admin';
+  var callerOwner = !!caller && _isOwner(caller);
+  var stored = _users();
+  var restored = 0;
+
+  // Promotion Super Admin : reservee a un Super Admin
+  if (!callerSuper) {
+    var wasSuper = {};
+    stored.forEach(function (s) { if (s.role === 'super_admin') _idsOf(s).forEach(function (id) { wasSuper[id] = true; }); });
+    for (var i = 0; i < incoming.length; i++) {
+      var u = incoming[i];
+      if (u && u.role === 'super_admin' && !_idsOf(u).some(function (id) { return wasSuper[id]; })) {
+        return { error: 'super_admin required' };
+      }
+    }
+  }
+
+  var out = incoming.slice();
+  stored.forEach(function (s) {
+    var owner = _isOwner(s);
+    if (!owner && s.role !== 'super_admin') return;          // compte ordinaire
+    if (!owner && callerSuper) return;                        // Super Admin gere par un Super Admin
+
+    // Retire TOUTES les entrees qui portent son identifiant (aussi un doublon glisse
+    // devant lui : _findUser prend la premiere correspondance au login).
+    var ids = _idsOf(s), pos = -1, sent = null;
+    for (var j = out.length - 1; j >= 0; j--) {
+      var hit = _idsOf(out[j]).some(function (id) { return ids.indexOf(id) >= 0; });
+      if (hit) { if (!sent) sent = out[j]; pos = j; out.splice(j, 1); }
+    }
+    var keep;
+    if (owner && callerOwner && sent) {
+      keep = _copy(sent);                                     // ses propres retouches
+      keep.username = s.username; keep.email = s.email; keep.role = s.role;
+      if (s.active === undefined) delete keep.active; else keep.active = s.active;
+    } else {
+      keep = _copy(s);
+    }
+    if (JSON.stringify(keep) !== JSON.stringify(sent)) restored++;
+    if (pos < 0) out.push(keep); else out.splice(pos, 0, keep);
+  });
+  if (restored) Logger.log('_guardUsersSave : ' + restored + ' compte(s) protege(s) restaure(s)');
+  return { users: out, restored: restored };
 }
 
 /* ===================== AJOUT D'USAGERS DELEGUE (hors admins) ===================== */
