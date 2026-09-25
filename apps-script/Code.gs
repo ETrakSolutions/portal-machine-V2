@@ -798,7 +798,8 @@ var OV_TYPE_SLUGS = {
   'Camion Vacuum': 'camion-vacuum',
   'Retrocaveuse': 'retrocaveuse',
   'Loader': 'loader',
-  'Nacelle': 'nacelle'
+  'Nacelle': 'nacelle',
+  'Tracteur': 'tracteur'
 };
 // Chemin du fichier overrides pour un type. Decoupe par type -> chaque fichier reste petit,
 // les ecritures sont isolees (editer une grue ne touche pas le fichier des excavatrices).
@@ -1097,4 +1098,11 @@ function authAcceptConsent(body) {
     }
   }
   return { ok: false, error: 'user not found' };
+}
+
+// Diagnostic d'envoi de courriel (repris de l'editeur Apps Script le 2026-09-25).
+function _diagMail() {
+  Logger.log('Quota restant: ' + MailApp.getRemainingDailyQuota());
+  MailApp.sendEmail('jcaron@gryb.com', 'TEST diag portail', 'Test direct MailApp depuis Apps Script.');
+  Logger.log('sendEmail termine sans erreur');
 }
