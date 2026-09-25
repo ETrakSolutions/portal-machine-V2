@@ -21,6 +21,7 @@ canonique** : modèle de données, pièges, règle de validation fabricant. Le l
 | Changer un état de kit / jeton BOM | `portal-kit-options` |
 | Renommer ou réordonner un champ de specs | `portal-rename-field` |
 | Tester, bumper les caches, pousser, vérifier | `portal-deploy` |
+| Serveur Apps Script : sécurité, prix, cédule, redéployer, secrets | `portal-backend` |
 
 Un fait technique n'a qu'**un seul domicile**. Si tu dois le corriger, corrige-le là et
 nulle part ailleurs — la duplication entre skills est ce qui a laissé passer l'erreur du
@@ -75,6 +76,7 @@ Windows.
 
 ## Contrôles
 
+`node scripts/banc_backend/tous.js` (backend Apps Script, à lancer avant tout commit de `Code.gs`),
 `scripts/controle_sante_portail.py` (santé données + code), `scripts/check_portal_integrity.py`
 (appelé par le hook pre-commit), `scripts/selenium_mini_fabricant_test.py` (modèle de test
 navigateur bout en bout, sur le site en ligne).

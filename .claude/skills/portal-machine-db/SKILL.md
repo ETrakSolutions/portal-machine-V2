@@ -21,6 +21,7 @@ règle vivait dans trois fichiers et n'était corrigée que dans un.
 | États de kit / jetons BOM (`r`, `j`, `v`, `na`) | `portal-kit-options` |
 | Renommer ou réordonner un champ de specs | `portal-rename-field` |
 | Tester, bumper les caches, pousser, vérifier le live | `portal-deploy` |
+| Serveur Apps Script (sécurité, prix, cédule, redéploiement, secrets) | `portal-backend` |
 
 ## Dépôt
 
