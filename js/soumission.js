@@ -342,7 +342,8 @@ function hasActiveOptions() {
     var anyIDC = document.querySelector('[data-option="Indicateur de charge"].active');
     var anyCreus = document.querySelector('#toggle-creusage input:checked');
     var anyCam = document.querySelector('#toggle-camera input:checked');
-    return !!(anyLim || anyIDC || anyCreus || anyCam);
+    var anyGodet = document.querySelector('#toggle-godet-avant.active');
+    return !!(anyLim || anyIDC || anyCreus || anyCam || anyGodet);
 }
 
 // Show HTML modal for reset confirmation, call onConfirm if accepted
@@ -817,13 +818,26 @@ function applyTypeRestrictions(type) {
     // installee par les techniciens e-Trak) et 1200-0011 (balance en valise,
     // installee par le client) — plus UNE imprimante au choix : 1200-0014
     // thermique ou 1200-0015 carbone.
-    // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Auparavant le
-    // bloc s'affichait aussi sur Telehandler et Retrocaveuse.
+    // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Elargi par
+    // Jacquot le 2026-09-25 a la RETROCAVEUSE, avec les memes choix que le Loader.
     // La balance Scale Lite (1200-0020) est reservee au tracteur, type
     // de machine qui reste a creer : elle n'est donc pas encore proposee ici,
     // et elle n'aura pas d'option imprimante.
     var isTracteur = (type === 'Tracteur');
-    var isBalanceType = (type === 'Loader' || isTracteur);
+    var isBalanceType = (type === 'Loader' || type === 'Retrocaveuse' || isTracteur);
+
+    // Limiteur du godet avant : retrocaveuse seulement (decision Jacquot,
+    // 2026-09-25). Systeme complet a lui seul (1500-0603), pris seul ou en plus
+    // du limiteur arriere : il n'emporte ni la base 1500-0600 ni le kit arriere.
+    var godetBox = document.getElementById('toggle-godet-avant');
+    if (godetBox) {
+        var isRetro = (type === 'Retrocaveuse');
+        godetBox.style.display = isRetro ? '' : 'none';
+        if (!isRetro) {
+            godetBox.classList.remove('active');
+            var gSt = godetBox.querySelector('.toggle-status'); if (gSt) gSt.textContent = 'OFF';
+        }
+    }
     var balBox = document.getElementById('toggle-balance');
     if (balBox) {
         balBox.style.display = isBalanceType ? '' : 'none';
@@ -1595,6 +1609,7 @@ if (submitBtn) {
             if (box.id === 'toggle-limiteur') return;
             if (box.id === 'toggle-camera') return;
             if (box.id === 'toggle-balance') return;
+            if (box.id === 'toggle-godet-avant') return;   // traite juste en dessous
             // Nacelle : traite plus bas, sous-option par sous-option (cumulables).
             if (box.id === 'toggle-nacelle-opts') return;
             if (box.dataset.option === 'Indicateur de charge') return;
@@ -1608,6 +1623,15 @@ if (submitBtn) {
                 optionsOff.push(name);
             }
         });
+
+        // Limiteur du godet avant : seulement sur retrocaveuse (tuile masquee ailleurs).
+        var _godetE = godetAvantInfo();
+        if (_godetE) {
+            optionsOn.push(_godetE.desc);
+            accessoires.push({ code: _godetE.pn, name: _godetE.desc });
+        } else if (selectType.value === 'Retrocaveuse') {
+            optionsOff.push('Limiteur godet avant');
+        }
 
         // Balance : modele choisi + imprimante eventuelle, dans le courriel aussi.
         var _balBoxE = document.getElementById('toggle-balance');
@@ -2443,6 +2467,7 @@ function updateSelectedSummary() {
         if (box.id === 'toggle-camera') return;
         if (box.id === 'toggle-creusage') return;
         if (box.id === 'toggle-balance') return;
+        if (box.id === 'toggle-godet-avant') return;   // traite juste en dessous (1500-0603)
         if (box.dataset.option === 'Indicateur de charge') return;
         if (box.classList.contains('active')) {
             var od = INDIVIDUAL_CODES[box.dataset.option];
@@ -2450,6 +2475,10 @@ function updateSelectedSummary() {
             else items.push(fmtItem('', box.dataset.option));   // repli : passe par tBom
         }
     });
+
+    // Limiteur du godet avant (retrocaveuse) : PN et libelle lus dans _bom_labels.
+    var _godet = godetAvantInfo();
+    if (_godet) items.push(fmtItem(_godet.pn, i18n.tBom(_godet.desc)));
 
     // Balance : le modele choisi (0010 installee / 0011 valise) + l'imprimante
     // eventuelle (0014 thermique / 0015 carbone), chacune en choix exclusif.
@@ -2762,6 +2791,15 @@ function updateIdcLockValveWarning() {
 // Items du kit "a valider" (etat 'v') de la machine selectionnee.
 // 'v' ne vient que des corrections (overrides) -> on lit currentBomOverrides (type-agnostique).
 // BD maitre : retourne {pn, desc} (description LONGUE) depuis _bom_labels, ou null si absent.
+// Limiteur du godet avant choisi ? -> { pn, desc } du code 0603 de la retrocaveuse
+// (BD maitre : _bom_labels), sinon null. Une seule lecture pour l'ecran et le courriel.
+function godetAvantInfo() {
+    var box = document.getElementById('toggle-godet-avant');
+    if (!box || box.style.display === 'none' || !box.classList.contains('active')) return null;
+    if (!selectType || selectType.value !== 'Retrocaveuse') return null;
+    var info = bomDescInfo('Retrocaveuse', '0603');
+    return (info && info.pn) ? info : { pn: '1500-0603', desc: 'Limiteur de portee godet avant (Front loader)' };
+}
 function bomDescInfo(type, code) {
     try {
         var labels = machinesData[type]._bom_labels;
