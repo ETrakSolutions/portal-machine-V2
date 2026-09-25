@@ -733,6 +733,7 @@ fr: {
     // -- Tableau prix soumission (ecran) --
     'soum.tbl_product': 'Produit',
     'soum.tbl_price': 'Prix',
+    'soum.prices_need_account': 'Pour obtenir les prix, vous devez avoir un compte, obtenu par votre représentant e-Trak.',
     'soum.tbl_onhand': 'Inventaire',
     'soum.tbl_onhand_title': 'Quantité en main dans Epicor (entrepôt ETRAK), sans tenir compte des réservations',
     'soum.inv_updated': 'Quantité en main, entrepôt {wh} — dernier import : {date} (pas en temps réel)',
@@ -1803,6 +1804,7 @@ en: {
     // -- Quote price table (screen) --
     'soum.tbl_product': 'Product',
     'soum.tbl_price': 'Price',
+    'soum.prices_need_account': 'To see prices, you need an account, provided by your e-Trak representative.',
     'soum.tbl_onhand': 'Inventory',
     'soum.tbl_onhand_title': 'On-hand quantity in Epicor (ETRAK warehouse), reservations not deducted',
     'soum.inv_updated': 'On-hand quantity, {wh} warehouse — last import: {date} (not real time)',

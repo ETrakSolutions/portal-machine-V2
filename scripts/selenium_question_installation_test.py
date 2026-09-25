@@ -18,7 +18,7 @@ Verifie :
   9. libelles FR/EN de la question ;
  10. aucune erreur JS SEVERE.
 
-Les attendus sont LUS dans data/prices.json, jamais recopies : le test survit a une
+Les attendus sont LUS dans la liste maitresse (scripts/_prix_test.py), jamais recopies : le test survit a une
 mise a jour de la liste de prix.
 """
 import sys, io, os, re, json, threading, http.server, socketserver, time
@@ -48,12 +48,14 @@ if not SUR_LE_LIVE:
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
 print('CIBLE :', BASE)
 
-PRIX = json.load(open(os.path.join(REPO, 'data', 'prices.json'), encoding='utf-8'))
+sys.path.insert(0, os.path.join(REPO, 'scripts'))
+from _prix_test import PRIX, installer_prix, SESSION_TEST_JS   # prix : serveur simule
 
 opts = Options()
 for a in ['--headless=new', '--no-sandbox', '--disable-gpu', '--window-size=1500,1200']:
     opts.add_argument(a)
 dv = webdriver.Chrome(options=opts)
+installer_prix(dv)
 fails = []
 
 
@@ -151,9 +153,7 @@ def est_pose(code):
 
 try:
     dv.get(BASE + '/index.html')
-    dv.execute_script("localStorage.setItem('portal_user', JSON.stringify("
-                      "{role:'super_admin', email:'t@e', name:'Test Claude',"
-                      " permissions:{modifBom:true, voirPrix:true}}));")
+    dv.execute_script(SESSION_TEST_JS)
 
     # =====================================================================
     print('--- 1) la question est au-dessus du tableau, sans reponse par defaut ---')

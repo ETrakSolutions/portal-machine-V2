@@ -10,7 +10,11 @@ import json, os, re, sys, glob, collections
 sys.stdout.reconfigure(encoding='utf-8')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-prix = json.load(open(os.path.join(ROOT, 'data', 'prices.json'), encoding='utf-8'))
+# Les prix ne sont plus dans le depot depuis le 2026-09-25 : on lit la liste
+# maitresse sur SharePoint (_Portail e-Trak/prix-portail.json, voir publier_prix.py).
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from publier_prix import dossier_portail
+prix = json.load(open(os.path.join(str(dossier_portail()), 'prix-portail.json'), encoding='utf-8'))
 codes_tarifes = {k for k in prix if re.fullmatch(r'\d{4}-\d{4}', k)}
 
 # tous les codes cites dans le code source de l application (hors prices.json)
@@ -30,7 +34,7 @@ for t, v in mj.items():
         if pn and re.fullmatch(r'\d{4}-\d{4}', str(pn).strip()):
             catalogue.add(str(pn).strip())
 
-print('codes tarifes dans prices.json      : %d' % len(codes_tarifes))
+print('codes tarifes (liste maitresse)     : %d' % len(codes_tarifes))
 print('codes cites dans l interface        : %d' % len(cites))
 print('codes references par les _bom_labels : %d' % len(catalogue))
 

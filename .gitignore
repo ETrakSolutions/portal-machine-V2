@@ -27,3 +27,8 @@ PIN Portail.txt
 
 # Backend Apps Script complet — garde LOCAL (repo public : ne pas exposer l'architecture de securite)
 apps-script/Api.gs
+
+# Prix : jamais dans le depot public (decision Jacquot 2026-09-25).
+# Liste maitresse sur SharePoint _Portail e-Trak, publiee par scripts/publier_prix.py
+data/prices.json
+prix-portail.json

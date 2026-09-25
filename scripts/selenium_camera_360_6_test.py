@@ -31,12 +31,14 @@ httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
 threading.Thread(target=httpd.serve_forever, daemon=True).start()
 
 MJ = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-8'))
-PRIX = json.load(open(os.path.join(REPO, 'data', 'prices.json'), encoding='utf-8'))
+sys.path.insert(0, os.path.join(REPO, 'scripts'))
+from _prix_test import PRIX, installer_prix, SESSION_TEST_JS   # prix : serveur simule
 
 opts = Options()
 for a in ['--headless=new', '--no-sandbox', '--disable-gpu', '--window-size=1500,1100']:
     opts.add_argument(a)
 dv = webdriver.Chrome(options=opts)
+installer_prix(dv)
 fails = []
 
 
@@ -75,12 +77,10 @@ def premier_modele(typ):
 
 try:
     dv.get(BASE + '/index.html')
-    dv.execute_script("localStorage.setItem('portal_user', JSON.stringify("
-                      "{role:'super_admin', email:'t@e', name:'T',"
-                      " permissions:{modifBom:true, voirPrix:true}}));")
+    dv.execute_script(SESSION_TEST_JS)
 
     print('--- 1) presence et prix du code ---')
-    check('1300-0005 tarife dans prices.json (%s / %s)'
+    check('1300-0005 tarife dans la liste de prix (%s / %s)'
           % (PRIX.get('1300-0005', {}).get('item'), PRIX.get('1300-0005', {}).get('install')),
           '1300-0005' in PRIX)
 

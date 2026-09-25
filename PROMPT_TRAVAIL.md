@@ -24,7 +24,8 @@ Voici comment je veux que tu travailles sur ce dépôt.
 la très grande majorité des questions. Avant de me poser une question, va voir :
 `data/machines.json` pour les specs et le catalogue `_bom_labels`,
 `data/overrides/<type>.json` pour les jetons BOM par machine, `js/kit-rules.js` pour
-les règles du kit, `data/prices.json` pour les prix. Si la réponse est dans le dépôt,
+les règles du kit, la liste maîtresse `prix-portail.json` (SharePoint `_Portail e-Trak`)
+pour les prix. Si la réponse est dans le dépôt,
 dans les données ou sur la page produit d'un fabricant, c'est à toi de la trouver.
 
 **Ne me pose que les questions que moi seul peux trancher** : un arbitrage d'affaires,

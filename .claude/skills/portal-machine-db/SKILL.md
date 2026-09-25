@@ -36,13 +36,30 @@ chemin en dur. Sur le poste `jcaron` : `C:\Users\jcaron\CLAUDE_CODE\portal-machi
 |---|---|---|
 | `data/machines.json` | Specs de base + `_bom_labels` (libellés et PN du catalogue) | scripts, rarement l'UI |
 | `data/overrides/<type>.json` | Les jetons BOM par machine (`_bom`), les notes | le backend Apps Script à chaque save dans l'UI |
-| `data/prices.json` | `item` et `install` par PN | scripts |
+| `data/price-codes.json` | codes tarifés **sans montants** (1 = a une pose) | `scripts/publier_prix.py` |
 
 `machines.json` fait ~13 Mo : il n'est plus écrit par l'UI (trop lent, ~90 s). Les 11
 types : Excavatrice, Pompe a Beton, Grue Mobile, Camion Girafe (Boom Truck), Telehandler,
 Foreuse, Camion Vacuum, Retrocaveuse, Loader, Nacelle, Tracteur.
 
 Structure : `data[type][fabricant][annee][modele] = { specs... }`.
+
+### ⛔ Les prix ne sont PAS dans le dépôt (depuis le 2026-09-25)
+
+Décision de Jacquot. L'ancien `data/prices.json` se téléchargeait sans connexion (dépôt
+public) et l'accès invité `?guest=1` montrait les prix sans mot de passe. Désormais :
+
+- **Liste maîtresse** : SharePoint *E-Trak Production › General › _Portail e-Trak ›
+  `prix-portail.json`*, à côté de la liste de prix officielle (PDF/Excel). Format
+  `{ "<PN>": { item, install, installCode? } }`, montants numériques ou `null`.
+- **Publication** : `py -3.13 scripts/publier_prix.py` (valide, envoie au backend avec le
+  NIP, régénère `data/price-codes.json`). `--dry-run` pour valider, `--journal` pour voir
+  qui a obtenu les prix et quand. Committer ensuite `data/price-codes.json`.
+- **Service** : action backend `getprices`, remise seulement à une vraie session dont le
+  rôle a la Soumission. Le NIP ne les obtient pas ; l'invité non plus (il voit la
+  Soumission sans colonne Prix, avec la mention « compte obtenu par votre représentant »).
+- **Ne jamais recréer `data/prices.json`** ni écrire un montant dans un fichier du dépôt :
+  `.gitignore` le bloque, et l'historique Git public garde déjà l'ancienne liste.
 
 **La BD est maître.** Les libellés, les PN et les options viennent de `_bom_labels` et des
 specs — jamais codés en dur dans les pages.
@@ -78,7 +95,7 @@ Le tableau complet des codes BOM et de leurs défauts vit dans le skill
 **`portal-kit-options`** — ne pas le recopier ici, il doit avoir un seul domicile.
 
 Un point à connaître même sans ouvrir ce skill : le `1500-0004` est **du temps de
-main-d'œuvre**, pas un kit (`prices.json` : `item: null, install: 790 $`). Son critère est
+main-d'œuvre**, pas un kit (liste de prix : `item: null, install: 790 $`). Son critère est
 la gamme dans laquelle le **fabricant** classe la machine, pas le poids. 991 entrées
 corrigées le 2026-08-10 via les overrides. Détail par marque : mémoire
 `project-portal-option-0004-mini`.

@@ -54,7 +54,7 @@ le skill concerné, pas là-bas.
 | `js/kit-rules.js` | **source unique** des règles BOM (défauts, `DRAIN_PREFIXES`, harnais) |
 | `data/machines.json` | specs + `_bom_labels` (libellés et PN du catalogue) |
 | `data/overrides/<type>.json` | jetons BOM et notes par machine — écrits par le backend |
-| `data/prices.json` | `item` et `install` par PN |
+| `data/price-codes.json` | codes tarifés **sans montants** — les prix sont sur le serveur, jamais dans le dépôt (`scripts/publier_prix.py`, voir `portal-machine-db`) |
 | `js/app.js` / `machine.html` | fiche machine et tableau du kit |
 | `js/soumission.js` | soumission; `getKitSummary()` construit le kit facturé |
 | `js/translations.js` | i18n FR/EN, dont les clés `spec.<champ>` |

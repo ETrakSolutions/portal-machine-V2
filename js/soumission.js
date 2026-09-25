@@ -203,11 +203,35 @@ Promise.all([
     })
     .catch(function(err) { console.error('Erreur chargement donnees:', err); });
 
-// Prix (price list) : code produit -> { item, install }. data/prices.json
+// Prix (price list) : code produit -> { item, install, installCode }.
+// Remis par le SERVEUR a une vraie session dont le role a acces a la Soumission
+// (decision Jacquot, 2026-09-25) : l'ancien data/prices.json etait public. L'invite
+// du code QR n'a pas de session serveur -> aucun prix, et la mention du compte.
 var priceData = {};
-fetch('data/prices.json', { cache: 'no-cache' }).then(function(r) { return r.json(); })
-    .then(function(d) { priceData = d || {}; try { updateSelectedSummary(); } catch (e) {} })
+var prixRecus = false;
+function chargerPrix() {
+    if (!currentUser || !currentUser.token || currentUser.isGuest) return;
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'getprices', token: currentUser.token })
+    })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (!d || !d.ok || !d.prices) return;
+            priceData = d.prices; prixRecus = true;
+            try { updateSelectedSummary(); } catch (e) {}
+        })
+        .catch(function() {});
+}
+chargerPrix();
+// Codes tarifes SANS montants (public) : dit seulement quels codes ont une pose.
+// Sert a poser la question « Installation par e-Trak ? » meme sans prix (invite).
+var PRICE_CODES = {};
+fetch('data/price-codes.json', { cache: 'no-cache' }).then(function(r) { return r.json(); })
+    .then(function(d) { PRICE_CODES = d || {}; try { updateSelectedSummary(); } catch (e) {} })
     .catch(function() {});
+function sansAccesPrix() { return !currentUser || !currentUser.token || !!currentUser.isGuest; }
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }
 function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
 
@@ -2030,7 +2054,8 @@ function majEtiquetteLieu() {
 function selectionAInstallation() {
     return (window.__selectionRows || []).some(function (r) {
         var pr = priceFor(r.code);
-        return typeof pr.install === 'number' && pr.install !== 0;
+        if (typeof pr.install === 'number') return pr.install !== 0;
+        return !!PRICE_CODES[r.code];    // pas de prix (invite) : drapeau public
     });
 }
 // LIGNES FACTURABLES — une par chose vendue, produit ET installation. UN SEUL
@@ -2519,12 +2544,13 @@ function updateSelectedSummary() {
             }
             return '<td style="padding:4px 12px 4px 0;text-align:center;white-space:nowrap;vertical-align:top">' + inner + '</td>';
         };
+        var sansPrix = sansAccesPrix();
         var ligne = function (libelle, montant, invCode) {
             return '<tr>' +
                 invTd(invCode) +
                 '<td style="padding:4px 10px 4px 0;vertical-align:top">' + libelle + '</td>' +
-                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
-                + cell(montant) + '</td>' +
+                (sansPrix ? '' : '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
+                + cell(montant) + '</td>') +
                 '</tr>';
         };
         // UNE LIGNE PAR CHOSE VENDUE, un seul prix au bout (demande de Jacquot,
@@ -2558,7 +2584,7 @@ function updateSelectedSummary() {
                 '</tr>';
         }
         var noteRow = currentNotes
-            ? '<tr><td colspan="' + (showInv ? 3 : 2) + '" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
+            ? '<tr><td colspan="' + ((showInv ? 3 : 2) - (sansPrix ? 1 : 0)) + '" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
             : '';
         var invTh = showInv
             ? '<th style="text-align:center;padding:0 12px 5px 0;white-space:nowrap" title="' + escAttrInv(i18n.t('soum.tbl_onhand_title')) + '">' + i18n.t('soum.tbl_onhand') + '</th>'
@@ -2577,8 +2603,10 @@ function updateSelectedSummary() {
             '<thead><tr style="border-bottom:1px solid #555;color:#9fb4c8;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">' +
             invTh +
             '<th style="text-align:left;padding:0 10px 5px 0">' + i18n.t('soum.tbl_product') + '</th>' +
-            '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_price') + '</th>' +
-            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>' + invNote;
+            (sansPrix ? '' : '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_price') + '</th>') +
+            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>' + invNote +
+            (sansPrix ? '<div class="prix-compte-requis" style="margin-top:12px;padding:10px 12px;border:1px solid #FF8C00;border-radius:8px;background:rgba(255,140,0,0.08);color:#ffd9a8;font-size:0.85rem">'
+                        + i18n.t('soum.prices_need_account') + '</div>' : '');
         // Filigrane du nom du user en fond du tableau de prix (dissuasion capture d'ecran).
         // Applique seulement si des prix sont reellement affiches.
         list.style.backgroundImage = '';   // ancienne approche (fond direct) retiree
