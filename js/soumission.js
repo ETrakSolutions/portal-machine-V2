@@ -65,6 +65,8 @@ var BALANCE_PRODUITS = {
 // confondre avec un vrai type : elle ne doit jamais servir de cle dans
 // machinesData, et tout code qui indexe la base doit sortir avant.
 const SANS_MACHINE = '__sans_machine__';
+// Fabricant absent de la BD : ouvre la demande d'ajout (voir doFabChange).
+const OTHER_FAB = '__OTHER_FAB__';
 function estSansMachine() { return selectType && selectType.value === SANS_MACHINE; }
 
 const selectType = document.getElementById('select-type');
@@ -485,6 +487,14 @@ function doTypeChange() {
         opt.textContent = fab;
         selectFabricant.appendChild(opt);
     });
+    // « Fabricant non repertorie » : sans lui, une machine d'un fabricant absent de
+    // la BD ne pouvait meme pas etre demandee (Robert, 2026-09-25). Meme principe
+    // que « Autre modele » plus bas : on n'invente pas de fiche, on DEMANDE l'ajout.
+    const optAutreFab = document.createElement('option');
+    optAutreFab.value = OTHER_FAB;
+    optAutreFab.textContent = (typeof i18n !== 'undefined') ? i18n.t('soum.other_fab') : '\u2295 Ajout fabricant non repertorie';
+    optAutreFab.style.fontStyle = 'italic';
+    selectFabricant.appendChild(optAutreFab);
     selectFabricant.disabled = false;
     btnReset.style.display = 'inline-block';
 }
@@ -497,6 +507,12 @@ function doFabChange() {
     const type = selectType.value;
     const fab = selectFabricant.value;
     if (!fab) return;
+    if (fab === OTHER_FAB) {
+        // Rien ici ne doit indexer machinesData avec cette valeur : elle n'y existe pas.
+        hideOptions();
+        showSoumissionCustomModelModal(type, null);
+        return;
+    }
     const annees = Object.keys(machinesData[type][fab]).sort().reverse();
     annees.forEach(annee => {
         const opt = document.createElement('option');
@@ -1240,8 +1256,11 @@ function removeRequestPanel() {
     var p = document.getElementById('soumission-request-panel');
     if (p) p.remove();
 }
+// fab === null : fabricant absent de la liste, saisi dans la fenetre.
 function showSoumissionCustomModelModal(type, fab) {
     var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
+    var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+    var fabLibre = (fab === null);
     var existing = document.getElementById('custom-model-modal');
     if (existing) existing.remove();
     var modal = document.createElement('div');
@@ -1250,7 +1269,8 @@ function showSoumissionCustomModelModal(type, fab) {
     modal.innerHTML =
         '<div class="custom-modal">' +
         '<h3>' + t('soum.req_title', 'Machine absente de la liste') + '</h3>' +
-        '<p class="modal-desc">' + fab + ' — ' + t('type.' + type, type) + '</p>' +
+        '<p class="modal-desc">' + (fabLibre ? '' : esc(fab) + ' — ') + t('type.' + type, type) + '</p>' +
+        (fabLibre ? '<input type="text" id="custom-fab-name" class="modal-input" placeholder="' + t('soum.req_fab_ph', 'Nom du fabricant') + '" autocomplete="off" style="margin-bottom:0.5rem">' : '') +
         '<input type="text" id="custom-model-name" class="modal-input" placeholder="' + t('soum.req_model_ph', 'Nom du modele') + '" autocomplete="off">' +
         '<input type="text" id="custom-model-year" class="modal-input" inputmode="numeric" placeholder="' + t('soum.req_year_ph', 'Annee (ex: 2026)') + '" autocomplete="off" style="margin-top:0.5rem">' +
         '<div class="modal-buttons">' +
@@ -1258,17 +1278,40 @@ function showSoumissionCustomModelModal(type, fab) {
         '<button id="modal-create" class="modal-btn modal-btn-create">' + t('soum.req_continue', 'Continuer') + '</button>' +
         '</div></div>';
     document.body.appendChild(modal);
+    var fabF = document.getElementById('custom-fab-name');
     var nameF = document.getElementById('custom-model-name');
     var yearF = document.getElementById('custom-model-year');
-    nameF.focus();
-    document.getElementById('modal-cancel').addEventListener('click', function(){ modal.remove(); selectModele.value = ''; hideOptions(); });
+    (fabF || nameF).focus();
+    document.getElementById('modal-cancel').addEventListener('click', function(){
+        modal.remove();
+        if (fabLibre) { selectFabricant.value = ''; resetFrom('annee'); }
+        else selectModele.value = '';
+        hideOptions();
+    });
     document.getElementById('modal-create').addEventListener('click', function(){
+        var fb = fabLibre ? fabF.value.trim() : fab;
         var nm = nameF.value.trim(); var yr = yearF.value.trim();
+        if (fabLibre && !fb) { fabF.style.borderColor = 'red'; return; }
+        if (fabLibre) {
+            // Deja dans la liste sous une autre casse ou avec des espaces ? On prend
+            // le fabricant existant plutot que de demander un doublon.
+            var norm = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]/g, ''); };
+            var connu = Object.keys(machinesData[type] || {}).filter(function (f) {
+                return f.charAt(0) !== '_' && norm(f) === norm(fb);
+            })[0];
+            if (connu) {
+                modal.remove();
+                selectFabricant.value = connu;
+                doFabChange();
+                return;
+            }
+        }
         if (!nm) { nameF.style.borderColor = 'red'; return; }
         if (!/^\d{4}$/.test(yr)) { yearF.style.borderColor = 'red'; return; }
         modal.remove();
-        showSoumissionRequestPanel(type, fab, nm, yr);
+        showSoumissionRequestPanel(type, fb, nm, yr);
     });
+    if (fabF) fabF.addEventListener('keydown', function(e){ if (e.key === 'Enter') nameF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
     nameF.addEventListener('keydown', function(e){ if (e.key === 'Enter') yearF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
     yearF.addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('modal-create').click(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
 }
