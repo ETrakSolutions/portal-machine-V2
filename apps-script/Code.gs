@@ -74,6 +74,7 @@ function doPost(e) {
     if (action === 'getprices')      return jsonOut(getPrices(body));
     if (action === 'setprices')      return jsonOut(setPrices(body));
     if (action === 'getpriceslog')   return jsonOut(getPricesLog(body));
+    if (action === 'getcedule')      return jsonOut(getCedule(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
@@ -136,7 +137,7 @@ function jsonOut(obj) {
 // L'ecriture (save/delete) de ces cles exige un token admin (voir doPost).
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
-                      'inventory_etrak'];
+                      'inventory_etrak', 'PROGRESSIONLIVE_API_KEY'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -680,6 +681,158 @@ function getPricesLog(body) {
   var log = {};
   try { log = JSON.parse(PROPS.getProperty(PRICES_LOG_KEY) || '{}'); } catch (e) {}
   return { ok: true, log: log, updated: PROPS.getProperty(PRICES_PREFIX + 'updated') || null };
+}
+
+/* ============================ CEDULE DES TECHNICIENS ============================ */
+// Decision Jacquot, 2026-09-25. Grille Ouvert / Ferme par demi-journee (AM 7 h 30-12 h,
+// PM 12 h-16 h 30), lundi a vendredi, 4 semaines, lue dans ProgressionLive. AUCUN client,
+// aucune ville, aucun detail de tache : la reponse ne porte que des booleens.
+//  - Techniciens : ressources humaines actives dont le nom ne commence PAS par « _ »
+//    (convention ProgressionLive : « _A Planifier », « _HOLD »... sont des files
+//    d'attente), moins CEDULE_EXCLUS. Le type ProgressionLive n'est pas fiable (Michel
+//    Landry est « Employe », « _HOLD » est « Technicien »).
+//  - Ferme une case : toute tache du technicien (ou dont il est aide) qui chevauche la
+//    demi-journee, sauf les taches annulees et les feuilles de temps. Un conge est une
+//    tache : il ferme ses cases. La duree n'est jamais prolongee au-dela de l'inscrit.
+//  - Visible par les roles internes seulement (pas dealer, distributeur ni invite).
+// Cle : Script Property PROGRESSIONLIVE_API_KEY (cle de Jacquot, droits admin dans
+// ProgressionLive). ⚠️ Cette fonction ne fait QUE deux lectures fixes (hr/list,
+// task/list) : rien de ce qu'envoie le portail n'est relaye a ProgressionLive.
+var PL_BASE = 'https://ecotrakindustrie.progressionlive.com/server/rest';
+var CEDULE_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe',
+                    'technicien', 'ingenierie'];
+var CEDULE_EXCLUS = ['autre tech'];                  // noms (minuscules) a ne pas afficher
+var CEDULE_TYPES_IGNORES = ['feuille de temps'];
+var CEDULE_ETATS_IGNORES = ['annulé', 'annule'];
+var CEDULE_TZ = 'America/Toronto';
+var CEDULE_AM = [450, 720], CEDULE_PM = [720, 990];  // minutes depuis minuit
+var CEDULE_JOURS = 28;
+var CEDULE_CACHE_S = 900;                            // 15 min
+
+function _plGet(path, params) {
+  var key = PROPS.getProperty('PROGRESSIONLIVE_API_KEY');
+  if (!key) throw new Error('cle ProgressionLive absente');
+  var q = [];
+  for (var k in params) q.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+  var r = UrlFetchApp.fetch(PL_BASE + path + (q.length ? '?' + q.join('&') : ''), {
+    method: 'get', muteHttpExceptions: true,
+    headers: { Authorization: 'Bearer ' + key, Accept: 'application/json' }
+  });
+  if (r.getResponseCode() !== 200) throw new Error('ProgressionLive HTTP ' + r.getResponseCode());
+  var d = JSON.parse(r.getContentText());
+  return Array.isArray(d) ? d : (d.list || d.items || d.data || []);
+}
+
+// Toutes les pages (500 par appel)
+function _plListe(path, params) {
+  var out = [], start = 0;
+  for (var guard = 0; guard < 20; guard++) {
+    params.maxResults = 500; params.startResult = start;
+    var page = _plGet(path, params);
+    out = out.concat(page);
+    if (page.length < 500) break;
+    start += 500;
+  }
+  return out;
+}
+
+// « 2026-10-03T07:30:00-04 » -> Date (le decalage sans minutes n'est pas ISO)
+function _plDate(s) {
+  if (!s) return null;
+  var t = String(s).replace(/([+-]\d{2})$/, '$1:00');
+  var d = new Date(t);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+// « PT4H30M », « P1DT2H » -> millisecondes
+function _plDuree(s) {
+  var m = /^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/.exec(String(s || ''));
+  if (!m) return 0;
+  return ((+m[1] || 0) * 86400 + (+m[2] || 0) * 3600 + (+m[3] || 0) * 60 + (+m[4] || 0)) * 1000;
+}
+
+function _norm(s) { return String(s || '').toLowerCase().trim(); }
+function _labelDe(o) { return o && typeof o === 'object' ? (o.label || '') : String(o || ''); }
+
+// Jour local « yyyy-MM-dd » et minutes depuis minuit, dans le fuseau de l'entreprise
+function _local(d) {
+  var s = Utilities.formatDate(d, CEDULE_TZ, "yyyy-MM-dd HH:mm");
+  return { jour: s.slice(0, 10), min: parseInt(s.slice(11, 13), 10) * 60 + parseInt(s.slice(14, 16), 10) };
+}
+
+function _jourSuivant(j) {
+  var d = new Date(j + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function _calculCedule(maintenant) {
+  var j0 = _local(maintenant).jour, jours = [], j = j0;
+  for (var i = 0; i < CEDULE_JOURS; i++) {
+    var dow = new Date(j + 'T12:00:00Z').getUTCDay();
+    if (dow >= 1 && dow <= 5) jours.push(j);
+    j = _jourSuivant(j);
+  }
+  var jFin = j;                                       // exclu
+
+  var techs = [], parId = {};
+  _plListe('/hr/list', { removed: 'false', onlyFieldsToInclude: 'id,label' }).forEach(function (h) {
+    var nom = String(h.label || '').trim();
+    if (!nom || nom.charAt(0) === '_' || CEDULE_EXCLUS.indexOf(_norm(nom)) >= 0) return;
+    var t = { nom: nom, cases: {} };
+    jours.forEach(function (jj) { t.cases[jj] = [false, false]; });
+    techs.push(t); parId[String(h.id)] = t;
+  });
+
+  // On remonte d'un jour : une tache commencee la veille peut deborder sur aujourd'hui.
+  var debut = Utilities.formatDate(new Date(maintenant.getTime() - 86400000), CEDULE_TZ, 'yyyy-MM-dd');
+  var taches = _plListe('/task/list', { rv: debut + ',' + jFin,
+    onlyFieldsToInclude: 'rv,duration,humanResource,helpers,currentState,type' });
+
+  taches.forEach(function (t) {
+    if (CEDULE_TYPES_IGNORES.indexOf(_norm(_labelDe(t.type))) >= 0) return;
+    if (CEDULE_ETATS_IGNORES.indexOf(_norm(_labelDe(t.currentState))) >= 0) return;
+    var s = _plDate(t.rv);
+    var dur = _plDuree(t.duration);
+    if (!s || dur <= 0) return;
+    var qui = [];
+    if (t.humanResource && parId[String(t.humanResource.id)]) qui.push(parId[String(t.humanResource.id)]);
+    (t.helpers || []).forEach(function (h) { if (h && parId[String(h.id)]) qui.push(parId[String(h.id)]); });
+    if (!qui.length) return;
+    var a = _local(s), z = _local(new Date(s.getTime() + dur));
+    for (var jj = a.jour, n = 0; jj <= z.jour && n < 60; jj = _jourSuivant(jj), n++) {
+      var m0 = (jj === a.jour) ? a.min : 0, m1 = (jj === z.jour) ? z.min : 1440;
+      var am = m0 < CEDULE_AM[1] && m1 > CEDULE_AM[0];
+      var pm = m0 < CEDULE_PM[1] && m1 > CEDULE_PM[0];
+      qui.forEach(function (tech) {
+        var c = tech.cases[jj];
+        if (!c) return;                               // fin de semaine ou hors periode
+        if (am) c[0] = true;
+        if (pm) c[1] = true;
+      });
+    }
+  });
+
+  techs.sort(function (x, y) { return x.nom.localeCompare(y.nom, 'fr'); });
+  return { genere: maintenant.toISOString(), jours: jours, techs: techs };
+}
+
+// { action:'getcedule', token } -> { ok, cedule:{ genere, jours[], techs[{nom, cases{jour:[AM,PM]}}] } }
+// true = FERME. Role relu a chaque appel ; resultat en cache 15 min pour tout le monde
+// (il ne depend pas de l'appelant).
+function getCedule(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (CEDULE_ROLES.indexOf(user.role) < 0) return { error: 'forbidden' };
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('cedule_v1');
+  if (hit) { try { return { ok: true, cedule: JSON.parse(hit) }; } catch (e) {} }
+  var ced;
+  try { ced = _calculCedule(new Date()); }
+  catch (err) { Logger.log('getCedule : ' + err); return { error: 'cedule unavailable' }; }
+  try { cache.put('cedule_v1', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
+  return { ok: true, cedule: ced };
 }
 
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
