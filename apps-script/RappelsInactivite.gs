@@ -16,8 +16,12 @@
  *  - user_active_<courriel> : { lastPing, lastActivity } ecrit par js/heartbeat.js
  *    toutes les 10 min quand le client a une page du portail ouverte ;
  *  - createdAt du compte : un compte cree il y a plus de 30 jours et jamais connecte
- *    compte comme inactif. Un compte sans aucune trace (ni activite ni date de
- *    creation, anciens comptes) n'est PAS signale : on ne peut pas dater son absence.
+ *    compte comme inactif ;
+ *  - comptes anciens sans aucune trace (ni activite ni date de creation) : comptes a
+ *    partir de la plus vieille date connue parmi les autres clients (decision Steve,
+ *    2026-09-28). Cette date est figee a l'installation (inactivite_date_ancienne) :
+ *    sans ca, elle bougerait quand le plus vieux client revient, et ces comptes
+ *    repartiraient de zero.
  *
  * Suivi : inactivity_notice_<courriel> = { palier, date, depuis } — dernier palier
  * rappele pour l'absence qui a commence a « depuis ». Si le client revient, sa derniere
@@ -37,6 +41,20 @@ var INACTIVITE_ROLES = ['dealer', 'distributeur'];
 var INACTIVITE_HEURE = 8;   // heure de l'envoi quotidien (fuseau du projet Apps Script)
 var INACTIVITE_LOTS_JOURS = [0, 5, 9, 14];   // premier envoi etale : 4 lots sur 14 jours
 var VENDEUR_PAR_DEFAUT = 'startre@e-trak.ca';   // Simon Tartre : clients existants sans vendeur (decision Steve, 2026-09-24)
+
+// Plus vieille trace connue parmi les clients (activite ou creation) : date de reference
+// des comptes anciens sans aucune trace. Figee a l'installation ; calculee sinon (apercu).
+function _dateAncienne() {
+  var v = PROPS.getProperty('inactivite_date_ancienne');
+  if (v) { var f = new Date(v); if (!isNaN(f)) return f; }
+  var min = null;
+  _users().forEach(function (u) {
+    if (INACTIVITE_ROLES.indexOf(u.role) < 0) return;
+    var t = _derniereTrace(u);
+    if (t && (!min || t.date < min)) min = t.date;
+  });
+  return min;
+}
 
 // Date de mise en service (posee par installerRappelsInactivite), ou null
 function _debutDeploiement() {
@@ -101,10 +119,12 @@ function rappelsInactivite(envoyer, maintenant, debutSimule) {
   var vendeurs = {};
   try { JSON.parse(PROPS.getProperty('vendeurs_list') || '[]').forEach(function (v) { vendeurs[String(v.email || '').toLowerCase()] = v.name; }); } catch (e) {}
 
-  var candidats = [], sansTrace = 0;
+  var candidats = [], sansTrace = 0, anciens = 0;
+  var dateAncienne = _dateAncienne();
   _users().forEach(function (u) {
     if (INACTIVITE_ROLES.indexOf(u.role) < 0 || u.active === false) return;
     var t = _derniereTrace(u);
+    if (!t && dateAncienne) { t = { date: dateAncienne, jamaisConnecte: false, ancien: true }; anciens++; }
     if (!t) { sansTrace++; return; }
     var jours = Math.floor((now.getTime() - t.date.getTime()) / (24 * 3600 * 1000));
     var palier = _palierAtteint(jours);
@@ -118,7 +138,7 @@ function rappelsInactivite(envoyer, maintenant, debutSimule) {
     } catch (e) {}
     // deja = ce palier a deja ete rappele : garde pour le calcul des lots, retire plus bas
     candidats.push({ deja: palier <= deja, nom: u.name, courriel: email, role: u.role, derniere: _fmtDate(t.date), jours: jours,
-                     jamaisConnecte: t.jamaisConnecte, palier: palier, rappel: _libelleRappel(palier), depuis: depuis,
+                     jamaisConnecte: t.jamaisConnecte, ancien: !!t.ancien, palier: palier, rappel: _libelleRappel(palier), depuis: depuis,
                      vend: String(u.vendeurEmail || '').toLowerCase(), _trace: t.date });
   });
 
@@ -150,7 +170,8 @@ function rappelsInactivite(envoyer, maintenant, debutSimule) {
     (parVendeur[c.vend] = parVendeur[c.vend] || []).push(c);
   });
 
-  var resume = { vendeurs: [], sansVendeur: sansVendeur, sansTrace: sansTrace, reportes: reportes, envoyes: 0 };
+  var resume = { vendeurs: [], sansVendeur: sansVendeur, sansTrace: sansTrace, anciens: anciens,
+                 dateAncienne: dateAncienne, reportes: reportes, envoyes: 0 };
   Object.keys(parVendeur).sort().forEach(function (vend) {
     var clients = parVendeur[vend].sort(function (a, b) { return b.jours - a.jours; });
     var nomVendeur = vendeurs[vend] || vend;
@@ -181,7 +202,8 @@ function _courrielRappel(nomVendeur, clients) {
   var td = '<td style="padding:5px 8px;border:1px solid #d9d9d9">';
   var lignes = clients.map(function (c) {
     var final = c.palier === INACTIVITE_PALIERS[INACTIVITE_PALIERS.length - 1];
-    var derniere = c.jamaisConnecte ? 'Jamais connecté (compte créé le ' + c.derniere + ')' : c.derniere;
+    var derniere = c.ancien ? 'Aucune activité connue (compte ancien, compté depuis le ' + c.derniere + ')'
+                 : c.jamaisConnecte ? 'Jamais connecté (compte créé le ' + c.derniere + ')' : c.derniere;
     return '<tr>' + td + '<b>' + _html(c.nom) + '</b></td>' +
            td + (c.role === 'dealer' ? 'Dealer' : 'Distributeur') + '</td>' +
            td + _html(c.courriel) + '</td>' +
@@ -208,7 +230,8 @@ function _courrielRappel(nomVendeur, clients) {
   var texte = 'Bonjour ' + prenom + ',\n\nPetit rappel amical : ' + n + ' client(s) dont vous êtes le vendeur associé ne se sont pas connectés au Portail e-Trak depuis un bon moment :\n\n' +
     clients.map(function (c) {
       return '- ' + c.nom + ' (' + c.courriel + ') : inactif depuis ' + c.jours + ' jours' +
-             (c.jamaisConnecte ? ' (jamais connecté, compte créé le ' + c.derniere + ')' : ' (dernière activité le ' + c.derniere + ')') + ' — ' + c.rappel;
+             (c.ancien ? ' (aucune activité connue, compte ancien, compté depuis le ' + c.derniere + ')'
+                       : c.jamaisConnecte ? ' (jamais connecté, compte créé le ' + c.derniere + ')' : ' (dernière activité le ' + c.derniere + ')') + ' — ' + c.rappel;
     }).join('\n') +
     (dernier ? '\n\nClients inactifs depuis 1 an : nous suggérons de désactiver leur profil (Portail e-Trak > Mes utilisateurs), ou de demander sa suppression à un administrateur.' : '') +
     '\n\nRappels envoyés à ' + paliers + '.\nPortail e-Trak : https://etraksolutions.github.io/portal-machine-V2/';
@@ -224,16 +247,17 @@ function apercuRappelsInactivite() {
   var r = rappelsInactivite(false, new Date(), debut || new Date());
   Logger.log((debut ? 'Mise en service le ' + _fmtDate(debut) : 'PAS ENCORE EN SERVICE — plan si on demarre aujourd\'hui') +
              ' | vendeurs a prevenir aujourd\'hui : ' + r.vendeurs.length + ' | clients reportes (lots suivants) : ' + r.reportes.length +
-             ' | clients sans vendeur associe : ' + r.sansVendeur.length + ' | comptes sans aucune trace datable (ignores) : ' + r.sansTrace);
+             ' | clients sans vendeur associe : ' + r.sansVendeur.length + ' | comptes anciens sans trace, comptes depuis le ' +
+             (r.dateAncienne ? _fmtDate(r.dateAncienne) : '?') + ' : ' + r.anciens + ' | ignores (aucune date de reference) : ' + r.sansTrace);
   r.vendeurs.forEach(function (v) {
     Logger.log('> AUJOURD\'HUI ' + v.vendeur + ' <' + v.courriel + '> : ' + v.clients.length + ' client(s)');
-    v.clients.forEach(function (c) { Logger.log('    - ' + c.nom + ' (' + c.courriel + ') : ' + c.jours + ' j — ' + c.rappel + (c.jamaisConnecte ? ' (jamais connecte)' : '')); });
+    v.clients.forEach(function (c) { Logger.log('    - ' + c.nom + ' (' + c.courriel + ') : ' + c.jours + ' j — ' + c.rappel + (c.jamaisConnecte ? ' (jamais connecte)' : '') + (c.ancien ? ' (compte ancien)' : '')); });
   });
   var lots = {};
   r.reportes.forEach(function (c) { (lots[c.lot] = lots[c.lot] || []).push(c); });
   Object.keys(lots).sort().forEach(function (k) {
     Logger.log('> LOT ' + k + ' le ' + lots[k][0].dateLot + ' : ' + lots[k].length + ' client(s)');
-    lots[k].forEach(function (c) { Logger.log('    - ' + c.nom + ' (' + c.courriel + ') vendeur ' + (c.vend || 'AUCUN') + ' : ' + c.jours + ' j aujourd\'hui'); });
+    lots[k].forEach(function (c) { Logger.log('    - ' + c.nom + ' (' + c.courriel + ') vendeur ' + (c.vend || 'AUCUN') + ' : ' + c.jours + ' j aujourd\'hui' + (c.ancien ? ' (compte ancien)' : '')); });
   });
   r.sansVendeur.forEach(function (c) { Logger.log('  [sans vendeur] ' + c.nom + ' (' + c.courriel + ') : ' + c.jours + ' j — ' + c.rappel); });
   return r;
@@ -250,6 +274,10 @@ function rappelsInactiviteQuotidien() {
 function installerRappelsInactivite() {
   retirerRappelsInactivite();
   if (!_debutDeploiement()) PROPS.setProperty('inactivite_deploiement', new Date().toISOString());
+  if (!PROPS.getProperty('inactivite_date_ancienne')) {
+    var da = _dateAncienne();
+    if (da) PROPS.setProperty('inactivite_date_ancienne', da.toISOString());
+  }
   ScriptApp.newTrigger('rappelsInactiviteQuotidien').timeBased().everyDays(1).atHour(INACTIVITE_HEURE).create();
   Logger.log('Rappels d\'inactivite actives : chaque jour vers ' + INACTIVITE_HEURE + ' h. Mise en service : ' + _fmtDate(_debutDeploiement()) +
              ' (premier envoi etale sur ' + INACTIVITE_LOTS_JOURS[INACTIVITE_LOTS_JOURS.length - 1] + ' jours).');
