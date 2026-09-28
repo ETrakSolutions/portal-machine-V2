@@ -178,6 +178,7 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
                 sel.appendChild(opt);
             });
         }
+        poserBoiteVendeur();
     })
     .catch(function() {});
 
@@ -444,6 +445,53 @@ function valeurCourrielClient() {
     if (!estRoleAvecClientFinal()) return '';
     var el = document.getElementById('soumission-client-email');
     return el ? (el.value || '').trim() : '';
+}
+
+// ===========================================================================
+// Vendeur destinataire de la demande (decision Steve, 2026-09-28) : seul le
+// vendeur CONCERNE recoit la demande, les autres vendeurs de la liste « Vendeurs »
+// sont retires des destinataires. Les autres adresses de vente (non vendeurs)
+// restent toujours.
+//  - un vendeur fait la demande        -> lui-meme ;
+//  - un client (dealer/distributeur)    -> son vendeur associe (sans vendeur :
+//                                          liste inchangee, cas corrige par la
+//                                          mise a niveau « vendeur par defaut ») ;
+//  - un employe qui n'est pas vendeur   -> le vendeur qu'il choisit (obligatoire).
+// ===========================================================================
+function courrielUtilisateur() {
+    return String((currentUser && (currentUser.email || currentUser.username)) || '').trim().toLowerCase();
+}
+
+function estVendeurListe(email) {
+    var e = String(email || '').trim().toLowerCase();
+    return !!e && vendeursList.some(function (v) { return String(v.email || '').trim().toLowerCase() === e; });
+}
+
+function doitChoisirVendeur() {
+    return !!currentUser && !estRoleAvecClientFinal() && !estVendeurListe(courrielUtilisateur()) && vendeursList.length > 0;
+}
+
+// Courriel du vendeur concerne, ou '' si on ne filtre pas
+function vendeurDestinataire() {
+    var moi = courrielUtilisateur();
+    if (estVendeurListe(moi)) return moi;
+    if (estRoleAvecClientFinal()) return String((currentUser && currentUser.vendeurEmail) || '').trim().toLowerCase();
+    var sel = document.getElementById('soumission-vendeur');
+    return sel ? String(sel.value || '').trim().toLowerCase() : '';
+}
+
+// Retire des destinataires les vendeurs autres que « cible » (liste inchangee si cible vide)
+function filtrerVendeurs(adresses, cible) {
+    if (!cible) return adresses;
+    return adresses.filter(function (a) {
+        var e = String(a || '').trim().toLowerCase();
+        return !estVendeurListe(e) || e === cible;
+    });
+}
+
+function poserBoiteVendeur() {
+    var box = document.getElementById('soumission-vendeur-box');
+    if (box) box.style.display = doitChoisirVendeur() ? '' : 'none';
 }
 
 (function brancherCourrielClient() {
@@ -1450,6 +1498,10 @@ if (submitBtn) {
         // chose qui remplace les quatre selecteurs pour les ventes internes. Laisser
         // ce champ facultatif rendrait la soumission moins lisible qu'avant, alors
         // que le but est l'inverse.
+        // Employe non vendeur : le vendeur responsable est obligatoire (seul lui recevra la demande)
+        if (doitChoisirVendeur()) {
+            REQUIRED_FIELDS.unshift({ id: 'soumission-vendeur', reqKey: 'soumission.vendeur_required', phKey: null });
+        }
         if (estSansMachine()) {
             REQUIRED_FIELDS.unshift({ id: 'soumission-equipement',
                                       reqKey: 'soumission.equipement_required',
@@ -1663,12 +1715,12 @@ if (submitBtn) {
         var dateInstall = _fieldVal('soumission-date-install');
         var userName = currentUser ? currentUser.name : i18n.t('common.user_not_connected');
         // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
-        var vendeurEmail = '';
+        // Vendeur concerne : associe au client, le vendeur lui-meme, ou celui choisi par
+        // un employe (vendeurDestinataire). Seul lui reste parmi les vendeurs destinataires.
+        var vendeurEmail = vendeurDestinataire();
         var vendeurName = '';
-        if (currentUser && currentUser.vendeurEmail) {
-            vendeurEmail = currentUser.vendeurEmail;
-            // Find vendeur name from vendeurs list
-            var v = vendeursList.find(function(vv) { return vv.email === vendeurEmail; });
+        if (vendeurEmail) {
+            var v = vendeursList.find(function(vv) { return String(vv.email || '').toLowerCase() === vendeurEmail; });
             vendeurName = v ? v.name : vendeurEmail;
         }
 
@@ -1683,9 +1735,9 @@ if (submitBtn) {
         // Separateur point-virgule (Outlook ne separe PAS les adresses par virgule dans
         // un lien mailto -> il les met toutes dans un seul champ invalide et le courriel
         // ne part pas). Filtre aussi les entrees vides/espaces.
-        var mailTo = salesEmails
+        var mailTo = filtrerVendeurs(salesEmails
             .map(function(e) { return (e || '').trim(); })
-            .filter(function(e) { return e; })
+            .filter(function(e) { return e; }), vendeurEmail)
             .join(';');
         var subject = i18n.t('email.soumission_subject', { fab: fab, modele: modele, annee: annee });
         // Specs de la machine, pour le bloc de specs du courriel (EMAIL_SPEC_FIELDS).
