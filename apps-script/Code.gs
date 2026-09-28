@@ -71,6 +71,10 @@ function doPost(e) {
     if (action === 'listusers')      return jsonOut(authListUsers(body));
     if (action === 'acceptconsent')  return jsonOut(authAcceptConsent(body));
     if (action === 'getinventory')   return jsonOut(getInventory(body));
+    if (action === 'getprices')      return jsonOut(getPrices(body));
+    if (action === 'setprices')      return jsonOut(setPrices(body));
+    if (action === 'getpriceslog')   return jsonOut(getPricesLog(body));
+    if (action === 'getcedule')      return jsonOut(getCedule(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
@@ -91,6 +95,14 @@ function doPost(e) {
       }
     }
 
+    // Liste des comptes : jamais effacee d'un bloc, et les comptes proteges
+    // (Super Admin, proprietaire) sont reimposes par le serveur (_guardUsersSave).
+    if (action === 'delete' && body.key === USERS_KEY) return jsonOut({ error: 'users list cannot be deleted' });
+    if (action === 'save' && body.key === USERS_KEY) {
+      var g = _guardUsersSave(auth, body.value);
+      if (g.error) return jsonOut({ error: g.error });
+      return jsonOut({ ok: kvSave(USERS_KEY, JSON.stringify(g.users)), restored: g.restored });
+    }
     if (action === 'save')               return jsonOut({ ok: kvSave(body.key, body.value) });
     if (action === 'delete')             return jsonOut({ ok: kvDelete(body.key) });
     if (action === 'list')               return jsonOut({ keys: kvList(body.prefix || '') });
@@ -125,7 +137,7 @@ function jsonOut(obj) {
 // L'ecriture (save/delete) de ces cles exige un token admin (voir doPost).
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
-                      'inventory_etrak'];
+                      'inventory_etrak', 'PROGRESSIONLIVE_API_KEY'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -163,6 +175,9 @@ function _findUser(username) {
 // Roles avec gestion de comptes : lit roles_permissions (modifiable via l'UI admin),
 // repli sur les deux roles admin connus.
 function _isAdminRole(role) {
+  // Un Super Admin reste admin quoi que dise roles_permissions (modifiable par un
+  // simple administrateur depuis l'UI) : sinon on pourrait lui retirer ses droits.
+  if (role === 'super_admin') return true;
   try {
     var roles = JSON.parse(PROPS.getProperty('roles_permissions') || '{}');
     if (roles[role] && roles[role].modifAccounts !== undefined) return !!roles[role].modifAccounts;
@@ -229,7 +244,7 @@ function _authCheck(body) {
     // session) : un changement de role ou une desactivation prend effet tout de suite.
     var u = _findUser(sess.u);
     if (!u || u.active === false) return { ok: false, admin: false };
-    return { ok: true, admin: _isAdminRole(u.role), role: u.role, perms: _permsForRole(u.role) };
+    return { ok: true, admin: _isAdminRole(u.role), role: u.role, perms: _permsForRole(u.role), user: u };
   }
   return { ok: false, admin: false };
 }
@@ -319,6 +334,83 @@ function authListUsers(body) {
   if (!auth.ok) return { error: 'authentication required' };
   var users = _users();
   return { users: auth.admin ? users : users.map(_publicUser) };
+}
+
+/* ===================== COMPTES PROTEGES (Super Admin, proprietaire) ===================== */
+// Decision Jacquot, 2026-09-24/25. Le portail renvoie la liste COMPLETE des comptes a
+// chaque sauvegarde ; l'interface cache et verrouille les comptes proteges, mais seul le
+// serveur fait foi. Regles :
+//  - Proprietaire (OWNER_EMAIL) : personne d'autre que lui ne le modifie ni ne le retire ;
+//    lui-meme peut changer son nom et son mot de passe, jamais son role, son identifiant
+//    ni son statut actif (pas de verrouillage par erreur).
+//  - Super Admin : seul un Super Admin connecte (session, pas le PIN) peut en retirer un,
+//    le retrograder, le modifier, ou promouvoir quelqu'un Super Admin.
+// Un compte protege envoye par un appelant non autorise est remplace par la version
+// stockee (restauration silencieuse : une page restee ouverte ne casse pas la sauvegarde
+// d'un admin). Une promotion non autorisee est refusee.
+var USERS_KEY = 'authorized_users_v2';
+var OWNER_EMAIL = 'jcaron@gryb.com';
+
+function _idsOf(u) {
+  var ids = [];
+  if (u && u.username) ids.push(String(u.username).toLowerCase());
+  if (u && u.email) ids.push(String(u.email).toLowerCase());
+  return ids;
+}
+function _isOwner(u) { return _idsOf(u).indexOf(OWNER_EMAIL) >= 0; }
+function _copy(o) { return JSON.parse(JSON.stringify(o)); }
+
+// auth = retour de _authCheck ; raw = liste envoyee (texte JSON ou tableau).
+// -> { users, restored } | { error }
+function _guardUsersSave(auth, raw) {
+  var incoming;
+  try { incoming = (typeof raw === 'string') ? JSON.parse(raw) : raw; } catch (e) { incoming = null; }
+  if (!Array.isArray(incoming)) return { error: 'invalid users list' };
+
+  var caller = auth && auth.user;
+  var callerSuper = !!caller && caller.role === 'super_admin';
+  var callerOwner = !!caller && _isOwner(caller);
+  var stored = _users();
+  var restored = 0;
+
+  // Promotion Super Admin : reservee a un Super Admin
+  if (!callerSuper) {
+    var wasSuper = {};
+    stored.forEach(function (s) { if (s.role === 'super_admin') _idsOf(s).forEach(function (id) { wasSuper[id] = true; }); });
+    for (var i = 0; i < incoming.length; i++) {
+      var u = incoming[i];
+      if (u && u.role === 'super_admin' && !_idsOf(u).some(function (id) { return wasSuper[id]; })) {
+        return { error: 'super_admin required' };
+      }
+    }
+  }
+
+  var out = incoming.slice();
+  stored.forEach(function (s) {
+    var owner = _isOwner(s);
+    if (!owner && s.role !== 'super_admin') return;          // compte ordinaire
+    if (!owner && callerSuper) return;                        // Super Admin gere par un Super Admin
+
+    // Retire TOUTES les entrees qui portent son identifiant (aussi un doublon glisse
+    // devant lui : _findUser prend la premiere correspondance au login).
+    var ids = _idsOf(s), pos = -1, sent = null;
+    for (var j = out.length - 1; j >= 0; j--) {
+      var hit = _idsOf(out[j]).some(function (id) { return ids.indexOf(id) >= 0; });
+      if (hit) { if (!sent) sent = out[j]; pos = j; out.splice(j, 1); }
+    }
+    var keep;
+    if (owner && callerOwner && sent) {
+      keep = _copy(sent);                                     // ses propres retouches
+      keep.username = s.username; keep.email = s.email; keep.role = s.role;
+      if (s.active === undefined) delete keep.active; else keep.active = s.active;
+    } else {
+      keep = _copy(s);
+    }
+    if (JSON.stringify(keep) !== JSON.stringify(sent)) restored++;
+    if (pos < 0) out.push(keep); else out.splice(pos, 0, keep);
+  });
+  if (restored) Logger.log('_guardUsersSave : ' + restored + ' compte(s) protege(s) restaure(s)');
+  return { users: out, restored: restored };
 }
 
 /* ===================== AJOUT D'USAGERS DELEGUE (hors admins) ===================== */
@@ -493,6 +585,261 @@ function getInventory(body) {
   catch (e) { return { error: 'inventory unreadable' }; }
 }
 
+/* ============================ LISTE DE PRIX ============================ */
+// Decision Jacquot, 2026-09-25 : les prix ne sont plus publies sur le site (l'ancien
+// data/prices.json se telechargeait sans connexion, et l'acces invite ?guest=1 les
+// montrait sans mot de passe). Ils vivent ici, en Script Properties, et ne sortent
+// que vers une VRAIE session dont le role a acces a la Soumission. L'invite du code
+// QR n'a pas de session serveur : il ne recoit jamais un prix.
+// Liste maitresse : SharePoint E-Trak Production > General > _Portail e-Trak.
+// Publiee par scripts/publier_prix.py (PIN). Valeur = { "<PN>": { item, install,
+// installCode } } ; decoupee en tranches (limite de 9 Ko par propriete).
+// Chaque remise est comptee par compte (prices_log) : si une liste circule, on sait
+// qui l'a obtenue et quand.
+var PRICES_PREFIX = 'price_list_';          // price_list_n = nb de tranches, price_list_0..
+var PRICES_LOG_KEY = 'price_list_log';
+var PRICES_CHUNK = 8000;
+var SOUMISSION_DEFAULT_ROLES = ['administrateur', 'vente_interne', 'vente_externe',
+                                'distributeur', 'dealer'];
+
+function _isPriceKey(key) { return String(key || '').indexOf(PRICES_PREFIX) === 0; }
+
+function _canSeePrices(role) {
+  if (role === 'super_admin') return true;
+  var perms = _permsForRole(role);
+  if (perms && perms.soumissionAccess !== undefined) return !!perms.soumissionAccess;
+  return SOUMISSION_DEFAULT_ROLES.indexOf(role) >= 0;
+}
+
+function _readPrices() {
+  var n = parseInt(PROPS.getProperty(PRICES_PREFIX + 'n') || '0', 10);
+  if (!n) return null;
+  var raw = '';
+  for (var i = 0; i < n; i++) raw += (PROPS.getProperty(PRICES_PREFIX + i) || '');
+  return JSON.parse(raw);
+}
+
+// Compte par utilisateur : { "<courriel>": { n, first, last } }. Borne a 150 comptes
+// (les plus anciens sortent) pour rester sous la limite d'une propriete.
+function _logPrices(uname) {
+  try {
+    var log = JSON.parse(PROPS.getProperty(PRICES_LOG_KEY) || '{}');
+    var now = new Date().toISOString();
+    var e = log[uname] || { n: 0, first: now };
+    e.n++; e.last = now; log[uname] = e;
+    var keys = Object.keys(log);
+    if (keys.length > 150) {
+      keys.sort(function (a, b) { return String(log[a].last).localeCompare(String(log[b].last)); });
+      for (var i = 0; i < keys.length - 150; i++) delete log[keys[i]];
+    }
+    PROPS.setProperty(PRICES_LOG_KEY, JSON.stringify(log));
+  } catch (err) { Logger.log('_logPrices : ' + err); }
+}
+
+// { action:'getprices', token } -> { ok, prices } | { error }
+// Role relu dans authorized_users_v2 a chaque appel (un compte retrograde ou
+// desactive perd l'acces tout de suite). Le PIN ne donne PAS les prix : les scripts
+// qui ont besoin des codes lisent data/price-codes.json (sans montants).
+function getPrices(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (!_canSeePrices(user.role)) return { error: 'forbidden' };
+  var prices;
+  try { prices = _readPrices(); } catch (e) { return { error: 'prices unreadable' }; }
+  _avecVerrou(function () { _logPrices(_uname(user)); });
+  return { ok: true, prices: prices || {} };
+}
+
+// { action:'setprices', prices, pin|token admin } -> { ok, codes, chunks }
+function setPrices(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var p = body.prices;
+  if (typeof p === 'string') { try { p = JSON.parse(p); } catch (e) { p = null; } }
+  if (!p || typeof p !== 'object' || Array.isArray(p)) return { error: 'invalid prices' };
+  var codes = Object.keys(p);
+  if (!codes.length) return { error: 'invalid prices' };
+  for (var i = 0; i < codes.length; i++) {
+    var v = p[codes[i]];
+    if (!v || typeof v !== 'object') return { error: 'invalid price for ' + codes[i] };
+    var okNum = function (x) { return x === null || x === undefined || typeof x === 'number'; };
+    if (!okNum(v.item) || !okNum(v.install)) return { error: 'invalid price for ' + codes[i] };
+  }
+  var raw = JSON.stringify(p);
+  return _avecVerrou(function () {
+    var old = parseInt(PROPS.getProperty(PRICES_PREFIX + 'n') || '0', 10);
+    var n = Math.ceil(raw.length / PRICES_CHUNK);
+    for (var j = 0; j < n; j++) PROPS.setProperty(PRICES_PREFIX + j, raw.substr(j * PRICES_CHUNK, PRICES_CHUNK));
+    for (var k = n; k < old; k++) PROPS.deleteProperty(PRICES_PREFIX + k);
+    PROPS.setProperty(PRICES_PREFIX + 'n', String(n));
+    PROPS.setProperty(PRICES_PREFIX + 'updated', new Date().toISOString());
+    return { ok: true, codes: codes.length, chunks: n };
+  });
+}
+
+// { action:'getpriceslog', pin|token admin } -> { ok, log, updated }
+function getPricesLog(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var log = {};
+  try { log = JSON.parse(PROPS.getProperty(PRICES_LOG_KEY) || '{}'); } catch (e) {}
+  return { ok: true, log: log, updated: PROPS.getProperty(PRICES_PREFIX + 'updated') || null };
+}
+
+/* ============================ CEDULE DES TECHNICIENS ============================ */
+// Decision Jacquot, 2026-09-25. Grille Ouvert / Ferme par demi-journee (AM 7 h 30-12 h,
+// PM 12 h-16 h 30), lundi a vendredi, 4 semaines, lue dans ProgressionLive. AUCUN client,
+// aucune ville, aucun detail de tache : la reponse ne porte que des booleens.
+//  - Techniciens : ressources humaines actives dont le nom ne commence PAS par « _ »
+//    (convention ProgressionLive : « _A Planifier », « _HOLD »... sont des files
+//    d'attente), moins CEDULE_EXCLUS. Le type ProgressionLive n'est pas fiable (Michel
+//    Landry est « Employe », « _HOLD » est « Technicien »).
+//  - Ferme une case : toute tache du technicien (ou dont il est aide) qui chevauche la
+//    demi-journee, sauf les taches annulees et les feuilles de temps. Un conge est une
+//    tache : il ferme ses cases. La duree n'est jamais prolongee au-dela de l'inscrit.
+//  - Visible par les roles internes seulement (pas dealer, distributeur ni invite).
+// Cle : Script Property PROGRESSIONLIVE_API_KEY (cle de Jacquot, droits admin dans
+// ProgressionLive). ⚠️ Cette fonction ne fait QUE deux lectures fixes (hr/list,
+// task/list) : rien de ce qu'envoie le portail n'est relaye a ProgressionLive.
+var PL_BASE = 'https://ecotrakindustrie.progressionlive.com/server/rest';
+var CEDULE_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe',
+                    'technicien', 'ingenierie'];
+var CEDULE_EXCLUS = ['autre tech'];                  // noms (minuscules) a ne pas afficher
+var CEDULE_TYPES_IGNORES = ['feuille de temps'];
+var CEDULE_ETATS_IGNORES = ['annulé', 'annule'];
+var CEDULE_TZ = 'America/Toronto';
+var CEDULE_AM = [450, 720], CEDULE_PM = [720, 990];  // minutes depuis minuit
+var CEDULE_JOURS = 28;
+var CEDULE_CACHE_S = 900;                            // 15 min
+
+function _plGet(path, params) {
+  var key = PROPS.getProperty('PROGRESSIONLIVE_API_KEY');
+  if (!key) throw new Error('cle ProgressionLive absente');
+  var q = [];
+  for (var k in params) q.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
+  var r = UrlFetchApp.fetch(PL_BASE + path + (q.length ? '?' + q.join('&') : ''), {
+    method: 'get', muteHttpExceptions: true,
+    headers: { Authorization: 'Bearer ' + key, Accept: 'application/json' }
+  });
+  if (r.getResponseCode() !== 200) throw new Error('ProgressionLive HTTP ' + r.getResponseCode());
+  var d = JSON.parse(r.getContentText());
+  return Array.isArray(d) ? d : (d.list || d.items || d.data || []);
+}
+
+// Toutes les pages (500 par appel)
+function _plListe(path, params) {
+  var out = [], start = 0;
+  for (var guard = 0; guard < 20; guard++) {
+    params.maxResults = 500; params.startResult = start;
+    var page = _plGet(path, params);
+    out = out.concat(page);
+    if (page.length < 500) break;
+    start += 500;
+  }
+  return out;
+}
+
+// « 2026-10-03T07:30:00-04 » -> Date (le decalage sans minutes n'est pas ISO)
+function _plDate(s) {
+  if (!s) return null;
+  var t = String(s).replace(/([+-]\d{2})$/, '$1:00');
+  var d = new Date(t);
+  return isNaN(d.getTime()) ? null : d;
+}
+
+// « PT4H30M », « P1DT2H » -> millisecondes
+function _plDuree(s) {
+  var m = /^P(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?$/.exec(String(s || ''));
+  if (!m) return 0;
+  return ((+m[1] || 0) * 86400 + (+m[2] || 0) * 3600 + (+m[3] || 0) * 60 + (+m[4] || 0)) * 1000;
+}
+
+function _norm(s) { return String(s || '').toLowerCase().trim(); }
+function _labelDe(o) { return o && typeof o === 'object' ? (o.label || '') : String(o || ''); }
+
+// Jour local « yyyy-MM-dd » et minutes depuis minuit, dans le fuseau de l'entreprise
+function _local(d) {
+  var s = Utilities.formatDate(d, CEDULE_TZ, "yyyy-MM-dd HH:mm");
+  return { jour: s.slice(0, 10), min: parseInt(s.slice(11, 13), 10) * 60 + parseInt(s.slice(14, 16), 10) };
+}
+
+function _jourSuivant(j) {
+  var d = new Date(j + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() + 1);
+  return d.toISOString().slice(0, 10);
+}
+
+function _calculCedule(maintenant) {
+  var j0 = _local(maintenant).jour, jours = [], j = j0;
+  for (var i = 0; i < CEDULE_JOURS; i++) {
+    var dow = new Date(j + 'T12:00:00Z').getUTCDay();
+    if (dow >= 1 && dow <= 5) jours.push(j);
+    j = _jourSuivant(j);
+  }
+  var jFin = j;                                       // exclu
+
+  var techs = [], parId = {};
+  _plListe('/hr/list', { removed: 'false', onlyFieldsToInclude: 'id,label' }).forEach(function (h) {
+    var nom = String(h.label || '').trim();
+    if (!nom || nom.charAt(0) === '_' || CEDULE_EXCLUS.indexOf(_norm(nom)) >= 0) return;
+    var t = { nom: nom, cases: {} };
+    jours.forEach(function (jj) { t.cases[jj] = [false, false]; });
+    techs.push(t); parId[String(h.id)] = t;
+  });
+
+  // On remonte d'un jour : une tache commencee la veille peut deborder sur aujourd'hui.
+  var debut = Utilities.formatDate(new Date(maintenant.getTime() - 86400000), CEDULE_TZ, 'yyyy-MM-dd');
+  var taches = _plListe('/task/list', { rv: debut + ',' + jFin,
+    onlyFieldsToInclude: 'rv,duration,humanResource,helpers,currentState,type' });
+
+  taches.forEach(function (t) {
+    if (CEDULE_TYPES_IGNORES.indexOf(_norm(_labelDe(t.type))) >= 0) return;
+    if (CEDULE_ETATS_IGNORES.indexOf(_norm(_labelDe(t.currentState))) >= 0) return;
+    var s = _plDate(t.rv);
+    var dur = _plDuree(t.duration);
+    if (!s || dur <= 0) return;
+    var qui = [];
+    if (t.humanResource && parId[String(t.humanResource.id)]) qui.push(parId[String(t.humanResource.id)]);
+    (t.helpers || []).forEach(function (h) { if (h && parId[String(h.id)]) qui.push(parId[String(h.id)]); });
+    if (!qui.length) return;
+    var a = _local(s), z = _local(new Date(s.getTime() + dur));
+    for (var jj = a.jour, n = 0; jj <= z.jour && n < 60; jj = _jourSuivant(jj), n++) {
+      var m0 = (jj === a.jour) ? a.min : 0, m1 = (jj === z.jour) ? z.min : 1440;
+      var am = m0 < CEDULE_AM[1] && m1 > CEDULE_AM[0];
+      var pm = m0 < CEDULE_PM[1] && m1 > CEDULE_PM[0];
+      qui.forEach(function (tech) {
+        var c = tech.cases[jj];
+        if (!c) return;                               // fin de semaine ou hors periode
+        if (am) c[0] = true;
+        if (pm) c[1] = true;
+      });
+    }
+  });
+
+  techs.sort(function (x, y) { return x.nom.localeCompare(y.nom, 'fr'); });
+  return { genere: maintenant.toISOString(), jours: jours, techs: techs };
+}
+
+// { action:'getcedule', token } -> { ok, cedule:{ genere, jours[], techs[{nom, cases{jour:[AM,PM]}}] } }
+// true = FERME. Role relu a chaque appel ; resultat en cache 15 min pour tout le monde
+// (il ne depend pas de l'appelant).
+function getCedule(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (CEDULE_ROLES.indexOf(user.role) < 0) return { error: 'forbidden' };
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('cedule_v1');
+  if (hit) { try { return { ok: true, cedule: JSON.parse(hit) }; } catch (e) {} }
+  var ced;
+  try { ced = _calculCedule(new Date()); }
+  catch (err) { Logger.log('getCedule : ' + err); return { error: 'cedule unavailable' }; }
+  try { cache.put('cedule_v1', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
+  return { ok: true, cedule: ced };
+}
+
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
    de courriels (scope script.send_mail). Le courriel de test part a la personne
    qui execute la fonction.
@@ -547,19 +894,19 @@ function kvGet(key) {
   if (!key) return '';
   // Cles sensibles (mots de passe) et sessions : jamais lisibles par le GET public.
   // Les clients authentifies passent par action=listusers.
-  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0) return '';
+  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) return '';
   return PROPS.getProperty(key) || '';
 }
 function kvSave(key, value) {
   if (!key) throw new Error('key required');
-  if (key.indexOf(SESSION_PREFIX) === 0) throw new Error('reserved key');
+  if (key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) throw new Error('reserved key');
   var v = (typeof value === 'string') ? value : JSON.stringify(value);
   PROPS.setProperty(key, v);
   return true;
 }
 function kvDelete(key) {
   if (!key) throw new Error('key required');
-  if (key.indexOf(SESSION_PREFIX) === 0) throw new Error('reserved key');
+  if (key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) throw new Error('reserved key');
   PROPS.deleteProperty(key);
   return true;
 }
@@ -569,7 +916,7 @@ function kvList(prefix) {
   for (var k in all) {
     if (k.indexOf(prefix) !== 0) continue;
     // Les tokens de session sont DANS le nom de cle -> exclus de tout listing
-    if (k.indexOf(SESSION_PREFIX) === 0 || SENSITIVE_KEYS.indexOf(k) >= 0) continue;
+    if (k.indexOf(SESSION_PREFIX) === 0 || SENSITIVE_KEYS.indexOf(k) >= 0 || _isPriceKey(k)) continue;
     keys.push(k);
   }
   return keys.sort();
@@ -715,7 +1062,8 @@ var OV_TYPE_SLUGS = {
   'Camion Vacuum': 'camion-vacuum',
   'Retrocaveuse': 'retrocaveuse',
   'Loader': 'loader',
-  'Nacelle': 'nacelle'
+  'Nacelle': 'nacelle',
+  'Tracteur': 'tracteur'
 };
 // Chemin du fichier overrides pour un type. Decoupe par type -> chaque fichier reste petit,
 // les ecritures sont isolees (editer une grue ne touche pas le fichier des excavatrices).
@@ -1014,4 +1362,11 @@ function authAcceptConsent(body) {
     }
   }
   return { ok: false, error: 'user not found' };
+}
+
+// Diagnostic d'envoi de courriel (repris de l'editeur Apps Script le 2026-09-25).
+function _diagMail() {
+  Logger.log('Quota restant: ' + MailApp.getRemainingDailyQuota());
+  MailApp.sendEmail('jcaron@gryb.com', 'TEST diag portail', 'Test direct MailApp depuis Apps Script.');
+  Logger.log('sendEmail termine sans erreur');
 }

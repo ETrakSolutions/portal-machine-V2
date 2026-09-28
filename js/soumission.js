@@ -65,6 +65,8 @@ var BALANCE_PRODUITS = {
 // confondre avec un vrai type : elle ne doit jamais servir de cle dans
 // machinesData, et tout code qui indexe la base doit sortir avant.
 const SANS_MACHINE = '__sans_machine__';
+// Fabricant absent de la BD : ouvre la demande d'ajout (voir doFabChange).
+const OTHER_FAB = '__OTHER_FAB__';
 function estSansMachine() { return selectType && selectType.value === SANS_MACHINE; }
 
 const selectType = document.getElementById('select-type');
@@ -176,6 +178,7 @@ fetch(API_URL + '?action=get&key=vendeurs_list')
                 sel.appendChild(opt);
             });
         }
+        poserBoiteVendeur();
     })
     .catch(function() {});
 
@@ -203,11 +206,35 @@ Promise.all([
     })
     .catch(function(err) { console.error('Erreur chargement donnees:', err); });
 
-// Prix (price list) : code produit -> { item, install }. data/prices.json
+// Prix (price list) : code produit -> { item, install, installCode }.
+// Remis par le SERVEUR a une vraie session dont le role a acces a la Soumission
+// (decision Jacquot, 2026-09-25) : l'ancien data/prices.json etait public. L'invite
+// du code QR n'a pas de session serveur -> aucun prix, et la mention du compte.
 var priceData = {};
-fetch('data/prices.json', { cache: 'no-cache' }).then(function(r) { return r.json(); })
-    .then(function(d) { priceData = d || {}; try { updateSelectedSummary(); } catch (e) {} })
+var prixRecus = false;
+function chargerPrix() {
+    if (!currentUser || !currentUser.token || currentUser.isGuest) return;
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'getprices', token: currentUser.token })
+    })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (!d || !d.ok || !d.prices) return;
+            priceData = d.prices; prixRecus = true;
+            try { updateSelectedSummary(); } catch (e) {}
+        })
+        .catch(function() {});
+}
+chargerPrix();
+// Codes tarifes SANS montants (public) : dit seulement quels codes ont une pose.
+// Sert a poser la question « Installation par e-Trak ? » meme sans prix (invite).
+var PRICE_CODES = {};
+fetch('data/price-codes.json', { cache: 'no-cache' }).then(function(r) { return r.json(); })
+    .then(function(d) { PRICE_CODES = d || {}; try { updateSelectedSummary(); } catch (e) {} })
     .catch(function() {});
+function sansAccesPrix() { return !currentUser || !currentUser.token || !!currentUser.isGuest; }
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }
 function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
 
@@ -316,7 +343,8 @@ function hasActiveOptions() {
     var anyIDC = document.querySelector('[data-option="Indicateur de charge"].active');
     var anyCreus = document.querySelector('#toggle-creusage input:checked');
     var anyCam = document.querySelector('#toggle-camera input:checked');
-    return !!(anyLim || anyIDC || anyCreus || anyCam);
+    var anyGodet = document.querySelector('#toggle-godet-avant.active');
+    return !!(anyLim || anyIDC || anyCreus || anyCam || anyGodet);
 }
 
 // Show HTML modal for reset confirmation, call onConfirm if accepted
@@ -419,6 +447,53 @@ function valeurCourrielClient() {
     return el ? (el.value || '').trim() : '';
 }
 
+// ===========================================================================
+// Vendeur destinataire de la demande (decision Steve, 2026-09-28) : seul le
+// vendeur CONCERNE recoit la demande, les autres vendeurs de la liste « Vendeurs »
+// sont retires des destinataires. Les autres adresses de vente (non vendeurs)
+// restent toujours.
+//  - un vendeur fait la demande        -> lui-meme ;
+//  - un client (dealer/distributeur)    -> son vendeur associe (sans vendeur :
+//                                          liste inchangee, cas corrige par la
+//                                          mise a niveau « vendeur par defaut ») ;
+//  - un employe qui n'est pas vendeur   -> le vendeur qu'il choisit (obligatoire).
+// ===========================================================================
+function courrielUtilisateur() {
+    return String((currentUser && (currentUser.email || currentUser.username)) || '').trim().toLowerCase();
+}
+
+function estVendeurListe(email) {
+    var e = String(email || '').trim().toLowerCase();
+    return !!e && vendeursList.some(function (v) { return String(v.email || '').trim().toLowerCase() === e; });
+}
+
+function doitChoisirVendeur() {
+    return !!currentUser && !estRoleAvecClientFinal() && !estVendeurListe(courrielUtilisateur()) && vendeursList.length > 0;
+}
+
+// Courriel du vendeur concerne, ou '' si on ne filtre pas
+function vendeurDestinataire() {
+    var moi = courrielUtilisateur();
+    if (estVendeurListe(moi)) return moi;
+    if (estRoleAvecClientFinal()) return String((currentUser && currentUser.vendeurEmail) || '').trim().toLowerCase();
+    var sel = document.getElementById('soumission-vendeur');
+    return sel ? String(sel.value || '').trim().toLowerCase() : '';
+}
+
+// Retire des destinataires les vendeurs autres que « cible » (liste inchangee si cible vide)
+function filtrerVendeurs(adresses, cible) {
+    if (!cible) return adresses;
+    return adresses.filter(function (a) {
+        var e = String(a || '').trim().toLowerCase();
+        return !estVendeurListe(e) || e === cible;
+    });
+}
+
+function poserBoiteVendeur() {
+    var box = document.getElementById('soumission-vendeur-box');
+    if (box) box.style.display = doitChoisirVendeur() ? '' : 'none';
+}
+
 (function brancherCourrielClient() {
     var poser = function () {
         var box = document.getElementById('soumission-client-email-box');
@@ -461,6 +536,14 @@ function doTypeChange() {
         opt.textContent = fab;
         selectFabricant.appendChild(opt);
     });
+    // « Fabricant non repertorie » : sans lui, une machine d'un fabricant absent de
+    // la BD ne pouvait meme pas etre demandee (Robert, 2026-09-25). Meme principe
+    // que « Autre modele » plus bas : on n'invente pas de fiche, on DEMANDE l'ajout.
+    const optAutreFab = document.createElement('option');
+    optAutreFab.value = OTHER_FAB;
+    optAutreFab.textContent = (typeof i18n !== 'undefined') ? i18n.t('soum.other_fab') : '\u2295 Ajout fabricant non repertorie';
+    optAutreFab.style.fontStyle = 'italic';
+    selectFabricant.appendChild(optAutreFab);
     selectFabricant.disabled = false;
     btnReset.style.display = 'inline-block';
 }
@@ -473,6 +556,12 @@ function doFabChange() {
     const type = selectType.value;
     const fab = selectFabricant.value;
     if (!fab) return;
+    if (fab === OTHER_FAB) {
+        // Rien ici ne doit indexer machinesData avec cette valeur : elle n'y existe pas.
+        hideOptions();
+        showSoumissionCustomModelModal(type, null);
+        return;
+    }
     const annees = Object.keys(machinesData[type][fab]).sort().reverse();
     annees.forEach(annee => {
         const opt = document.createElement('option');
@@ -777,13 +866,26 @@ function applyTypeRestrictions(type) {
     // installee par les techniciens e-Trak) et 1200-0011 (balance en valise,
     // installee par le client) — plus UNE imprimante au choix : 1200-0014
     // thermique ou 1200-0015 carbone.
-    // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Auparavant le
-    // bloc s'affichait aussi sur Telehandler et Retrocaveuse.
+    // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Elargi par
+    // Jacquot le 2026-09-25 a la RETROCAVEUSE, avec les memes choix que le Loader.
     // La balance Scale Lite (1200-0020) est reservee au tracteur, type
     // de machine qui reste a creer : elle n'est donc pas encore proposee ici,
     // et elle n'aura pas d'option imprimante.
     var isTracteur = (type === 'Tracteur');
-    var isBalanceType = (type === 'Loader' || isTracteur);
+    var isBalanceType = (type === 'Loader' || type === 'Retrocaveuse' || isTracteur);
+
+    // Limiteur du godet avant : retrocaveuse seulement (decision Jacquot,
+    // 2026-09-25). Systeme complet a lui seul (1500-0603), pris seul ou en plus
+    // du limiteur arriere : il n'emporte ni la base 1500-0600 ni le kit arriere.
+    var godetBox = document.getElementById('toggle-godet-avant');
+    if (godetBox) {
+        var isRetro = (type === 'Retrocaveuse');
+        godetBox.style.display = isRetro ? '' : 'none';
+        if (!isRetro) {
+            godetBox.classList.remove('active');
+            var gSt = godetBox.querySelector('.toggle-status'); if (gSt) gSt.textContent = 'OFF';
+        }
+    }
     var balBox = document.getElementById('toggle-balance');
     if (balBox) {
         balBox.style.display = isBalanceType ? '' : 'none';
@@ -1216,8 +1318,11 @@ function removeRequestPanel() {
     var p = document.getElementById('soumission-request-panel');
     if (p) p.remove();
 }
+// fab === null : fabricant absent de la liste, saisi dans la fenetre.
 function showSoumissionCustomModelModal(type, fab) {
     var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
+    var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+    var fabLibre = (fab === null);
     var existing = document.getElementById('custom-model-modal');
     if (existing) existing.remove();
     var modal = document.createElement('div');
@@ -1226,7 +1331,8 @@ function showSoumissionCustomModelModal(type, fab) {
     modal.innerHTML =
         '<div class="custom-modal">' +
         '<h3>' + t('soum.req_title', 'Machine absente de la liste') + '</h3>' +
-        '<p class="modal-desc">' + fab + ' — ' + t('type.' + type, type) + '</p>' +
+        '<p class="modal-desc">' + (fabLibre ? '' : esc(fab) + ' — ') + t('type.' + type, type) + '</p>' +
+        (fabLibre ? '<input type="text" id="custom-fab-name" class="modal-input" placeholder="' + t('soum.req_fab_ph', 'Nom du fabricant') + '" autocomplete="off" style="margin-bottom:0.5rem">' : '') +
         '<input type="text" id="custom-model-name" class="modal-input" placeholder="' + t('soum.req_model_ph', 'Nom du modele') + '" autocomplete="off">' +
         '<input type="text" id="custom-model-year" class="modal-input" inputmode="numeric" placeholder="' + t('soum.req_year_ph', 'Annee (ex: 2026)') + '" autocomplete="off" style="margin-top:0.5rem">' +
         '<div class="modal-buttons">' +
@@ -1234,17 +1340,40 @@ function showSoumissionCustomModelModal(type, fab) {
         '<button id="modal-create" class="modal-btn modal-btn-create">' + t('soum.req_continue', 'Continuer') + '</button>' +
         '</div></div>';
     document.body.appendChild(modal);
+    var fabF = document.getElementById('custom-fab-name');
     var nameF = document.getElementById('custom-model-name');
     var yearF = document.getElementById('custom-model-year');
-    nameF.focus();
-    document.getElementById('modal-cancel').addEventListener('click', function(){ modal.remove(); selectModele.value = ''; hideOptions(); });
+    (fabF || nameF).focus();
+    document.getElementById('modal-cancel').addEventListener('click', function(){
+        modal.remove();
+        if (fabLibre) { selectFabricant.value = ''; resetFrom('annee'); }
+        else selectModele.value = '';
+        hideOptions();
+    });
     document.getElementById('modal-create').addEventListener('click', function(){
+        var fb = fabLibre ? fabF.value.trim() : fab;
         var nm = nameF.value.trim(); var yr = yearF.value.trim();
+        if (fabLibre && !fb) { fabF.style.borderColor = 'red'; return; }
+        if (fabLibre) {
+            // Deja dans la liste sous une autre casse ou avec des espaces ? On prend
+            // le fabricant existant plutot que de demander un doublon.
+            var norm = function (s) { return String(s).toLowerCase().replace(/[^a-z0-9]/g, ''); };
+            var connu = Object.keys(machinesData[type] || {}).filter(function (f) {
+                return f.charAt(0) !== '_' && norm(f) === norm(fb);
+            })[0];
+            if (connu) {
+                modal.remove();
+                selectFabricant.value = connu;
+                doFabChange();
+                return;
+            }
+        }
         if (!nm) { nameF.style.borderColor = 'red'; return; }
         if (!/^\d{4}$/.test(yr)) { yearF.style.borderColor = 'red'; return; }
         modal.remove();
-        showSoumissionRequestPanel(type, fab, nm, yr);
+        showSoumissionRequestPanel(type, fb, nm, yr);
     });
+    if (fabF) fabF.addEventListener('keydown', function(e){ if (e.key === 'Enter') nameF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
     nameF.addEventListener('keydown', function(e){ if (e.key === 'Enter') yearF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
     yearF.addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('modal-create').click(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
 }
@@ -1369,6 +1498,10 @@ if (submitBtn) {
         // chose qui remplace les quatre selecteurs pour les ventes internes. Laisser
         // ce champ facultatif rendrait la soumission moins lisible qu'avant, alors
         // que le but est l'inverse.
+        // Employe non vendeur : le vendeur responsable est obligatoire (seul lui recevra la demande)
+        if (doitChoisirVendeur()) {
+            REQUIRED_FIELDS.unshift({ id: 'soumission-vendeur', reqKey: 'soumission.vendeur_required', phKey: null });
+        }
         if (estSansMachine()) {
             REQUIRED_FIELDS.unshift({ id: 'soumission-equipement',
                                       reqKey: 'soumission.equipement_required',
@@ -1528,6 +1661,7 @@ if (submitBtn) {
             if (box.id === 'toggle-limiteur') return;
             if (box.id === 'toggle-camera') return;
             if (box.id === 'toggle-balance') return;
+            if (box.id === 'toggle-godet-avant') return;   // traite juste en dessous
             // Nacelle : traite plus bas, sous-option par sous-option (cumulables).
             if (box.id === 'toggle-nacelle-opts') return;
             if (box.dataset.option === 'Indicateur de charge') return;
@@ -1541,6 +1675,15 @@ if (submitBtn) {
                 optionsOff.push(name);
             }
         });
+
+        // Limiteur du godet avant : seulement sur retrocaveuse (tuile masquee ailleurs).
+        var _godetE = godetAvantInfo();
+        if (_godetE) {
+            optionsOn.push(_godetE.desc);
+            accessoires.push({ code: _godetE.pn, name: _godetE.desc });
+        } else if (selectType.value === 'Retrocaveuse') {
+            optionsOff.push('Limiteur godet avant');
+        }
 
         // Balance : modele choisi + imprimante eventuelle, dans le courriel aussi.
         var _balBoxE = document.getElementById('toggle-balance');
@@ -1572,12 +1715,12 @@ if (submitBtn) {
         var dateInstall = _fieldVal('soumission-date-install');
         var userName = currentUser ? currentUser.name : i18n.t('common.user_not_connected');
         // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
-        var vendeurEmail = '';
+        // Vendeur concerne : associe au client, le vendeur lui-meme, ou celui choisi par
+        // un employe (vendeurDestinataire). Seul lui reste parmi les vendeurs destinataires.
+        var vendeurEmail = vendeurDestinataire();
         var vendeurName = '';
-        if (currentUser && currentUser.vendeurEmail) {
-            vendeurEmail = currentUser.vendeurEmail;
-            // Find vendeur name from vendeurs list
-            var v = vendeursList.find(function(vv) { return vv.email === vendeurEmail; });
+        if (vendeurEmail) {
+            var v = vendeursList.find(function(vv) { return String(vv.email || '').toLowerCase() === vendeurEmail; });
             vendeurName = v ? v.name : vendeurEmail;
         }
 
@@ -1592,9 +1735,9 @@ if (submitBtn) {
         // Separateur point-virgule (Outlook ne separe PAS les adresses par virgule dans
         // un lien mailto -> il les met toutes dans un seul champ invalide et le courriel
         // ne part pas). Filtre aussi les entrees vides/espaces.
-        var mailTo = salesEmails
+        var mailTo = filtrerVendeurs(salesEmails
             .map(function(e) { return (e || '').trim(); })
-            .filter(function(e) { return e; })
+            .filter(function(e) { return e; }), vendeurEmail)
             .join(';');
         var subject = i18n.t('email.soumission_subject', { fab: fab, modele: modele, annee: annee });
         // Specs de la machine, pour le bloc de specs du courriel (EMAIL_SPEC_FIELDS).
@@ -2030,7 +2173,8 @@ function majEtiquetteLieu() {
 function selectionAInstallation() {
     return (window.__selectionRows || []).some(function (r) {
         var pr = priceFor(r.code);
-        return typeof pr.install === 'number' && pr.install !== 0;
+        if (typeof pr.install === 'number') return pr.install !== 0;
+        return !!PRICE_CODES[r.code];    // pas de prix (invite) : drapeau public
     });
 }
 // LIGNES FACTURABLES — une par chose vendue, produit ET installation. UN SEUL
@@ -2375,6 +2519,7 @@ function updateSelectedSummary() {
         if (box.id === 'toggle-camera') return;
         if (box.id === 'toggle-creusage') return;
         if (box.id === 'toggle-balance') return;
+        if (box.id === 'toggle-godet-avant') return;   // traite juste en dessous (1500-0603)
         if (box.dataset.option === 'Indicateur de charge') return;
         if (box.classList.contains('active')) {
             var od = INDIVIDUAL_CODES[box.dataset.option];
@@ -2382,6 +2527,10 @@ function updateSelectedSummary() {
             else items.push(fmtItem('', box.dataset.option));   // repli : passe par tBom
         }
     });
+
+    // Limiteur du godet avant (retrocaveuse) : PN et libelle lus dans _bom_labels.
+    var _godet = godetAvantInfo();
+    if (_godet) items.push(fmtItem(_godet.pn, i18n.tBom(_godet.desc)));
 
     // Balance : le modele choisi (0010 installee / 0011 valise) + l'imprimante
     // eventuelle (0014 thermique / 0015 carbone), chacune en choix exclusif.
@@ -2519,12 +2668,13 @@ function updateSelectedSummary() {
             }
             return '<td style="padding:4px 12px 4px 0;text-align:center;white-space:nowrap;vertical-align:top">' + inner + '</td>';
         };
+        var sansPrix = sansAccesPrix();
         var ligne = function (libelle, montant, invCode) {
             return '<tr>' +
                 invTd(invCode) +
                 '<td style="padding:4px 10px 4px 0;vertical-align:top">' + libelle + '</td>' +
-                '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
-                + cell(montant) + '</td>' +
+                (sansPrix ? '' : '<td style="padding:4px 0 4px 8px;text-align:right;white-space:nowrap">'
+                + cell(montant) + '</td>') +
                 '</tr>';
         };
         // UNE LIGNE PAR CHOSE VENDUE, un seul prix au bout (demande de Jacquot,
@@ -2558,7 +2708,7 @@ function updateSelectedSummary() {
                 '</tr>';
         }
         var noteRow = currentNotes
-            ? '<tr><td colspan="' + (showInv ? 3 : 2) + '" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
+            ? '<tr><td colspan="' + ((showInv ? 3 : 2) - (sansPrix ? 1 : 0)) + '" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
             : '';
         var invTh = showInv
             ? '<th style="text-align:center;padding:0 12px 5px 0;white-space:nowrap" title="' + escAttrInv(i18n.t('soum.tbl_onhand_title')) + '">' + i18n.t('soum.tbl_onhand') + '</th>'
@@ -2577,8 +2727,10 @@ function updateSelectedSummary() {
             '<thead><tr style="border-bottom:1px solid #555;color:#9fb4c8;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em">' +
             invTh +
             '<th style="text-align:left;padding:0 10px 5px 0">' + i18n.t('soum.tbl_product') + '</th>' +
-            '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_price') + '</th>' +
-            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>' + invNote;
+            (sansPrix ? '' : '<th style="text-align:right;padding:0 0 5px 8px">' + i18n.t('soum.tbl_price') + '</th>') +
+            '</tr></thead><tbody>' + rows + totalRow + noteRow + '</tbody></table>' + invNote +
+            (sansPrix ? '<div class="prix-compte-requis" style="margin-top:12px;padding:10px 12px;border:1px solid #FF8C00;border-radius:8px;background:rgba(255,140,0,0.08);color:#ffd9a8;font-size:0.85rem">'
+                        + i18n.t('soum.prices_need_account') + '</div>' : '');
         // Filigrane du nom du user en fond du tableau de prix (dissuasion capture d'ecran).
         // Applique seulement si des prix sont reellement affiches.
         list.style.backgroundImage = '';   // ancienne approche (fond direct) retiree
@@ -2691,6 +2843,15 @@ function updateIdcLockValveWarning() {
 // Items du kit "a valider" (etat 'v') de la machine selectionnee.
 // 'v' ne vient que des corrections (overrides) -> on lit currentBomOverrides (type-agnostique).
 // BD maitre : retourne {pn, desc} (description LONGUE) depuis _bom_labels, ou null si absent.
+// Limiteur du godet avant choisi ? -> { pn, desc } du code 0603 de la retrocaveuse
+// (BD maitre : _bom_labels), sinon null. Une seule lecture pour l'ecran et le courriel.
+function godetAvantInfo() {
+    var box = document.getElementById('toggle-godet-avant');
+    if (!box || box.style.display === 'none' || !box.classList.contains('active')) return null;
+    if (!selectType || selectType.value !== 'Retrocaveuse') return null;
+    var info = bomDescInfo('Retrocaveuse', '0603');
+    return (info && info.pn) ? info : { pn: '1500-0603', desc: 'Limiteur de portee godet avant (Front loader)' };
+}
 function bomDescInfo(type, code) {
     try {
         var labels = machinesData[type]._bom_labels;

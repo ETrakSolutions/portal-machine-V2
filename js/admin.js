@@ -123,6 +123,14 @@ function updateHubUI() {
         if (tileMU) {
             tileMU.style.display = (currentUser.permissions.addUsers && !currentUser.permissions.modifAccounts) ? 'block' : 'none';
         }
+        // Tuile Cedule des techniciens : roles internes (decision Jacquot, 2026-09-25).
+        // Le serveur (getcedule) refait le meme controle : la tuile n'est qu'un raccourci.
+        var tileCedule = document.getElementById('hub-tile-cedule');
+        if (tileCedule) {
+            var ceduleRoles = { super_admin: true, administrateur: true, vente_interne: true,
+                                vente_externe: true, technicien: true, ingenierie: true };
+            tileCedule.style.display = (ceduleRoles[currentUser.role] && !currentUser.isGuest) ? 'block' : 'none';
+        }
         // Tuile Export : Super Admin + Administrateur
         var tileExport = document.getElementById('hub-tile-export');
         if (tileExport) {

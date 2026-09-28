@@ -6,7 +6,7 @@ photo au backend Apps Script sous la cle protegee `inventory_etrak` (ecriture pa
 le PIN seulement, jamais lisible par le GET public). La page Soumission l'affiche
 aux roles qui ont la permission « Inventaire » (action 'getinventory').
 
-Liste des pieces : relue a chaque execution sur le site en ligne (data/prices.json,
+Liste des pieces : relue a chaque execution sur le site en ligne (data/price-codes.json,
 _bom_labels de data/machines.json, lignes _custom des data/overrides/<type>.json,
 PN ecrits en dur dans js/kit-rules.js et js/soumission.js, dont les harnais).
 Aucune liste a tenir a jour ici.
@@ -50,7 +50,7 @@ def fetch(path):
 
 
 def portal_part_numbers():
-    pns = set(json.loads(fetch('data/prices.json')).keys())
+    pns = set(json.loads(fetch('data/price-codes.json')).keys())   # codes tarifes, sans montants
     machines = json.loads(fetch('data/machines.json'))
     for v in machines.values():
         if isinstance(v, dict):

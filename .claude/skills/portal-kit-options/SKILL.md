@@ -58,7 +58,7 @@ masse via les overrides, que les admins peuvent ensuite ajuster machine par mach
 
 ### Note sur le 0004 — le cas qui a servi de leçon (2026-08-10)
 
-Le `1500-0004` **n'est pas un kit physique** : `data/prices.json` donne `item: null,
+Le `1500-0004` **n'est pas un kit physique** : la liste de prix donne `item: null,
 install: 790 $`. C'est **du temps de main-d'œuvre**, parce que l'espace est plus restreint
 pour le technicien. Le critère métier n'est donc PAS le poids, c'est **la gamme dans
 laquelle le FABRICANT classe la machine** (décision Jacquot, 2026-08-10 : classification
@@ -117,7 +117,8 @@ Si l'utilisateur édite en direct dans l'UI pendant ce temps, passer par le back
 3. Ajouter le code dans `EXC_CODES` de `js/kit-rules.js` et son défaut dans `excDefaults()`.
 4. Ajouter le libellé + PN dans `_bom_labels` du type dans `data/machines.json` (la BD est
    maître pour le texte et le PN — ne pas coder en dur).
-5. Ajouter le prix dans `data/prices.json` (`item` et `install`).
+5. Ajouter le prix dans la liste maîtresse puis lancer `scripts/publier_prix.py` — voir
+   « Les prix ne sont PAS dans le dépôt » dans `portal-machine-db`.
 6. Vérifier que la soumission le reprend : `getKitSummary()` dans `js/soumission.js` itère
    sur `KitRules.EXC_CODES`.
 7. Bumper les caches, tester, pousser.

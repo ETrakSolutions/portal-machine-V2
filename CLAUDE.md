@@ -21,6 +21,7 @@ canonique** : modèle de données, pièges, règle de validation fabricant. Le l
 | Changer un état de kit / jeton BOM | `portal-kit-options` |
 | Renommer ou réordonner un champ de specs | `portal-rename-field` |
 | Tester, bumper les caches, pousser, vérifier | `portal-deploy` |
+| Serveur Apps Script : sécurité, prix, cédule, redéployer, secrets | `portal-backend` |
 
 Un fait technique n'a qu'**un seul domicile**. Si tu dois le corriger, corrige-le là et
 nulle part ailleurs — la duplication entre skills est ce qui a laissé passer l'erreur du
@@ -54,7 +55,7 @@ le skill concerné, pas là-bas.
 | `js/kit-rules.js` | **source unique** des règles BOM (défauts, `DRAIN_PREFIXES`, harnais) |
 | `data/machines.json` | specs + `_bom_labels` (libellés et PN du catalogue) |
 | `data/overrides/<type>.json` | jetons BOM et notes par machine — écrits par le backend |
-| `data/prices.json` | `item` et `install` par PN |
+| `data/price-codes.json` | codes tarifés **sans montants** — les prix sont sur le serveur, jamais dans le dépôt (`scripts/publier_prix.py`, voir `portal-machine-db`) |
 | `js/app.js` / `machine.html` | fiche machine et tableau du kit |
 | `js/soumission.js` | soumission; `getKitSummary()` construit le kit facturé |
 | `js/translations.js` | i18n FR/EN, dont les clés `spec.<champ>` |
@@ -75,6 +76,7 @@ Windows.
 
 ## Contrôles
 
+`node scripts/banc_backend/tous.js` (backend Apps Script, à lancer avant tout commit de `Code.gs`),
 `scripts/controle_sante_portail.py` (santé données + code), `scripts/check_portal_integrity.py`
 (appelé par le hook pre-commit), `scripts/selenium_mini_fabricant_test.py` (modèle de test
 navigateur bout en bout, sur le site en ligne).

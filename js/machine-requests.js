@@ -211,12 +211,30 @@
 
         // Ferme la demande. C'est le SEUL passage a 'done' desormais : generer le squelette
         // ne suffit plus, il faut que quelqu'un constate que les specs sont la.
+        // S'il y a un courriel de demandeur, "Terminee" ouvre aussi le courriel pour le prevenir
+        // (meme mailto que "Prevenir le demandeur" dans edit-machine : envoye depuis l'Outlook
+        // de l'admin, le Gmail du backend etant bloque par le M365 de gryb.ca).
         function doneRequest(req) {
-            if (!confirm(t('dbr.confirm_done', 'Marquer cette demande comme terminee ?'))) return;
+            var notify = !!req.requesterEmail;
+            var msg = notify
+                ? i18n.t('mr.confirm_done_notify', { name: req.requester || req.requesterEmail })
+                : t('dbr.confirm_done', 'Marquer cette demande comme terminee ?');
+            if (!confirm(msg)) return;
             req.status = 'done';
             req.doneDate = new Date().toISOString().slice(0, 10);
             req.doneBy = (user && (user.name || user.username)) || '';
-            saveRequests(requests).then(function () { renderTable(); toast(t('dbr.done', 'Terminee')); });
+            saveRequests(requests).then(function () {
+                renderTable(); toast(t('dbr.done', 'Terminee'));
+                if (notify) notifyRequester(req);
+            });
+        }
+
+        function notifyRequester(req) {
+            var p = { fab: req.fab, model: req.modele, year: req.annee, type: t('type.' + req.type, req.type),
+                      link: 'https://etraksolutions.github.io/portal-machine-V2/machine.html' };
+            window.location.href = 'mailto:' + encodeURIComponent(req.requesterEmail) +
+                '?subject=' + encodeURIComponent(i18n.t('edit.notify_subject', p)) +
+                '&body=' + encodeURIComponent(i18n.t('edit.notify_body', p));
         }
 
         function rejectRequest(req) {

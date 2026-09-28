@@ -10,7 +10,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE = 'https://etraksolutions.github.io/portal-machine-V2/'
 FICHIERS = ['data/machines.json', 'data/overrides/excavatrice.json',
-            'data/overrides/grue-mobile.json', 'data/prices.json',
+            'data/overrides/grue-mobile.json', 'data/price-codes.json',
             'js/kit-rules.js', 'js/app.js', 'js/soumission.js', 'js/edit-machine.js',
             'index.html', 'machine.html', 'database.html', 'soumission.html',
             'edit-machine.html']

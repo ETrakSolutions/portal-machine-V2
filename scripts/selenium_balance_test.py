@@ -2,7 +2,7 @@
 """Test du bloc Balance restructure.
 
 Regles metier (Jacquot, 2026-08-05) :
-  - LOADER seulement (avant : Telehandler, Loader, Retrocaveuse) ;
+  - LOADER et RETROCAVEUSE (Loader seul du 2026-08-05 au 2026-09-25 ; avant : Telehandler aussi) ;
   - modele de balance au choix exclusif : 1200-0010 (installee e-Trak) ou
     1200-0011 (valise, installation client) ;
   - imprimante au choix exclusif : 1200-0014 thermique ou 1200-0015 carbone ;
@@ -31,12 +31,14 @@ httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
 threading.Thread(target=httpd.serve_forever, daemon=True).start()
 
 MJ = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-8'))
-PRIX = json.load(open(os.path.join(REPO, 'data', 'prices.json'), encoding='utf-8'))
+sys.path.insert(0, os.path.join(REPO, 'scripts'))
+from _prix_test import PRIX, installer_prix, SESSION_TEST_JS   # prix : serveur simule
 
 opts = Options()
 for a in ['--headless=new', '--no-sandbox', '--disable-gpu', '--window-size=1500,1100']:
     opts.add_argument(a)
 dv = webdriver.Chrome(options=opts)
+installer_prix(dv)
 fails = []
 
 
@@ -96,14 +98,13 @@ try:
           PRIX['1200-0010'].get('install') == 1320)
 
     dv.get(BASE + '/index.html')
-    dv.execute_script("localStorage.setItem('portal_user', JSON.stringify("
-                      "{role:'super_admin', email:'t@e', name:'T',"
-                      " permissions:{modifBom:true, voirPrix:true}}));")
+    dv.execute_script(SESSION_TEST_JS)
 
-    print('--- 2) perimetre : Loader seulement ---')
-    aller('Loader')
-    check('bloc Balance visible sur Loader', visible('toggle-balance'))
-    for typ in ('Telehandler', 'Retrocaveuse', 'Excavatrice'):
+    print('--- 2) perimetre : Loader et Retrocaveuse ---')
+    for typ in ('Loader', 'Retrocaveuse'):
+        aller(typ)
+        check('bloc Balance visible sur %s' % typ, visible('toggle-balance'))
+    for typ in ('Telehandler', 'Excavatrice'):
         aller(typ)
         check('bloc Balance masque sur %s' % typ, not visible('toggle-balance'))
 
