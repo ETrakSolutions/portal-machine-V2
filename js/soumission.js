@@ -1920,14 +1920,77 @@ if (submitBtn) {
         window.__lastSoumissionEpicor = _epiBlock;
         // Cache un eventuel panneau de secours d'un envoi precedent.
         hideSoumissionFallback();
+        window.__soumissionLongue = null;
+        // Demande trop longue pour un lien mailto : Outlook et Windows le coupent
+        // sans prevenir (voir MAILTO_MAX). On copie le corps complet et on ouvre un
+        // courriel avec seulement destinataires + objet, ou il reste a coller.
+        if (mailUrl.length > MAILTO_MAX) {
+            envoyerDemandeLongue(toAll, subject, body);
+            return;
+        }
         // Point 2 : le panneau de copie (Copier la demande / Copier pour Epicor) est
         // TOUJOURS affiche apres une generation, pas seulement si le courriel echoue.
         renderSoumissionFallback(false);
         // Detecte si le client courriel s'ouvre; sinon, bascule le panneau en mode "alerte".
         armMailtoFallback();
         // Envoi via le client courriel de l'utilisateur (part de sa propre adresse).
-        window.location.href = mailUrl;
+        ouvrirLienCourriel(mailUrl);
         } // end sendEmail
+    });
+}
+
+// Longueur maximale (lien ENCODE : espace et saut de ligne = 3 caracteres, accent
+// = 6) sous laquelle le courriel s'ouvre directement. Mesure du 2026-09-28 sur le
+// poste de Steve (navigateur + Outlook classique) : complet jusqu'a 28 266, rien
+// ne s'ouvre a 56 468 (limite Windows ~32 000). Les dealers utilisent d'autres
+// logiciels (Gmail web, nouvel Outlook, Mac) aux limites inconnues : seuil prudent
+// choisi par Steve. Une soumission d'une machine avec prix fait ~3 000.
+var MAILTO_MAX = 8000;
+
+// Seul point qui ouvre le client courriel (les tests le remplacent pour lire le lien).
+function ouvrirLienCourriel(url) { window.location.href = url; }
+
+// Copie un texte ; ok() si c'est fait, ko() sinon. Sans alert : c'est l'appelant
+// qui decide quoi dire.
+function copierTexte(text, ok, ko) {
+    var repli = function () {
+        var fait = false;
+        try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            fait = document.execCommand('copy');
+            document.body.removeChild(ta);
+        } catch (e) { fait = false; }
+        (fait ? ok : ko)();
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(ok).catch(repli);
+    } else {
+        repli();
+    }
+}
+
+// Demande longue : corps complet dans le presse-papiers, puis courriel avec les
+// destinataires et l'objet deja remplis, et une ligne qui dit de coller. Si la
+// copie echoue, on N'OUVRE PAS de courriel (il serait vide) : le panneau passe
+// en alerte et le bouton « Copier la demande » prend le relais.
+function envoyerDemandeLongue(to, subject, body) {
+    var fr = soumissionLang() === 'fr';
+    copierTexte(body, function () {
+        window.__soumissionLongue = 'copiee';
+        renderSoumissionFallback(false);
+        armMailtoFallback();
+        var invite = fr ? '[Colle ici la demande complète : Ctrl+V]\n\n'
+                        : '[Paste the full request here: Ctrl+V]\n\n';
+        ouvrirLienCourriel('mailto:' + to + '?subject=' + encodeURIComponent(subject) +
+                           '&body=' + encodeURIComponent(invite));
+    }, function () {
+        window.__soumissionLongue = 'echec';
+        renderSoumissionFallback(true);
     });
 }
 
@@ -2001,6 +2064,20 @@ function renderSoumissionFallback(auto) {
         'Otherwise, just use the <b>Copy the request</b> button above.'
     ];
     var itemsHtml = helpItems.map(function (i) { return '<li>' + i + '</li>'; }).join('');
+    // Demande trop longue pour le lien courriel (envoyerDemandeLongue).
+    var longue = window.__soumissionLongue;
+    if (longue === 'copiee' && auto) {
+        text += fr ? ' <b>Ta demande complète est déjà copiée</b> : il suffit de la coller (Ctrl+V).'
+                   : ' <b>Your full request is already copied</b>: just paste it (Ctrl+V).';
+    } else if (longue === 'copiee') {
+        title = fr ? '📋 Demande longue : colle-la dans le courriel' : '📋 Long request: paste it into the email';
+        text = fr ? 'Ta demande est trop longue pour s\'ouvrir directement dans le courriel. Elle a été <b>copiée au complet</b> : dans le courriel qui vient de s\'ouvrir, colle-la avec <b>Ctrl+V</b> à la place de la ligne entre crochets.'
+                  : 'Your request is too long to open directly in the email. It has been <b>copied in full</b>: in the email that just opened, paste it with <b>Ctrl+V</b> in place of the line in brackets.';
+    } else if (longue === 'echec') {
+        title = fr ? '⚠️ Demande longue : copie-la avant d\'envoyer' : '⚠️ Long request: copy it before sending';
+        text = fr ? 'Ta demande est trop longue pour s\'ouvrir directement dans le courriel, et la copie automatique n\'a pas fonctionné. Clique sur <b>Copier la demande</b>, puis colle-la dans un nouveau courriel.'
+                  : 'Your request is too long to open directly in the email, and the automatic copy did not work. Click <b>Copy the request</b>, then paste it into a new email.';
+    }
     box.className = 'soumission-fallback' + (auto ? ' is-auto' : '');
     box.innerHTML =
         '<p class="soumission-fallback-title">' + title + '</p>' +
