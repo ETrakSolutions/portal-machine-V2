@@ -6,8 +6,9 @@
  * listant ses clients rendus a un palier, avec le nombre de jours d'inactivite.
  * Demande de Steve et Jacquot, 2026-09-24.
  *
- * Paliers (INACTIVITE_PALIERS) : 1er rappel a 30 jours, 2e a 45 jours, dernier a
- * 60 jours. Apres le dernier, plus rien tant que le client ne revient pas. Un client
+ * Paliers (INACTIVITE_PALIERS) : rappels a 30, 60 et 90 jours, puis un dernier a
+ * 365 jours qui suggere de desactiver ou supprimer le profil (decision Steve,
+ * 2026-09-28). Apres celui-la, plus rien tant que le client ne revient pas. Un client
  * qui atteint un palier sans avoir recu le precedent (ex. deja a 70 jours au premier
  * envoi) recoit seulement le rappel du palier atteint.
  *
@@ -31,7 +32,7 @@
  *  - retirerRappelsInactivite()   : desactive l'envoi quotidien
  */
 
-var INACTIVITE_PALIERS = [30, 45, 60];   // jours ; le dernier est le rappel final
+var INACTIVITE_PALIERS = [30, 60, 90, 365];   // jours ; le dernier (1 an) suggere de desactiver le profil
 var INACTIVITE_ROLES = ['dealer', 'distributeur'];
 var INACTIVITE_HEURE = 8;   // heure de l'envoi quotidien (fuseau du projet Apps Script)
 var INACTIVITE_LOTS_JOURS = [0, 5, 9, 14];   // premier envoi etale : 4 lots sur 14 jours
@@ -79,7 +80,7 @@ function _palierAtteint(jours) {
 // Libelle du rappel : 1er, 2e, ... dernier
 function _libelleRappel(palier) {
   var i = INACTIVITE_PALIERS.indexOf(palier);
-  if (i === INACTIVITE_PALIERS.length - 1) return 'Dernier rappel';
+  if (i === INACTIVITE_PALIERS.length - 1) return 'Inactif depuis 1 an';
   return (i === 0 ? '1er' : (i + 1) + 'e') + ' rappel';
 }
 
@@ -189,7 +190,8 @@ function _courrielRappel(nomVendeur, clients) {
            td + (final ? '<b style="color:#F41C22">' : '') + _html(c.rappel) + (final ? '</b>' : '') + '</td></tr>';
   }).join('');
   var th = '<th style="background:#145090;color:#fff;padding:5px 8px;text-align:left;border:1px solid #145090">';
-  var paliers = INACTIVITE_PALIERS.join(', ').replace(/, (\d+)$/, ' et $1');
+  // « 30, 60 et 90 jours d'inactivité, puis à 1 an »
+  var paliers = INACTIVITE_PALIERS.slice(0, -1).join(', ').replace(/, (\d+)$/, ' et $1') + ' jours d\'inactivité, puis à 1 an';
   var html = '<div style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1A1A1A">' +
     '<p>Bonjour ' + _html(prenom) + ',</p>' +
     '<p>Petit rappel amical : ' + (n > 1 ? 'ces clients, dont vous êtes le vendeur associé, ne se sont pas connectés'
@@ -197,15 +199,19 @@ function _courrielRappel(nomVendeur, clients) {
     ' au Portail e-Trak depuis un bon moment. C\'est peut-être une bonne occasion de prendre de leurs nouvelles.</p>' +
     '<table style="border-collapse:collapse;font-size:10pt"><tr>' + th + 'Client</th>' + th + 'Rôle</th>' + th + 'Courriel</th>' +
     th + 'Inactif depuis</th>' + th + 'Dernière activité</th>' + th + 'Rappel</th></tr>' + lignes + '</table>' +
-    (dernier ? '<p>Pour les clients marqués <b style="color:#F41C22">Dernier rappel</b>, c\'est le dernier courriel automatique à leur sujet.</p>' : '') +
-    '<p style="color:#464646;font-size:9pt">Rappels envoyés à ' + paliers + ' jours d\'inactivité, puis plus rien tant que le client ne revient pas sur le portail. ' +
+    (dernier ? '<p>Pour les clients marqués <b style="color:#F41C22">Inactif depuis 1 an</b>, nous suggérons de <b>désactiver leur profil</b>, ' +
+               'ou de demander sa suppression à un administrateur s\'il n\'est plus client. Vous pouvez le désactiver vous-même dans ' +
+               '<b>Portail e-Trak › Mes utilisateurs</b> (cliquez sur le client, puis décochez « Compte actif »). ' +
+               'C\'est le dernier courriel automatique à leur sujet.</p>' : '') +
+    '<p style="color:#464646;font-size:9pt">Rappels envoyés à ' + paliers + ', puis plus rien tant que le client ne revient pas sur le portail. ' +
     'Portail e-Trak : https://etraksolutions.github.io/portal-machine-V2/</p></div>';
   var texte = 'Bonjour ' + prenom + ',\n\nPetit rappel amical : ' + n + ' client(s) dont vous êtes le vendeur associé ne se sont pas connectés au Portail e-Trak depuis un bon moment :\n\n' +
     clients.map(function (c) {
       return '- ' + c.nom + ' (' + c.courriel + ') : inactif depuis ' + c.jours + ' jours' +
              (c.jamaisConnecte ? ' (jamais connecté, compte créé le ' + c.derniere + ')' : ' (dernière activité le ' + c.derniere + ')') + ' — ' + c.rappel;
     }).join('\n') +
-    '\n\nRappels envoyés à ' + paliers + ' jours d\'inactivité.\nPortail e-Trak : https://etraksolutions.github.io/portal-machine-V2/';
+    (dernier ? '\n\nClients inactifs depuis 1 an : nous suggérons de désactiver leur profil (Portail e-Trak > Mes utilisateurs), ou de demander sa suppression à un administrateur.' : '') +
+    '\n\nRappels envoyés à ' + paliers + '.\nPortail e-Trak : https://etraksolutions.github.io/portal-machine-V2/';
   return { sujet: sujet, html: html, texte: texte };
 }
 
