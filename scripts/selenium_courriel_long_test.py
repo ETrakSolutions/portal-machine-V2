@@ -36,7 +36,9 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 
 
 if not SUR_LE_LIVE:
-    httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
+    socketserver.ThreadingTCPServer.allow_reuse_address = True
+socketserver.ThreadingTCPServer.daemon_threads = True
+httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Quiet)   # plusieurs requetes a la fois
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
 print('CIBLE :', BASE)
 

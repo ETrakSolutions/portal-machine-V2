@@ -1740,16 +1740,9 @@ if (submitBtn) {
             .filter(function(e) { return e; }), vendeurEmail)
             .join(';');
         var subject = i18n.t('email.soumission_subject', { fab: fab, modele: modele, annee: annee });
-        // Specs de la machine, pour le bloc de specs du courriel (EMAIL_SPEC_FIELDS).
-        // Il y avait ici un `var kitItems = getKitSummary(...)` jamais lu : les
-        // produits du courriel viennent des lignes A L'ECRAN (window.__selectionRows),
-        // pas d'un second calcul. Retire le 2026-09-03 — un appel mort qui refaisait
-        // tout le kit a chaque construction de courriel, et qui invitait a croire que
-        // le courriel avait sa propre source de verite.
-        var specs = {};
-        if (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] && machinesData[type][fab][annee][modele]) {
-            specs = machinesData[type][fab][annee][modele];
-        }
+        // Tout ce qui decrit LA MACHINE (kit, prix, installation, Epicor) : voir
+        // photoMachine(). Le reste du courriel (client, lieu, vendeur) est commun.
+        var photo = photoMachine();
 
         // Load product codes then build email
         var pcApiKey = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
@@ -1763,24 +1756,6 @@ if (submitBtn) {
             .catch(function() { sendEmail([]); });
 
         function sendEmail(productCodes) {
-        // Build specs text — only key fields, highlight special values
-        var EMAIL_SPEC_FIELDS = ['Type de traction', 'Type de boom', 'Swing boom', 'Voltage machine (V/type)'];
-        var specsText = '';
-        EMAIL_SPEC_FIELDS.forEach(function(sKey) {
-            var sVal = specs[sKey];
-            if (!sVal || sVal === 'A completer') return;
-            var highlight = false;
-            if (sKey === 'Type de traction' && sVal === 'Roue') highlight = true;
-            if (sKey === 'Type de boom' && sVal.indexOf('2 parties') >= 0) highlight = true;
-            if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
-            if (sKey === 'Voltage machine (V/type)' && String(sVal).indexOf('12V') >= 0) highlight = true;
-            if (highlight) {
-                specsText += '  ' + i18n.tSpec(sKey) + ' : *** ' + String(i18n.tVal(sVal)).toUpperCase() + ' ***\n';
-            } else {
-                specsText += '  ' + i18n.tSpec(sKey) + ' : ' + i18n.tVal(sVal) + '\n';
-            }
-        });
-
         var body =
             i18n.t('email.soumission_header') + '\n' +
             '================================\n\n';
@@ -1802,90 +1777,19 @@ if (submitBtn) {
         if (dateInstall) {
             body += i18n.t('email.install_date', { date: dateInstall }) + '\n';
         }
-        if (currentNotes && currentNotes.trim()) {
-            body += i18n.t('email.notes_machine', { notes: currentNotes.trim() }) + '\n';
+        if (photo.notes) {
+            body += i18n.t('email.notes_machine', { notes: photo.notes }) + '\n';
         }
-        if (companyName || clientEmail || nbSystemes || lieuInstall || dateInstall || (currentNotes && currentNotes.trim())) {
+        if (companyName || clientEmail || nbSystemes || lieuInstall || dateInstall || photo.notes) {
             body += '\n';
         }
 
-        if (estSansMachine()) {
-            // Le champ libre REMPLACE les quatre lignes de machine. Ecrire « Type :
-            // __sans_machine__ » ou quatre lignes vides serait pire que rien pour
-            // les ventes internes.
-            body += i18n.t('email.machine_header') + '\n' +
-                i18n.t('email.equipement', { eq: _fieldVal('soumission-equipement') || '—' }) + '\n';
-        } else {
-            body += i18n.t('email.machine_header') + '\n' +
-                i18n.t('email.type', { type: i18n.t('type.' + type) }) + '\n' +
-                i18n.t('email.fabricant', { fab: fab }) + '\n' +
-                i18n.t('email.modele', { modele: modele }) + '\n' +
-                i18n.t('email.annee', { annee: annee }) + '\n';
-        }
-
-        // Le dire explicitement, quel que soit le mode : sans cette ligne, une
-        // soumission sans montant d'installation se lit comme un oubli de prix,
-        // pas comme un choix du vendeur.
-        if (reponseInstall() === 'non') body += i18n.t('email.install_client') + '\n';
-
-        // Warning : items du kit a valider
-        var _avItems = aValiderItems();
-        if (_avItems.length > 0) {
-            body += (typeof i18n !== 'undefined') ? i18n.t('email.validate_items') : '\n*** ATTENTION - ITEMS A VALIDER (a confirmer avec e-Trak) ***\n';
-            _avItems.forEach(function (i) { body += '  /!\\ ' + i.name + (i.code ? ' (' + i.code + ')' : '') + '\n'; });
-        }
-
-        // Multi-axe sur retrocaveuse : analyse ingenierie requise avant soumission.
-        if (_limVal === 'Multi-axe' && type === 'Retrocaveuse') {
-            body += (typeof i18n !== 'undefined') ? i18n.t('email.multiaxe_engineering') : '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
-        }
-
-        // Specs machine
-        if (specsText) {
-            body += '\n' + i18n.t('email.specs_header') + '\n' + specsText;
-        }
-
-        // Produits / kit demandes : EXACTEMENT la meme selection que l'ecran.
-        // window.__selectionRows = [{code, name, oblig}] (genere par updateSelectedSummary)
-        var _totItem = 0, _totInstall = 0;
-        var selRows = window.__selectionRows || [];
-        // Repli sur l'ancienne liste plate si la version structuree manque.
-        if (selRows.length === 0 && window.__selectionLines) {
-            selRows = window.__selectionLines.map(function (l) {
-                var i = l.indexOf(' — ');
-                return { code: i >= 0 ? l.slice(0, i).trim() : '', name: i >= 0 ? l.slice(i + 3) : l, oblig: false };
-            });
-        }
-
-        if (selRows.length > 0) {
-            var anyOblig = false;
-            body += '\n' + i18n.t('email.products_header') + '\n';
-            selRows.forEach(function (r) {
-                if (r.oblig) anyOblig = true;
-                var mark = r.oblig ? '* ' : '';
-                body += '  - ' + mark + (r.code ? r.code + '  ' : '') + r.name + '\n';
-            });
-            if (anyOblig) body += i18n.t('email.kit_included') + '\n';
-        }
-
-        // Totaux calcules sur les MEMES lignes que le tableau a l'ecran et que le
-        // bloc Epicor (lignesFacturables) — plus de calcul parallele ici.
-        lignesFacturables().forEach(function (l) {
-            if (typeof l.montant !== 'number') return;
-            if (l.kind === 'install') _totInstall += l.montant; else _totItem += l.montant;
-        });
-
-        // Une seule ligne de totaux en bas (prix indicatifs, hors taxes).
-        if (_totItem > 0 || _totInstall > 0) {
-            body += '\n' + i18n.t('email.total_parts') + ' : ' + fmtPrice(_totItem) +
-                    '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(_totInstall) +
-                    '   ' + i18n.t('email.total_indicative') + '\n';
-        }
+        body += texteMachine(photo);
 
         // Bloc Epicor (point 1) : une ligne par item, deux colonnes separees par
         // une tabulation (Code / Qte). Luna le copie depuis le courriel et le
         // colle directement dans la grille de commande Epicor.
-        var _epiBlock = epicorBlockText();
+        var _epiBlock = texteEpicor(photo.epicor);
         if (_epiBlock) {
             body += '\n' + i18n.t('email.epicor_header') + '\n' + _epiBlock + '\n';
         }
@@ -1937,6 +1841,145 @@ if (submitBtn) {
         ouvrirLienCourriel(mailUrl);
         } // end sendEmail
     });
+}
+
+// ===========================================================================
+// PHOTO D'UNE MACHINE — tout ce que le courriel dit de LA machine configuree a
+// l'ecran, fige dans un objet simple (aucune reference au DOM). Base du panier
+// multi-machines (demande de Gord) : chaque machine ajoutee sera une photo, et le
+// courriel empilera texteMachine() de chacune. Pour une seule machine, le courriel
+// reste identique a celui d'avant le decoupage (selenium_photo_machine_test.py).
+// ===========================================================================
+// Specs reprises dans le courriel ; les valeurs inhabituelles sont mises en evidence.
+var EMAIL_SPEC_FIELDS = ['Type de traction', 'Type de boom', 'Swing boom', 'Voltage machine (V/type)'];
+
+function photoMachine() {
+    var type = selectType.value, fab = selectFabricant.value,
+        annee = selectAnnee.value, modele = selectModele.value;
+    // Il y avait ici (dans le clic d'envoi) un `var kitItems = getKitSummary(...)`
+    // jamais lu : les produits du courriel viennent des lignes A L'ECRAN
+    // (window.__selectionRows), pas d'un second calcul. Retire le 2026-09-03.
+    var fiche = (machinesData[type] && machinesData[type][fab] && machinesData[type][fab][annee] &&
+                 machinesData[type][fab][annee][modele]) || {};
+    var specs = {};
+    EMAIL_SPEC_FIELDS.forEach(function (k) { if (fiche[k] !== undefined) specs[k] = fiche[k]; });
+    // Produits : EXACTEMENT la meme selection que l'ecran, repli sur l'ancienne
+    // liste plate si la version structuree manque.
+    var produits = window.__selectionRows || [];
+    if (produits.length === 0 && window.__selectionLines) {
+        produits = window.__selectionLines.map(function (l) {
+            var i = l.indexOf(' — ');
+            return { code: i >= 0 ? l.slice(0, i).trim() : '', name: i >= 0 ? l.slice(i + 3) : l, oblig: false };
+        });
+    }
+    var lim = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+    var eq = document.getElementById('soumission-equipement');
+    var copie = function (o) { var c = {}; for (var k in o) c[k] = o[k]; return c; };
+    return {
+        sansMachine: estSansMachine(),
+        equipement: eq ? (eq.value || '').trim() : '',
+        type: type, fab: fab, modele: modele, annee: annee,
+        specs: specs,
+        notes: (currentNotes || '').trim(),
+        installation: reponseInstall(),                 // 'oui' | 'non' | ''
+        aValider: aValiderItems(),
+        multiAxeRetro: !!(lim && lim.value === 'Multi-axe' && type === 'Retrocaveuse'),
+        produits: produits.map(copie),                  // [{code, name, oblig}]
+        lignes: lignesFacturables().map(copie),         // tableau de prix a l'ecran
+        epicor: buildEpicorRows()                       // [{code, qty}]
+    };
+}
+
+// Texte du courriel propre a une machine : identification, avertissements, specs,
+// produits et totaux. Les notes machine et le bloc Epicor sont poses par l'appelant
+// (en tete du courriel et apres les totaux, comme avant le decoupage).
+function texteMachine(p) {
+    var t = '';
+    if (p.sansMachine) {
+        // Le champ libre REMPLACE les quatre lignes de machine. Ecrire « Type :
+        // __sans_machine__ » ou quatre lignes vides serait pire que rien pour
+        // les ventes internes.
+        t += i18n.t('email.machine_header') + '\n' +
+            i18n.t('email.equipement', { eq: p.equipement || '—' }) + '\n';
+    } else {
+        t += i18n.t('email.machine_header') + '\n' +
+            i18n.t('email.type', { type: i18n.t('type.' + p.type) }) + '\n' +
+            i18n.t('email.fabricant', { fab: p.fab }) + '\n' +
+            i18n.t('email.modele', { modele: p.modele }) + '\n' +
+            i18n.t('email.annee', { annee: p.annee }) + '\n';
+    }
+
+    // Le dire explicitement, quel que soit le mode : sans cette ligne, une
+    // soumission sans montant d'installation se lit comme un oubli de prix,
+    // pas comme un choix du vendeur.
+    if (p.installation === 'non') t += i18n.t('email.install_client') + '\n';
+
+    // Warning : items du kit a valider
+    if (p.aValider.length > 0) {
+        t += (typeof i18n !== 'undefined') ? i18n.t('email.validate_items') : '\n*** ATTENTION - ITEMS A VALIDER (a confirmer avec e-Trak) ***\n';
+        p.aValider.forEach(function (i) { t += '  /!\\ ' + i.name + (i.code ? ' (' + i.code + ')' : '') + '\n'; });
+    }
+
+    // Multi-axe sur retrocaveuse : analyse ingenierie requise avant soumission.
+    if (p.multiAxeRetro) {
+        t += (typeof i18n !== 'undefined') ? i18n.t('email.multiaxe_engineering') : '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
+    }
+
+    // Specs machine — seulement les champs cles, valeurs speciales en evidence
+    var specsText = '';
+    EMAIL_SPEC_FIELDS.forEach(function (sKey) {
+        var sVal = p.specs[sKey];
+        if (!sVal || sVal === 'A completer') return;
+        var highlight = false;
+        if (sKey === 'Type de traction' && sVal === 'Roue') highlight = true;
+        if (sKey === 'Type de boom' && sVal.indexOf('2 parties') >= 0) highlight = true;
+        if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
+        if (sKey === 'Voltage machine (V/type)' && String(sVal).indexOf('12V') >= 0) highlight = true;
+        if (highlight) {
+            specsText += '  ' + i18n.tSpec(sKey) + ' : *** ' + String(i18n.tVal(sVal)).toUpperCase() + ' ***\n';
+        } else {
+            specsText += '  ' + i18n.tSpec(sKey) + ' : ' + i18n.tVal(sVal) + '\n';
+        }
+    });
+    if (specsText) {
+        t += '\n' + i18n.t('email.specs_header') + '\n' + specsText;
+    }
+
+    if (p.produits.length > 0) {
+        var anyOblig = false;
+        t += '\n' + i18n.t('email.products_header') + '\n';
+        p.produits.forEach(function (r) {
+            if (r.oblig) anyOblig = true;
+            var mark = r.oblig ? '* ' : '';
+            t += '  - ' + mark + (r.code ? r.code + '  ' : '') + r.name + '\n';
+        });
+        if (anyOblig) t += i18n.t('email.kit_included') + '\n';
+    }
+
+    // Totaux calcules sur les MEMES lignes que le tableau a l'ecran et que le
+    // bloc Epicor (lignesFacturables) — plus de calcul parallele ici.
+    var tot = totauxLignes(p.lignes);
+    // Une seule ligne de totaux en bas (prix indicatifs, hors taxes).
+    if (tot.pieces > 0 || tot.installation > 0) {
+        t += '\n' + i18n.t('email.total_parts') + ' : ' + fmtPrice(tot.pieces) +
+             '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(tot.installation) +
+             '   ' + i18n.t('email.total_indicative') + '\n';
+    }
+    return t;
+}
+
+function totauxLignes(lignes) {
+    var tot = { pieces: 0, installation: 0 };
+    lignes.forEach(function (l) {
+        if (typeof l.montant !== 'number') return;
+        if (l.kind === 'install') tot.installation += l.montant; else tot.pieces += l.montant;
+    });
+    return tot;
+}
+
+// Bloc Epicor d'une liste [{code, qty}] : « code<TAB>qte » par ligne.
+function texteEpicor(rows) {
+    return rows.map(function (r) { return [r.code, r.qty].join('\t'); }).join('\n');
 }
 
 // Longueur maximale (lien ENCODE : espace et saut de ligne = 3 caracteres, accent
@@ -2318,9 +2361,7 @@ function buildEpicorRows() {
         .map(function (l) { return { code: l.code, qty: l.qty }; });
 }
 function epicorBlockText() {
-    return buildEpicorRows().map(function (r) {
-        return [r.code, r.qty].join('\t');
-    }).join('\n');
+    return texteEpicor(buildEpicorRows());
 }
 function copyEpicorBlock() {
     var fr = soumissionLang() === 'fr';
