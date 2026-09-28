@@ -45,6 +45,11 @@ def dossier_portail():
         d = lib / 'General' / '_Portail e-Trak'
         if d.is_dir():
             return d
+    # Raccourci OneDrive du seul canal General (poste de Steve).
+    for lib in (Path.home() / 'e-Trak').glob('E-Trak*Production - General'):
+        d = lib / '_Portail e-Trak'
+        if d.is_dir():
+            return d
     return None
 
 

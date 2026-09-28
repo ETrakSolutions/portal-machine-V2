@@ -10,7 +10,7 @@ Verifie :
   4. « Non » : plus une seule ligne de pose ;
   5. le bloc Epicor contient les codes de pose, avec la MEME quantite que le produit
      (c'est le defaut signale : les poses ne partaient jamais dans le collage) ;
-  6. le 1500-0004 « option mini » sort sous 1500-0004_install, et disparait quand le
+  6. le 1500-0004 « option mini » sort sous 1500-0004-Install, et disparait quand le
      client installe (c'est du temps de tech, pas une piece) ;
   7. sans machine : la quantite se propage au produit ET a sa pose (camera x7) ;
   8. l'envoi est bloque tant que la question est sans reponse, et le courriel porte
@@ -231,17 +231,17 @@ try:
     time.sleep(1.2)
     repondre('oui')
     lignes, total = tableau()
-    mini = [l for l in lignes if l['code'] == '1500-0004_install']
-    check('la ligne mini porte le code 1500-0004_install', len(mini) == 1)
+    mini = [l for l in lignes if l['code'] == '1500-0004-Install']
+    check('la ligne mini porte le code 1500-0004-Install', len(mini) == 1)
     if mini:
-        check('elle vaut %s $ (liste de prix)' % PRIX['1500-0004']['install'],
-              mini[0]['montant'] == PRIX['1500-0004']['install'])
+        check('elle vaut %s $ (liste de prix)' % PRIX['1500-0004-Install']['install'],
+              mini[0]['montant'] == PRIX['1500-0004-Install']['install'])
         check('son libelle dit « Installation »',
               mini[0]['label'].lower().find('installation') >= 0)
     check('aucune ligne nue « 1500-0004 » (sans suffixe)',
           not [l for l in lignes if l['code'] == '1500-0004'])
-    check('Epicor porte 1500-0004_install en quantite 1',
-          ('1500-0004_install', 1) in epicor())
+    check('Epicor porte 1500-0004-Install en quantite 1',
+          ('1500-0004-Install', 1) in epicor())
     somme = sum(l['montant'] for l in lignes if l['montant'] is not None)
     check('ARITHMETIQUE mini : somme = TOTAL (%s = %s)' % (somme, total), somme == total)
 
@@ -294,6 +294,15 @@ try:
                      ('soumission-lieu', 'Victoriaville')):
         dv.execute_script("var e=document.getElementById(arguments[0]); e.value=arguments[1];"
                           "e.dispatchEvent(new Event('input',{bubbles:true}));", cid, val)
+    # Vendeur responsable obligatoire pour un employe non vendeur (filtre des
+    # destinataires, 2026-09-28) : on prend le premier de la liste.
+    fin = time.time() + 20
+    while time.time() < fin and not dv.execute_script(
+            "var b=document.getElementById('soumission-vendeur-box'),s=document.getElementById('soumission-vendeur');"
+            "if(!b||b.style.display==='none') return true;"
+            "for(var i=0;i<s.options.length;i++){ if(s.options[i].value){ s.selectedIndex=i;"
+            " s.dispatchEvent(new Event('change',{bubbles:true})); return true; } } return false;"):
+        time.sleep(0.3)
     dv.execute_script("window.__lastSoumissionEmail = null;")
     dv.execute_script("document.getElementById('soumission-submit').click();")
     time.sleep(1.0)
