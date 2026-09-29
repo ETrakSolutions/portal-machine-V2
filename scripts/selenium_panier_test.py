@@ -26,7 +26,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORT = 8803
-BASE = 'http://127.0.0.1:%d' % PORT
+# « --live » rejoue le test sur le site en ligne (aucun courriel ne part : l'ouverture
+# d'Outlook est interceptee).
+SUR_LE_LIVE = '--live' in sys.argv
+BASE = 'https://etraksolutions.github.io/portal-machine-V2' if SUR_LE_LIVE else 'http://127.0.0.1:%d' % PORT
 os.chdir(REPO)
 
 
@@ -35,10 +38,12 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-socketserver.ThreadingTCPServer.allow_reuse_address = True
-socketserver.ThreadingTCPServer.daemon_threads = True
-httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Quiet)
-threading.Thread(target=httpd.serve_forever, daemon=True).start()
+if not SUR_LE_LIVE:
+    socketserver.ThreadingTCPServer.allow_reuse_address = True
+    socketserver.ThreadingTCPServer.daemon_threads = True
+    httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Quiet)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+print('CIBLE :', BASE)
 
 sys.path.insert(0, os.path.join(REPO, 'scripts'))
 from _prix_test import PRIX, installer_prix, SESSION_TEST_JS   # prix : serveur simule
