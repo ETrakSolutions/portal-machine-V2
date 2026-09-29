@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Demande de service après-vente</title>
+    <link rel="stylesheet" href="css/style.css?v=175">
+    <link rel="stylesheet" href="css/admin.css?v=175">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .sav-wrap { max-width: 980px; margin: 0 auto; padding: 1rem; }
+        .sav-sub { color: #9aa7b2; font-size: 0.85rem; margin: 0.2rem 0 1rem; }
+        .sav-sec { background: #1f1f1f; border: 1px solid rgba(192,192,192,0.18); border-radius: 12px; padding: 14px 16px 16px; margin-bottom: 14px; }
+        .sav-sec h2 { color: #fff; font-size: 1rem; margin: 0 0 10px; display: flex; gap: 8px; align-items: baseline; }
+        .sav-sec h2 .n { color: #FF8C00; font-weight: 800; }
+        .sav-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+        .sav-grid .full { grid-column: 1 / -1; }
+        @media (max-width: 700px) { .sav-grid { grid-template-columns: 1fr; } }
+        .sav-f label { display: block; color: #aab6c2; font-size: 0.78rem; margin-bottom: 3px; }
+        .sav-f label .req { color: #FF8C00; }
+        .sav-f input[type=text], .sav-f input[type=tel], .sav-f input[type=email], .sav-f input[type=datetime-local],
+        .sav-f input[type=number], .sav-f input[type=date], .sav-f textarea, .sav-f select {
+            width: 100%; box-sizing: border-box; background: #2a2a2a; color: #eee; border: 1px solid #444;
+            border-radius: 8px; padding: 8px 10px; font: inherit; font-size: 0.9rem; }
+        .sav-f textarea { min-height: 76px; resize: vertical; }
+        .sav-f input:focus, .sav-f textarea:focus { outline: none; border-color: #FF8C00; }
+        .sav-f.err input, .sav-f.err textarea, .sav-f.err .sav-radios { border-color: #e74c3c; box-shadow: 0 0 0 1px #e74c3c; }
+        .sav-radios { display: flex; flex-wrap: wrap; gap: 6px 14px; color: #ddd; font-size: 0.88rem; border: 1px solid transparent; border-radius: 8px; padding: 2px 0; }
+        .sav-radios label { display: inline-flex; gap: 6px; align-items: center; color: #ddd; font-size: 0.88rem; margin: 0; cursor: pointer; }
+        .sav-hint { color: #8a97a3; font-size: 0.75rem; margin-top: 3px; }
+        .sav-ac { position: relative; }
+        .sav-ac-list { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; background: #262626; border: 1px solid #555;
+                       border-radius: 8px; max-height: 280px; overflow-y: auto; margin-top: 2px; display: none; }
+        .sav-ac-list div { padding: 7px 10px; cursor: pointer; font-size: 0.86rem; color: #eee; border-bottom: 1px solid #333; }
+        .sav-ac-list div small { color: #8a97a3; margin-left: 6px; }
+        .sav-ac-list div.on, .sav-ac-list div:hover { background: #3a2a14; }
+        .sav-ac-list div.new { color: #FFB45C; font-style: italic; }
+        .sav-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 6px; }
+        .sav-tag.dealer { background: rgba(0,98,204,.25); color: #8bb8f0; }
+        .sav-tag.direct { background: rgba(46,204,113,.18); color: #3ddc84; }
+        .sav-tag.interco { background: rgba(160,160,160,.2); color: #ccc; }
+        .sav-tag.nouveau { background: rgba(255,140,0,.2); color: #FFB45C; }
+        .sav-pieces-row { display: grid; grid-template-columns: 1fr 90px 36px; gap: 8px; margin-bottom: 8px; align-items: start; }
+        .sav-btn { background: #2A2A2A; color: #ddd; border: 1px solid #444; border-radius: 8px; padding: 8px 14px; font-size: 0.85rem; cursor: pointer; }
+        .sav-btn:hover { border-color: #FF8C00; }
+        .sav-btn.main { background: #FF8C00; color: #1a1a1a; border-color: #FF8C00; font-weight: 800; padding: 11px 20px; }
+        .sav-btn.x { padding: 7px 0; width: 36px; }
+        .sav-rt { display: grid; gap: 6px; }
+        .sav-rt label { display: grid; grid-template-columns: 22px 150px 1fr; gap: 8px; align-items: start; padding: 7px 10px; border: 1px solid #333;
+                        border-radius: 8px; cursor: pointer; color: #eee; font-size: 0.86rem; }
+        .sav-rt label.sugg { border-color: #FF8C00; background: rgba(255,140,0,.07); }
+        .sav-rt label.off { opacity: 0.45; cursor: not-allowed; }
+        .sav-rt label small { color: #8a97a3; }
+        .sav-rt label b.s { color: #FF8C00; font-size: 0.72rem; margin-left: 6px; }
+        .sav-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 6px 0 30px; }
+        .sav-msg { text-align: center; color: #bbb; padding: 3rem 1rem; }
+        .sav-note { color: #9aa7b2; font-size: 0.8rem; }
+        .sav-alert { background: rgba(231,76,60,.12); border: 1px solid rgba(231,76,60,.5); color: #ffb3aa; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 10px; display: none; }
+        .sav-ok { background: rgba(46,204,113,.12); border: 1px solid rgba(46,204,113,.5); color: #9ff0bf; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; display: none; }
+        .pl-btn { display:inline-block; background:#FF8C00; color:#1a1a1a; text-decoration:none; border-radius:10px; padding:12px 22px; font-weight:800; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Retour au hub" data-i18n-title="common.back_hub">&larr; <span data-i18n="common.retour">Retour</span></a>
+            <div class="logo-section">
+                <a href="index.html" title="Retour au hub" data-i18n-title="common.back_hub">
+                    <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="sav-wrap">
+            <div id="sav-denied" class="sav-msg" style="display:none;">
+                <div style="font-size:2.4rem">&#128274;</div>
+                <h2 style="color:#fff;">Accès réservé à l'équipe e-Trak</h2>
+                <p>La demande de service après-vente est réservée aux comptes internes.</p>
+                <a href="index.html" class="pl-btn">Retour au hub</a>
+            </div>
+
+            <div id="sav-root" style="display:none;">
+                <div class="admin-hero" style="padding-bottom:0.2rem;">
+                    <h1 class="admin-hero-title">Demande de service après-vente</h1>
+                </div>
+                <p class="sav-sub">Guide d'appel : suivez les sections dans l'ordre pour ne rien oublier. Les champs marqués <b style="color:#FF8C00">*</b> sont obligatoires. Rien n'est enregistré : l'envoi ouvre un courriel Outlook pré-rempli.</p>
+                <div id="sav-load" class="sav-note">Chargement des listes clients et pièces…</div>
+
+                <form id="sav-form" autocomplete="off" onsubmit="return false;">
+                <section class="sav-sec"><h2><span class="n">1</span> Appel</h2>
+                    <div class="sav-grid">
+                        <div class="sav-f"><label>Date et heure</label><input type="datetime-local" id="f-date"></div>
+                        <div class="sav-f"><label>Reçu par</label><input type="text" id="f-recu"></div>
+                        <div class="sav-f"><label>N° de billet</label><input type="text" id="f-billet" placeholder="facultatif"></div>
+                    </div>
+                </section>
+
+                <section class="sav-sec"><h2><span class="n">2</span> Client</h2>
+                    <div class="sav-grid">
+                        <div class="sav-f full sav-ac" id="w-compagnie"><label>Compagnie <span class="req">*</span> <span id="f-type-tag"></span></label>
+                            <input type="text" id="f-compagnie" placeholder="Tapez quelques lettres du nom ou de la ville…">
+                            <div class="sav-ac-list" id="ac-clients"></div>
+                            <div class="sav-hint" id="f-compagnie-hint">Choisissez dans la liste Epicor, ou gardez le nom tapé s'il s'agit d'un nouveau client.</div></div>
+                        <div class="sav-f" id="w-contact"><label>Nom du contact <span class="req">*</span></label><input type="text" id="f-contact"></div>
+                        <div class="sav-f" id="w-tel"><label>Téléphone <span class="req">*</span></label><input type="tel" id="f-tel" placeholder="pour le rappel"></div>
+                        <div class="sav-f"><label>Courriel</label><input type="email" id="f-courriel"></div>
+                        <div class="sav-f" id="w-type"><label>Type de client <span class="req">*</span></label>
+                            <div class="sav-radios"><label><input type="radio" name="f-type" value="dealer"> Dealer</label>
+                                <label><input type="radio" name="f-type" value="direct"> Client direct</label></div></div>
+                        <div class="sav-f full" id="w-final" style="display:none;"><label>Client final (si dealer)</label><input type="text" id="f-final"></div>
+                    </div>
+                </section>
+
+                <section class="sav-sec"><h2><span class="n">3</span> Machine et système</h2>
+                    <div class="sav-grid">
+                        <div class="sav-f full" id="w-produit"><label>Produit <span class="req">*</span></label><div class="sav-radios" id="f-produits"></div></div>
+                        <div class="sav-f"><label>Machine (marque, modèle)</label><input type="text" id="f-machine"></div>
+                        <div class="sav-f"><label>N° de série du système</label><input type="text" id="f-serie"></div>
+                        <div class="sav-f full"><label>Lieu (ville, chantier)</label><input type="text" id="f-lieu"></div>
+                    </div>
+                </section>
+
+                <section class="sav-sec"><h2><span class="n">4</span> Problème</h2>
+                    <div class="sav-grid">
+                        <div class="sav-f" id="w-arret"><label>Machine arrêtée ? <span class="req">*</span></label>
+                            <div class="sav-radios"><label><input type="radio" name="f-arret" value="oui"> Oui</label><label><input type="radio" name="f-arret" value="non"> Non</label></div></div>
+                        <div class="sav-f" id="w-bypass"><label>Demande de bypass ? <span class="req">*</span></label>
+                            <div class="sav-radios"><label><input type="radio" name="f-bypass" value="oui"> Oui</label><label><input type="radio" name="f-bypass" value="non"> Non</label></div></div>
+                        <div class="sav-f full"><label>Code / message à l'écran</label><input type="text" id="f-code"></div>
+                        <div class="sav-f full" id="w-desc"><label>Description (dans les mots du client) <span class="req">*</span></label><textarea id="f-desc"></textarea></div>
+                        <div class="sav-f full"><label>Pièces demandées</label>
+                            <div id="f-pieces"></div>
+                            <button type="button" class="sav-btn" id="b-piece">+ Ajouter une pièce</button>
+                            <div class="sav-hint">Recherche par numéro ou par description (pièces vendues ou soumissionnées par e-Trak).</div></div>
+                        <div class="sav-f"><label>Déplacement d'un technicien requis ?</label>
+                            <div class="sav-radios"><label><input type="radio" name="f-depl" value="oui"> Oui</label><label><input type="radio" name="f-depl" value="non"> Non</label><label><input type="radio" name="f-depl" value="?"> À valider</label></div></div>
+                        <div class="sav-f"><label>Question de facturation, compte ou paiement ?</label>
+                            <div class="sav-radios"><label><input type="radio" name="f-fact" value="oui"> Oui</label><label><input type="radio" name="f-fact" value="non"> Non</label></div></div>
+                    </div>
+                </section>
+
+                <section class="sav-sec"><h2><span class="n">5</span> Routage</h2>
+                    <div class="sav-f" id="w-routage"><div class="sav-rt" id="f-routage"></div>
+                        <div class="sav-hint" id="f-routage-hint">La suggestion suit les règles ci-dessus ; vous pouvez choisir quelqu'un d'autre.</div></div>
+                    <div class="sav-grid" style="margin-top:10px;">
+                        <div class="sav-f"><label>Rappel promis au client</label><input type="text" id="f-rappel" placeholder="ex. avant 14 h, demain matin"></div>
+                        <div class="sav-f"><label>En copie</label><div class="sav-note" id="f-cc"></div></div>
+                    </div>
+                </section>
+
+                <section class="sav-sec"><h2><span class="n">6</span> Suivi</h2>
+                    <div class="sav-grid">
+                        <div class="sav-f full"><label>Action prise</label><textarea id="f-action"></textarea></div>
+                        <div class="sav-f full"><label>Résultat</label>
+                            <div class="sav-radios"><label><input type="radio" name="f-res" value="Réglé au téléphone"> Réglé au téléphone</label>
+                                <label><input type="radio" name="f-res" value="Pièce envoyée"> Pièce envoyée</label>
+                                <label><input type="radio" name="f-res" value="Tech envoyé"> Tech envoyé</label>
+                                <label><input type="radio" name="f-res" value="En attente"> En attente</label></div></div>
+                        <div class="sav-f"><label>Fermé le</label><input type="date" id="f-ferme-le"></div>
+                        <div class="sav-f"><label>Fermé par</label><input type="text" id="f-ferme-par"></div>
+                    </div>
+                </section>
+
+                <div class="sav-alert" id="sav-alert"></div>
+                <div class="sav-actions">
+                    <button type="button" class="sav-btn main" id="b-envoyer">✉ Envoyer par courriel</button>
+                    <button type="button" class="sav-btn" id="b-copier">⧉ Copier la fiche</button>
+                    <button type="button" class="sav-btn" id="b-nouveau">Nouvelle demande</button>
+                    <div class="sav-ok" id="sav-ok"></div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js?v=1"></script>
+    <script src="js/translations.js?v=237"></script>
+    <script src="js/i18n.js?v=167"></script>
+    <script src="js/heartbeat.js?v=5"></script>
+    <script src="js/version-check.js?v=2"></script>
+    <script src="js/sav.js?v=1"></script>
+</body>
+</html>

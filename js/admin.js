@@ -131,6 +131,14 @@ function updateHubUI() {
                                 vente_externe: true, technicien: true, ingenierie: true };
             tileCedule.style.display = (ceduleRoles[currentUser.role] && !currentUser.isGuest) ? 'block' : 'none';
         }
+        // Tuile Demande de service (SAV) : memes roles internes (decision Jacquot,
+        // 2026-09-29). Le serveur (getsav) refait le controle : la tuile n'est qu'un raccourci.
+        var tileSav = document.getElementById('hub-tile-sav');
+        if (tileSav) {
+            var savRoles = { super_admin: true, administrateur: true, vente_interne: true,
+                             vente_externe: true, technicien: true, ingenierie: true };
+            tileSav.style.display = (savRoles[currentUser.role] && !currentUser.isGuest) ? 'block' : 'none';
+        }
         // Tuile Export : Super Admin + Administrateur
         var tileExport = document.getElementById('hub-tile-export');
         if (tileExport) {
