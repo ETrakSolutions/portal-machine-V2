@@ -347,13 +347,27 @@ function hasActiveOptions() {
     return !!(anyLim || anyIDC || anyCreus || anyCam || anyGodet);
 }
 
-// Show HTML modal for reset confirmation, call onConfirm if accepted
-function confirmReset(onConfirm) {
+// Valeur de chaque selecteur au dernier changement ACCEPTE. Sert a « Annuler » :
+// sans elle, le selecteur gardait le nouveau choix alors que la page restait sur
+// l'ancienne machine (ecran S-65 XC, pieces de la Z-45 XC ; HIAB X-HiPro 362 avec
+// la piece 1500-0321 du Hiab 192). Constate par Jacquot le 2026-09-28.
+function memoriserSelection() {
+    [selectType, selectFabricant, selectModele, selectAnnee].forEach(function (s) {
+        if (s) s.dataset.prev = s.value;
+    });
+}
+// Show HTML modal for reset confirmation, call onConfirm if accepted.
+// selectEl : le selecteur qui a declenche la demande ; « Annuler » le remet a sa
+// valeur precedente pour que l'ecran reste coherent avec la machine chargee.
+function confirmReset(onConfirm, selectEl) {
     var modal = document.getElementById('modal-reset');
-    if (!modal) { onConfirm(); return; }
+    if (!modal) { onConfirm(); memoriserSelection(); return; }
     modal.style.display = 'flex';
-    document.getElementById('modal-reset-cancel').onclick = function() { modal.style.display = 'none'; };
-    document.getElementById('modal-reset-confirm').onclick = function() { modal.style.display = 'none'; onConfirm(); };
+    document.getElementById('modal-reset-cancel').onclick = function() {
+        modal.style.display = 'none';
+        if (selectEl && selectEl.dataset.prev !== undefined) selectEl.value = selectEl.dataset.prev;
+    };
+    document.getElementById('modal-reset-confirm').onclick = function() { modal.style.display = 'none'; onConfirm(); memoriserSelection(); };
 }
 
 // Cascading selects
@@ -548,7 +562,7 @@ function doTypeChange() {
     btnReset.style.display = 'inline-block';
 }
 selectType.addEventListener('change', () => {
-    if (hasActiveOptions()) { confirmReset(doTypeChange); } else { doTypeChange(); }
+    if (hasActiveOptions()) { confirmReset(doTypeChange, selectType); } else { doTypeChange(); memoriserSelection(); }
 });
 
 function doFabChange() {
@@ -575,7 +589,7 @@ function doFabChange() {
     populateModeles(type, fab, null);
 }
 selectFabricant.addEventListener('change', () => {
-    if (hasActiveOptions()) { confirmReset(doFabChange); } else { doFabChange(); }
+    if (hasActiveOptions()) { confirmReset(doFabChange, selectFabricant); } else { doFabChange(); memoriserSelection(); }
 });
 
 // Helper: peuple les modeles (filtre optionnellement par annee)
@@ -628,7 +642,7 @@ function doAnneeChange() {
     }
 }
 selectAnnee.addEventListener('change', () => {
-    if (hasActiveOptions()) { confirmReset(doAnneeChange); } else { doAnneeChange(); }
+    if (hasActiveOptions()) { confirmReset(doAnneeChange, selectAnnee); } else { doAnneeChange(); memoriserSelection(); }
 });
 
 function doModeleChange() {
@@ -654,7 +668,7 @@ function doModeleChange() {
     showOptions();
 }
 selectModele.addEventListener('change', () => {
-    if (hasActiveOptions()) { confirmReset(doModeleChange); } else { doModeleChange(); }
+    if (hasActiveOptions()) { confirmReset(doModeleChange, selectModele); } else { doModeleChange(); memoriserSelection(); }
 });
 
 function resetFrom(level) {
