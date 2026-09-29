@@ -138,7 +138,7 @@ def ajouter():
 
 def panier_js():
     return js("return panier.map(function(it){ return { lib: it.unites + ' x ' + libelleMachine(it.photo),"
-              " inst: it.photo.installation, epicor: texteEpicor(it.photo.epicor), texte: texteMachine(it.photo) }; });")
+              " inst: it.photo.installation, epicor: texteEpicor(it.photo.epicor), texte: texteMachine(it.photo, true) }; });")
 
 
 def libelles_affiches():
@@ -166,8 +166,14 @@ try:
     check('1 machine dans le panier : 2 x Caterpillar 320 (2024)', [x['lib'] for x in p] == ['2 x Caterpillar 320 (2024)'], p)
     check('le panier est affiche', js("return document.getElementById('panier-section').style.display") == '')
     check('liste affichee : « 1. 2 × Caterpillar 320 (2024) »', libelles_affiches() == ['1. 2 × Caterpillar 320 (2024)'], libelles_affiches())
-    check('ecran machine vide apres l ajout', js("return document.getElementById('options-section').style.display") == 'none'
-          and js("return document.getElementById('select-type').value") == '')
+    check('apres l ajout : type et fabricant gardes, modele et options vides',
+          js("return document.getElementById('select-type').value") == 'Excavatrice'
+          and js("return document.getElementById('select-fabricant').value") == 'Caterpillar'
+          and js("return document.getElementById('select-modele').value") == ''
+          and js("return document.getElementById('options-section').style.display") == 'none')
+    check('les modeles du fabricant sont deja proposes', js("return document.getElementById('select-modele').options.length") > 2)
+    check('les specifications de la machine ajoutee ne restent pas affichees',
+          js("return document.getElementById('specs-section').style.display") == 'none')
     check('infos du client gardees', js("return document.getElementById('soumission-company').value") == 'Test Claude inc.'
           and js("return document.getElementById('soumission-lieu').value") == 'Victoriaville')
     check('section client + envoi toujours visible', js("return document.getElementById('commun-section').style.display") == '')
@@ -197,7 +203,7 @@ try:
     print('--- 3) Dupliquer : la machine revient a l ecran a l identique ---')
     ref = panier_js()[0]
     action(0, 'dupliquer')
-    ecran = js("var p=photoMachine(); return { texte: texteMachine(p), epicor: texteEpicor(p.epicor), unites: unitesMachine(), inst: reponseInstall() };")
+    ecran = js("var p=photoMachine(); return { texte: texteMachine(p, true), epicor: texteEpicor(p.epicor), unites: unitesMachine(), inst: reponseInstall() };")
     check('meme texte de courriel que la machine du panier', ecran['texte'] == ref['texte'])
     check('meme bloc Epicor', ecran['epicor'] == ref['epicor'], (ecran['epicor'], ref['epicor']))
     check('memes unites (2) et installation (oui)', ecran['unites'] == 2 and ecran['inst'] == 'oui', ecran)
@@ -243,8 +249,8 @@ try:
         corps = m['body']
         check('objet : 2 machines, avec la liste', m['subject'] == 'Demande de soumission — 2 machine(s) : Caterpillar 320 (2024), Bobcat E08 (2015)', m['subject'])
         check('« Nombre de machines : 2 »', 'Nombre de machines : 2' in corps)
-        check('section machine 1 : « === Machine 1 de 2 : 2 × Caterpillar 320 (2024) === »', '=== Machine 1 de 2 : 2 × Caterpillar 320 (2024) ===' in corps)
-        check('section machine 2 : « === Machine 2 de 2 : 1 × Bobcat E08 (2015) === »', '=== Machine 2 de 2 : 1 × Bobcat E08 (2015) ===' in corps)
+        check('section machine 1 : « === Machine 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) === »', '=== Machine 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) ===' in corps)
+        check('section machine 2 : « === Machine 2 de 2 : 1 × excavatrice Bobcat E08 (2015) === »', '=== Machine 2 de 2 : 1 × excavatrice Bobcat E08 (2015) ===' in corps)
         entete = js("return i18n.t('email.epicor_header');")
         check('UN bloc Epicor par machine (2)', corps.count(entete) == 2)
         check('bloc de la machine 1 = celui du panier (qte x 2)', ('\n' + avant[0]['epicor'] + '\n') in corps and '1500-0000\t2' in avant[0]['epicor'])
@@ -322,6 +328,9 @@ try:
     check('7 cameras x 2 unites -> Epicor 1300-0003 qte 7 (pas 14)', '1300-0003\t7' in epi and '\t14' not in epi, epi)
     ajouter()
     check('ajoutee au panier avec le meme bloc Epicor', panier_js() and panier_js()[0]['epicor'] == epi, panier_js())
+    check('apres l ajout : on reste en mode sans machine, equipement a ressaisir',
+          js("return document.getElementById('select-type').value") == '__sans_machine__'
+          and js("return document.getElementById('soumission-equipement').value") == '')
 
     print('--- 10) limite de 10 machines ---')
     ouvrir()

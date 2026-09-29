@@ -1334,6 +1334,10 @@ function getKitSummary(type, fab, modele, specs) {
 
 function hideOptions() {
     optionsSection.style.display = 'none';
+    // Plus de machine choisie : ses specifications ne doivent pas rester a l'ecran (on
+    // les voyait encore apres un ajout au panier, sous un modele vide).
+    var _specs = document.getElementById('specs-section');
+    if (_specs) _specs.style.display = 'none';
     emptyState.style.display = 'block';
     removeRequestPanel();
     var _sb = document.getElementById('soumission-submit'); if (_sb) _sb.style.display = '';
@@ -1822,20 +1826,18 @@ function photoMachine() {
 // Texte du courriel propre a une machine : identification, avertissements, specs,
 // produits et totaux. Les notes machine et le bloc Epicor sont poses par l'appelant
 // (en tete du courriel et apres les totaux, comme avant le decoupage).
-function texteMachine(p) {
+// dansPanier : la ligne « === Machine i de n : ... === » identifie deja la machine,
+// on ne la repete pas.
+function texteMachine(p, dansPanier) {
     var t = '';
-    if (p.sansMachine) {
-        // Le champ libre REMPLACE les quatre lignes de machine. Ecrire « Type :
-        // __sans_machine__ » ou quatre lignes vides serait pire que rien pour
-        // les ventes internes.
-        t += i18n.t('email.machine_header') + '\n' +
-            i18n.t('email.equipement', { eq: p.equipement || '—' }) + '\n';
-    } else {
-        t += i18n.t('email.machine_header') + '\n' +
-            i18n.t('email.type', { type: i18n.t('type.' + p.type) }) + '\n' +
-            i18n.t('email.fabricant', { fab: p.fab }) + '\n' +
-            i18n.t('email.modele', { modele: p.modele }) + '\n' +
-            i18n.t('email.annee', { annee: p.annee }) + '\n';
+    // UNE ligne d'identification (demande de Steve, 2026-09-29), au lieu du bloc
+    // Type / Fabricant / Modele / Annee : « Machine : Excavatrice Caterpillar 320 (2024) ».
+    // Sans machine, le champ libre la remplace : « __sans_machine__ » ne dirait rien
+    // aux ventes internes.
+    if (!dansPanier) {
+        t += p.sansMachine
+            ? i18n.t('email.equipement_ligne', { eq: p.equipement || '—' }) + '\n'
+            : i18n.t('email.machine_ligne', { machine: i18n.t('type.' + p.type) + ' ' + libelleMachine(p) }) + '\n';
     }
 
     // Le dire explicitement, quel que soit le mode : sans cette ligne, une
@@ -2016,13 +2018,12 @@ function machineEcranValide() {
     return true;
 }
 
-// Vide la machine a l'ecran (pas les informations du client).
+// Vide la machine a l'ecran (pas les informations du client). Le TYPE et le FABRICANT
+// restent choisis : un client qui a plusieurs machines les a souvent du meme type et du
+// meme fabricant (demande de Steve, 2026-09-29). On repart du modele ; les selecteurs
+// restent modifiables pour une machine differente.
 function viderEcranMachine() {
-    afficherModeSansMachine(false);
-    selectType.value = '';
-    resetFrom('fabricant');
-    btnReset.style.display = 'none';
-    memoriserSelection();
+    var type = selectType.value, fab = selectFabricant.value;
     // Options de la machine ajoutee : decochees. Restees cochees (meme cachees), elles
     // faisaient ouvrir la fenetre « Reinitialiser ? » au choix de la machine suivante.
     document.querySelectorAll('#options-section .toggle-box').forEach(function (box) {
@@ -2036,6 +2037,18 @@ function viderEcranMachine() {
         var el = document.getElementById(id);
         if (el) el.value = '';
     });
+    if (type === SANS_MACHINE) {
+        doTypeChange();                 // reste en mode sans machine, equipement a ressaisir
+    } else if (type && fab && machinesData[type] && machinesData[type][fab]) {
+        doFabChange();                  // garde type + fabricant, vide annee / modele / options
+    } else {
+        afficherModeSansMachine(false);
+        selectType.value = '';
+        resetFrom('fabricant');
+        btnReset.style.display = 'none';
+    }
+    memoriserSelection();
+    try { updateSelectedSummary(); } catch (e) {}
 }
 
 function ajouterAuPanier() {
@@ -2160,10 +2173,12 @@ function envoyerPanier() {
     var totP = 0, totI = 0, blocs = [];
     panier.forEach(function (it, i) {
         var p = it.photo;
-        body += '\n' + i18n.t('email.panier_machine', { i: i + 1, n: n, q: it.unites, machine: libelleMachine(p) }) + '\n';
+        // Le type en minuscules devant la machine : « 1 × excavatrice Hitachi ZX135US-7H (2026) ».
+        var ident = p.sansMachine ? libelleMachine(p) : i18n.t('type.' + p.type).toLowerCase() + ' ' + libelleMachine(p);
+        body += '\n' + i18n.t('email.panier_machine', { i: i + 1, n: n, q: it.unites, machine: ident }) + '\n';
         body += i18n.t('email.nb_units', { n: it.unites }) + '\n';
         if (p.notes) body += i18n.t('email.notes_machine', { notes: p.notes }) + '\n';
-        body += '\n' + texteMachine(p);
+        body += texteMachine(p, true);
         // UN BLOC EPICOR PAR MACHINE (decision de Steve) : chaque machine se saisit a part.
         var epi = texteEpicor(p.epicor);
         if (epi) {
