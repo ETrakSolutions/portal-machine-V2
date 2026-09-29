@@ -76,6 +76,14 @@ const selectModele = document.getElementById('select-modele');
 const btnReset = document.getElementById('btn-reset');
 const optionsSection = document.getElementById('options-section');
 const emptyState = document.getElementById('empty-state');
+// Panier multi-machines : machines deja ajoutees a la soumission (voir PANIER plus bas).
+// Charge ici, avant le reste, parce que showOptions() le consulte des le premier affichage.
+var PANIER_CLE = 'soumission_panier_v1';
+var panier = (function () {
+    try { var p = JSON.parse(sessionStorage.getItem(PANIER_CLE)); return Array.isArray(p) ? p : []; }
+    catch (e) { return []; }
+})();
+function panierActif() { return panier.length > 0; }
 
 // Restore user session
 var saved = localStorage.getItem('portal_user');
@@ -743,12 +751,19 @@ function showOptions() {
             .forEach(function(r) { r.checked = false; });
     // Reset options secondaires nacelle
     document.querySelectorAll('input[name="nacelle-opt"]').forEach(function(r) { r.checked = false; });
-    ['soumission-company','soumission-nb-systemes','soumission-lieu','soumission-date-install'].forEach(function(id){
-        var el = document.getElementById(id);
-        if (el) el.value = '';
-    });
-    var textarea = document.getElementById('soumission-comment');
-    if (textarea) textarea.value = '';
+    // Nouvelle machine : son nombre d'unites repart a vide. Les informations du client
+    // aussi, SAUF si le panier contient deja des machines : elles valent alors pour toute
+    // la soumission et ne se ressaisissent pas a chaque machine.
+    var _nb = document.getElementById('soumission-nb-systemes');
+    if (_nb) _nb.value = '';
+    if (!panierActif()) {
+        ['soumission-company','soumission-lieu','soumission-date-install'].forEach(function(id){
+            var el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        var textarea = document.getElementById('soumission-comment');
+        if (textarea) textarea.value = '';
+    }
 
     // Load BOM overrides, notes, and product codes for this machine
     currentBomOverrides = null;
@@ -1488,6 +1503,8 @@ function notifyMachineRequest(info, requesterName) {
 var submitBtn = document.getElementById('soumission-submit');
 if (submitBtn) {
     submitBtn.addEventListener('click', function() {
+        // Panier non vide : la demande porte sur TOUTES ses machines (envoyerPanier).
+        if (panierActif()) { envoyerPanier(); return; }
         var type = selectType.value;
         var fab = selectFabricant.value;
         var annee = selectAnnee.value;
@@ -1532,30 +1549,7 @@ if (submitBtn) {
                 return f.id !== 'soumission-lieu';
             });
         }
-        var _firstEmpty = null;
-        REQUIRED_FIELDS.forEach(function(f) {
-            var el = document.getElementById(f.id);
-            if (!el) return;
-            if (!(el.value || '').trim()) {
-                el.style.border = '2px solid #ff4444';
-                if (!_firstEmpty) _firstEmpty = el;
-                if (f.phKey) {
-                    var _msg = (typeof i18n !== 'undefined') ? i18n.t(f.reqKey) : '';
-                    if (_msg) el.setAttribute('placeholder', _msg);
-                }
-                var _clear = function() {
-                    el.style.border = '';
-                    if (f.phKey) {
-                        var _p = (typeof i18n !== 'undefined') ? i18n.t(f.phKey) : '';
-                        if (_p) el.setAttribute('placeholder', _p);
-                    }
-                    el.removeEventListener('input', _clear);
-                    el.removeEventListener('change', _clear);
-                };
-                el.addEventListener('input', _clear);
-                el.addEventListener('change', _clear);
-            }
-        });
+        var _firstEmpty = marquerChampsVides(REQUIRED_FIELDS);
         // « Installation par e-Trak ? » n'a pas de valeur par defaut : sans reponse,
         // la soumission ne part pas. C'est ce qui garantit qu'aucun prix n'est
         // publie sans que le vendeur ait tranche — un defaut par defaut aurait
@@ -1564,20 +1558,7 @@ if (submitBtn) {
         // seulement quand il y a quelque chose a installer, sinon on bloquerait
         // l'envoi sur une boite que personne ne voit.
         if (selectionAInstallation() && !reponseInstall()) {
-            var _boite = document.getElementById('install-question-box');
-            if (_boite) {
-                _boite.style.border = '2px solid #ff4444';
-                _boite.style.borderRadius = '6px';
-                _boite.style.padding = '.4rem .6rem';
-                _boite.scrollIntoView({ block: 'center' });
-                var _clr = function () {
-                    _boite.style.border = ''; _boite.style.padding = '';
-                    document.querySelectorAll('input[name="install-etrak"]')
-                            .forEach(function (r) { r.removeEventListener('change', _clr); });
-                };
-                document.querySelectorAll('input[name="install-etrak"]')
-                        .forEach(function (r) { r.addEventListener('change', _clr); });
-            }
+            signalerQuestionInstallation();
             return;
         }
 
@@ -1587,20 +1568,7 @@ if (submitBtn) {
         // plausible. Une adresse fautive ici ne fait pas rebondir un courriel
         // (le client n'est pas destinataire), elle donne a e-Trak un moyen de
         // rappel qui ne marche pas — le defaut se decouvrirait bien plus tard.
-        var _elClient = document.getElementById('soumission-client-email');
-        if (_elClient && !courrielClientValide()) {
-            _elClient.classList.add('champ-invalide');
-            _elClient.focus();
-            alert((typeof i18n !== 'undefined')
-                  ? i18n.t('soumission.client_email_invalid')
-                  : "L'adresse courriel du client n'est pas valide.");
-            var _clrCl = function () {
-                _elClient.classList.remove('champ-invalide');
-                _elClient.removeEventListener('input', _clrCl);
-            };
-            _elClient.addEventListener('input', _clrCl);
-            return;
-        }
+        if (courrielClientRefuse()) return;
 
         // No limiteur check — options obligatoires only shown when limiteur selected
 
@@ -1728,31 +1696,9 @@ if (submitBtn) {
         var lieuInstall = _fieldVal('soumission-lieu');
         var dateInstall = _fieldVal('soumission-date-install');
         var userName = currentUser ? currentUser.name : i18n.t('common.user_not_connected');
-        // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
-        // Vendeur concerne : associe au client, le vendeur lui-meme, ou celui choisi par
-        // un employe (vendeurDestinataire). Seul lui reste parmi les vendeurs destinataires.
-        var vendeurEmail = vendeurDestinataire();
-        var vendeurName = '';
-        if (vendeurEmail) {
-            var v = vendeursList.find(function(vv) { return String(vv.email || '').toLowerCase() === vendeurEmail; });
-            vendeurName = v ? v.name : vendeurEmail;
-        }
-
-        if (salesEmails.length === 0) {
-            alert((typeof i18n !== 'undefined') ? i18n.t('soumission.emails_not_loaded') : 'Les courriels de vente ne sont pas encore charges. Veuillez patienter quelques secondes et reessayer.');
-            // Retry loading
-            fetch(API_URL + '?action=get&key=sales_emails')
-                .then(function(r) { return r.json(); })
-                .then(function(data) { if (data.value) { try { salesEmails = JSON.parse(data.value); } catch(e) {} } });
-            return;
-        }
-        // Separateur point-virgule (Outlook ne separe PAS les adresses par virgule dans
-        // un lien mailto -> il les met toutes dans un seul champ invalide et le courriel
-        // ne part pas). Filtre aussi les entrees vides/espaces.
-        var mailTo = filtrerVendeurs(salesEmails
-            .map(function(e) { return (e || '').trim(); })
-            .filter(function(e) { return e; }), vendeurEmail)
-            .join(';');
+        var dest = destinatairesDemande();
+        if (!dest) return;
+        var vendeurEmail = dest.vendeurEmail, vendeurName = dest.vendeurName;
         var subject = i18n.t('email.soumission_subject', { fab: fab, modele: modele, annee: annee });
         // Tout ce qui decrit LA MACHINE (kit, prix, installation, Epicor) : voir
         // photoMachine(). Le reste du courriel (client, lieu, vendeur) est commun.
@@ -1821,38 +1767,7 @@ if (submitBtn) {
             'Portail e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine-V2/';
 
-        // Le vendeur attitre (dealer/distributeur) devient un DESTINATAIRE PRINCIPAL
-        // (dans le "A", avec les ventes) plutot qu'une simple copie : ainsi il part
-        // toujours avec la demande, y compris dans le texte du panneau "copier" si le
-        // client courriel ne s'ouvre pas. Dedoublonne (au cas ou le vendeur serait deja
-        // dans la liste de vente). Meme separateur ';' (Outlook).
-        var toAll = mailTo;
-        if (vendeurEmail) {
-            var _already = mailTo.split(';').some(function(e) { return e.trim().toLowerCase() === vendeurEmail.toLowerCase(); });
-            if (!_already) toAll = mailTo ? (mailTo + ';' + vendeurEmail) : vendeurEmail;
-        }
-        var mailUrl = 'mailto:' + toAll + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours) :
-        // le vendeur est dans le "A", donc visible aussi dans la version copiee.
-        window.__lastSoumissionEmail = { to: toAll, cc: '', subject: subject, body: body };
-        window.__lastSoumissionEpicor = _epiBlock;
-        // Cache un eventuel panneau de secours d'un envoi precedent.
-        hideSoumissionFallback();
-        window.__soumissionLongue = null;
-        // Demande trop longue pour un lien mailto : Outlook et Windows le coupent
-        // sans prevenir (voir MAILTO_MAX). On copie le corps complet et on ouvre un
-        // courriel avec seulement destinataires + objet, ou il reste a coller.
-        if (mailUrl.length > MAILTO_MAX) {
-            envoyerDemandeLongue(toAll, subject, body);
-            return;
-        }
-        // Point 2 : le panneau de copie (Copier la demande / Copier pour Epicor) est
-        // TOUJOURS affiche apres une generation, pas seulement si le courriel echoue.
-        renderSoumissionFallback(false);
-        // Detecte si le client courriel s'ouvre; sinon, bascule le panneau en mode "alerte".
-        armMailtoFallback();
-        // Envoi via le client courriel de l'utilisateur (part de sa propre adresse).
-        ouvrirLienCourriel(mailUrl);
+        lancerCourriel(dest.toAll, subject, body, _epiBlock);
         } // end sendEmail
     });
 }
@@ -1994,6 +1909,444 @@ function totauxLignes(lignes) {
 // Bloc Epicor d'une liste [{code, qty}] : « code<TAB>qte » par ligne.
 function texteEpicor(rows) {
     return rows.map(function (r) { return [r.code, r.qty].join('\t'); }).join('\n');
+}
+
+// ===========================================================================
+// PANIER MULTI-MACHINES — demande de Gord ; decisions de Steve (2026-09-29) :
+//  - chaque machine a son nombre d'unites, qui multiplie ses quantites et ses prix ;
+//  - « Installation par e-Trak ? » se repond par machine ; le lieu reste commun ;
+//  - le courriel porte UN BLOC EPICOR PAR MACHINE ;
+//  - 10 machines au plus par soumission.
+// Une machine du panier = sa photo (le texte du courriel) + l'etat de l'ecran (pour la
+// remettre a l'ecran avec « Modifier » ou « Dupliquer ») + son nombre d'unites. Le
+// panier vit dans l'onglet (sessionStorage) : un rechargement ne le perd pas ; il se
+// vide apres l'envoi.
+// ===========================================================================
+var PANIER_MAX = 10;
+var panierPosition = null;   // place d'une machine sortie par « Modifier » (y revient)
+
+function unitesMachine() {
+    var el = document.getElementById('soumission-nb-systemes');
+    var n = el ? parseInt(el.value, 10) : NaN;
+    return n > 0 ? n : 1;
+}
+
+function panierSauver() {
+    try { sessionStorage.setItem(PANIER_CLE, JSON.stringify(panier)); } catch (e) {}
+}
+
+function libelleMachine(p) {
+    if (p.sansMachine) return p.equipement || i18n.t('panier.sans_machine');
+    return p.fab + ' ' + p.modele + ' (' + p.annee + ')';
+}
+
+// Etat de l'ecran : ce qu'il faut pour remettre la machine a l'ecran telle quelle.
+function etatEcran() {
+    var coches = [], actives = [];
+    document.querySelectorAll('#options-section input[type=checkbox], #options-section input[type=radio]')
+        .forEach(function (c) { if (c.checked && c.id) coches.push(c.id); });
+    document.querySelectorAll('#options-section .toggle-box.active')
+        .forEach(function (b) { if (b.id) actives.push(b.id); });
+    var eq = document.getElementById('soumission-equipement'), cq = document.getElementById('cam-qte');
+    return { type: selectType.value, fab: selectFabricant.value, annee: selectAnnee.value, modele: selectModele.value,
+             equipement: eq ? eq.value : '', coches: coches, actives: actives,
+             camQte: cq ? cq.value : '', unites: String(unitesMachine()) };
+}
+
+// Remet une machine a l'ecran : selecteurs (sans passer par la fenetre « Reinitialiser »),
+// puis tuiles et sous-options dans l'ordre ou elles etaient cochees, puis reponses.
+function restaurerEtat(e) {
+    var SOUS_PANNEAU = ['toggle-limiteur', 'toggle-camera', 'toggle-creusage', 'toggle-balance'];
+    selectType.value = e.type;
+    doTypeChange();
+    if (e.type === SANS_MACHINE) {
+        var eq = document.getElementById('soumission-equipement');
+        if (eq) { eq.value = e.equipement || ''; eq.dispatchEvent(new Event('input', { bubbles: true })); }
+    } else {
+        selectFabricant.value = e.fab;
+        doFabChange();
+        selectAnnee.value = e.annee;
+        selectModele.value = e.modele;
+        doModeleChange();
+    }
+    memoriserSelection();
+    // Tuiles simples (et limiteur maitre de la pompe a beton) : un clic les active. Les
+    // tuiles a sous-options s'activent d'elles-memes quand on coche leurs sous-options.
+    (e.actives || []).forEach(function (id) {
+        var b = document.getElementById(id);
+        if (!b || b.classList.contains('active')) return;
+        if (SOUS_PANNEAU.indexOf(id) >= 0 && !(id === 'toggle-limiteur' && e.type === 'Pompe a Beton')) return;
+        b.click();
+    });
+    (e.coches || []).forEach(function (id) {
+        if (id.indexOf('install-etrak-') === 0) return;
+        var c = document.getElementById(id);
+        if (c && !c.checked) c.click();
+    });
+    var cq = document.getElementById('cam-qte');
+    if (cq && e.camQte) { cq.value = e.camQte; cq.dispatchEvent(new Event('change', { bubbles: true })); }
+    var nb = document.getElementById('soumission-nb-systemes');
+    if (nb) nb.value = e.unites || '';
+    (e.coches || []).forEach(function (id) {
+        if (id.indexOf('install-etrak-') !== 0) return;
+        var c = document.getElementById(id);
+        if (c && !c.checked) c.click();
+    });
+    try { updateSelectedSummary(); } catch (x) {}
+}
+
+// Une machine est configuree a l'ecran (au moins un produit dans la selection).
+function machineEcranPrete() {
+    return optionsSection.style.display !== 'none' && (window.__selectionRows || []).length > 0;
+}
+
+// Garde-fous propres a la machine avant de l'ajouter : memes regles que l'envoi d'une
+// seule machine pour ce qui la concerne (equipement, unites, installation).
+function machineEcranValide() {
+    try { updateSelectedSummary(); } catch (e) {}
+    if (!machineEcranPrete()) { alert(i18n.t('panier.rien_a_ajouter')); return false; }
+    var champs = [{ id: 'soumission-nb-systemes', reqKey: 'soumission.nb_required', phKey: 'soumission.nb_systemes_placeholder' }];
+    if (estSansMachine()) {
+        champs.unshift({ id: 'soumission-equipement', reqKey: 'soumission.equipement_required',
+                         phKey: 'soumission.equipement_placeholder' });
+    }
+    var vide = marquerChampsVides(champs);
+    if (vide) { vide.focus(); vide.scrollIntoView({ block: 'center' }); return false; }
+    if (selectionAInstallation() && !reponseInstall()) { signalerQuestionInstallation(); return false; }
+    return true;
+}
+
+// Vide la machine a l'ecran (pas les informations du client).
+function viderEcranMachine() {
+    afficherModeSansMachine(false);
+    selectType.value = '';
+    resetFrom('fabricant');
+    btnReset.style.display = 'none';
+    memoriserSelection();
+    // Options de la machine ajoutee : decochees. Restees cochees (meme cachees), elles
+    // faisaient ouvrir la fenetre « Reinitialiser ? » au choix de la machine suivante.
+    document.querySelectorAll('#options-section .toggle-box').forEach(function (box) {
+        box.classList.remove('active', 'open');
+        var st = box.querySelector('.toggle-status');
+        if (st) st.textContent = 'OFF';
+    });
+    document.querySelectorAll('#options-section input[type=checkbox], #options-section input[type=radio]')
+        .forEach(function (c) { c.checked = false; });
+    ['soumission-nb-systemes', 'soumission-equipement'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+}
+
+function ajouterAuPanier() {
+    if (panier.length >= PANIER_MAX) { alert(i18n.t('panier.max', { n: PANIER_MAX })); return false; }
+    if (!machineEcranValide()) return false;
+    var item = { photo: photoMachine(), etat: etatEcran(), unites: unitesMachine() };
+    if (panierPosition !== null && panierPosition <= panier.length) panier.splice(panierPosition, 0, item);
+    else panier.push(item);
+    panierPosition = null;
+    panierSauver();
+    viderEcranMachine();
+    rendrePanier();
+    var sec = document.getElementById('panier-section');
+    if (sec && sec.scrollIntoView) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return true;
+}
+
+function rendrePanier() {
+    var sec = document.getElementById('panier-section'), liste = document.getElementById('panier-liste');
+    if (!sec || !liste) return;
+    sec.style.display = panierActif() ? '' : 'none';
+    majSectionCommune();
+    try { majEtiquetteLieu(); } catch (e) {}
+    var esc = function (x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+    var compte = document.getElementById('panier-compte');
+    if (compte) compte.textContent = panierActif() ? '(' + panier.length + ' / ' + PANIER_MAX + ')' : '';
+    var prix = !sansAccesPrix(), totP = 0, totI = 0;
+    liste.innerHTML = panier.map(function (it, i) {
+        var p = it.photo, t = totauxLignes(p.lignes);
+        totP += t.pieces; totI += t.installation;
+        var detail = [i18n.t('panier.nb_produits', { n: p.produits.length })];
+        if (p.installation === 'oui') detail.push(i18n.t('panier.install_oui'));
+        if (p.installation === 'non') detail.push(i18n.t('panier.install_non'));
+        if (prix && (t.pieces || t.installation)) detail.push(i18n.t('panier.sous_total') + ' : ' + fmtPrice(t.pieces + t.installation));
+        return '<div class="panier-item" data-i="' + i + '">' +
+            '<div class="panier-item-texte">' +
+              '<div class="panier-item-titre"><span class="panier-num">' + (i + 1) + '.</span> ' +
+                esc(it.unites + ' × ' + libelleMachine(p)) + '</div>' +
+              '<div class="panier-item-detail">' + esc(detail.join(' · ')) + '</div>' +
+            '</div>' +
+            '<div class="panier-item-actions">' +
+              '<button type="button" class="panier-action" data-act="modifier">' + esc(i18n.t('panier.modifier')) + '</button>' +
+              '<button type="button" class="panier-action" data-act="dupliquer">' + esc(i18n.t('panier.dupliquer')) + '</button>' +
+              '<button type="button" class="panier-action panier-retirer" data-act="retirer">' + esc(i18n.t('panier.retirer')) + '</button>' +
+            '</div></div>';
+    }).join('');
+    var tot = document.getElementById('panier-total');
+    if (tot) tot.textContent = (prix && (totP || totI))
+        ? i18n.t('panier.total_general', { pieces: fmtPrice(totP), install: fmtPrice(totI) }) : '';
+    var sb = document.getElementById('soumission-submit');
+    if (sb) sb.innerHTML = panierActif() ? i18n.t('panier.envoyer', { n: panier.length }) : i18n.t('soumission.submit');
+}
+
+// Clic sur Modifier / Dupliquer / Retirer d'une machine du panier.
+function actionPanier(ev) {
+    var btn = ev.target.closest && ev.target.closest('button[data-act]');
+    if (!btn) return;
+    var i = parseInt(btn.closest('.panier-item').getAttribute('data-i'), 10);
+    var it = panier[i];
+    if (!it) return;
+    var act = btn.getAttribute('data-act');
+    if (act === 'retirer') {
+        if (!confirm(i18n.t('panier.confirmer_retirer', { machine: libelleMachine(it.photo) }))) return;
+        panier.splice(i, 1);
+        if (panierPosition !== null && panierPosition > i) panierPosition--;
+        panierSauver();
+        rendrePanier();
+        return;
+    }
+    // Modifier / Dupliquer : la machine revient a l'ecran. Celle qui y est, si elle n'a
+    // pas ete ajoutee, serait perdue : on demande.
+    if (machineEcranPrete() && !confirm(i18n.t('panier.confirmer_remplacer'))) return;
+    if (act === 'modifier') {
+        panier.splice(i, 1);
+        panierPosition = i;
+        panierSauver();
+    } else {
+        panierPosition = null;
+    }
+    restaurerEtat(it.etat);
+    rendrePanier();
+    var sel = document.getElementById('select-type');
+    if (sel && sel.scrollIntoView) sel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Informations communes et bouton d'envoi : visibles des qu'une machine est a l'ecran
+// OU que le panier contient une machine (sinon on ne pourrait plus l'envoyer).
+function majSectionCommune() {
+    var c = document.getElementById('commun-section');
+    if (c) c.style.display = (optionsSection.style.display !== 'none' || panierActif()) ? '' : 'none';
+}
+
+// Envoi de toutes les machines du panier, en un seul courriel.
+function envoyerPanier() {
+    if (machineEcranPrete()) {
+        if (confirm(i18n.t('panier.ajouter_avant_envoi'))) { if (!ajouterAuPanier()) return; }
+    }
+    if (!panierActif()) return;
+    var champs = [{ id: 'soumission-company', reqKey: 'soumission.company_required', phKey: 'soumission.company_placeholder' }];
+    if (doitChoisirVendeur()) champs.unshift({ id: 'soumission-vendeur', reqKey: 'soumission.vendeur_required', phKey: null });
+    // Le lieu d'installation n'est exige que si au moins une machine est installee par e-Trak.
+    if (!panier.every(function (it) { return it.photo.installation === 'non'; })) {
+        champs.push({ id: 'soumission-lieu', reqKey: 'soumission.lieu_required', phKey: 'soumission.lieu_placeholder' });
+    }
+    var vide = marquerChampsVides(champs);
+    if (vide) { vide.focus(); return; }
+    if (courrielClientRefuse()) return;
+    var dest = destinatairesDemande();
+    if (!dest) return;
+
+    var val = function (id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
+    var company = val('soumission-company'), clientEmail = valeurCourrielClient(), lieu = val('soumission-lieu'),
+        dateInstall = val('soumission-date-install'), comment = val('soumission-comment');
+    var userName = currentUser ? currentUser.name : i18n.t('common.user_not_connected');
+    var n = panier.length;
+    var body = i18n.t('email.soumission_header') + '\n' + '================================\n\n';
+    if (company) body += i18n.t('email.company', { name: company }) + '\n';
+    if (clientEmail) body += i18n.t('email.client_email', { email: clientEmail }) + '\n';
+    if (lieu) body += i18n.t('email.location', { loc: lieu }) + '\n';
+    if (dateInstall) body += i18n.t('email.install_date', { date: dateInstall }) + '\n';
+    body += i18n.t('email.panier_nb', { n: n }) + '\n';
+    var totP = 0, totI = 0, blocs = [];
+    panier.forEach(function (it, i) {
+        var p = it.photo;
+        body += '\n' + i18n.t('email.panier_machine', { i: i + 1, n: n, q: it.unites, machine: libelleMachine(p) }) + '\n';
+        body += i18n.t('email.nb_units', { n: it.unites }) + '\n';
+        if (p.notes) body += i18n.t('email.notes_machine', { notes: p.notes }) + '\n';
+        body += '\n' + texteMachine(p);
+        // UN BLOC EPICOR PAR MACHINE (decision de Steve) : chaque machine se saisit a part.
+        var epi = texteEpicor(p.epicor);
+        if (epi) {
+            body += '\n' + i18n.t('email.epicor_header') + '\n' + epi + '\n';
+            blocs.push(epi);
+        }
+        var t = totauxLignes(p.lignes);
+        totP += t.pieces; totI += t.installation;
+    });
+    if (totP > 0 || totI > 0) {
+        body += '\n================================\n' + i18n.t('email.panier_total') + '\n' +
+                i18n.t('email.total_parts') + ' : ' + fmtPrice(totP) +
+                '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(totI) +
+                '   ' + i18n.t('email.total_indicative') + '\n';
+    }
+    if (comment) body += '\n' + i18n.t('email.additional_info') + '\n  ' + comment + '\n';
+    if (dest.vendeurName) body += '\n' + i18n.t('email.vendeur', { name: dest.vendeurName, email: dest.vendeurEmail }) + '\n';
+    body += '\n--------------------------------\n' +
+        i18n.t('email.requested_by', { name: userName }) + '\n' +
+        'Portail e-Trak\n' +
+        'https://etraksolutions.github.io/portal-machine-V2/';
+    var liste = panier.map(function (it) { return libelleMachine(it.photo); }).join(', ');
+    if (liste.length > 110) liste = liste.slice(0, 107) + '...';
+    var subject = i18n.t('email.panier_subject', { n: n, liste: liste });
+    lancerCourriel(dest.toAll, subject, body, blocs.join('\n\n'));
+    // Envoye : le panier se vide. Le texte complet reste dans le panneau « Copier la
+    // demande » si le courriel ne s'ouvre pas.
+    panier = [];
+    panierPosition = null;
+    panierSauver();
+    rendrePanier();
+}
+
+(function () {
+    var b = document.getElementById('panier-ajouter');
+    if (b) b.addEventListener('click', ajouterAuPanier);
+    var l = document.getElementById('panier-liste');
+    if (l) l.addEventListener('click', actionPanier);
+    // Le nombre d'unites multiplie le tableau : il se redessine a chaque changement.
+    var nb = document.getElementById('soumission-nb-systemes');
+    if (nb) nb.addEventListener('input', function () { try { updateSelectedSummary(); } catch (e) {} });
+    // Toute apparition ou disparition de la section machine met a jour la section commune.
+    if (window.MutationObserver) {
+        new MutationObserver(majSectionCommune).observe(optionsSection, { attributes: true, attributeFilter: ['style'] });
+    }
+    window.addEventListener('langchange', rendrePanier);
+    rendrePanier();
+})();
+
+// Encadre en rouge chaque champ obligatoire vide (message dans le placeholder), le
+// remet normal des qu'on le remplit. Renvoie le premier champ vide, ou null.
+function marquerChampsVides(fields) {
+    var _firstEmpty = null;
+    fields.forEach(function(f) {
+        var el = document.getElementById(f.id);
+        if (!el) return;
+        if (!(el.value || '').trim()) {
+            el.style.border = '2px solid #ff4444';
+            if (!_firstEmpty) _firstEmpty = el;
+            if (f.phKey) {
+                var _msg = (typeof i18n !== 'undefined') ? i18n.t(f.reqKey) : '';
+                if (_msg) el.setAttribute('placeholder', _msg);
+            }
+            var _clear = function() {
+                el.style.border = '';
+                if (f.phKey) {
+                    var _p = (typeof i18n !== 'undefined') ? i18n.t(f.phKey) : '';
+                    if (_p) el.setAttribute('placeholder', _p);
+                }
+                el.removeEventListener('input', _clear);
+                el.removeEventListener('change', _clear);
+            };
+            el.addEventListener('input', _clear);
+            el.addEventListener('change', _clear);
+        }
+    });
+    return _firstEmpty;
+}
+
+// « Installation par e-Trak ? » sans reponse : encadre rouge et defilement jusqu'a la
+// question ; l'encadre part a la premiere reponse.
+function signalerQuestionInstallation() {
+    var _boite = document.getElementById('install-question-box');
+    if (_boite) {
+        _boite.style.border = '2px solid #ff4444';
+        _boite.style.borderRadius = '6px';
+        _boite.style.padding = '.4rem .6rem';
+        _boite.scrollIntoView({ block: 'center' });
+        var _clr = function () {
+            _boite.style.border = ''; _boite.style.padding = '';
+            document.querySelectorAll('input[name="install-etrak"]')
+                    .forEach(function (r) { r.removeEventListener('change', _clr); });
+        };
+        document.querySelectorAll('input[name="install-etrak"]')
+                .forEach(function (r) { r.addEventListener('change', _clr); });
+    }
+}
+
+// Courriel du client rempli mais invalide : on le signale et on refuse l'envoi (true).
+function courrielClientRefuse() {
+    var _elClient = document.getElementById('soumission-client-email');
+    if (_elClient && !courrielClientValide()) {
+        _elClient.classList.add('champ-invalide');
+        _elClient.focus();
+        alert((typeof i18n !== 'undefined')
+              ? i18n.t('soumission.client_email_invalid')
+              : "L'adresse courriel du client n'est pas valide.");
+        var _clrCl = function () {
+            _elClient.classList.remove('champ-invalide');
+            _elClient.removeEventListener('input', _clrCl);
+        };
+        _elClient.addEventListener('input', _clrCl);
+        return true;
+    }
+    return false;
+}
+
+// Destinataires de la demande : equipe des ventes + vendeur concerne. null si les
+// courriels de vente ne sont pas encore charges (alerte, puis nouvel essai).
+function destinatairesDemande() {
+    // Get vendeur from user profile (dealer/distributeur have vendeurEmail)
+    // Vendeur concerne : associe au client, le vendeur lui-meme, ou celui choisi par
+    // un employe (vendeurDestinataire). Seul lui reste parmi les vendeurs destinataires.
+    var vendeurEmail = vendeurDestinataire();
+    var vendeurName = '';
+    if (vendeurEmail) {
+        var v = vendeursList.find(function(vv) { return String(vv.email || '').toLowerCase() === vendeurEmail; });
+        vendeurName = v ? v.name : vendeurEmail;
+    }
+
+    if (salesEmails.length === 0) {
+        alert((typeof i18n !== 'undefined') ? i18n.t('soumission.emails_not_loaded') : 'Les courriels de vente ne sont pas encore charges. Veuillez patienter quelques secondes et reessayer.');
+        // Retry loading
+        fetch(API_URL + '?action=get&key=sales_emails')
+            .then(function(r) { return r.json(); })
+            .then(function(data) { if (data.value) { try { salesEmails = JSON.parse(data.value); } catch(e) {} } });
+        return null;
+    }
+    // Separateur point-virgule (Outlook ne separe PAS les adresses par virgule dans
+    // un lien mailto -> il les met toutes dans un seul champ invalide et le courriel
+    // ne part pas). Filtre aussi les entrees vides/espaces.
+    var mailTo = filtrerVendeurs(salesEmails
+        .map(function(e) { return (e || '').trim(); })
+        .filter(function(e) { return e; }), vendeurEmail)
+        .join(';');
+    // Le vendeur attitre (dealer/distributeur) devient un DESTINATAIRE PRINCIPAL
+    // (dans le "A", avec les ventes) plutot qu'une simple copie : ainsi il part
+    // toujours avec la demande, y compris dans le texte du panneau "copier" si le
+    // client courriel ne s'ouvre pas. Dedoublonne (au cas ou le vendeur serait deja
+    // dans la liste de vente). Meme separateur ';' (Outlook).
+    var toAll = mailTo;
+    if (vendeurEmail) {
+        var _already = mailTo.split(';').some(function(e) { return e.trim().toLowerCase() === vendeurEmail.toLowerCase(); });
+        if (!_already) toAll = mailTo ? (mailTo + ';' + vendeurEmail) : vendeurEmail;
+    }
+    return { toAll: toAll, vendeurEmail: vendeurEmail, vendeurName: vendeurName };
+}
+
+// Ouvre le courriel de la demande (ou le repli « demande longue ») et prepare le
+// panneau « Copier la demande / Copier pour Epicor ».
+function lancerCourriel(toAll, subject, body, epicor) {
+    var mailUrl = 'mailto:' + toAll + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    // Memorise le contenu pour le bouton "Copier la demande" (panneau de secours) :
+    // le vendeur est dans le "A", donc visible aussi dans la version copiee.
+    window.__lastSoumissionEmail = { to: toAll, cc: '', subject: subject, body: body };
+    window.__lastSoumissionEpicor = epicor;
+    // Cache un eventuel panneau de secours d'un envoi precedent.
+    hideSoumissionFallback();
+    window.__soumissionLongue = null;
+    // Demande trop longue pour un lien mailto : Outlook et Windows le coupent
+    // sans prevenir (voir MAILTO_MAX). On copie le corps complet et on ouvre un
+    // courriel avec seulement destinataires + objet, ou il reste a coller.
+    if (mailUrl.length > MAILTO_MAX) {
+        envoyerDemandeLongue(toAll, subject, body);
+        return;
+    }
+    // Point 2 : le panneau de copie (Copier la demande / Copier pour Epicor) est
+    // TOUJOURS affiche apres une generation, pas seulement si le courriel echoue.
+    renderSoumissionFallback(false);
+    // Detecte si le client courriel s'ouvre; sinon, bascule le panneau en mode "alerte".
+    armMailtoFallback();
+    // Envoi via le client courriel de l'utilisateur (part de sa propre adresse).
+    ouvrirLienCourriel(mailUrl);
 }
 
 // Longueur maximale (lien ENCODE : espace et saut de ligne = 3 caracteres, accent
@@ -2297,10 +2650,18 @@ function prixLigne(code) {
 // le champ n'est alors plus exige. L'etiquette suit la reponse. On change aussi
 // l'attribut data-i18n, sinon la prochaine bascule de langue remettrait
 // « obligatoire » par-dessus (translatePage relit l'attribut, pas le texte).
+// Avec un panier, le lieu reste exige tant qu'UNE machine (du panier ou a l'ecran) est
+// installee par e-Trak : il est commun a toute la soumission.
+function lieuFacultatif() {
+    var ecranNon = reponseInstall() === 'non';
+    if (!panierActif()) return ecranNon;
+    var panierNon = panier.every(function (it) { return it.photo.installation === 'non'; });
+    return panierNon && (ecranNon || !machineEcranPrete());
+}
 function majEtiquetteLieu() {
     var lbl = document.querySelector('label[for="soumission-lieu"]');
     if (!lbl) return;
-    var cle = (reponseInstall() === 'non') ? 'soumission.lieu_optionnel' : 'soumission.lieu';
+    var cle = lieuFacultatif() ? 'soumission.lieu_optionnel' : 'soumission.lieu';
     lbl.setAttribute('data-i18n', cle);
     lbl.textContent = i18n.t(cle);
 }
@@ -2323,7 +2684,9 @@ function lignesFacturables() {
     (window.__selectionRows || []).forEach(function (r) {
         var pr = prixLigne(r.code);     // pose neutralisee si le client installe
         var brut = priceFor(r.code);    // liste de prix telle quelle
-        var q = lineQty(r.code, r.name);
+        // x unites de la machine (decision de Steve, 2026-09-29) : « 2 x CAT 320 » veut
+        // dire deux kits, dans le tableau, les totaux ET le bloc Epicor.
+        var q = lineQty(r.code, r.name) * unitesMachine();
         var itemExt = (typeof pr.item === 'number') ? pr.item * q : pr.item;
         var instExt = (typeof pr.install === 'number') ? pr.install * q : pr.install;
         // MAIN-D'OEUVRE PURE — le 1500-0004 « option mini » : aucun prix piece,
