@@ -72,6 +72,18 @@ check('savGz corrompu : refuse, liste intacte', post({ action: 'setsav', savGz: 
 check('accents conserves', (() => { post({ action: 'setsav', sav: { clients: [['Équipements Gérard Côté', 'Lévis', 'QC', 'direct']], pieces: [] }, pin: 'PINSECRET' });
   const c = post({ action: 'getsav', token: vi }).sav.clients[0][0]; post({ action: 'setsav', savGz: gz, pin: 'PINSECRET' }); return c === 'Équipements Gérard Côté'; })());
 
+// Contacts : liste blanche (4 champs, 5 par client, un contact sans telephone ni courriel ecarte)
+res = post({ action: 'setsav', sav: { clients: [['C1', 'V', 'QC', 'direct']], pieces: [],
+  contacts: { C1: [['Jean Tremblay', 'Contremaitre', '819-555-0000', 'jt@c1.ca', 'intrus'], ['Vide', '', '', ''],
+                   ['A', '', '1', ''], ['B', '', '2', ''], ['C', '', '3', ''], ['D', '', '4', ''], ['E', '', '5', '']],
+              '': [['X', '', '1', '']], C2: 'pas une liste' } }, pin: 'PINSECRET' });
+let sv = post({ action: 'getsav', token: vi }).sav;
+check('contacts transmis, 4 champs seulement', res.ok && res.contacts === 1 && JSON.stringify(sv.contacts.C1[0]) === JSON.stringify(['Jean Tremblay', 'Contremaitre', '819-555-0000', 'jt@c1.ca']));
+check('contact sans telephone ni courriel ecarte, 5 au plus par client', sv.contacts.C1.length === 4 && sv.contacts.C1.every(c => c[2] || c[3]));
+check('cle vide et valeur invalide ignorees', !('' in sv.contacts) && !('C2' in sv.contacts));
+check('ancienne liste effacee avant l ecriture : aucune tranche orpheline', store.sav_ref_n === '1' && !store.sav_ref_1);
+post({ action: 'setsav', savGz: gz, pin: 'PINSECRET' });
+
 // Fuites par les portes generiques
 check('GET public sav_ref_0 : vide', get({ action: 'get', key: 'sav_ref_0' }).value === '');
 check('GET public sav_ref_n : vide', get({ action: 'get', key: 'sav_ref_n' }).value === '');

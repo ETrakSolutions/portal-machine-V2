@@ -45,8 +45,9 @@ def classeur_par_defaut():
     return str(max(cands, key=lambda p: p.stat().st_mtime)) if cands else str(MASTER_BOOKING)
 # Groupes de produits qui ne sont PAS des pieces qu'un client commande au telephone.
 GROUPES_EXCLUS = ('3116', '3117', '3140', '3120', '32', '9001', '1930')
-# Au-dela, la liste pese sur le quota des proprietes du script (500 Ko au total).
-PLAFOND_OCTETS = 150_000
+# Au-dela, la liste pese sur le quota des proprietes du script (500 Ko au total, ~80 Ko
+# libres le 2026-09-29) : plafond sur la taille COMPRESSEE, celle qui est stockee.
+PLAFOND_OCTETS = 45_000
 
 
 def _norm(s):
@@ -154,6 +155,55 @@ def construire(feuilles):
     return clients, pieces
 
 
+# Contacts Epicor (decision Jacquot, 2026-09-29) : proposes a CHOISIR dans la page,
+# jamais remplis automatiquement — mesure du jour, chez les clients actifs : 645
+# contacts de facturation (Recevables, payables, administration) pour 104 vraies
+# personnes. Les personnes passent en premier ; la facturation est marquee.
+MOTS_FACTURATION = ('recevable', 'payable', 'compta', 'account', 'factur', 'admin', 'invoice',
+                    'billing', 'ap@', 'ar@')
+CONTACTS_PAR_CLIENT = 4
+
+
+def est_facturation(nom, courriel):
+    t = _norm(nom) + ' ' + _norm(courriel)
+    return any(m in t for m in MOTS_FACTURATION)
+
+
+def lire_contacts(noms_clients, env_path):
+    from sync_inventaire_epicor import sql_connect
+    conn = sql_connect(env_path)
+    cur = conn.cursor()
+    rows = cur.execute(
+        "SELECT cu.Name, c.Name, c.Func, c.PhoneNum, c.EMailAddress, c.ConNum "
+        "FROM dbo.CustCnt c JOIN dbo.Customer cu ON cu.Company = c.Company AND cu.CustNum = c.CustNum "
+        "WHERE c.Company = 'ETRAK' AND c.Inactive = 0").fetchall()
+    conn.close()
+    voulus = {_norm(n): n for n in noms_clients}
+    par = collections.defaultdict(list)
+    for client, nom, fonc, tel, mail, num in rows:
+        cle = voulus.get(_norm(str(client or '').strip()))
+        tel, mail, nom = str(tel or '').strip(), str(mail or '').strip(), str(nom or '').strip()
+        if not cle or not (tel or mail):
+            continue
+        fact = est_facturation(nom, mail)
+        par[cle].append((fact, int(num or 0), [nom[:60], str(fonc or '').strip()[:40], tel[:30], mail[:80], 1 if fact else 0]))
+    # QUOTA (500 Ko pour tout le portail, ~80 Ko libres le 2026-09-29) : seules les VRAIES
+    # PERSONNES sont gardees (115 contacts, 100 clients : 38,7 Ko compresses avec le reste).
+    # Les contacts de facturation — meme reduits a leur telephone — ajoutaient 20 Ko.
+    out = {}
+    for cle, lst in par.items():
+        vus, garde = set(), []
+        for fact, _, c in sorted(lst, key=lambda x: x[1]):
+            if fact:
+                continue
+            k = (_norm(c[0]), c[2], _norm(c[3]))
+            if k not in vus:
+                vus.add(k); garde.append(c[:4])
+        if garde:
+            out[cle] = garde[:CONTACTS_PAR_CLIENT]
+    return out
+
+
 def lire_reglages(fichier):
     r = json.loads(Path(fichier).read_text(encoding='utf-8'))
     for k in ('produits', 'routage'):
@@ -171,6 +221,8 @@ def main():
     ap.add_argument('--classeur', default=None)
     ap.add_argument('--reglages', default=None)
     ap.add_argument('--pin-file', default=str(REPO / 'PIN Portail.txt'))
+    ap.add_argument('--env', default=str(Path.home() / 'GRYB-MCP' / 'gryb-epicor' / 'credentials.env'),
+                    help='identifiants SQL Epicor (lecture seule), comme sync_inventaire_epicor.py')
     a = ap.parse_args()
 
     reg_path = Path(a.reglages) if a.reglages else ((dossier_portail() or Path('.')) / 'sav-reglages.json')
@@ -182,17 +234,26 @@ def main():
     if not Path(a.classeur).exists():
         sys.exit('Master Booking introuvable : %s' % a.classeur)
     clients, pieces = construire(lire_classeur(a.classeur))
+    try:
+        contacts = lire_contacts([c[0] for c in clients], a.env)
+    except Exception as e:                # Epicor injoignable : on publie sans contacts
+        print('⚠ Contacts Epicor illisibles (%s: %s) — publication sans contacts' % (type(e).__name__, str(e)[:120]))
+        contacts = {}
     sav = {'clients': clients, 'pieces': pieces, 'produits': reglages['produits'],
-           'routage': reglages['routage'], 'cc': reglages.get('cc') or []}
-    taille = len(json.dumps(sav, ensure_ascii=False, separators=(',', ':')).encode('utf-8'))
+           'routage': reglages['routage'], 'cc': reglages.get('cc') or [], 'contacts': contacts}
+    import base64, gzip
+    gz = base64.b64encode(gzip.compress(json.dumps(sav, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 9)).decode('ascii')
+    taille = len(gz)
     nt = collections.Counter(c[3] or '(inconnu)' for c in clients)
     print('Clients : %d (%s)' % (len(clients), ', '.join('%s %d' % kv for kv in nt.most_common())))
     print('Pieces  : %d' % len(pieces))
+    nc = sum(len(v) for v in contacts.values())
+    print('Contacts: %d personnes pour %d clients' % (nc, len(contacts)))
     print('Routage : %s' % ', '.join('%s <%s>' % (x['nom'], x.get('courriel') or 'SANS COURRIEL')
                                      for x in reglages['routage']))
-    print('Taille  : %d octets' % taille)
+    print('Taille  : %d octets compresses (plafond %d)' % (taille, PLAFOND_OCTETS))
     if taille > PLAFOND_OCTETS:
-        sys.exit('Liste trop lourde (%d octets > %d) : resserrer les pieces' % (taille, PLAFOND_OCTETS))
+        sys.exit('Liste trop lourde (%d octets compresses > %d) : quota du portail' % (taille, PLAFOND_OCTETS))
     sans = [x['nom'] for x in reglages['routage'] if not x.get('courriel')]
     if sans:
         print('⚠ Routage sans courriel (la page le desactive) : %s' % ', '.join(sans))
@@ -201,8 +262,6 @@ def main():
         return
     # Envoi COMPRESSE : le serveur stocke la liste en gzip (quota de 500 Ko partage par
     # tout le portail ; il restait ~80 Ko le 2026-09-29, la liste brute en fait 86).
-    import base64, gzip
-    gz = base64.b64encode(gzip.compress(json.dumps(sav, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 9)).decode('ascii')
     res = post({'action': 'setsav', 'savGz': gz, 'pin': read_pin(a.pin_file)})
     if not res.get('ok'):
         sys.exit('Refus du portail : %s' % res)
