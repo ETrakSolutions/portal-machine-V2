@@ -82,6 +82,10 @@ def preparer(commentaire):
         "return typeof machinesData!=='undefined' && Object.keys(machinesData).length>0"
         " && typeof priceData!=='undefined' && Object.keys(priceData).length>0;"))
     dv.execute_script("window.__liens=[]; window.ouvrirLienCourriel=function(u){ window.__liens.push(u); };")
+    # Courriels de vente et vendeurs : charges en asynchrone (sinon alerte « pas encore charges »).
+    WebDriverWait(dv, 40).until(lambda d: d.execute_script(
+        "return typeof salesEmails!=='undefined' && salesEmails.length>0"
+        " && typeof vendeursList!=='undefined' && vendeursList.length>0;"))
     for sid, val in (('select-type', 'Excavatrice'), ('select-fabricant', 'Caterpillar'),
                      ('select-modele', '320'), ('select-annee', '2024')):
         check('selection %s' % val, choisir(sid, val))
