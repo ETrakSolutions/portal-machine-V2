@@ -75,6 +75,8 @@ function doPost(e) {
     if (action === 'setprices')      return jsonOut(setPrices(body));
     if (action === 'getpriceslog')   return jsonOut(getPricesLog(body));
     if (action === 'getcedule')      return jsonOut(getCedule(body));
+    if (action === 'getsav')         return jsonOut(getSav(body));
+    if (action === 'setsav')         return jsonOut(setSav(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
@@ -840,6 +842,87 @@ function getCedule(body) {
   return { ok: true, cedule: ced };
 }
 
+/* ============================ SAV (demande de service apres-vente) ============================ */
+// Decision Jacquot, 2026-09-29 : guide d'appel pour toute l'equipe interne (pas de
+// stockage des demandes : la page ouvre un courriel Outlook pre-rempli). Le serveur ne
+// sert que les listes de reference de la page :
+//   { updated, clients:[[nom, ville, prov, type]], pieces:[[pn, description]],
+//     produits:[...], routage:[{cle, nom, courriel, regle}], cc:[courriel] }
+// type = 'dealer' | 'direct' | 'interco' (groupe client Epicor). Aucun montant, aucune
+// adresse complete, aucun telephone (decision : nom, ville, dealer/direct).
+// Publie par scripts/publier_sav.py (PIN, action setsav) depuis le Master Booking et
+// le fichier sav-reglages.json de SharePoint (_Portail e-Trak). Tranches de 8 Ko.
+// Roles : les memes que la cedule (CEDULE_ROLES) — pas dealer, distributeur ni invite.
+var SAV_PREFIX = 'sav_ref_';
+var SAV_CHUNK = 8000;
+var SAV_ROLES = CEDULE_ROLES;
+
+function _isSavKey(key) { return String(key || '').indexOf(SAV_PREFIX) === 0; }
+// Cles jamais lisibles, modifiables ni listees par les actions generiques get/save/delete.
+function _isReservedKey(key) { return _isPriceKey(key) || _isSavKey(key); }
+
+function _readSav() {
+  var n = parseInt(PROPS.getProperty(SAV_PREFIX + 'n') || '0', 10);
+  if (!n) return null;
+  var raw = '';
+  for (var i = 0; i < n; i++) raw += (PROPS.getProperty(SAV_PREFIX + i) || '');
+  return JSON.parse(raw);
+}
+
+// { action:'getsav', token } -> { ok, sav } | { error }
+// Role relu dans authorized_users_v2 a chaque appel. Le PIN ne donne PAS la liste.
+function getSav(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (SAV_ROLES.indexOf(user.role) < 0) return { error: 'forbidden' };
+  var sav;
+  try { sav = _readSav(); } catch (e) { return { error: 'sav unreadable' }; }
+  return { ok: true, sav: sav };
+}
+
+// { action:'setsav', sav, pin|token admin } -> { ok, clients, pieces, chunks }
+// Liste blanche stricte : seuls les champs prevus sont gardes, tout le reste est jete.
+function setSav(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var s = body.sav;
+  if (typeof s === 'string') { try { s = JSON.parse(s); } catch (e) { s = null; } }
+  if (!s || typeof s !== 'object' || Array.isArray(s)) return { error: 'invalid sav' };
+  var str = function (x, n) { return String(x === null || x === undefined ? '' : x).slice(0, n); };
+  var TYPES = { dealer: 1, direct: 1, interco: 1 };
+  if (!Array.isArray(s.clients) || !Array.isArray(s.pieces)) return { error: 'invalid sav' };
+  var clients = [], pieces = [], routage = [], produits = [], cc = [];
+  for (var i = 0; i < s.clients.length; i++) {
+    var c = s.clients[i];
+    if (!Array.isArray(c) || !c[0]) return { error: 'invalid client ' + i };
+    clients.push([str(c[0], 80), str(c[1], 50), str(c[2], 10), TYPES[c[3]] ? c[3] : '']);
+  }
+  for (var j = 0; j < s.pieces.length; j++) {
+    var p = s.pieces[j];
+    if (!Array.isArray(p) || !p[0]) return { error: 'invalid piece ' + j };
+    pieces.push([str(p[0], 40), str(p[1], 90)]);
+  }
+  (Array.isArray(s.routage) ? s.routage : []).forEach(function (r) {
+    if (r && r.cle && r.nom) routage.push({ cle: str(r.cle, 20), nom: str(r.nom, 60),
+      courriel: str(r.courriel, 80), regle: str(r.regle, 160) });
+  });
+  (Array.isArray(s.produits) ? s.produits : []).forEach(function (x) { if (x) produits.push(str(x, 40)); });
+  (Array.isArray(s.cc) ? s.cc : []).forEach(function (x) { if (x) cc.push(str(x, 80)); });
+  var out = { updated: new Date().toISOString(), clients: clients, pieces: pieces,
+              produits: produits, routage: routage, cc: cc };
+  var raw = JSON.stringify(out);
+  return _avecVerrou(function () {
+    var old = parseInt(PROPS.getProperty(SAV_PREFIX + 'n') || '0', 10);
+    var n = Math.ceil(raw.length / SAV_CHUNK);
+    for (var k = 0; k < n; k++) PROPS.setProperty(SAV_PREFIX + k, raw.substr(k * SAV_CHUNK, SAV_CHUNK));
+    for (var m = n; m < old; m++) PROPS.deleteProperty(SAV_PREFIX + m);
+    PROPS.setProperty(SAV_PREFIX + 'n', String(n));
+    return { ok: true, clients: clients.length, pieces: pieces.length, chunks: n };
+  });
+}
+
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
    de courriels (scope script.send_mail). Le courriel de test part a la personne
    qui execute la fonction.
@@ -894,19 +977,19 @@ function kvGet(key) {
   if (!key) return '';
   // Cles sensibles (mots de passe) et sessions : jamais lisibles par le GET public.
   // Les clients authentifies passent par action=listusers.
-  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) return '';
+  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0 || _isReservedKey(key)) return '';
   return PROPS.getProperty(key) || '';
 }
 function kvSave(key, value) {
   if (!key) throw new Error('key required');
-  if (key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) throw new Error('reserved key');
+  if (key.indexOf(SESSION_PREFIX) === 0 || _isReservedKey(key)) throw new Error('reserved key');
   var v = (typeof value === 'string') ? value : JSON.stringify(value);
   PROPS.setProperty(key, v);
   return true;
 }
 function kvDelete(key) {
   if (!key) throw new Error('key required');
-  if (key.indexOf(SESSION_PREFIX) === 0 || _isPriceKey(key)) throw new Error('reserved key');
+  if (key.indexOf(SESSION_PREFIX) === 0 || _isReservedKey(key)) throw new Error('reserved key');
   PROPS.deleteProperty(key);
   return true;
 }
@@ -916,7 +999,7 @@ function kvList(prefix) {
   for (var k in all) {
     if (k.indexOf(prefix) !== 0) continue;
     // Les tokens de session sont DANS le nom de cle -> exclus de tout listing
-    if (k.indexOf(SESSION_PREFIX) === 0 || SENSITIVE_KEYS.indexOf(k) >= 0 || _isPriceKey(k)) continue;
+    if (k.indexOf(SESSION_PREFIX) === 0 || SENSITIVE_KEYS.indexOf(k) >= 0 || _isReservedKey(k)) continue;
     keys.push(k);
   }
   return keys.sort();
