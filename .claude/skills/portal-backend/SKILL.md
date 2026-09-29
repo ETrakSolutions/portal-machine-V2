@@ -40,7 +40,7 @@ et le tester par un appel direct.
   sensible (ex. `machine_requests` porte des noms et courriels). Une nouvelle donnée privée
   va dans `SENSITIVE_KEYS` ou derrière sa propre action.
 
-## Les actions protégées (état au 2026-09-25, version 30)
+## Les actions protégées (état au 2026-09-29, version 33)
 
 | Action | Qui | Ce qui sort | Décision |
 |---|---|---|---|
@@ -49,6 +49,8 @@ et le tester par un appel direct.
 | `getprices` | vraie session, rôle avec `soumissionAccess` ; **pas le PIN, pas l'invité** | `{PN:{item,install,installCode}}` + journal par compte | Jacquot 2026-09-25 |
 | `setprices` / `getpriceslog` | admin / PIN | — / qui a obtenu les prix, quand | idem |
 | `getcedule` | rôles internes `CEDULE_ROLES` (pas dealer, distributeur, invité) | noms, jours, booléens AM/PM | Jacquot 2026-09-25 |
+| `getsav` | rôles internes `SAV_ROLES` (= `CEDULE_ROLES`) ; pas le PIN, pas l'invité | clients `[nom, ville, prov, type]`, pièces `[pn, desc]`, produits, routage (courriels), cc | Jacquot 2026-09-29 |
+| `setsav` | admin / PIN — `scripts/publier_sav.py` (Master Booking + `sav-reglages.json` de SharePoint) | — | idem |
 | `adduser` / `listmyusers` / `updatemyuser` | `addUsers` (vente externe) — Dealer/Distributeur seulement | — | Steve 2026-09-24 |
 
 **Comptes protégés (`_guardUsersSave`)** : le portail renvoie la liste COMPLÈTE des comptes
@@ -147,7 +149,15 @@ Guider Jacquot **une étape à la fois**, attendre sa réponse avant la suivante
 est collé doit être un commit identifiable. Après le déploiement, ajouter la version
 ci-dessous.
 
-Versions : 28 (comptes protégés), 29 (prix), 30 (cédule) — toutes du 2026-09-25.
+Versions : 28 (comptes protégés), 29 (prix), 30 (cédule) — toutes du 2026-09-25 ; 31 (`getsav`/`setsav`),
+33 (liste SAV compressée) — 2026-09-29. La 32 a été prise par un autre déploiement entre les deux.
+
+⚠️ **QUOTA DES PROPRIÉTÉS : 500 Ko pour TOUT le portail** (comptes, prix, inventaire, SAV…).
+Mesuré le 2026-09-29 : il restait ~80 Ko ; une écriture qui dépasse répond seulement
+`server error`. La liste SAV est donc stockée en **gzip + base64** (`_gzB64` / `_ungzB64`,
+81 Ko → 33 Ko, 5 tranches, marqueur `sav_ref_fmt = gz`). Toute nouvelle grosse donnée doit
+être compressée de la même façon, et un `server error` sur une écriture fait d'abord penser
+au quota. Clés `sav_ref_*` : réservées comme `price_list_*` (`_isReservedKey`).
 
 ### Ordre de mise en ligne
 
