@@ -35,6 +35,8 @@ SAV = {
                 {'cle': 'compta', 'nom': 'Comptabilité', 'courriel': '', 'regle': 'Facturation'},
                 {'cle': 'kevin', 'nom': 'Kevin Bérubé', 'courriel': 'kevin@test', 'regle': 'Directeur de service'}],
     'cc': ['kevin@test'],
+    'contacts': {'Gravier Duncan Simard': [['Marc Girard', 'Contremaître', '819-555-0101', 'mgirard@test'],
+                                           ['Julie Roy', '', '819-555-0102', '']]},
 }
 ok, ko = [], []
 
@@ -103,7 +105,16 @@ def main():
         v('type deduit : Dealer coche', d.find_element(By.CSS_SELECTOR, 'input[name=f-type][value=dealer]').is_selected())
         v('champ client final visible pour un dealer', d.find_element(By.ID, 'w-final').is_displayed())
         v('lieu pre-rempli par la ville', d.find_element(By.ID, 'f-lieu').get_attribute('value') == 'Laval, QC')
+        v('client sans contact Epicor : zone contacts masquee', not d.find_element(By.ID, 'w-contacts').is_displayed())
         items = choisir(d, 'f-compagnie', 'gravier', 'Gravier')
+        btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
+        v('client avec contacts : 2 contacts proposes', d.find_element(By.ID, 'w-contacts').is_displayed() and len(btn) == 2,
+          [b.text for b in btn])
+        v('rien de rempli tant qu on ne clique pas', d.find_element(By.ID, 'f-contact').get_attribute('value') == '')
+        btn[0].click(); time.sleep(0.2)
+        v('clic : nom, telephone, courriel remplis', [d.find_element(By.ID, i).get_attribute('value') for i in ('f-contact', 'f-tel', 'f-courriel')]
+          == ['Marc Girard', '819-555-0101', 'mgirard@test'])
+        for i in ('f-contact', 'f-tel', 'f-courriel'): d.find_element(By.ID, i).clear()
         v('changement de client : Client direct coche', d.find_element(By.CSS_SELECTOR, 'input[name=f-type][value=direct]').is_selected())
         el = d.find_element(By.ID, 'f-compagnie'); el.clear(); el.send_keys('Nouvelle Excavation Inc'); time.sleep(0.4)
         v('nom inconnu : marque « nouveau client »', 'nouveau client' in d.find_element(By.ID, 'f-type-tag').text)

@@ -18,7 +18,7 @@
     var $ = function (id) { return document.getElementById(id); };
     var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
     var norm = function (s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
-    var REF = { clients: [], pieces: [], produits: [], routage: [], cc: [] };
+    var REF = { clients: [], pieces: [], produits: [], routage: [], cc: [], contacts: {} };
     var clientChoisi = null;          // [nom, ville, prov, type] ou null (nouveau client)
     var routageManuel = false;        // l'utilisateur a choisi lui-meme : on ne suggere plus
 
@@ -83,7 +83,26 @@
     $('f-compagnie').addEventListener('input', function () {
         if (clientChoisi && $('f-compagnie').value !== clientChoisi[0]) { clientChoisi = null; majClientTag(); }
     });
+    // Contacts Epicor du client choisi : proposes, jamais remplis seuls (decision Jacquot,
+    // 2026-09-29 — la plupart des contacts Epicor sont ceux de la facturation, ecartes a
+    // la publication ; ne restent que les vraies personnes).
+    function majContacts() {
+        var l = clientChoisi ? (REF.contacts[clientChoisi[0]] || []) : [];
+        $('w-contacts').style.display = l.length ? '' : 'none';
+        $('f-contacts').innerHTML = l.map(function (c, i) {
+            return '<button type="button" data-i="' + i + '"><b>' + esc(c[0] || '(sans nom)') + '</b>' + (c[1] ? ' — ' + esc(c[1]) : '') +
+                '<small>' + esc([c[2], c[3]].filter(Boolean).join(' · ')) + '</small></button>';
+        }).join('');
+        [].forEach.call($('f-contacts').querySelectorAll('button'), function (b) {
+            b.addEventListener('click', function () {
+                var c = l[+b.getAttribute('data-i')];
+                $('f-contact').value = c[0] || ''; $('f-tel').value = c[2] || ''; $('f-courriel').value = c[3] || '';
+                [].forEach.call($('f-contacts').querySelectorAll('button'), function (x) { x.classList.toggle('on', x === b); });
+            });
+        });
+    }
     function majClientTag() {
+        majContacts();
         var v = $('f-compagnie').value.trim();
         $('f-type-tag').innerHTML = clientChoisi ? tagType(clientChoisi[3]) || '<span class="sav-tag interco">Epicor</span>'
             : (v ? '<span class="sav-tag nouveau">nouveau client</span>' : '');
@@ -282,7 +301,7 @@
                     return;
                 }
                 REF = { clients: d.sav.clients || [], pieces: d.sav.pieces || [], produits: d.sav.produits || [],
-                        routage: d.sav.routage || [], cc: d.sav.cc || [] };
+                        routage: d.sav.routage || [], cc: d.sav.cc || [], contacts: d.sav.contacts || {} };
                 var up = d.sav.updated ? new Date(d.sav.updated) : null;
                 $('sav-load').textContent = REF.clients.length + ' clients et ' + REF.pieces.length + ' pièces'
                     + (up && !isNaN(up) ? ' · listes au ' + up.toLocaleDateString('fr-CA') : '');
