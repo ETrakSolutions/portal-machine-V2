@@ -2685,8 +2685,10 @@ function lignesFacturables() {
         var pr = prixLigne(r.code);     // pose neutralisee si le client installe
         var brut = priceFor(r.code);    // liste de prix telle quelle
         // x unites de la machine (decision de Steve, 2026-09-29) : « 2 x CAT 320 » veut
-        // dire deux kits, dans le tableau, les totaux ET le bloc Epicor.
-        var q = lineQty(r.code, r.name) * unitesMachine();
+        // dire deux kits, dans le tableau, les totaux ET le bloc Epicor. Pas en mode sans
+        // machine : la quantite de cameras y est deja saisie, le nombre d'unites n'est
+        // qu'une information (decision de Steve, meme jour).
+        var q = lineQty(r.code, r.name) * (estSansMachine() ? 1 : unitesMachine());
         var itemExt = (typeof pr.item === 'number') ? pr.item * q : pr.item;
         var instExt = (typeof pr.install === 'number') ? pr.install * q : pr.install;
         // MAIN-D'OEUVRE PURE — le 1500-0004 « option mini » : aucun prix piece,
