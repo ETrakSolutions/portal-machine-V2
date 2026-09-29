@@ -1856,25 +1856,8 @@ function texteMachine(p, dansPanier) {
         t += (typeof i18n !== 'undefined') ? i18n.t('email.multiaxe_engineering') : '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
     }
 
-    // Specs machine — seulement les champs cles, valeurs speciales en evidence
-    var specsText = '';
-    EMAIL_SPEC_FIELDS.forEach(function (sKey) {
-        var sVal = p.specs[sKey];
-        if (!sVal || sVal === 'A completer') return;
-        var highlight = false;
-        if (sKey === 'Type de traction' && sVal === 'Roue') highlight = true;
-        if (sKey === 'Type de boom' && sVal.indexOf('2 parties') >= 0) highlight = true;
-        if (sKey === 'Swing boom' && sVal === 'Oui') highlight = true;
-        if (sKey === 'Voltage machine (V/type)' && String(sVal).indexOf('12V') >= 0) highlight = true;
-        if (highlight) {
-            specsText += '  ' + i18n.tSpec(sKey) + ' : *** ' + String(i18n.tVal(sVal)).toUpperCase() + ' ***\n';
-        } else {
-            specsText += '  ' + i18n.tSpec(sKey) + ' : ' + i18n.tVal(sVal) + '\n';
-        }
-    });
-    if (specsText) {
-        t += '\n' + i18n.t('email.specs_header') + '\n' + specsText;
-    }
+    // Plus de bloc « Specifications » dans le courriel : juge inutile par Steve
+    // (2026-09-29). photo.specs reste dans la photo, au cas ou on le remettrait.
 
     if (p.produits.length > 0) {
         var anyOblig = false;
