@@ -847,7 +847,10 @@ function getCedule(body) {
 // stockage des demandes : la page ouvre un courriel Outlook pre-rempli). Le serveur ne
 // sert que les listes de reference de la page :
 //   { updated, clients:[[nom, ville, prov, type]], pieces:[[pn, description]],
-//     produits:[...], routage:[{cle, nom, courriel, regle}], cc:[courriel] }
+//     produits:[...], routage:[{cle, nom, courriel, regle}], cc:[courriel],
+//     contacts:{ "<nom client>": [[nom, fonction, telephone, courriel]] } }
+// Contacts (ajout du 2026-09-29, demande de Jacquot) : vraies personnes seulement, au
+// plus 5 par client, proposees a CHOISIR dans la page — jamais remplies seules.
 // type = 'dealer' | 'direct' | 'interco' (groupe client Epicor). Aucun montant, aucune
 // adresse complete, aucun telephone (decision : nom, ville, dealer/direct).
 // Publie par scripts/publier_sav.py (PIN, action setsav) depuis le Master Booking et
@@ -922,17 +925,34 @@ function setSav(body) {
   });
   (Array.isArray(s.produits) ? s.produits : []).forEach(function (x) { if (x) produits.push(str(x, 40)); });
   (Array.isArray(s.cc) ? s.cc : []).forEach(function (x) { if (x) cc.push(str(x, 80)); });
+  var contacts = {};
+  if (s.contacts && typeof s.contacts === 'object' && !Array.isArray(s.contacts)) {
+    Object.keys(s.contacts).forEach(function (cli) {
+      var l = s.contacts[cli];
+      if (!cli || !Array.isArray(l)) return;
+      var g = [];
+      l.slice(0, 5).forEach(function (c) {
+        if (Array.isArray(c) && (c[2] || c[3])) g.push([str(c[0], 60), str(c[1], 40), str(c[2], 30), str(c[3], 80)]);
+      });
+      if (g.length) contacts[str(cli, 80)] = g;
+    });
+  }
   var out = { updated: new Date().toISOString(), clients: clients, pieces: pieces,
-              produits: produits, routage: routage, cc: cc };
+              produits: produits, routage: routage, cc: cc, contacts: contacts };
   var raw = _gzB64(JSON.stringify(out));      // base64 : ASCII, 1 caractere = 1 octet
   return _avecVerrou(function () {
+    // Ancienne liste effacee AVANT d'ecrire la nouvelle : le quota n'a jamais a porter
+    // les deux a la fois (il restait ~80 Ko le 2026-09-29). Si l'ecriture echoue, la
+    // page affiche « listes indisponibles » jusqu'a la prochaine publication.
     var old = parseInt(PROPS.getProperty(SAV_PREFIX + 'n') || '0', 10);
+    PROPS.setProperty(SAV_PREFIX + 'n', '0');
+    for (var m = 0; m < old; m++) PROPS.deleteProperty(SAV_PREFIX + m);
     var n = Math.ceil(raw.length / SAV_CHUNK);
     for (var k = 0; k < n; k++) PROPS.setProperty(SAV_PREFIX + k, raw.substr(k * SAV_CHUNK, SAV_CHUNK));
-    for (var m = n; m < old; m++) PROPS.deleteProperty(SAV_PREFIX + m);
     PROPS.setProperty(SAV_PREFIX + 'n', String(n));
     PROPS.setProperty(SAV_PREFIX + 'fmt', 'gz');
-    return { ok: true, clients: clients.length, pieces: pieces.length, chunks: n, octets: raw.length };
+    return { ok: true, clients: clients.length, pieces: pieces.length, contacts: Object.keys(contacts).length,
+             chunks: n, octets: raw.length };
   });
 }
 
