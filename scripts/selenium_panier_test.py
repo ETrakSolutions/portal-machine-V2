@@ -84,11 +84,17 @@ def champ(cid, val):
 
 def ouvrir(vider=True):
     dv.get(BASE + '/soumission.html')
-    WebDriverWait(dv, 40).until(lambda d: d.execute_script(
-        "return typeof machinesData!=='undefined' && Object.keys(machinesData).length>0"
-        " && typeof priceData!=='undefined' && Object.keys(priceData).length>0"
-        " && typeof salesEmails!=='undefined' && salesEmails.length>0"
-        " && typeof vendeursList!=='undefined' && vendeursList.length>0;"))
+    # Vendeurs et courriels de vente viennent du VRAI serveur du portail : il lui arrive
+    # de mettre plus de 40 s a repondre. On attend plus longtemps et, si ca echoue, on
+    # dit ce qui manque (sinon l'echec ressemble a un defaut du panier).
+    etat = ("return {bd: typeof machinesData!=='undefined' && Object.keys(machinesData).length>0,"
+            " prix: typeof priceData!=='undefined' && Object.keys(priceData).length>0,"
+            " ventes: typeof salesEmails!=='undefined' && salesEmails.length>0,"
+            " vendeurs: typeof vendeursList!=='undefined' && vendeursList.length>0};")
+    try:
+        WebDriverWait(dv, 120).until(lambda d: all(d.execute_script(etat).values()))
+    except Exception:
+        raise RuntimeError('page pas prete apres 120 s : %r' % dv.execute_script(etat))
     if vider:
         js("sessionStorage.removeItem('soumission_panier_v1'); panier = []; rendrePanier();")
     # Boites de dialogue et courriel interceptes : le test lit ce qui aurait ete montre.
