@@ -34,6 +34,15 @@ from publier_prix import dossier_portail, read_pin, post, REPO  # noqa: E402
 
 MASTER_BOOKING = (Path.home() / 'e-Trak' / 'E-Trak - Finances - Documents' / 'General' /
                   '_e-Trak - gestion' / 'VENTE' / 'Copie de Master Booking CLOUD.xlsm')
+# Copie rafraichie 4 fois par jour par la tache « Master e-Trak - Rafraichir Master
+# Booking » (Epicor du jour). L'original n'avance que quand quelqu'un clique
+# « Actualiser tout » : on prend la plus recente des deux.
+MB_LIVE = Path.home() / 'Master e-Trak' / '_cache' / 'mb_live.xlsm'
+
+
+def classeur_par_defaut():
+    cands = [p for p in (MB_LIVE, MASTER_BOOKING) if p.exists()]
+    return str(max(cands, key=lambda p: p.stat().st_mtime)) if cands else str(MASTER_BOOKING)
 # Groupes de produits qui ne sont PAS des pieces qu'un client commande au telephone.
 GROUPES_EXCLUS = ('3116', '3117', '3140', '3120', '32', '9001', '1930')
 # Au-dela, la liste pese sur le quota des proprietes du script (500 Ko au total).
@@ -159,7 +168,7 @@ def lire_reglages(fichier):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry-run', action='store_true')
-    ap.add_argument('--classeur', default=str(MASTER_BOOKING))
+    ap.add_argument('--classeur', default=None)
     ap.add_argument('--reglages', default=None)
     ap.add_argument('--pin-file', default=str(REPO / 'PIN Portail.txt'))
     a = ap.parse_args()
@@ -168,6 +177,8 @@ def main():
     if not reg_path.exists():
         sys.exit('Reglages introuvables : %s' % reg_path)
     reglages = lire_reglages(reg_path)
+    a.classeur = a.classeur or classeur_par_defaut()
+    print('Classeur : %s' % a.classeur)
     if not Path(a.classeur).exists():
         sys.exit('Master Booking introuvable : %s' % a.classeur)
     clients, pieces = construire(lire_classeur(a.classeur))
