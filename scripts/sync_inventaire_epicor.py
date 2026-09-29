@@ -69,7 +69,9 @@ def portal_part_numbers():
     # PN ecrits en dur dans le code du kit (harnais Z03B-..., bases, options) :
     # absents des fichiers de donnees, ils sortiraient en « pas en stock » a tort.
     for js in ('js/kit-rules.js', 'js/soumission.js'):
-        pns.update(re.findall(r'\b(?:\d{4}-\d{4}|[A-Z]\d{2}[A-Z]-\d{4}(?:_R\d+)?)\b', fetch(js)))
+        # (?![\w-]) : un code suivi d'un suffixe (« 1500-0004-Install ») n'est pas coupe
+        # en « 1500-0004 », un code qui n'existe pas dans Epicor.
+        pns.update(re.findall(r'\b(?:\d{4}-\d{4}|[A-Z]\d{2}[A-Z]-\d{4}(?:_R\d+)?)(?![\w-])', fetch(js)))
     return sorted(p for p in pns if p and PN_RE.match(p))
 
 

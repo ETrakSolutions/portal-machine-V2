@@ -867,7 +867,7 @@ function applyTypeRestrictions(type) {
     // SANS MACHINE : seule la tuile Camera reste. Les 5 cameras sont des codes
     // fixes (1300-0001/0012/0003/0004/0005) qui ne dependent d'aucune machine.
     // Tout le reste en depend d'une facon ou d'une autre : le limiteur tire son
-    // drain de DRAIN_PREFIXES, son harnais du fabricant et son 1500-0004 de la
+    // drain de DRAIN_PREFIXES, son harnais du fabricant et son 1500-0004-Install de la
     // gamme. L'offrir sans machine produirait un kit que personne ne peut
     // valider — pire que le blocage qu'on corrige. On masque donc, et on
     // reinitialise, pour qu'aucune case laissee cochee ne parte dans la demande.
@@ -2689,7 +2689,7 @@ function lignesFacturables() {
         var q = lineQty(r.code, r.name) * (estSansMachine() ? 1 : unitesMachine());
         var itemExt = (typeof pr.item === 'number') ? pr.item * q : pr.item;
         var instExt = (typeof pr.install === 'number') ? pr.install * q : pr.install;
-        // MAIN-D'OEUVRE PURE — le 1500-0004 « option mini » : aucun prix piece,
+        // MAIN-D'OEUVRE PURE — le 1500-0004-Install « option mini » : aucun prix piece,
         // seulement du temps de pose plus long. La ligne EST l'installation, donc
         // elle sort sous le code d'installation, et elle n'existe pas du tout si
         // e-Trak n'installe pas : il n'y a alors aucun temps a facturer.
@@ -3177,7 +3177,7 @@ function updateSelectedSummary() {
         // son propre code produit (`installCode`, repris de la liste de prix
         // maitresse). Le point rouge du kit obligatoire reste sur la ligne PRODUIT,
         // et sur une ligne de pose seulement quand elle est seule (main-d'oeuvre
-        // pure : le 1500-0004), sinon il paraitrait deux fois pour un seul item.
+        // pure : le 1500-0004-Install), sinon il paraitrait deux fois pour un seul item.
         var rows = _lignes.map(function (l) {
             var dot = (l.oblig && (l.kind === 'item' || l.seule))
                       ? '<span style="color:#FF4444">&#9679; </span>' : '';
