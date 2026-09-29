@@ -2,7 +2,9 @@
 // services Google simules. Donnees FABRIQUEES ici (aucun vrai client). Voir
 // .claude/skills/portal-backend. Decision Jacquot du 2026-09-29 : roles internes,
 // nom + ville + dealer/direct seulement.
-const fs = require('fs'), vm = require('vm'), path = require('path');
+const fs = require('fs'), vm = require('vm'), path = require('path'), zlib = require('zlib');
+// Blob / gzip / base64 d'Apps Script, simules avec zlib (octets = Buffer).
+const blob = buf => ({ buf, getBytes: () => buf, getDataAsString: () => buf.toString('utf8') });
 const src = fs.readFileSync(path.join(__dirname, '..', '..', 'apps-script', 'Code.gs'), 'utf8');
 let store = {};
 const ctx = {
@@ -10,7 +12,10 @@ const ctx = {
     getProperty: k => (k in store ? store[k] : null),
     setProperty: (k, v) => { v = String(v); if (v.length > 9216) throw new Error('Argument too large: value'); store[k] = v; },
     deleteProperty: k => { delete store[k]; }, getProperties: () => ({ ...store }) }) },
-  Utilities: { getUuid: () => Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + '-aaaa', sleep: () => {} },
+  Utilities: { getUuid: () => Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + '-aaaa', sleep: () => {},
+    newBlob: (d) => blob(Buffer.isBuffer(d) ? d : Buffer.from(String(d), 'utf8')),
+    gzip: b => blob(zlib.gzipSync(b.buf)), ungzip: b => blob(zlib.gunzipSync(b.buf)),
+    base64Encode: b => Buffer.from(b).toString('base64'), base64Decode: s => Buffer.from(s, 'base64') },
   CacheService: { getScriptCache: () => ({ get: () => null, put: () => {} }) },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   ContentService: { createTextOutput: s => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 'json' } },
@@ -41,8 +46,8 @@ const sav = { clients, pieces, produits: ['LIMIT-ELG', 'Autre'],
 
 let res = post({ action: 'setsav', sav, pin: 'PINSECRET' });
 check('PIN publie la liste SAV', res.ok === true && res.clients === 700 && res.pieces === 900);
-check('liste decoupee en plusieurs tranches, chacune sous 9 Ko', res.chunks > 1 &&
-  Object.keys(store).filter(k => /^sav_ref_\d+$/.test(k)).every(k => store[k].length <= 9216));
+check('liste stockee COMPRESSEE (quota de 500 Ko partage)', store.sav_ref_fmt === 'gz' && res.octets < JSON.stringify(sav).length / 2);
+check('tranches sous 9 Ko chacune', Object.keys(store).filter(k => /^sav_ref_\d+$/.test(k)).every(k => store[k].length <= 9216));
 
 const vi = tok('vi@e', 'VI');
 res = post({ action: 'getsav', token: vi });
@@ -56,6 +61,16 @@ check('distributeur : refuse', post({ action: 'getsav', token: tok('s@x', 'S') }
 check('sans session : refuse', post({ action: 'getsav' }).error === 'authentication required');
 check('PIN seul ne donne pas la liste', post({ action: 'getsav', pin: 'PINSECRET' }).error === 'authentication required');
 check('compte desactive : ne se connecte pas', !post({ action: 'login', username: 'off@e', password: 'O' }).ok);
+
+// Publication compressee (savGz), comme publier_sav.py
+const gz = zlib.gzipSync(Buffer.from(JSON.stringify(sav), 'utf8')).toString('base64');
+res = post({ action: 'setsav', savGz: gz, pin: 'PINSECRET' });
+check('publication savGz acceptee', res.ok && res.clients === 700 && res.pieces === 900);
+check('relue intacte apres savGz', JSON.stringify(post({ action: 'getsav', token: vi }).sav.pieces[899]) === JSON.stringify(pieces[899]));
+check('savGz corrompu : refuse, liste intacte', post({ action: 'setsav', savGz: 'pas-du-gzip', pin: 'PINSECRET' }).error === 'invalid savGz'
+  && post({ action: 'getsav', token: vi }).sav.clients.length === 700);
+check('accents conserves', (() => { post({ action: 'setsav', sav: { clients: [['Équipements Gérard Côté', 'Lévis', 'QC', 'direct']], pieces: [] }, pin: 'PINSECRET' });
+  const c = post({ action: 'getsav', token: vi }).sav.clients[0][0]; post({ action: 'setsav', savGz: gz, pin: 'PINSECRET' }); return c === 'Équipements Gérard Côté'; })());
 
 // Fuites par les portes generiques
 check('GET public sav_ref_0 : vide', get({ action: 'get', key: 'sav_ref_0' }).value === '');

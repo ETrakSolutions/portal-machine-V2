@@ -861,12 +861,22 @@ function _isSavKey(key) { return String(key || '').indexOf(SAV_PREFIX) === 0; }
 // Cles jamais lisibles, modifiables ni listees par les actions generiques get/save/delete.
 function _isReservedKey(key) { return _isPriceKey(key) || _isSavKey(key); }
 
+// ⚠️ QUOTA : les proprietes du script partagent 500 Ko pour TOUT le portail (comptes,
+// prix, inventaire...). Mesure du 2026-09-29 : il restait ~80 Ko ; la liste brute en
+// fait 86. Elle est donc stockee COMPRESSEE (gzip + base64 : 81 Ko -> 32 Ko).
+function _gzB64(str) {
+  return Utilities.base64Encode(Utilities.gzip(Utilities.newBlob(str, 'application/json')).getBytes());
+}
+function _ungzB64(b64) {
+  return Utilities.ungzip(Utilities.newBlob(Utilities.base64Decode(b64), 'application/x-gzip')).getDataAsString('UTF-8');
+}
+
 function _readSav() {
   var n = parseInt(PROPS.getProperty(SAV_PREFIX + 'n') || '0', 10);
   if (!n) return null;
   var raw = '';
   for (var i = 0; i < n; i++) raw += (PROPS.getProperty(SAV_PREFIX + i) || '');
-  return JSON.parse(raw);
+  return JSON.parse(PROPS.getProperty(SAV_PREFIX + 'fmt') === 'gz' ? _ungzB64(raw) : raw);
 }
 
 // { action:'getsav', token } -> { ok, sav } | { error }
@@ -882,12 +892,14 @@ function getSav(body) {
   return { ok: true, sav: sav };
 }
 
-// { action:'setsav', sav, pin|token admin } -> { ok, clients, pieces, chunks }
+// { action:'setsav', sav | savGz (base64 d'un gzip du JSON), pin|token admin }
+//   -> { ok, clients, pieces, chunks, octets }
 // Liste blanche stricte : seuls les champs prevus sont gardes, tout le reste est jete.
 function setSav(body) {
   var auth = _authCheck(body);
   if (!auth.ok || !auth.admin) return { error: 'admin role required' };
   var s = body.sav;
+  if (body.savGz) { try { s = JSON.parse(_ungzB64(String(body.savGz))); } catch (e) { return { error: 'invalid savGz' }; } }
   if (typeof s === 'string') { try { s = JSON.parse(s); } catch (e) { s = null; } }
   if (!s || typeof s !== 'object' || Array.isArray(s)) return { error: 'invalid sav' };
   var str = function (x, n) { return String(x === null || x === undefined ? '' : x).slice(0, n); };
@@ -912,14 +924,15 @@ function setSav(body) {
   (Array.isArray(s.cc) ? s.cc : []).forEach(function (x) { if (x) cc.push(str(x, 80)); });
   var out = { updated: new Date().toISOString(), clients: clients, pieces: pieces,
               produits: produits, routage: routage, cc: cc };
-  var raw = JSON.stringify(out);
+  var raw = _gzB64(JSON.stringify(out));      // base64 : ASCII, 1 caractere = 1 octet
   return _avecVerrou(function () {
     var old = parseInt(PROPS.getProperty(SAV_PREFIX + 'n') || '0', 10);
     var n = Math.ceil(raw.length / SAV_CHUNK);
     for (var k = 0; k < n; k++) PROPS.setProperty(SAV_PREFIX + k, raw.substr(k * SAV_CHUNK, SAV_CHUNK));
     for (var m = n; m < old; m++) PROPS.deleteProperty(SAV_PREFIX + m);
     PROPS.setProperty(SAV_PREFIX + 'n', String(n));
-    return { ok: true, clients: clients.length, pieces: pieces.length, chunks: n };
+    PROPS.setProperty(SAV_PREFIX + 'fmt', 'gz');
+    return { ok: true, clients: clients.length, pieces: pieces.length, chunks: n, octets: raw.length };
   });
 }
 

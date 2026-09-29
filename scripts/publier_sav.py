@@ -188,10 +188,14 @@ def main():
     if a.dry_run:
         print('--dry-run : rien envoye.')
         return
-    res = post({'action': 'setsav', 'sav': sav, 'pin': read_pin(a.pin_file)})
+    # Envoi COMPRESSE : le serveur stocke la liste en gzip (quota de 500 Ko partage par
+    # tout le portail ; il restait ~80 Ko le 2026-09-29, la liste brute en fait 86).
+    import base64, gzip
+    gz = base64.b64encode(gzip.compress(json.dumps(sav, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 9)).decode('ascii')
+    res = post({'action': 'setsav', 'savGz': gz, 'pin': read_pin(a.pin_file)})
     if not res.get('ok'):
         sys.exit('Refus du portail : %s' % res)
-    print('Publie : %d clients, %d pieces, %d tranche(s).' % (res['clients'], res['pieces'], res['chunks']))
+    print('Publie : %d clients, %d pieces, %d tranche(s), %s octets stockes.' % (res['clients'], res['pieces'], res['chunks'], res.get('octets', '?')))
 
 
 if __name__ == '__main__':
