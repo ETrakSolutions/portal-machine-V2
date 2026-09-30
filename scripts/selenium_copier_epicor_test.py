@@ -10,6 +10,7 @@ Scenarios :
   D. rien du tout (ni ecran ni panier) : le message « Aucun item a copier » reste juste ;
   E. panier d'une machine + une machine a l'ecran pas ajoutee : panier puis ecran ;
   F. une machine a l'ecran, sans envoi : ses lignes (preparer sans s'envoyer de courriel).
+  G-I. « Copier la demande » : panier non envoye, machine a l ecran, rien du tout.
 
     py -3.12 scripts/selenium_copier_epicor_test.py [--live]
 """
@@ -208,6 +209,51 @@ try:
     time.sleep(0.6)
     btn, copie, alertes = cliquer_copier()
     check('copie = machine a l ecran, sans envoi', copie == attendu and bool(attendu) and not js("return window.__liens;"), (copie, attendu))
+
+    print('--- G) « Copier la demande » : panier de 2 machines PAS envoye ---')
+    ouvrir()
+    machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 2, 'oui')
+    client()
+    ajouter()
+    machine('Excavatrice', 'Bobcat', 'E08', '2015', ['lim-hauteur'], 1, 'non')
+    ajouter()
+    attendu_epi = panier_epicor()
+    js("document.getElementById('soumission-help-toggle').click();")
+    time.sleep(0.6)
+    js("window.__alertes=[]; window.__copie=null; document.getElementById('soumission-copy-btn').click();")
+    time.sleep(0.6)
+    copie = js("return window.__copie;") or ''
+    entete = js("return i18n.t('email.epicor_header');")
+    check('texte copie, sans message', bool(copie) and not js("return window.__alertes;"), js("return window.__alertes;"))
+    check('objet des 2 machines', 'Objet : Demande de soumission — 2 machine(s) : Caterpillar 320 (2024), Bobcat E08 (2015)' in copie)
+    check('les 2 sections machine et UN seul bloc Epicor au bas',
+          '=== Machine 1 de 2' in copie and '=== Machine 2 de 2' in copie and copie.count(entete) == 1
+          and ('\n' + entete + '\n' + attendu_epi + '\n') in copie)
+    check('destinataires et entreprise repris', copie.startswith('A : ') and 'Test Claude inc.' in copie)
+    check('aucun courriel ouvert, panier intact', not js("return window.__liens;") and js("return panier.length;") == 2)
+
+    print('--- H) « Copier la demande » : une machine a l ecran, sans envoi ---')
+    ouvrir()
+    machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 1, 'oui')
+    client()
+    js("document.getElementById('soumission-help-toggle').click();")
+    time.sleep(0.6)
+    js("window.__alertes=[]; window.__copie=null; document.getElementById('soumission-copy-btn').click();")
+    time.sleep(0.6)
+    copie = js("return window.__copie;") or ''
+    objet = js("return i18n.t('email.soumission_subject', {fab: selectFabricant.value, modele: selectModele.value, annee: selectAnnee.value});")
+    check('objet = celui de l envoi', ('\nObjet : ' + objet + '\n') in copie, (objet, copie.split('\n')[:2]))
+    check('corps avec la machine et le bloc Epicor', 'Machine : Excavatrice Caterpillar 320 (2024)' in copie and (entete + '\n' + js("return epicorBlockText();")) in copie)
+    check('aucun courriel ouvert', not js("return window.__liens;"))
+
+    print('--- I) « Copier la demande » sans rien : message ---')
+    ouvrir()
+    js("document.getElementById('soumission-help-toggle').click();")
+    time.sleep(0.6)
+    js("window.__alertes=[]; window.__copie=null; document.getElementById('soumission-copy-btn').click();")
+    time.sleep(0.6)
+    al = js("return window.__alertes;")
+    check('message « Aucune demande a copier »', not js("return window.__copie;") and len(al) == 1 and 'Aucune demande' in al[0], al)
 
     print('--- D) rien a l ecran ni au panier : le message reste ---')
     ouvrir()

@@ -1720,6 +1720,23 @@ if (submitBtn) {
             .catch(function() { sendEmail([]); });
 
         function sendEmail(productCodes) {
+            var body = corpsDemandeMachine(photo, {
+                company: companyName, clientEmail: clientEmail, nbSystemes: nbSystemes, lieu: lieuInstall,
+                dateInstall: dateInstall, comment: comment, userName: userName
+            }, dest);
+            lancerCourriel(dest.toAll, subject, body, texteEpicor(photo.epicor));
+        } // end sendEmail
+    });
+}
+
+// Corps du courriel d'UNE machine, sans rien envoyer : sert a l'envoi ET a « Copier la
+// demande » (preparer une soumission sans s'envoyer de courriel, Steve 2026-09-30).
+// c = champs communs (entreprise, courriel client, unites, lieu, date, commentaire,
+// demandeur) ; dest = destinatairesDemande() (pour le vendeur).
+function corpsDemandeMachine(photo, c, dest) {
+        var companyName = c.company, clientEmail = c.clientEmail, nbSystemes = c.nbSystemes,
+            lieuInstall = c.lieu, dateInstall = c.dateInstall, comment = c.comment, userName = c.userName;
+        var vendeurName = dest.vendeurName, vendeurEmail = dest.vendeurEmail;
         var body =
             i18n.t('email.soumission_header') + '\n' +
             '================================\n\n';
@@ -1770,10 +1787,7 @@ if (submitBtn) {
             i18n.t('email.requested_by', { name: userName }) + '\n' +
             'Portail e-Trak\n' +
             'https://etraksolutions.github.io/portal-machine-V2/';
-
-        lancerCourriel(dest.toAll, subject, body, _epiBlock);
-        } // end sendEmail
-    });
+        return body;
 }
 
 // ===========================================================================
@@ -2144,11 +2158,32 @@ function envoyerPanier() {
     var dest = destinatairesDemande();
     if (!dest) return;
 
+    var d = demandePanier(panier, champsCommuns(), dest);
+    lancerCourriel(dest.toAll, d.subject, d.body, d.epicor);
+    // Envoye : le panier se vide. Le texte complet reste dans le panneau « Copier la
+    // demande » si le courriel ne s'ouvre pas.
+    panier = [];
+    panierPosition = null;
+    panierSauver();
+    rendrePanier();
+}
+
+// Champs communs a toute la demande (client, lieu, date, commentaire, demandeur).
+function champsCommuns() {
     var val = function (id) { var el = document.getElementById(id); return el ? (el.value || '').trim() : ''; };
-    var company = val('soumission-company'), clientEmail = valeurCourrielClient(), lieu = val('soumission-lieu'),
-        dateInstall = val('soumission-date-install'), comment = val('soumission-comment');
-    var userName = currentUser ? currentUser.name : i18n.t('common.user_not_connected');
-    var n = panier.length;
+    return {
+        company: val('soumission-company'), clientEmail: valeurCourrielClient(), nbSystemes: val('soumission-nb-systemes'),
+        lieu: val('soumission-lieu'), dateInstall: val('soumission-date-install'), comment: val('soumission-comment'),
+        userName: currentUser ? currentUser.name : i18n.t('common.user_not_connected')
+    };
+}
+
+// Objet, corps et bloc Epicor d'une demande a plusieurs machines, sans rien envoyer :
+// sert a l'envoi du panier ET a « Copier la demande » (Steve, 2026-09-30).
+function demandePanier(items, c, dest) {
+    var company = c.company, clientEmail = c.clientEmail, lieu = c.lieu,
+        dateInstall = c.dateInstall, comment = c.comment, userName = c.userName;
+    var n = items.length;
     var body = i18n.t('email.soumission_header') + '\n' + '================================\n\n';
     if (company) body += i18n.t('email.company', { name: company }) + '\n';
     if (clientEmail) body += i18n.t('email.client_email', { email: clientEmail }) + '\n';
@@ -2156,7 +2191,7 @@ function envoyerPanier() {
     if (dateInstall) body += i18n.t('email.install_date', { date: dateInstall }) + '\n';
     body += i18n.t('email.panier_nb', { n: n }) + '\n';
     var totP = 0, totI = 0, blocs = [];
-    panier.forEach(function (it, i) {
+    items.forEach(function (it, i) {
         var p = it.photo;
         // Le type en minuscules devant la machine : « 1 × excavatrice Hitachi ZX135US-7H (2026) ».
         var ident = p.sansMachine ? libelleMachine(p) : i18n.t('type.' + p.type).toLowerCase() + ' ' + libelleMachine(p);
@@ -2188,16 +2223,35 @@ function envoyerPanier() {
         i18n.t('email.requested_by', { name: userName }) + '\n' +
         'Portail e-Trak\n' +
         'https://etraksolutions.github.io/portal-machine-V2/';
-    var liste = panier.map(function (it) { return libelleMachine(it.photo); }).join(', ');
+    var liste = items.map(function (it) { return libelleMachine(it.photo); }).join(', ');
     if (liste.length > 110) liste = liste.slice(0, 107) + '...';
-    var subject = i18n.t('email.panier_subject', { n: n, liste: liste });
-    lancerCourriel(dest.toAll, subject, body, epicorPanier);
-    // Envoye : le panier se vide. Le texte complet reste dans le panneau « Copier la
-    // demande » si le courriel ne s'ouvre pas.
-    panier = [];
-    panierPosition = null;
-    panierSauver();
-    rendrePanier();
+    return { subject: i18n.t('email.panier_subject', { n: n, liste: liste }), body: body, epicor: epicorPanier };
+}
+
+// La demande EN COURS de preparation, sans rien envoyer : le panier (plus la machine
+// prete a l'ecran, comme a l'envoi), sinon la machine a l'ecran. null s'il n'y a rien.
+// Sert a « Copier la demande » : le vendeur prepare sa soumission sans s'envoyer de
+// courriel (Steve, 2026-09-30). Aucun garde-fou d'envoi ici : on copie ce qui est saisi.
+function demandeEnCours() {
+    try { updateSelectedSummary(); } catch (e) {}
+    var ecran = machineEcranPrete();
+    if (!panierActif() && !ecran) return null;
+    // Destinataires sans l'alerte de destinatairesDemande() si les courriels de vente ne
+    // sont pas encore charges : une copie n'a pas a etre bloquee pour ca.
+    var dest = (salesEmails.length > 0 && destinatairesDemande()) || { toAll: '', vendeurName: '', vendeurEmail: '' };
+    var c = champsCommuns();
+    if (panierActif()) {
+        var items = panier.slice();
+        if (ecran) items.push({ photo: photoMachine(), unites: unitesMachine() });
+        var d = demandePanier(items, c, dest);
+        return { to: dest.toAll, cc: '', subject: d.subject, body: d.body };
+    }
+    var photo = photoMachine();
+    return {
+        to: dest.toAll, cc: '',
+        subject: i18n.t('email.soumission_subject', { fab: selectFabricant.value, modele: selectModele.value, annee: selectAnnee.value }),
+        body: corpsDemandeMachine(photo, c, dest)
+    };
 }
 
 (function () {
@@ -2525,12 +2579,13 @@ window.addEventListener('langchange', function () {
 
 // Construit le texte complet (destinataires + objet + corps) et le copie.
 function copySoumissionRequest() {
-    var m = window.__lastSoumissionEmail;
+    // D'abord la demande en cours (panier ou ecran), sinon la derniere envoyee.
+    var m = demandeEnCours() || window.__lastSoumissionEmail;
     var fr = soumissionLang() === 'fr';
     var btn = document.getElementById('soumission-copy-btn');
     if (!m) {
-        alert(fr ? 'Aucune demande a copier. Clique d\'abord sur "Envoyer la demande".'
-                 : 'Nothing to copy. Click "Send the request" first.');
+        alert(fr ? 'Aucune demande a copier. Configure une machine ou ajoute-la au panier.'
+                 : 'Nothing to copy. Configure a machine or add it to the quote.');
         return;
     }
     var text =
