@@ -1900,7 +1900,9 @@ function texteEpicor(rows) {
 // PANIER MULTI-MACHINES — demande de Gord ; decisions de Steve (2026-09-29) :
 //  - chaque machine a son nombre d'unites, qui multiplie ses quantites et ses prix ;
 //  - « Installation par e-Trak ? » se repond par machine ; le lieu reste commun ;
-//  - le courriel porte UN BLOC EPICOR PAR MACHINE ;
+//  - le courriel porte UN SEUL BLOC EPICOR, au bas, qui repete les lignes de chaque
+//    machine a la suite, sans les additionner (Steve, 2026-09-30 ; remplace le bloc
+//    par machine du 2026-09-29) ;
 //  - 10 machines au plus par soumission.
 // Une machine du panier = sa photo (le texte du courriel) + l'etat de l'ecran (pour la
 // remettre a l'ecran avec « Modifier » ou « Dupliquer ») + son nombre d'unites. Le
@@ -2162,12 +2164,9 @@ function envoyerPanier() {
         body += i18n.t('email.nb_units', { n: it.unites }) + '\n';
         if (p.notes) body += i18n.t('email.notes_machine', { notes: p.notes }) + '\n';
         body += texteMachine(p, true);
-        // UN BLOC EPICOR PAR MACHINE (decision de Steve) : chaque machine se saisit a part.
+        // Lignes Epicor de la machine : gardees pour LE bloc du bas du courriel.
         var epi = texteEpicor(p.epicor);
-        if (epi) {
-            body += '\n' + i18n.t('email.epicor_header') + '\n' + epi + '\n';
-            blocs.push(epi);
-        }
+        if (epi) blocs.push(epi);
         var t = totauxLignes(p.lignes);
         totP += t.pieces; totI += t.installation;
     });
@@ -2179,6 +2178,12 @@ function envoyerPanier() {
     }
     if (comment) body += '\n' + i18n.t('email.additional_info') + '\n  ' + comment + '\n';
     if (dest.vendeurName) body += '\n' + i18n.t('email.vendeur', { name: dest.vendeurName, email: dest.vendeurEmail }) + '\n';
+    // UN SEUL bloc Epicor, au bas du courriel (Steve, 2026-09-30) : les lignes de chaque
+    // machine, a la suite, dans l'ordre du panier. Un code present sur deux machines
+    // revient deux fois (pas d'addition). Aucune ligne vide : Luna colle tout le bloc
+    // d'un coup dans la grille Epicor, et une ligne vide y ferait une rangee vide.
+    var epicorPanier = blocs.join('\n');
+    if (epicorPanier) body += '\n' + i18n.t('email.epicor_header') + '\n' + epicorPanier + '\n';
     body += '\n--------------------------------\n' +
         i18n.t('email.requested_by', { name: userName }) + '\n' +
         'Portail e-Trak\n' +
@@ -2186,7 +2191,7 @@ function envoyerPanier() {
     var liste = panier.map(function (it) { return libelleMachine(it.photo); }).join(', ');
     if (liste.length > 110) liste = liste.slice(0, 107) + '...';
     var subject = i18n.t('email.panier_subject', { n: n, liste: liste });
-    lancerCourriel(dest.toAll, subject, body, blocs.join('\n\n'));
+    lancerCourriel(dest.toAll, subject, body, epicorPanier);
     // Envoye : le panier se vide. Le texte complet reste dans le panneau « Copier la
     // demande » si le courriel ne s'ouvre pas.
     panier = [];

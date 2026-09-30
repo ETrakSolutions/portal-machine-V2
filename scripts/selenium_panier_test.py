@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Test du panier multi-machines de la Soumission (demande de Gord, decisions de Steve
-du 2026-09-29 : unites et installation par machine, un bloc Epicor par machine, 10 max).
+du 2026-09-29 : unites et installation par machine, 10 max ; 2026-09-30 : UN seul bloc
+Epicor au bas du courriel, qui repete les lignes de chaque machine a la suite).
 
 Verifie :
   1. ajout d'une machine : le panier l'affiche (« 2 x Caterpillar 320 (2024) »), l'ecran
@@ -10,7 +11,8 @@ Verifie :
   4. « Modifier » la sort du panier et la remet a SA place quand on la rajoute ;
   5. « Retirer » (avec confirmation) ;
   6. le panier survit a un rechargement de la page ;
-  7. envoi : un courriel, une section et UN BLOC EPICOR PAR MACHINE, quantites x unites,
+  7. envoi : un courriel, une section par machine, UN SEUL BLOC EPICOR au bas (lignes de
+     chaque machine a la suite), quantites x unites,
      total general = somme des machines, objet avec le nombre de machines ; panier vide apres ;
   8. machine a l'ecran non ajoutee au moment d'envoyer : proposee, puis incluse ;
   9. lieu non exige si toutes les machines sont installees par le client ;
@@ -247,21 +249,28 @@ try:
     check('un courriel genere', bool(m))
     if m:
         corps = m['body']
+        if os.environ.get('PANIER_EXEMPLE'):
+            open(os.environ['PANIER_EXEMPLE'], 'w', encoding='utf-8').write(m['subject'] + '\n\n' + corps)
         check('objet : 2 machines, avec la liste', m['subject'] == 'Demande de soumission — 2 machine(s) : Caterpillar 320 (2024), Bobcat E08 (2015)', m['subject'])
         check('« Nombre de machines : 2 »', 'Nombre de machines : 2' in corps)
         check('section machine 1 : « === Machine 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) === »', '=== Machine 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) ===' in corps)
         check('section machine 2 : « === Machine 2 de 2 : 1 × excavatrice Bobcat E08 (2015) === »', '=== Machine 2 de 2 : 1 × excavatrice Bobcat E08 (2015) ===' in corps)
         entete = js("return i18n.t('email.epicor_header');")
-        check('UN bloc Epicor par machine (2)', corps.count(entete) == 2)
-        check('bloc de la machine 1 = celui du panier (qte x 2)', ('\n' + avant[0]['epicor'] + '\n') in corps and '1500-0000\t2' in avant[0]['epicor'])
-        check('bloc de la machine 2 = celui du panier (qte x 1, pas de pose)', ('\n' + avant[1]['epicor'] + '\n') in corps and '-install' not in avant[1]['epicor'].lower())
+        # 2026-09-30 : UN seul bloc Epicor au bas, lignes de chaque machine a la suite.
+        bloc_attendu = avant[0]['epicor'] + '\n' + avant[1]['epicor']
+        check('UN SEUL bloc Epicor dans le courriel', corps.count(entete) == 1, corps.count(entete))
+        check('bloc = lignes machine 1 puis machine 2, sans ligne vide', ('\n' + entete + '\n' + bloc_attendu + '\n') in corps)
+        check('bloc au bas : apres le total general, avant la signature',
+              corps.find('TOTAL DE LA SOUMISSION') < corps.find(entete) < corps.find('Portail e-Trak'))
+        check('machine 1 : qte x 2 ; machine 2 : qte x 1, pas de pose',
+              '1500-0000\t2' in avant[0]['epicor'] and '-install' not in avant[1]['epicor'].lower())
         check('texte de chaque machine repris tel quel', all(x['texte'] in corps for x in avant))
         # Total general = somme des machines
         tot = js("var t={p:0,i:0}; JSON.parse(sessionStorage.getItem('soumission_panier_v1')||'[]'); return t;")
         attendu = js("return arguments[0];", 0)
         check('« TOTAL DE LA SOUMISSION » present', 'TOTAL DE LA SOUMISSION' in corps)
         check('lieu et entreprise une seule fois', corps.count('Victoriaville') == 1 and corps.count('Test Claude inc.') == 1)
-        check('Copier pour Epicor : les deux blocs', js("return window.__lastSoumissionEpicor;") == avant[0]['epicor'] + '\n\n' + avant[1]['epicor'])
+        check('Copier pour Epicor = le bloc du bas', js("return window.__lastSoumissionEpicor;") == bloc_attendu)
     check('le panier est vide apres l envoi', len(panier_js()) == 0 and js("return sessionStorage.getItem('soumission_panier_v1')") == '[]')
     check('bouton d envoi revenu a « Envoyer la demande »', js("return document.getElementById('soumission-submit').textContent.trim()").endswith('Envoyer la demande'))
 
