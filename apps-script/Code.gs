@@ -708,6 +708,19 @@ function getPricesLog(body) {
 var PL_BASE = 'https://ecotrakindustrie.progressionlive.com/server/rest';
 var CEDULE_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe',
                     'technicien', 'ingenierie'];
+// Depuis le 2026-09-30 (decision Jacquot), l'acces se regle dans le tableau des
+// permissions (ceduleAccess, savAccess) : CEDULE_ROLES n'est plus que la liste par
+// defaut, tant que la permission n'a jamais ete reglee pour un role.
+// Les roles externes n'y ont JAMAIS acces, meme coches : la cedule nomme les techniciens,
+// la liste SAV porte les clients et les courriels internes.
+var ROLES_EXTERNES = ['dealer', 'distributeur'];
+function _roleHasAccess(role, perm, defaults) {
+  if (role === 'super_admin') return true;
+  if (ROLES_EXTERNES.indexOf(role) >= 0) return false;
+  var perms = _permsForRole(role);
+  if (perms && perms[perm] !== undefined) return !!perms[perm];
+  return defaults.indexOf(role) >= 0;
+}
 var CEDULE_EXCLUS = ['autre tech'];                  // noms (minuscules) a ne pas afficher
 var CEDULE_TYPES_IGNORES = ['feuille de temps'];
 var CEDULE_ETATS_IGNORES = ['annulé', 'annule'];
@@ -831,7 +844,7 @@ function getCedule(body) {
   if (!sess) return { error: 'authentication required' };
   var user = _findUser(sess.u);
   if (!user || user.active === false) return { error: 'authentication required' };
-  if (CEDULE_ROLES.indexOf(user.role) < 0) return { error: 'forbidden' };
+  if (!_roleHasAccess(user.role, 'ceduleAccess', CEDULE_ROLES)) return { error: 'forbidden' };
   var cache = CacheService.getScriptCache();
   var hit = cache.get('cedule_v1');
   if (hit) { try { return { ok: true, cedule: JSON.parse(hit) }; } catch (e) {} }
@@ -889,7 +902,7 @@ function getSav(body) {
   if (!sess) return { error: 'authentication required' };
   var user = _findUser(sess.u);
   if (!user || user.active === false) return { error: 'authentication required' };
-  if (SAV_ROLES.indexOf(user.role) < 0) return { error: 'forbidden' };
+  if (!_roleHasAccess(user.role, 'savAccess', SAV_ROLES)) return { error: 'forbidden' };
   var sav;
   try { sav = _readSav(); } catch (e) { return { error: 'sav unreadable' }; }
   return { ok: true, sav: sav };

@@ -1,15 +1,18 @@
     (function () {
         'use strict';
 
-        // ---- Auth : Super Admin + Administrateur ----
-        var EXPORT_ROLES = { super_admin: true, administrateur: true };
+        // ---- Auth : reglable dans le tableau des permissions (exportAccess, 2026-09-30) ----
+        // Defaut : Super Admin + Administrateur. Les donnees affichees sont publiques
+        // (machines.json, overrides) : ce controle est un confort d'affichage.
         var user = null;
         try { user = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
-        if (!user || !EXPORT_ROLES[user.role]) {
+        if (!user || !user.role || user.isGuest) {
             document.getElementById('exp-denied').style.display = 'block';
             return;
         }
-        document.getElementById('exp-root').style.display = 'block';
+        window.portalAccess('exportAccess', user, function (ok) {
+            document.getElementById(ok ? 'exp-root' : 'exp-denied').style.display = 'block';
+        });
 
         // Ordre canonique des types (= slugs du loader)
         var TYPE_ORDER = [

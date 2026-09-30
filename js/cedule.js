@@ -5,11 +5,16 @@
 // le serveur ; le controle ci-dessous ne fait qu'eviter d'afficher une page vide.
 (function () {
     'use strict';
-    var ROLES = { super_admin: 1, administrateur: 1, vente_interne: 1, vente_externe: 1, technicien: 1, ingenierie: 1 };
+    // Acces regle dans le tableau des permissions (ceduleAccess, 2026-09-30) : le serveur
+    // tranche ; un refus de sa part affiche la page « acces refuse ».
     var user = null;
     try { user = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
-    if (!user || user.isGuest || !user.token || !ROLES[user.role]) {
+    function refuser() {
+        document.getElementById('ced-root').style.display = 'none';
         document.getElementById('ced-denied').style.display = 'block';
+    }
+    if (!user || user.isGuest || !user.token || (window.portalRoleLocked && window.portalRoleLocked(user.role, 'ceduleAccess'))) {
+        refuser();
         return;
     }
     document.getElementById('ced-root').style.display = 'block';
@@ -82,6 +87,7 @@
             .then(function (r) { return r.json(); })
             .then(function (d) {
                 var grid = document.getElementById('ced-grid');
+                if (d && d.error === 'forbidden') { refuser(); return; }
                 if (!d || !d.ok || !d.cedule) {
                     grid.className = 'ced-msg';
                     grid.textContent = (d && d.error === 'forbidden') ? t('ced.denied_desc') : t('ced.error');

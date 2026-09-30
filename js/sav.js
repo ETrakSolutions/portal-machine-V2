@@ -6,11 +6,16 @@
 // ci-dessous ne fait qu'eviter d'afficher une page vide.
 (function () {
     'use strict';
-    var ROLES = { super_admin: 1, administrateur: 1, vente_interne: 1, vente_externe: 1, technicien: 1, ingenierie: 1 };
+    // Acces regle dans le tableau des permissions (savAccess, 2026-09-30) : le serveur
+    // tranche ; un refus de sa part affiche la page « acces refuse ».
     var user = null;
     try { user = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
-    if (!user || user.isGuest || !user.token || !ROLES[user.role]) {
+    function refuser() {
+        document.getElementById('sav-root').style.display = 'none';
         document.getElementById('sav-denied').style.display = 'block';
+    }
+    if (!user || user.isGuest || !user.token || (window.portalRoleLocked && window.portalRoleLocked(user.role, 'savAccess'))) {
+        refuser();
         return;
     }
     document.getElementById('sav-root').style.display = 'block';
@@ -294,6 +299,7 @@
             body: JSON.stringify({ action: 'getsav', token: user.token }) })
             .then(function (r) { return r.json(); })
             .then(function (d) {
+                if (d && d.error === 'forbidden') { refuser(); return; }
                 if (!d || !d.ok || !d.sav) {
                     $('sav-load').textContent = (d && d.error === 'forbidden') ? 'La demande SAV est réservée aux comptes internes.'
                         : (d && d.ok && !d.sav) ? 'Les listes clients et pièces ne sont pas encore publiées : la fiche fonctionne, sans recherche.'

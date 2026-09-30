@@ -48,8 +48,8 @@ et le tester par un appel direct.
 | `getinventory` | rôles avec `inventoryAccess` (défaut : admin, vente int./ext.) | quantités en main | Steve 2026-09-23 |
 | `getprices` | vraie session, rôle avec `soumissionAccess` ; **pas le PIN, pas l'invité** | `{PN:{item,install,installCode}}` + journal par compte | Jacquot 2026-09-25 |
 | `setprices` / `getpriceslog` | admin / PIN | — / qui a obtenu les prix, quand | idem |
-| `getcedule` | rôles internes `CEDULE_ROLES` (pas dealer, distributeur, invité) | noms, jours, booléens AM/PM | Jacquot 2026-09-25 |
-| `getsav` | rôles internes `SAV_ROLES` (= `CEDULE_ROLES`) ; pas le PIN, pas l'invité | clients `[nom, ville, prov, type]`, pièces `[pn, desc]`, produits, routage (courriels), cc | Jacquot 2026-09-29 |
+| `getcedule` | case **Cédule techs** du tableau des permissions (`ceduleAccess`) ; défaut `CEDULE_ROLES` ; **jamais** dealer, distributeur, invité | noms, jours, booléens AM/PM | Jacquot 2026-09-25, réglable 2026-09-30 |
+| `getsav` | case **SAV** (`savAccess`) ; défaut `SAV_ROLES` (= `CEDULE_ROLES`) ; **jamais** dealer, distributeur ; pas le PIN, pas l'invité | clients `[nom, ville, prov, type]`, pièces `[pn, desc]`, produits, routage (courriels), cc | Jacquot 2026-09-29 |
 | `setsav` | admin / PIN — `scripts/publier_sav.py` (Master Booking + `sav-reglages.json` de SharePoint) | — | idem |
 | `adduser` / `listmyusers` / `updatemyuser` | `addUsers` (vente externe) — Dealer/Distributeur seulement | — | Steve 2026-09-24 |
 
@@ -88,7 +88,10 @@ compris), sauf annulées et feuilles de temps ; durée jamais prolongée ; cache
    - Rôles admis réglables par l'admin : une permission dans `roles_permissions` (ex.
      `inventoryAccess`), avec une liste de rôles par défaut tant qu'elle n'a jamais été
      touchée (`_canSeeInventory`), et la clé ajoutée à `ROLES` / `PERM_KEYS` / `PERM_LABELS`
-     de `js/admin.js`. Rôles fixés par décision : une constante (ex. `CEDULE_ROLES`).
+     de `js/admin.js`. Modèle générique : `_roleHasAccess(role, perm, défauts)` (Code.gs) et
+     son miroir `js/perm-access.js` (`portalAccess`, `portalRoleLocked`) pour les pages ;
+     `ROLES_EXTERNES` = verrou dur (cases grisées dans le tableau). Tuiles réglables depuis
+     le 2026-09-30 : Cédule, SAV, Export, Price List (`selenium_permissions_tuiles_test.py`).
 2. **Liste blanche** de ce qui sort. Une fiche ProgressionLive porte coût horaire, téléphone
    et position GPS ; une tâche porte l'adresse du client : rien de cela ne quitte le serveur.
 3. Vers une API externe : **lectures fixes écrites en dur**, jamais un chemin ou un

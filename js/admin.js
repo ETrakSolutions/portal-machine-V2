@@ -5,14 +5,14 @@
 const API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 
 const ROLES = {
-    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, label: 'Super Admin' },
-    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, label: 'Administrateur' },
-    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, addUsers: false, label: 'Vente interne' },
-    vente_externe:  { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: true, addUsers: true, label: 'Vente externe' },
-    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, label: 'Technicien' },
-    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, label: 'Distributeur' },
-    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, label: 'Dealer' },
-    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, addUsers: false, label: 'Ingenierie' }
+    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: true, pricelistAccess: true, label: 'Super Admin' },
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: true, pricelistAccess: true, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, label: 'Vente interne' },
+    vente_externe:  { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, label: 'Vente externe' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, label: 'Technicien' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, label: 'Ingenierie' }
 };
 
 // Les comptes vivent UNIQUEMENT cote serveur (Apps Script, cle authorized_users_v2).
@@ -123,34 +123,19 @@ function updateHubUI() {
         if (tileMU) {
             tileMU.style.display = (currentUser.permissions.addUsers && !currentUser.permissions.modifAccounts) ? 'block' : 'none';
         }
-        // Tuile Cedule des techniciens : roles internes (decision Jacquot, 2026-09-25).
-        // Le serveur (getcedule) refait le meme controle : la tuile n'est qu'un raccourci.
-        var tileCedule = document.getElementById('hub-tile-cedule');
-        if (tileCedule) {
-            var ceduleRoles = { super_admin: true, administrateur: true, vente_interne: true,
-                                vente_externe: true, technicien: true, ingenierie: true };
-            tileCedule.style.display = (ceduleRoles[currentUser.role] && !currentUser.isGuest) ? 'block' : 'none';
-        }
-        // Tuile Demande de service (SAV) : memes roles internes (decision Jacquot,
-        // 2026-09-29). Le serveur (getsav) refait le controle : la tuile n'est qu'un raccourci.
-        var tileSav = document.getElementById('hub-tile-sav');
-        if (tileSav) {
-            var savRoles = { super_admin: true, administrateur: true, vente_interne: true,
-                             vente_externe: true, technicien: true, ingenierie: true };
-            tileSav.style.display = (savRoles[currentUser.role] && !currentUser.isGuest) ? 'block' : 'none';
-        }
-        // Tuile Export : Super Admin + Administrateur
-        var tileExport = document.getElementById('hub-tile-export');
-        if (tileExport) {
-            var exportRoles = { super_admin: true, administrateur: true };
-            tileExport.style.display = exportRoles[currentUser.role] ? 'block' : 'none';
-        }
-        // Tuile Price List : Super Admin + Administrateur (document interne)
-        var tilePricelist = document.getElementById('hub-tile-pricelist');
-        if (tilePricelist) {
-            var pricelistRoles = { super_admin: true, administrateur: true };
-            tilePricelist.style.display = pricelistRoles[currentUser.role] ? 'block' : 'none';
-        }
+        // Tuiles Cedule, SAV, Export, Price List : reglables dans le tableau des permissions
+        // (decision Jacquot, 2026-09-30). Pour la Cedule et le SAV, le serveur (getcedule,
+        // getsav) refait le controle : la tuile n'est qu'un raccourci.
+        [['hub-tile-cedule', 'ceduleAccess', true], ['hub-tile-sav', 'savAccess', true],
+         ['hub-tile-export', 'exportAccess', false], ['hub-tile-pricelist', 'pricelistAccess', false]].forEach(function (x) {
+            var tile = document.getElementById(x[0]);
+            if (!tile) return;
+            var p = x[1], role = currentUser.role;
+            var ok = role === 'super_admin' ||
+                (!!currentUser.permissions[p] && !(window.portalRoleLocked && window.portalRoleLocked(role, p)));
+            if (x[2] && currentUser.isGuest) ok = false;
+            tile.style.display = ok ? 'block' : 'none';
+        });
         // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
             hamburgerWrap.style.display = '';
@@ -297,8 +282,8 @@ function showHubSection() {
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
-var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess', 'addUsers'];
-var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire','addUsers':'Ajout usagers'};
+var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess', 'addUsers', 'ceduleAccess', 'savAccess', 'exportAccess', 'pricelistAccess'];
+var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire','addUsers':'Ajout usagers','ceduleAccess':'Cedule techs','savAccess':'SAV','exportAccess':'Export','pricelistAccess':'Price List'};
 
 function renderPermTable() {
     var tbody = document.getElementById('admin-perm-tbody');
@@ -325,6 +310,12 @@ function renderPermTable() {
                 td.className = 'perm-yes';
                 td.textContent = '\u2713';
                 td.style.opacity = '0.6';
+            } else if (window.portalRoleLocked && window.portalRoleLocked(roleKey, perm)) {
+                // Cedule / SAV : jamais pour Dealer ni Distributeur (le serveur refuse aussi)
+                td.className = 'perm-no';
+                td.textContent = '✗';
+                td.style.opacity = '0.4';
+                td.title = i18n.t('admin.perm_locked_external');
             } else {
                 td.className = isOn ? 'perm-yes' : 'perm-no';
                 td.textContent = isOn ? '\u2713' : '\u2717';

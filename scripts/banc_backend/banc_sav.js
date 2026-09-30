@@ -105,5 +105,18 @@ check('republication plus petite : une seule tranche, les autres effacees',
   res.ok && store.sav_ref_n === '1' && !store.sav_ref_1 && post({ action: 'getsav', token: vi }).sav.clients.length === 1);
 check('type inconnu ramene a vide', (() => { post({ action: 'setsav', sav: { clients: [['C', 'V', 'QC', 'pirate']], pieces: [] }, pin: 'PINSECRET' });
   return post({ action: 'getsav', token: vi }).sav.clients[0][3] === ''; })());
+
+// Acces regle dans le tableau des permissions (savAccess / ceduleAccess, 2026-09-30)
+const tt = tok('t@e', 'T'), dd = tok('d@x', 'D'), jj = tok('j@e', 'J');
+store.roles_permissions = JSON.stringify({ technicien: { savAccess: false, ceduleAccess: true },
+  dealer: { savAccess: true, ceduleAccess: true }, super_admin: { savAccess: false } });
+check('savAccess decoche : technicien refuse', post({ action: 'getsav', token: tt }).error === 'forbidden');
+check('permission jamais reglee : vente interne garde l\'acces par defaut', post({ action: 'getsav', token: vi }).ok === true);
+check('dealer coche par erreur : toujours refuse (role externe)', post({ action: 'getsav', token: dd }).error === 'forbidden');
+check('super admin decoche : garde l\'acces', post({ action: 'getsav', token: jj }).ok === true);
+check('la cedule suit sa propre case (dealer toujours refuse)', post({ action: 'getcedule', token: dd }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ technicien: { savAccess: true } });
+check('savAccess recoche : technicien recoit', post({ action: 'getsav', token: tt }).ok === true);
+delete store.roles_permissions;
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);
