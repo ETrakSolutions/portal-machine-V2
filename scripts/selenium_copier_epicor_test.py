@@ -12,6 +12,8 @@ Scenarios :
   F. une machine a l'ecran, sans envoi : ses lignes (preparer sans s'envoyer de courriel).
   G-I. « Copier la demande » : panier non envoye, machine a l ecran, rien du tout.
   J. mini excavatrice : 1500-0004-Install (main-d oeuvre pure) seulement si e-Trak installe.
+  K-M. infos du client : gardees au changement de machine, videes apres l'envoi ;
+       juste apres l'envoi, les copies reprennent la demande envoyee.
 
     py -3.12 scripts/selenium_copier_epicor_test.py [--live]
 """
@@ -152,8 +154,10 @@ try:
     machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 1, 'oui')
     client()
     attendu = js("return epicorBlockText();")
-    js("document.getElementById('soumission-submit').click();")
-    time.sleep(1.2)
+    js("window.__lastSoumissionEmail=null; document.getElementById('soumission-submit').click();")
+    # Une machine seule : l'envoi attend d'abord une reponse du serveur du portail.
+    WebDriverWait(dv, 60).until(lambda d: d.execute_script("return !!window.__lastSoumissionEmail;"))
+    time.sleep(0.5)
     btn, copie, alertes = cliquer_copier()
     check('bouton present apres l envoi', btn)
     check('copie = bloc Epicor de la machine', copie == attendu and bool(attendu), (copie, attendu))
@@ -269,6 +273,60 @@ try:
     check('posee par le client : absente des produits et d Epicor, un produit de moins',
           '1500-0004' not in p['texte'] and '1500-0004' not in p['epicor'] and p['n'] == n_etrak - 1, p)
     check('les autres produits restent (kit de base)', '1500-0000' in p['texte'], p['texte'])
+
+    print('--- K) infos du client gardees au changement de machine (sans panier) ---')
+    ouvrir()
+    machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 1, 'oui')
+    client()
+    champ('soumission-date-install', '2026-11-15')
+    champ('soumission-comment', 'Commentaire test')
+    # Nouvelle machine : showOptions() est ce qui remet l'ecran a zero (et, avant le
+    # 2026-09-30, effacait le client). On l'appelle apres avoir choisi le nouveau modele.
+    check('changement de modele', choisir('select-modele', '330') and choisir('select-annee', '2024'))
+    js("showOptions();")
+    time.sleep(1.2)
+    check('l ecran montre bien la nouvelle machine (330)', '330' in js("return document.getElementById('options-title').textContent;"))
+    vals = js("return ['soumission-company','soumission-lieu','soumission-date-install','soumission-comment']"
+              ".map(function(i){ return document.getElementById(i).value; });")
+    check('entreprise, lieu, date et commentaire gardes', vals == ['Test Claude inc.', 'Victoriaville', '2026-11-15', 'Commentaire test'], vals)
+    check('unites remises a vide (propres a la machine)', js("return document.getElementById('soumission-nb-systemes').value;") == '')
+
+    print('--- L) apres l envoi : infos du client videes, copie = demande envoyee ---')
+    ouvrir()
+    machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 1, 'oui')
+    client()
+    vend_avant = js("var s=document.getElementById('soumission-vendeur'); return s ? s.value : '';")
+    js("window.__lastSoumissionEmail=null; document.getElementById('soumission-submit').click();")
+    # Une machine seule : l'envoi attend d'abord une reponse du serveur du portail.
+    WebDriverWait(dv, 60).until(lambda d: d.execute_script("return !!window.__lastSoumissionEmail;"))
+    time.sleep(0.5)
+    envoye = js("return window.__lastSoumissionEmail;") or {}
+    vals = js("return ['soumission-company','soumission-lieu','soumission-date-install','soumission-comment']"
+              ".map(function(i){ var e=document.getElementById(i); return e ? e.value : ''; });")
+    check('infos du client videes apres l envoi', vals == ['', '', '', ''], vals)
+    check('vendeur choisi garde', js("var s=document.getElementById('soumission-vendeur'); return s ? s.value : '';") == vend_avant)
+    js("window.__alertes=[]; window.__copie=null; document.getElementById('soumission-copy-btn').click();")
+    time.sleep(0.6)
+    copie = js("return window.__copie;") or ''
+    check('« Copier la demande » juste apres l envoi = demande envoyee (avec le client)',
+          'Test Claude inc.' in copie and copie.endswith(envoye.get('body', '#')), copie[:200])
+    btn, copie_epi, alertes = cliquer_copier()
+    check('« Copier pour Epicor » juste apres l envoi = bloc envoye',
+          copie_epi == js("return window.__lastSoumissionEpicor;") and bool(copie_epi), copie_epi)
+    champ('soumission-company', 'Autre client inc.')
+    js("window.__copie=null; document.getElementById('soumission-copy-btn').click();")
+    time.sleep(0.6)
+    copie = js("return window.__copie;") or ''
+    check('apres une nouvelle saisie : la copie suit l ecran (nouveau client)', 'Autre client inc.' in copie and 'Test Claude inc.' not in copie, copie[:200])
+
+    print('--- M) panier envoye : infos du client videes aussi ---')
+    ouvrir()
+    machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 1, 'oui')
+    client()
+    ajouter()
+    js("document.getElementById('soumission-submit').click();")
+    time.sleep(1.2)
+    check('entreprise videe apres l envoi du panier', js("return document.getElementById('soumission-company').value;") == '')
 
     print('--- D) rien a l ecran ni au panier : le message reste ---')
     ouvrir()

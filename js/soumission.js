@@ -751,19 +751,12 @@ function showOptions() {
             .forEach(function(r) { r.checked = false; });
     // Reset options secondaires nacelle
     document.querySelectorAll('input[name="nacelle-opt"]').forEach(function(r) { r.checked = false; });
-    // Nouvelle machine : son nombre d'unites repart a vide. Les informations du client
-    // aussi, SAUF si le panier contient deja des machines : elles valent alors pour toute
-    // la soumission et ne se ressaisissent pas a chaque machine.
+    // Nouvelle machine : son nombre d'unites repart a vide. Les informations du client,
+    // elles, restent TOUJOURS (decision de Steve, 2026-09-30) : un vendeur qui corrige
+    // son choix de modele ne ressaisit plus le client. Elles sont videes apres l'envoi
+    // (viderInfosClient), pour qu'une nouvelle soumission ne reparte pas avec l'ancien client.
     var _nb = document.getElementById('soumission-nb-systemes');
     if (_nb) _nb.value = '';
-    if (!panierActif()) {
-        ['soumission-company','soumission-lieu','soumission-date-install'].forEach(function(id){
-            var el = document.getElementById(id);
-            if (el) el.value = '';
-        });
-        var textarea = document.getElementById('soumission-comment');
-        if (textarea) textarea.value = '';
-    }
 
     // Load BOM overrides, notes, and product codes for this machine
     currentBomOverrides = null;
@@ -1725,6 +1718,7 @@ if (submitBtn) {
                 dateInstall: dateInstall, comment: comment, userName: userName
             }, dest);
             lancerCourriel(dest.toAll, subject, body, texteEpicor(photo.epicor));
+            viderInfosClient();
         } // end sendEmail
     });
 }
@@ -2175,7 +2169,35 @@ function envoyerPanier() {
     panierPosition = null;
     panierSauver();
     rendrePanier();
+    viderInfosClient();
 }
+
+// Apres l'envoi d'une demande : les informations du client se vident, pour que la
+// soumission suivante (souvent un autre client) ne reparte pas avec l'ancien nom
+// (decision de Steve, 2026-09-30 ; avant, c'etait le changement de machine qui les
+// effacait). Le vendeur choisi reste. Tant que rien n'est modifie ensuite,
+// « Copier la demande » et « Copier pour Epicor » reprennent la demande ENVOYEE
+// (window.__envoiRecent) : c'est le secours quand le courriel ne s'ouvre pas.
+var CHAMPS_CLIENT = ['soumission-company', 'soumission-client-email', 'soumission-lieu',
+                     'soumission-date-install', 'soumission-comment'];
+function viderInfosClient() {
+    CHAMPS_CLIENT.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    window.__envoiRecent = true;
+    try { majEtiquetteLieu(); } catch (e) {}
+}
+// Toute saisie ou tout choix fait apres l'envoi (tuiles d'options comprises, qui se
+// cliquent) : c'est une nouvelle demande. Les clics dans le panneau de copie et sur
+// « ? » ne comptent pas : ce sont eux qui doivent retrouver la demande envoyee.
+['input', 'change', 'click'].forEach(function (ev) {
+    document.addEventListener(ev, function (e) {
+        var t = e.target;
+        if (ev === 'click' && t && t.closest && t.closest('#soumission-fallback, #soumission-help-toggle')) return;
+        window.__envoiRecent = false;
+    }, true);
+});
 
 // Champs communs a toute la demande (client, lieu, date, commentaire, demandeur).
 function champsCommuns() {
@@ -2242,6 +2264,8 @@ function demandePanier(items, c, dest) {
 // Sert a « Copier la demande » : le vendeur prepare sa soumission sans s'envoyer de
 // courriel (Steve, 2026-09-30). Aucun garde-fou d'envoi ici : on copie ce qui est saisi.
 function demandeEnCours() {
+    // Juste apres un envoi, rien de modifie : c'est la demande envoyee qu'on copie.
+    if (window.__envoiRecent) return null;
     try { updateSelectedSummary(); } catch (e) {}
     var ecran = machineEcranPrete();
     if (!panierActif() && !ecran) return null;
@@ -2821,6 +2845,7 @@ function epicorBlockText() {
 // Avant, la derniere demande envoyee passait en premier et le panier etait ignore :
 // avec des machines au panier et l'ecran vide, le bouton disait « Aucun item a copier ».
 function epicorACopier() {
+    if (window.__envoiRecent && window.__lastSoumissionEpicor) return window.__lastSoumissionEpicor;
     if (panierActif()) {
         var blocs = panier.map(function (it) { return texteEpicor(it.photo.epicor); });
         // Machine configuree a l'ecran mais pas encore ajoutee : l'envoi la proposerait,
