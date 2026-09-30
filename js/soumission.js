@@ -35,9 +35,10 @@ var OPTION_CODES = {
 // Balance : produits derriere chaque sous-option. Deux groupes exclusifs — le
 // modele de balance, puis l'imprimante. La Scale Lite (1200-0020) est reservee
 // au tracteur (type de machine a creer) et n'a pas d'imprimante.
+// Balance ST-7 : on ne vend plus que la balance loader 1200-0010. La balance en
+// valise 1200-0011 est retiree du portail (decision de Steve, 2026-09-30).
 var BALANCE_PRODUITS = {
-    'Balance loader':       { code: '1200-0010', desc: 'Balance loader (installation e-Trak)' },
-    'Balance valise':       { code: '1200-0011', desc: 'Balance en valise (installation client)' },
+    'Balance loader':       { code: '1200-0010', desc: 'Balance loader' },
     'Imprimante thermique': { code: '1200-0014', desc: 'Imprimante thermique' },
     'Imprimante carbone':   { code: '1200-0015', desc: 'Imprimante carbone' },
     'Balance Scale Lite':   { code: '1200-0020', desc: 'Balance Scale Lite (tracteur)' }
@@ -884,10 +885,9 @@ function applyTypeRestrictions(type) {
     var isExc = (type === 'Excavatrice');
     var isExcOrBackhoe = (type === 'Excavatrice' || type === 'Retrocaveuse');
 
-    // Balance : deux modeles au choix exclusif — 1200-0010 (balance loader,
-    // installee par les techniciens e-Trak) et 1200-0011 (balance en valise,
-    // installee par le client) — plus UNE imprimante au choix : 1200-0014
-    // thermique ou 1200-0015 carbone.
+    // Balance ST-7 : la balance loader 1200-0010 (la balance en valise 1200-0011
+    // est retiree du portail par Steve le 2026-09-30) — plus UNE imprimante au
+    // choix : 1200-0014 thermique ou 1200-0015 carbone.
     // Perimetre fixe par Jacquot le 2026-08-05 : LOADER seulement. Elargi par
     // Jacquot le 2026-09-25 a la RETROCAVEUSE, avec les memes choix que le Loader.
     // La balance Scale Lite (1200-0020) est reservee au tracteur, type
@@ -918,9 +918,9 @@ function applyTypeRestrictions(type) {
                   .forEach(function(c) { c.checked = false; });
         } else {
             // Tracteur : Scale Lite (1200-0020) SEULEMENT, sans imprimante.
-            // Loader : les deux balances 0010/0011 + le choix d'imprimante.
+            // Loader : la balance loader 0010 + le choix d'imprimante.
             [['sub-bal-scalelite', 'bal-scalelite', isTracteur]].concat(
-                [['', 'bal-loader', !isTracteur], ['', 'bal-valise', !isTracteur],
+                [['', 'bal-loader', !isTracteur],
                  ['', 'bal-imp-therm', !isTracteur], ['', 'bal-imp-carb', !isTracteur]]
             ).forEach(function(t) {
                 var cb = document.getElementById(t[1]);
@@ -2963,8 +2963,7 @@ var INDIVIDUAL_CODES = {
     'Camera Quad': [{code: '1300-0003', desc: 'Camera Quad'}],
     'Camera 360': [{code: '1300-0004', desc: 'Camera 360 (4 cameras)'}],
     'Camera 360 (6 cameras)': [{code: '1300-0005', desc: 'Camera 360 (set de 6 cameras)'}],
-    'Balance loader (installation e-Trak)': [{code: '1200-0010', desc: 'Balance loader (installation e-Trak)'}],
-    'Balance en valise (installation client)': [{code: '1200-0011', desc: 'Balance en valise (installation client)'}],
+    'Balance loader': [{code: '1200-0010', desc: 'Balance loader'}],
     'Imprimante thermique': [{code: '1200-0014', desc: 'Imprimante thermique'}],
     'Imprimante carbone': [{code: '1200-0015', desc: 'Imprimante carbone'}]
 };
@@ -3143,7 +3142,7 @@ function updateSelectedSummary() {
     var _godet = godetAvantInfo();
     if (_godet) items.push(fmtItem(_godet.pn, i18n.tBom(_godet.desc)));
 
-    // Balance : le modele choisi (0010 installee / 0011 valise) + l'imprimante
+    // Balance : le modele choisi (0010 loader ; Scale Lite au tracteur) + l'imprimante
     // eventuelle (0014 thermique / 0015 carbone), chacune en choix exclusif.
     var _balBoxS = document.getElementById('toggle-balance');
     if (_balBoxS && _balBoxS.classList.contains('active')) {
@@ -3557,7 +3556,7 @@ function updateAValiderWarning() {
 })();
 
 // Balance : DEUX groupes exclusifs dans le meme bloc — le modele de balance
-// (0010 installee / 0011 valise) et l'imprimante (0014 thermique / 0015
+// (0010 loader ; Scale Lite au tracteur) et l'imprimante (0014 thermique / 0015
 // carbone). Exclusif A L'INTERIEUR de chaque groupe, mais on peut prendre une
 // balance ET une imprimante. Le bloc reste actif tant qu'une case est cochee.
 (function() {

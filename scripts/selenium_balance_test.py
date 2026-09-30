@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """Test du bloc Balance restructure.
 
-Regles metier (Jacquot, 2026-08-05) :
+Regles metier (Jacquot, 2026-08-05 ; Steve, 2026-09-30) :
   - LOADER et RETROCAVEUSE (Loader seul du 2026-08-05 au 2026-09-25 ; avant : Telehandler aussi) ;
-  - modele de balance au choix exclusif : 1200-0010 (installee e-Trak) ou
-    1200-0011 (valise, installation client) ;
+  - balance ST-7 : UNE seule balance, « Balance loader » 1200-0010. La balance en valise
+    1200-0011 est retiree du portail (Steve, 2026-09-30) : ni case, ni code, ni libelle ;
   - imprimante au choix exclusif : 1200-0014 thermique ou 1200-0015 carbone ;
-  - on peut prendre une balance ET une imprimante ;
-  - 1200-0011 ne porte plus de frais d installation.
+  - on peut prendre une balance ET une imprimante.
 """
 import sys, io, os, json, threading, http.server, socketserver, time
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -91,9 +90,7 @@ def visible(eid):
 
 
 try:
-    print('--- 1) tarif corrige ---')
-    check('1200-0011 installation = 0 (%s)' % PRIX['1200-0011'].get('install'),
-          PRIX['1200-0011'].get('install') == 0)
+    print('--- 1) tarif ---')
     check('1200-0010 installation inchangee a 1320 (%s)' % PRIX['1200-0010'].get('install'),
           PRIX['1200-0010'].get('install') == 1320)
 
@@ -108,15 +105,13 @@ try:
         aller(typ)
         check('bloc Balance masque sur %s' % typ, not visible('toggle-balance'))
 
-    print('--- 3) exclusivite par groupe, cumul entre groupes ---')
+    print('--- 3) une seule balance ST-7, cumul avec une imprimante ---')
     aller('Loader')
+    check('plus de choix « Balance en valise »', not dv.execute_script("return !!document.getElementById('bal-valise');"))
+    lib = dv.execute_script("return document.getElementById('bal-loader').closest('label').textContent.trim();")
+    check('libelle « Balance loader », sans parentheses (%r)' % lib, lib == 'Balance loader')
     dv.execute_script("document.getElementById('bal-loader').click();")
     time.sleep(0.4)
-    dv.execute_script("document.getElementById('bal-valise').click();")
-    time.sleep(0.4)
-    check('choisir la valise decoche la balance loader',
-          not dv.find_element(By.ID, 'bal-loader').is_selected()
-          and dv.find_element(By.ID, 'bal-valise').is_selected())
     dv.execute_script("document.getElementById('bal-imp-therm').click();")
     time.sleep(0.4)
     dv.execute_script("document.getElementById('bal-imp-carb').click();")
@@ -125,20 +120,22 @@ try:
           not dv.find_element(By.ID, 'bal-imp-therm').is_selected()
           and dv.find_element(By.ID, 'bal-imp-carb').is_selected())
     check('la balance reste cochee malgre le choix d imprimante',
-          dv.find_element(By.ID, 'bal-valise').is_selected())
+          dv.find_element(By.ID, 'bal-loader').is_selected())
     time.sleep(1.0)
     corps = dv.find_element(By.TAG_NAME, 'body').text
-    check('1200-0011 au recapitulatif', '1200-0011' in corps)
-    check('1200-0015 au recapitulatif', '1200-0015' in corps)
-    check('1200-0010 absent (non choisi)', '1200-0010' not in corps)
-    check('1200-0014 absent (non choisi)', '1200-0014' not in corps)
-
-    print('--- 4) l autre balance ---')
-    dv.execute_script("document.getElementById('bal-loader').click();")
-    time.sleep(1.2)
-    corps = dv.find_element(By.TAG_NAME, 'body').text
     check('1200-0010 au recapitulatif', '1200-0010' in corps)
-    check('1200-0011 disparu', '1200-0011' not in corps)
+    check('1200-0015 au recapitulatif', '1200-0015' in corps)
+    check('1200-0014 absent (non choisi)', '1200-0014' not in corps)
+    check('1200-0011 nulle part dans la page', '1200-0011' not in dv.page_source)
+    kit = dv.execute_script("var p=photoMachine(); return texteMachine(p) + '\\n' + texteEpicor(p.epicor);")
+    check('courriel et bloc Epicor : 1200-0010 « Balance loader », pas de 1200-0011',
+          '1200-0010  Balance loader\n' in kit and '1200-0010\t' in kit and '1200-0011' not in kit)
+
+    print('--- 4) anglais : « Loader scale » ---')
+    dv.execute_script("localStorage.setItem('portal_lang','en');")
+    aller('Loader')
+    lib_en = dv.execute_script("return document.getElementById('bal-loader').closest('label').textContent.trim();")
+    check('libelle anglais « Loader scale » (%r)' % lib_en, lib_en == 'Loader scale')
 
     errs = [e for e in dv.get_log('browser') if e['level'] == 'SEVERE']
     check('aucune erreur JS SEVERE (%d)' % len(errs), not errs)
