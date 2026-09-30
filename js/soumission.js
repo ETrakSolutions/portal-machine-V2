@@ -2745,11 +2745,28 @@ function buildEpicorRows() {
 function epicorBlockText() {
     return texteEpicor(buildEpicorRows());
 }
+// Ce que copie « Copier pour Epicor ». Le vendeur doit pouvoir preparer sa soumission
+// dans Epicor SANS s'envoyer de courriel (Steve, 2026-09-30) : on prend donc d'abord ce
+// qui est en cours (panier, puis machine a l'ecran), et seulement a defaut la derniere
+// demande envoyee (cas juste apres l'envoi d'un panier : ecran et panier sont vides).
+// Avant, la derniere demande envoyee passait en premier et le panier etait ignore :
+// avec des machines au panier et l'ecran vide, le bouton disait « Aucun item a copier ».
+function epicorACopier() {
+    if (panierActif()) {
+        var blocs = panier.map(function (it) { return texteEpicor(it.photo.epicor); });
+        // Machine configuree a l'ecran mais pas encore ajoutee : l'envoi la proposerait,
+        // on la met a la suite (meme ordre que le bloc du bas du courriel).
+        if (machineEcranPrete()) blocs.push(epicorBlockText());
+        return blocs.filter(function (b) { return b && b.trim(); }).join('\n');
+    }
+    var ecran = epicorBlockText();
+    if (ecran && ecran.trim()) return ecran;
+    return window.__lastSoumissionEpicor || '';
+}
 function copyEpicorBlock() {
     var fr = soumissionLang() === 'fr';
     var btn = document.getElementById('soumission-copy-epicor-btn');
-    var text = (window.__lastSoumissionEpicor && window.__lastSoumissionEpicor.trim())
-        ? window.__lastSoumissionEpicor : epicorBlockText();
+    var text = epicorACopier();
     if (!text || !text.trim()) {
         alert(fr ? 'Aucun item a copier. Selectionne au moins une option.'
                  : 'Nothing to copy. Select at least one option.');
