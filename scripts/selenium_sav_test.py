@@ -120,39 +120,43 @@ def main():
         v('nom inconnu : marque « nouveau client »', 'nouveau client' in d.find_element(By.ID, 'f-type-tag').text)
         choisir(d, 'f-compagnie', 'gravier dun', 'Gravier')
 
-        print('3) Routage et pieces')
-        rt = lambda: d.execute_script("var r=document.querySelector('input[name=f-routage]:checked');return r&&r.value")
-        v('sans indice : Mathieu suggere, sans courriel -> repli sur Kevin', rt() == 'kevin'
-          and 'Mathieu Robillard' in d.find_element(By.ID, 'f-routage-hint').text, rt())
-        v('Mathieu et Compta desactives (courriel a completer)',
-          d.find_element(By.CSS_SELECTOR, 'input[name=f-routage][value=mathieu]').get_attribute('disabled') is not None
-          and d.find_element(By.CSS_SELECTOR, 'input[name=f-routage][value=compta]').get_attribute('disabled') is not None)
+        print('3) Nom tape sans choisir dans la liste (correctif 2026-09-30)')
+        el = d.find_element(By.ID, 'f-compagnie'); el.clear(); time.sleep(0.2)
+        el.send_keys('gravier duncan simard'); d.find_element(By.ID, 'f-billet').click(); time.sleep(0.4)
+        btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
+        v('nom tape au complet (casse ignoree) : contacts proposes', d.find_element(By.ID, 'w-contacts').is_displayed()
+          and len(btn) == 2, [b.text for b in btn])
+        el.send_keys(' Inc'); time.sleep(0.3)
+        v('nom qui ne correspond plus : contacts masques', not d.find_element(By.ID, 'w-contacts').is_displayed())
+        choisir(d, 'f-compagnie', 'gravier dun', 'Gravier')
+
+        print('4) Sections 5 et 6 retirees, destinataires fixes')
+        titres = [h.text for h in d.find_elements(By.CSS_SELECTOR, '.sav-sec h2')]
+        v('4 sections seulement (plus de Routage ni de Suivi)', len(titres) == 4
+          and not any(('Routage' in t or 'Suivi' in t) for t in titres), titres)
+        v('aucun champ de routage ni de suivi', not d.find_elements(By.CSS_SELECTOR,
+          'input[name=f-routage], #f-rappel, #f-action, input[name=f-res], #f-ferme-le, #f-ferme-par'))
+        v('destinataires annonces : Kevin et Luna', d.find_element(By.ID, 'f-dest').text
+          == 'Le courriel part à : Kevin Bérubé et Luna Briceno.', d.find_element(By.ID, 'f-dest').text)
         d.find_element(By.ID, 'b-piece').click(); time.sleep(0.2)
         p = d.find_element(By.CSS_SELECTOR, '#f-pieces .p-pn')
         p.send_keys('E03A'); time.sleep(0.4)
         d.execute_script("document.querySelector('#f-pieces .sav-ac-list div').dispatchEvent(new MouseEvent('mousedown',{bubbles:true}))")
         time.sleep(0.3)
         v('piece choisie : numero + description', p.get_attribute('value').startswith('E03A-0013 — Câble'), p.get_attribute('value'))
-        v('une piece -> Steve suggere', rt() == 'steve', rt())
-        d.find_element(By.CSS_SELECTOR, 'input[name=f-depl][value=oui]').click()
-        v('deplacement -> Luna suggeree', rt() == 'luna', rt())
         d.find_element(By.CSS_SELECTOR, 'input[name=f-bypass][value=oui]').click()
-        v('bypass -> Mathieu, repli Kevin', rt() == 'kevin', rt())
-        d.find_element(By.CSS_SELECTOR, 'input[name=f-routage][value=steve]').click()
         d.find_element(By.CSS_SELECTOR, 'input[name=f-arret][value=non]').click()
-        v('choix manuel respecte (Steve reste coche)', rt() == 'steve', rt())
 
-        print('4) Validation et envoi')
+        print('5) Validation et envoi')
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
         alerte = d.find_element(By.ID, 'sav-alert').text
         v('envoi refuse tant que manquent contact, tel, produit, description',
           all(x in alerte for x in ('nom du contact', 'téléphone', 'produit', 'description'))
-          and not d.execute_script('return window.__mailto'), alerte)
+          and 'routage' not in alerte and not d.execute_script('return window.__mailto'), alerte)
         d.find_element(By.ID, 'f-contact').send_keys('Marc Girard')
         d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
         d.find_element(By.CSS_SELECTOR, '#f-produits input[value="LIMIT-ELG"]').click()
         d.find_element(By.ID, 'f-desc').send_keys('Besoin pièces E03A-0013, câble M12 3 m.')
-        d.find_element(By.ID, 'f-rappel').send_keys('avant 14 h')
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.5)
         u = d.execute_script('return window.__mailto') or ''
         v('courriel ouvert', u.startswith('mailto:'), u[:60])
@@ -160,13 +164,14 @@ def main():
         dest = urllib.parse.unquote(q.path)
         prm = urllib.parse.parse_qs(q.query)
         corps = (prm.get('body') or [''])[0]
-        v('destinataire = Steve', dest == 'steve@test', dest)
-        v('copie = Kevin', (prm.get('cc') or [''])[0] == 'kevin@test', prm.get('cc'))
+        v('destinataires = Kevin et Luna, meme avec une piece et un bypass', dest == 'kevin@test,luna@test', dest)
+        v('pas de copie en double (Kevin deja destinataire)', not prm.get('cc'), prm.get('cc'))
         v('sujet : URGENT (bypass) + compagnie + produit',
           (prm.get('subject') or [''])[0] == 'SAV — URGENT — Gravier Duncan Simard — LIMIT-ELG', prm.get('subject'))
-        v('corps : client, contact, piece, bypass, routage, rappel',
+        v('corps : client, contact, piece, bypass ; plus de routage ni de suivi',
           all(x in corps for x in ('Compagnie : Gravier Duncan Simard', 'Contact : Marc Girard', '1 × E03A-0013',
-                                   'Demande de bypass : OUI', 'Assigné à : Steve Martineau', 'Rappel promis : avant 14 h')), corps[:200])
+                                   'Demande de bypass : OUI'))
+          and not any(x in corps for x in ('ROUTAGE', 'SUIVI', 'Assigné à', 'Rappel promis')), corps[:200])
         v('aucune erreur console', not [l for l in d.get_log('browser') if l['level'] == 'SEVERE'],
           [l['message'][:120] for l in d.get_log('browser') if l['level'] == 'SEVERE'])
         d.save_screenshot(str(Path.home() / 'AppData' / 'Local' / 'Temp' / 'sav_test.png'))

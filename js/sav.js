@@ -1,6 +1,6 @@
 // Demande de service apres-vente (decision Jacquot, 2026-09-29).
 // Guide d'appel pour toute l'equipe interne : RIEN n'est enregistre. L'envoi ouvre un
-// courriel Outlook pre-rempli vers la personne choisie au routage (+ les copies).
+// courriel Outlook pre-rempli vers Kevin et Luna (+ les copies des reglages).
 // Le serveur (action 'getsav') ne remet la liste des clients (nom, ville, province,
 // dealer/direct) et des pieces qu'a une session d'un role interne ; le controle
 // ci-dessous ne fait qu'eviter d'afficher une page vide.
@@ -25,7 +25,6 @@
     var norm = function (s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
     var REF = { clients: [], pieces: [], produits: [], routage: [], cc: [], contacts: {} };
     var clientChoisi = null;          // [nom, ville, prov, type] ou null (nouveau client)
-    var routageManuel = false;        // l'utilisateur a choisi lui-meme : on ne suggere plus
 
     // ---------- recherche avec liste deroulante (clients et pieces) ----------
     function autocomplete(input, liste, source, rendu, choisir, options) {
@@ -72,21 +71,36 @@
     var TYPE_LBL = { dealer: 'Dealer', direct: 'Client direct', interco: 'Intercompagnie' };
     function tagType(t) { return t ? '<span class="sav-tag ' + t + '">' + (TYPE_LBL[t] || t) + '</span>' : ''; }
 
+    function adopterClient(c) {
+        clientChoisi = c;
+        if (c) {
+            $('f-compagnie').value = c[0];
+            if (c[1] && !$('f-lieu').value) $('f-lieu').value = c[1] + (c[2] ? ', ' + c[2] : '');
+            var r = document.querySelector('input[name="f-type"][value="' + c[3] + '"]');
+            if (r) { r.checked = true; majType(); }
+        }
+        majClientTag();
+    }
     autocomplete($('f-compagnie'), $('ac-clients'), function () { return REF.clients; },
         function (c) { return esc(c[0]) + '<small>' + esc([c[1], c[2]].filter(Boolean).join(', ')) + '</small>' + tagType(c[3]); },
-        function (c) {
-            clientChoisi = c;
-            if (c) {
-                $('f-compagnie').value = c[0];
-                if (c[1] && !$('f-lieu').value) $('f-lieu').value = c[1] + (c[2] ? ', ' + c[2] : '');
-                var r = document.querySelector('input[name="f-type"][value="' + c[3] + '"]');
-                if (r) { r.checked = true; majType(); }
+        adopterClient,
+        { nouveau: function (v) { return v.trim() ? '« ' + v.trim() + ' » — nouveau client (pas dans Epicor)' : ''; } });
+    // Nom tape (ou colle) au complet sans cliquer dans la liste : s'il correspond a UN seul
+    // client Epicor (casse et accents ignores), il est traite comme choisi — sinon ses
+    // contacts n'apparaissaient jamais (constate par Jacquot le 2026-09-30).
+    $('f-compagnie').addEventListener('input', function () {
+        var v = $('f-compagnie').value;
+        if (clientChoisi && v !== clientChoisi[0]) { clientChoisi = null; majClientTag(); }
+        if (!clientChoisi) {
+            var q = norm(v).trim();
+            var m = q ? REF.clients.filter(function (c) { return norm(c[0]).trim() === q; }) : [];
+            if (m.length === 1) {
+                clientChoisi = m[0];
+                var r = document.querySelector('input[name="f-type"][value="' + m[0][3] + '"]');
+                if (r && !val('f-type')) { r.checked = true; majType(); }
             }
             majClientTag();
-        },
-        { nouveau: function (v) { return v.trim() ? '« ' + v.trim() + ' » — nouveau client (pas dans Epicor)' : ''; } });
-    $('f-compagnie').addEventListener('input', function () {
-        if (clientChoisi && $('f-compagnie').value !== clientChoisi[0]) { clientChoisi = null; majClientTag(); }
+        }
     });
     // Contacts Epicor du client choisi : proposes, jamais remplis seuls (decision Jacquot,
     // 2026-09-29 — la plupart des contacts Epicor sont ceux de la facturation, ecartes a
@@ -130,10 +144,10 @@
         var inp = row.querySelector('.p-pn');
         autocomplete(inp, row.querySelector('.sav-ac-list'), function () { return REF.pieces; },
             function (p) { return '<b>' + esc(p[0]) + '</b><small>' + esc(p[1]) + '</small>'; },
-            function (p) { if (p) { inp.value = p[0] + ' — ' + p[1]; inp.dataset.pn = p[0]; } suggerer(); },
+            function (p) { if (p) { inp.value = p[0] + ' — ' + p[1]; inp.dataset.pn = p[0]; } },
             { min: 2 });
-        inp.addEventListener('input', function () { delete inp.dataset.pn; suggerer(); });
-        row.querySelector('button').addEventListener('click', function () { row.remove(); suggerer(); });
+        inp.addEventListener('input', function () { delete inp.dataset.pn; });
+        row.querySelector('button').addEventListener('click', function () { row.remove(); });
         return row;
     }
     $('b-piece').addEventListener('click', function () { lignePiece().querySelector('.p-pn').focus(); });
@@ -143,59 +157,25 @@
         }).filter(function (p) { return p.txt; });
     }
 
-    // ---------- routage : suggestion d'apres les regles de Mathieu ----------
+    // ---------- destinataires : toujours Kevin et Luna (decision Jacquot, 2026-09-30) ----------
+    // Le routage par regles (section 5) et le suivi (section 6) sont retires. Les adresses
+    // viennent du serveur (sav-reglages.json), jamais ecrites ici ; les copies restent celles
+    // des reglages, moins les destinataires.
+    var DEST_CLES = ['kevin', 'luna'];
     var val = function (n) { return (document.querySelector('input[name="' + n + '"]:checked') || {}).value || ''; };
-    function suggestion() {
-        if (val('f-arret') === 'oui' || val('f-bypass') === 'oui') return 'mathieu';
-        if (val('f-fact') === 'oui') return 'compta';
-        if (val('f-depl') === 'oui') return 'luna';
-        if (pieces().length) return 'steve';
-        return 'mathieu';                 // technique, calibration : meme journee
+    function destinataires() {
+        return DEST_CLES.map(function (k) { return REF.routage.filter(function (r) { return r.cle === k && r.courriel; })[0]; })
+            .filter(Boolean);
     }
-    function dessinerRoutage() {
-        $('f-routage').innerHTML = REF.routage.filter(function (r) { return r.cle !== 'kevin' || REF.routage.length; }).map(function (r) {
-            var off = !r.courriel;
-            return '<label class="' + (off ? 'off' : '') + '" data-cle="' + esc(r.cle) + '"><input type="radio" name="f-routage" value="' + esc(r.cle) + '"' + (off ? ' disabled' : '') + '>' +
-                '<span><b>' + esc(r.nom) + '</b><b class="s"></b></span><small>' + esc(r.regle) + (off ? ' — <i>courriel à compléter</i>' : '') + '</small></label>';
-        }).join('');
-        document.querySelectorAll('input[name="f-routage"]').forEach(function (r) {
-            r.addEventListener('change', function () { routageManuel = true; marquerSugg(); });
-        });
-        $('f-cc').textContent = REF.cc.length ? REF.cc.join(', ') : '—';
+    function dessinerDest() {
+        var d = destinataires();
+        $('f-dest').textContent = d.length ? 'Le courriel part à : ' + d.map(function (r) { return r.nom; }).join(' et ') + '.'
+            : 'Destinataires indisponibles (listes non chargées) : utilisez « Copier la fiche ».';
     }
-    // Personne suggeree sans courriel (a completer dans sav-reglages.json) : repli sur
-    // le directeur de service, et la page le dit.
-    function suggestionEffective() {
-        var s = suggestion();
-        var r = REF.routage.filter(function (x) { return x.cle === s; })[0];
-        if (r && !r.courriel) {
-            var k = REF.routage.filter(function (x) { return x.cle === 'kevin' && x.courriel; })[0];
-            if (k) return { cle: 'kevin', note: r.nom + ' n’a pas encore de courriel : la demande part à ' + k.nom + '.' };
-        }
-        return { cle: s, note: '' };
-    }
-    function marquerSugg() {
-        var se = suggestionEffective(), s = se.cle;
-        $('f-routage-hint').textContent = se.note || 'La suggestion suit les règles ci-dessus ; vous pouvez choisir quelqu’un d’autre.';
-        document.querySelectorAll('#f-routage label').forEach(function (l) {
-            var on = l.getAttribute('data-cle') === s;
-            l.classList.toggle('sugg', on);
-            l.querySelector('b.s').textContent = on ? 'suggéré' : '';
-        });
-        if (!routageManuel) {
-            var r = document.querySelector('input[name="f-routage"][value="' + s + '"]');
-            if (r && !r.disabled) r.checked = true;
-        }
-    }
-    function suggerer() { marquerSugg(); }
-    ['f-arret', 'f-bypass', 'f-depl', 'f-fact'].forEach(function (n) {
-        document.querySelectorAll('input[name="' + n + '"]').forEach(function (r) { r.addEventListener('change', suggerer); });
-    });
 
     // ---------- fiche texte ----------
     function fiche() {
         var L = [], ajoute = function (k, v) { if (v) L.push(k + ' : ' + v); };
-        var rt = REF.routage.filter(function (r) { return r.cle === val('f-routage'); })[0];
         var dt = $('f-date').value ? $('f-date').value.replace('T', ' ') : '';
         L.push('DEMANDE DE SERVICE APRÈS-VENTE — e-Trak');
         L.push('');
@@ -216,13 +196,6 @@
         if (p.length) { L.push('Pièces demandées :'); p.forEach(function (x) { L.push('  - ' + x.qte + ' × ' + x.txt); }); }
         ajoute('Déplacement technicien', ({ oui: 'OUI', non: 'Non', '?': 'À valider' })[val('f-depl')] || '');
         ajoute('Facturation / compte', val('f-fact') === 'oui' ? 'OUI' : '');
-        L.push(''); L.push('5. ROUTAGE');
-        ajoute('Assigné à', rt ? rt.nom : ''); ajoute('Rappel promis', $('f-rappel').value);
-        if ($('f-action').value.trim() || val('f-res') || $('f-ferme-le').value) {
-            L.push(''); L.push('6. SUIVI');
-            if ($('f-action').value.trim()) { L.push('Action prise :'); L.push($('f-action').value.trim()); }
-            ajoute('Résultat', val('f-res')); ajoute('Fermé le', $('f-ferme-le').value); ajoute('Fermé par', $('f-ferme-par').value);
-        }
         return L.join('\n');
     }
     function sujet() {
@@ -243,7 +216,6 @@
         marque('w-arret', !val('f-arret'), 'machine arrêtée ?');
         marque('w-bypass', !val('f-bypass'), 'demande de bypass ?');
         marque('w-desc', !$('f-desc').value.trim(), 'description');
-        marque('w-routage', !val('f-routage'), 'routage');
         var a = $('sav-alert');
         a.style.display = manque.length ? 'block' : 'none';
         a.textContent = manque.length ? 'À compléter avant l’envoi : ' + manque.join(', ') + '.' : '';
@@ -260,14 +232,15 @@
 
     $('b-envoyer').addEventListener('click', function () {
         if (!valider()) return;
-        var rt = REF.routage.filter(function (r) { return r.cle === val('f-routage'); })[0];
+        var dest = destinataires().map(function (r) { return r.courriel; });
+        if (!dest.length) { ok('Destinataires indisponibles : utilisez « Copier la fiche ».'); return; }
         var txt = fiche();
-        var cc = REF.cc.filter(function (x) { return x && x !== rt.courriel; });
+        var cc = REF.cc.filter(function (x) { return x && dest.indexOf(x) < 0; });
         var corps = txt;
         // Outlook et Windows tronquent un lien mailto trop long : au-dela, la fiche
         // complete part dans le presse-papiers et le courriel dit de la coller.
         // Adresses en clair (Outlook decode mal « %40 ») et copies separees par des virgules.
-        var url = function (b) { return 'mailto:' + rt.courriel + '?subject=' + encodeURIComponent(sujet()) +
+        var url = function (b) { return 'mailto:' + dest.join(',') + '?subject=' + encodeURIComponent(sujet()) +
             (cc.length ? '&cc=' + cc.join(',') : '') + '&body=' + encodeURIComponent(b); };
         copier(txt).then(function () {}, function () {});
         if (url(corps).length > 1900) {
@@ -281,7 +254,7 @@
     $('b-copier').addEventListener('click', function () { copier(fiche()).then(function () { ok('Fiche copiée dans le presse-papiers.'); }); });
     $('b-nouveau').addEventListener('click', function () {
         if (!confirm('Effacer la fiche et commencer une nouvelle demande ?')) return;
-        $('sav-form').reset(); $('f-pieces').innerHTML = ''; clientChoisi = null; routageManuel = false;
+        $('sav-form').reset(); $('f-pieces').innerHTML = ''; clientChoisi = null;
         document.querySelectorAll('.sav-f.err').forEach(function (e) { e.classList.remove('err'); });
         $('sav-alert').style.display = 'none';
         init();
@@ -291,7 +264,7 @@
         var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
         $('f-date').value = d.toISOString().slice(0, 16);
         $('f-recu').value = user.name || user.email || '';
-        majClientTag(); majType(); marquerSugg();
+        majClientTag(); majType(); dessinerDest();
     }
 
     function charger() {
@@ -313,11 +286,11 @@
                     + (up && !isNaN(up) ? ' · listes au ' + up.toLocaleDateString('fr-CA') : '');
                 $('f-produits').innerHTML = REF.produits.map(function (p) {
                     return '<label><input type="checkbox" value="' + esc(p) + '"> ' + esc(p) + '</label>'; }).join('');
-                dessinerRoutage(); marquerSugg();
+                dessinerDest();
             })
             .catch(function () { $('sav-load').textContent = 'Listes indisponibles pour le moment : la fiche fonctionne, sans recherche.'; });
     }
-    // Sans liste publiee, le routage et les produits restent vides : valeurs de repli
+    // Sans liste publiee, les destinataires et les produits restent vides : valeurs de repli
     // (les courriels ne sont jamais ecrits ici — ils viennent du serveur).
     REF.produits = ['LIMIT-ELG', 'LIMIT-ELN', 'LIMIT-ELP', 'Guide-Pro', 'IDC', 'Scale-Pro / Lite', 'Autre'];
     $('f-produits').innerHTML = REF.produits.map(function (p) { return '<label><input type="checkbox" value="' + esc(p) + '"> ' + esc(p) + '</label>'; }).join('');
