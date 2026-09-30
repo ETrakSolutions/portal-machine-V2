@@ -265,6 +265,10 @@ try:
         check('machine 1 : qte x 2 ; machine 2 : qte x 1, pas de pose',
               '1500-0000\t2' in avant[0]['epicor'] and '-install' not in avant[1]['epicor'].lower())
         check('texte de chaque machine repris tel quel', all(x['texte'] in corps for x in avant))
+        # Bobcat E08 installee par le client : la main-d'oeuvre pure 1500-0004-Install
+        # n'est pas facturee, donc absente des produits comme du bloc Epicor (Steve, 2026-09-30).
+        check('Bobcat posee par le client : pas de 1500-0004-Install dans ses produits',
+              '1500-0004' not in avant[1]['texte'] and '1500-0004' not in avant[1]['epicor'], avant[1]['texte'])
         # Total general = somme des machines
         tot = js("var t={p:0,i:0}; JSON.parse(sessionStorage.getItem('soumission_panier_v1')||'[]'); return t;")
         attendu = js("return arguments[0];", 0)

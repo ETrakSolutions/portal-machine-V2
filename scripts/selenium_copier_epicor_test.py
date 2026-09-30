@@ -11,6 +11,7 @@ Scenarios :
   E. panier d'une machine + une machine a l'ecran pas ajoutee : panier puis ecran ;
   F. une machine a l'ecran, sans envoi : ses lignes (preparer sans s'envoyer de courriel).
   G-I. « Copier la demande » : panier non envoye, machine a l ecran, rien du tout.
+  J. mini excavatrice : 1500-0004-Install (main-d oeuvre pure) seulement si e-Trak installe.
 
     py -3.12 scripts/selenium_copier_epicor_test.py [--live]
 """
@@ -254,6 +255,20 @@ try:
     time.sleep(0.6)
     al = js("return window.__alertes;")
     check('message « Aucune demande a copier »', not js("return window.__copie;") and len(al) == 1 and 'Aucune demande' in al[0], al)
+
+    print('--- J) mini excavatrice : 1500-0004-Install selon qui installe ---')
+    ouvrir()
+    machine('Excavatrice', 'Bobcat', 'E08', '2015', ['lim-hauteur'], 1, 'oui')
+    p = js("var p=photoMachine(); return {texte: texteMachine(p), epicor: texteEpicor(p.epicor), n: p.produits.length};")
+    check('posee par e-Trak : 1500-0004-Install dans les produits ET dans Epicor',
+          '1500-0004-Install' in p['texte'] and '1500-0004' in p['epicor'], p)
+    n_etrak = p['n']
+    js("document.getElementById('install-etrak-non').click();")
+    time.sleep(0.6)
+    p = js("var p=photoMachine(); return {texte: texteMachine(p), epicor: texteEpicor(p.epicor), n: p.produits.length};")
+    check('posee par le client : absente des produits et d Epicor, un produit de moins',
+          '1500-0004' not in p['texte'] and '1500-0004' not in p['epicor'] and p['n'] == n_etrak - 1, p)
+    check('les autres produits restent (kit de base)', '1500-0000' in p['texte'], p['texte'])
 
     print('--- D) rien a l ecran ni au panier : le message reste ---')
     ouvrir()

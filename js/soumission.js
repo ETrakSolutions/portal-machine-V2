@@ -1822,6 +1822,15 @@ function photoMachine() {
     var lim = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
     var eq = document.getElementById('soumission-equipement');
     var copie = function (o) { var c = {}; for (var k in o) c[k] = o[k]; return c; };
+    var lignes = lignesFacturables();
+    // Une ligne de main-d'oeuvre pure (1500-0004-Install) qui n'est PAS facturee — le
+    // client installe — ne figure pas non plus dans « Produits demandes » : elle etait
+    // listee comme produit obligatoire alors qu'elle n'est ni dans les totaux ni dans le
+    // bloc Epicor (decision de Steve, 2026-09-30). Meme regle que lignesFacturables().
+    produits = produits.filter(function (r) {
+        if (!r.code || !estMainOeuvrePure(r.code)) return true;
+        return lignes.some(function (l) { return l.seule && l.name === r.name; });
+    });
     return {
         sansMachine: estSansMachine(),
         equipement: eq ? (eq.value || '').trim() : '',
@@ -1832,7 +1841,7 @@ function photoMachine() {
         aValider: aValiderItems(),
         multiAxeRetro: !!(lim && lim.value === 'Multi-axe' && type === 'Retrocaveuse'),
         produits: produits.map(copie),                  // [{code, name, oblig}]
-        lignes: lignesFacturables().map(copie),         // tableau de prix a l'ecran
+        lignes: lignes.map(copie),                      // tableau de prix a l'ecran
         epicor: buildEpicorRows()                       // [{code, qty}]
     };
 }
@@ -2737,6 +2746,11 @@ function selectionAInstallation() {
 // par Jacquot le 2026-09-02) : le bloc etait bati a part, depuis les seuls codes
 // produits. Une ligne sans code produit (ligne custom d'un kit) reste affichee
 // mais ne descend pas dans Epicor : il n'y a rien a y coller.
+// Main-d'oeuvre pure : aucun prix piece, seulement un temps de pose (1500-0004-Install).
+function estMainOeuvrePure(code) {
+    var brut = priceFor(code);
+    return brut.item === null && typeof brut.install === 'number' && brut.install !== 0;
+}
 function lignesFacturables() {
     var out = [];
     (window.__selectionRows || []).forEach(function (r) {
@@ -2753,7 +2767,7 @@ function lignesFacturables() {
         // seulement du temps de pose plus long. La ligne EST l'installation, donc
         // elle sort sous le code d'installation, et elle n'existe pas du tout si
         // e-Trak n'installe pas : il n'y a alors aucun temps a facturer.
-        if (brut.item === null && typeof brut.install === 'number' && brut.install !== 0) {
+        if (estMainOeuvrePure(r.code)) {
             if (typeof instExt === 'number' && instExt !== 0) {
                 out.push({ code: pr.installCode || r.code, name: r.name, qty: q,
                            montant: instExt, kind: 'install', oblig: r.oblig, seule: true });
