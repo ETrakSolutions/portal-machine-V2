@@ -582,10 +582,10 @@ function showConsentModal(sessionUser, onAccepted) {
         (isFr ? 'J\'ai lu et j\'accepte la clause de confidentialité.' : 'I have read and accept the Confidentiality Clause.') + '</span></label>' +
         '<p id="consent-hint" style="color:#FF8C00;font-size:0.72rem;margin:8px 0 0;">' +
         (isFr ? 'Faites défiler le texte jusqu\'en bas pour activer les cases.' : 'Scroll to the bottom to enable the checkboxes.') + '</p>' +
-        '<div style="display:flex;gap:10px;margin-top:14px;">' +
-        '<button type="button" id="consent-accept" class="login-submit" style="flex:1;opacity:0.5;" disabled>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;">' +
+        '<button type="button" id="consent-accept" class="login-submit" style="flex:2 1 120px;width:auto;margin-top:0;opacity:0.5;" disabled>' +
         (isFr ? 'Accepter' : 'Accept') + '</button>' +
-        '<button type="button" id="consent-decline" class="login-submit" style="flex:0 0 auto;background:#3a3a44;">' +
+        '<button type="button" id="consent-decline" class="login-submit" style="flex:1 1 auto;width:auto;margin-top:0;padding:10px 16px;background:#3a3a44;">' +
         (isFr ? 'Refuser et se déconnecter' : 'Decline and log out') + '</button>' +
         '</div>' +
         '<p id="consent-error" class="login-error" style="display:none;"></p>' +
