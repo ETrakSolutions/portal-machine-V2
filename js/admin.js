@@ -489,6 +489,98 @@ function showChangePasswordModal(user, oldPassword) {
     document.getElementById('change-pwd-new').focus();
 }
 
+// ---- PREMIERE CONNEXION / MOT DE PASSE OUBLIE (decision Steve, 2026-10-01) ----
+// Etape 1 : courriel -> le serveur envoie un code a 6 chiffres (30 min) a CE courriel.
+// Etape 2 : code + nouveau mot de passe -> connecte. Le serveur repond pareil que le compte
+// existe ou non ; l'ancien mot de passe reste valide tant que le code n'est pas utilise.
+function showResetModal(prefill) {
+    var existing = document.getElementById('reset-pwd-modal');
+    if (existing) existing.remove();
+    var modal = document.createElement('div');
+    modal.id = 'reset-pwd-modal';
+    modal.className = 'login-modal';
+    modal.style.display = 'flex';
+    modal.innerHTML =
+        '<div class="login-modal-content" style="max-width:380px;">' +
+        '<button type="button" id="reset-close" class="login-close">&times;</button>' +
+        '<h3>' + escHtml(i18n.t('reset.title')) + '</h3>' +
+        '<div id="reset-step1">' +
+            '<p class="login-info" style="color:#999">' + escHtml(i18n.t('reset.intro')) + '</p>' +
+            '<input type="email" id="reset-email" class="login-input" autocomplete="email" placeholder="' + escHtml(i18n.t('hub.login_email')) + '">' +
+            '<button type="button" id="reset-send" class="login-submit">' + escHtml(i18n.t('reset.send')) + '</button>' +
+        '</div>' +
+        '<div id="reset-step2" style="display:none;">' +
+            '<p id="reset-sent" class="login-info"></p>' +
+            '<input type="text" id="reset-code" class="login-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="' + escHtml(i18n.t('reset.code_ph')) + '">' +
+            '<input type="password" id="reset-new" class="login-input" autocomplete="new-password" placeholder="' + escHtml(i18n.t('admin.pwd_new_ph')) + '">' +
+            '<input type="password" id="reset-confirm" class="login-input" autocomplete="new-password" placeholder="' + escHtml(i18n.t('admin.pwd_confirm_ph')) + '">' +
+            '<button type="button" id="reset-submit" class="login-submit">' + escHtml(i18n.t('reset.submit')) + '</button>' +
+            '<button type="button" id="reset-again" class="login-link">' + escHtml(i18n.t('reset.resend')) + '</button>' +
+        '</div>' +
+        '<p id="reset-error" class="login-error" style="display:none;"></p>' +
+        '</div>';
+    document.body.appendChild(modal);
+
+    var $ = function(id) { return document.getElementById(id); };
+    var erreur = function(msg) { $('reset-error').textContent = msg; $('reset-error').style.display = msg ? 'block' : 'none'; };
+    var poster = function(payload) {
+        return fetch(API_URL, { method: 'POST', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(payload) })
+            .then(function(r) { return r.json(); });
+    };
+    var etape = function(n) {
+        $('reset-step1').style.display = n === 1 ? 'block' : 'none';
+        $('reset-step2').style.display = n === 2 ? 'block' : 'none';
+        erreur('');
+        (n === 1 ? $('reset-email') : $('reset-code')).focus();
+    };
+    $('reset-email').value = prefill || '';
+    $('reset-close').addEventListener('click', function() { modal.remove(); });
+    modal.addEventListener('click', function(e) { if (e.target === modal) modal.remove(); });
+
+    $('reset-send').addEventListener('click', function() {
+        var email = $('reset-email').value.trim().toLowerCase();
+        if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { erreur(i18n.t('mu.err_name_email')); return; }
+        var btn = $('reset-send'); btn.disabled = true; erreur('');
+        poster({ action: 'resetrequest', email: email, lang: i18n.getLang() })
+            .then(function(d) {
+                btn.disabled = false;
+                if (!d.ok) { erreur(i18n.t(d.error === 'send_failed' ? 'reset.err_send' : 'admin.err_server')); return; }
+                $('reset-sent').textContent = i18n.t('reset.sent', { email: email });
+                etape(2);
+            })
+            .catch(function() { btn.disabled = false; erreur(i18n.t('admin.err_server')); });
+    });
+
+    $('reset-submit').addEventListener('click', function() {
+        var email = $('reset-email').value.trim().toLowerCase();
+        var code = $('reset-code').value.replace(/\D/g, '');
+        var pwd = $('reset-new').value.trim(), conf = $('reset-confirm').value.trim();
+        if (code.length !== 6) { erreur(i18n.t('reset.err_code')); return; }
+        if (!pwd || pwd.length < 4) { erreur(i18n.t('admin.pwd_err_min')); return; }
+        if (pwd === '0000') { erreur(i18n.t('admin.pwd_err_0000')); return; }
+        if (pwd !== conf) { erreur(i18n.t('admin.pwd_err_mismatch')); return; }
+        var btn = $('reset-submit'); btn.disabled = true; erreur('');
+        poster({ action: 'resetconfirm', email: email, code: code, newPassword: pwd })
+            .then(function(d) {
+                btn.disabled = false;
+                if (d.ok && d.user) {
+                    modal.remove();
+                    var u = d.user;
+                    var sess = { username: u.username, email: u.email || u.username, name: u.name, role: u.role, token: d.token, permissions: getUserPermissions(u.role), vendeurEmail: u.vendeurEmail || '', consentVersion: u.consentVersion || 0 };
+                    proceedAfterAuth(sess, u);
+                    return;
+                }
+                erreur(i18n.t(d.error === 'password too short' ? 'admin.pwd_err_min' : 'reset.err_code'));
+            })
+            .catch(function() { btn.disabled = false; erreur(i18n.t('admin.err_server')); });
+    });
+
+    $('reset-again').addEventListener('click', function() { etape(1); });
+    $('reset-email').addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); $('reset-send').click(); } });
+    $('reset-confirm').addEventListener('keydown', function(e) { if (e.key === 'Enter') { e.preventDefault(); $('reset-submit').click(); } });
+    etape(1);
+}
+
 // ---- CONSENTEMENT (Conditions d'utilisation + confidentialite) ----
 // Version courante du texte. INCREMENTER cette valeur = forcer tout le monde a
 // re-signer a la prochaine ouverture (ex. apres une revision juridique du texte).
@@ -678,87 +770,118 @@ function proceedAfterAuth(sessionUser, rawUser) {
 }
 
 // ---- CREDENTIALS POPUP ----
-function showCredentialsPopup(name, email, password, roleLabel) {
+// Fenetre affichee apres une creation de compte ou une reinitialisation.
+// mode 'invitation' (creation, par defaut depuis le 2026-10-01, decision Steve) : le courriel au
+//   client NE contient PAS de mot de passe ; il active son compte lui-meme par « Premiere
+//   connexion » (code recu par courriel). Bouton pour basculer vers le mot de passe temporaire.
+// mode 'password' (reinitialisation, renvoi d'identifiants) : mot de passe temporaire, comme avant.
+function showCredentialsPopup(name, email, password, roleLabel, mode) {
     var existing = document.getElementById('cred-popup-overlay');
     if (existing) existing.remove();
+    mode = mode === 'invitation' ? 'invitation' : 'password';
+    var URL_PORTAIL = 'https://etraksolutions.github.io/portal-machine-V2/';
 
-    // Build FR and EN email content
-    var subjectFr = 'Portail e-Trak \u2014 Votre compte a \u00e9t\u00e9 cr\u00e9\u00e9';
-    var bodyFr = 'Bonjour ' + name + ',\n\n' +
-        'Un compte a \u00e9t\u00e9 cr\u00e9\u00e9 pour vous sur le Portail e-Trak.\n\n' +
-        'Voici vos informations de connexion :\n\n' +
-        'Adresse du portail : https://etraksolutions.github.io/portal-machine-V2/\n' +
-        'Courriel : ' + email + '\n' +
-        'Mot de passe temporaire : ' + password + '\n\n' +
-        'IMPORTANT : Vous devrez changer votre mot de passe lors de votre premi\u00e8re connexion.\n\n' +
-        'Votre r\u00f4le : ' + roleLabel + '\n\n' +
-        'Portail e-Trak \u2014 e-Trak Technology Solutions';
+    function textes(isFr) {
+        if (mode === 'invitation') {
+            return isFr ? {
+                sujet: 'Portail e-Trak — Votre compte a été créé',
+                corps: 'Bonjour ' + name + ',\n\n' +
+                    'Un compte a été créé pour vous sur le Portail e-Trak.\n\n' +
+                    'Pour l’activer :\n' +
+                    '1. Allez sur ' + URL_PORTAIL + '\n' +
+                    '2. Cliquez sur « Connexion », puis sur « Première connexion ou mot de passe oublié ? »\n' +
+                    '3. Entrez votre courriel (' + email + ') : vous recevrez un code à 6 chiffres pour choisir votre mot de passe.\n\n' +
+                    'Le code arrive de « Portail e-Trak ». S’il n’est pas dans votre boîte de réception, vérifiez vos courriels indésirables.\n\n' +
+                    'Votre rôle : ' + roleLabel + '\n\n' +
+                    'Portail e-Trak — e-Trak Technology Solutions'
+            } : {
+                sujet: 'e-Trak Portal — Your account has been created',
+                corps: 'Hello ' + name + ',\n\n' +
+                    'An account has been created for you on the e-Trak Portal.\n\n' +
+                    'To activate it:\n' +
+                    '1. Go to ' + URL_PORTAIL + '\n' +
+                    '2. Click “Login”, then “First sign-in or forgot your password?”\n' +
+                    '3. Enter your email (' + email + '): you will receive a 6-digit code to choose your password.\n\n' +
+                    'The code comes from “Portail e-Trak”. If it is not in your inbox, check your junk mail.\n\n' +
+                    'Your role: ' + roleLabel + '\n\n' +
+                    'e-Trak Portal — e-Trak Technology Solutions'
+            };
+        }
+        return isFr ? {
+            sujet: 'Portail e-Trak — Vos informations de connexion',
+            corps: 'Bonjour ' + name + ',\n\n' +
+                'Voici vos informations de connexion au Portail e-Trak :\n\n' +
+                'Adresse du portail : ' + URL_PORTAIL + '\n' +
+                'Courriel : ' + email + '\n' +
+                'Mot de passe temporaire : ' + password + '\n\n' +
+                'IMPORTANT : Vous devrez changer votre mot de passe lors de votre première connexion.\n\n' +
+                'Votre rôle : ' + roleLabel + '\n\n' +
+                'Portail e-Trak — e-Trak Technology Solutions'
+        } : {
+            sujet: 'e-Trak Portal — Your login credentials',
+            corps: 'Hello ' + name + ',\n\n' +
+                'Here are your e-Trak Portal login credentials:\n\n' +
+                'Portal address: ' + URL_PORTAIL + '\n' +
+                'Email: ' + email + '\n' +
+                'Temporary password: ' + password + '\n\n' +
+                'IMPORTANT: You will need to change your password on your first login.\n\n' +
+                'Your role: ' + roleLabel + '\n\n' +
+                'e-Trak Portal — e-Trak Technology Solutions'
+        };
+    }
 
-    var subjectEn = 'e-Trak Portal \u2014 Your account has been created';
-    var bodyEn = 'Hello ' + name + ',\n\n' +
-        'An account has been created for you on the e-Trak Portal.\n\n' +
-        'Here are your login credentials:\n\n' +
-        'Portal address: https://etraksolutions.github.io/portal-machine-V2/\n' +
-        'Email: ' + email + '\n' +
-        'Temporary password: ' + password + '\n\n' +
-        'IMPORTANT: You will need to change your password on your first login.\n\n' +
-        'Your role: ' + roleLabel + '\n\n' +
-        'e-Trak Portal \u2014 e-Trak Technology Solutions';
-
-    var mailtoUrlFr = 'mailto:' + email + '?subject=' + encodeURIComponent(subjectFr) + '&body=' + encodeURIComponent(bodyFr);
-    var mailtoUrlEn = 'mailto:' + email + '?subject=' + encodeURIComponent(subjectEn) + '&body=' + encodeURIComponent(bodyEn);
-
-    var lang = 'fr'; // current language state
-
+    var lang = 'fr';
     var overlay = document.createElement('div');
     overlay.id = 'cred-popup-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';
-
     var box = document.createElement('div');
     box.style.cssText = 'background:#1e1e2e;border:1px solid #333;border-radius:12px;padding:28px 24px;max-width:430px;width:90%;color:#e0e0e0;font-family:inherit;';
 
     function render() {
-        var isFr = lang === 'fr';
+        var isFr = lang === 'fr', inv = mode === 'invitation', t = textes(isFr);
+        var mailto = 'mailto:' + email + '?subject=' + encodeURIComponent(t.sujet) + '&body=' + encodeURIComponent(t.corps);
+        var ligne = function(lib, val) { return '<div><span style="color:#888;">' + lib + '&nbsp;&nbsp;</span>' + val + '</div>'; };
         box.innerHTML =
             '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
-                '<h3 style="margin:0;color:#fff;font-size:1.1rem;">\u2705 ' + (isFr ? 'Compte cr\u00e9\u00e9' : 'Account created') + '</h3>' +
+                '<h3 style="margin:0;color:#fff;font-size:1.1rem;">✅ ' + (inv ? (isFr ? 'Compte créé' : 'Account created') : (isFr ? 'Mot de passe temporaire' : 'Temporary password')) + '</h3>' +
                 '<div style="display:flex;gap:6px;">' +
                     '<button id="cred-lang-fr" style="padding:3px 10px;border-radius:6px;border:1px solid ' + (isFr ? '#0d6efd' : '#444') + ';background:' + (isFr ? '#0d6efd' : 'transparent') + ';color:#fff;cursor:pointer;font-size:0.8rem;font-weight:600;">FR</button>' +
                     '<button id="cred-lang-en" style="padding:3px 10px;border-radius:6px;border:1px solid ' + (!isFr ? '#0d6efd' : '#444') + ';background:' + (!isFr ? '#0d6efd' : 'transparent') + ';color:#fff;cursor:pointer;font-size:0.8rem;font-weight:600;">EN</button>' +
                 '</div>' +
             '</div>' +
-            '<p style="margin:0 0 16px;color:#aaa;font-size:0.85rem;">' + (isFr ? 'Transmettez ces informations \u00e0 l\'utilisateur.' : 'Share these credentials with the user.') + '</p>' +
+            '<p style="margin:0 0 16px;color:#aaa;font-size:0.85rem;line-height:1.45;">' + (inv
+                ? (isFr ? 'Envoyez l’invitation : le client activera son compte lui-même avec un code reçu par courriel. Aucun mot de passe à transmettre.'
+                        : 'Send the invitation: the client will activate the account with a code received by email. No password to share.')
+                : (isFr ? 'Transmettez ces informations à l’utilisateur.' : 'Share these credentials with the user.')) + '</p>' +
             '<div style="background:#111;border-radius:8px;padding:14px 16px;font-size:0.88rem;line-height:1.9;">' +
-                '<div><span style="color:#888;">' + (isFr ? 'Nom' : 'Name') + '&nbsp;&nbsp;</span><strong>' + escHtml(name) + '</strong></div>' +
-                '<div><span style="color:#888;">' + (isFr ? 'Courriel' : 'Email') + '&nbsp;&nbsp;</span><strong>' + escHtml(email) + '</strong></div>' +
-                '<div><span style="color:#888;">' + (isFr ? 'Mot de passe' : 'Password') + '&nbsp;&nbsp;</span><strong style="color:#f90;">' + password + '</strong> <span style="color:#555;font-size:0.75rem;">(' + (isFr ? 'temporaire' : 'temporary') + ')</span></div>' +
-                '<div><span style="color:#888;">' + (isFr ? 'R\u00f4le' : 'Role') + '&nbsp;&nbsp;</span><strong>' + roleLabel + '</strong></div>' +
-                '<div><span style="color:#888;">Portal&nbsp;&nbsp;</span><a href="https://etraksolutions.github.io/portal-machine-V2/" target="_blank" style="color:#4ea8de;">etraksolutions.github.io/portal-machine-V2</a></div>' +
+                ligne(isFr ? 'Nom' : 'Name', '<strong>' + escHtml(name) + '</strong>') +
+                ligne(isFr ? 'Courriel' : 'Email', '<strong>' + escHtml(email) + '</strong>') +
+                (inv ? '' : ligne(isFr ? 'Mot de passe' : 'Password', '<strong id="cred-password" style="color:#f90;">' + escHtml(password) + '</strong> <span style="color:#555;font-size:0.75rem;">(' + (isFr ? 'temporaire' : 'temporary') + ')</span>')) +
+                ligne(isFr ? 'Rôle' : 'Role', '<strong>' + escHtml(roleLabel) + '</strong>') +
+                ligne('Portal', '<a href="' + URL_PORTAIL + '" target="_blank" style="color:#4ea8de;">etraksolutions.github.io/portal-machine-V2</a>') +
             '</div>' +
             '<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">' +
-                '<a id="cred-mailto-btn" href="' + (isFr ? mailtoUrlFr : mailtoUrlEn) + '" style="flex:1;min-width:140px;background:#0d6efd;color:#fff;text-align:center;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:0.88rem;font-weight:600;">\uD83D\uDCE7 ' + (isFr ? 'Ouvrir dans mon courriel' : 'Open in my email') + '</a>' +
-                '<button id="cred-copy-btn" style="flex:1;min-width:120px;background:#333;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;font-weight:600;">\uD83D\uDCCB ' + (isFr ? 'Copier' : 'Copy') + '</button>' +
+                '<a id="cred-mailto-btn" href="' + mailto + '" style="flex:1;min-width:140px;background:#0d6efd;color:#fff;text-align:center;padding:10px 14px;border-radius:8px;text-decoration:none;font-size:0.88rem;font-weight:600;">📧 ' + (inv ? (isFr ? 'Envoyer l’invitation' : 'Send the invitation') : (isFr ? 'Ouvrir dans mon courriel' : 'Open in my email')) + '</a>' +
+                '<button id="cred-copy-btn" style="flex:1;min-width:120px;background:#333;color:#fff;border:none;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;font-weight:600;">📋 ' + (isFr ? 'Copier' : 'Copy') + '</button>' +
                 '<button id="cred-close-btn" style="flex:1;min-width:80px;background:#222;color:#aaa;border:1px solid #444;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:0.88rem;">' + (isFr ? 'Fermer' : 'Close') + '</button>' +
-            '</div>';
-
-        var copyText = isFr
-            ? 'Portail e-Trak \u2014 Vos informations de connexion\n\nPortail : https://etraksolutions.github.io/portal-machine-V2/\nCourriel : ' + email + '\nMot de passe temporaire : ' + password + '\nR\u00f4le : ' + roleLabel + '\n\nVous devrez changer votre mot de passe \u00e0 la premi\u00e8re connexion.'
-            : 'e-Trak Portal \u2014 Your login credentials\n\nPortal: https://etraksolutions.github.io/portal-machine-V2/\nEmail: ' + email + '\nTemporary password: ' + password + '\nRole: ' + roleLabel + '\n\nYou will need to change your password on first login.';
+            '</div>' +
+            (inv && password ? '<button id="cred-show-pwd" class="login-link" style="margin-top:14px;">' + (isFr ? 'Donner plutôt un mot de passe temporaire' : 'Give a temporary password instead') + '</button>' : '');
 
         document.getElementById('cred-lang-fr').addEventListener('click', function() { lang = 'fr'; render(); });
         document.getElementById('cred-lang-en').addEventListener('click', function() { lang = 'en'; render(); });
         document.getElementById('cred-copy-btn').addEventListener('click', function() {
-            navigator.clipboard.writeText(copyText).then(function() {
-                document.getElementById('cred-copy-btn').textContent = '\u2713 ' + (lang === 'fr' ? 'Copi\u00e9!' : 'Copied!');
+            navigator.clipboard.writeText(t.corps).then(function() {
+                document.getElementById('cred-copy-btn').textContent = '✓ ' + (lang === 'fr' ? 'Copié!' : 'Copied!');
             });
         });
         document.getElementById('cred-close-btn').addEventListener('click', function() { overlay.remove(); });
+        var bascule = document.getElementById('cred-show-pwd');
+        if (bascule) bascule.addEventListener('click', function() { mode = 'password'; render(); });
     }
 
     overlay.appendChild(box);
     document.body.appendChild(overlay);
     render();
-
     overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
@@ -1543,6 +1666,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    var loginForgot = document.getElementById('hub-login-forgot');
+    if (loginForgot) {
+        loginForgot.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+            showResetModal(loginUsername.value.trim().toLowerCase());
+        });
+    }
+
     if (loginPassword) {
         loginPassword.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') { e.preventDefault(); loginSubmit.click(); }
@@ -1811,7 +1942,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!ok) return;   // message deja affiche, liste relue sur le serveur
                 // Identifiants montres seulement une fois le compte VRAIMENT enregistre
                 var roleLabel = i18n.t('role.' + role);
-                showCredentialsPopup(name, email, tempPwd, roleLabel);
+                showCredentialsPopup(name, email, tempPwd, roleLabel, 'invitation');
                 document.getElementById('admin-new-name').value = '';
                 document.getElementById('admin-new-email').value = '';
                 showToast(i18n.t('admin.user_added', {name: name}));

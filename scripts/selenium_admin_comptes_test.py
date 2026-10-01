@@ -148,6 +148,21 @@ try:
     check('save = liste complete + le nouveau', emails == ['jcaron@gryb.com', 't@e', 'dealer@x.ca', 'neuf@x.ca'], str(emails))
     check('identifiants affiches', e['popup'])
     check('aucune alerte', not e['alertes'], str(e['alertes']))
+    # Invitation par defaut (decision Steve 2026-10-01) : aucun mot de passe dans le courriel
+    mdp = (e['saves'][0][-1] if e['saves'] else {}).get('password', '???')
+    lien = dv.execute_script("return decodeURIComponent(document.getElementById('cred-mailto-btn').getAttribute('href'))")
+    check('invitation : aucun mot de passe affiche ni dans le courriel',
+          not dv.execute_script("return !!document.getElementById('cred-password')") and mdp not in lien, lien[:120])
+    check('invitation : explique « Premiere connexion » et le code', 'Première connexion' in lien and 'code' in lien and 'indésirables' in lien)
+    dv.find_element(By.ID, 'cred-show-pwd').click()
+    time.sleep(0.5)
+    lien2 = dv.execute_script("return decodeURIComponent(document.getElementById('cred-mailto-btn').getAttribute('href'))")
+    check('« Donner plutot un mot de passe temporaire » : mot de passe affiche et dans le courriel',
+          dv.execute_script("return (document.getElementById('cred-password')||{}).textContent") == mdp and mdp in lien2)
+    dv.execute_script("showCredentialsPopup('A', 'a@x.ca', 'PWD999', 'Dealer')")
+    time.sleep(0.5)
+    check('reinitialisation (sans mode) : mot de passe affiche comme avant',
+          dv.execute_script("return (document.getElementById('cred-password')||{}).textContent") == 'PWD999')
     err = erreurs_js(dv)
     check('aucune erreur JS', not err, str(err))
     dv.quit()

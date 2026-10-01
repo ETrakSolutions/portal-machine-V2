@@ -157,7 +157,7 @@ function muAjouter() {
         .then(function(d) {
             btn.disabled = false;
             if (!d.ok) { err.textContent = muErreur(d.error); err.style.display = 'block'; return; }
-            showCredentialsPopup(d.user.name, d.user.email, d.tempPassword, i18n.t('role.' + d.user.role));
+            showCredentialsPopup(d.user.name, d.user.email, d.tempPassword, i18n.t('role.' + d.user.role), 'invitation');
             document.getElementById('mu-new-name').value = '';
             document.getElementById('mu-new-email').value = '';
             showToast(i18n.t('admin.user_added', { name: d.user.name }));
