@@ -1068,7 +1068,8 @@
             ],
             'Loader': [
                 {key: 'levage', label: 'Capacité de levage'},
-                // Gage port (suggestion de Mathieu Robillard, 2026-10-01) : type / filetage du port
+                // Gage port (suggestion de Mathieu Robillard, 2026-10-01) : type / filetage du port.
+                // Aussi sur le Tracteur (decision Jacquot, meme jour).
                 {key: 'gage', label: 'Gage port'},
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'}
@@ -1076,6 +1077,7 @@
             // Tracteur : memes champs que le Loader (decision 2026-08-05)
             'Tracteur': [
                 {key: 'levage', label: 'Capacité de levage'},
+                {key: 'gage', label: 'Gage port'},
                 {key: 'puissance', label: 'Puissance'},
                 {key: 'poids', label: 'Poids'}
             ],
@@ -1765,6 +1767,7 @@
                 'Tracteur': function(s) {
                     return {
                         levage: s['Capacite de levage'] || '',
+                        gage: s['Gage port'] || '',
                         puissance: s['Puissance moteur'] || '',
                         poids: s['Poids operationnel'] || ''
                     };
@@ -2205,7 +2208,7 @@
                                     'Capacite de levage':'levage','Gage port':'gage','Puissance moteur':'puissance','Poids operationnel':'poids'
                                 },
                                 'Tracteur': {
-                                    'Capacite de levage':'levage','Puissance moteur':'puissance','Poids operationnel':'poids'
+                                    'Capacite de levage':'levage','Gage port':'gage','Puissance moteur':'puissance','Poids operationnel':'poids'
                                 },
                                 'Nacelle': {
                                     'Categorie':'categorie','Hauteur plateforme (pi)':'hauteur','Voltage':'voltage','Nb sections fleche':'sections'

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Test navigateur du champ Loader « Gage port » (suggestion Mathieu Robillard, 2026-10-01).
+"""Test navigateur du champ « Gage port » (Loader et Tracteur) (suggestion Mathieu Robillard, 2026-10-01).
 
 Sert le depot LOCAL et verifie :
   - BD : toutes les fiches Loader ont « Gage port », juste apres « Capacite de levage » ;
@@ -23,7 +23,9 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PORT = 8798
 BASE = 'http://127.0.0.1:%d' % PORT
 os.chdir(REPO)
-_DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-8'))['Loader']
+_ALL = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-8'))
+TYPES = ['Loader', 'Tracteur']      # Tracteur ajoute le meme jour (decision Jacquot)
+_DB = _ALL['Loader']
 FAB, AN = 'Case', '2024'
 MOD = sorted(_DB[FAB][AN])[0]
 
@@ -59,39 +61,41 @@ def titres():
 
 try:
     print('--- 0) Donnees ---')
-    tot = ok = 0
-    for f, ys in _DB.items():
-        if f.startswith('_'):
-            continue
-        for y, ms in ys.items():
-            for m, s in ms.items():
-                tot += 1
-                k = [x for x in s if not x.startswith('_') and x != 'Image']
-                ok += (k[:2] == ['Capacite de levage', 'Gage port'])
-    check('les %d fiches Loader ont Gage port apres Capacite de levage' % tot, ok == tot, ok)
+    for TY in TYPES:
+        tot = ok = 0
+        for f, ys in _ALL[TY].items():
+            if f.startswith('_'):
+                continue
+            for y, ms in ys.items():
+                for m, s in ms.items():
+                    tot += 1
+                    k = [x for x in s if not x.startswith('_') and x != 'Image']
+                    ok += (k[:2] == ['Capacite de levage', 'Gage port'])
+        check('les %d fiches %s ont Gage port apres Capacite de levage' % (tot, TY), ok == tot, ok)
 
     dv.get(BASE + '/index.html')
     dv.execute_script("localStorage.setItem('portal_user', JSON.stringify({role:'super_admin',email:'t@e',name:'T',"
                       "token:'TOK',permissions:{modifBom:true}}));localStorage.setItem('portal_lang','fr');")
 
     print('--- 1) database.html ---')
-    dv.get(BASE + '/database.html')
-    WebDriverWait(dv, 60).until(lambda d: any(o.get_attribute('value') == 'Loader'
-                                              for o in d.find_elements(By.CSS_SELECTOR, '#db-type option')))
-    Select(dv.find_element(By.ID, 'db-type')).select_by_value('Loader')
-    WebDriverWait(dv, 90).until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.db-table tbody tr')) > 5)
-    time.sleep(1)
-    t = [x.upper() for x in titres()]
-    print('     colonnes :', t)
-    i_lev = next((i for i, x in enumerate(t) if 'LEVAGE' in x), -1)
-    i_gage = next((i for i, x in enumerate(t) if 'GAGE PORT' in x), -1)
-    i_pui = next((i for i, x in enumerate(t) if 'PUISSANCE' in x), -1)
-    check('colonne Gage port entre Capacite de levage et Puissance', 0 <= i_lev < i_gage < i_pui, (i_lev, i_gage, i_pui))
-    cell = dv.execute_script("var r=document.querySelector('.db-table tbody tr');return r?r.children[arguments[0]].innerText:'';", i_gage)
-    check('cellule Gage port = a completer', 'compl' in cell.lower(), cell)
-    stats = dv.find_element(By.ID, 'db-stats').text
-    check('compteur « incomplets » non gonfle (sous le total)', 'incomplet' not in stats or
-          int(stats.split('|')[1].split()[0]) < int(stats.split('/')[1].split()[0]), stats)
+    for TY in TYPES:
+        dv.get(BASE + '/database.html')
+        WebDriverWait(dv, 60).until(lambda d: any(o.get_attribute('value') == 'Loader'
+                                                  for o in d.find_elements(By.CSS_SELECTOR, '#db-type option')))
+        Select(dv.find_element(By.ID, 'db-type')).select_by_value(TY)
+        WebDriverWait(dv, 90).until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '.db-table tbody tr')) > 5)
+        time.sleep(1)
+        t = [x.upper() for x in titres()]
+        print('     colonnes :', t)
+        i_lev = next((i for i, x in enumerate(t) if 'LEVAGE' in x), -1)
+        i_gage = next((i for i, x in enumerate(t) if 'GAGE PORT' in x), -1)
+        i_pui = next((i for i, x in enumerate(t) if 'PUISSANCE' in x), -1)
+        check(TY + ' : colonne Gage port entre Capacite de levage et Puissance', 0 <= i_lev < i_gage < i_pui, (i_lev, i_gage, i_pui))
+        cell = dv.execute_script("var r=document.querySelector('.db-table tbody tr');return r?r.children[arguments[0]].innerText:'';", i_gage)
+        check(TY + ' : cellule Gage port = a completer', 'compl' in cell.lower(), cell)
+        stats = dv.find_element(By.ID, 'db-stats').text
+        check(TY + ' : compteur « incomplets » non gonfle (sous le total)', 'incomplet' not in stats or
+              int(stats.split('|')[1].split()[0]) < int(stats.split('/')[1].split()[0]), stats)
 
     print('--- 2) titre en anglais ---')
     dv.execute_script("localStorage.setItem('portal_lang','en');")
