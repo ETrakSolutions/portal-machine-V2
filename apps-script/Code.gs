@@ -68,6 +68,8 @@ function doPost(e) {
     if (action === 'logout')         return jsonOut(authLogout(body));
     if (action === 'whoami')         return jsonOut(authWhoami(body));
     if (action === 'changepassword') return jsonOut(authChangePassword(body));
+    if (action === 'resetrequest')   return jsonOut(authResetRequest(body));
+    if (action === 'resetconfirm')   return jsonOut(authResetConfirm(body));
     if (action === 'listusers')      return jsonOut(authListUsers(body));
     if (action === 'acceptconsent')  return jsonOut(authAcceptConsent(body));
     if (action === 'getinventory')   return jsonOut(getInventory(body));
@@ -354,6 +356,10 @@ function authLogout(body) {
 // Changement de mot de passe par l'utilisateur lui-meme (flux mustChangePassword inclus).
 // Valide l'ancien mot de passe, ecrit le nouveau, retire le drapeau, retourne une session.
 function authChangePassword(body) {
+  // Sous verrou : sans lui, un ajout de client fait au meme moment pouvait etre ecrase.
+  return _avecVerrou(function () { return _changePassword(body); });
+}
+function _changePassword(body) {
   var uname = String(body.username || '').trim().toLowerCase();
   var users = _users();
   for (var i = 0; i < users.length; i++) {
@@ -373,6 +379,81 @@ function authChangePassword(body) {
   }
   Utilities.sleep(500);
   return { error: 'invalid credentials' };
+}
+
+/* ============ PREMIERE CONNEXION / MOT DE PASSE OUBLIE (decision Steve, 2026-10-01) ============ */
+// Le client entre son courriel -> code a 6 chiffres envoye a CE courriel, valable 30 min ->
+// il entre le code + son nouveau mot de passe -> connecte. Personne chez e-Trak n'a a
+// transmettre de mot de passe. Regles :
+//  - l'ancien mot de passe reste valide tant que le code n'est pas utilise (taper le courriel
+//    d'un autre ne bloque ni ne change son compte) ;
+//  - meme reponse que le compte existe ou non (pas de sondage des courriels) ;
+//  - 1 envoi par courriel par 15 min ; 5 essais de code au plus, puis le code est detruit ;
+//  - compte desactive : jamais de code. Le vendeur n'est pas avise (decision Steve).
+// Code garde dans CacheService (prive au script, expire seul) : rien dans le quota des proprietes.
+var RESET_TTL_S = 1800, RESET_RATE_S = 900, RESET_MAX_TRIES = 5;
+function _resetCle(email) { return 'pwreset_' + String(email).replace(/[^a-z0-9]/g, '_'); }
+
+// { action:'resetrequest', email, lang:'fr'|'en' } -> { ok:true } toujours (sauf courriel invalide)
+function authResetRequest(body) {
+  var email = String(body.email || '').trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: 'valid email required' };
+  var cache = CacheService.getScriptCache(), cle = _resetCle(email);
+  if (cache.get(cle + '_rl')) return { ok: true };                 // deja envoye recemment : silence
+  cache.put(cle + '_rl', '1', RESET_RATE_S);
+  var u = _findUser(email);
+  if (!u || u.active === false) { Utilities.sleep(300); return { ok: true }; }
+  var hex = Utilities.getUuid().replace(/[^0-9a-f]/gi, '');
+  var code = ('000000' + (parseInt(hex.substr(0, 8), 16) % 1000000)).slice(-6);
+  cache.put(cle, JSON.stringify({ c: code, t: 0 }), RESET_TTL_S);
+  var en = body.lang === 'en';
+  var url = 'https://etraksolutions.github.io/portal-machine-V2/';
+  var sujet = en ? 'e-Trak Portal — your access code' : 'Portail e-Trak — votre code d\'accès';
+  var texte = en
+    ? 'Hello ' + (u.name || '') + ',\n\nYour e-Trak Portal access code is: ' + code + '\n\n' +
+      'It is valid for 30 minutes. Enter it on the portal with the password you choose:\n' + url + '\n\n' +
+      'If you did not ask for this code, ignore this email: your current password stays valid.\n\ne-Trak'
+    : 'Bonjour ' + (u.name || '') + ',\n\nVotre code d\'accès au Portail e-Trak : ' + code + '\n\n' +
+      'Il est valable 30 minutes. Entrez-le sur le portail avec le mot de passe de votre choix :\n' + url + '\n\n' +
+      'Si vous n\'avez pas demandé ce code, ignorez ce courriel : votre mot de passe actuel reste valide.\n\ne-Trak';
+  try {
+    MailApp.sendEmail(email, sujet, texte, { name: 'Portail e-Trak' });
+  } catch (err) {
+    Logger.log('authResetRequest : envoi impossible : ' + err);
+    cache.remove(cle); cache.remove(cle + '_rl');
+    return { error: 'send_failed' };
+  }
+  return { ok: true };
+}
+
+// { action:'resetconfirm', email, code, newPassword } -> { ok, token, user } | { error }
+function authResetConfirm(body) {
+  var email = String(body.email || '').trim().toLowerCase();
+  var cache = CacheService.getScriptCache(), cle = _resetCle(email);
+  var brut = cache.get(cle), st = null;
+  try { st = brut ? JSON.parse(brut) : null; } catch (e) { st = null; }
+  if (!st) { Utilities.sleep(500); return { error: 'invalid code' }; }
+  if (String(body.code || '').trim() !== st.c) {
+    st.t++;
+    if (st.t >= RESET_MAX_TRIES) cache.remove(cle); else cache.put(cle, JSON.stringify(st), RESET_TTL_S);
+    Utilities.sleep(500);
+    return { error: 'invalid code' };
+  }
+  if (!body.newPassword || String(body.newPassword).length < 4) return { error: 'password too short' };
+  return _avecVerrou(function () {
+    var users = _users();
+    for (var i = 0; i < users.length; i++) {
+      var u = users[i];
+      if (_idsOf(u).indexOf(email) < 0) continue;
+      if (u.active === false) return { error: 'invalid code' };
+      u.password = String(body.newPassword);
+      delete u.mustChangePassword;
+      _writeUsers(users);
+      cache.remove(cle);
+      return { ok: true, token: _newSession(u), user: _publicUser(u) };
+    }
+    return { error: 'invalid code' };
+  });
 }
 
 // Liste des utilisateurs pour un client authentifie.
@@ -1538,6 +1619,9 @@ function authWhoami(body) {
 function authAcceptConsent(body) {
   var sess = _getSession(body.token);
   if (!sess) return { ok: false, error: 'invalid session' };
+  return _avecVerrou(function () { return _acceptConsent(body, sess); });   // meme raison que le mot de passe
+}
+function _acceptConsent(body, sess) {
   var uname = String(sess.u || '').toLowerCase();
   var users = _users();
   for (var i = 0; i < users.length; i++) {

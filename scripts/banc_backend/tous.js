@@ -4,7 +4,7 @@
 //   node scripts/banc_backend/tous.js
 const { spawnSync } = require('child_process'), path = require('path');
 let ko = 0;
-for (const f of ['banc_comptes.js', 'banc_prix.js', 'banc_cedule.js', 'banc_sav.js']) {
+for (const f of ['banc_comptes.js', 'banc_prix.js', 'banc_cedule.js', 'banc_sav.js', 'banc_reset.js']) {
   const r = spawnSync(process.execPath, [path.join(__dirname, f)], { encoding: 'utf8' });
   const der = (r.stdout || '').trim().split(/\r?\n/).pop();
   console.log((r.status === 0 ? 'OK     ' : 'ECHEC  ') + f.padEnd(16) + der);
