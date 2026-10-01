@@ -306,7 +306,7 @@ function _vendeurParDefaut(appliquer) {
         if (appliquer) u.vendeurEmail = VENDEUR_PAR_DEFAUT;
       }
     });
-    if (appliquer && touches.length) PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    if (appliquer && touches.length) _writeUsers(users);
     return touches;
   } finally { lock.releaseLock(); }
 }

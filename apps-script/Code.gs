@@ -103,7 +103,7 @@ function doPost(e) {
     if (action === 'save' && body.key === USERS_KEY) {
       var g = _guardUsersSave(auth, body.value);
       if (g.error) return jsonOut({ error: g.error });
-      return jsonOut({ ok: kvSave(USERS_KEY, JSON.stringify(g.users)), restored: g.restored });
+      return jsonOut({ ok: _writeUsers(g.users), restored: g.restored });
     }
     if (action === 'save')               return jsonOut({ ok: kvSave(body.key, body.value) });
     if (action === 'delete')             return jsonOut({ ok: kvDelete(body.key) });
@@ -157,9 +157,56 @@ var SESSION_PREFIX = 'session_';
 var SESSION_TTL_MS  = 90 * 24 * 3600 * 1000;       // 90 jours
 var SESSION_RENEW_MS = 45 * 24 * 3600 * 1000;      // renouvele si < 45 jours restants
 
+// LISTE DES COMPTES — stockee compressee (gzip + base64) en tranches de 8 Ko, comme le SAV.
+// Incident du 2026-10-01 : une seule propriete est limitee a 9 Ko, soit ~35 comptes.
+// Deux emplacements (A / B) : la nouvelle liste est ecrite EN ENTIER dans l'emplacement
+// libre, puis le pointeur users_gz_cur bascule en une seule ecriture. Une ecriture
+// interrompue (quota, delai) laisse donc toujours l'ancienne liste intacte et lisible.
+// L'ancienne cle authorized_users_v2 n'est plus lue que tant que le pointeur n'existe pas :
+// la premiere ecriture fait la migration et l'efface.
+var USERS_GZ_PREFIX = 'users_gz_';
+var USERS_GZ_CHUNK = 8000;
+function _isUsersGzKey(key) { return String(key || '').indexOf(USERS_GZ_PREFIX) === 0; }
+
 function _users() {
-  try { return JSON.parse(PROPS.getProperty('authorized_users_v2') || '[]'); }
-  catch (e) { return []; }
+  var cur = PROPS.getProperty(USERS_GZ_PREFIX + 'cur');      // ex. 'A:2' (emplacement:tranches)
+  var raw;
+  if (cur) {
+    var p = cur.split(':'), slot = p[0], n = parseInt(p[1] || '0', 10), b64 = '';
+    for (var i = 0; i < n; i++) {
+      var part = PROPS.getProperty(USERS_GZ_PREFIX + slot + '_' + i);
+      if (part === null) throw new Error('users list unreadable (missing chunk)');
+      b64 += part;
+    }
+    raw = _ungzB64(b64);
+  } else {
+    raw = PROPS.getProperty(USERS_KEY) || '[]';
+  }
+  // Jamais de liste vide « par defaut » sur une erreur de lecture : une liste vide renvoyee
+  // a une page Admin puis resauvee effacerait tous les comptes. On echoue plutot.
+  var list = JSON.parse(raw);
+  if (!Array.isArray(list)) throw new Error('users list unreadable');
+  return list;
+}
+
+// Seule ecriture de la liste des comptes. Lever une exception = rien n'a change.
+function _writeUsers(list) {
+  if (!Array.isArray(list)) throw new Error('invalid users list');
+  var b64 = _gzB64(JSON.stringify(list));
+  var cur = PROPS.getProperty(USERS_GZ_PREFIX + 'cur');
+  var oldSlot = cur ? cur.split(':')[0] : '', oldN = cur ? parseInt(cur.split(':')[1] || '0', 10) : 0;
+  var slot = oldSlot === 'A' ? 'B' : 'A';
+  var n = Math.max(1, Math.ceil(b64.length / USERS_GZ_CHUNK));
+  // Restes d'une ecriture interrompue dans l'emplacement libre
+  for (var r = 0; r < 64; r++) {
+    if (PROPS.getProperty(USERS_GZ_PREFIX + slot + '_' + r) === null) break;
+    PROPS.deleteProperty(USERS_GZ_PREFIX + slot + '_' + r);
+  }
+  for (var i = 0; i < n; i++) PROPS.setProperty(USERS_GZ_PREFIX + slot + '_' + i, b64.substr(i * USERS_GZ_CHUNK, USERS_GZ_CHUNK));
+  PROPS.setProperty(USERS_GZ_PREFIX + 'cur', slot + ':' + n);            // bascule atomique
+  for (var j = 0; j < oldN; j++) PROPS.deleteProperty(USERS_GZ_PREFIX + oldSlot + '_' + j);
+  if (PROPS.getProperty(USERS_KEY) !== null) PROPS.deleteProperty(USERS_KEY);   // migration faite
+  return true;
 }
 
 function _findUser(username) {
@@ -321,7 +368,7 @@ function authChangePassword(body) {
     if (!body.newPassword || String(body.newPassword).length < 4) return { error: 'password too short' };
     u.password = String(body.newPassword);
     delete u.mustChangePassword;
-    PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    _writeUsers(users);
     return { ok: true, token: _newSession(u), user: _publicUser(u) };
   }
   Utilities.sleep(500);
@@ -503,7 +550,7 @@ function userAdd(body) {
                mustChangePassword: true, createdBy: _uname(me), createdAt: new Date().toISOString() };
     if (vend) nu.vendeurEmail = vend;
     users.push(nu);
-    PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    _writeUsers(users);
     return { ok: true, user: _publicUser(nu), tempPassword: pwd };
   });
 }
@@ -560,7 +607,7 @@ function userUpdateMine(body) {
     var pwd = null;
     if (body.resetPassword) { pwd = _tempPassword(); u.password = pwd; u.mustChangePassword = true; }
     u.updatedBy = moi; u.updatedAt = new Date().toISOString();
-    PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+    _writeUsers(users);
     var out = { ok: true, user: _publicUser(u) };
     if (pwd) out.tempPassword = pwd;
     return out;
@@ -888,7 +935,7 @@ var SAV_ROLES = CEDULE_ROLES;
 
 function _isSavKey(key) { return String(key || '').indexOf(SAV_PREFIX) === 0; }
 // Cles jamais lisibles, modifiables ni listees par les actions generiques get/save/delete.
-function _isReservedKey(key) { return _isPriceKey(key) || _isSavKey(key); }
+function _isReservedKey(key) { return _isPriceKey(key) || _isSavKey(key) || _isUsersGzKey(key); }
 
 // ⚠️ QUOTA : les proprietes du script partagent 500 Ko pour TOUT le portail (comptes,
 // prix, inventaire...). Mesure du 2026-09-29 : il restait ~80 Ko ; la liste brute en
@@ -1499,7 +1546,7 @@ function authAcceptConsent(body) {
         (u.email && String(u.email).toLowerCase() === uname)) {
       u.consentVersion = Number(body.version) || 1;
       u.consentDate = new Date().toISOString();
-      PROPS.setProperty('authorized_users_v2', JSON.stringify(users));
+      _writeUsers(users);
       return { ok: true, user: _publicUser(u) };
     }
   }

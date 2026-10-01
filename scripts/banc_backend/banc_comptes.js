@@ -1,21 +1,33 @@
 // Banc des comptes proteges (Super Admin, proprietaire) : apps-script/Code.gs execute
-// en Node, services Google simules. 26 cas. Voir .claude/skills/portal-backend.
-const fs = require('fs'), vm = require('vm'), path = require('path');
+// en Node, services Google simules. 37 cas. Voir .claude/skills/portal-backend.
+const fs = require('fs'), vm = require('vm'), path = require('path'), zlib = require('zlib');
+// Blob / gzip / base64 d'Apps Script, simules avec zlib (octets = Buffer).
+const blob = buf => ({ buf, getBytes: () => buf, getDataAsString: () => buf.toString('utf8') });
 // Le VRAI backend du depot, charge tel quel (Apps Script = JavaScript).
 const src = fs.readFileSync(path.join(__dirname, '..', '..', 'apps-script', 'Code.gs'), 'utf8');
 let store = {};
+let pannes = Infinity;   // nb d'ecritures permises avant une panne simulee (quota, delai)
 const ctx = {
   PropertiesService: { getScriptProperties: () => ({
-    getProperty: k => (k in store ? store[k] : null), setProperty: (k, v) => { store[k] = String(v); },
+    getProperty: k => (k in store ? store[k] : null),
+    setProperty: (k, v) => {
+      v = String(v);
+      if (pannes-- <= 0) throw new Error('Simulated failure');
+      if (v.length > 9216) throw new Error('Argument too large: value');   // limite Google : 9 Ko
+      store[k] = v;
+    },
     deleteProperty: k => { delete store[k]; }, getProperties: () => ({ ...store }) }) },
-  Utilities: { getUuid: () => Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + '-aaaa-bbbb', sleep: () => {} },
+  Utilities: { getUuid: () => Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2) + '-aaaa-bbbb', sleep: () => {},
+    newBlob: (d) => blob(Buffer.isBuffer(d) ? d : Buffer.from(String(d), 'utf8')),
+    gzip: b => blob(zlib.gzipSync(b.buf)), ungzip: b => blob(zlib.gunzipSync(b.buf)),
+    base64Encode: b => Buffer.from(b).toString('base64'), base64Decode: s => Buffer.from(s, 'base64') },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   ContentService: { createTextOutput: s => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 'json' } },
   Logger: { log: () => {} }, Session: {}, MailApp: {}, UrlFetchApp: {}, console,
 };
 vm.createContext(ctx); vm.runInContext(src, ctx);
 const post = b => JSON.parse(ctx.doPost({ postData: { contents: JSON.stringify(b) } }).s);
-const U = () => JSON.parse(store.authorized_users_v2);
+const U = () => ctx._users();   // lecture par le vrai serveur (ancienne cle ou tranches)
 const find = e => U().filter(u => (u.email || '').toLowerCase() === e);
 function reset() {
   store = { PIN: 'PINSECRET', authorized_users_v2: JSON.stringify([
@@ -105,6 +117,43 @@ check('changement de courriel d un compte : passe', res.ok === true && find('nou
 reset(); r = tok('robin@gryb.ca', 'R');
 res = save(r, [...U(), { username: 'neuf@x.ca', email: 'neuf@x.ca', password: 'N', role: 'dealer', name: 'Neuf' }]);
 check('ajout normal : passe', res.ok === true && U().length === 5);
+
+// --- Stockage en tranches compressees (2026-10-01)
+const gzKeys = () => Object.keys(store).filter(k => k.indexOf('users_gz_') === 0).sort();
+const grosseListe = n => Array.from({ length: n }, (_, i) => ({ username: 'client' + i + '@exemple-dealer.ca',
+  email: 'client' + i + '@exemple-dealer.ca', password: Math.random().toString(36).slice(2, 12), role: 'dealer',
+  name: 'Client Numero ' + i, active: true, mustChangePassword: true, vendeurEmail: 'startre@e-trak.ca',
+  createdBy: 'startre@e-trak.ca', createdAt: new Date().toISOString() }));
+reset(); r = tok('robin@gryb.ca', 'R');
+res = save(r, [...U(), { username: 'neuf@x.ca', email: 'neuf@x.ca', password: 'N', role: 'dealer', name: 'Neuf' }]);
+check('1re ecriture : ancienne cle migree puis effacee', res.ok === true && store.authorized_users_v2 === undefined && /^A:\d+$/.test(store.users_gz_cur) && U().length === 5);
+check('apres migration : login et liste intacts', post({ action: 'login', username: 'jcaron@gryb.com', password: 'J' }).ok === true && post({ action: 'listusers', token: r }).users.length === 5);
+res = save(r, U().filter(u => u.name !== 'Neuf'));
+check('2e ecriture : bascule A -> B, emplacement A nettoye', res.ok === true && /^B:/.test(store.users_gz_cur) && !gzKeys().some(k => /_A_/.test(k)) && U().length === 4);
+reset(); store.authorized_users_v2 = JSON.stringify([...JSON.parse(store.authorized_users_v2), ...grosseListe(200)]);
+r = tok('robin@gryb.ca', 'R');
+res = save(r, [...U(), { username: 'neuf@x.ca', email: 'neuf@x.ca', password: 'N', role: 'dealer', name: 'Neuf' }]);
+const nTr = parseInt((store.users_gz_cur || ':0').split(':')[1], 10);
+check('205 comptes (bien au-dela de 9 Ko) : ecrits en tranches et relus', res.ok === true && nTr >= 1 && U().length === 205 && find('client199@exemple-dealer.ca').length === 1);
+check('aucune tranche ne depasse 9 Ko', gzKeys().every(k => store[k].length <= 9216));
+reset(); r = tok('robin@gryb.ca', 'R'); save(r, U());      // migre vers l'emplacement A
+const av2 = JSON.stringify(U()), cur2 = store.users_gz_cur;
+pannes = 1;                                                 // 1re tranche ecrite, puis panne
+try { ctx._writeUsers([...U(), { username: 'z@x.ca', email: 'z@x.ca', password: 'Z', role: 'dealer', name: 'Z' }]); } catch (e) {}
+pannes = Infinity;
+check('ecriture interrompue : ancienne liste intacte et lisible', store.users_gz_cur === cur2 && JSON.stringify(U()) === av2);
+res = save(r, [...U(), { username: 'z@x.ca', email: 'z@x.ca', password: 'Z', role: 'dealer', name: 'Z' }]);
+check('ecriture suivante : reussit et nettoie les restes', res.ok === true && find('z@x.ca').length === 1 && gzKeys().filter(k => k !== 'users_gz_cur').every(k => k.indexOf('users_gz_' + store.users_gz_cur[0] + '_') === 0));
+reset(); r = tok('robin@gryb.ca', 'R'); save(r, U());
+store[gzKeys().find(k => k !== 'users_gz_cur')] = 'corrompu!!';
+res = post({ action: 'login', username: 'jcaron@gryb.com', password: 'J' });
+check('tranche corrompue : erreur serveur, jamais une liste vide', res.error === 'server error');
+res = save(r, [{ username: 'joe@x.ca', email: 'joe@x.ca', password: 'P', role: 'dealer', name: 'Joe' }]);
+check('tranche corrompue : aucune sauvegarde n ecrase la liste', !!res.error && store[gzKeys().find(k => k !== 'users_gz_cur')] === 'corrompu!!');
+reset(); r = tok('robin@gryb.ca', 'R'); save(r, U());
+const k0 = gzKeys().find(k => k !== 'users_gz_cur');
+check('tranches illisibles par le GET public', JSON.parse(ctx.doGet({ parameter: { action: 'get', key: k0 } }).s).value === '');
+check('tranches non modifiables par save/delete generiques', !!post({ action: 'save', key: 'users_gz_cur', value: 'A:0', token: r }).error && !!post({ action: 'delete', key: k0, token: r }).error && U().length === 4);
 
 // --- non-regression
 reset(); d = tok('dealer@x.ca', 'D');
