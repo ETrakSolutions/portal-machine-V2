@@ -739,6 +739,8 @@ function showOptions() {
     // Hide IDC lock valve warning on reset
     var idcWarn = document.getElementById('idc-lockvalve-warning');
     if (idcWarn) idcWarn.style.display = 'none';
+    var idcNote = document.getElementById('idc-hr-note');
+    if (idcNote) idcNote.style.display = 'none';
     var avWarn = document.getElementById('bom-avalider-warning');
     if (avWarn) avWarn.style.display = 'none';
     var machineWarn = document.getElementById('machine-warning');
@@ -956,6 +958,8 @@ function applyTypeRestrictions(type) {
     }
     var idcWarn = document.getElementById('idc-lockvalve-warning');
     if (idcWarn && !isExc) idcWarn.style.display = 'none';
+    var idcNoteT = document.getElementById('idc-hr-note');
+    if (idcNoteT && !isExc) idcNoteT.style.display = 'none';
 
     // Point 1 — Guide de creusage complet (2D + Reference laser), excavatrice seulement
     var creusBox = document.getElementById('toggle-creusage');
@@ -3432,12 +3436,54 @@ document.querySelectorAll('.toggle-box').forEach(function(box) {
             }
             // Show/hide lock valve warning for IDC on Excavatrice
             if (this.dataset.option === 'Indicateur de charge') {
+                appliquerRegleIdc('idc');
                 updateIdcLockValveWarning();
             }
             updateSelectedSummary();
         });
     }
 });
+
+// Regle de Mathieu Robillard (2026-10-01) : l'IDC ne s'installe JAMAIS avec la hauteur
+// seule ni avec la rotation seule. Decision Jacquot : l'IDC n'existe qu'avec le limiteur
+// Hauteur + Rotation (ni IDC seul, ni Multi-axe / IDC). Bascule automatique :
+//  - IDC active (source 'idc') -> le limiteur passe a Hauteur + Rotation ;
+//  - Hauteur ou Rotation cochee avec l'IDC -> passe a Hauteur + Rotation ;
+//  - limiteur decoche ou Multi-axe choisi avec l'IDC -> l'IDC est retire (le choix
+//    explicite du limiteur est respecte).
+// La page dit toujours ce qu'elle a fait. L'IDC n'est offert que sur l'Excavatrice.
+function appliquerRegleIdc(source) {
+    var note = document.getElementById('idc-hr-note');
+    var noteTxt = document.getElementById('idc-hr-note-text');
+    var idcBox = document.querySelector('[data-option="Indicateur de charge"]');
+    var limBox = document.getElementById('toggle-limiteur');
+    var hr = document.getElementById('lim-hr');
+    if (!idcBox || !limBox || !hr) return;
+    var msg = '';
+    if (selectType.value === 'Excavatrice' && idcBox.classList.contains('active')) {
+        var c = limBox.querySelector('input[name="limiteur-type"]:checked');
+        var v = c ? c.value : '';
+        if (v === 'Hauteur + Rotation') {
+            msg = i18n.t('soumission.idc_hr_regle');
+        } else if (source === 'idc' || v === 'Hauteur' || v === 'Rotation') {
+            limBox.querySelectorAll('input[name="limiteur-type"]').forEach(function (x) { x.checked = (x === hr); });
+            limBox.classList.add('active');
+            var st = limBox.querySelector('.toggle-status');
+            if (st) st.textContent = hr.value;
+            msg = i18n.t('soumission.idc_hr_bascule');
+        } else {
+            idcBox.classList.remove('active');
+            var sti = idcBox.querySelector('.toggle-status');
+            if (sti) sti.textContent = 'OFF';
+            updateIdcLockValveWarning();
+            msg = i18n.t('soumission.idc_hr_retire');
+        }
+    }
+    if (note && noteTxt) {
+        noteTxt.textContent = msg;
+        note.style.display = msg ? 'flex' : 'none';
+    }
+}
 
 // IDC Lock Valve warning — visible only when type=Excavatrice and IDC is ON
 function updateIdcLockValveWarning() {
@@ -3537,6 +3583,7 @@ function updateAValiderWarning() {
                     cbs.forEach(function(other) { if (other !== cb) other.checked = false; });
                 }
             }
+            appliquerRegleIdc('lim');
             // Recalcule etat + libelle a partir de toutes les cases cochees (visibles).
             var checked = [].filter.call(cbs, function(c) { return c.checked; });
             if (checked.length) {
