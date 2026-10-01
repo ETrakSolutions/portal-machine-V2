@@ -1,5 +1,5 @@
 // Banc des comptes proteges (Super Admin, proprietaire) : apps-script/Code.gs execute
-// en Node, services Google simules. 21 cas. Voir .claude/skills/portal-backend.
+// en Node, services Google simules. 26 cas. Voir .claude/skills/portal-backend.
 const fs = require('fs'), vm = require('vm'), path = require('path');
 // Le VRAI backend du depot, charge tel quel (Apps Script = JavaScript).
 const src = fs.readFileSync(path.join(__dirname, '..', '..', 'apps-script', 'Code.gs'), 'utf8');
@@ -88,6 +88,23 @@ check('Jacquot peut supprimer Steve', find('smartineau@gryb.ca').length === 0);
 reset(); j = tok('jcaron@gryb.com', 'J');
 save(j, U().filter(u => u.name !== 'Jacquot'));
 check('Jacquot ne peut pas se supprimer lui-meme', find('jcaron@gryb.com').length === 1);
+
+// --- Liste tronquee (incident du 2026-10-01 : page Admin a liste vide + un ajout)
+reset(); s = tok('smartineau@gryb.ca', 'S');
+res = save(s, [{ username: 'joe@x.ca', email: 'joe@x.ca', password: 'P', role: 'dealer', name: 'Joe' }]);
+check('liste d un seul nouveau compte : refusee, rien d efface', /would remove/.test(res.error || '') && U().length === 4 && find('dealer@x.ca').length === 1);
+reset(); r = tok('robin@gryb.ca', 'R');
+res = save(r, U().filter(u => u.name !== 'Dealer' && u.name !== 'Robin'));
+check('admin qui retire 2 comptes ordinaires d un coup : refuse', /would remove 2/.test(res.error || '') && U().length === 4);
+reset(); r = tok('robin@gryb.ca', 'R');
+res = save(r, U().filter(u => u.name !== 'Dealer'));
+check('suppression d un seul compte : passe', res.ok === true && find('dealer@x.ca').length === 0 && U().length === 3);
+reset(); r = tok('robin@gryb.ca', 'R');
+res = save(r, U().map(u => u.name === 'Dealer' ? { ...u, email: 'nouveau@x.ca', username: 'nouveau@x.ca' } : u));
+check('changement de courriel d un compte : passe', res.ok === true && find('nouveau@x.ca').length === 1);
+reset(); r = tok('robin@gryb.ca', 'R');
+res = save(r, [...U(), { username: 'neuf@x.ca', email: 'neuf@x.ca', password: 'N', role: 'dealer', name: 'Neuf' }]);
+check('ajout normal : passe', res.ok === true && U().length === 5);
 
 // --- non-regression
 reset(); d = tok('dealer@x.ca', 'D');

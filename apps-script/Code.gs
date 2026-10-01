@@ -412,6 +412,19 @@ function _guardUsersSave(auth, raw) {
     if (pos < 0) out.push(keep); else out.splice(pos, 0, keep);
   });
   if (restored) Logger.log('_guardUsersSave : ' + restored + ' compte(s) protege(s) restaure(s)');
+
+  // Jamais plus d'un compte retire par sauvegarde (incident du 2026-10-01 : une page Admin
+  // dont la liste n'avait pas charge a renvoye un seul compte et efface tous les autres).
+  // La page supprime un compte a la fois ; une liste qui en perd davantage est tronquee.
+  var restants = {};
+  out.forEach(function (u) { _idsOf(u).forEach(function (id) { restants[id] = true; }); });
+  var perdus = stored.filter(function (s) {
+    return !_idsOf(s).some(function (id) { return restants[id]; });
+  });
+  if (perdus.length > 1) {
+    Logger.log('_guardUsersSave : refus, la liste retirerait ' + perdus.length + ' comptes');
+    return { error: 'users list would remove ' + perdus.length + ' accounts' };
+  }
   return { users: out, restored: restored };
 }
 

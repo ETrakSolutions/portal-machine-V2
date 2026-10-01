@@ -20,6 +20,10 @@ const ROLES = {
 const DEFAULT_USERS = [];
 
 let USERS = [...DEFAULT_USERS];
+// Vrai seulement quand la liste du serveur est chargee : toute sauvegarde renvoie la liste
+// COMPLETE, donc modifier une liste vide ou perimee efface les autres comptes (incident du
+// 2026-10-01). Aucune ecriture tant que ce n'est pas vrai.
+let USERS_LOADED = false;
 
 // Token de session (renvoye par l'API au login, stocke dans portal_user).
 // Envoye dans le champ 'pin' des ecritures — le backend accepte token ou PIN script.
@@ -1088,13 +1092,25 @@ function loadUsers() {
             // (jeton de session expire/invalide). On l'affiche clairement au lieu
             // de laisser une table vide muette (sinon "je ne vois aucun user").
             if (!Array.isArray(data.users)) {
+                USERS_LOADED = false;
                 renderUsersMessage(i18n.t('admin.users_session_expired'));
                 return;
             }
-            if (data.users.length > 0) USERS = data.users;
+            USERS = data.users;
+            USERS_LOADED = true;
             renderUsers();
         })
-        .catch(function() { renderUsers(); });
+        .catch(function() {
+            USERS_LOADED = false;
+            renderUsersMessage(i18n.t('admin.users_load_failed'));
+        });
+}
+
+// Garde avant toute modification de compte : jamais sur une liste non chargee.
+function usersPrets() {
+    if (USERS_LOADED) return true;
+    alert(i18n.t('admin.users_not_loaded'));
+    return false;
 }
 
 // Affiche un message sur toute la largeur de la table des utilisateurs.
@@ -1104,12 +1120,23 @@ function renderUsersMessage(msg) {
     tbody.innerHTML = '<tr><td colspan="4" style="padding:1.2rem;color:#E07B00;text-align:center;line-height:1.5">' + msg + '</td></tr>';
 }
 
+// Promesse -> true si le serveur a enregistre. Sinon : message, puis la liste est relue
+// sur le serveur pour que l'ecran ne montre jamais un changement qui n'a pas eu lieu.
 function saveUsers() {
-    fetch(API_URL, {
+    return fetch(API_URL, {
         method: 'POST',
         headers: {'Content-Type': 'text/plain'},
         body: JSON.stringify({ action: 'save', key: 'authorized_users_v2', value: JSON.stringify(USERS), pin: portalToken() })
-    }).catch(function() {});
+    })
+        .then(function(r) { return r.json(); })
+        .catch(function() { return { error: 'network' }; })
+        .then(function(d) {
+            if (d && d.ok) return true;
+            alert(i18n.t('admin.users_save_failed', { error: (d && d.error) || '?' }));
+            USERS_LOADED = false;
+            loadUsers();
+            return false;
+        });
 }
 
 // Compte protege = role Super Admin (plus d'adresse ecrite en dur : Jacquot, 2026-09-24).
@@ -1188,12 +1215,14 @@ function renderUsers() {
                 alert(i18n.t('admin.cannot_delete_super'));
                 return;
             }
+            if (!usersPrets()) return;
             var userName = user.name;
             if (!confirm(i18n.t('admin.confirm_delete_user', {name: userName}))) return;
             USERS.splice(idx, 1);
-            saveUsers();
             renderUsers();
-            showToast(i18n.t('admin.user_deleted', {name: userName}));
+            saveUsers().then(function(ok) {
+                if (ok) showToast(i18n.t('admin.user_deleted', {name: userName}));
+            });
         });
     });
 }
@@ -1370,10 +1399,11 @@ function openEditUserModal(idx) {
         }
         USERS[idx].password = newPassword;
 
-        saveUsers();
         renderUsers();
         modal.remove();
-        showToast(i18n.t('admin.user_modified', {name: newName}));
+        saveUsers().then(function(ok) {
+            if (ok) showToast(i18n.t('admin.user_modified', {name: newName}));
+        });
     });
 
     // Resend credentials
@@ -1769,20 +1799,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (errorEl) { errorEl.textContent = i18n.t('admin.add_user_err_exists'); errorEl.style.display = 'block'; }
                 return;
             }
+            if (!usersPrets()) return;
             var tempPwd = _genTempPassword();
             var newUser = { username: email.toLowerCase(), email: email.toLowerCase(), password: tempPwd, role: role, name: name, active: true, mustChangePassword: true };
             if (vendeurEmail) newUser.vendeurEmail = vendeurEmail;
             USERS.push(newUser);
-            saveUsers();
             renderUsers();
-
-            // Show credentials popup + mailto button
-            var roleLabel = i18n.t('role.' + role);
-            showCredentialsPopup(name, email, tempPwd, roleLabel);
-
-            document.getElementById('admin-new-name').value = '';
-            document.getElementById('admin-new-email').value = '';
-            showToast(i18n.t('admin.user_added', {name: name}));
+            addUserBtn.disabled = true;
+            saveUsers().then(function(ok) {
+                addUserBtn.disabled = false;
+                if (!ok) return;   // message deja affiche, liste relue sur le serveur
+                // Identifiants montres seulement une fois le compte VRAIMENT enregistre
+                var roleLabel = i18n.t('role.' + role);
+                showCredentialsPopup(name, email, tempPwd, roleLabel);
+                document.getElementById('admin-new-name').value = '';
+                document.getElementById('admin-new-email').value = '';
+                showToast(i18n.t('admin.user_added', {name: name}));
+            });
         };
     }
 
