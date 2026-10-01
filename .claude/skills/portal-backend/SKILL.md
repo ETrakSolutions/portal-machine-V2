@@ -153,7 +153,7 @@ est collé doit être un commit identifiable. Après le déploiement, ajouter la
 ci-dessous.
 
 Versions : 28 (comptes protégés), 29 (prix), 30 (cédule) — toutes du 2026-09-25 ; 31 (`getsav`/`setsav`),
-33 (liste SAV compressée) — 2026-09-29. La 32 a été prise par un autre déploiement entre les deux.
+33 (liste SAV compressée) — 2026-09-29. La 32 a été prise par un autre déploiement entre les deux. 35 (garde-fou : une sauvegarde de `authorized_users_v2` ne retire jamais plus d'un compte, + permissions Cédule/SAV de Jacquot du 2026-09-30 restées non déployées jusque-là) — 2026-10-01, déployée par Steve. Ce jour-là, l'éditeur n'avait PAS le `Code.gs` de 18ad2b8 : la vérification de l'étape 1 l'a montré.
 
 ⚠️ **QUOTA DES PROPRIÉTÉS : 500 Ko pour TOUT le portail** (comptes, prix, inventaire, SAV…).
 Mesuré le 2026-09-29 : il restait ~80 Ko ; une écriture qui dépasse répond seulement
