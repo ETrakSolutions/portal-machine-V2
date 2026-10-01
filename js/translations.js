@@ -989,6 +989,7 @@ fr: {
     'spec.Contrepoids': 'Contrepoids',
     // ---- BD data translation (spec/bom/val) 2026-07-10 ----
     'spec.Capacite de levage': 'Capacite de levage',
+    'spec.Gage port': 'Gage port',
     'spec.Capacite max': 'Capacite max',
     'spec.Categorie': 'Categorie',
     'spec.Console operateur': 'Console operateur',
@@ -2127,6 +2128,7 @@ en: {
     'spec.Contrepoids': 'Counterweight',
     // ---- BD data translation (spec/bom/val) 2026-07-10 ----
     'spec.Capacite de levage': 'Lifting capacity',
+    'spec.Gage port': 'Gauge port',
     'spec.Capacite max': 'Max capacity',
     'spec.Categorie': 'Category',
     'spec.Console operateur': 'Operator console',
