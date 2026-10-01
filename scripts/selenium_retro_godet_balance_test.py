@@ -7,7 +7,7 @@
   - Balance offerte sur la retrocaveuse avec les memes choix que le Loader.
 
 Verifie, sur Caterpillar 430 (2026), prix simules depuis la liste maitresse :
-  1. retrocaveuse : tuile godet visible ; tuile balance visible avec loader, valise et
+  1. retrocaveuse : tuile godet visible ; tuile balance visible avec loader et
      les deux imprimantes (pas la Scale Lite) ;
   2. godet SEUL : 1500-0603 et rien du limiteur arriere (ni 0600, 0601, 0602) ;
      prix = liste de prix ; pose 1500-0603-install si « Oui » ;
@@ -135,8 +135,10 @@ try:
     lib_fr = dv.execute_script("return document.querySelector('#toggle-godet-avant .toggle-label').textContent;")
     check('tuile godet visible : « %s »' % lib_fr, visible('toggle-godet-avant') and lib_fr == 'Limiteur godet avant (front loader)')
     check('tuile balance visible', visible('toggle-balance'))
-    check('balance loader, valise et 2 imprimantes offertes',
-          all(sub_visible(i) for i in ('bal-loader', 'bal-valise', 'bal-imp-therm', 'bal-imp-carb')))
+    check('balance loader et 2 imprimantes offertes',
+          all(sub_visible(i) for i in ('bal-loader', 'bal-imp-therm', 'bal-imp-carb')))
+    # 1200-0011 (balance en valise) retiree du portail (Steve, 2026-09-30)
+    check('balance en valise retiree', not sub_visible('bal-valise'))
     check('Scale Lite non offerte', not sub_visible('bal-scalelite'))
 
     print('--- 2) godet SEUL ---')
