@@ -712,6 +712,7 @@ function showOptions() {
     var specsSection = document.getElementById('specs-section');
     if (specsSection) specsSection.style.display = 'block';
     renderSpecsTable(type, fab, annee, modele);
+    if (window.majOption2Booms) window.majOption2Booms();
 
     optionsSection.style.display = 'block';
     emptyState.style.display = 'none';
@@ -970,6 +971,7 @@ function applyTypeRestrictions(type) {
             var crSt = creusBox.querySelector('.toggle-status'); if (crSt) crSt.textContent = 'OFF';
             var c2d = document.getElementById('creus-2d'); if (c2d) c2d.checked = false;
             var cLaser = document.getElementById('creus-laser'); if (cLaser) cLaser.checked = false;
+            var c2b = document.getElementById('creus-2booms'); if (c2b) c2b.checked = false;
         }
     }
 
@@ -1603,6 +1605,8 @@ if (submitBtn) {
         var _creusLaser = document.getElementById('creus-laser');
         if (_creus2d && _creus2d.checked) { var _c2d = creusage2dCode(); optionsOn.push('Systeme de creusage 2D'); accessoires.push({ code: _c2d, name: 'Systeme de creusage 2D' }); }
         if (_creusLaser && _creusLaser.checked) { optionsOn.push('Reference laser'); accessoires.push({ code: '1000-0009', name: 'Reference laser' }); }
+        var _creus2b = document.getElementById('creus-2booms');
+        if (_creus2b && _creus2b.checked) { optionsOn.push('2 booms + 1 stick'); accessoires.push({ code: CODE_2BOOMS, name: '2 booms + 1 stick' }); }
         if (!(_creus2d && _creus2d.checked) && !(_creusLaser && _creusLaser.checked)) optionsOff.push('Guide de creusage');
 
         // Camera
@@ -1991,6 +1995,8 @@ function restaurerEtat(e) {
         var c = document.getElementById(id);
         if (c && !c.checked) c.click();
     });
+    var c2b = document.getElementById('creus-2booms');
+    if (c2b && !c2b.disabled && c2b.checked !== ((e.coches || []).indexOf('creus-2booms') >= 0)) c2b.click();
     var cq = document.getElementById('cam-qte');
     if (cq && e.camQte) { cq.value = e.camQte; cq.dispatchEvent(new Event('change', { bubbles: true })); }
     var nb = document.getElementById('soumission-nb-systemes');
@@ -2953,6 +2959,27 @@ function creusage2dCode() {
     return (v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Multi-axe') ? '1000-0007' : '1100-0007';
 }
 
+// Option « 2 booms + 1 stick » du creusage 2D (pelle a boom 2 parties / articule).
+// Code cree par Steve — A RENSEIGNER avant la mise en ligne.
+var CODE_2BOOMS = '';
+
+// Configuration de boom de la machine a l'ecran, lue dans « Type de boom » (BD + override
+// _specs) : 'deux' = boom 2 parties seulement -> option cochee d'avance avec la 2D ;
+// 'choix' = le fabricant offre 1 ou 2 parties -> pas cochee, avertissement ; '' = rien.
+function configBoom() {
+    var t = selectType ? selectType.value : '';
+    if (t !== 'Excavatrice') return '';
+    var f = selectFabricant.value, a = selectAnnee.value, m = selectModele.value;
+    var v = '';
+    try { v = machinesData[t][f][a][m]['Type de boom'] || ''; } catch (e) {}
+    if (currentBomOverrides && currentBomOverrides._specs && currentBomOverrides._specs['Type de boom'])
+        v = currentBomOverrides._specs['Type de boom'];
+    v = String(v);
+    if (v.indexOf('au choix') >= 0) return 'choix';
+    if (v.indexOf('2 parties') >= 0) return 'deux';
+    return '';
+}
+
 // Individual code mappings (one code per item)
 var INDIVIDUAL_CODES = {
     'Limiteur Hauteur': [{code: '1500-0001', desc: 'Limiteur Hauteur'}],
@@ -3108,6 +3135,8 @@ function updateSelectedSummary() {
     var creusLaser = document.getElementById('creus-laser');
     if (creus2d && creus2d.checked) items.push(fmtItem(creusage2dCode(), 'Systeme de creusage 2D'));
     if (creusLaser && creusLaser.checked) items.push(fmtItem('1000-0009', 'Reference laser'));
+    var creus2b = document.getElementById('creus-2booms');
+    if (creus2b && creus2b.checked) items.push(fmtItem(CODE_2BOOMS, '2 booms + 1 stick'));
 
     // Camera with sub-option
     var camBox = document.getElementById('toggle-camera');
@@ -3700,10 +3729,16 @@ function updateAValiderWarning() {
     var cbLaser = document.getElementById('creus-laser');
     var status = creusBox.querySelector('.toggle-status');
 
+    var cb2b = document.getElementById('creus-2booms');
+    var note2b = document.getElementById('creus-2booms-note');
+
     // Laser only available when 2D is checked
     if (cbLaser) cbLaser.disabled = true;
+    if (cb2b) cb2b.disabled = true;
 
-    function updateCreusage() {
+    // preCocher : la 2D vient d'etre cochee ou la machine a change -> la case
+    // « 2 booms » suit la configuration de la machine (boom 2 parties = cochee).
+    function updateCreusage(preCocher) {
         // Laser requires 2D
         if (cb2d && cbLaser) {
             cbLaser.disabled = !cb2d.checked;
@@ -3711,9 +3746,24 @@ function updateAValiderWarning() {
                 cbLaser.checked = false;
             }
         }
+        // 2 booms + 1 stick : exige la 2D, cochee d'avance sur un boom 2 parties
+        var cfg = configBoom();
+        if (cb2d && cb2b) {
+            cb2b.disabled = !cb2d.checked;
+            if (!cb2d.checked) cb2b.checked = false;
+            else if (preCocher === true) cb2b.checked = (cfg === 'deux');
+        }
+        if (note2b) {
+            var msg = '';
+            if (cb2d && cb2d.checked && cfg === 'deux') msg = i18n.t(cb2b && cb2b.checked ? 'soumission.deux_booms_auto' : 'soumission.deux_booms_retire');
+            else if (cb2d && cb2d.checked && cfg === 'choix') msg = i18n.t('soumission.deux_booms_choix');
+            note2b.textContent = msg;
+            note2b.style.display = msg ? '' : 'none';
+        }
         var parts = [];
         if (cb2d && cb2d.checked) parts.push('2D');
         if (cbLaser && cbLaser.checked) parts.push('Laser');
+        if (cb2b && cb2b.checked) parts.push('2 booms');
         if (parts.length > 0) {
             creusBox.classList.add('active');
             status.textContent = parts.join(' + ');
@@ -3724,7 +3774,10 @@ function updateAValiderWarning() {
         updateSelectedSummary();
     }
 
-    if (cb2d) cb2d.addEventListener('change', updateCreusage);
+    if (cb2d) cb2d.addEventListener('change', function () { updateCreusage(true); });
+    if (cb2b) cb2b.addEventListener('change', function () { updateCreusage(false); });
+    // Appele par showOptions() a chaque changement de machine.
+    window.majOption2Booms = function () { updateCreusage(true); };
 
 // Re-translate dynamic dropdown content on language change
 window.addEventListener('langchange', function() {
@@ -3753,5 +3806,5 @@ window.addEventListener('langchange', function() {
         try { updateSelectedSummary(); } catch (e) {}
     }
 });
-    if (cbLaser) cbLaser.addEventListener('change', updateCreusage);
+    if (cbLaser) cbLaser.addEventListener('change', function () { updateCreusage(false); });
 })();
