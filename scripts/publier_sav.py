@@ -266,6 +266,16 @@ def main():
     if not res.get('ok'):
         sys.exit('Refus du portail : %s' % res)
     print('Publie : %d clients, %d pieces, %d tranche(s), %s octets stockes.' % (res['clients'], res['pieces'], res['chunks'], res.get('octets', '?')))
+    # Le serveur renvoie le nombre de CLIENTS dont il a garde les contacts (setSav, v34+).
+    # Le journal le montre pour que le passage automatique prouve seul que les contacts
+    # sont bien en ligne ; un ecart avec ce qui a ete envoye fait echouer la tache.
+    gardes = res.get('contacts')
+    if gardes is None:
+        print('⚠ Contacts : le serveur ne renvoie pas leur compte (version < 34 ?) — a verifier')
+    else:
+        print('Contacts gardes par le serveur : %d clients sur %d envoyes' % (gardes, len(contacts)))
+        if gardes != len(contacts):
+            sys.exit('Contacts perdus par le serveur : %d clients gardes sur %d envoyes' % (gardes, len(contacts)))
 
 
 if __name__ == '__main__':
