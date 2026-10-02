@@ -1603,10 +1603,8 @@ if (submitBtn) {
         // Creusage (checkboxes — can select both)
         var _creus2d = document.getElementById('creus-2d');
         var _creusLaser = document.getElementById('creus-laser');
-        if (_creus2d && _creus2d.checked) { var _c2d = creusage2dCode(); optionsOn.push('Systeme de creusage 2D'); accessoires.push({ code: _c2d, name: 'Systeme de creusage 2D' }); }
+        if (_creus2d && _creus2d.checked) { var _c2d = creusage2dCode(); var _n2d = libelle2d(); optionsOn.push(_n2d); accessoires.push({ code: _c2d, name: _n2d }); }
         if (_creusLaser && _creusLaser.checked) { optionsOn.push('Reference laser'); accessoires.push({ code: '1000-0009', name: 'Reference laser' }); }
-        var _creus2b = document.getElementById('creus-2booms');
-        if (_creus2b && _creus2b.checked) { optionsOn.push('2 booms + 1 stick'); accessoires.push({ code: code2booms(), name: '2 booms + 1 stick' }); }
         if (!(_creus2d && _creus2d.checked) && !(_creusLaser && _creusLaser.checked)) optionsOff.push('Guide de creusage');
 
         // Camera
@@ -2950,21 +2948,25 @@ function fmtItem(code, desc) {
     return code ? code + ' — ' + d : d;
 }
 
-// Code du creusage 2D selon le limiteur de portee — REGLE FIXE excavatrice (non-overridable) :
-//   Limiteur Hauteur / Hauteur+Rotation / Multi-axe -> 1000-0007 (creusage 2D integre au limiteur)
-//   sinon (aucun limiteur, ou Rotation seule)        -> 1100-0007 (creusage 2D autonome)
+// Code du creusage 2D — REGLE FIXE excavatrice (non-overridable). UNE seule ligne 2D par
+// machine : la case « 2 booms + 1 stick » REMPLACE le code, elle ne s'ajoute pas (Jacquot,
+// 2026-10-02). La reference laser 1000-0009 reste offerte dans tous les cas.
+//                                                    1 boom + 1 stick   2 booms + 1 stick
+//   Limiteur Hauteur / Hauteur+Rotation / Multi-axe     1000-0007          1000-0011
+//   sinon (aucun limiteur, ou Rotation seule)           1100-0007          1100-0011
 function creusage2dCode() {
     var c = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
     var v = c ? c.value : '';
-    return (v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Multi-axe') ? '1000-0007' : '1100-0007';
+    var avecLimiteur = (v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Multi-axe');
+    var b = document.getElementById('creus-2booms');
+    var suffixe = (b && b.checked) ? '0011' : '0007';
+    return (avecLimiteur ? '1000-' : '1100-') + suffixe;
 }
 
-// Option « 2 booms + 1 stick » du creusage 2D (pelle a boom 2 parties / articule).
-// Codes de Steve, meme regle que la 2D :
-//   avec limiteur Hauteur / Hauteur+Rotation / Multi-axe -> 1000-0011
-//   sinon (Guide Pro seul)                               -> 1100-0011
-function code2booms() {
-    return creusage2dCode() === '1000-0007' ? '1000-0011' : '1100-0011';
+// Libelle de la ligne 2D (traduit par i18n.tBom).
+function libelle2d() {
+    var b = document.getElementById('creus-2booms');
+    return (b && b.checked) ? 'Systeme de creusage 2D (2 booms + 1 stick)' : 'Systeme de creusage 2D';
 }
 
 // Configuration de boom de la machine a l'ecran, lue dans « Type de boom » (BD + override
@@ -3137,10 +3139,8 @@ function updateSelectedSummary() {
     // Guide de creusage (checkboxes — can select both)
     var creus2d = document.getElementById('creus-2d');
     var creusLaser = document.getElementById('creus-laser');
-    if (creus2d && creus2d.checked) items.push(fmtItem(creusage2dCode(), 'Systeme de creusage 2D'));
+    if (creus2d && creus2d.checked) items.push(fmtItem(creusage2dCode(), libelle2d()));
     if (creusLaser && creusLaser.checked) items.push(fmtItem('1000-0009', 'Reference laser'));
-    var creus2b = document.getElementById('creus-2booms');
-    if (creus2b && creus2b.checked) items.push(fmtItem(code2booms(), '2 booms + 1 stick'));
 
     // Camera with sub-option
     var camBox = document.getElementById('toggle-camera');

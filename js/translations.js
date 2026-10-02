@@ -2246,6 +2246,7 @@ en: {
     'bom.Rotation': 'Rotation',
     'bom.Rotation crémaillère camion vac': 'Vacuum truck rack rotation',
     'bom.Systeme de creusage 2D': '2D digging system',
+    'bom.Systeme de creusage 2D (2 booms + 1 stick)': '2D digging system (2 booms + 1 stick)',
     'bom.Reference laser': 'Laser reference',
     'bom.IDC Complet': 'Complete load indicator',
     'bom.IDC en ajout au limiteur': 'Load indicator (add-on to limiter)',
