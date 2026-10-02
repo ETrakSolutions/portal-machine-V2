@@ -32,3 +32,7 @@ apps-script/Api.gs
 # Liste maitresse sur SharePoint _Portail e-Trak, publiee par scripts/publier_prix.py
 data/prices.json
 prix-portail.json
+
+# Classeurs de travail (controle fittings, traductions) : SharePoint _Portail e-Trak/reference, jamais ici
+scripts/Fittings_Loader_controle.xlsx
+scripts/Traduction_textes_BD.xlsx

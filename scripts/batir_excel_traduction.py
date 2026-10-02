@@ -34,7 +34,14 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Les lots de traduction et l extraction FR vivent DANS le depot : le script doit
 # pouvoir etre rejoue par n importe qui, sur n importe quel poste.
 SC = os.path.join(REPO, 'scripts', 'traductions')
-SORTIE = os.path.join(REPO, 'scripts', 'Traduction_textes_BD.xlsx')
+# Le classeur produit n'entre JAMAIS dans le depot (public) : il va dans SharePoint
+# E-Trak Production > General > _Portail e-Trak > reference (decision Jacquot,
+# 2026-10-02). Repli sur scripts/ (ignore par .gitignore) si SharePoint est absent.
+sys.path.insert(0, os.path.join(REPO, 'scripts'))
+from publier_prix import dossier_portail  # noqa: E402
+_REF = dossier_portail() and (dossier_portail() / 'reference')
+SORTIE = os.path.join(str(_REF) if _REF and _REF.is_dir() else os.path.join(REPO, 'scripts'),
+                      'Traduction_textes_BD.xlsx')
 
 
 def charger(nom):

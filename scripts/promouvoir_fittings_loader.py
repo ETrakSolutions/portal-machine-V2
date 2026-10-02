@@ -55,7 +55,14 @@ CODE_A_CONFIRMER = 'À CONFIRMER'
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--essai', action='store_true', help='n ecrit rien, affiche seulement')
-ap.add_argument('--excel', default=os.path.join(REPO, 'scripts', 'Fittings_Loader_controle.xlsx'))
+# Le classeur de controle vit dans SharePoint E-Trak Production > General >
+# _Portail e-Trak > reference (jamais dans le depot public ; decision Jacquot,
+# 2026-10-02). Repli sur scripts/ (ignore par .gitignore) si SharePoint est absent.
+sys.path.insert(0, os.path.join(REPO, 'scripts'))
+from publier_prix import dossier_portail  # noqa: E402
+_REF = dossier_portail() and (dossier_portail() / 'reference')
+ap.add_argument('--excel', default=os.path.join(
+    str(_REF) if _REF and _REF.is_dir() else os.path.join(REPO, 'scripts'), 'Fittings_Loader_controle.xlsx'))
 args = ap.parse_args()
 
 
