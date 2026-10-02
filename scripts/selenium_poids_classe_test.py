@@ -42,7 +42,7 @@ LOTS = {
                  'R 914 Compact Litronic', 'R 918 Litronic', 'R 920 Litronic',
                  'R 922 Litronic', 'R 924 Litronic', 'R 926 Litronic',
                  'R 934 Litronic', 'R 938 Litronic', 'R 945 Litronic',
-                 'R 946 Litronic', 'A 922 Litronic', 'R 960 Litronic',
+                 'R 946 Litronic', 'A 922 Rail Litronic', 'R 960 Litronic',
                  'R 970 Litronic', 'R 936 Litronic'],
     'JCB': ['420X', '520X'],
     'Bobcat': ['E10e - electrique', 'E19e - electrique'],
