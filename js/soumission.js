@@ -972,6 +972,7 @@ function applyTypeRestrictions(type) {
             var c2d = document.getElementById('creus-2d'); if (c2d) c2d.checked = false;
             var cLaser = document.getElementById('creus-laser'); if (cLaser) cLaser.checked = false;
             var c2b = document.getElementById('creus-2booms'); if (c2b) c2b.checked = false;
+            var cEx = document.getElementById('creus-limexist'); if (cEx) cEx.checked = false;
         }
     }
 
@@ -1604,6 +1605,8 @@ if (submitBtn) {
         var _creus2d = document.getElementById('creus-2d');
         var _creusLaser = document.getElementById('creus-laser');
         if (_creus2d && _creus2d.checked) { var _c2d = creusage2dCode(); var _n2d = libelle2d(); optionsOn.push(_n2d); accessoires.push({ code: _c2d, name: _n2d }); }
+        var _creusEx = document.getElementById('creus-limexist');
+        if (_creus2d && _creus2d.checked && _creusEx && _creusEx.checked && !_creusEx.disabled) optionsOn.push('Limit-Pro deja installe sur la machine');
         if (_creusLaser && _creusLaser.checked) { optionsOn.push('Reference laser'); accessoires.push({ code: '1000-0009', name: 'Reference laser' }); }
         if (!(_creus2d && _creus2d.checked) && !(_creusLaser && _creusLaser.checked)) optionsOff.push('Guide de creusage');
 
@@ -2953,11 +2956,16 @@ function fmtItem(code, desc) {
 // 2026-10-02). La reference laser 1000-0009 reste offerte dans tous les cas.
 //                                                    1 boom + 1 stick   2 booms + 1 stick
 //   Limiteur Hauteur / Hauteur+Rotation / Multi-axe     1000-0007          1000-0011
+//   ou case « Limit-Pro deja installe sur la machine »
 //   sinon (aucun limiteur, ou Rotation seule)           1100-0007          1100-0011
 function creusage2dCode() {
     var c = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
     var v = c ? c.value : '';
     var avecLimiteur = (v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Multi-axe');
+    // Limit-Pro deja installe sur la machine du client : meme code que 2D + limiteur,
+    // sans vendre de limiteur (Jacquot, 2026-10-02 — la 2D seulement, pas l'IDC).
+    var ex = document.getElementById('creus-limexist');
+    if (ex && ex.checked && !ex.disabled) avecLimiteur = true;
     var b = document.getElementById('creus-2booms');
     var suffixe = (b && b.checked) ? '0011' : '0007';
     return (avecLimiteur ? '1000-' : '1100-') + suffixe;
@@ -3031,6 +3039,7 @@ function limiteurRoleInfo(type, role) {
 
 function updateSelectedSummary() {
     try { updateAValiderWarning(); } catch (e) {}
+    try { if (window.majLimExistant) window.majLimExistant(); } catch (e) {}
     // Les overrides arrivent en asynchrone : on reevalue ici la disponibilite
     // des options nacelle, sinon un override recu apres la selection ne serait
     // pas reflete a l'ecran.
@@ -3735,6 +3744,22 @@ function updateAValiderWarning() {
 
     var cb2b = document.getElementById('creus-2booms');
     var note2b = document.getElementById('creus-2booms-note');
+    var cbEx = document.getElementById('creus-limexist');
+
+    // « Limit-Pro deja installe » : utilisable seulement avec la 2D et si aucun limiteur
+    // Hauteur / Hauteur+Rotation / Multi-axe n'est coche dans la soumission. Reevalue a
+    // chaque mise a jour du resume (les limiteurs sont parfois remis a zero par code).
+    window.majLimExistant = function () {
+        if (!cbEx) return;
+        var c = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
+        var v = c ? c.value : '';
+        var limVendu = (v === 'Hauteur' || v === 'Hauteur + Rotation' || v === 'Multi-axe');
+        var actif = !!(cb2d && cb2d.checked) && !limVendu;
+        cbEx.disabled = !actif;
+        if (!actif) cbEx.checked = false;
+        var lbl = cbEx.closest('.sub-option');
+        if (lbl) lbl.style.opacity = actif ? '' : '0.5';
+    };
 
     // Laser only available when 2D is checked
     if (cbLaser) cbLaser.disabled = true;
@@ -3811,4 +3836,5 @@ window.addEventListener('langchange', function() {
     }
 });
     if (cbLaser) cbLaser.addEventListener('change', function () { updateCreusage(false); });
+    if (cbEx) cbEx.addEventListener('change', function () { updateCreusage(false); });
 })();
