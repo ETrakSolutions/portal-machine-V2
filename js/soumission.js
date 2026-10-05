@@ -2979,7 +2979,9 @@ function libelle2d() {
 
 // Configuration de boom de la machine a l'ecran, lue dans « Type de boom » (BD + override
 // _specs) : 'deux' = boom 2 parties seulement -> option cochee d'avance avec la 2D ;
-// 'choix' = le fabricant offre 1 ou 2 parties -> pas cochee, avertissement ; '' = rien.
+// 'choix' = le fabricant offre 1 ou 2 parties -> pas cochee, avertissement ;
+// 'un' = boom 1 partie -> option fermee ; 'inconnu' = « A completer » ou vide -> option
+// fermee + message (Jacquot, 2026-10-05 : eviter les erreurs de soumission) ; '' = pas une excavatrice.
 function configBoom() {
     var t = selectType ? selectType.value : '';
     if (t !== 'Excavatrice') return '';
@@ -2991,7 +2993,8 @@ function configBoom() {
     v = String(v);
     if (v.indexOf('au choix') >= 0) return 'choix';
     if (v.indexOf('2 parties') >= 0) return 'deux';
-    return '';
+    if (v.indexOf('1 partie') >= 0) return 'un';
+    return 'inconnu';
 }
 
 // Individual code mappings (one code per item)
@@ -3775,17 +3778,24 @@ function updateAValiderWarning() {
                 cbLaser.checked = false;
             }
         }
-        // 2 booms + 1 stick : exige la 2D, cochee d'avance sur un boom 2 parties
+        // 2 booms + 1 stick : exige la 2D ET une machine qui existe en boom 2 parties
+        // ('deux' ou 'choix'); cochee d'avance sur un boom 2 parties seulement.
         var cfg = configBoom();
+        var boomOk = (cfg === 'deux' || cfg === 'choix');
         if (cb2d && cb2b) {
-            cb2b.disabled = !cb2d.checked;
-            if (!cb2d.checked) cb2b.checked = false;
+            var ouvert = cb2d.checked && boomOk;
+            cb2b.disabled = !ouvert;
+            if (!ouvert) cb2b.checked = false;
             else if (preCocher === true) cb2b.checked = (cfg === 'deux');
+            var lbl2b = cb2b.closest('.sub-option');
+            if (lbl2b) lbl2b.style.opacity = ouvert ? '' : '0.5';
         }
         if (note2b) {
             var msg = '';
             if (cb2d && cb2d.checked && cfg === 'deux') msg = i18n.t(cb2b && cb2b.checked ? 'soumission.deux_booms_auto' : 'soumission.deux_booms_retire');
             else if (cb2d && cb2d.checked && cfg === 'choix') msg = i18n.t('soumission.deux_booms_choix');
+            else if (cb2d && cb2d.checked && cfg === 'un') msg = i18n.t('soumission.deux_booms_un');
+            else if (cb2d && cb2d.checked && cfg === 'inconnu') msg = i18n.t('soumission.deux_booms_inconnu');
             note2b.textContent = msg;
             note2b.style.display = msg ? '' : 'none';
         }
