@@ -46,9 +46,8 @@ LOTS = {
                  'R 970 Litronic', 'R 936 Litronic'],
     'JCB': ['420X', '520X'],
     'Bobcat': ['E10e - electrique', 'E19e - electrique'],
-    'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4', '225 Spin Ace',
-                  '245 X3 SR', '250 X3 / X4', '300 X3 / X4', '350 X3 / X4',
-                  '460 X2'],
+    'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4',
+                  '245 X3 SR', '250 X3 / X4', '300 X3 / X4', '350 X3 / X4'],
     # PC220LC-12 (2026) n'est PAS dans ce lot : ses specs vivent dans un override
     # `_specs` pose par l'interface, qui masque machines.json a l'affichage. Un lot
     # ne doit contenir que des modeles dont la BD de base porte la verite.
