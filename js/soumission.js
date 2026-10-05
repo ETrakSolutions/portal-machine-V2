@@ -3817,6 +3817,8 @@ function updateAValiderWarning() {
     if (cb2b) cb2b.addEventListener('change', function () { updateCreusage(false); });
     // Appele par showOptions() a chaque changement de machine.
     window.majOption2Booms = function () { updateCreusage(true); };
+    // Le message sous la case est genere en JS : le retraduire a la bascule FR/EN.
+    window.addEventListener('langchange', function () { updateCreusage(false); });
 
 // Re-translate dynamic dropdown content on language change
 window.addEventListener('langchange', function() {
