@@ -49,7 +49,7 @@ function doGet(e) {
   try {
     var action = (e.parameter.action || 'get').toLowerCase();
     if (action === 'get')             return jsonOut({ value: kvGet(e.parameter.key) });
-    if (action === 'list')            return jsonOut({ keys: kvList(e.parameter.prefix || '') });
+    if (action === 'list')            return jsonOut({ keys: _publicList(e.parameter.prefix || '') });
     if (action === 'getmachinejson')  return jsonOut(ghReadFile());
     return jsonOut({ error: 'unknown action: ' + action });
   } catch (err) {
@@ -82,6 +82,8 @@ function doPost(e) {
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
+    if (action === 'getprivate')     return jsonOut(getPrivate(body));
+    if (action === 'listkeys')       return jsonOut(listKeys(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -109,7 +111,7 @@ function doPost(e) {
     }
     if (action === 'save')               return jsonOut({ ok: kvSave(body.key, body.value) });
     if (action === 'delete')             return jsonOut({ ok: kvDelete(body.key) });
-    if (action === 'list')               return jsonOut({ keys: kvList(body.prefix || '') });
+    if (action === 'list')               return jsonOut({ keys: _publicList(body.prefix || '') });
     if (action === 'getmachinejson')     return jsonOut(ghReadFile());
     if (action === 'updatemachinebom')   return jsonOut(updateMachineBom(body));
     if (action === 'updatemachinebombulk') return jsonOut(updateMachineBomBulk(body));
@@ -154,6 +156,61 @@ var ADMIN_WRITE_KEYS = ['roles_permissions', 'target_emails', 'sales_emails',
 
 function _isAdminOnlyKey(key) {
   return SENSITIVE_KEYS.indexOf(key) >= 0 || ADMIN_WRITE_KEYS.indexOf(key) >= 0;
+}
+
+// ---- LECTURE AUTHENTIFIEE (2026-10-06) --------------------------------------------
+// Le GET public (?action=get / ?action=list, et le POST 'list') repondait SANS connexion
+// pour toute cle hors SENSITIVE_KEYS : 143 cles listables, dont les courriels des
+// utilisateurs et des clients DANS le nom des cles user_active_<courriel> et
+// inactivity_notice_<courriel>, les demandes de machines et les listes de courriels
+// internes. Correctif en trois mises en ligne, chacune reversible :
+//   1. ce code avec LECTURE_PUBLIQUE_FERMEE = false : ajoute getprivate / listkeys,
+//      ne ferme rien (les pages actuelles continuent de marcher) ;
+//   2. les pages lisent ces cles par getprivate (le jeton est deja dans le navigateur),
+//      la sauvegarde hebdo liste par listkeys avec le PIN ;
+//   3. LECTURE_PUBLIQUE_FERMEE = true : le GET public ne rend plus ces cles et la liste
+//      publique est vide.
+// sales_emails et vendeurs_list restent PUBLIQUES : l'invite (?guest=1) n'a pas de jeton
+// serveur et en a besoin pour router sa soumission (decision Jacquot 2026-10-06).
+var LECTURE_PUBLIQUE_FERMEE = false;
+var PRIVATE_READ_KEYS = ['machine_requests', 'machine_request_emails', 'notes_emails',
+                         'target_emails', 'kit_emails', 'db_changelog'];
+// Le nom de ces cles porte un courriel : lecture reservee a un admin (ecran Administration).
+var ADMIN_READ_PREFIXES = ['user_active_', 'inactivity_notice_'];
+
+function _isAdminReadKey(key) {
+  for (var i = 0; i < ADMIN_READ_PREFIXES.length; i++) {
+    if (String(key).indexOf(ADMIN_READ_PREFIXES[i]) === 0) return true;
+  }
+  return false;
+}
+function _isPrivateReadKey(key) {
+  return PRIVATE_READ_KEYS.indexOf(key) >= 0 || _isAdminReadKey(key);
+}
+
+// action 'getprivate' { key, token|pin } : lecture d'une cle avec une session valide.
+// Les cles secretes, de session et reservees restent illisibles, comme par le GET public.
+function getPrivate(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok) return { error: 'authentication required' };
+  var key = body.key;
+  if (!key) return { error: 'key required' };
+  if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0 || _isReservedKey(key)) return { value: '' };
+  if (_isAdminReadKey(key) && !auth.admin) return { error: 'admin role required' };
+  return { value: PROPS.getProperty(key) || '' };
+}
+
+// action 'listkeys' { prefix, pin|token } : liste des cles, admin ou PIN (sauvegarde hebdo).
+function listKeys(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok) return { error: 'authentication required' };
+  if (!auth.admin) return { error: 'admin role required' };
+  return { keys: kvList(body.prefix || '') };
+}
+
+// Liste par les portes publiques (GET 'list', POST 'list' sans authentification).
+function _publicList(prefix) {
+  return LECTURE_PUBLIQUE_FERMEE ? [] : kvList(prefix);
 }
 var SESSION_PREFIX = 'session_';
 var SESSION_TTL_MS  = 90 * 24 * 3600 * 1000;       // 90 jours
@@ -1165,6 +1222,8 @@ function kvGet(key) {
   // Cles sensibles (mots de passe) et sessions : jamais lisibles par le GET public.
   // Les clients authentifies passent par action=listusers.
   if (SENSITIVE_KEYS.indexOf(key) >= 0 || key.indexOf(SESSION_PREFIX) === 0 || _isReservedKey(key)) return '';
+  // Etape 3 du correctif du 2026-10-06 : ces cles ne se lisent plus que par getprivate.
+  if (LECTURE_PUBLIQUE_FERMEE && _isPrivateReadKey(key)) return '';
   return PROPS.getProperty(key) || '';
 }
 function kvSave(key, value) {
