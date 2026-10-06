@@ -22,6 +22,7 @@ Le NIP n'est jamais affiche.
 """
 import argparse
 import collections
+import re
 import json
 import shutil
 import sys
@@ -164,9 +165,27 @@ MOTS_FACTURATION = ('recevable', 'payable', 'compta', 'account', 'factur', 'admi
 CONTACTS_PAR_CLIENT = 4
 
 
+# Les fiches Epicor portent des FAUTES DE FRAPPE que les mots exacts ne voient pas
+# (mesure du 2026-10-06, 9 contacts de facturation passaient pour des personnes) :
+# « receavbleswajax 2.0 », « Paybles NP », « Paygbles Bertnor », « EFTCEGERCO »,
+# « ÉTATSDECOMPTEJCLAIR », « Ap - Chantal Boily », comptes.fournisseurs@...
+# Motifs tolerants, sur le texte sans accents ni casse.
+RX_FACTURATION = re.compile(
+    r'pa[iy]g?e?a?bl'            # payable, paybles, paygbles, paiables
+    r'|rec?e?a?v[ae]?bl'         # recevable, receavbles, recvable
+    r'|^rec\.'                  # REC.WajaxLachine
+    r'|^eft(?![aeiouy])'         # EFTCEGERCO, EFT G.Lapalme (pas « Eftimie »)
+    r'|etats?\s*de\s*compte'     # etats de compte, ETATSDECOMPTE
+    r'|fournisseur'              # comptes.fournisseurs@
+    r'|^a/?p\b|^a/r\b'           # « Ap - Chantal Boily », A/P, A/R
+)
+
+
 def est_facturation(nom, courriel):
-    t = _norm(nom) + ' ' + _norm(courriel)
-    return any(m in t for m in MOTS_FACTURATION)
+    n, m = _norm(nom), _norm(courriel)
+    t = n + ' ' + m
+    return any(x in t for x in MOTS_FACTURATION) or bool(RX_FACTURATION.search(n)) \
+        or bool(RX_FACTURATION.search(m))
 
 
 def lire_contacts(noms_clients, env_path):
