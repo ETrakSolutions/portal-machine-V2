@@ -47,6 +47,7 @@ et le tester par un appel direct.
   - côté pages : `portalFetchKey(clé)` (`js/config.js`) choisit la voie — **miroir** de
     `PRIVATE_READ_KEYS` / `ADMIN_READ_PREFIXES`, les deux listes doivent rester identiques ;
   - `sales_emails` et `vendeurs_list` restent publiques : l'invité n'a pas de jeton serveur.
+  - côté **scripts Python** : `getprivate` / `listkeys` en POST avec le NIP (ex. `retirer_destinataire.py`, `sauvegarde_hebdo_portail.py`) ; le GET public rend une valeur **vide** sans erreur, donc un script resté sur l'ancienne voie échoue en silence. Après tout ajout à `PRIVATE_READ_KEYS`, chercher `action=get&key=` dans `scripts/` **et** les pages.
   Une nouvelle donnée privée va dans `SENSITIVE_KEYS` (jamais lisible), ou dans
   `PRIVATE_READ_KEYS` **et** `PORTAL_PRIVATE_KEYS` (lisible connecté), ou derrière sa
   propre action. Bancs : `banc_lecture.js` ; pages : `scripts/selenium_lecture_privee_test.py`.
