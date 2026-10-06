@@ -172,7 +172,7 @@ function _isAdminOnlyKey(key) {
 //      publique est vide.
 // sales_emails et vendeurs_list restent PUBLIQUES : l'invite (?guest=1) n'a pas de jeton
 // serveur et en a besoin pour router sa soumission (decision Jacquot 2026-10-06).
-var LECTURE_PUBLIQUE_FERMEE = false;
+var LECTURE_PUBLIQUE_FERMEE = true;   // etape 3 : fermee le 2026-10-06 (version 39)
 var PRIVATE_READ_KEYS = ['machine_requests', 'machine_request_emails', 'notes_emails',
                          'target_emails', 'kit_emails', 'db_changelog'];
 // Le nom de ces cles porte un courriel : lecture reservee a un admin (ecran Administration).

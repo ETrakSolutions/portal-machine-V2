@@ -5,14 +5,16 @@
 // Voir .claude/skills/portal-backend et SharePoint « Correctif - lecture publique du serveur.md ».
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const SRC = fs.readFileSync(path.join(__dirname, '..', '..', 'apps-script', 'Code.gs'), 'utf8');
-const INTER = 'var LECTURE_PUBLIQUE_FERMEE = false;';
+// L'interrupteur peut etre a false (etape 1) ou a true (etape 3) dans le fichier :
+// le banc impose lui-meme chaque position.
+const INTER = /var LECTURE_PUBLIQUE_FERMEE = (true|false);/;
 
 let ok = 0, ko = 0;
 const check = (nom, cond) => { cond ? ok++ : ko++; console.log((cond ? 'OK    ' : 'ECHEC ') + nom); };
 
 function charger(ferme) {
-  if (SRC.indexOf(INTER) < 0) { console.log('ECHEC interrupteur absent de Code.gs : ' + INTER); process.exit(1); }
-  const src = ferme ? SRC.replace(INTER, 'var LECTURE_PUBLIQUE_FERMEE = true;') : SRC;
+  if (!INTER.test(SRC)) { console.log('ECHEC interrupteur absent de Code.gs'); process.exit(1); }
+  const src = SRC.replace(INTER, 'var LECTURE_PUBLIQUE_FERMEE = ' + (ferme ? 'true' : 'false') + ';');
   let store = {};
   const ctx = {
     PropertiesService: { getScriptProperties: () => ({
