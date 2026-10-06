@@ -37,8 +37,19 @@ et le tester par un appel direct.
   lisibles, écriture admin seulement. Les clés `price_list_*` sont en plus intouchables par
   `save`/`delete` génériques (`_isPriceKey`).
 - ⚠️ `?action=get&key=…` répond **sans authentification** pour toute clé hors liste
-  sensible (ex. `machine_requests` porte des noms et courriels). Une nouvelle donnée privée
-  va dans `SENSITIVE_KEYS` ou derrière sa propre action.
+  sensible. **Correctif du 2026-10-06** (branche `securite/lecture-publique`, analyse
+  SharePoint `_Portail e-Trak/Correctif - lecture publique du serveur.md`) :
+  - `getprivate { key, token|pin }` lit une clé avec une session ; `user_active_*` et
+    `inactivity_notice_*` (courriel dans le nom) réservées aux admins ;
+  - `listkeys { prefix, pin|token }` : la liste, admin ou PIN (sauvegarde hebdo) ;
+  - interrupteur `LECTURE_PUBLIQUE_FERMEE` : à `true`, le GET public ne rend plus
+    `PRIVATE_READ_KEYS` / `ADMIN_READ_PREFIXES` et les listes publiques sont vides ;
+  - côté pages : `portalFetchKey(clé)` (`js/config.js`) choisit la voie — **miroir** de
+    `PRIVATE_READ_KEYS` / `ADMIN_READ_PREFIXES`, les deux listes doivent rester identiques ;
+  - `sales_emails` et `vendeurs_list` restent publiques : l'invité n'a pas de jeton serveur.
+  Une nouvelle donnée privée va dans `SENSITIVE_KEYS` (jamais lisible), ou dans
+  `PRIVATE_READ_KEYS` **et** `PORTAL_PRIVATE_KEYS` (lisible connecté), ou derrière sa
+  propre action. Bancs : `banc_lecture.js` ; pages : `scripts/selenium_lecture_privee_test.py`.
 
 ## Les actions protégées (état au 2026-09-29, version 33)
 

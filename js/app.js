@@ -49,7 +49,7 @@ function submitMachineRequest(info, btnEl) {
     var t = function(k, fb) { return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
     var prev = btnEl ? btnEl.textContent : '';
     if (btnEl) { btnEl.disabled = true; btnEl.textContent = t('js.req_sending', 'Envoi...'); }
-    fetch(API_URL + '?action=get&key=machine_requests')
+    portalFetchKey('machine_requests')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var list = [];
@@ -92,7 +92,7 @@ function submitMachineRequest(info, btnEl) {
 // (la demande est deja enregistree cote KV, la notif est un bonus).
 function notifyMachineRequest(info, requesterName) {
     var tt = function(k, p) { return (typeof i18n !== 'undefined') ? i18n.t(k, p) : k; };
-    fetch(API_URL + '?action=get&key=machine_request_emails')
+    portalFetchKey('machine_request_emails')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var emails = [];
@@ -1076,7 +1076,7 @@ function saveNotes() {
             notesStatus.textContent = i18n.t('js.saved');
             // Send email notification to notes emails
             if (noteContent.trim()) {
-                fetch(API_URL + '?action=get&key=notes_emails')
+                portalFetchKey('notes_emails')
                     .then(function(r) { return r.json(); })
                     .then(function(emailData) {
                         var emails = [];
@@ -1579,7 +1579,7 @@ const DEFAULT_EMAILS = ['jacquot@gryb.ca', 'k.berube@e-trak.ca'];
 let targetEmails = [...DEFAULT_EMAILS];
 
 function loadEmails() {
-    fetch(API_URL + '?action=get&key=target_emails')
+    portalFetchKey('target_emails')
         .then(r => r.json())
         .then(data => {
             if (data.value) {

@@ -166,7 +166,7 @@ function updateMachineRequestsBadge() {
         badge.addEventListener('click', go);
         badge.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') go(e); });
     }
-    fetch(API_URL + '?action=get&key=machine_requests')
+    portalFetchKey('machine_requests')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var list = [];
@@ -898,7 +898,7 @@ function showToast(msg) {
 
 // ---- EMAILS ----
 function loadEmails() {
-    fetch(API_URL + '?action=get&key=target_emails')
+    portalFetchKey('target_emails')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.value) {
@@ -984,7 +984,7 @@ function renderSalesEmails() {
 let kitEmails = [];
 
 function loadKitEmails() {
-    fetch(API_URL + '?action=get&key=kit_emails')
+    portalFetchKey('kit_emails')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.value) {
@@ -1071,7 +1071,7 @@ function renderVendeurs() {
 let notesEmails = [];
 
 function loadNotesEmails() {
-    fetch(API_URL + '?action=get&key=notes_emails')
+    portalFetchKey('notes_emails')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.value) { try { notesEmails = JSON.parse(data.value); } catch(e) {} }
@@ -1113,7 +1113,7 @@ function renderNotesEmails() {
 let machineReqEmails = [];
 
 function loadMachineReqEmails() {
-    fetch(API_URL + '?action=get&key=machine_request_emails')
+    portalFetchKey('machine_request_emails')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.value) { try { machineReqEmails = JSON.parse(data.value); } catch(e) {} }
@@ -1373,7 +1373,7 @@ function loadUserActiveStatus() {
         var email = dot.dataset.email;
         if (!email) return;
         var key = 'user_active_' + email.replace(/[^a-zA-Z0-9]/g, '_');
-        fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+        portalFetchKey(key)
             .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (!data.value) {

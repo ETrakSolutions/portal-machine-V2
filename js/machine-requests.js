@@ -49,7 +49,7 @@
         }
 
         function loadRequests() {
-            return fetch(API_URL + '?action=get&key=machine_requests')
+            return portalFetchKey('machine_requests')
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     var list = [];

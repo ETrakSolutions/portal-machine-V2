@@ -40,7 +40,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from publier_prix import dossier_portail  # noqa: E402
+from publier_prix import REPO, dossier_portail, read_pin  # noqa: E402
 
 DEPOT = 'https://github.com/ETrakSolutions/portal-machine-V2.git'
 API = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec'
@@ -67,6 +67,18 @@ def get(url, essais=5):
     for i in range(essais):
         try:
             return json.loads(urllib.request.urlopen(url, timeout=90).read().decode('utf-8'))
+        except Exception:
+            if i == essais - 1:
+                raise
+            time.sleep(2 + 3 * i)
+
+
+def post(corps, essais=5):
+    donnees = json.dumps(corps).encode('utf-8')
+    for i in range(essais):
+        try:
+            req = urllib.request.Request(API, data=donnees, headers={'Content-Type': 'text/plain'})
+            return json.loads(urllib.request.urlopen(req, timeout=90).read().decode('utf-8'))
         except Exception:
             if i == essais - 1:
                 raise
@@ -113,12 +125,22 @@ def bundle(tmp, etat):
 
 
 def export_serveur(tmp, etat):
-    cles = get(API + '?action=list&prefix=')['keys']
+    # Depuis le correctif « lecture publique » (2026-10-06), la liste et une partie des
+    # valeurs ne sortent plus par le GET public : on passe par listkeys / getprivate avec
+    # le NIP. Sans NIP, on S'ARRETE : un export par la voie publique perdrait ces cles
+    # en silence (vides) et la sauvegarde paraitrait complete.
+    nip = read_pin(REPO / 'PIN Portail.txt')
+    r = post({'action': 'listkeys', 'prefix': '', 'pin': nip})
+    if not isinstance(r, dict) or 'keys' not in r:
+        raise RuntimeError('listkeys refuse : %s' % (r.get('error') if isinstance(r, dict) else r))
+    cles = r['keys']
     valeurs, erreurs = {}, []
 
     def un(k):
         try:
-            r = get(API + '?action=get&key=' + urllib.parse.quote(k))
+            r = post({'action': 'getprivate', 'key': k, 'pin': nip})
+            if isinstance(r, dict) and r.get('error'):
+                return k, None, r['error']
             return k, (r.get('value') if isinstance(r, dict) else r), None
         except Exception as e:
             return k, None, repr(e)

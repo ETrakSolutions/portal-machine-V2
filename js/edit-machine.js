@@ -290,7 +290,7 @@
 
   // ===== API =====
   function apiGet(key){
-    return fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+    return portalFetchKey(key)
       .then(function(r){return r.json()})
       .then(function(data){
         if (!data.value) return null;

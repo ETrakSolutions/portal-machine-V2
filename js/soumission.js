@@ -1013,7 +1013,7 @@ function loadBomOverrides(fab, modele, annee) {
 // Load product codes from API (manually added in BD)
 function loadProductCodes(fab, modele, annee) {
     var key = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
-    fetch(API_URL + '?action=get&key=' + encodeURIComponent(key))
+    portalFetchKey(key)
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.value) {
@@ -1435,7 +1435,7 @@ function submitMachineRequest(info, btnEl) {
     var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };
     var prev = btnEl ? btnEl.textContent : '';
     if (btnEl) { btnEl.disabled = true; btnEl.textContent = t('js.req_sending', 'Envoi...'); }
-    fetch(API_URL + '?action=get&key=machine_requests')
+    portalFetchKey('machine_requests')
         .then(function(r){ return r.json(); })
         .then(function(data){
             var list = [];
@@ -1472,7 +1472,7 @@ function submitMachineRequest(info, btnEl) {
 // silencieux (la demande est deja enregistree cote KV).
 function notifyMachineRequest(info, requesterName) {
     var tt = function(k, p) { return (typeof i18n !== 'undefined') ? i18n.t(k, p) : k; };
-    fetch(API_URL + '?action=get&key=machine_request_emails')
+    portalFetchKey('machine_request_emails')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             var emails = [];
