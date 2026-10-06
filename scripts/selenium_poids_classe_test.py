@@ -43,7 +43,11 @@ LOTS = {
                  'R 922 Litronic', 'R 924 Litronic', 'R 926 Litronic',
                  'R 934 Litronic', 'R 938 Litronic', 'R 945 Litronic',
                  'R 946 Litronic', 'A 922 Rail Litronic', 'R 960 Litronic',
-                 'R 970 Litronic', 'R 936 Litronic'],
+                 'R 970 Litronic', 'R 936 Litronic',
+                 # 2026-10-06 : fusions sous le nom officiel Liebherr
+                 'A 910 Compact Litronic', 'R 950 SME', 'R 980 SME'],
+    'Case': ['CX145E SR'],
+    'John Deere': ['260 P-Tier'],
     'JCB': ['420X', '520X'],
     'Bobcat': ['E10e - electrique', 'E19e - electrique'],
     'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4',
@@ -61,7 +65,11 @@ LOTS = {
 # Modeles retires de la BD parce qu'ils ne correspondent a aucun modele du
 # fabricant -- ils ne doivent revenir ni en base ni a l'ecran.
 RETIRES = [('Link-Belt', '170 X3'), ('Link-Belt', '235 X3 LF'),
-           ('JCB', '27Z-1'), ('JCB', '38Z-1'), ('JCB', '75Z-2')]
+           ('JCB', '27Z-1'), ('JCB', '38Z-1'), ('JCB', '75Z-2'),
+           # 2026-10-06 : doublons fusionnes ou noms absents chez le fabricant
+           ('Liebherr', 'A 910 Compact'), ('Liebherr', 'R 950'), ('Liebherr', 'R 950 Litronic'),
+           ('Liebherr', 'R 980'), ('Liebherr', 'R 980 Litronic'),
+           ('Case', 'CX145E'), ('John Deere', '260G / 260P')]
 
 _DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'),
                      encoding='utf-8'))['Excavatrice']
@@ -72,8 +80,10 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         pass
 
 
-socketserver.TCPServer.allow_reuse_address = True
-httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
+# Serveur MULTI-requetes : la page charge 11 overrides en parallele, et un serveur a
+# une requete a la fois en refusait parfois une (ERR_CONNECTION_REFUSED, faux SEVERE).
+socketserver.ThreadingTCPServer.allow_reuse_address = True
+httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Quiet)
 threading.Thread(target=httpd.serve_forever, daemon=True).start()
 
 opts = Options()
