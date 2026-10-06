@@ -54,9 +54,16 @@ def nip():
 
 
 def lire(cle):
-    u = API + '?action=get&key=' + urllib.parse.quote(cle)
-    with urllib.request.urlopen(u, timeout=120) as r:
-        return json.loads(r.read().decode()).get('value')
+    # Depuis le 2026-10-06 (serveur v39), les listes de courriels internes ne se lisent
+    # plus par le GET public (elles y rendent une valeur VIDE) : action authentifiee
+    # 'getprivate' avec le NIP. Un refus est dit, jamais pris pour une liste vide.
+    corps = json.dumps({'action': 'getprivate', 'key': cle, 'pin': nip()}).encode()
+    req = urllib.request.Request(API, data=corps, headers={'Content-Type': 'text/plain'}, method='POST')
+    with urllib.request.urlopen(req, timeout=120) as r:
+        rep = json.loads(r.read().decode())
+    if rep.get('error'):
+        sys.exit('Lecture de %s refusee par le serveur : %s' % (cle, rep['error']))
+    return rep.get('value')
 
 
 def ecrire(cle, valeur, pin):

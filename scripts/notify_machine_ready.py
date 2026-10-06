@@ -34,8 +34,15 @@ def pin():
     raise SystemExit("PIN Portail.txt introuvable")
 
 def kv_get(key):
-    raw = urllib.request.urlopen(API + "?action=get&key=" + key, timeout=60).read().decode()
-    try: return json.loads(json.loads(raw).get("value") or "[]")
+    # Depuis le 2026-10-06 (serveur v39), machine_requests ne se lit plus par le GET
+    # public : action authentifiee 'getprivate' avec le NIP.
+    corps = json.dumps({"action": "getprivate", "key": key, "pin": pin()}).encode()
+    req = urllib.request.Request(API, data=corps, headers={"Content-Type": "text/plain"})
+    raw = urllib.request.urlopen(req, timeout=60).read().decode()
+    rep = json.loads(raw)
+    if rep.get("error"):
+        raise SystemExit("Lecture de %s refusee par le serveur : %s" % (key, rep["error"]))
+    try: return json.loads(rep.get("value") or "[]")
     except Exception: return []
 
 def find_requester(type_, fab, modele):
