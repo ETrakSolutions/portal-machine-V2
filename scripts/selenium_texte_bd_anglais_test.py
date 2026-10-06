@@ -53,6 +53,18 @@ dv = webdriver.Chrome(options=opts)
 fails = []
 
 TYPE, FAB, YEAR, MODEL = 'Excavatrice', 'Case', '2026', 'CX90E'   # porte deja un _notes FR
+
+
+def en_attendu():
+    """_notes_en que la BD porte pour la machine de test (override d'abord, comme app.js).
+    Depuis le 2026-10-06 les notes sont traduites : la zone anglaise n'est plus vide
+    au chargement, elle doit montrer CE texte."""
+    ov = json.load(open(os.path.join(REPO, 'data', 'overrides', 'excavatrice.json'), encoding='utf-8'))
+    o = ov.get(TYPE, {}).get(FAB, {}).get(YEAR, {}).get(MODEL, {})
+    if '_notes' in o:
+        return o.get('_notes_en') or ''
+    b = json.load(open(os.path.join(REPO, 'data', 'machines.json'), encoding='utf-8'))
+    return (b.get(TYPE, {}).get(FAB, {}).get(YEAR, {}).get(MODEL, {}) or {}).get('_notes_en') or ''
 NOTE_EN = 'CLAUDE TEST English note'
 WARN_EN = 'CLAUDE TEST English warning'
 
@@ -100,8 +112,9 @@ try:
         check('zone « %s » presente' % zid, bool(dv.find_elements('id', zid)))
     check('la note francaise existante est chargee',
           bool((dv.find_element('id', 'notes-area').get_attribute('value') or '').strip()))
-    check('la zone anglaise part vide',
-          not (dv.find_element('id', 'notes-area-en').get_attribute('value') or '').strip())
+    _att = en_attendu()
+    check('la zone anglaise charge la traduction de la BD (%s)' % (_att[:40] or 'vide'),
+          (dv.find_element('id', 'notes-area-en').get_attribute('value') or '').strip() == _att.strip())
     lbl = dv.execute_script(
         "var l=[].slice.call(document.querySelectorAll('label'));"
         "return l.map(function(e){return e.textContent.trim();}).filter(function(t){"
@@ -192,6 +205,10 @@ e._warning = arguments[6]; e._warning_en = arguments[7];
     dv.get(BASE + '/soumission.html')
     WebDriverWait(dv, 40).until(lambda d: d.execute_script(
         "return (typeof machinesData !== 'undefined') && Object.keys(machinesData).length > 0;"))
+    # Toutes les notes de la BD ont leur anglais depuis le 2026-10-06 : on SIMULE
+    # l'absence en retirant _notes_en de la machine chargee, avant de la choisir.
+    dv.execute_script("var e=machinesData[arguments[0]][arguments[1]][arguments[2]][arguments[3]];"
+                      "if(e){delete e._notes_en;}", TYPE, FAB, YEAR, MODEL)
     for sid, val in (('select-type', TYPE), ('select-fabricant', FAB),
                      ('select-modele', MODEL), ('select-annee', YEAR)):
         choisir(sid, val)
