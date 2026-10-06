@@ -2172,15 +2172,35 @@ function envoyerPanier() {
     var dest = destinatairesDemande();
     if (!dest) return;
 
-    var d = demandePanier(panier, champsCommuns(), dest);
-    lancerCourriel(dest.toAll, d.subject, d.body, d.epicor);
-    // Envoye : le panier se vide. Le texte complet reste dans le panneau « Copier la
-    // demande » si le courriel ne s'ouvre pas.
-    panier = [];
-    panierPosition = null;
-    panierSauver();
-    rendrePanier();
-    viderInfosClient();
+    var envoyer = function (format) {
+        var d = demandePanier(panier, champsCommuns(), dest, format);
+        lancerCourriel(dest.toAll, d.subject, d.body, d.epicor);
+        // Envoye : le panier se vide. Le texte complet reste dans le panneau « Copier la
+        // demande » si le courriel ne s'ouvre pas.
+        panier = [];
+        panierPosition = null;
+        panierSauver();
+        rendrePanier();
+        viderInfosClient();
+    };
+    // Plusieurs machines : une seule soumission ou une par machine ? La question est
+    // posee a l'envoi, sans choix par defaut (Steve, 2026-10-06 ; vient de la question
+    // posee a Gord).
+    if (panier.length >= 2) demanderFormatSoumission(panier.length, envoyer);
+    else envoyer('une');
+}
+
+// Fenetre « Format de la soumission » : appelle suite('une') ou suite('par_machine').
+// « Annuler » ferme sans rien envoyer : le panier reste intact.
+function demanderFormatSoumission(n, suite) {
+    var modal = document.getElementById('modal-format');
+    if (!modal) { suite('une'); return; }
+    document.getElementById('modal-format-text').textContent = i18n.t('panier.format_text', { n: n });
+    modal.style.display = 'flex';
+    var fermer = function () { modal.style.display = 'none'; };
+    document.getElementById('modal-format-cancel').onclick = fermer;
+    document.getElementById('modal-format-une').onclick = function () { fermer(); suite('une'); };
+    document.getElementById('modal-format-par-machine').onclick = function () { fermer(); suite('par_machine'); };
 }
 
 // Apres l'envoi d'une demande : les informations du client se vident, pour que la
@@ -2222,32 +2242,46 @@ function champsCommuns() {
 
 // Objet, corps et bloc Epicor d'une demande a plusieurs machines, sans rien envoyer :
 // sert a l'envoi du panier ET a « Copier la demande » (Steve, 2026-09-30).
-function demandePanier(items, c, dest) {
+// format (choisi a l'envoi, Steve 2026-10-06) :
+//  - 'une'         : une seule soumission, total general et UN bloc Epicor au bas ;
+//  - 'par_machine' : une soumission par machine, chaque machine suivie de SON bloc
+//                    Epicor, sans total general ; Luna colle un bloc par soumission.
+//  - absent        : comme 'une', sans la ligne « Format demande » (« Copier la demande »).
+function demandePanier(items, c, dest, format) {
     var company = c.company, clientEmail = c.clientEmail, lieu = c.lieu,
         dateInstall = c.dateInstall, comment = c.comment, userName = c.userName;
     var n = items.length;
+    var parMachine = format === 'par_machine' && n >= 2;
     var body = i18n.t('email.soumission_header') + '\n' + '================================\n\n';
     if (company) body += i18n.t('email.company', { name: company }) + '\n';
     if (clientEmail) body += i18n.t('email.client_email', { email: clientEmail }) + '\n';
     if (lieu) body += i18n.t('email.location', { loc: lieu }) + '\n';
     if (dateInstall) body += i18n.t('email.install_date', { date: dateInstall }) + '\n';
     body += i18n.t('email.panier_nb', { n: n }) + '\n';
+    if (format && n >= 2) {
+        body += i18n.t(parMachine ? 'email.format_par_machine' : 'email.format_une', { n: n }) + '\n';
+    }
     var totP = 0, totI = 0, blocs = [];
     items.forEach(function (it, i) {
         var p = it.photo;
         // Le type en minuscules devant la machine : « 1 × excavatrice Hitachi ZX135US-7H (2026) ».
         var ident = p.sansMachine ? libelleMachine(p) : i18n.t('type.' + p.type).toLowerCase() + ' ' + libelleMachine(p);
-        body += '\n' + i18n.t('email.panier_machine', { i: i + 1, n: n, q: it.unites, machine: ident }) + '\n';
+        body += '\n' + i18n.t(parMachine ? 'email.panier_soumission' : 'email.panier_machine',
+                              { i: i + 1, n: n, q: it.unites, machine: ident }) + '\n';
         body += i18n.t('email.nb_units', { n: it.unites }) + '\n';
         if (p.notes) body += i18n.t('email.notes_machine', { notes: p.notes }) + '\n';
         body += texteMachine(p, true);
-        // Lignes Epicor de la machine : gardees pour LE bloc du bas du courriel.
+        // Lignes Epicor de la machine : sous la machine (une soumission par machine),
+        // sinon gardees pour LE bloc du bas du courriel.
         var epi = texteEpicor(p.epicor);
-        if (epi) blocs.push(epi);
+        if (epi) {
+            blocs.push(epi);
+            if (parMachine) body += '\n' + i18n.t('email.epicor_header_soumission', { i: i + 1 }) + '\n' + epi + '\n';
+        }
         var t = totauxLignes(p.lignes);
         totP += t.pieces; totI += t.installation;
     });
-    if (totP > 0 || totI > 0) {
+    if (!parMachine && (totP > 0 || totI > 0)) {
         body += '\n================================\n' + i18n.t('email.panier_total') + '\n' +
                 i18n.t('email.total_parts') + ' : ' + fmtPrice(totP) +
                 '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(totI) +
@@ -2260,14 +2294,15 @@ function demandePanier(items, c, dest) {
     // revient deux fois (pas d'addition). Aucune ligne vide : Luna colle tout le bloc
     // d'un coup dans la grille Epicor, et une ligne vide y ferait une rangee vide.
     var epicorPanier = blocs.join('\n');
-    if (epicorPanier) body += '\n' + i18n.t('email.epicor_header') + '\n' + epicorPanier + '\n';
+    if (epicorPanier && !parMachine) body += '\n' + i18n.t('email.epicor_header') + '\n' + epicorPanier + '\n';
     body += '\n--------------------------------\n' +
         i18n.t('email.requested_by', { name: userName }) + '\n' +
         'Portail e-Trak\n' +
         'https://etraksolutions.github.io/portal-machine-V2/';
     var liste = items.map(function (it) { return libelleMachine(it.photo); }).join(', ');
     if (liste.length > 110) liste = liste.slice(0, 107) + '...';
-    return { subject: i18n.t('email.panier_subject', { n: n, liste: liste }), body: body, epicor: epicorPanier };
+    return { subject: i18n.t(parMachine ? 'email.panier_subject_par_machine' : 'email.panier_subject', { n: n, liste: liste }),
+             body: body, epicor: epicorPanier };
 }
 
 // La demande EN COURS de preparation, sans rien envoyer : le panier (plus la machine

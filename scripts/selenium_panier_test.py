@@ -17,7 +17,11 @@ Verifie :
   8. machine a l'ecran non ajoutee au moment d'envoyer : proposee, puis incluse ;
   9. lieu non exige si toutes les machines sont installees par le client ;
  10. limite de 10 machines ;
- 11. aucune erreur JS SEVERE.
+ 11. aucune erreur JS SEVERE ;
+ 12. (2026-10-06) panier de 2 machines et plus : a l'envoi, la question « une seule
+     soumission / une soumission par machine / Annuler ». Par machine : chaque machine
+     suivie de SON bloc Epicor, pas de total general ni de bloc au bas, objet
+     « Demande de N soumissions (1 par machine) ». Annuler : rien ne part, panier intact.
 """
 import sys, io, os, json, threading, http.server, socketserver, time
 from urllib.parse import unquote
@@ -147,6 +151,19 @@ def libelles_affiches():
     return js("return [...document.querySelectorAll('#panier-liste .panier-item-titre')].map(e=>e.textContent.trim());")
 
 
+def envoyer(choix=None):
+    """Clique « Envoyer ». choix : 'une' ou 'par-machine' pour repondre a la question du
+    format (panier de 2 machines et plus), 'cancel' pour Annuler, None si aucune question
+    n'est attendue. Renvoie True si la question est apparue."""
+    js("window.__lastSoumissionEmail=null; document.getElementById('soumission-submit').click();")
+    time.sleep(1.0)
+    vue = js("var m=document.getElementById('modal-format'); return !!m && m.style.display==='flex';")
+    if vue and choix:
+        js("document.getElementById('modal-format-' + arguments[0]).click();", choix)
+        time.sleep(1.0)
+    return vue
+
+
 def action(i, act):
     js("document.querySelectorAll('#panier-liste .panier-item')[arguments[0]].querySelector('[data-act=\"%s\"]').click();" % act, i)
     time.sleep(1.2)
@@ -243,8 +260,15 @@ try:
 
     print('--- 7) envoi du panier ---')
     avant = panier_js()
-    js("document.getElementById('soumission-submit').click();")
-    time.sleep(1.2)
+    js("window.__lastSoumissionEmail=null; document.getElementById('soumission-submit').click();")
+    time.sleep(1.0)
+    check('2 machines : la question du format apparait',
+          js("return document.getElementById('modal-format').style.display") == 'flex')
+    check('texte de la question : « Le panier contient 2 machines »',
+          'Le panier contient 2 machines' in js("return document.getElementById('modal-format-text').textContent"))
+    check('rien ne part avant la reponse', not js("return window.__lastSoumissionEmail;"))
+    js("document.getElementById('modal-format-une').click();"); time.sleep(1.0)
+    check('la fenetre se ferme', js("return document.getElementById('modal-format').style.display") == 'none')
     m = js("return window.__lastSoumissionEmail;")
     check('un courriel genere', bool(m))
     if m:
@@ -253,6 +277,8 @@ try:
             open(os.environ['PANIER_EXEMPLE'], 'w', encoding='utf-8').write(m['subject'] + '\n\n' + corps)
         check('objet : 2 machines, avec la liste', m['subject'] == 'Demande de soumission — 2 machine(s) : Caterpillar 320 (2024), Bobcat E08 (2015)', m['subject'])
         check('« Nombre de machines : 2 »', 'Nombre de machines : 2' in corps)
+        check('« Format demandé : une seule soumission pour les 2 machines »',
+              'Format demandé : une seule soumission pour les 2 machines' in corps)
         check('section machine 1 : « === Machine 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) === »', '=== Machine 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) ===' in corps)
         check('section machine 2 : « === Machine 2 de 2 : 1 × excavatrice Bobcat E08 (2015) === »', '=== Machine 2 de 2 : 1 × excavatrice Bobcat E08 (2015) ===' in corps)
         entete = js("return i18n.t('email.epicor_header');")
@@ -287,7 +313,7 @@ try:
     ajouter()
     sommes = js("var P=0,I=0; panier.forEach(function(it){ var t=totauxLignes(it.photo.lignes); P+=t.pieces; I+=t.installation; }); return [P,I, fmtPrice(P), fmtPrice(I)];")
     vendeur()
-    js("document.getElementById('soumission-submit').click();"); time.sleep(1.2)
+    envoyer('une')
     corps = js("return window.__lastSoumissionEmail.body;")
     ligne_tot = corps.split('TOTAL DE LA SOUMISSION\n')[1].split('\n')[0] if 'TOTAL DE LA SOUMISSION\n' in corps else ''
     check('total general = %s + %s' % (sommes[2], sommes[3]), sommes[2] in ligne_tot and sommes[3] in ligne_tot, ligne_tot)
@@ -304,7 +330,8 @@ try:
           'obligatoire' in js("return document.querySelector('label[for=soumission-lieu]').textContent"),
           js("return document.querySelector('label[for=soumission-lieu]').textContent"))
     vendeur()
-    js("window.__confirms=[]; document.getElementById('soumission-submit').click();"); time.sleep(1.2)
+    js("window.__confirms=[];")
+    check('la question du format suit l ajout (2 machines)', envoyer('une'))
     check('on propose de l ajouter', len(js("return window.__confirms;")) == 1 and "pas encore dans la soumission" in js("return window.__confirms[0];"))
     corps = js("return window.__lastSoumissionEmail ? window.__lastSoumissionEmail.body : '';")
     check('acceptee : incluse (2 machines)', 'Nombre de machines : 2' in corps and 'Bobcat E08 (2015)' in corps)
@@ -316,7 +343,7 @@ try:
     champ('soumission-company', 'Test Claude inc.')
     ajouter()
     vendeur()
-    js("window.__lastSoumissionEmail=null; document.getElementById('soumission-submit').click();"); time.sleep(1.2)
+    check('1 seule machine : aucune question de format', not envoyer())
     check('envoye sans lieu', bool(js("return window.__lastSoumissionEmail;")))
     ouvrir()
     machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 1, 'oui')
@@ -326,6 +353,52 @@ try:
     js("window.__lastSoumissionEmail=null; document.getElementById('soumission-submit').click();"); time.sleep(1.2)
     check('pose e-Trak : le lieu est exige', not js("return window.__lastSoumissionEmail;")
           and 'rgb(255, 68, 68)' in js("return getComputedStyle(document.getElementById('soumission-lieu')).borderColor"))
+
+    print('--- 12) une soumission par machine (Steve, 2026-10-06) ---')
+    ouvrir()
+    machine('Excavatrice', 'Caterpillar', '320', '2024', ['lim-hauteur'], 2, 'oui')
+    champ('soumission-company', 'Test Claude inc.'); champ('soumission-lieu', 'Victoriaville')
+    ajouter()
+    machine('Excavatrice', 'Bobcat', 'E08', '2015', ['lim-hauteur'], 1, 'non')
+    ajouter()
+    vendeur()
+    avant = panier_js()
+    check('Annuler : la question est posee', envoyer('cancel'))
+    check('Annuler : rien ne part, panier intact (2 machines)',
+          not js("return window.__lastSoumissionEmail;") and len(panier_js()) == 2
+          and js("return document.getElementById('modal-format').style.display") == 'none')
+    check('par machine : la question est posee', envoyer('par-machine'))
+    m = js("return window.__lastSoumissionEmail;")
+    check('par machine : un courriel genere', bool(m))
+    if m:
+        corps = m['body']
+        if os.environ.get('PANIER_EXEMPLE_PAR_MACHINE'):
+            open(os.environ['PANIER_EXEMPLE_PAR_MACHINE'], 'w', encoding='utf-8').write(m['subject'] + '\n\n' + corps)
+        check('objet « Demande de 2 soumissions (1 par machine) : ... »',
+              m['subject'] == 'Demande de 2 soumissions (1 par machine) : Caterpillar 320 (2024), Bobcat E08 (2015)', m['subject'])
+        check('« Format demandé : UNE SOUMISSION PAR MACHINE (2 soumissions) »',
+              'Format demandé : UNE SOUMISSION PAR MACHINE (2 soumissions)' in corps)
+        check('« === Soumission 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) === »',
+              '=== Soumission 1 de 2 : 2 × excavatrice Caterpillar 320 (2024) ===' in corps)
+        check('« === Soumission 2 de 2 : 1 × excavatrice Bobcat E08 (2015) === »',
+              '=== Soumission 2 de 2 : 1 × excavatrice Bobcat E08 (2015) ===' in corps)
+        e1 = js("return i18n.t('email.epicor_header_soumission', {i: 1});")
+        e2 = js("return i18n.t('email.epicor_header_soumission', {i: 2});")
+        check('bloc Epicor de la soumission 1 = lignes de la machine 1', ('\n' + e1 + '\n' + avant[0]['epicor'] + '\n') in corps)
+        check('bloc Epicor de la soumission 2 = lignes de la machine 2', ('\n' + e2 + '\n' + avant[1]['epicor'] + '\n') in corps)
+        check('chaque bloc sous SA machine (1, bloc 1, 2, bloc 2)',
+              corps.find('Soumission 1 de 2') < corps.find(e1) < corps.find('Soumission 2 de 2') < corps.find(e2))
+        check('pas de total general', 'TOTAL DE LA SOUMISSION' not in corps)
+        check('pas de bloc Epicor commun au bas', js("return i18n.t('email.epicor_header');") not in corps)
+        check('texte de chaque machine repris tel quel (avec son total)', all(x['texte'] in corps for x in avant))
+        check('signature a la fin', corps.rstrip().endswith('portal-machine-V2/'))
+        check('Copier pour Epicor = lignes des 2 machines',
+              js("return window.__lastSoumissionEpicor;") == avant[0]['epicor'] + '\n' + avant[1]['epicor'])
+    check('par machine : panier vide apres l envoi', len(panier_js()) == 0)
+    js("localStorage.setItem('portal_lang','en'); window.dispatchEvent(new Event('langchange'));"); time.sleep(0.5)
+    check('anglais : « One single quote » / « One quote per machine »',
+          js("return i18n.t('panier.format_une') + ' / ' + i18n.t('panier.format_par_machine')") == 'One single quote / One quote per machine')
+    js("localStorage.setItem('portal_lang','fr'); window.dispatchEvent(new Event('langchange'));"); time.sleep(0.5)
 
     print('--- 9b) sans machine : les unites ne multiplient pas (decision de Steve) ---')
     ouvrir()

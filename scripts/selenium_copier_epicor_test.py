@@ -172,7 +172,11 @@ try:
     ajouter()
     attendu = panier_epicor()
     js("document.getElementById('soumission-submit').click();")
-    time.sleep(1.2)
+    time.sleep(1.0)
+    # 2 machines : question du format a l'envoi (Steve, 2026-10-06) ; la copie Epicor
+    # reprend les lignes des 2 machines quel que soit le format.
+    js("var b=document.getElementById('modal-format-une'); if (b) b.click();")
+    time.sleep(1.0)
     btn, copie, alertes = cliquer_copier()
     check('bouton present apres l envoi', btn)
     check('copie = lignes des 2 machines a la suite', copie == attendu and bool(attendu), (copie, attendu))

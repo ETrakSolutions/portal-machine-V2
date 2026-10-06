@@ -580,6 +580,8 @@
     background: #4DA8FF;
     color: #fff;
 }
+.modal-actions-wrap { flex-direction: column; }
+.modal-actions-wrap .modal-btn { width: 100%; }
 
 /* ---- MOBILE ---- */
 @media (max-width: 600px) {
