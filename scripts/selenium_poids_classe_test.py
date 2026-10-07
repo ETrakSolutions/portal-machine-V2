@@ -60,6 +60,8 @@ LOTS = {
     'Volvo CE': ['EW140D/E', 'EC140D/E', 'EC180D/E', 'EC200D/E', 'EC220D/E', 'EC250D/E',
                  'EC300D/E', 'EC350D/E', 'EC380D/E', 'EC480D/E', 'EC750D/E',
                  'EW160D/E', 'EW180D/E', 'EW205D/E', 'EW220D/E'],
+    # 2026-10-07 : demande du portail, fiche Develon NA (lancee au WOC 2022)
+    'Develon (Doosan)': ['DX140LCR-7'],
 }
 
 # Modeles retires de la BD parce qu'ils ne correspondent a aucun modele du
@@ -69,7 +71,9 @@ RETIRES = [('Link-Belt', '170 X3'), ('Link-Belt', '235 X3 LF'),
            # 2026-10-06 : doublons fusionnes ou noms absents chez le fabricant
            ('Liebherr', 'A 910 Compact'), ('Liebherr', 'R 950'), ('Liebherr', 'R 950 Litronic'),
            ('Liebherr', 'R 980'), ('Liebherr', 'R 980 Litronic'),
-           ('Case', 'CX145E'), ('John Deere', '260G / 260P')]
+           ('Case', 'CX145E'), ('John Deere', '260G / 260P'),
+           # 2026-10-07 : saisie en minuscules de la demande, renommee DX140LCR-7
+           ('Develon (Doosan)', 'DX140lcr-7')]
 
 _DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'),
                      encoding='utf-8'))['Excavatrice']
