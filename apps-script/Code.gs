@@ -84,6 +84,7 @@ function doPost(e) {
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
     if (action === 'getprivate')     return jsonOut(getPrivate(body));
     if (action === 'listkeys')       return jsonOut(listKeys(body));
+    if (action === 'quota')          return jsonOut(getQuota(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -206,6 +207,34 @@ function listKeys(body) {
   if (!auth.ok) return { error: 'authentication required' };
   if (!auth.admin) return { error: 'admin role required' };
   return { keys: kvList(body.prefix || '') };
+}
+
+// { action:'quota', pin|token } -> { ok, total, plafond, libre, cles, familles:[{famille, cles, octets}] }
+// Mesure du quota des proprietes du script (500 Ko pour TOUT le portail) — 2026-10-07,
+// apres le 404 de setsav a 70 Ko : on ne savait pas qui occupait la place. Admin ou PIN.
+// Ne sort AUCUNE valeur, et aucun nom de cle : seulement des familles (le nom d'une cle
+// peut porter un courriel ou un jeton de session). Octets = cle + valeur en UTF-8.
+var QUOTA_PROPRIETES = 500 * 1024;
+function _familleCle(k) {
+  if (k.indexOf(SESSION_PREFIX) === 0) return SESSION_PREFIX;
+  if (k.indexOf('@') >= 0) return k.slice(0, k.indexOf('_') + 1) + '<courriel>';
+  return k.replace(/\d+$/, '#');
+}
+function getQuota(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok) return { error: 'authentication required' };
+  if (!auth.admin) return { error: 'admin role required' };
+  var all = PROPS.getProperties(), fam = {}, total = 0, n = 0;
+  Object.keys(all).forEach(function (k) {
+    var o = Utilities.newBlob(k).getBytes().length + Utilities.newBlob(String(all[k])).getBytes().length;
+    var f = _familleCle(k);
+    if (!fam[f]) fam[f] = { famille: f, cles: 0, octets: 0 };
+    fam[f].cles++; fam[f].octets += o; total += o; n++;
+  });
+  var familles = Object.keys(fam).map(function (f) { return fam[f]; })
+    .sort(function (a, b) { return b.octets - a.octets; });
+  return { ok: true, total: total, plafond: QUOTA_PROPRIETES, libre: QUOTA_PROPRIETES - total,
+           cles: n, familles: familles };
 }
 
 // Liste par les portes publiques (GET 'list', POST 'list' sans authentification).
@@ -1153,13 +1182,26 @@ function setSav(body) {
   var raw = _gzB64(JSON.stringify(out));      // base64 : ASCII, 1 caractere = 1 octet
   return _avecVerrou(function () {
     // Ancienne liste effacee AVANT d'ecrire la nouvelle : le quota n'a jamais a porter
-    // les deux a la fois (il restait ~80 Ko le 2026-09-29). Si l'ecriture echoue, la
-    // page affiche « listes indisponibles » jusqu'a la prochaine publication.
+    // les deux a la fois (il restait ~80 Ko le 2026-09-29).
+    // 2026-10-07 : une ecriture refusee (quota plein, 70 Ko) laissait la page SAV VIDE et
+    // repondait un 404 opaque. L'ancienne liste est maintenant gardee en memoire et
+    // REECRITE si la nouvelle ne passe pas ; la reponse dit pourquoi.
     var old = parseInt(PROPS.getProperty(SAV_PREFIX + 'n') || '0', 10);
+    var oldFmt = PROPS.getProperty(SAV_PREFIX + 'fmt'), oldParts = [];
+    for (var i0 = 0; i0 < old; i0++) oldParts.push(PROPS.getProperty(SAV_PREFIX + i0) || '');
     PROPS.setProperty(SAV_PREFIX + 'n', '0');
     for (var m = 0; m < old; m++) PROPS.deleteProperty(SAV_PREFIX + m);
     var n = Math.ceil(raw.length / SAV_CHUNK);
-    for (var k = 0; k < n; k++) PROPS.setProperty(SAV_PREFIX + k, raw.substr(k * SAV_CHUNK, SAV_CHUNK));
+    try {
+      for (var k = 0; k < n; k++) PROPS.setProperty(SAV_PREFIX + k, raw.substr(k * SAV_CHUNK, SAV_CHUNK));
+    } catch (e) {
+      for (var d = 0; d < n; d++) PROPS.deleteProperty(SAV_PREFIX + d);
+      for (var r = 0; r < oldParts.length; r++) PROPS.setProperty(SAV_PREFIX + r, oldParts[r]);
+      if (oldFmt) PROPS.setProperty(SAV_PREFIX + 'fmt', oldFmt);
+      PROPS.setProperty(SAV_PREFIX + 'n', String(oldParts.length));
+      return { error: 'storage full: ' + String(e && e.message || e).slice(0, 120),
+               octets: raw.length, ancienneListe: oldParts.length ? 'restauree' : 'aucune' };
+    }
     PROPS.setProperty(SAV_PREFIX + 'n', String(n));
     PROPS.setProperty(SAV_PREFIX + 'fmt', 'gz');
     return { ok: true, clients: clients.length, pieces: pieces.length, contacts: Object.keys(contacts).length,

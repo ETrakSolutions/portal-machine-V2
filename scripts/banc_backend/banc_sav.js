@@ -118,5 +118,38 @@ check('la cedule suit sa propre case (dealer toujours refuse)', post({ action: '
 store.roles_permissions = JSON.stringify({ technicien: { savAccess: true } });
 check('savAccess recoche : technicien recoit', post({ action: 'getsav', token: tt }).ok === true);
 delete store.roles_permissions;
+
+// Quota plein (2026-10-07) : la page SAV restait VIDE apres une ecriture refusee.
+// On simule le plafond de 500 Ko : setProperty leve une erreur au-dela.
+const vrai = ctx.PropertiesService.getScriptProperties;
+const octets = () => Object.entries(store).reduce((s, [k, v]) => s + Buffer.byteLength(k) + Buffer.byteLength(v), 0);
+let plafond = Infinity;
+ctx.PropertiesService.getScriptProperties = () => { const p = vrai();
+  return { ...p, setProperty: (k, v) => { const avant = store[k]; p.setProperty(k, v);
+    if (octets() > plafond) { if (avant === undefined) delete store[k]; else store[k] = avant;
+      throw new Error('You have exceeded the property storage quota.'); } } }; };
+vm.runInContext('PROPS = PropertiesService.getScriptProperties();', ctx);
+res = post({ action: 'setsav', sav: { clients: clients.slice(0, 50), pieces: pieces.slice(0, 50) }, pin: 'PINSECRET' });
+check('quota : publication normale avant le plafond', res.ok === true);
+plafond = octets() + 3000;
+res = post({ action: 'setsav', sav, pin: 'PINSECRET' });
+check('quota plein : refus explicite (storage full), pas une erreur opaque', /^storage full/.test(res.error || '') && res.ancienneListe === 'restauree');
+const apres = post({ action: 'getsav', token: vi });
+check('quota plein : l\'ANCIENNE liste est restauree et lisible', apres.ok && apres.sav.clients.length === 50);
+check('quota plein : aucune tranche orpheline', Object.keys(store).filter(k => /^sav_ref_\d+$/.test(k)).length === +store.sav_ref_n);
+plafond = Infinity;
+
+// Mesure du quota (action 'quota', 2026-10-07) : admin ou PIN, jamais de valeur ni de nom de cle
+store['user_active_x@e'] = '1';
+let q = post({ action: 'quota', pin: 'PINSECRET' });
+check('quota : le PIN obtient la mesure', q.ok === true && q.total === octets() && q.libre === 500 * 1024 - q.total);
+check('quota : familles triees, tranches SAV regroupees', q.familles[0].octets >= q.familles[q.familles.length - 1].octets
+  && q.familles.some(f => f.famille === 'sav_ref_#' && f.cles === +store.sav_ref_n));
+check('quota : sessions et courriels masques dans les noms', q.familles.some(f => f.famille === 'session_')
+  && q.familles.some(f => f.famille === 'user_<courriel>') && !JSON.stringify(q).includes('x@e') && !JSON.stringify(q).includes('PINSECRET'));
+check('quota : sans session refuse', post({ action: 'quota' }).error === 'authentication required');
+check('quota : role non admin refuse', post({ action: 'quota', token: vi }).error === 'admin role required');
+check('quota : super admin connecte obtient la mesure', post({ action: 'quota', token: jj }).ok === true);
+delete store['user_active_x@e'];
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);
