@@ -71,11 +71,30 @@
     var TYPE_LBL = { dealer: 'Dealer', direct: 'Client direct', interco: 'Intercompagnie' };
     function tagType(t) { return t ? '<span class="sav-tag ' + t + '">' + (TYPE_LBL[t] || t) + '</span>' : ''; }
 
+    // Changement de client (Steve, 2026-10-07) : le contact, le telephone, le courriel, le
+    // type de client, le client final et le lieu (section 3) du client precedent ne doivent
+    // pas rester. On vide
+    // quand le client reconnu change (A -> B, ou A -> nom tape d'un nouveau client), AVANT
+    // d'appliquer le type du nouveau client. Le premier choix de client ne vide rien.
+    var clientCle = null;
+    function siChangementClient() {
+        var cle = clientChoisi ? clientChoisi[0] : null;
+        if (cle === clientCle) return;
+        var avant = clientCle;
+        clientCle = cle;
+        if (avant === null) return;
+        ['f-contact', 'f-tel', 'f-courriel', 'f-final', 'f-lieu'].forEach(function (id) { $(id).value = ''; });
+        document.querySelectorAll('input[name="f-type"]').forEach(function (r) { r.checked = false; });
+        majType();
+    }
+
     function adopterClient(c) {
         clientChoisi = c;
+        siChangementClient();
         if (c) {
             $('f-compagnie').value = c[0];
-            if (c[1] && !$('f-lieu').value) $('f-lieu').value = c[1] + (c[2] ? ', ' + c[2] : '');
+            // Le lieu n'est PLUS pre-rempli par la ville du client (Steve, 2026-10-07) : beaucoup
+            // de clients appellent d'un chantier ailleurs. Il se demande pendant l'appel.
             var r = document.querySelector('input[name="f-type"][value="' + c[3] + '"]');
             if (r) { r.checked = true; majType(); }
         }
@@ -90,12 +109,13 @@
     // contacts n'apparaissaient jamais (constate par Jacquot le 2026-09-30).
     $('f-compagnie').addEventListener('input', function () {
         var v = $('f-compagnie').value;
-        if (clientChoisi && v !== clientChoisi[0]) { clientChoisi = null; majClientTag(); }
+        if (clientChoisi && v !== clientChoisi[0]) { clientChoisi = null; siChangementClient(); majClientTag(); }
         if (!clientChoisi) {
             var q = norm(v).trim();
             var m = q ? REF.clients.filter(function (c) { return norm(c[0]).trim() === q; }) : [];
             if (m.length === 1) {
                 clientChoisi = m[0];
+                siChangementClient();
                 var r = document.querySelector('input[name="f-type"][value="' + m[0][3] + '"]');
                 if (r && !val('f-type')) { r.checked = true; majType(); }
             }
@@ -186,7 +206,7 @@
         ajoute('Type de client', ({ dealer: 'Dealer', direct: 'Client direct' })[val('f-type')] || '');
         if (val('f-type') === 'dealer') ajoute('Client final', $('f-final').value);
         L.push(''); L.push('3. MACHINE ET SYSTÈME');
-        ajoute('Produit', [].map.call(document.querySelectorAll('#f-produits input:checked'), function (c) { return c.value; }).join(', '));
+        ajoute('Produit', produitsCoches().join(', '));
         ajoute('Machine', $('f-machine').value); ajoute('N° série système', $('f-serie').value); ajoute('Lieu', $('f-lieu').value);
         L.push(''); L.push('4. PROBLÈME');
         ajoute('Machine arrêtée', val('f-arret').toUpperCase()); ajoute('Demande de bypass', val('f-bypass').toUpperCase());
@@ -198,9 +218,31 @@
         ajoute('Facturation / compte', val('f-fact') === 'oui' ? 'OUI' : '');
         return L.join('\n');
     }
+    // Cases « Produit ». Cocher « Autre » fait apparaitre un champ de precision, obligatoire
+    // et repris dans le courriel (Steve, 2026-10-07) ; decocher le cache et le vide.
+    function dessinerProduits() {
+        $('f-produits').innerHTML = REF.produits.map(function (p) {
+            return '<label' + (p === 'Autre' ? ' class="p-autre"' : '') + '><input type="checkbox" value="' + esc(p) + '"> ' + esc(p) + '</label>'; }).join('');
+        // « Autre » toujours en bas de la 3e colonne (Steve, 2026-10-07).
+        // 3 colonnes remplies de haut en bas, dans l'ordre de la liste (Steve, 2026-10-07).
+        $('f-produits').style.setProperty('--lignes', Math.max(1, Math.ceil(REF.produits.length / 3)));
+        majAutre();
+    }
+    function autreCoche() { return !!document.querySelector('#f-produits input[value="Autre"]:checked'); }
+    function majAutre() {
+        var oui = autreCoche();
+        $('w-autre').style.display = oui ? '' : 'none';
+        if (!oui) $('f-autre').value = '';
+    }
+    $('f-produits').addEventListener('change', majAutre);
+    function produitsCoches() {
+        return [].map.call(document.querySelectorAll('#f-produits input:checked'), function (c) {
+            return c.value === 'Autre' && $('f-autre').value.trim() ? 'Autre : ' + $('f-autre').value.trim() : c.value; });
+    }
+
     function sujet() {
         var urg = (val('f-arret') === 'oui' || val('f-bypass') === 'oui') ? 'URGENT — ' : '';
-        var prod = [].map.call(document.querySelectorAll('#f-produits input:checked'), function (c) { return c.value; }).join('/');
+        var prod = produitsCoches().join(' / ');
         return 'SAV — ' + urg + ($('f-compagnie').value.trim() || 'client') + (prod ? ' — ' + prod : '');
     }
 
@@ -213,6 +255,7 @@
         marque('w-tel', !$('f-tel').value.trim() && !$('f-courriel').value.trim(), 'téléphone (ou courriel)');
         marque('w-type', !val('f-type'), 'type de client');
         marque('w-produit', !document.querySelector('#f-produits input:checked'), 'produit');
+        marque('w-autre', autreCoche() && !$('f-autre').value.trim(), 'précision du produit « Autre »');
         marque('w-arret', !val('f-arret'), 'machine arrêtée ?');
         marque('w-bypass', !val('f-bypass'), 'demande de bypass ?');
         marque('w-desc', !$('f-desc').value.trim(), 'description');
@@ -284,16 +327,18 @@
                 var up = d.sav.updated ? new Date(d.sav.updated) : null;
                 $('sav-load').textContent = REF.clients.length + ' clients et ' + REF.pieces.length + ' pièces'
                     + (up && !isNaN(up) ? ' · listes au ' + up.toLocaleDateString('fr-CA') : '');
-                $('f-produits').innerHTML = REF.produits.map(function (p) {
-                    return '<label><input type="checkbox" value="' + esc(p) + '"> ' + esc(p) + '</label>'; }).join('');
+                dessinerProduits();
                 dessinerDest();
             })
             .catch(function () { $('sav-load').textContent = 'Listes indisponibles pour le moment : la fiche fonctionne, sans recherche.'; });
     }
     // Sans liste publiee, les destinataires et les produits restent vides : valeurs de repli
     // (les courriels ne sont jamais ecrits ici — ils viennent du serveur).
-    REF.produits = ['LIMIT-ELG', 'LIMIT-ELN', 'LIMIT-ELP', 'Guide-Pro', 'IDC', 'Scale-Pro / Lite', 'Autre'];
-    $('f-produits').innerHTML = REF.produits.map(function (p) { return '<label><input type="checkbox" value="' + esc(p) + '"> ' + esc(p) + '</label>'; }).join('');
+    // Meme liste que sav-reglages.json (Steve, 2026-10-07).
+    REF.produits = ["Limiteur d'excavatrice", 'Creusage 2D', 'Indicateur de charge', 'Limiteur de rétrocaveuse',
+                    'Limiteur de pompe à béton', 'Limiteur de téléhandler', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
+                    'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance', 'Caméras', 'Autre'];
+    dessinerProduits();
     init();
     charger();
 })();

@@ -28,7 +28,10 @@ SAV = {
                 ['Prospect Sans Groupe', 'Rimouski', 'QC', '']],
     'pieces': [['E03A-0013', 'Câble Can Femelle et male M12, 5 pôles - 3m, 2 Connecteurs M12'],
                ['C01A-0005-73-360-0-250', 'Inclino e-trak 73 360 pos 0']],
-    'produits': ['LIMIT-ELG', 'LIMIT-ELN', 'LIMIT-ELP', 'Guide-Pro', 'IDC', 'Scale-Pro / Lite', 'Autre'],
+    # Liste de Steve du 2026-10-07, dans l'ordre des 3 colonnes lues de haut en bas.
+    'produits': ["Limiteur d'excavatrice", 'Creusage 2D', 'Indicateur de charge', 'Limiteur de rétrocaveuse',
+                 'Limiteur de pompe à béton', 'Limiteur de téléhandler', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
+                 'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance', 'Caméras', 'Autre'],
     'routage': [{'cle': 'mathieu', 'nom': 'Mathieu Robillard', 'courriel': '', 'regle': 'Machine arrêtée'},
                 {'cle': 'steve', 'nom': 'Steve Martineau', 'courriel': 'steve@test', 'regle': 'Pièce'},
                 {'cle': 'luna', 'nom': 'Luna Briceno', 'courriel': 'luna@test', 'regle': 'Déplacement'},
@@ -98,15 +101,29 @@ def main():
         v('bandeau : nombre de clients et de pieces', '4 clients et 2 pièces' in d.find_element(By.ID, 'sav-load').text,
           d.find_element(By.ID, 'sav-load').text)
         v('recu par = personne connectee', d.find_element(By.ID, 'f-recu').get_attribute('value') == 'Testeur Interne')
-        v('7 produits en cases', len(d.find_elements(By.CSS_SELECTOR, '#f-produits input')) == 7)
+        v('14 produits en cases', len(d.find_elements(By.CSS_SELECTOR, '#f-produits input')) == 14)
+        pos = d.execute_script("return [...document.querySelectorAll('#f-produits label')].map(l => [l.innerText.trim(), Math.round(l.getBoundingClientRect().left), Math.round(l.getBoundingClientRect().top)])")
+        xs = sorted({x for _, x, _ in pos})
+        col = lambda t: [x for n, x, _ in pos if n == t][0]
+        row = lambda t: [y for n, _, y in pos if n == t][0]
+        v('3 colonnes alignees', len(xs) == 3, xs)
+        v('colonne 1 : excavatrice a pompe a beton ; colonne 2 : telehandler a grue ; colonne 3 : foreuse, balance, cameras',
+          col("Limiteur d'excavatrice") == col('Limiteur de pompe à béton') == xs[0]
+          and col('Limiteur de téléhandler') == col('Limiteur de grue') == xs[1]
+          and col('Limiteur de foreuse') == col('Caméras') == xs[2], pos)
+        v('« Autre » en bas de la 3e colonne, sur la rangee de « pompe a beton »',
+          col('Autre') == xs[2] and row('Autre') == row('Limiteur de pompe à béton'), pos)
+        v('champ « Precisez Autre » cache au depart', not d.find_element(By.ID, 'w-autre').is_displayed())
 
         print('2) Client')
+        d.find_element(By.ID, 'f-contact').send_keys('Avant')
         items = choisir(d, 'f-compagnie', 'waj lav', 'Laval')
+        v('premier choix de client : le contact deja tape reste', d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Avant')
         v('recherche « waj lav » : une seule succursale + nouveau client', len(items) == 2 and 'Laval' in items[0], items)
         v('client choisi : nom rempli', d.find_element(By.ID, 'f-compagnie').get_attribute('value') == 'Wajax Limitée - Laval')
         v('type deduit : Dealer coche', d.find_element(By.CSS_SELECTOR, 'input[name=f-type][value=dealer]').is_selected())
         v('champ client final visible pour un dealer', d.find_element(By.ID, 'w-final').is_displayed())
-        v('lieu pre-rempli par la ville', d.find_element(By.ID, 'f-lieu').get_attribute('value') == 'Laval, QC')
+        v('lieu PAS pre-rempli par la ville (chantiers ailleurs, Steve 2026-10-07)', d.find_element(By.ID, 'f-lieu').get_attribute('value') == '')
         v('client sans contact Epicor : zone contacts masquee', not d.find_element(By.ID, 'w-contacts').is_displayed())
         choisir(d, 'f-compagnie', 'waj cham', 'Chambly')
         btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
@@ -128,8 +145,31 @@ def main():
           == ['Marc Girard', '819-555-0101', 'mgirard@test'])
         for i in ('f-contact', 'f-tel', 'f-courriel'): d.find_element(By.ID, i).clear()
         v('changement de client : Client direct coche', d.find_element(By.CSS_SELECTOR, 'input[name=f-type][value=direct]').is_selected())
+
+        print('2b) Changement de client : contact, telephone, courriel, type et client final vides (Steve, 2026-10-07)')
+        champs = ('f-contact', 'f-tel', 'f-courriel', 'f-final')
+        lire = lambda: [d.find_element(By.ID, i).get_attribute('value') for i in champs]
+        coches = lambda: [r.get_attribute('value') for r in d.find_elements(By.CSS_SELECTOR, 'input[name=f-type]') if r.is_selected()]
+        d.find_element(By.ID, 'f-contact').send_keys('Marc Girard'); d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
+        d.find_element(By.ID, 'f-courriel').send_keys('mgirard@test')
+        choisir(d, 'f-compagnie', 'waj lav', 'Laval')
+        v('Gravier -> Wajax Laval : contact, telephone, courriel vides', lire()[:3] == ['', '', ''], lire())
+        v('Gravier -> Wajax Laval : type du NOUVEAU client (Dealer)', coches() == ['dealer'], coches())
+        d.find_element(By.ID, 'f-final').send_keys('Client X'); d.find_element(By.ID, 'f-contact').send_keys('Pierre'); d.find_element(By.ID, 'f-lieu').send_keys('Chantier Laval')
+        choisir(d, 'f-compagnie', 'waj cham', 'Chambly')
+        v('Laval -> Chambly : contact et client final vides', lire() == ['', '', '', ''], lire())
+        v('Laval -> Chambly : lieu vide (le lieu tape pour Laval ne reste pas)', d.find_element(By.ID, 'f-lieu').get_attribute('value') == '',
+          d.find_element(By.ID, 'f-lieu').get_attribute('value'))
+        d.find_element(By.ID, 'f-contact').send_keys('Paul')
         el = d.find_element(By.ID, 'f-compagnie'); el.clear(); el.send_keys('Nouvelle Excavation Inc'); time.sleep(0.4)
+        v('client Epicor -> nouveau client tape : contact vide, aucun type coche', lire()[0] == '' and coches() == [], [lire(), coches()])
+        v('client Epicor -> nouveau client tape : lieu vide', d.find_element(By.ID, 'f-lieu').get_attribute('value') == '',
+          d.find_element(By.ID, 'f-lieu').get_attribute('value'))
+        d.find_element(By.ID, 'f-contact').send_keys('Robert')
+        el.send_keys(' Ltee'); time.sleep(0.3)
+        v('en continuant de taper le nouveau nom : le contact saisi reste', lire()[0] == 'Robert', lire())
         v('nom inconnu : marque « nouveau client »', 'nouveau client' in d.find_element(By.ID, 'f-type-tag').text)
+        d.find_element(By.ID, 'f-contact').clear()
         choisir(d, 'f-compagnie', 'gravier dun', 'Gravier')
 
         print('3) Nom tape sans choisir dans la liste (correctif 2026-09-30)')
@@ -167,8 +207,17 @@ def main():
           and 'routage' not in alerte and not d.execute_script('return window.__mailto'), alerte)
         d.find_element(By.ID, 'f-contact').send_keys('Marc Girard')
         d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
-        d.find_element(By.CSS_SELECTOR, '#f-produits input[value="LIMIT-ELG"]').click()
+        d.find_elements(By.CSS_SELECTOR, '#f-produits input')[0].click()
         d.find_element(By.ID, 'f-desc').send_keys('Besoin pièces E03A-0013, câble M12 3 m.')
+        d.find_element(By.CSS_SELECTOR, '#f-produits input[value="Autre"]').click(); time.sleep(0.2)
+        v('« Autre » coche : champ de precision affiche', d.find_element(By.ID, 'w-autre').is_displayed())
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
+        v('« Autre » sans precision : envoi refuse', 'précision du produit « Autre »' in d.find_element(By.ID, 'sav-alert').text
+          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-alert').text)
+        d.find_element(By.CSS_SELECTOR, '#f-produits input[value="Autre"]').click(); time.sleep(0.2)
+        v('« Autre » decoche : champ cache', not d.find_element(By.ID, 'w-autre').is_displayed())
+        d.find_element(By.CSS_SELECTOR, '#f-produits input[value="Autre"]').click(); time.sleep(0.2)
+        d.find_element(By.ID, 'f-autre').send_keys('Module GPS')
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.5)
         u = d.execute_script('return window.__mailto') or ''
         v('courriel ouvert', u.startswith('mailto:'), u[:60])
@@ -179,7 +228,8 @@ def main():
         v('destinataires = Kevin et Luna, meme avec une piece et un bypass', dest == 'kevin@test,luna@test', dest)
         v('pas de copie en double (Kevin deja destinataire)', not prm.get('cc'), prm.get('cc'))
         v('sujet : URGENT (bypass) + compagnie + produit',
-          (prm.get('subject') or [''])[0] == 'SAV — URGENT — Gravier Duncan Simard — LIMIT-ELG', prm.get('subject'))
+          (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Duncan Simard — Limiteur d'excavatrice / Autre : Module GPS", prm.get('subject'))
+        v('corps : produits avec la precision de « Autre »', "Produit : Limiteur d'excavatrice, Autre : Module GPS" in corps, corps[:400])
         v('corps : client, contact, piece, bypass ; plus de routage ni de suivi',
           all(x in corps for x in ('Compagnie : Gravier Duncan Simard', 'Contact : Marc Girard', '1 × E03A-0013',
                                    'Demande de bypass : OUI'))

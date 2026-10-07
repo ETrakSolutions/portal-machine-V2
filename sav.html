@@ -29,6 +29,12 @@
         .sav-f.err input, .sav-f.err textarea, .sav-f.err .sav-radios { border-color: #e74c3c; box-shadow: 0 0 0 1px #e74c3c; }
         .sav-radios { display: flex; flex-wrap: wrap; gap: 6px 14px; color: #ddd; font-size: 0.88rem; border: 1px solid transparent; border-radius: 8px; padding: 2px 0; }
         .sav-radios label { display: inline-flex; gap: 6px; align-items: center; color: #ddd; font-size: 0.88rem; margin: 0; cursor: pointer; }
+        /* Produits en 3 colonnes alignees, lues de haut en bas (Steve, 2026-10-07) ; une seule colonne sur un petit ecran. */
+        #f-produits { display: grid; grid-auto-flow: column; grid-template-columns: repeat(3, minmax(0, 1fr));
+                      grid-template-rows: repeat(var(--lignes, 5), auto); gap: 8px 16px; }
+        #f-produits label.p-autre { grid-column: 3; grid-row: var(--lignes, 5); }
+        @media (max-width: 900px) { #f-produits { grid-auto-flow: row; grid-template-columns: 1fr; grid-template-rows: none; }
+            #f-produits label.p-autre { grid-column: auto; grid-row: auto; } }
         .sav-hint { color: #8a97a3; font-size: 0.75rem; margin-top: 3px; }
         .sav-ac { position: relative; }
         .sav-ac-list { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; background: #262626; border: 1px solid #555;
@@ -126,6 +132,7 @@
                 <section class="sav-sec"><h2><span class="n">3</span> Machine et système</h2>
                     <div class="sav-grid">
                         <div class="sav-f full" id="w-produit"><label>Produit <span class="req">*</span></label><div class="sav-radios" id="f-produits"></div></div>
+                        <div class="sav-f full" id="w-autre" style="display:none;"><label>Précisez « Autre » <span class="req">*</span></label><input type="text" id="f-autre" placeholder="Quel produit ou système ?"></div>
                         <div class="sav-f"><label>Machine (marque, modèle)</label><input type="text" id="f-machine"></div>
                         <div class="sav-f"><label>N° de série du système</label><input type="text" id="f-serie"></div>
                         <div class="sav-f full"><label>Lieu (ville, chantier)</label><input type="text" id="f-lieu"></div>
@@ -170,6 +177,6 @@
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/sav.js?v=4"></script>
+    <script src="js/sav.js?v=5"></script>
 </body>
 </html>
