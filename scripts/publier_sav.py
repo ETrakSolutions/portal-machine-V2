@@ -13,6 +13,9 @@ Sources :
                  sans main-d'oeuvre, kilometrage, garantie, installation ni divers.
   - SharePoint E-Trak Production > General > _Portail e-Trak > sav-reglages.json :
       produits, routage (cle, nom, courriel, regle) et cc — modifiable sans toucher au code.
+  - Contacts : les vraies personnes d'Epicor (CustCnt) ; pour un client qui n'en a
+    aucune, celles de Salesforce (scripts/exporter_contacts_salesforce.mjs), marquees
+    « Salesforce » dans la fonction (option --avec-salesforce, desactivee par defaut).
 
 Usage :
     py -3.13 scripts/publier_sav.py --dry-run    # construit et resume, n'envoie rien
@@ -24,7 +27,9 @@ import argparse
 import collections
 import re
 import json
+import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import unicodedata
@@ -48,7 +53,9 @@ def classeur_par_defaut():
 GROUPES_EXCLUS = ('3116', '3117', '3140', '3120', '32', '9001', '1930')
 # Au-dela, la liste pese sur le quota des proprietes du script (500 Ko au total, ~80 Ko
 # libres le 2026-09-29) : plafond sur la taille COMPRESSEE, celle qui est stockee.
-PLAFOND_OCTETS = 45_000
+# Releve a 90 Ko le 2026-10-07 pour les contacts Salesforce (+32 Ko, 70,8 Ko mesures) : la purge du V1
+# du 2026-10-02 a libere ~335 Ko (plus de 400 Ko libres).
+PLAFOND_OCTETS = 90_000
 
 
 def _norm(s):
@@ -234,6 +241,70 @@ def lire_reglages(fichier):
     return r
 
 
+# Salesforce (decision Jacquot, 2026-10-07) : Epicor n'a souvent que des contacts de
+# facturation (846 clients sur 938 sans personne le 2026-10-07). Salesforce n'a AUCUN
+# lien fiable avec Epicor (pas de numero ERP e-Trak, comptes en double) : appariement
+# par NOM normalise (suffixes legaux retires), ou « nom + ville » pour les succursales
+# (« Wajax Limitee - Laval » = compte « Wajax - Laval »). Mesure du jour : 419 clients,
+# 777 personnes. Un contact dont le compte est dans une AUTRE ville est ecarte (85
+# clients : succursale differente ou homonyme). Les interco ne sont pas completes.
+SF_EXPORT = Path(__file__).resolve().parent / 'exporter_contacts_salesforce.mjs'
+SUFFIXES = re.compile(r'\b(inc|incorporated|ltee|ltd|limited|limitee|corp|corporation|co|cie|enr|senc|llc|the|company|compagnie)\b')
+
+
+def _cle_nom(n):
+    t = re.sub(r'[^a-z0-9 ]', ' ', _norm(n))
+    return SUFFIXES.sub(' ', t).replace(' ', '')
+
+
+def _tel(t):
+    t = str(t or '').strip()
+    d = re.sub(r'\D', '', t)
+    if len(d) == 11 and d[0] == '1':
+        d = d[1:]
+    return '%s-%s-%s' % (d[:3], d[3:6], d[6:]) if len(d) == 10 and re.fullmatch(r'[\d\s().+-]+', t) else t
+
+
+def lire_salesforce():
+    node = Path(os.environ.get('LOCALAPPDATA', '')) / 'Programs' / 'nodejs' / 'node.exe'
+    node = str(node) if node.exists() else (shutil.which('node') or 'node')
+    with tempfile.TemporaryDirectory() as tmp:
+        sortie = Path(tmp) / 'sf.json'
+        r = subprocess.run([node, str(SF_EXPORT), str(sortie)], capture_output=True, text=True,
+                           encoding='utf-8', errors='replace', timeout=300)
+        if r.returncode != 0 or not sortie.exists():
+            raise RuntimeError((r.stderr or r.stdout or 'code %d' % r.returncode).strip()[-200:])
+        return json.loads(sortie.read_text(encoding='utf-8'))
+
+
+def completer_par_salesforce(clients, contacts, sf):
+    par = collections.defaultdict(list)
+    for c in sf:
+        par[_cle_nom(c.get('compte'))].append(c)
+    out = {}
+    for nom, ville, _prov, typ in clients:
+        if nom in contacts or typ == 'interco':
+            continue
+        cands = par.get(_cle_nom(nom)) or par.get(_cle_nom(nom + ' ' + (ville or ''))) or []
+        v = _norm(ville).strip(' ,.')
+        garde, vus = [], set()
+        for c in sorted(cands, key=lambda c: c.get('modif') or '', reverse=True):
+            n, tel, mail = str(c.get('nom') or '').strip(), _tel(c.get('tel')), str(c.get('mail') or '').strip()
+            cv = _norm(c.get('ville')).strip(' ,.')
+            if not (tel or mail) or est_facturation(n, mail) or (v and cv and cv != v):
+                continue
+            k = (_norm(n), _norm(mail))
+            if k in vus:
+                continue
+            vus.add(k)
+            titre = str(c.get('titre') or '').strip()
+            fonc = (titre[:27] + ' · Salesforce') if titre else 'Salesforce'
+            garde.append([n[:60], fonc, tel[:30], mail[:80]])
+        if garde:
+            out[nom] = garde[:CONTACTS_PAR_CLIENT]
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry-run', action='store_true')
@@ -242,6 +313,11 @@ def main():
     ap.add_argument('--pin-file', default=str(REPO / 'PIN Portail.txt'))
     ap.add_argument('--env', default=str(Path.home() / 'GRYB-MCP' / 'gryb-epicor' / 'credentials.env'),
                     help='identifiants SQL Epicor (lecture seule), comme sync_inventaire_epicor.py')
+    # ⚠️ DESACTIVE par defaut (2026-10-07) : l'envoi a 70,8 Ko a recu un HTTP 404 du
+    # serveur (la liste a ete republiee aussitot sans Salesforce, 38,5 Ko). Cause non
+    # trouvee : a diagnostiquer avant d'activer dans la tache de 08:30.
+    ap.add_argument('--avec-salesforce', action='store_true',
+                    help='completer par Salesforce les clients sans personne dans Epicor')
     a = ap.parse_args()
 
     reg_path = Path(a.reglages) if a.reglages else ((dossier_portail() or Path('.')) / 'sav-reglages.json')
@@ -258,6 +334,15 @@ def main():
     except Exception as e:                # Epicor injoignable : on publie sans contacts
         print('⚠ Contacts Epicor illisibles (%s: %s) — publication sans contacts' % (type(e).__name__, str(e)[:120]))
         contacts = {}
+    if a.avec_salesforce:
+        try:
+            ajout = completer_par_salesforce(clients, contacts, lire_salesforce())
+            print('Salesforce : %d personnes pour %d clients sans personne dans Epicor'
+                  % (sum(len(v) for v in ajout.values()), len(ajout)))
+            contacts.update(ajout)
+        except Exception as e:            # Salesforce injoignable : on publie avec Epicor seul
+            print('⚠ Contacts Salesforce illisibles (%s: %s) — publication avec Epicor seul'
+                  % (type(e).__name__, str(e)[:160]))
     sav = {'clients': clients, 'pieces': pieces, 'produits': reglages['produits'],
            'routage': reglages['routage'], 'cc': reglages.get('cc') or [], 'contacts': contacts}
     import base64, gzip
