@@ -140,16 +140,17 @@ check('quota plein : aucune tranche orpheline', Object.keys(store).filter(k => /
 plafond = Infinity;
 
 // Mesure du quota (action 'quota', 2026-10-07) : admin ou PIN, jamais de valeur ni de nom de cle
-store['user_active_x@e'] = '1';
+store['user_active_x@e'] = '1'; store.user_active_jean_tremblay_exemple_com = '1'; store.inactivity_notice_jean_tremblay_exemple_com = '1';
 let q = post({ action: 'quota', pin: 'PINSECRET' });
 check('quota : le PIN obtient la mesure', q.ok === true && q.total === octets() && q.libre === 500 * 1024 - q.total);
 check('quota : familles triees, tranches SAV regroupees', q.familles[0].octets >= q.familles[q.familles.length - 1].octets
   && q.familles.some(f => f.famille === 'sav_ref_#' && f.cles === +store.sav_ref_n));
-check('quota : sessions et courriels masques dans les noms', q.familles.some(f => f.famille === 'session_')
-  && q.familles.some(f => f.famille === 'user_<courriel>') && !JSON.stringify(q).includes('x@e') && !JSON.stringify(q).includes('PINSECRET'));
+check('quota : sessions et courriels masques dans les noms', q.familles.some(f => f.famille === 'session_*')
+  && q.familles.some(f => f.famille === 'user_active_*' && f.cles >= 2) && !JSON.stringify(q).includes('x@e')
+  && !JSON.stringify(q).includes('tremblay') && !JSON.stringify(q).includes('PINSECRET'));
 check('quota : sans session refuse', post({ action: 'quota' }).error === 'authentication required');
 check('quota : role non admin refuse', post({ action: 'quota', token: vi }).error === 'admin role required');
 check('quota : super admin connecte obtient la mesure', post({ action: 'quota', token: jj }).ok === true);
-delete store['user_active_x@e'];
+delete store['user_active_x@e']; delete store.user_active_jean_tremblay_exemple_com; delete store.inactivity_notice_jean_tremblay_exemple_com;
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);

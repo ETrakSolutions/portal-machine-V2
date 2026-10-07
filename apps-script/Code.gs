@@ -215,9 +215,16 @@ function listKeys(body) {
 // Ne sort AUCUNE valeur, et aucun nom de cle : seulement des familles (le nom d'une cle
 // peut porter un courriel ou un jeton de session). Octets = cle + valeur en UTF-8.
 var QUOTA_PROPRIETES = 500 * 1024;
+// Familles a prefixe connu : le reste du nom est un courriel (« @ » et « . » remplaces
+// par « _ ») ou une machine — regroupes sous le prefixe (mesure v40 : les courriels
+// sortaient dans les noms de famille).
+var QUOTA_PREFIXES = ['session_', 'user_active_', 'inactivity_notice_', 'product_codes_',
+                      'notes_', 'deleted_', 'changelog_', 'user_'];
 function _familleCle(k) {
-  if (k.indexOf(SESSION_PREFIX) === 0) return SESSION_PREFIX;
-  if (k.indexOf('@') >= 0) return k.slice(0, k.indexOf('_') + 1) + '<courriel>';
+  for (var i = 0; i < QUOTA_PREFIXES.length; i++) {
+    if (k.indexOf(QUOTA_PREFIXES[i]) === 0) return QUOTA_PREFIXES[i] + '*';
+  }
+  if (k.indexOf('@') >= 0) return '<courriel>';
   return k.replace(/\d+$/, '#');
 }
 function getQuota(body) {
