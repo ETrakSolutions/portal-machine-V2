@@ -36,7 +36,9 @@ SAV = {
                 {'cle': 'kevin', 'nom': 'Kevin Bérubé', 'courriel': 'kevin@test', 'regle': 'Directeur de service'}],
     'cc': ['kevin@test'],
     'contacts': {'Gravier Duncan Simard': [['Marc Girard', 'Contremaître', '819-555-0101', 'mgirard@test'],
-                                           ['Julie Roy', '', '819-555-0102', '']]},
+                                           ['Julie Roy', '', '819-555-0102', '']],
+                 # complete par Salesforce (2026-10-07) : la source est dans la fonction
+                 'Wajax Limitée - Chambly': [['Paul Test', 'Gérant de service · Salesforce', '450-555-0100', 'ptest@test']]},
 }
 ok, ko = [], []
 
@@ -106,6 +108,16 @@ def main():
         v('champ client final visible pour un dealer', d.find_element(By.ID, 'w-final').is_displayed())
         v('lieu pre-rempli par la ville', d.find_element(By.ID, 'f-lieu').get_attribute('value') == 'Laval, QC')
         v('client sans contact Epicor : zone contacts masquee', not d.find_element(By.ID, 'w-contacts').is_displayed())
+        choisir(d, 'f-compagnie', 'waj cham', 'Chambly')
+        btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
+        lab = d.find_element(By.CSS_SELECTOR, '#w-contacts label').text
+        v('contact Salesforce : propose et marque comme tel', len(btn) == 1 and 'Salesforce' in btn[0].text
+          and 'Salesforce' in lab, [b.text for b in btn] + [lab])
+        btn[0].click(); time.sleep(0.2)
+        v('clic sur le contact Salesforce : nom, telephone, courriel remplis',
+          [d.find_element(By.ID, i).get_attribute('value') for i in ('f-contact', 'f-tel', 'f-courriel')]
+          == ['Paul Test', '450-555-0100', 'ptest@test'])
+        for i in ('f-contact', 'f-tel', 'f-courriel'): d.find_element(By.ID, i).clear()
         items = choisir(d, 'f-compagnie', 'gravier', 'Gravier')
         btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
         v('client avec contacts : 2 contacts proposes', d.find_element(By.ID, 'w-contacts').is_displayed() and len(btn) == 2,

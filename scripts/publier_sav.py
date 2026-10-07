@@ -15,7 +15,7 @@ Sources :
       produits, routage (cle, nom, courriel, regle) et cc — modifiable sans toucher au code.
   - Contacts : les vraies personnes d'Epicor (CustCnt) ; pour un client qui n'en a
     aucune, celles de Salesforce (scripts/exporter_contacts_salesforce.mjs), marquees
-    « Salesforce » dans la fonction (option --avec-salesforce, desactivee par defaut).
+    « Salesforce » dans la fonction (--sans-salesforce pour s'en passer).
 
 Usage :
     py -3.13 scripts/publier_sav.py --dry-run    # construit et resume, n'envoie rien
@@ -313,11 +313,10 @@ def main():
     ap.add_argument('--pin-file', default=str(REPO / 'PIN Portail.txt'))
     ap.add_argument('--env', default=str(Path.home() / 'GRYB-MCP' / 'gryb-epicor' / 'credentials.env'),
                     help='identifiants SQL Epicor (lecture seule), comme sync_inventaire_epicor.py')
-    # ⚠️ DESACTIVE par defaut (2026-10-07) : l'envoi a 70,8 Ko a recu un HTTP 404 du
-    # serveur (la liste a ete republiee aussitot sans Salesforce, 38,5 Ko). Cause non
-    # trouvee : a diagnostiquer avant d'activer dans la tache de 08:30.
-    ap.add_argument('--avec-salesforce', action='store_true',
-                    help='completer par Salesforce les clients sans personne dans Epicor')
+    # Active par defaut depuis le 2026-10-07 (941 clients, 513 avec contacts, 71 Ko).
+    # Le 404 recu le matin meme a 70 Ko etait passager (quota : 419 Ko libres, v41) ;
+    # depuis la v40, une ecriture refusee laisse l'ancienne liste en place.
+    ap.add_argument('--sans-salesforce', action='store_true', help='contacts Epicor seulement')
     a = ap.parse_args()
 
     reg_path = Path(a.reglages) if a.reglages else ((dossier_portail() or Path('.')) / 'sav-reglages.json')
@@ -334,7 +333,7 @@ def main():
     except Exception as e:                # Epicor injoignable : on publie sans contacts
         print('⚠ Contacts Epicor illisibles (%s: %s) — publication sans contacts' % (type(e).__name__, str(e)[:120]))
         contacts = {}
-    if a.avec_salesforce:
+    if not a.sans_salesforce:
         try:
             ajout = completer_par_salesforce(clients, contacts, lire_salesforce())
             print('Salesforce : %d personnes pour %d clients sans personne dans Epicor'
