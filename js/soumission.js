@@ -635,21 +635,137 @@ function populateModeles(type, fab, anneeFilter) {
     selectModele.disabled = false;
 }
 
-// Menu Modele avec filtre (Steve, 2026-10-08) : UNE case (#filtre-modele) qui ressemble aux
-// autres menus. Un clic ouvre la liste complete ; taper ne garde que les modeles qui
-// contiennent le texte, sans tenir compte de la casse, des espaces ni des tirets (« dx 140 »
-// trouve DX140LC-5 / -7). Le vrai <select id="select-modele"> reste dans la page, cache :
-// tout le reste du code le lit et l'ecrit comme avant ; la case suit sa valeur (voir plus bas).
-var filtreModele = document.getElementById('filtre-modele');
-var filtreResultats = document.getElementById('filtre-modele-resultats');
+// Menus Fabricant et Modele avec filtre (Steve, 2026-10-08) : chacun est UNE case qui
+// ressemble aux autres menus. Un clic ouvre la liste complete ; taper ne garde que les
+// choix qui contiennent le texte, sans tenir compte de la casse, des espaces ni des tirets
+// (« dx 140 » trouve DX140LC-5 / -7). Le vrai <select> reste dans la page, cache : tout le
+// reste du code le lit et l'ecrit comme avant ; la case suit sa valeur (voir creerComboFiltre).
 var modelesListe = [];
-var filtreIndex = -1;
 function normFiltre(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9]/g, ''); }
 function texteI18n(k, fb, p) {
     var v = (typeof i18n !== 'undefined') ? i18n.t(k, p) : k;
     if (!v || v === k) { v = fb; if (p) Object.keys(p).forEach(function (n) { v = v.split('{' + n + '}').join(p[n]); }); }
     return v;
 }
+
+// select : le vrai menu (cache) ; input / ul : la case et sa liste ; cfg.autre : valeur de
+// l'option « Ajout ... non repertorie » (toujours au bout) ; cfg.compte / cfg.aucun : cles
+// de l'en-tete quand on filtre. Les choix sont lus dans les <option> du menu.
+function creerComboFiltre(select, input, ul, cfg) {
+    var index = -1;
+    var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+    function choix() {
+        return Array.prototype.filter.call(select.options, function (o) { return o.value && o.value !== cfg.autre; })
+            .map(function (o) { return { v: o.value, t: o.textContent }; });
+    }
+    // La case montre le choix du menu (vide = invite « Selectionnez ou tapez »).
+    function afficher() {
+        if (document.activeElement === input) return;
+        var o = select.options[select.selectedIndex];
+        input.value = (o && o.value && o.value !== cfg.autre) ? o.textContent : '';
+    }
+    function fermer() {
+        ul.hidden = true; ul.innerHTML = ''; index = -1;
+        input.setAttribute('aria-expanded', 'false');
+    }
+    function choisir(valeur) {
+        fermer();
+        input.blur();
+        if (valeur && valeur !== select.value) {
+            select.value = valeur;
+            select.dispatchEvent(new Event('change'));
+        }
+        afficher();
+    }
+    function surligner() {
+        var items = ul.querySelectorAll('.filtre-item');
+        Array.prototype.forEach.call(items, function (li, i) { li.classList.toggle('actif', i === index); });
+        if (items[index]) items[index].scrollIntoView({ block: 'nearest' });
+    }
+    // texte vide : liste complete (comme le menu deroulant) ; sinon les choix qui le contiennent.
+    function ouvrir(texte) {
+        if (input.disabled) return;
+        var brut = String(texte || '').trim(), f = normFiltre(brut);
+        var tous = choix();
+        var liste = f ? tous.filter(function (c) { return normFiltre(c.t).indexOf(f) >= 0 || normFiltre(c.v).indexOf(f) >= 0; }) : tous;
+        var html = '';
+        if (f) {
+            html += '<li class="filtre-entete">' + esc(liste.length
+                ? texteI18n(cfg.compte[0], cfg.compte[1], { n: liste.length, f: brut })
+                : texteI18n(cfg.aucun[0], cfg.aucun[1], { f: brut })) + '</li>';
+        }
+        var courant = select.value;
+        liste.forEach(function (c) {
+            html += '<li class="filtre-item' + (c.v === courant ? ' choisi' : '') + '" role="option" data-valeur="' + esc(c.v) + '">' + esc(c.t) + '</li>';
+        });
+        var oAutre = cfg.autre && select.querySelector('option[value="' + cfg.autre + '"]');
+        if (oAutre) html += '<li class="filtre-item filtre-autre" role="option" data-valeur="' + esc(cfg.autre) + '">' + esc(oAutre.textContent) + '</li>';
+        ul.innerHTML = html;
+        ul.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+        // Liste complete : on part du choix courant ; liste filtree : du premier resultat.
+        index = f ? (liste.length ? 0 : -1) : liste.map(function (c) { return c.v; }).indexOf(courant);
+        surligner();
+    }
+    // Le reste du code ecrit select.value / .disabled directement (restauration du panier,
+    // Annuler, changement de type...) : la case suit sans qu'on ait a toucher ces endroits.
+    ['value', 'disabled'].forEach(function (prop) {
+        var d = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, prop);
+        if (!d || !d.set) return;
+        Object.defineProperty(select, prop, {
+            configurable: true,
+            get: function () { return d.get.call(this); },
+            set: function (v) {
+                d.set.call(this, v);
+                if (prop === 'disabled') { input.disabled = !!v; if (v) fermer(); }
+                afficher();
+            }
+        });
+    });
+    select.addEventListener('change', afficher);
+    input.addEventListener('focus', function () {
+        input.value = '';                     // on part d'une case vide : taper filtre tout de suite
+        ouvrir('');
+    });
+    input.addEventListener('mousedown', function () {
+        // Deuxieme clic sur la case deja active : referme / rouvre la liste, comme un menu.
+        if (document.activeElement === input) { if (ul.hidden) ouvrir(input.value); else fermer(); }
+    });
+    input.addEventListener('input', function () { ouvrir(input.value); });
+    // mousedown (pas click) : le choix se fait avant que la case perde le focus.
+    ul.addEventListener('mousedown', function (e) {
+        var li = e.target.closest('.filtre-item');
+        e.preventDefault();
+        if (li) choisir(li.getAttribute('data-valeur'));
+    });
+    input.addEventListener('blur', function () {
+        setTimeout(function () { if (document.activeElement !== input) { fermer(); afficher(); } }, 150);
+    });
+    input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { e.preventDefault(); fermer(); input.blur(); return; }
+        if (e.key === 'Tab') { fermer(); return; }
+        if (ul.hidden && (e.key === 'ArrowDown' || e.key === 'Enter')) { e.preventDefault(); ouvrir(input.value); return; }
+        var items = ul.querySelectorAll('.filtre-item');
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); index = Math.min(items.length - 1, index + 1); surligner(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); index = Math.max(0, index - 1); surligner(); }
+        else if (e.key === 'Enter') { e.preventDefault(); if (items[index]) choisir(items[index].getAttribute('data-valeur')); }
+    });
+    input.disabled = select.disabled;
+    afficher();
+    return { afficher: afficher, fermer: fermer, ouvrir: ouvrir };
+}
+
+var comboModele = null, comboFabricant = null;
+(function () {
+    var im = document.getElementById('filtre-modele'), um = document.getElementById('filtre-modele-resultats');
+    if (im && um) comboModele = creerComboFiltre(selectModele, im, um, { autre: '__OTHER__',
+        compte: ['soum.filter_count', '{n} modèle(s) contenant « {f} »'], aucun: ['soum.filter_none', 'Aucun modèle ne contient « {f} »'] });
+    var iff = document.getElementById('filtre-fabricant'), uf = document.getElementById('filtre-fabricant-resultats');
+    if (iff && uf) comboFabricant = creerComboFiltre(selectFabricant, iff, uf, { autre: OTHER_FAB,
+        compte: ['soum.filter_count_fab', '{n} fabricant(s) contenant « {f} »'], aucun: ['soum.filter_none_fab', 'Aucun fabricant ne contient « {f} »'] });
+})();
+
 function construireOptionsModeles() {
     var courant = selectModele.value;
     selectModele.innerHTML = '';
@@ -669,117 +785,10 @@ function construireOptionsModeles() {
     optAutre.style.fontStyle = 'italic';
     selectModele.appendChild(optAutre);
     if (courant && modelesListe.indexOf(courant) >= 0) selectModele.value = courant;
-    afficherModeleChoisi();
-}
-// La case montre le modele choisi dans le <select> (vide = invite « Selectionnez ou tapez »).
-function afficherModeleChoisi() {
-    if (!filtreModele || document.activeElement === filtreModele) return;
-    var v = selectModele.value;
-    filtreModele.value = (v && v !== '__OTHER__') ? v : '';
-}
-function fermerResultatsModele() {
-    if (filtreResultats) { filtreResultats.hidden = true; filtreResultats.innerHTML = ''; }
-    if (filtreModele) filtreModele.setAttribute('aria-expanded', 'false');
-    filtreIndex = -1;
+    if (comboModele) comboModele.afficher();
 }
 function viderFiltreModele() {
-    fermerResultatsModele();
-    afficherModeleChoisi();
-}
-function choisirModeleFiltre(valeur) {
-    fermerResultatsModele();
-    if (filtreModele) filtreModele.blur();
-    if (valeur && valeur !== selectModele.value) {
-        selectModele.value = valeur;
-        selectModele.dispatchEvent(new Event('change'));
-    }
-    afficherModeleChoisi();
-}
-// texte vide : liste complete (comme le menu deroulant) ; sinon les modeles qui le contiennent.
-function afficherResultatsModele(texte) {
-    if (!filtreModele || !filtreResultats || filtreModele.disabled) return;
-    var brut = String(texte || '').trim(), f = normFiltre(brut);
-    var liste = f ? modelesListe.filter(function (m) { return normFiltre(m).indexOf(f) >= 0; }) : modelesListe;
-    var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
-    var html = '';
-    if (f) {
-        html += '<li class="filtre-entete">' + esc(liste.length
-            ? texteI18n('soum.filter_count', '{n} modèle(s) contenant « {f} »', { n: liste.length, f: brut })
-            : texteI18n('soum.filter_none', 'Aucun modèle ne contient « {f} »', { f: brut })) + '</li>';
-    }
-    var courant = selectModele.value;
-    liste.forEach(function (m) {
-        html += '<li class="filtre-item' + (m === courant ? ' choisi' : '') + '" role="option" data-valeur="' + esc(m) + '">' + esc(m) + '</li>';
-    });
-    html += '<li class="filtre-item filtre-autre" role="option" data-valeur="__OTHER__">' +
-        esc((typeof i18n !== 'undefined') ? i18n.t('js.other_model') : '⊕ Autre modele (pas dans la liste)') + '</li>';
-    filtreResultats.innerHTML = html;
-    filtreResultats.hidden = false;
-    filtreModele.setAttribute('aria-expanded', 'true');
-    // Liste complete : on part du modele deja choisi ; liste filtree : du premier resultat.
-    filtreIndex = f ? (liste.length ? 0 : -1) : Math.max(-1, liste.indexOf(courant));
-    surlignerResultat();
-}
-function surlignerResultat() {
-    var items = filtreResultats ? filtreResultats.querySelectorAll('.filtre-item') : [];
-    Array.prototype.forEach.call(items, function (li, i) { li.classList.toggle('actif', i === filtreIndex); });
-    if (items[filtreIndex]) items[filtreIndex].scrollIntoView({ block: 'nearest' });
-}
-if (filtreModele && filtreResultats) {
-    // Le reste du code ecrit selectModele.value / .disabled directement (restauration du panier,
-    // Annuler, changement d'annee...) : la case suit sans qu'on ait a toucher ces endroits.
-    ['value', 'disabled'].forEach(function (prop) {
-        var d = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(selectModele), prop) ||
-                Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, prop);
-        if (!d || !d.set) return;
-        Object.defineProperty(selectModele, prop, {
-            configurable: true,
-            get: function () { return d.get.call(this); },
-            set: function (v) {
-                d.set.call(this, v);
-                if (prop === 'disabled') { filtreModele.disabled = !!v; if (v) fermerResultatsModele(); }
-                afficherModeleChoisi();
-            }
-        });
-    });
-    selectModele.addEventListener('change', afficherModeleChoisi);
-    filtreModele.addEventListener('focus', function () {
-        filtreModele.value = '';                  // on part d'une case vide : taper filtre tout de suite
-        afficherResultatsModele('');
-    });
-    filtreModele.addEventListener('mousedown', function () {
-        // Deuxieme clic sur la case deja active : referme / rouvre la liste, comme un menu.
-        if (document.activeElement === filtreModele) {
-            if (filtreResultats.hidden) afficherResultatsModele(filtreModele.value); else fermerResultatsModele();
-        }
-    });
-    filtreModele.addEventListener('input', function () { afficherResultatsModele(filtreModele.value); });
-    // mousedown (pas click) : le choix se fait avant que la case perde le focus.
-    filtreResultats.addEventListener('mousedown', function (e) {
-        var li = e.target.closest('.filtre-item');
-        e.preventDefault();
-        if (li) choisirModeleFiltre(li.getAttribute('data-valeur'));
-    });
-    filtreModele.addEventListener('blur', function () {
-        setTimeout(function () {
-            if (document.activeElement !== filtreModele) { fermerResultatsModele(); afficherModeleChoisi(); }
-        }, 150);
-    });
-    filtreModele.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { e.preventDefault(); fermerResultatsModele(); filtreModele.blur(); return; }
-        if (e.key === 'Tab') { fermerResultatsModele(); return; }
-        if (filtreResultats.hidden && (e.key === 'ArrowDown' || e.key === 'Enter')) {
-            e.preventDefault(); afficherResultatsModele(filtreModele.value); return;
-        }
-        var items = filtreResultats.querySelectorAll('.filtre-item');
-        if (!items.length) return;
-        if (e.key === 'ArrowDown') { e.preventDefault(); filtreIndex = Math.min(items.length - 1, filtreIndex + 1); surlignerResultat(); }
-        else if (e.key === 'ArrowUp') { e.preventDefault(); filtreIndex = Math.max(0, filtreIndex - 1); surlignerResultat(); }
-        else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (items[filtreIndex]) choisirModeleFiltre(items[filtreIndex].getAttribute('data-valeur'));
-        }
-    });
+    if (comboModele) { comboModele.fermer(); comboModele.afficher(); }
 }
 
 function doAnneeChange() {
@@ -842,6 +851,7 @@ function resetFrom(level) {
     }
     // Nouveau type ou fabricant : le filtre du modele repart a vide.
     if (startIdx <= levels.indexOf('annee')) { modelesListe = []; viderFiltreModele(); }
+    if (startIdx === 0 && comboFabricant) { comboFabricant.fermer(); comboFabricant.afficher(); }
     hideOptions();
 }
 

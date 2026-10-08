@@ -17,6 +17,8 @@ Verifie (invite, rien n'est ecrit) :
  10. le code qui ecrit selectModele.value (panier, Annuler) met la case a jour ;
  11. changer de fabricant vide la case ;
  12. EN : texte de la case traduit ; aucune erreur JS SEVERE.
+ 13. Fabricant (meme case) : liste complete au clic, « deve » -> Develon (Doosan),
+     choix -> modeles remplis, « Ajout fabricant non repertorie » ouvre la fenetre.
 
     py -3.12 scripts/selenium_filtre_modele_test.py [--live]
 """
@@ -126,13 +128,13 @@ try:
     check('grisee sans fabricant', dv.execute_script("return document.getElementById('filtre-modele').disabled;"))
     choisir('select-fabricant', 'Takeuchi')
     check('active apres le fabricant', not dv.execute_script("return document.getElementById('filtre-modele').disabled;"))
-    check('alignee avec le menu Fabricant (meme hauteur, meme ligne)', dv.execute_script(
-        "var a=document.getElementById('filtre-modele').getBoundingClientRect(), b=selectFabricant.getBoundingClientRect();"
+    check('alignee avec le menu Type (meme hauteur, meme ligne)', dv.execute_script(
+        "var a=document.getElementById('filtre-modele').getBoundingClientRect(), b=selectType.getBoundingClientRect();"
         "return Math.abs(a.top-b.top) < 2 && Math.abs(a.height-b.height) < 3;"))
     check('le vrai menu est cache', dv.execute_script("return selectModele.getBoundingClientRect().width <= 2;"))
     check('un seul menu Modele dans la page, Annee sur la meme ligne', dv.execute_script(
         "return document.querySelectorAll('#select-modele').length === 1 &&"
-        " Math.abs(selectAnnee.getBoundingClientRect().top - selectFabricant.getBoundingClientRect().top) < 2;"))
+        " Math.abs(selectAnnee.getBoundingClientRect().top - selectType.getBoundingClientRect().top) < 2;"))
     tous = [v for v, _ in options() if v and v != '__OTHER__']
 
     print('--- 2) clic : liste complete ---')
@@ -212,6 +214,42 @@ try:
     time.sleep(0.4)
     check('case vide, liste fermee', texte_case() == '' and not liste_ouverte())
     check('aucune ecriture', dv.execute_script("return window.__ecrits.length;") == 0)
+
+    print('--- 13) Fabricant : meme case ---')
+    charger()
+    choisir('select-type', 'Excavatrice')
+    time.sleep(0.3)
+    cf = lambda: dv.find_element('id', 'filtre-fabricant')
+    check('case Fabricant alignee avec Type', dv.execute_script(
+        "var a=document.getElementById('filtre-fabricant').getBoundingClientRect(), b=selectType.getBoundingClientRect();"
+        "return Math.abs(a.top-b.top) < 2 && Math.abs(a.height-b.height) < 3;"))
+    fabs = dv.execute_script("return Array.from(selectFabricant.options).map(function(o){return o.value;}).filter(function(v){return v && v !== '__OTHER_FAB__';});")
+    cf().click(); time.sleep(0.3)
+    r = dv.execute_script("""var it=Array.from(document.querySelectorAll('#filtre-fabricant-resultats .filtre-item'));
+      return it.map(function(x){return x.getAttribute('data-valeur');});""")
+    check('clic : %d fabricants + « Ajout fabricant »' % (len(r) - 1), r[:-1] == fabs and r[-1] == '__OTHER_FAB__')
+    cf().send_keys('deve'); time.sleep(0.2)
+    r = dv.execute_script("""var l=document.getElementById('filtre-fabricant-resultats'); return { e: (l.querySelector('.filtre-entete')||{}).textContent||'',
+      v: Array.from(l.querySelectorAll('.filtre-item')).map(function(x){return x.getAttribute('data-valeur');}) };""")
+    check('« deve » -> %s (%s)' % (r['v'][:-1], r['e']), r['v'][:-1] == ['Develon (Doosan)'] and 'fabricant' in r['e'])
+    cf().send_keys(Keys.ENTER); time.sleep(0.6)
+    check('Entree : Develon (Doosan) choisi, case « %s », modeles remplis' % dv.execute_script("return document.getElementById('filtre-fabricant').value;"),
+          dv.execute_script("return selectFabricant.value;") == 'Develon (Doosan)'
+          and dv.execute_script("return document.getElementById('filtre-fabricant').value;") == 'Develon (Doosan)'
+          and dv.execute_script("return !document.getElementById('filtre-modele').disabled && selectModele.options.length > 3;"))
+    cf().click(); cf().send_keys('zzzfab'); time.sleep(0.2)
+    dv.execute_script("var li=document.querySelector('#filtre-fabricant-resultats .filtre-autre');"
+                      "li.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true}));")
+    time.sleep(0.5)
+    check('« Ajout fabricant » : fenetre avec champ fabricant', dv.execute_script(
+        "return !!document.getElementById('custom-model-modal') && !!document.getElementById('custom-fab-name');"))
+    dv.execute_script("var b=document.getElementById('modal-cancel'); if (b) b.click();")
+    time.sleep(0.3)
+    check('Annuler : case Fabricant vide', dv.execute_script("return document.getElementById('filtre-fabricant').value;") == '')
+    choisir('select-type', 'Chargeuse sur roues') or choisir('select-type', 'Retrocaveuse')
+    time.sleep(0.3)
+    check('nouveau type : case Fabricant vide, liste fermee', dv.execute_script(
+        "return document.getElementById('filtre-fabricant').value === '' && document.getElementById('filtre-fabricant-resultats').hidden;"))
 
     print('--- 12) anglais et console ---')
     dv.execute_script("i18n.setLang('en');")
