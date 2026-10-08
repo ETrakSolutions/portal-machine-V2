@@ -32,6 +32,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import unicodedata
 from pathlib import Path
 
@@ -305,6 +306,26 @@ def completer_par_salesforce(clients, contacts, sf):
     return out
 
 
+# Refus definitifs : les renvoyer tels quels, une reprise n'y changerait rien.
+REFUS_DEFINITIFS = ('admin role required', 'invalid sav', 'invalid savGz')
+
+
+def envoyer(corps, essais=4, attente=(5, 15, 45)):
+    """post() avec reprises sur les incidents passagers du serveur Google.
+    Vus en vrai : HTTP 404 (2026-10-07) et {'value': ''} = le POST arrive en GET sans
+    corps (2026-10-08 08:30). Renvoyer la liste est sans danger : setSav la remplace
+    au complet, et depuis la v40 un echec d'ecriture laisse l'ancienne en place."""
+    for i in range(essais):
+        try:
+            res = post(corps)
+        except Exception as e:
+            res = {'error': '%s: %s' % (type(e).__name__, str(e)[:160])}
+        if res.get('ok') or res.get('error') in REFUS_DEFINITIFS or i == essais - 1:
+            return res
+        print('⚠ Essai %d/%d refuse (%s) — nouvel essai dans %d s' % (i + 1, essais, res, attente[i]))
+        time.sleep(attente[i])
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--dry-run', action='store_true')
@@ -365,7 +386,7 @@ def main():
         return
     # Envoi COMPRESSE : le serveur stocke la liste en gzip (quota de 500 Ko partage par
     # tout le portail ; il restait ~80 Ko le 2026-09-29, la liste brute en fait 86).
-    res = post({'action': 'setsav', 'savGz': gz, 'pin': read_pin(a.pin_file)})
+    res = envoyer({'action': 'setsav', 'savGz': gz, 'pin': read_pin(a.pin_file)})
     if not res.get('ok'):
         sys.exit('Refus du portail : %s' % res)
     print('Publie : %d clients, %d pieces, %d tranche(s), %s octets stockes.' % (res['clients'], res['pieces'], res['chunks'], res.get('octets', '?')))

@@ -29,9 +29,9 @@ SAV = {
     'pieces': [['E03A-0013', 'Câble Can Femelle et male M12, 5 pôles - 3m, 2 Connecteurs M12'],
                ['C01A-0005-73-360-0-250', 'Inclino e-trak 73 360 pos 0']],
     # Liste de Steve du 2026-10-07, dans l'ordre des 3 colonnes lues de haut en bas.
-    'produits': ["Limiteur d'excavatrice", 'Creusage 2D', 'Indicateur de charge', 'Limiteur de rétrocaveuse',
-                 'Limiteur de pompe à béton', 'Limiteur de téléhandler', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
-                 'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance', 'Caméras', 'Autre'],
+    'produits': ["Limiteur d'excavatrice (LPE)", 'Creusage 2D (Guide-Pro GP)', 'Indicateur de charge (IDC)', 'Limiteur de rétrocaveuse',
+                 'Limiteur de pompe à béton (LPB)', 'Limiteur de téléhandler (LPT)', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
+                 'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance (Scale-Pro / Lite)', 'Caméras', 'Autre'],
     'routage': [{'cle': 'mathieu', 'nom': 'Mathieu Robillard', 'courriel': '', 'regle': 'Machine arrêtée'},
                 {'cle': 'steve', 'nom': 'Steve Martineau', 'courriel': 'steve@test', 'regle': 'Pièce'},
                 {'cle': 'luna', 'nom': 'Luna Briceno', 'courriel': 'luna@test', 'regle': 'Déplacement'},
@@ -108,11 +108,11 @@ def main():
         row = lambda t: [y for n, _, y in pos if n == t][0]
         v('3 colonnes alignees', len(xs) == 3, xs)
         v('colonne 1 : excavatrice a pompe a beton ; colonne 2 : telehandler a grue ; colonne 3 : foreuse, balance, cameras',
-          col("Limiteur d'excavatrice") == col('Limiteur de pompe à béton') == xs[0]
-          and col('Limiteur de téléhandler') == col('Limiteur de grue') == xs[1]
+          col("Limiteur d'excavatrice (LPE)") == col('Limiteur de pompe à béton (LPB)') == xs[0]
+          and col('Limiteur de téléhandler (LPT)') == col('Limiteur de grue') == xs[1]
           and col('Limiteur de foreuse') == col('Caméras') == xs[2], pos)
         v('« Autre » en bas de la 3e colonne, sur la rangee de « pompe a beton »',
-          col('Autre') == xs[2] and row('Autre') == row('Limiteur de pompe à béton'), pos)
+          col('Autre') == xs[2] and row('Autre') == row('Limiteur de pompe à béton (LPB)'), pos)
         v('champ « Precisez Autre » cache au depart', not d.find_element(By.ID, 'w-autre').is_displayed())
 
         print('2) Client')
@@ -228,8 +228,8 @@ def main():
         v('destinataires = Kevin et Luna, meme avec une piece et un bypass', dest == 'kevin@test,luna@test', dest)
         v('pas de copie en double (Kevin deja destinataire)', not prm.get('cc'), prm.get('cc'))
         v('sujet : URGENT (bypass) + compagnie + produit',
-          (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Duncan Simard — Limiteur d'excavatrice / Autre : Module GPS", prm.get('subject'))
-        v('corps : produits avec la precision de « Autre »', "Produit : Limiteur d'excavatrice, Autre : Module GPS" in corps, corps[:400])
+          (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Duncan Simard — Limiteur d'excavatrice (LPE) / Autre : Module GPS", prm.get('subject'))
+        v('corps : produits avec la precision de « Autre »', "Produit : Limiteur d'excavatrice (LPE), Autre : Module GPS" in corps, corps[:400])
         v('corps : client, contact, piece, bypass ; plus de routage ni de suivi',
           all(x in corps for x in ('Compagnie : Gravier Duncan Simard', 'Contact : Marc Girard', '1 × E03A-0013',
                                    'Demande de bypass : OUI'))

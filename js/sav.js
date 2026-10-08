@@ -335,9 +335,9 @@
     // Sans liste publiee, les destinataires et les produits restent vides : valeurs de repli
     // (les courriels ne sont jamais ecrits ici — ils viennent du serveur).
     // Meme liste que sav-reglages.json (Steve, 2026-10-07).
-    REF.produits = ["Limiteur d'excavatrice", 'Creusage 2D', 'Indicateur de charge', 'Limiteur de rétrocaveuse',
-                    'Limiteur de pompe à béton', 'Limiteur de téléhandler', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
-                    'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance', 'Caméras', 'Autre'];
+    REF.produits = ["Limiteur d'excavatrice (LPE)", 'Creusage 2D (Guide-Pro GP)', 'Indicateur de charge (IDC)', 'Limiteur de rétrocaveuse',
+                    'Limiteur de pompe à béton (LPB)', 'Limiteur de téléhandler (LPT)', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
+                    'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance (Scale-Pro / Lite)', 'Caméras', 'Autre'];
     dessinerProduits();
     init();
     charger();
