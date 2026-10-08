@@ -52,10 +52,9 @@ LOTS = {
     'Bobcat': ['E10e - electrique', 'E19e - electrique'],
     'Link-Belt': ['80 X3', '145 X3', '145 X3 SR', '210 X3 / X4',
                   '245 X3 SR', '250 X3 / X4', '300 X3 / X4', '350 X3 / X4'],
-    # PC220LC-12 (2026) n'est PAS dans ce lot : ses specs vivent dans un override
-    # `_specs` pose par l'interface, qui masque machines.json a l'affichage. Un lot
-    # ne doit contenir que des modeles dont la BD de base porte la verite.
-    'Komatsu': ['PW160-10 / -11'],
+    # 2026-10-08 : « PC220LC-11 / -12 » separe par generation (-12 lancee en 2025) ;
+    # l'override `_specs` de la PC220LC-12 retire, la BD redevient maitre.
+    'Komatsu': ['PW160-10 / -11', 'PC220LC-11', 'PC220LC-12', 'PC220LCi-12'],
     'Mecalac': ['15MWR'],
     'Volvo CE': ['EW140D/E', 'EC140D/E', 'EC180D/E', 'EC200D/E', 'EC220D/E', 'EC250D/E',
                  'EC300D/E', 'EC350D/E', 'EC380D/E', 'EC480D/E', 'EC750D/E',
@@ -73,7 +72,9 @@ RETIRES = [('Link-Belt', '170 X3'), ('Link-Belt', '235 X3 LF'),
            ('Liebherr', 'R 980'), ('Liebherr', 'R 980 Litronic'),
            ('Case', 'CX145E'), ('John Deere', '260G / 260P'),
            # 2026-10-07 : saisie en minuscules de la demande, renommee DX140LCR-7
-           ('Develon (Doosan)', 'DX140lcr-7')]
+           ('Develon (Doosan)', 'DX140lcr-7'),
+           # 2026-10-08 : separe en PC220LC-11 (2019-2024) et PC220LC-12 (2025-2026)
+           ('Komatsu', 'PC220LC-11 / -12')]
 
 _DB = json.load(open(os.path.join(REPO, 'data', 'machines.json'),
                      encoding='utf-8'))['Excavatrice']
