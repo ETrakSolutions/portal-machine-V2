@@ -499,24 +499,54 @@ function authResetRequest(body) {
   var hex = Utilities.getUuid().replace(/[^0-9a-f]/gi, '');
   var code = ('000000' + (parseInt(hex.substr(0, 8), 16) % 1000000)).slice(-6);
   cache.put(cle, JSON.stringify({ c: code, t: 0 }), RESET_TTL_S);
-  var en = body.lang === 'en';
-  var url = 'https://etraksolutions.github.io/portal-machine-V2/';
-  var sujet = en ? 'e-Trak Portal — your access code' : 'Portail e-Trak — votre code d\'accès';
-  var texte = en
-    ? 'Hello ' + (u.name || '') + ',\n\nYour e-Trak Portal access code is: ' + code + '\n\n' +
-      'It is valid for 30 minutes. Enter it on the portal with the password you choose:\n' + url + '\n\n' +
-      'If you did not ask for this code, ignore this email: your current password stays valid.\n\ne-Trak'
-    : 'Bonjour ' + (u.name || '') + ',\n\nVotre code d\'accès au Portail e-Trak : ' + code + '\n\n' +
-      'Il est valable 30 minutes. Entrez-le sur le portail avec le mot de passe de votre choix :\n' + url + '\n\n' +
-      'Si vous n\'avez pas demandé ce code, ignorez ce courriel : votre mot de passe actuel reste valide.\n\ne-Trak';
+  var m = _courrielReset(u.name || '', code, body.lang === 'en');
   try {
-    MailApp.sendEmail(email, sujet, texte, { name: 'Portail e-Trak' });
+    MailApp.sendEmail(email, m.sujet, m.texte, { htmlBody: m.html, name: 'Portail e-Trak' });
   } catch (err) {
     Logger.log('authResetRequest : envoi impossible : ' + err);
     cache.remove(cle); cache.remove(cle + '_rl');
     return { error: 'send_failed' };
   }
   return { ok: true };
+}
+
+// Courriel du code (Steve, 2026-10-08) : les codes partaient bien (« Envoyés » de
+// etrak.portail@gmail.com) mais n'arrivaient pas, chez GRYB comme chez les concessionnaires,
+// alors que les soumissions de la meme adresse arrivent. Un texte brut « votre code d'acces »
+// avec un code et un lien ressemble a de l'hameconnage : mise en forme HTML comme les
+// soumissions, sujet neutre, AUCUN lien ni adresse Web (la page du code reste ouverte).
+function _courrielReset(nom, code, en) {
+  var esc = function (t) {
+    return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  };
+  var L = en ? {
+    sujet: 'e-Trak Portal — account activation',
+    bonjour: 'Hello' + (nom ? ' ' + nom : '') + ',',
+    intro: 'Here is the code to activate your e-Trak Portal account or choose a new password:',
+    suite: 'Enter it on the portal screen where you asked for it, with the password of your choice. It is valid for 30 minutes.',
+    pas: 'If you did not ask for it, you can ignore this message: your current password stays valid.',
+    sig: 'The e-Trak team'
+  } : {
+    sujet: 'Portail e-Trak — activation de votre accès',
+    bonjour: 'Bonjour' + (nom ? ' ' + nom : '') + ',',
+    intro: 'Voici le code pour activer votre accès au Portail e-Trak ou choisir un nouveau mot de passe :',
+    suite: 'Entrez-le dans l\'écran du portail où vous l\'avez demandé, avec le mot de passe de votre choix. Il est valable 30 minutes.',
+    pas: 'Si vous n\'avez rien demandé, ignorez ce message : votre mot de passe actuel reste valide.',
+    sig: 'L\'équipe e-Trak'
+  };
+  var texte = L.bonjour + '\n\n' + L.intro + '\n\n' + code + '\n\n' + L.suite + '\n\n' + L.pas + '\n\n' + L.sig;
+  var html =
+    '<div style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#222;max-width:560px">' +
+    '<div style="background:#0b5ba8;color:#fff;padding:12px 16px;font-size:16px;font-weight:bold">e-Trak</div>' +
+    '<div style="padding:16px;border:1px solid #ddd;border-top:0">' +
+    '<p>' + esc(L.bonjour) + '</p>' +
+    '<p>' + esc(L.intro) + '</p>' +
+    '<p style="font-size:26px;font-weight:bold;letter-spacing:6px;margin:18px 0">' + esc(code) + '</p>' +
+    '<p>' + esc(L.suite) + '</p>' +
+    '<p style="color:#666">' + esc(L.pas) + '</p>' +
+    '<p>' + esc(L.sig) + '</p>' +
+    '</div></div>';
+  return { sujet: L.sujet, texte: texte, html: html };
 }
 
 // { action:'resetconfirm', email, code, newPassword } -> { ok, token, user } | { error }

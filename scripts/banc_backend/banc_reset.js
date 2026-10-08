@@ -30,7 +30,7 @@ function reset() {
   ]) };
   cache = {}; envois = []; panneCourriel = false;
 }
-const code = () => { const m = /:\s*(\d{6})\b/.exec(envois[envois.length - 1].texte); return m && m[1]; };
+const code = () => { const m = /^(\d{6})$/m.exec(envois[envois.length - 1].texte); return m && m[1]; };
 const login = (u, p) => post({ action: 'login', username: u, password: p });
 let ok = 0, ko = 0;
 const check = (nom, cond) => { cond ? ok++ : ko++; console.log((cond ? 'OK    ' : 'ECHEC ') + nom); };
@@ -40,7 +40,9 @@ reset();
 r = post({ action: 'resetrequest', email: ' Client@Napa.ca ' });
 check('demande pour un compte actif : ok + 1 courriel a CE courriel', r.ok === true && envois.length === 1 && envois[0].to === 'client@napa.ca');
 c = code();
-check('le courriel porte un code a 6 chiffres et le lien du portail', /^\d{6}$/.test(c || '') && /etraksolutions\.github\.io/.test(envois[0].texte));
+check('le courriel porte un code a 6 chiffres', /^\d{6}$/.test(c || ''));
+check('courriel : aucun lien ni adresse Web (texte et HTML)', !/https?:|www\.|github|\.io\b|href/i.test(envois[0].texte + (envois[0].opt.htmlBody || '')));
+check('courriel : version HTML avec le meme code, sujet neutre', (envois[0].opt.htmlBody || '').indexOf(c) > 0 && /activation/i.test(envois[0].sujet) && !/code/i.test(envois[0].sujet));
 check('le courriel ne contient aucun mot de passe', envois[0].texte.indexOf('TEMP123') < 0);
 check('ancien mot de passe toujours valide apres la demande', login('client@napa.ca', 'TEMP123').ok === true);
 r = post({ action: 'resetconfirm', email: 'client@napa.ca', code: c, newPassword: 'abc' });
@@ -86,7 +88,7 @@ check('apres une panne : une nouvelle demande part tout de suite', r.ok === true
 
 reset();
 post({ action: 'resetrequest', email: 'client@napa.ca', lang: 'en' });
-check('demande en anglais : courriel en anglais', /access code/.test(envois[0].sujet) && /Hello Client Napa/.test(envois[0].texte));
+check('demande en anglais : courriel en anglais', /account activation/.test(envois[0].sujet) && /Hello Client Napa/.test(envois[0].texte));
 check('sans code demande : confirmation refusee', post({ action: 'resetconfirm', email: 'jcaron@gryb.com', code: '123456', newPassword: 'pirate1' }).error === 'invalid code' && login('jcaron@gryb.com', 'J').ok === true);
 
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
