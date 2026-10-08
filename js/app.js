@@ -399,8 +399,24 @@ function showCustomModelModal(type, fab, annee) {
     document.getElementById('modal-create').addEventListener('click', () => {
         const customName = inputField.value.trim();
         if (!customName) { inputField.style.borderColor = 'red'; return; }
-        modal.remove();
-        createCustomModel(type, fab, annee, customName);
+        const creer = function () { modal.remove(); createCustomModel(type, fab, annee, customName); };
+        // La machine est-elle deja dans la base (autre casse, espaces, variante) ? (Steve, 2026-10-08)
+        if (!window.machineMatch) { creer(); return; }
+        machineMatch.verifierAvantDemande({
+            data: machinesData, type: type, fab: fab, modele: customName, annee: annee, modal: modal,
+            onContinuer: creer,
+            onAnnuler: function () { modal.remove(); selectModele.value = ''; hideResults(); },
+            onChoisir: function (y, m) {
+                modal.remove();
+                if (!selectAnnee.querySelector('option[value="' + CSS.escape(String(y)) + '"]')) {
+                    const o = document.createElement('option'); o.value = y; o.textContent = y; selectAnnee.appendChild(o);
+                }
+                selectAnnee.value = y;
+                populateModeles(type, fab, y);
+                selectModele.value = m;
+                selectModele.dispatchEvent(new Event('change'));
+            }
+        });
     });
 
     inputField.addEventListener('keydown', (e) => {

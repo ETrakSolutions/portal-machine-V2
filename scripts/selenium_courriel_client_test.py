@@ -86,7 +86,13 @@ def choisir(select_id, valeur, essais=6):
             WebDriverWait(dv, 20).until(lambda d: any(
                 o.get_attribute('value') == valeur
                 for o in d.find_elements(By.CSS_SELECTOR, '#%s option' % select_id)))
-            Select(dv.find_element(By.ID, select_id)).select_by_value(valeur)
+            if select_id == 'select-modele':
+                # Le vrai menu Modele est cache derriere la case avec filtre (2026-10-08) :
+                # on le regle comme le fait la case, valeur + evenement change.
+                dv.execute_script("selectModele.value = arguments[0];"
+                                  "selectModele.dispatchEvent(new Event('change', {bubbles: true}));", valeur)
+            else:
+                Select(dv.find_element(By.ID, select_id)).select_by_value(valeur)
             return
         except StaleElementReferenceException as e:
             derniere = e

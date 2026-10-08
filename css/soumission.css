@@ -665,3 +665,51 @@
 .panier-retirer { color: #ff7b7b; }
 .panier-total { color: #fff; font-weight: 700; margin-top: 0.6rem; }
 .panier-total:empty { display: none; }
+
+/* Menu Modele avec filtre (Steve, 2026-10-08) : une case qui ressemble aux autres menus. */
+.combo-modele { position: relative; }
+.combo-modele .select-cache { position: absolute; top: 0; left: 0; width: 1px; height: 1px; padding: 0; border: 0; opacity: 0; pointer-events: none; overflow: hidden; }
+.filtre-modele {
+    width: 100%;
+    box-sizing: border-box;
+    color-scheme: dark;
+    background: linear-gradient(180deg, #2E2E2E, #1A1A1A);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235A6577' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    border: 1px solid rgba(192,192,192,0.2);
+    border-radius: var(--radius);
+    padding: 0.7rem 2.5rem 0.7rem 0.75rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--white);
+    cursor: pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 2px 4px rgba(0,0,0,0.3);
+}
+.filtre-modele::placeholder { color: var(--white); opacity: 1; }
+.filtre-modele:focus { outline: none; cursor: text; border-color: var(--etrak-orange); box-shadow: 0 0 0 2px var(--etrak-orange-glow); }
+.filtre-modele:focus::placeholder { color: #888; }
+.filtre-modele:disabled { opacity: 0.35; cursor: not-allowed; color: #999999; }
+.filtre-resultats {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 50;
+    max-height: 20rem;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0.25rem 0;
+    list-style: none;
+    background: #1A1A1A;
+    border: 1px solid var(--etrak-orange);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+.filtre-resultats li { padding: 0.45rem 0.75rem; font-size: 0.85rem; color: var(--white); }
+.filtre-resultats .filtre-entete { font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 0.5px; cursor: default; }
+.filtre-resultats .filtre-item { cursor: pointer; }
+.filtre-resultats .filtre-item:hover, .filtre-resultats .filtre-item.actif { background: var(--etrak-orange-glow); }
+.filtre-resultats .filtre-item.choisi { color: var(--etrak-orange); font-weight: 600; }
+.filtre-resultats .filtre-autre { font-style: italic; color: #bbb; border-top: 1px solid rgba(192,192,192,0.15); }

@@ -628,10 +628,35 @@ function populateModeles(type, fab, anneeFilter) {
     });
     // Tri alphabetique naturel (numerique) -- identique a app.js : CX17C avant CX130C,
     // tous les CX groupes puis les WX, etc. Aide a retrouver un modele.
-    Object.keys(modelesSet).sort(function(a, b) {
+    modelesListe = Object.keys(modelesSet).sort(function(a, b) {
         return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
-    }).forEach(function(modele) {
-        const opt = document.createElement('option');
+    });
+    construireOptionsModeles();
+    selectModele.disabled = false;
+}
+
+// Menu Modele avec filtre (Steve, 2026-10-08) : UNE case (#filtre-modele) qui ressemble aux
+// autres menus. Un clic ouvre la liste complete ; taper ne garde que les modeles qui
+// contiennent le texte, sans tenir compte de la casse, des espaces ni des tirets (« dx 140 »
+// trouve DX140LC-5 / -7). Le vrai <select id="select-modele"> reste dans la page, cache :
+// tout le reste du code le lit et l'ecrit comme avant ; la case suit sa valeur (voir plus bas).
+var filtreModele = document.getElementById('filtre-modele');
+var filtreResultats = document.getElementById('filtre-modele-resultats');
+var modelesListe = [];
+var filtreIndex = -1;
+function normFiltre(s) { return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9]/g, ''); }
+function texteI18n(k, fb, p) {
+    var v = (typeof i18n !== 'undefined') ? i18n.t(k, p) : k;
+    if (!v || v === k) { v = fb; if (p) Object.keys(p).forEach(function (n) { v = v.split('{' + n + '}').join(p[n]); }); }
+    return v;
+}
+function construireOptionsModeles() {
+    var courant = selectModele.value;
+    selectModele.innerHTML = '';
+    var o0 = document.createElement('option'); o0.value = ''; o0.textContent = texteI18n('common.selectionnez', '-- Selectionnez --');
+    selectModele.appendChild(o0);
+    modelesListe.forEach(function (modele) {
+        var opt = document.createElement('option');
         opt.value = modele;
         opt.textContent = modele;
         selectModele.appendChild(opt);
@@ -643,7 +668,118 @@ function populateModeles(type, fab, anneeFilter) {
     optAutre.textContent = (typeof i18n !== 'undefined') ? i18n.t('js.other_model') : '⊕ Autre modele (pas dans la liste)';
     optAutre.style.fontStyle = 'italic';
     selectModele.appendChild(optAutre);
-    selectModele.disabled = false;
+    if (courant && modelesListe.indexOf(courant) >= 0) selectModele.value = courant;
+    afficherModeleChoisi();
+}
+// La case montre le modele choisi dans le <select> (vide = invite « Selectionnez ou tapez »).
+function afficherModeleChoisi() {
+    if (!filtreModele || document.activeElement === filtreModele) return;
+    var v = selectModele.value;
+    filtreModele.value = (v && v !== '__OTHER__') ? v : '';
+}
+function fermerResultatsModele() {
+    if (filtreResultats) { filtreResultats.hidden = true; filtreResultats.innerHTML = ''; }
+    if (filtreModele) filtreModele.setAttribute('aria-expanded', 'false');
+    filtreIndex = -1;
+}
+function viderFiltreModele() {
+    fermerResultatsModele();
+    afficherModeleChoisi();
+}
+function choisirModeleFiltre(valeur) {
+    fermerResultatsModele();
+    if (filtreModele) filtreModele.blur();
+    if (valeur && valeur !== selectModele.value) {
+        selectModele.value = valeur;
+        selectModele.dispatchEvent(new Event('change'));
+    }
+    afficherModeleChoisi();
+}
+// texte vide : liste complete (comme le menu deroulant) ; sinon les modeles qui le contiennent.
+function afficherResultatsModele(texte) {
+    if (!filtreModele || !filtreResultats || filtreModele.disabled) return;
+    var brut = String(texte || '').trim(), f = normFiltre(brut);
+    var liste = f ? modelesListe.filter(function (m) { return normFiltre(m).indexOf(f) >= 0; }) : modelesListe;
+    var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+    var html = '';
+    if (f) {
+        html += '<li class="filtre-entete">' + esc(liste.length
+            ? texteI18n('soum.filter_count', '{n} modèle(s) contenant « {f} »', { n: liste.length, f: brut })
+            : texteI18n('soum.filter_none', 'Aucun modèle ne contient « {f} »', { f: brut })) + '</li>';
+    }
+    var courant = selectModele.value;
+    liste.forEach(function (m) {
+        html += '<li class="filtre-item' + (m === courant ? ' choisi' : '') + '" role="option" data-valeur="' + esc(m) + '">' + esc(m) + '</li>';
+    });
+    html += '<li class="filtre-item filtre-autre" role="option" data-valeur="__OTHER__">' +
+        esc((typeof i18n !== 'undefined') ? i18n.t('js.other_model') : '⊕ Autre modele (pas dans la liste)') + '</li>';
+    filtreResultats.innerHTML = html;
+    filtreResultats.hidden = false;
+    filtreModele.setAttribute('aria-expanded', 'true');
+    // Liste complete : on part du modele deja choisi ; liste filtree : du premier resultat.
+    filtreIndex = f ? (liste.length ? 0 : -1) : Math.max(-1, liste.indexOf(courant));
+    surlignerResultat();
+}
+function surlignerResultat() {
+    var items = filtreResultats ? filtreResultats.querySelectorAll('.filtre-item') : [];
+    Array.prototype.forEach.call(items, function (li, i) { li.classList.toggle('actif', i === filtreIndex); });
+    if (items[filtreIndex]) items[filtreIndex].scrollIntoView({ block: 'nearest' });
+}
+if (filtreModele && filtreResultats) {
+    // Le reste du code ecrit selectModele.value / .disabled directement (restauration du panier,
+    // Annuler, changement d'annee...) : la case suit sans qu'on ait a toucher ces endroits.
+    ['value', 'disabled'].forEach(function (prop) {
+        var d = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(selectModele), prop) ||
+                Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, prop);
+        if (!d || !d.set) return;
+        Object.defineProperty(selectModele, prop, {
+            configurable: true,
+            get: function () { return d.get.call(this); },
+            set: function (v) {
+                d.set.call(this, v);
+                if (prop === 'disabled') { filtreModele.disabled = !!v; if (v) fermerResultatsModele(); }
+                afficherModeleChoisi();
+            }
+        });
+    });
+    selectModele.addEventListener('change', afficherModeleChoisi);
+    filtreModele.addEventListener('focus', function () {
+        filtreModele.value = '';                  // on part d'une case vide : taper filtre tout de suite
+        afficherResultatsModele('');
+    });
+    filtreModele.addEventListener('mousedown', function () {
+        // Deuxieme clic sur la case deja active : referme / rouvre la liste, comme un menu.
+        if (document.activeElement === filtreModele) {
+            if (filtreResultats.hidden) afficherResultatsModele(filtreModele.value); else fermerResultatsModele();
+        }
+    });
+    filtreModele.addEventListener('input', function () { afficherResultatsModele(filtreModele.value); });
+    // mousedown (pas click) : le choix se fait avant que la case perde le focus.
+    filtreResultats.addEventListener('mousedown', function (e) {
+        var li = e.target.closest('.filtre-item');
+        e.preventDefault();
+        if (li) choisirModeleFiltre(li.getAttribute('data-valeur'));
+    });
+    filtreModele.addEventListener('blur', function () {
+        setTimeout(function () {
+            if (document.activeElement !== filtreModele) { fermerResultatsModele(); afficherModeleChoisi(); }
+        }, 150);
+    });
+    filtreModele.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { e.preventDefault(); fermerResultatsModele(); filtreModele.blur(); return; }
+        if (e.key === 'Tab') { fermerResultatsModele(); return; }
+        if (filtreResultats.hidden && (e.key === 'ArrowDown' || e.key === 'Enter')) {
+            e.preventDefault(); afficherResultatsModele(filtreModele.value); return;
+        }
+        var items = filtreResultats.querySelectorAll('.filtre-item');
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') { e.preventDefault(); filtreIndex = Math.min(items.length - 1, filtreIndex + 1); surlignerResultat(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); filtreIndex = Math.max(0, filtreIndex - 1); surlignerResultat(); }
+        else if (e.key === 'Enter') {
+            e.preventDefault();
+            if (items[filtreIndex]) choisirModeleFiltre(items[filtreIndex].getAttribute('data-valeur'));
+        }
+    });
 }
 
 function doAnneeChange() {
@@ -704,6 +840,8 @@ function resetFrom(level) {
         sel.innerHTML = '<option value="">' + defaults[i] + '</option>';
         sel.disabled = true;
     }
+    // Nouveau type ou fabricant : le filtre du modele repart a vide.
+    if (startIdx <= levels.indexOf('annee')) { modelesListe = []; viderFiltreModele(); }
     hideOptions();
 }
 
@@ -1416,12 +1554,33 @@ function showSoumissionCustomModelModal(type, fab) {
         }
         if (!nm) { nameF.style.borderColor = 'red'; return; }
         if (!/^\d{4}$/.test(yr)) { yearF.style.borderColor = 'red'; return; }
-        modal.remove();
-        showSoumissionRequestPanel(type, fb, nm, yr);
+        var demander = function () { modal.remove(); showSoumissionRequestPanel(type, fb, nm, yr); };
+        // La machine est-elle deja dans la base (autre casse, espaces, variante) ? (Steve, 2026-10-08)
+        if (fabLibre || !window.machineMatch) { demander(); return; }
+        machineMatch.verifierAvantDemande({
+            data: machinesData, type: type, fab: fb, modele: nm, annee: yr, modal: modal,
+            onContinuer: demander,
+            onAnnuler: function () { modal.remove(); selectModele.value = ''; hideOptions(); },
+            onChoisir: function (y, m) { modal.remove(); ouvrirMachineExistante(type, fb, y, m); }
+        });
     });
     if (fabF) fabF.addEventListener('keydown', function(e){ if (e.key === 'Enter') nameF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
     nameF.addEventListener('keydown', function(e){ if (e.key === 'Enter') yearF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
     yearF.addEventListener('keydown', function(e){ if (e.key === 'Enter') document.getElementById('modal-create').click(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
+}
+// Ouvre une machine deja dans la base, proposee a la place d'une demande d'ajout.
+function ouvrirMachineExistante(type, fab, annee, modele) {
+    removeRequestPanel();
+    viderFiltreModele();
+    populateModeles(type, fab, null);
+    selectModele.value = modele;
+    doModeleChange();
+    if (selectAnnee.value !== String(annee) &&
+        selectAnnee.querySelector('option[value="' + CSS.escape(String(annee)) + '"]')) {
+        selectAnnee.value = String(annee);
+        doAnneeChange();
+    }
+    memoriserSelection();
 }
 function showSoumissionRequestPanel(type, fab, modele, annee) {
     var t = function(k, fb){ return (typeof i18n !== 'undefined') ? i18n.t(k) : fb; };

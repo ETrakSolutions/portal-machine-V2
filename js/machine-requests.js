@@ -34,6 +34,7 @@
         function hideOverlay() { var o = document.getElementById('mr-overlay'); if (o) o.remove(); }
 
         function machineExists(type, fab, annee, modele) {
+            if (window.machineMatch && fullData) return !!machineMatch.chercher(fullData, type, fab, modele, annee).exact;
             return !!(fullData && fullData[type] && fullData[type][fab] && fullData[type][fab][annee] && fullData[type][fab][annee][modele]);
         }
 
