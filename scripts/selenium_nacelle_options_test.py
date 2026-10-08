@@ -97,10 +97,10 @@ try:
                       "{role:'super_admin', email:'t@e', name:'T',"
                       " permissions:{modifBom:true, voirPrix:true}}));")
 
-    print('--- 1) catalogue : 8 codes dont 0906/0907 ---')
+    print('--- 1) catalogue : 9 codes dont 0906/0907/0915 ---')
     lab = NAC['_bom_labels']
     pns = sorted((v or {}).get('pn') for v in lab.values())
-    check('catalogue Nacelle = 8 codes (%d)' % len(lab), len(lab) == 8)
+    check('catalogue Nacelle = 9 codes (%d)' % len(lab), len(lab) == 9)
     check('1500-0906 au catalogue', '1500-0906' in pns)
     check('1500-0907 au catalogue', '1500-0907' in pns)
 

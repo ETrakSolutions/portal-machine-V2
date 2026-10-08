@@ -247,6 +247,19 @@ function sansAccesPrix() { return !currentUser || !currentUser.token || !!curren
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }
 function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
 
+// PRIX A VALIDER (Jacquot, 2026-10-08) : un code de nacelle (1500-09xx) dont le prix
+// n'est pas encore fixe — le reel 15 m 1500-0915 d'abord, puis les codes que Steve cree
+// dans Epicor. La ligne affiche « Prix a valider » et AUCUN total ne sort (ecran, panier,
+// courriel) tant qu'une telle ligne est presente : un total partiel se lirait comme le
+// prix complet. Limite aux nacelles (decision du meme jour) : ailleurs, une ligne sans
+// prix (harnais Z03B, lignes _custom) garde son « — » et le total reste affiche.
+function prixAValider(code) {
+    if (!/^1500-09\d\d$/.test(String(code || ''))) return false;
+    if (PRICE_CODES[code]) return false;
+    var p = priceFor(code);
+    return typeof p.item !== 'number' && typeof p.install !== 'number';
+}
+
 // Filigrane anti-partage : le nom (+ courriel) du user connecte est repete en
 // diagonale, en fond du tableau de prix. Dissuade la diffusion d'une capture
 // d'ecran de nos prix : l'identite de la personne qui l'a prise reste visible.
@@ -1899,8 +1912,11 @@ function texteMachine(p, dansPanier) {
     // Totaux calcules sur les MEMES lignes que le tableau a l'ecran et que le
     // bloc Epicor (lignesFacturables) — plus de calcul parallele ici.
     var tot = totauxLignes(p.lignes);
-    // Une seule ligne de totaux en bas (prix indicatifs, hors taxes).
-    if (tot.pieces > 0 || tot.installation > 0) {
+    // Une seule ligne de totaux en bas (prix indicatifs, hors taxes) — aucune si un
+    // prix reste a valider : un total partiel se lirait comme le prix complet.
+    if (tot.aValider.length) {
+        t += '\n' + i18n.t('email.prix_a_valider', { codes: tot.aValider.join(', ') }) + '\n';
+    } else if (tot.pieces > 0 || tot.installation > 0) {
         t += '\n' + i18n.t('email.total_parts') + ' : ' + fmtPrice(tot.pieces) +
              '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(tot.installation) +
              '   ' + i18n.t('email.total_indicative') + '\n';
@@ -1909,8 +1925,9 @@ function texteMachine(p, dansPanier) {
 }
 
 function totauxLignes(lignes) {
-    var tot = { pieces: 0, installation: 0 };
+    var tot = { pieces: 0, installation: 0, aValider: [] };
     lignes.forEach(function (l) {
+        if (l.prixAValider && tot.aValider.indexOf(l.code) < 0) tot.aValider.push(l.code);
         if (typeof l.montant !== 'number') return;
         if (l.kind === 'install') tot.installation += l.montant; else tot.pieces += l.montant;
     });
@@ -2088,14 +2105,16 @@ function rendrePanier() {
     var esc = function (x) { return String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
     var compte = document.getElementById('panier-compte');
     if (compte) compte.textContent = panierActif() ? '(' + panier.length + ' / ' + PANIER_MAX + ')' : '';
-    var prix = !sansAccesPrix(), totP = 0, totI = 0;
+    var prix = !sansAccesPrix(), totP = 0, totI = 0, incomplet = false;
     liste.innerHTML = panier.map(function (it, i) {
         var p = it.photo, t = totauxLignes(p.lignes);
         totP += t.pieces; totI += t.installation;
+        if (t.aValider.length) incomplet = true;
         var detail = [i18n.t('panier.nb_produits', { n: p.produits.length })];
         if (p.installation === 'oui') detail.push(i18n.t('panier.install_oui'));
         if (p.installation === 'non') detail.push(i18n.t('panier.install_non'));
-        if (prix && (t.pieces || t.installation)) detail.push(i18n.t('panier.sous_total') + ' : ' + fmtPrice(t.pieces + t.installation));
+        if (prix && t.aValider.length) detail.push(i18n.t('panier.prix_a_valider'));
+        else if (prix && (t.pieces || t.installation)) detail.push(i18n.t('panier.sous_total') + ' : ' + fmtPrice(t.pieces + t.installation));
         return '<div class="panier-item" data-i="' + i + '">' +
             '<div class="panier-item-texte">' +
               '<div class="panier-item-titre"><span class="panier-num">' + (i + 1) + '.</span> ' +
@@ -2109,7 +2128,8 @@ function rendrePanier() {
             '</div></div>';
     }).join('');
     var tot = document.getElementById('panier-total');
-    if (tot) tot.textContent = (prix && (totP || totI))
+    if (tot) tot.textContent = (prix && incomplet) ? i18n.t('soum.total_a_valider')
+        : (prix && (totP || totI))
         ? i18n.t('panier.total_general', { pieces: fmtPrice(totP), install: fmtPrice(totI) }) : '';
     var sb = document.getElementById('soumission-submit');
     if (sb) sb.innerHTML = panierActif() ? i18n.t('panier.envoyer', { n: panier.length }) : i18n.t('soumission.submit');
@@ -2261,7 +2281,7 @@ function demandePanier(items, c, dest, format) {
     if (format && n >= 2) {
         body += i18n.t(parMachine ? 'email.format_par_machine' : 'email.format_une', { n: n }) + '\n';
     }
-    var totP = 0, totI = 0, blocs = [];
+    var totP = 0, totI = 0, blocs = [], incompletP = false;
     items.forEach(function (it, i) {
         var p = it.photo;
         // Le type en minuscules devant la machine : « 1 × excavatrice Hitachi ZX135US-7H (2026) ».
@@ -2280,8 +2300,11 @@ function demandePanier(items, c, dest, format) {
         }
         var t = totauxLignes(p.lignes);
         totP += t.pieces; totI += t.installation;
+        if (t.aValider.length) incompletP = true;
     });
-    if (!parMachine && (totP > 0 || totI > 0)) {
+    if (!parMachine && incompletP) {
+        body += '\n================================\n' + i18n.t('email.total_a_valider') + '\n';
+    } else if (!parMachine && (totP > 0 || totI > 0)) {
         body += '\n================================\n' + i18n.t('email.panier_total') + '\n' +
                 i18n.t('email.total_parts') + ' : ' + fmtPrice(totP) +
                 '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(totI) +
@@ -2845,7 +2868,8 @@ function lignesFacturables() {
             return;
         }
         out.push({ code: r.code, name: r.name, qty: q, montant: itemExt,
-                   kind: 'item', oblig: r.oblig, seule: false });
+                   kind: 'item', oblig: r.oblig, seule: false,
+                   prixAValider: prixAValider(r.code) });
         if (typeof instExt === 'number' && instExt !== 0) {
             out.push({ code: pr.installCode || '', name: r.name, qty: q,
                        montant: instExt, kind: 'install', oblig: r.oblig, seule: false });
@@ -3121,6 +3145,13 @@ function updateSelectedSummary() {
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
     // Avertissement par machine : pilote par la donnee _warning (voir loadNotesForModel / #machine-warning).
     function pushLi(info, fbCode, fbDesc) {
+        // Nacelle : un code du limiteur rendu inactif ('na') sur la machine n'est pas emis.
+        // Cas du 2026-10-08 : Star 26 J et VJR 26, ou le reel 15 m 1500-0915 (obligatoire)
+        // remplace la Limitation Hauteur 1500-0901. Limite a la Nacelle : ailleurs, des
+        // milliers d'overrides 'na' portent sur ces codes (Telehandler 0401, Boom Truck
+        // 0300...) sans que la soumission en ait jamais tenu compte.
+        if (info && _selT === 'Nacelle' && currentBomOverrides
+            && currentBomOverrides[String(info.pn).replace(/^\d+-/, '')] === 'na') return;
         if (info) { items.push(fmtItem(info.pn, i18n.tBom(info.desc))); return; }
         // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
         // Pour un type connu sans ce role (ex. Telehandler sans hauteur dediee) : ne rien emettre
@@ -3337,9 +3368,14 @@ function updateSelectedSummary() {
         // — les poses au tableau, absentes du collage Epicor.
         var _lignes = lignesFacturables();
         var anyPrice = _lignes.some(function (l) { return typeof l.montant === 'number'; });
+        var incomplet = _lignes.some(function (l) { return l.prixAValider; });
         var total = 0;
         _lignes.forEach(function (l) { if (typeof l.montant === 'number') total += l.montant; });
-        var cell = function (v) { return (v === null || v === undefined) ? '—' : fmtPrice(v); };
+        var AV = {};   // sentinelle : prix pas encore fixe (voir prixAValider)
+        var cell = function (v) {
+            if (v === AV) return '<span style="color:#FF8C00;font-style:italic">' + i18n.t('soum.prix_a_valider') + '</span>';
+            return (v === null || v === undefined) ? '—' : fmtPrice(v);
+        };
         var mono = function (c) {
             return '<span style="font-family:\'JetBrains Mono\',monospace;color:#9fb4c8">'
                    + c + '</span> ';
@@ -3386,14 +3422,20 @@ function updateSelectedSummary() {
                              + i18n.t('soum.tbl_install_line', { name: l.name }) + '</span>',
                              l.montant, false);
             }
-            return ligne(dot + code + l.name, l.montant, l.code || null);
+            return ligne(dot + code + l.name, l.prixAValider ? AV : l.montant, l.code || null);
         }).join('');
 
         // UN SEUL total, sous le trait, en face de la colonne de prix. Le « combine »
         // entre parentheses n'a plus lieu d'etre : produit et installation sont
         // maintenant des lignes du meme tableau, donc leur somme EST le total.
         var totalRow = '';
-        if (anyPrice) {
+        if (incomplet && !sansPrix) {
+            totalRow = '<tr style="border-top:2px solid #555">' +
+                invTd(null) +
+                '<td colspan="2" style="padding:8px 0 4px;color:#FF8C00;font-weight:700">'
+                + i18n.t('soum.total_a_valider') + '</td>' +
+                '</tr>';
+        } else if (anyPrice) {
             totalRow = '<tr style="border-top:2px solid #555;font-weight:700">' +
                 invTd(null) +
                 '<td style="padding:8px 10px 4px 0">' + i18n.t('soum.tbl_total') + '</td>' +

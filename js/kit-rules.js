@@ -112,7 +112,10 @@
       '0904': 'j',
       '0905': 'j',
       '0906': 'j',
-      '0907': 'j'
+      '0907': 'j',
+      // Reel 15 m (2026-10-08) : obligatoire seulement la ou un override le pose
+      // (Haulotte Star 26 J, Manitou VJR 26), absent ailleurs.
+      '0915': 'na'
     };
   }
 
