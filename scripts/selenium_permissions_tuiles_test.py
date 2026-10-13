@@ -98,16 +98,16 @@ try:
     d.execute_script("showAdminSection()")
     time.sleep(0.8)
     entetes = d.execute_script("return [...document.querySelectorAll('#admin-perm-table thead th')].map(x=>x.textContent.trim())")
-    v('14 colonnes, dont les quatre nouvelles', len(entetes) == 14 and entetes[-4:] == ['Cédule techs', 'SAV', 'Export', 'Price List'], entetes)
+    v('15 colonnes, dont les cinq nouvelles', len(entetes) == 15 and entetes[-5:] == ['Cédule techs', 'SAV', 'Export', 'Price List', 'Valider diag'], entetes)
     lignes = d.execute_script("""return [...document.querySelectorAll('#admin-perm-tbody tr')].map(tr =>
         [tr.cells[0].innerText.trim(), [...tr.cells].slice(1).map(c => c.textContent + (c.dataset.perm ? '' : '#'))])""")
     par_role = {l[0]: l[1] for l in lignes}
-    v('chaque ligne a 13 cases', all(len(c) == 13 for c in par_role.values()), {k: len(c) for k, c in par_role.items()})
+    v('chaque ligne a 14 cases', all(len(c) == 14 for c in par_role.values()), {k: len(c) for k, c in par_role.items()})
     dealer = par_role.get('Dealer', [])
     v('Dealer : Cedule et SAV verrouillees (✗, non cliquables)', dealer[9:11] == ['✗#', '✗#'], dealer[9:])
     v('Dealer : Export et Price List reglables', dealer[11].endswith('#') is False and dealer[12].endswith('#') is False, dealer[9:])
     ing = par_role.get('Ingenierie') or par_role.get('Ingénierie') or []
-    v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗', ing[9:] == ['✓', '✓', '✗', '✗'], ing[9:])
+    v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗ Valider diag ✓', ing[9:] == ['✓', '✓', '✗', '✗', '✓'], ing[9:])
     d.execute_script("""var td=[...document.querySelectorAll('#admin-perm-tbody td[data-perm="savAccess"]')]
         .find(c=>c.dataset.role==='ingenierie'); td.click();""")
     time.sleep(0.6)
