@@ -172,6 +172,12 @@ def main():
           and 'Écran noir' in d.find_element(By.CSS_SELECTOR, '.dg-card').text)
         q.clear(); q.send_keys('ecran signal')
         v('recherche sans accents, plusieurs mots (symptome + code)', len(d.find_elements(By.CSS_SELECTOR, '.dg-card')) == 1)
+        q.clear(); q.send_keys("la christ d'écran est tout noir quand on démarre")
+        v('phrase du client (sacres, petits mots, variantes) : trouve la bonne fiche', len(d.find_elements(By.CSS_SELECTOR, '.dg-card')) >= 1
+          and 'Écran noir' in d.find_elements(By.CSS_SELECTOR, '.dg-card')[0].text, d.find_element(By.ID, 'dg-compte').text)
+        q.clear(); q.send_keys('surcharge capteur pression fusible')
+        v('classement : la fiche qui a le plus de mots en premier', 'surcharge' in d.find_elements(By.CSS_SELECTOR, '.dg-card')[0].text.lower()
+          and len(d.find_elements(By.CSS_SELECTOR, '.dg-card')) == 2)
         q.clear(); q.send_keys('zzz')
         v('aucun resultat : invitation a ajouter la fiche', 'Aucune fiche ne correspond' in d.find_element(By.ID, 'dg-liste').text)
         q.clear(); q.send_keys(' ')

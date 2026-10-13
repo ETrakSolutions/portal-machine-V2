@@ -46,17 +46,48 @@
         f.value = ETAT.produits.indexOf(v) >= 0 ? v : '';
         $('e-produit').innerHTML = '<option value="">— Choisir —</option>' + ETAT.produits.map(function (p) { return '<option>' + esc(p) + '</option>'; }).join('');
     }
-    function correspond(f, mots) {
-        if (!mots.length) return true;
-        var h = norm([f.produit, f.symptome, f.code, f.motsCles].concat(f.causes.map(function (c) { return c.cause + ' ' + c.solution + ' ' + c.pieces; })).join(' '));
-        return mots.every(function (m) { return h.indexOf(m) >= 0; });
+    // Recherche par pertinence (Steve, 2026-10-13) : une description dans les mots du client
+    // (« la christ de balance pèse pas bien ») ne trouvait rien, car TOUS les mots devaient
+    // etre dans la fiche. Maintenant : petits mots ignores, variantes d'un meme mot
+    // rapprochees (pèse / peser / pesée), et fiches classees par points — un mot trouve dans
+    // le symptome, le code ou les mots-cles compte plus que dans une solution.
+    var VIDES = ('le la les l un une des de du d au aux a et ou ni ne n pas plus que qu qui quoi se s sa son ses ce c ca cela ' +
+        'cet cette il ils elle elles on y en est sont etre ai as avons ont avoir fait fais faire tres trop bien mal ' +
+        'pour par sur sous dans avec sans chez quand comme mais donc car si tout tous toute toutes rien peu ' +
+        'mon ma mes ton ta tes notre nos votre vos leur leurs me te nous vous lui je j tu ' +
+        'christ crisse tabarnak tabarnac calice caliss esti ostie hostie maudit maudite sacrament ciboire').split(' ');
+    function racine(m) {
+        m = m.replace(/(ements|ement|ations|ation|euses|euse|eurs|eur|ees|ee|es|er|ez|ent|ait|ais|ons|e|s|x)$/, '');
+        return m.length > 6 ? m.slice(0, 6) : m;
+    }
+    function racines(txt) {
+        return norm(txt).split(/[^a-z0-9]+/).filter(function (m) { return m.length >= 2 && VIDES.indexOf(m) < 0; })
+            .map(function (m) { return /\d/.test(m) ? m : racine(m); }).filter(function (m) { return m.length >= 2; });
+    }
+    function proche(a, b) { return a === b || (a.length >= 3 && b.length >= 3 && (a.indexOf(b) === 0 || b.indexOf(a) === 0)); }
+    function points(f, mots) {
+        var zones = [[racines(f.symptome + ' ' + f.code + ' ' + f.motsCles), 3], [racines(f.produit), 2],
+                     [racines(f.causes.map(function (c) { return c.cause + ' ' + c.pieces; }).join(' ')), 2],
+                     [racines(f.causes.map(function (c) { return c.solution; }).join(' ')), 1]];
+        var total = 0;
+        mots.forEach(function (m) {
+            var meilleur = 0;
+            zones.forEach(function (z) { if (meilleur < z[1] && z[0].some(function (x) { return proche(m, x); })) meilleur = z[1]; });
+            total += meilleur;
+        });
+        return total;
     }
     function visibles() {
-        var prod = $('f-produit').value, mots = norm($('f-q').value).trim().split(/\s+/).filter(Boolean);
-        return ETAT.fiches.filter(function (f) {
+        var prod = $('f-produit').value, mots = racines($('f-q').value);
+        var l = ETAT.fiches.filter(function (f) {
             if (ETAT.vue === 'brouillons' && f.statut !== 'brouillon') return false;
-            return (!prod || f.produit === prod) && correspond(f, mots);
-        }).sort(function (a, b) { return a.produit === b.produit ? a.symptome.localeCompare(b.symptome, 'fr') : a.produit.localeCompare(b.produit, 'fr'); });
+            return !prod || f.produit === prod;
+        });
+        var ordre = function (a, b) { return a.produit === b.produit ? a.symptome.localeCompare(b.symptome, 'fr') : a.produit.localeCompare(b.produit, 'fr'); };
+        if (!mots.length) return l.sort(ordre);
+        l.forEach(function (f) { f._points = points(f, mots); });
+        return l.filter(function (f) { return f._points > 0; })
+                .sort(function (a, b) { return b._points - a._points || ordre(a, b); });
     }
     function original(id) { return ETAT.fiches.filter(function (f) { return f.id === id; })[0]; }
     function carte(f) {
@@ -85,7 +116,7 @@
         var l = visibles(), nbB = ETAT.fiches.filter(function (f) { return f.statut === 'brouillon'; }).length;
         $('c-brouillons').textContent = (ETAT.peutValider ? 'Brouillons à valider' : 'Mes brouillons') + ' (' + nbB + ')';
         $('dg-compte').textContent = l.length + ' fiche' + (l.length > 1 ? 's' : '') + ' affichée' + (l.length > 1 ? 's' : '') +
-            ' sur ' + ETAT.fiches.length;
+            ' sur ' + ETAT.fiches.length + (racines($('f-q').value).length && l.length ? ' · les plus proches en premier' : '');
         $('dg-liste').innerHTML = l.length ? l.map(carte).join('') : '<div class="dg-vide">' + (ETAT.fiches.length
             ? 'Aucune fiche ne correspond. Essayez d\'autres mots, ou ajoutez la fiche si vous connaissez la solution.'
             : 'La base est vide pour l\'instant. Ajoutez la première panne connue avec « + Nouvelle fiche ».') + '</div>';
