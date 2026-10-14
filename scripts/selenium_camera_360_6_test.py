@@ -138,9 +138,10 @@ try:
     dv.execute_script("localStorage.setItem('portal_lang','en');")
     dv.get(BASE + '/soumission.html')
     time.sleep(3)
-    txt = dv.execute_script("var e=document.querySelector('[data-i18n=\"soumission.cam_360_6\"]');"
-                            "return e ? e.textContent.trim() : null;")
-    check('libelle EN = « 360 (6-camera set) » (%s)' % txt, txt == '360 (6-camera set)')
+    # Depuis le 2026-10-14, le set de 6 se choisit par le bouton « Kit 6 caméras » du
+    # questionnaire Couverture 360 (une seule case « Caméra 360 » a l'ecran).
+    txt = dv.execute_script("var e=document.getElementById('cam-kit-6'); return e ? e.textContent.trim() : null;")
+    check('bouton EN = « 6-camera kit » (%s)' % txt, txt == '6-camera kit')
 
     errs = [e for e in dv.get_log('browser') if e['level'] == 'SEVERE']
     check('aucune erreur JS SEVERE (%d)' % len(errs), not errs)

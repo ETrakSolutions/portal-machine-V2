@@ -45,15 +45,23 @@
 
     window.couverture360 = { calculer: calculer, porteeEnL: porteeEnL };
 
-    // INTERRUPTEUR : false = calculateur desactive (cache, aucune ligne dans le courriel),
-    // sans rien retirer d'autre. Pour reculer completement : git revert du commit
+    // INTERRUPTEUR : false = questionnaire cache (aucune ligne dans le courriel) ; la case
+    // « Camera 360 » et le choix du kit 4 / 6 restent. Pour reculer completement : git revert du commit
     // « Soumission : calculateur Couverture 360 » (repere git avant-couverture-360).
     var ACTIF = true;
 
     // ---------------- interface (page Soumission) ----------------
+    // Une seule case « Camera 360 » (Steve, 2026-10-14, 2e version) : on la coche, on
+    // remplit le questionnaire, puis on choisit le kit (4 ou 6 cameras) ; le kit recommande
+    // est mis en evidence. Les deux kits restent des cases cachees name="camera-type"
+    // (#cam-360 et #cam-360-6) : courriel, Epicor, recapitulatif et panier les lisent comme
+    // avant. Avec ACTIF = false, le questionnaire est cache mais le choix du kit reste.
     var boite = document.getElementById('cam-calc');
-    if (!boite || !ACTIF) return;
+    var choix = document.getElementById('cam-360-choix');
+    if (!boite || !choix) return;
     var $ = function (id) { return document.getElementById(id); };
+    var kit4 = $('cam-360'), kit6 = $('cam-360-6');
+    var camBox = $('toggle-camera');
     var t = function (k, fb, p) {
         var v = (typeof i18n !== 'undefined') ? i18n.t(k, p) : k;
         if (!v || v === k) { v = fb; if (p) Object.keys(p).forEach(function (n) { v = v.split('{' + n + '}').join(p[n]); }); }
@@ -65,58 +73,135 @@
         return en ? v : v.replace('.', ',');
     };
     var dernier = null;
+    if (!ACTIF) { var q = $('cam-calc-questions'); if (q) q.style.display = 'none'; }
 
     function enMetres(v) {
         var x = parseFloat(String(v || '').replace(',', '.'));
         if (isNaN(x)) return NaN;
         return $('cam-calc-unite').value === 'pi' ? x * PIED : x;
     }
-    function avecPieds(m) {   // « 10,5 m » ou « 10,5 m (34,4 pi) »
-        return nb(m) + ' m' + ($('cam-calc-unite').value === 'pi' ? ' (' + nb(m / PIED) + ' pi)' : '');
+    function avecPieds(m, dec) {   // « 10,5 m » ou « 10,5 m (34,4 pi) » ; dec = 2 pour les hauteurs minimales
+        var f = function (x) {
+            if (dec !== 2) return nb(x);
+            var v = (Math.round(x * 100) / 100).toFixed(2);
+            return (typeof i18n !== 'undefined' && i18n.getLang && i18n.getLang() === 'en') ? v : v.replace('.', ',');
+        };
+        return f(m) + ' m' + ($('cam-calc-unite').value === 'pi' ? ' (' + f(m / PIED) + ' pi)' : '');
     }
-    function cam360Coche() {
-        var a = $('cam-360'), b = $('cam-360-6');
-        return (a && a.checked) || (b && b.checked);
+    function kitChoisi() { return kit6.checked ? 6 : (kit4.checked ? 4 : 0); }
+
+    function majBoutons() {
+        var reco = dernier ? dernier.cameras : 0, pris = kitChoisi();
+        [[4, $('cam-kit-4')], [6, $('cam-kit-6')]].forEach(function (k) {
+            var b = k[1];
+            b.classList.toggle('reco', reco === k[0]);
+            b.classList.toggle('choisi', pris === k[0]);
+            b.textContent = t(k[0] === 4 ? 'cam360.kit_4' : 'cam360.kit_6', k[0] === 4 ? 'Kit 4 caméras' : 'Kit 6 caméras')
+                + (reco === k[0] ? ' — ' + t('cam360.recommande', 'recommandé') : '');
+        });
+        $('cam-kit-msg').textContent = pris ? '' : t('cam360.choisir_kit', 'Choisissez le kit qui convient.');
+        if (pris) boite.classList.remove('manquant');
     }
 
-    function majVisibilite() { boite.style.display = cam360Coche() ? '' : 'none'; majResultat(); }
+    function majLongueur() {   // somme des deux cotes = longueur du vehicule
+        var av = enMetres($('cam-calc-av').value), ar = enMetres($('cam-calc-ar').value), el = $('cam-calc-longueur');
+        if (!el) return;
+        el.textContent = (av >= 0 && ar >= 0)
+            ? t('cam360.longueur', 'Longueur du véhicule : {l}', { l: avecPieds(av + ar) }) : '';
+    }
 
     function majResultat() {
-        var res = $('cam-calc-res'), btn = $('cam-calc-choisir');
+        var res = $('cam-calc-res');
         dernier = null;
-        var c = calculer(enMetres($('cam-calc-h').value), enMetres($('cam-calc-av').value),
-                         enMetres($('cam-calc-ar').value), $('cam-calc-charte').value);
-        btn.style.display = 'none';
-        if (!c.ok) { res.className = 'cam-calc-res'; res.textContent = t('cam360.saisir', 'Entrez la hauteur de la caméra de côté et ses distances aux coins avant et arrière.'); return; }
-        if (c.tropBas) {
-            res.className = 'cam-calc-res cam-calc-alerte';
-            res.textContent = t('cam360.trop_bas', 'Caméra trop basse pour cette charte : hauteur minimale {h}.', { h: avecPieds(c.hMin) });
-            return;
+        majLongueur();
+        if (ACTIF) {
+            var c = calculer(enMetres($('cam-calc-h').value), enMetres($('cam-calc-av').value),
+                             enMetres($('cam-calc-ar').value), $('cam-calc-charte').value);
+            if (!c.ok) {
+                res.className = 'cam-calc-res';
+                res.textContent = t('cam360.saisir', 'Entrez la hauteur de la caméra de côté et ses distances aux coins avant et arrière.');
+            } else if (c.tropBas) {
+                res.className = 'cam-calc-res cam-calc-alerte';
+                res.textContent = t('cam360.trop_bas', 'Caméra trop basse pour cette charte : hauteur minimale {h}.', { h: avecPieds(c.hMin, 2) });
+            } else if (c.horsTableau) {
+                res.className = 'cam-calc-res cam-calc-alerte';
+                res.textContent = t('cam360.hors_tableau', 'Hauteur sous le tableau du fournisseur (portée connue à partir de {h}) : à valider avec le fournisseur.', { h: avecPieds(c.L, 2) });
+            } else {
+                dernier = c;
+                res.className = 'cam-calc-res ' + (c.cameras === 4 ? 'cam-calc-ok' : 'cam-calc-6');
+                res.textContent = t(c.cameras === 4 ? 'cam360.res_4' : 'cam360.res_6',
+                    c.cameras === 4 ? '4 caméras suffisent : coin le plus loin {d} (avec 1 m de marge), portée {p}.'
+                                    : '6 caméras recommandées : coin le plus loin {d} (avec 1 m de marge), portée {p} seulement.',
+                    { d: avecPieds(c.distance), p: avecPieds(c.portee) })
+                    + (c.auDela ? ' ' + t('cam360.au_dela', '(Hauteur au-delà du tableau du fournisseur : portée limitée à la dernière valeur connue.)') : '');
+            }
         }
-        if (c.horsTableau) {
-            res.className = 'cam-calc-res cam-calc-alerte';
-            res.textContent = t('cam360.hors_tableau', 'Hauteur sous le tableau du fournisseur (portée connue à partir de {h}) : à valider avec le fournisseur.', { h: avecPieds(c.L) });
-            return;
-        }
-        dernier = c;
-        var bon = c.cameras === 4 ? 'cam-360' : 'cam-360-6';
-        res.className = 'cam-calc-res ' + (c.cameras === 4 ? 'cam-calc-ok' : 'cam-calc-6');
-        res.textContent = t(c.cameras === 4 ? 'cam360.res_4' : 'cam360.res_6',
-            c.cameras === 4 ? '4 caméras suffisent : coin le plus loin {d} (avec 1 m de marge), portée {p}.'
-                            : '6 caméras recommandées : coin le plus loin {d} (avec 1 m de marge), portée {p} seulement.',
-            { d: avecPieds(c.distance), p: avecPieds(c.portee) })
-            + (c.auDela ? ' ' + t('cam360.au_dela', '(Hauteur au-delà du tableau du fournisseur : portée limitée à la dernière valeur connue.)') : '');
-        if (!$(bon).checked) {
-            btn.textContent = t(c.cameras === 4 ? 'cam360.choisir_4' : 'cam360.choisir_6',
-                                c.cameras === 4 ? 'Choisir 360 (4 caméras)' : 'Choisir 360 (6 caméras)');
-            btn.setAttribute('data-cible', bon);
-            btn.style.display = '';
+        majBoutons();
+    }
+
+    // Etat du bloc quand « Camera 360 » est cochee sans kit : actif, statut « 360 (kit a choisir) ».
+    function majBloc() {
+        if (!camBox) return;
+        var st = camBox.querySelector('.toggle-status');
+        if (choix.checked) {
+            camBox.classList.add('active');
+            if (!kitChoisi() && st) st.textContent = t('cam360.statut_sans_kit', '360 (kit à choisir)');
         }
     }
 
-    // Ligne du courriel (vide si 360 non coche ou calcul incomplet).
+    function majVisibilite() {
+        boite.style.display = choix.checked ? '' : 'none';
+        majBloc();
+        majResultat();
+    }
+    window.couverture360Maj = majVisibilite;
+
+    // Case « Camera 360 »
+    choix.addEventListener('change', function () {
+        if (choix.checked) {
+            // Exclusive avec Recul, Recul + capteur, Quad (comme les autres cases du bloc).
+            document.querySelectorAll('input[name="camera-type"]').forEach(function (cb) {
+                if (cb.checked && cb !== kit4 && cb !== kit6) cb.click();
+            });
+        } else {
+            [kit4, kit6].forEach(function (cb) { if (cb.checked) cb.click(); });
+        }
+        majVisibilite();
+        try { if (typeof updateSelectedSummary === 'function') updateSelectedSummary(); } catch (e) {}
+    });
+    // Une autre camera cochee (Recul, Quad...) : « Camera 360 » se decoche. Un kit coche
+    // (bouton, ou panier restaure) : « Camera 360 » se coche.
+    document.querySelectorAll('input[name="camera-type"]').forEach(function (cb) {
+        cb.addEventListener('change', function () {
+            if (cb.checked && (cb === kit4 || cb === kit6)) choix.checked = true;
+            else if (cb.checked) choix.checked = false;
+            majVisibilite();
+        });
+    });
+    [[4, kit4], [6, kit6]].forEach(function (k) {
+        $('cam-kit-' + k[0]).addEventListener('click', function (e) {
+            e.preventDefault();
+            if (!k[1].checked) k[1].click();
+            majVisibilite();
+        });
+    });
+    ['cam-calc-h', 'cam-calc-av', 'cam-calc-ar'].forEach(function (id) { $(id).addEventListener('input', majResultat); });
+    ['cam-calc-unite', 'cam-calc-charte'].forEach(function (id) { $(id).addEventListener('change', majResultat); });
+    document.addEventListener('langchange', majVisibilite);
+
+    // Envoi / ajout au panier : « Camera 360 » cochee sans kit choisi -> on bloque.
+    window.kit360Manquant = function () {
+        if (!choix.checked || kitChoisi()) return false;
+        boite.style.display = '';
+        boite.classList.add('manquant');
+        boite.scrollIntoView({ block: 'center' });
+        majBoutons();
+        return true;
+    };
+
+    // Ligne du courriel (vide si « Camera 360 » non cochee ou calcul non fait).
     window.couverture360Ligne = function () {
-        if (!cam360Coche() || !dernier) return '';
+        if (!choix.checked || !dernier) return '';
         return t('cam360.ligne', 'Couverture 360 : caméra de côté à {h}, coin le plus loin à {d} (avec 1 m de marge), portée {p} ({charte}) → {n} caméras.', {
             h: avecPieds(enMetres($('cam-calc-h').value)), d: avecPieds(dernier.distance), p: avecPieds(dernier.portee),
             charte: t($('cam-calc-charte').value === 'petite' ? 'cam360.charte_petite' : 'cam360.charte_grande',
@@ -124,15 +209,5 @@
             n: dernier.cameras });
     };
 
-    ['cam-calc-h', 'cam-calc-av', 'cam-calc-ar'].forEach(function (id) { $(id).addEventListener('input', majResultat); });
-    ['cam-calc-unite', 'cam-calc-charte'].forEach(function (id) { $(id).addEventListener('change', majResultat); });
-    document.querySelectorAll('input[name="camera-type"]').forEach(function (cb) { cb.addEventListener('change', majVisibilite); });
-    $('cam-calc-choisir').addEventListener('click', function (e) {
-        e.preventDefault();
-        var cb = $(this.getAttribute('data-cible'));
-        if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change', { bubbles: true })); }
-        majVisibilite();
-    });
-    document.addEventListener('langchange', majResultat);
     majVisibilite();
 })();

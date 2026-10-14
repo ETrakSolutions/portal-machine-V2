@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
-"""Soumission : calculateur « Couverture 360 : 4 ou 6 cameras ? » (Steve, 2026-10-14).
+"""Soumission : « Camera 360 » en une seule case + questionnaire 4 ou 6 cameras + choix du kit
+(Steve, 2026-10-14, 2e version).
 
 Regle de la fiche du fournisseur (Panoramic Calibration Camera Installation Instructions) :
 la camera de cote doit voir la charte jusqu'au coin le plus eloigne + 1 m de marge.
 
 Verifie :
-  1. le calculateur est cache tant qu'aucun 360 n'est coche, visible avec 360 (4) ;
-  2. cas du document : camera a 3 m, coin arriere a 9 m -> 4 cameras (portee 10,5 m) ;
-  3. coin a 10 m -> 6 cameras recommandees ; le bouton coche 360 (6) et decoche 360 (4) ;
-  4. pieds : 9,84 pi / 32,81 pi donnent le meme resultat que 3 m / 10 m ;
-  5. camera trop basse (0,8 m) et hauteur sous le tableau (1,0 m) : messages, pas de verdict ;
-  6. le courriel porte la ligne « Couverture 360 : ... → 6 cameras » ;
-  7. 360 decoche : calculateur cache, plus de ligne dans le courriel ;
-  8. anglais ; aucune erreur JS SEVERE.
+  1. une seule case « Caméra 360 » visible ; les kits 4 / 6 sont des cases cachees ;
+     cocher la case ouvre le questionnaire, statut « 360 (kit à choisir) », aucun kit coche ;
+  2. cas du document (3 m, coin a 9 m) -> 4 cameras, bouton « Kit 4 caméras — recommandé » ;
+  3. sans kit choisi : envoi bloque (kit360Manquant), questionnaire encadre en rouge ;
+  4. bouton Kit 6 -> case 6 cochee, statut « 360 (6 cameras) » ; bouton Kit 4 -> bascule ;
+  5. coin a 10 m -> 6 recommande ; le kit deja choisi reste (la personne decide) ;
+  6. pieds ; camera trop basse ; hauteur sous le tableau ;
+  7. courriel : ligne « Couverture 360 » + code 1300-0004 dans le bloc Epicor ;
+  8. panier : l'etat (Camera 360 + kit 6) se restaure ;
+  9. cocher « Recul » decoche Camera 360, cache le questionnaire, decoche le kit ;
+ 10. anglais ; aucune erreur JS SEVERE.
 
     py -3.12 scripts/selenium_couverture_360_test.py [--live]
 """
@@ -100,57 +104,81 @@ try:
     dv.get(BASE + '/index.html')
     dv.execute_script(SESSION_TEST_JS)
     charger()
+    clic = lambda i: dv.execute_script("document.getElementById(arguments[0]).click();", i) or time.sleep(0.4)
+    statut = lambda: dv.execute_script("return document.querySelector('#toggle-camera .toggle-status').textContent;")
+    classe = lambda i: dv.execute_script("return document.getElementById(arguments[0]).className;", i)
+    texte = lambda i: dv.execute_script("return document.getElementById(arguments[0]).textContent;", i)
 
-    print('--- 1) visibilite ---')
-    check('cache sans 360', not visible('cam-calc'))
-    dv.execute_script("document.getElementById('cam-360').click();"); time.sleep(0.4)
-    check('visible avec 360 (4 cameras)', visible('cam-calc'))
+    print('--- 1) une seule case ---')
+    check('kits 4 et 6 caches (inputs hidden)', dv.execute_script(
+        "return document.getElementById('cam-360').hidden && document.getElementById('cam-360-6').hidden;"))
+    check('questionnaire cache sans Camera 360', not visible('cam-calc'))
+    clic('cam-360-choix')
+    check('Camera 360 cochee -> questionnaire visible', visible('cam-calc'))
+    check('statut « %s »' % statut(), statut() == '360 (kit à choisir)')
+    check('aucun kit coche', not coche('cam-360') and not coche('cam-360-6'))
 
     print('--- 2) cas du document ---')
     saisir('3', '2', '9')
-    r = res()
-    check('3 m / 2 m / 9 m -> « 4 caméras suffisent », portée 10,5 m (%s)' % r, r.startswith('4 caméras suffisent') and '10,5 m' in r and '10,0 m' in r)
-    check('pas de bouton : 360 (4) deja coche', not visible('cam-calc-choisir'))
+    check('3 m / 9 m -> « 4 caméras suffisent », portée 10,5 m (%s)' % res(), res().startswith('4 caméras suffisent') and '10,5 m' in res())
+    check('bouton « %s » recommande' % texte('cam-kit-4'), 'reco' in classe('cam-kit-4') and 'recommandé' in texte('cam-kit-4')
+          and 'reco' not in classe('cam-kit-6'))
 
-    print('--- 3) coin a 10 m ---')
+    print('--- 3) blocage sans kit ---')
+    check('kit360Manquant() = vrai', dv.execute_script("return window.kit360Manquant();") is True)
+    check('questionnaire encadre (manquant) + message « %s »' % texte('cam-kit-msg'),
+          'manquant' in classe('cam-calc') and 'Choisissez' in texte('cam-kit-msg'))
+
+    print('--- 4) choix du kit ---')
+    clic('cam-kit-6')
+    check('Kit 6 : case 6 cochee, statut « %s »' % statut(), coche('cam-360-6') and not coche('cam-360') and '6' in statut())
+    check('Kit 6 marque choisi, encadre rouge retire', 'choisi' in classe('cam-kit-6') and 'manquant' not in classe('cam-calc'))
+    check('Camera 360 toujours cochee, plus de blocage', coche('cam-360-choix') and dv.execute_script("return window.kit360Manquant();") is False)
+    clic('cam-kit-4')
+    check('Kit 4 : bascule (4 coche, 6 decoche)', coche('cam-360') and not coche('cam-360-6') and 'choisi' in classe('cam-kit-4'))
+
+    print('--- 5) coin a 10 m ---')
     saisir('3', '2', '10')
-    r = res()
-    check('-> « 6 caméras recommandées » (%s)' % r, r.startswith('6 caméras recommandées') and '11,0 m' in r)
-    b = dv.execute_script("return document.getElementById('cam-calc-choisir').textContent;")
-    check('bouton « %s »' % b, visible('cam-calc-choisir') and '6' in b)
-    dv.execute_script("document.getElementById('cam-calc-choisir').click();"); time.sleep(0.4)
-    check('360 (6) coche, 360 (4) decoche, bouton cache', coche('cam-360-6') and not coche('cam-360') and not visible('cam-calc-choisir'))
-    check('calculateur toujours visible avec 360 (6)', visible('cam-calc'))
+    check('6 recommande (%s), kit 4 garde' % res(), res().startswith('6 caméras recommandées')
+          and 'reco' in classe('cam-kit-6') and coche('cam-360'))
 
-    print('--- 4) pieds ---')
+    print('--- 6) pieds et hauteurs hors regle ---')
     saisir('9.84', '6.56', '32.81', 'pi')
-    r = res()
-    check('9,84 pi / 32,81 pi -> 6 cameras, valeurs en m et pi (%s)' % r, r.startswith('6 caméras') and ' pi)' in r)
-
-    print('--- 5) hauteurs hors regle ---')
+    check('pieds : 6 cameras, valeurs en pi (%s)' % res(), res().startswith('6 caméras') and ' pi)' in res())
     saisir('0.8', '1', '3')
-    check('0,8 m : trop basse, minimum 0,9 m (%s)' % res(), 'trop basse' in res() and '0,9 m' in res())
+    check('0,8 m : trop basse, minimum 0,87 m (%s)' % res(), 'trop basse' in res() and '0,87 m' in res())
     saisir('1.0', '1', '3')
-    check('1,0 m : sous le tableau, a valider (%s)' % res(), 'sous le tableau' in res())
+    check('1,0 m : sous le tableau, connue a partir de 1,35 m (%s)' % res(), 'sous le tableau' in res() and '1,35 m' in res())
 
-    print('--- 6) courriel ---')
-    saisir('3', '2', '10')
-    ligne = dv.execute_script("return texteMachine(photoMachine(), true);")
-    check('ligne « Couverture 360 : caméra de côté à 3,0 m ... → 6 caméras »',
-          'Couverture 360 : caméra de côté à 3,0 m' in ligne and '→ 6 caméras' in ligne)
+    print('--- 7) courriel ---')
+    saisir('3', '2', '9')
+    dv.execute_script("updateSelectedSummary();")
+    ph = dv.execute_script("var p=photoMachine(); return {t: texteMachine(p, true), e: JSON.stringify(p.epicor)};")
+    check('ligne « Couverture 360 ... → 4 caméras »', 'Couverture 360 : caméra de côté à 3,0 m' in ph['t'] and '→ 4 caméras' in ph['t'])
+    check('code 1300-0004 dans le bloc Epicor (%s)' % ph['e'][:120], '1300-0004' in ph['e'])
 
-    print('--- 7) 360 decoche ---')
-    dv.execute_script("document.getElementById('cam-360-6').click();"); time.sleep(0.4)
-    check('calculateur cache', not visible('cam-calc'))
-    check('plus de ligne dans le courriel', 'Couverture 360' not in dv.execute_script("return texteMachine(photoMachine(), true);"))
+    print('--- 8) panier ---')
+    clic('cam-kit-6')
+    etat = dv.execute_script("return etatEcran();")
+    clic('cam-360-choix')
+    check('Camera 360 decochee : kit decoche', not coche('cam-360-6') and not coche('cam-360-choix'))
+    dv.execute_script("restaurerEtat(arguments[0]);", etat); time.sleep(1.5)
+    check('restauration : Camera 360 + kit 6 coches, questionnaire visible',
+          coche('cam-360-choix') and coche('cam-360-6') and visible('cam-calc'))
 
-    print('--- 8) anglais et console ---')
+    print('--- 9) Recul ---')
+    clic('cam-recul')
+    check('Recul : Camera 360 decochee, kit decoche, questionnaire cache, statut « %s »' % statut(),
+          not coche('cam-360-choix') and not coche('cam-360-6') and not visible('cam-calc') and statut() == 'Recul')
+
+    print('--- 10) anglais et console ---')
     dv.execute_script("localStorage.setItem('portal_lang','en');")
     charger()
-    dv.execute_script("document.getElementById('cam-360').click();"); time.sleep(0.4)
+    clic('cam-360-choix')
     saisir('3', '2', '9')
-    titre = dv.execute_script("return document.querySelector('#cam-calc .cam-calc-titre').textContent;")
-    check('EN : titre « %s », résultat « %s »' % (titre, res()), titre == '360 coverage: 4 or 6 cameras?' and res().startswith('4 cameras are enough') and '10.5 m' in res())
+    lib = dv.execute_script("return document.querySelector('label [data-i18n=\"soumission.cam_360_choix\"]').textContent;")
+    check('EN : case « %s », kit « %s », résultat « %s »' % (lib, texte('cam-kit-4'), res()),
+          lib == '360 camera' and texte('cam-kit-4') == '4-camera kit — recommended' and '10.5 m' in res())
     dv.execute_script("localStorage.setItem('portal_lang','fr');")
     err = [l['message'] for l in dv.get_log('browser') if l['level'] == 'SEVERE'
            and 'version.json' not in l['message'] and 'favicon' not in l['message']]

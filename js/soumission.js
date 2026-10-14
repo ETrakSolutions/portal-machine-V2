@@ -911,6 +911,8 @@ function showOptions() {
     document.querySelectorAll('input[name="limiteur-type"]').forEach(function(r) { r.checked = false; });
     // Reset camera radios
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
+    var _c360 = document.getElementById('cam-360-choix'); if (_c360) _c360.checked = false;
+    if (window.couverture360Maj) window.couverture360Maj();
     // Reset sous-options Balance (modele + imprimante)
     document.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
             .forEach(function(r) { r.checked = false; });
@@ -1747,6 +1749,8 @@ if (submitBtn) {
             signalerQuestionInstallation();
             return;
         }
+        // « Camera 360 » cochee sans kit (4 ou 6) choisi : rien ne part (Steve, 2026-10-14).
+        if (window.kit360Manquant && window.kit360Manquant()) return;
 
         if (_firstEmpty) { _firstEmpty.focus(); return; }
 
@@ -2218,6 +2222,7 @@ function machineEcranValide() {
     var vide = marquerChampsVides(champs);
     if (vide) { vide.focus(); vide.scrollIntoView({ block: 'center' }); return false; }
     if (selectionAInstallation() && !reponseInstall()) { signalerQuestionInstallation(); return false; }
+    if (window.kit360Manquant && window.kit360Manquant()) return false;   // « Camera 360 » sans kit 4 / 6
     return true;
 }
 
@@ -2236,6 +2241,7 @@ function viderEcranMachine() {
     });
     document.querySelectorAll('#options-section input[type=checkbox], #options-section input[type=radio]')
         .forEach(function (c) { c.checked = false; });
+    if (window.couverture360Maj) window.couverture360Maj();
     ['soumission-nb-systemes', 'soumission-equipement'].forEach(function (id) {
         var el = document.getElementById(id);
         if (el) el.value = '';

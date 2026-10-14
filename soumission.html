@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
     <link rel="stylesheet" href="css/style.css?v=176">
-    <link rel="stylesheet" href="css/soumission.css?v=206">
+    <link rel="stylesheet" href="css/soumission.css?v=208">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -177,19 +177,53 @@
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-recul" value="Recul"> <span data-i18n="soumission.cam_recul">Recul</span></label>
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-capteur" value="Recul + capteur"> <span data-i18n="soumission.cam_capteur">Recul + capteur proximite</span></label>
                         <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-quad" value="Quad"> <span data-i18n="soumission.cam_quad">Quad</span></label>
-                        <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-360" value="360"> <span data-i18n="soumission.cam_360">360 (4 cameras)</span></label>
-                        <label class="sub-option"><input type="checkbox" name="camera-type" id="cam-360-6" value="360 (6 cameras)"> <span data-i18n="soumission.cam_360_6">360 (set de 6 cameras)</span></label>
-                        <!-- 4 ou 6 cameras ? (Steve, 2026-10-14) : regle de la fiche de calibration du
-                             fournisseur, voir js/couverture-360.js. Visible quand un 360 est coche. -->
+                        <!-- Une seule case « Camera 360 » (Steve, 2026-10-14) : le questionnaire dit
+                             4 ou 6 cameras, puis on choisit le kit. Les kits restent deux cases
+                             cachees name="camera-type" (codes 1300-0004 / 1300-0005), lues comme avant. -->
+                        <label class="sub-option"><input type="checkbox" id="cam-360-choix" value="360"> <span data-i18n="soumission.cam_360_choix">Caméra 360</span></label>
+                        <input type="checkbox" name="camera-type" id="cam-360" value="360" hidden>
+                        <input type="checkbox" name="camera-type" id="cam-360-6" value="360 (6 cameras)" hidden>
                         <div class="cam-calc" id="cam-calc" style="display:none;">
                             <div class="cam-calc-titre" data-i18n="cam360.titre">Couverture 360 : 4 ou 6 caméras ?</div>
-                            <div class="cam-calc-grille">
-                                <label><span data-i18n="cam360.hauteur">Hauteur de la caméra de côté</span>
-                                    <input type="text" inputmode="decimal" id="cam-calc-h" class="soumission-input" autocomplete="off"></label>
-                                <label><span data-i18n="cam360.d_avant">Caméra → coin avant</span>
+                            <div id="cam-calc-questions">
+                            <!-- Schema du camion avec les cotes a remplir (Steve, 2026-10-14) : avant -> camera,
+                                 camera -> arriere (leur somme = longueur du vehicule) et hauteur de la camera. -->
+                            <div class="cam-schema">
+                                <svg viewBox="0 0 520 250" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                                    <line x1="10" y1="222" x2="510" y2="222" class="sch-sol"/>
+                                    <!-- caisse / benne -->
+                                    <rect x="200" y="110" width="290" height="80" rx="4" class="sch-caisse"/>
+                                    <!-- cabine (avant a gauche) -->
+                                    <path d="M30 190 L30 130 L60 88 L190 88 L190 190 Z" class="sch-cabine"/>
+                                    <path d="M66 98 L120 98 L120 132 L44 132 Z" class="sch-vitre"/>
+                                    <rect x="20" y="172" width="480" height="18" rx="3" class="sch-chassis"/>
+                                    <circle cx="95" cy="200" r="22" class="sch-roue"/><circle cx="95" cy="200" r="9" class="sch-moyeu"/>
+                                    <circle cx="350" cy="200" r="22" class="sch-roue"/><circle cx="350" cy="200" r="9" class="sch-moyeu"/>
+                                    <circle cx="410" cy="200" r="22" class="sch-roue"/><circle cx="410" cy="200" r="9" class="sch-moyeu"/>
+                                    <!-- camera de cote -->
+                                    <rect x="176" y="80" width="18" height="12" rx="3" class="sch-camera"/>
+                                    <!-- cotes horizontales : avant -> camera, camera -> arriere -->
+                                    <line x1="20" y1="22" x2="20" y2="172" class="sch-rappel"/>
+                                    <line x1="185" y1="22" x2="185" y2="80" class="sch-rappel"/>
+                                    <line x1="500" y1="22" x2="500" y2="172" class="sch-rappel"/>
+                                    <line x1="24" y1="30" x2="181" y2="30" class="sch-cote"/>
+                                    <path d="M24 30 l7 -4 v8 Z M181 30 l-7 -4 v8 Z" class="sch-fleche"/>
+                                    <line x1="189" y1="30" x2="496" y2="30" class="sch-cote"/>
+                                    <path d="M189 30 l7 -4 v8 Z M496 30 l-7 -4 v8 Z" class="sch-fleche"/>
+                                    <!-- cote verticale : hauteur de la camera -->
+                                    <line x1="185" y1="92" x2="185" y2="222" class="sch-cote sch-pointille"/>
+                                    <path d="M185 92 l-4 7 h8 Z M185 222 l-4 -7 h8 Z" class="sch-fleche"/>
+                                </svg>
+                                <label class="sch-champ sch-av"><span data-i18n="cam360.d_avant">Avant → caméra</span>
                                     <input type="text" inputmode="decimal" id="cam-calc-av" class="soumission-input" autocomplete="off"></label>
-                                <label><span data-i18n="cam360.d_arriere">Caméra → coin arrière</span>
+                                <label class="sch-champ sch-ar"><span data-i18n="cam360.d_arriere">Caméra → arrière</span>
                                     <input type="text" inputmode="decimal" id="cam-calc-ar" class="soumission-input" autocomplete="off"></label>
+                                <label class="sch-champ sch-h"><span data-i18n="cam360.hauteur">Hauteur caméra</span>
+                                    <input type="text" inputmode="decimal" id="cam-calc-h" class="soumission-input" autocomplete="off"></label>
+                                <span class="sch-cam-lib" data-i18n="cam360.camera_cote">Caméra de côté</span>
+                            </div>
+                            <div class="cam-calc-longueur" id="cam-calc-longueur"></div>
+                            <div class="cam-calc-grille">
                                 <label><span data-i18n="cam360.unite">Unités</span>
                                     <select id="cam-calc-unite" class="soumission-input"><option value="m">m</option><option value="pi" data-i18n="cam360.pieds">pi</option></select></label>
                                 <label><span data-i18n="cam360.charte">Charte de calibration</span>
@@ -199,8 +233,13 @@
                                     </select></label>
                             </div>
                             <div class="cam-calc-res" id="cam-calc-res"></div>
-                            <button type="button" class="cam-calc-btn" id="cam-calc-choisir" style="display:none;"></button>
-                            <div class="cam-calc-aide" data-i18n="cam360.aide">Distances horizontales mesurées le long du côté de la machine, de la caméra jusqu'au coin. Une marge de 1 m est ajoutée, comme dans la fiche du fournisseur.</div>
+                            </div>
+                            <div class="cam-kits">
+                                <button type="button" class="cam-kit" id="cam-kit-4">Kit 4 caméras</button>
+                                <button type="button" class="cam-kit" id="cam-kit-6">Kit 6 caméras</button>
+                                <span class="cam-kit-msg" id="cam-kit-msg"></span>
+                            </div>
+                            <div class="cam-calc-aide" data-i18n="cam360.aide">Distances horizontales mesurées le long du côté du véhicule. La caméra doit voir jusqu'au bout le plus éloigné : une marge de 1 m est ajoutée, comme dans la fiche du fournisseur.</div>
                         </div>
                         <!-- Quantite : n'apparait qu'en mode sans machine. Sur une
                              machine, une camera va sur CETTE machine et la quantite
@@ -423,15 +462,15 @@
     </footer>
 
     <script src="js/config.js?v=2"></script>
-    <script src="js/translations.js?v=254"></script>
+    <script src="js/translations.js?v=256"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=6"></script>
     <script src="js/kit-rules.js?v=12"></script>
     <script src="js/machine-match.js?v=1"></script>
-    <script src="js/soumission.js?v=312"></script>
-    <script src="js/couverture-360.js?v=1"></script>
+    <script src="js/soumission.js?v=313"></script>
+    <script src="js/couverture-360.js?v=3"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>
