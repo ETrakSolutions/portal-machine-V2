@@ -293,7 +293,30 @@
             ok('Courriel ouvert dans Outlook. La fiche est aussi dans le presse-papiers.');
         }
         (window.__savMailto || function (u) { window.location.href = u; })(url(corps));
+        demanderFermeture();
     });
+
+    // Apres l'envoi, la demande se ferme (Steve, 2026-10-14) : des que le courriel est ouvert,
+    // une fenetre demande « Retour a l'accueil ? ». Oui : retour au hub, la fiche n'est pas
+    // gardee. Non : on reste sur la fiche (pour corriger et renvoyer, par exemple).
+    function demanderFermeture() {
+        var ancien = $('sav-fin'); if (ancien) ancien.remove();
+        var v = document.createElement('div');
+        v.id = 'sav-fin'; v.className = 'sav-fin';
+        v.innerHTML = '<div class="sav-fin-boite" role="dialog" aria-modal="true" aria-labelledby="sav-fin-titre">' +
+            '<h3 id="sav-fin-titre">Retour à l’accueil ?</h3>' +
+            '<p>Le courriel de la demande est ouvert dans Outlook : envoyez-le, puis fermez la demande.</p>' +
+            '<div class="sav-fin-btns">' +
+            '<button type="button" class="sav-btn" id="b-fin-non">Non, rester sur la demande</button>' +
+            '<button type="button" class="sav-btn main" id="b-fin-oui">Oui, retour à l’accueil</button>' +
+            '</div></div>';
+        document.body.appendChild(v);
+        $('b-fin-oui').addEventListener('click', function () {
+            (window.__savAccueil || function () { window.location.href = 'index.html'; })();
+        });
+        $('b-fin-non').addEventListener('click', function () { v.remove(); });
+        $('b-fin-oui').focus();
+    }
     $('b-copier').addEventListener('click', function () { copier(fiche()).then(function () { ok('Fiche copiée dans le presse-papiers.'); }); });
     $('b-nouveau').addEventListener('click', function () {
         if (!confirm('Effacer la fiche et commencer une nouvelle demande ?')) return;

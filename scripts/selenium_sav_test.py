@@ -67,6 +67,7 @@ def navigateur(role):
             return Promise.resolve({ json: function () { return Promise.resolve(r); } });
         };
         window.__savMailto = function (u) { window.__mailto = u; };
+        window.__savAccueil = function () { window.__accueil = (window.__accueil || 0) + 1; };
     """ % (json.dumps(json.dumps(user)), json.dumps(SAV))})
     d.get(PAGE)
     time.sleep(1.5)
@@ -234,6 +235,15 @@ def main():
           all(x in corps for x in ('Compagnie : Gravier Duncan Simard', 'Contact : Marc Girard', '1 × E03A-0013',
                                    'Demande de bypass : OUI'))
           and not any(x in corps for x in ('ROUTAGE', 'SUIVI', 'Assigné à', 'Rappel promis')), corps[:200])
+        print('6) Fermeture de la demande apres l envoi')
+        fin = d.execute_script("var f=document.getElementById('sav-fin'); return f ? f.textContent : null;")
+        v('apres l envoi : fenetre « Retour a l accueil ? »', bool(fin) and 'Retour à l’accueil ?' in fin, fin)
+        d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
+        v('« Non » : fenetre fermee, fiche conservee, pas de retour', not d.execute_script("return !!document.getElementById('sav-fin');")
+          and d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Marc Girard' and not d.execute_script('return window.__accueil'))
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
+        d.find_element(By.ID, 'b-fin-oui').click(); time.sleep(0.2)
+        v('« Oui » : retour a l accueil', d.execute_script('return window.__accueil') == 1)
         v('aucune erreur console', not [l for l in d.get_log('browser') if l['level'] == 'SEVERE'],
           [l['message'][:120] for l in d.get_log('browser') if l['level'] == 'SEVERE'])
         d.save_screenshot(str(Path.home() / 'AppData' / 'Local' / 'Temp' / 'sav_test.png'))
