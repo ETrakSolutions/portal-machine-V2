@@ -2025,6 +2025,7 @@ function photoMachine() {
         installation: reponseInstall(),                 // 'oui' | 'non' | ''
         aValider: aValiderItems(),
         multiAxeRetro: !!(lim && lim.value === 'Multi-axe' && type === 'Retrocaveuse'),
+        couverture360: window.couverture360Ligne ? window.couverture360Ligne() : '',   // js/couverture-360.js
         produits: produits.map(copie),                  // [{code, name, oblig}]
         lignes: lignes.map(copie),                      // tableau de prix a l'ecran
         epicor: buildEpicorRows()                       // [{code, qty}]
@@ -2063,6 +2064,9 @@ function texteMachine(p, dansPanier) {
     if (p.multiAxeRetro) {
         t += (typeof i18n !== 'undefined') ? i18n.t('email.multiaxe_engineering') : '\n*** MULTI-AXE SUR RETROCAVEUSE : doit etre ANALYSE PAR L\'INGENIERIE avant la soumission. ***\n';
     }
+
+    // Calcul « 4 ou 6 cameras » de la couverture 360, s'il a ete fait (Steve, 2026-10-14).
+    if (p.couverture360) t += '\n' + p.couverture360 + '\n';
 
     // Plus de bloc « Specifications » dans le courriel : juge inutile par Steve
     // (2026-09-29). photo.specs reste dans la photo, au cas ou on le remettrait.

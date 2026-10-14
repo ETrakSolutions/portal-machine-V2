@@ -713,3 +713,16 @@
 .filtre-resultats .filtre-item:hover, .filtre-resultats .filtre-item.actif { background: var(--etrak-orange-glow); }
 .filtre-resultats .filtre-item.choisi { color: var(--etrak-orange); font-weight: 600; }
 .filtre-resultats .filtre-autre { font-style: italic; color: #bbb; border-top: 1px solid rgba(192,192,192,0.15); }
+
+/* Couverture 360 : 4 ou 6 cameras (Steve, 2026-10-14). */
+.cam-calc { margin: 8px 0 4px 24px; padding: 10px 12px; border: 1px solid rgba(255,140,0,.35); border-radius: 8px; background: rgba(255,140,0,.05); }
+.cam-calc-titre { font-weight: 700; font-size: 0.82rem; color: #FF8C00; margin-bottom: 8px; }
+.cam-calc-grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+.cam-calc-grille label { display: flex; flex-direction: column; gap: 3px; font-size: 0.72rem; color: #bbb; }
+.cam-calc-grille .soumission-input { width: 100%; box-sizing: border-box; }
+.cam-calc-res { margin-top: 8px; font-size: 0.8rem; color: #ccc; }
+.cam-calc-res.cam-calc-ok { color: #3ddc84; font-weight: 600; }
+.cam-calc-res.cam-calc-6 { color: #FFB45C; font-weight: 600; }
+.cam-calc-res.cam-calc-alerte { color: #ff8a80; }
+.cam-calc-btn { margin-top: 6px; background: #FF8C00; color: #1a1a1a; border: 0; border-radius: 6px; padding: 6px 12px; font-weight: 700; cursor: pointer; font-size: 0.78rem; }
+.cam-calc-aide { margin-top: 6px; font-size: 0.68rem; color: #888; }
