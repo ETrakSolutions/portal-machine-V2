@@ -73,6 +73,9 @@
         return en ? v : v.replace('.', ',');
     };
     var dernier = null;
+    // Toujours la grande charte (1,35 m) : on installe sur de la machinerie lourde, la camera
+    // est toujours au-dessus de 0,87 m (Steve, 2026-10-15 ; le choix de charte est retire).
+    var CHARTE = 'grande';
     if (!ACTIF) { var q = $('cam-calc-questions'); if (q) q.style.display = 'none'; }
 
     function enMetres(v) {
@@ -116,13 +119,13 @@
         majLongueur();
         if (ACTIF) {
             var c = calculer(enMetres($('cam-calc-h').value), enMetres($('cam-calc-av').value),
-                             enMetres($('cam-calc-ar').value), $('cam-calc-charte').value);
+                             enMetres($('cam-calc-ar').value), CHARTE);
             if (!c.ok) {
                 res.className = 'cam-calc-res';
                 res.textContent = t('cam360.saisir', 'Entrez la hauteur de la caméra de côté et ses distances aux coins avant et arrière.');
             } else if (c.tropBas) {
                 res.className = 'cam-calc-res cam-calc-alerte';
-                res.textContent = t('cam360.trop_bas', 'Caméra trop basse pour cette charte : hauteur minimale {h}.', { h: avecPieds(c.hMin, 2) });
+                res.textContent = t('cam360.trop_bas', 'Caméra trop basse : hauteur minimale {h}.', { h: avecPieds(c.hMin, 2) });
             } else if (c.horsTableau) {
                 res.className = 'cam-calc-res cam-calc-alerte';
                 res.textContent = t('cam360.hors_tableau', 'Hauteur sous le tableau du fournisseur (portée connue à partir de {h}) : à valider avec le fournisseur.', { h: avecPieds(c.L, 2) });
@@ -186,7 +189,7 @@
         });
     });
     ['cam-calc-h', 'cam-calc-av', 'cam-calc-ar'].forEach(function (id) { $(id).addEventListener('input', majResultat); });
-    ['cam-calc-unite', 'cam-calc-charte'].forEach(function (id) { $(id).addEventListener('change', majResultat); });
+    $('cam-calc-unite').addEventListener('change', majResultat);
     document.addEventListener('langchange', majVisibilite);
 
     // Envoi / ajout au panier : « Camera 360 » cochee sans kit choisi -> on bloque.
@@ -202,10 +205,8 @@
     // Ligne du courriel (vide si « Camera 360 » non cochee ou calcul non fait).
     window.couverture360Ligne = function () {
         if (!choix.checked || !dernier) return '';
-        return t('cam360.ligne', 'Couverture 360 : caméra de côté à {h}, coin le plus loin à {d} (avec 1 m de marge), portée {p} ({charte}) → {n} caméras.', {
+        return t('cam360.ligne', 'Couverture 360 : caméra de côté à {h}, coin le plus loin à {d} (avec 1 m de marge), portée {p} → {n} caméras.', {
             h: avecPieds(enMetres($('cam-calc-h').value)), d: avecPieds(dernier.distance), p: avecPieds(dernier.portee),
-            charte: t($('cam-calc-charte').value === 'petite' ? 'cam360.charte_petite' : 'cam360.charte_grande',
-                      $('cam-calc-charte').value === 'petite' ? 'petite charte' : 'grande charte'),
             n: dernier.cameras });
     };
 
