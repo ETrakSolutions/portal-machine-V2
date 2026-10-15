@@ -93,11 +93,14 @@ FAUX = [
   base('FT9', { type: { label: 'Feuille de temps' } }),                                  // pas une job -> exclue
   base('CG10', { type: { label: 'Congé' } }),                                            // exclue
   base('INS11', { rv: J(5), attachments: [{ name: 'Commande officielle.PDF', contentType: '' }] }),
+  base('INS13', { properties: { 'informations_generales.bon_commande': 'Tom Fredette 819-347-4254', 'informations_generales.numero_contact': 'SANS FRAIS' } }),
+  base('SAV14', { type: { label: 'SAV' }, properties: { 'informations_generales.bon_commande': 'Maxime Lavoie', 'informations_generales.numero_contact': '44373 -' } }),
+  base('INS15', { properties: { 'informations_generales.bon_commande': '2400083630', 'informations_generales.numero_contact': '43830 - 13053' } }),
 ];
 let r = post({ action: 'getprepjobs', token: tok('dluna@e-trak.ca', 'L') });
 const jobs = (r.prep && r.prep.jobs) || [], J_ = c => jobs.find(x => x.code === c) || {};
 check('reponse ok (Luna)', r.ok === true);
-check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV2']));
+check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2']));
 check('triees par date (SAV2 demain en premier)', jobs[0] && jobs[0].code === 'SAV2');
 check('INS1 complete', J_('INS1').commande && J_('INS1').contactNom && J_('INS1').telOk && J_('INS1').emplacement);
 check('SAV2 : photo seulement -> commande manquante', J_('SAV2').commande === false);
@@ -114,6 +117,13 @@ check('# de commande e-Trak = 2e numero de Numero contact (12539)', J_('INS1').n
 check('Numero contact sans tiret (4385412539) ou vide : pas de # de commande', J_('INS3').noCommande === '' && J_('INS5').noCommande === '');
 check('# de commande pris du Numero contact, jamais du bon de commande du client', !/PO-77/.test(rep));
 check('Confirmer client : cochee (INS5) -> true, absente (INS1) -> false', J_('INS5').confirme === true && J_('INS1').confirme === false);
+const AC = c => JSON.stringify(J_(c).aCorriger);
+check('champs a corriger : rien sur une job bien remplie (INS1)', AC('INS1') === '[]');
+check('champs a corriger : telephone dans le bon + lettres dans Numero contact (INS13)', AC('INS13') === '["bc_tel","nc_texte"]');
+check('champs a corriger : nom dans le bon ; SAV sans # de commande pas signale (SAV14)', AC('SAV14') === '["bc_texte"]');
+check('champs a corriger : # de bon de 10 chiffres colles = pas un telephone (INS15)', AC('INS15') === '[]');
+check('champs a corriger : Installation sans # de commande e-Trak (INS3)', AC('INS3') === '["nc_absent"]');
+check('champs a corriger : le contenu des champs ne sort jamais', !/Fredette|Maxime|SANS FRAIS|347-4254/.test(JSON.stringify(r)));
 check('ville et emplacement transmis', J_('INS1').ville === 'Saguenay' && J_('INS1').lieu === 'Chantier INS1');
 check('cache : 2e appel sans nouvel appel a ProgressionLive', (() => { const n = appels.length; post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }); return appels.length === n; })());
 check('Kevin (ingenierie, sur la liste) : admis', post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }).ok === true);

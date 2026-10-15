@@ -1134,6 +1134,13 @@ function getCedule(body) {
 //   - confirme    : case « Confirmer client » cochee (« true »). Sert au rappel de la veille
 //                   (scripts/recap_prep_jobs.py, decision Jacquot 2026-10-15) ; pas un
 //                   verdict de completude.
+//   - aCorriger   : champs mal remplis (voyant, decision Jacquot 2026-10-15) : codes
+//                   seulement, jamais le contenu. 'bc_tel' = « Bon de commande » contient
+//                   un telephone ecrit avec separateurs (un # de bon de 10 chiffres colles
+//                   n'est pas vise) ; 'bc_texte' = « Bon de commande » sans aucun chiffre
+//                   (un nom) ; 'nc_texte' = « Numero contact » contient des lettres
+//                   (« SANS FRAIS ») ; 'nc_absent' = Installation sans # de commande e-Trak
+//                   dans « Numero contact » (normal sur un SAV, donc pas signale).
 //   - emplacement : champ Emplacement (onglet General) rempli.
 // Acces : QUATRE personnes nommees, pas un role (Jacquot, Luna, Kevin Berube, Steve
 // Martineau). La Script Property PREP_JOBS_USERS (courriels separes par des virgules)
@@ -1165,6 +1172,19 @@ function _plProp(P, bloc, champ) {
 function _noCommandeEtrak(s) {
   var m = /\d\s*-\s*(\d{3,7})\s*$/.exec(String(s || ''));
   return m ? m[1] : '';
+}
+
+function _champsACorriger(P, type) {
+  var out = [];
+  var bc = _plProp(P, 'informations_generales', 'bon_commande').trim();
+  var nc = _plProp(P, 'informations_generales', 'numero_contact').trim();
+  if (bc) {
+    if (/\(?\d{3}\)?[\s.\-]{1,3}\d{3}[\s.\-]{1,3}\d{4}/.test(bc)) out.push('bc_tel');
+    else if (!/\d/.test(bc)) out.push('bc_texte');
+  }
+  if (/[^\W\d_]{2,}/.test(nc)) out.push('nc_texte');
+  else if (_norm(type) === 'installation' && !_noCommandeEtrak(nc)) out.push('nc_absent');
+  return out;
 }
 
 // 10 chiffres d'un seul numero (indicatif 1 et poste tolérés), pas 10 chiffres au total
@@ -1201,6 +1221,7 @@ function _calculPrepJobs(maintenant) {
       etat: _labelDe(etat),
       noCommande: _noCommandeEtrak(_plProp(P, 'informations_generales', 'numero_contact')),
       confirme: _plProp(P, 'confirmer_client', 'confirmer_client') === 'true',
+      aCorriger: _champsACorriger(P, _labelDe(t.type)),
       commande: pdf > 0,
       contactNom: /[^\W\d_]{2,}/.test(contact),        // au moins un mot (lettres)
       telOk: _telDixChiffres(contact),

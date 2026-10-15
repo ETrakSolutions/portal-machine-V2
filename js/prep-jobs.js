@@ -66,7 +66,9 @@
         document.getElementById('pj-summary').innerHTML = esc(t('pj.summary', { n: aFaire.length, total: jobs.length })) +
             '<small>' + esc([t('pj.count_cmd', { n: n(function (j) { return !commandeOk(j); }) }),
                              t('pj.count_contact', { n: n(function (j) { return !contactOk(j); }) }),
-                             t('pj.count_lieu', { n: n(function (j) { return !j.emplacement; }) })].join(' · ')) + '</small>';
+                             t('pj.count_lieu', { n: n(function (j) { return !j.emplacement; }) })]
+                            .concat(n(function (j) { return (j.aCorriger || []).length; }) ?
+                                [t('pj.count_fix', { n: n(function (j) { return (j.aCorriger || []).length; }) })] : []).join(' · ')) + '</small>';
         var liste = document.getElementById('pj-todo').checked ? aFaire : jobs;
         if (!jobs.length) { grid.className = 'pj-msg'; grid.textContent = t('pj.empty'); return; }
         if (!liste.length) { grid.className = 'pj-msg'; grid.textContent = t('pj.all_done'); return; }
@@ -80,12 +82,20 @@
             if (enAttente(j)) return '<span class="pj-v pj-na">—</span>';
             return '<span class="pj-v pj-warn">' + esc(t('pj.conf_non')) + '</span>';
         };
+        // Voyant des champs mal remplis (decision Jacquot, 2026-10-15) : information pour
+        // corriger ProgressionLive, pas un critere de completude. Le serveur n'envoie que
+        // des codes, jamais le contenu des champs.
+        var voyants = function (j) {
+            return (j.aCorriger || []).map(function (c) {
+                return '<span class="pj-fix">' + esc(t('pj.fix_' + c)) + '</span>';
+            }).join('');
+        };
         var rows = liste.map(function (j) {
             var lieu = j.lieu ? esc(j.lieu) + (j.ville ? ' — ' + esc(j.ville) : '') : '';
             return '<tr class="pj-row' + (urgent(j) ? ' pj-urgent' : '') + '" data-code="' + esc(j.code) + '">' +
                 '<td><span class="pj-date">' + esc(fmtDate(j.rv)) + '</span><small>' + esc(j.etat) + '</small></td>' +
                 '<td><button type="button" class="pj-code" data-code="' + esc(j.code) + '" title="' + esc(t('pj.copy')) + '">' + esc(j.code) + '</button><small>' + esc(j.type) + '</small></td>' +
-                '<td class="pj-nocmd">' + (j.noCommande ? esc(j.noCommande) : '<span class="pj-vide">—</span>') + '</td>' +
+                '<td class="pj-nocmd">' + (j.noCommande ? esc(j.noCommande) : '<span class="pj-vide">—</span>') + voyants(j) + '</td>' +
                 '<td>' + esc(j.client) + (lieu ? '<small>' + lieu + '</small>' : '') + '</td>' +
                 '<td class="pj-tech">' + esc(j.tech) + '</td>' +
                 '<td class="pj-c pj-cmd">' + celluleCmd(j) + '</td>' +
