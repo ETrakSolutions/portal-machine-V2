@@ -118,6 +118,25 @@ try:
     check('statut « %s »' % statut(), statut() == '360 (kit à choisir)')
     check('aucun kit coche', not coche('cam-360') and not coche('cam-360-6'))
 
+    print('--- 1b) longueur totale, hauteur de base, unites ---')
+    val = lambda i: dv.execute_script("return document.getElementById(arguments[0]).value;", i)
+    def taper(i, v):
+        dv.execute_script("var e=document.getElementById(arguments[0]); e.value=arguments[1]; e.dispatchEvent(new Event('input',{bubbles:true}));", i, v)
+        time.sleep(0.3)
+    check('hauteur de base = 2 (%s)' % val('cam-calc-h'), val('cam-calc-h') == '2')
+    taper('cam-calc-total', '11')
+    check('totale 11 -> 5,5 et 5,5 (%s / %s)' % (val('cam-calc-av'), val('cam-calc-ar')), val('cam-calc-av') == '5,5' and val('cam-calc-ar') == '5,5')
+    check('verdict avec 2 m de haut : 6,5 m <= 8,4 m -> 4 (%s)' % res(), res().startswith('4 caméras'))
+    taper('cam-calc-ar', '9')
+    check('arriere 9 -> totale 14,5 (%s)' % val('cam-calc-total'), val('cam-calc-total') == '14,5')
+    taper('cam-calc-av', '2')
+    check('avant 2 -> totale 11 (%s)' % val('cam-calc-total'), val('cam-calc-total') == '11')
+    dv.execute_script("var u=document.getElementById('cam-calc-unite'); u.value='pi'; u.dispatchEvent(new Event('change',{bubbles:true}));"); time.sleep(0.3)
+    check('passage en pi : 2 m -> 6,56 pi, 11 m -> 36,09 pi (%s / %s)' % (val('cam-calc-h'), val('cam-calc-total')),
+          val('cam-calc-h') == '6,56' and val('cam-calc-total') == '36,09')
+    dv.execute_script("var u=document.getElementById('cam-calc-unite'); u.value='m'; u.dispatchEvent(new Event('change',{bubbles:true}));"); time.sleep(0.3)
+    check('retour en m : 2 et 11 (%s / %s)' % (val('cam-calc-h'), val('cam-calc-total')), val('cam-calc-h') == '2' and val('cam-calc-total') == '11')
+
     print('--- 2) cas du document ---')
     saisir('3', '2', '9')
     check('3 m / 9 m -> « 4 caméras suffisent », portée 10,5 m (%s)' % res(), res().startswith('4 caméras suffisent') and '10,5 m' in res())

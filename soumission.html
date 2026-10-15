@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
     <link rel="stylesheet" href="css/style.css?v=176">
-    <link rel="stylesheet" href="css/soumission.css?v=208">
+    <link rel="stylesheet" href="css/soumission.css?v=209">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
@@ -186,10 +186,17 @@
                         <div class="cam-calc" id="cam-calc" style="display:none;">
                             <div class="cam-calc-titre" data-i18n="cam360.titre">Couverture 360 : 4 ou 6 caméras ?</div>
                             <div id="cam-calc-questions">
-                            <!-- Schema du camion avec les cotes a remplir (Steve, 2026-10-14) : avant -> camera,
-                                 camera -> arriere (leur somme = longueur du vehicule) et hauteur de la camera. -->
+                            <!-- Schema du camion avec les cotes a remplir (Steve, 2026-10-14) : longueur totale
+                                 en haut ; dessous avant -> camera et camera -> arriere ; hauteur de la camera.
+                                 Totale -> deux moities egales ; deux longueurs -> totale (Steve et Jacquot, 2026-10-15). -->
                             <div class="cam-schema">
-                                <svg viewBox="0 0 520 250" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                                <svg viewBox="0 0 520 290" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                                    <!-- cote de la longueur totale -->
+                                    <line x1="20" y1="14" x2="20" y2="62" class="sch-rappel"/>
+                                    <line x1="500" y1="14" x2="500" y2="62" class="sch-rappel"/>
+                                    <line x1="24" y1="22" x2="496" y2="22" class="sch-cote"/>
+                                    <path d="M24 22 l7 -4 v8 Z M496 22 l-7 -4 v8 Z" class="sch-fleche"/>
+                                    <g transform="translate(0,40)">
                                     <line x1="10" y1="222" x2="510" y2="222" class="sch-sol"/>
                                     <!-- caisse / benne -->
                                     <rect x="200" y="110" width="290" height="80" rx="4" class="sch-caisse"/>
@@ -213,16 +220,18 @@
                                     <!-- cote verticale : hauteur de la camera -->
                                     <line x1="185" y1="92" x2="185" y2="222" class="sch-cote sch-pointille"/>
                                     <path d="M185 92 l-4 7 h8 Z M185 222 l-4 -7 h8 Z" class="sch-fleche"/>
+                                    </g>
                                 </svg>
+                                <label class="sch-champ sch-total"><span data-i18n="cam360.longueur_totale">Longueur totale du véhicule</span>
+                                    <input type="text" inputmode="decimal" id="cam-calc-total" class="soumission-input" autocomplete="off"></label>
                                 <label class="sch-champ sch-av"><span data-i18n="cam360.d_avant">Avant → caméra</span>
                                     <input type="text" inputmode="decimal" id="cam-calc-av" class="soumission-input" autocomplete="off"></label>
                                 <label class="sch-champ sch-ar"><span data-i18n="cam360.d_arriere">Caméra → arrière</span>
                                     <input type="text" inputmode="decimal" id="cam-calc-ar" class="soumission-input" autocomplete="off"></label>
                                 <label class="sch-champ sch-h"><span data-i18n="cam360.hauteur">Hauteur caméra</span>
-                                    <input type="text" inputmode="decimal" id="cam-calc-h" class="soumission-input" autocomplete="off"></label>
+                                    <input type="text" inputmode="decimal" id="cam-calc-h" class="soumission-input" autocomplete="off" value="2"></label>
                                 <span class="sch-cam-lib" data-i18n="cam360.camera_cote">Caméra de côté</span>
                             </div>
-                            <div class="cam-calc-longueur" id="cam-calc-longueur"></div>
                             <div class="cam-calc-grille">
                                 <label><span data-i18n="cam360.unite">Unités</span>
                                     <select id="cam-calc-unite" class="soumission-input"><option value="m">m</option><option value="pi" data-i18n="cam360.pieds">pi</option></select></label>
@@ -457,7 +466,7 @@
     </footer>
 
     <script src="js/config.js?v=2"></script>
-    <script src="js/translations.js?v=257"></script>
+    <script src="js/translations.js?v=258"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
@@ -465,7 +474,7 @@
     <script src="js/kit-rules.js?v=12"></script>
     <script src="js/machine-match.js?v=1"></script>
     <script src="js/soumission.js?v=313"></script>
-    <script src="js/couverture-360.js?v=4"></script>
+    <script src="js/couverture-360.js?v=5"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>

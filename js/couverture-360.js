@@ -106,23 +106,48 @@
         if (pris) boite.classList.remove('manquant');
     }
 
-    function majLongueur() {   // somme des deux cotes = longueur du vehicule
-        var av = enMetres($('cam-calc-av').value), ar = enMetres($('cam-calc-ar').value), el = $('cam-calc-longueur');
-        if (!el) return;
-        el.textContent = (av >= 0 && ar >= 0)
-            ? t('cam360.longueur', 'Longueur du véhicule : {l}', { l: avecPieds(av + ar) }) : '';
+    // Longueur totale <-> deux longueurs (Steve et Jacquot, 2026-10-15) : la totale se
+    // separe en deux moities egales ; deux longueurs entrees refont la totale. Les valeurs
+    // restent dans l'unite choisie (m ou pi).
+    function lire(id) { var x = parseFloat(String($(id).value || '').replace(',', '.')); return isNaN(x) ? NaN : x; }
+    function ecrire(id, x) {
+        var v = String(Math.round(x * 100) / 100);
+        var en = typeof i18n !== 'undefined' && i18n.getLang && i18n.getLang() === 'en';
+        $(id).value = en ? v : v.replace('.', ',');
+    }
+    function totaleSaisie() {
+        var tot = lire('cam-calc-total');
+        if (tot >= 0) { ecrire('cam-calc-av', tot / 2); ecrire('cam-calc-ar', tot / 2); }
+        majResultat();
+    }
+    function partieSaisie() {
+        var av = lire('cam-calc-av'), ar = lire('cam-calc-ar');
+        if (av >= 0 && ar >= 0) ecrire('cam-calc-total', av + ar);
+        majResultat();
+    }
+    // Changement d'unite : les valeurs deja entrees sont converties (2 m ne devient pas 2 pi).
+    var uniteAvant = 'm';
+    function uniteChangee() {
+        var u = $('cam-calc-unite').value;
+        if (u !== uniteAvant) {
+            var k = u === 'pi' ? 1 / PIED : PIED;
+            ['cam-calc-total', 'cam-calc-av', 'cam-calc-ar', 'cam-calc-h'].forEach(function (id) {
+                var x = lire(id); if (!isNaN(x)) ecrire(id, x * k);
+            });
+            uniteAvant = u;
+        }
+        majResultat();
     }
 
     function majResultat() {
         var res = $('cam-calc-res');
         dernier = null;
-        majLongueur();
         if (ACTIF) {
             var c = calculer(enMetres($('cam-calc-h').value), enMetres($('cam-calc-av').value),
                              enMetres($('cam-calc-ar').value), CHARTE);
             if (!c.ok) {
                 res.className = 'cam-calc-res';
-                res.textContent = t('cam360.saisir', 'Entrez la hauteur de la caméra de côté et ses distances aux coins avant et arrière.');
+                res.textContent = t('cam360.saisir', 'Entrez la longueur totale du véhicule, ou les deux longueurs de chaque côté de la caméra.');
             } else if (c.tropBas) {
                 res.className = 'cam-calc-res cam-calc-alerte';
                 res.textContent = t('cam360.trop_bas', 'Caméra trop basse : hauteur minimale {h}.', { h: avecPieds(c.hMin, 2) });
@@ -188,8 +213,11 @@
             majVisibilite();
         });
     });
-    ['cam-calc-h', 'cam-calc-av', 'cam-calc-ar'].forEach(function (id) { $(id).addEventListener('input', majResultat); });
-    $('cam-calc-unite').addEventListener('change', majResultat);
+    $('cam-calc-h').addEventListener('input', majResultat);
+    $('cam-calc-total').addEventListener('input', totaleSaisie);
+    ['cam-calc-av', 'cam-calc-ar'].forEach(function (id) { $(id).addEventListener('input', partieSaisie); });
+    $('cam-calc-unite').addEventListener('change', uniteChangee);
+    if (!$('cam-calc-h').value) $('cam-calc-h').value = '2';     // hauteur de base : 2 m (modifiable)
     document.addEventListener('langchange', majVisibilite);
 
     // Envoi / ajout au panier : « Camera 360 » cochee sans kit choisi -> on bloque.
