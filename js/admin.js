@@ -140,6 +140,30 @@ function updateHubUI() {
             if (x[2] && currentUser.isGuest) ok = false;
             tile.style.display = ok ? 'block' : 'none';
         });
+        // Tuile « Preparation des jobs » : quatre personnes nommees (decision Jacquot,
+        // 2026-10-15), pas un role. Le serveur (getprepjobs) tranche : la tuile n'apparait
+        // que s'il repond ok, avec le nombre de jobs a completer. Une seule demande par page.
+        var tilePJ = document.getElementById('hub-tile-prepjobs');
+        if (tilePJ && !currentUser.isGuest && currentUser.token && window.PORTAL_API_URL &&
+            ['dealer', 'distributeur'].indexOf(currentUser.role) < 0 && !window.__prepJobsDemande) {
+            window.__prepJobsDemande = true;
+            fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'getprepjobs', token: currentUser.token }) })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (!d || !d.ok || !d.prep) return;
+                    var n = (d.prep.jobs || []).filter(function (j) {
+                        return !(j.commande && j.contactNom && j.telOk && j.emplacement); }).length;
+                    tilePJ.style.display = 'block';
+                    var desc = document.getElementById('hub-tile-prepjobs-desc');
+                    if (desc && n > 0 && typeof i18n !== 'undefined') {
+                        desc.removeAttribute('data-i18n');
+                        desc.textContent = i18n.t('hub.tile_prepjobs_badge', { n: n });
+                        desc.style.color = '#ff9d90';
+                    }
+                })
+                .catch(function () {});
+        }
         // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
             hamburgerWrap.style.display = '';

@@ -77,6 +77,7 @@ function doPost(e) {
     if (action === 'setprices')      return jsonOut(setPrices(body));
     if (action === 'getpriceslog')   return jsonOut(getPricesLog(body));
     if (action === 'getcedule')      return jsonOut(getCedule(body));
+    if (action === 'getprepjobs')    return jsonOut(getPrepJobs(body));
     if (action === 'getsav')         return jsonOut(getSav(body));
     if (action === 'setsav')         return jsonOut(setSav(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
@@ -144,7 +145,7 @@ function jsonOut(obj) {
 // L'ecriture (save/delete) de ces cles exige un token admin (voir doPost).
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
-                      'inventory_etrak', 'PROGRESSIONLIVE_API_KEY'];
+                      'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -1117,6 +1118,103 @@ function getCedule(body) {
   catch (err) { Logger.log('getCedule : ' + err); return { error: 'cedule unavailable' }; }
   try { cache.put('cedule_v1', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
   return { ok: true, cedule: ced };
+}
+
+/* ============================ PREPARATION DES JOBS (ProgressionLive) ============================ */
+// Decision Jacquot, 2026-10-15 : aider Luna (coordination ventes / techniciens) a completer
+// les jobs dans ProgressionLive avant le depart du technicien. Pour chaque Installation et
+// chaque SAV a venir et non terminee, trois controles :
+//   - commande    : au moins un PDF joint a la job (la commande officielle) ;
+//   - contact     : « Contact sur place » porte un nom ET un telephone de 10 chiffres
+//                   (l'equipe y ecrit « Prenom Nom 819-555-1234 ». Le champ « Numero
+//                   contact » n'est PAS un telephone : il porte « 43854 - 12539 ») ;
+//   - emplacement : champ Emplacement (onglet General) rempli.
+// Acces : QUATRE personnes nommees, pas un role (Jacquot, Luna, Kevin Berube, Steve
+// Martineau). La Script Property PREP_JOBS_USERS (courriels separes par des virgules)
+// remplace la liste par defaut sans redeploiement. Dealers et distributeurs : jamais.
+// Sortie (liste blanche) : code, type, date, technicien, client, emplacement et ville, etat,
+// verdicts. JAMAIS le telephone, l'adresse, le GPS ni le contenu des pieces jointes.
+// Une seule lecture fixe (task/list), en GET : rien de ce qu'envoie le portail n'est relaye.
+var PREP_JOBS_DEFAUT = ['jcaron@gryb.com', 'dluna@e-trak.ca', 'k.berube@e-trak.ca', 'steve@gryb.ca'];
+var PREP_JOBS_TYPES = ['installation', 'sav'];
+var PREP_JOBS_JOURS = 30;
+var PREP_JOBS_CACHE_S = 600;                          // 10 min
+
+function _prepJobsAdmis(user) {
+  if (!user || ROLES_EXTERNES.indexOf(user.role) >= 0) return false;
+  var liste = String(PROPS.getProperty('PREP_JOBS_USERS') || PREP_JOBS_DEFAUT.join(','))
+    .toLowerCase().split(',').map(function (s) { return s.trim(); });
+  return _idsOf(user).some(function (id) { return liste.indexOf(id) >= 0; });
+}
+
+// Champ personnalise : la liste le rend « bloc.champ » a plat ; on accepte aussi l'imbrique.
+function _plProp(P, bloc, champ) {
+  if (!P) return '';
+  var v = P[bloc + '.' + champ];
+  if (v === undefined && P[bloc] && typeof P[bloc] === 'object') v = P[bloc][champ];
+  return v === null || v === undefined ? '' : String(v);
+}
+
+// 10 chiffres d'un seul numero (indicatif 1 et poste tolérés), pas 10 chiffres au total
+function _telDixChiffres(s) {
+  return /(^|\D)(1\D{0,2})?\d{3}\D{0,3}\d{3}\D{0,3}\d{4}(\D|$)/.test(String(s || ''));
+}
+
+function _calculPrepJobs(maintenant) {
+  var j0 = _local(maintenant).jour, jFin = j0;
+  for (var i = 0; i < PREP_JOBS_JOURS; i++) jFin = _jourSuivant(jFin);
+  // Pas de onlyFieldsToInclude : il retire les sous-champs (logicId de l'etat, type et
+  // nom des pieces jointes) et toutes les jobs paraissaient sans PDF (2026-10-15).
+  var taches = _plListe('/task/list', { rv: j0 + ',' + jFin });
+  var jobs = [];
+  taches.forEach(function (t) {
+    if (PREP_JOBS_TYPES.indexOf(_norm(_labelDe(t.type))) < 0) return;
+    var etat = t.currentState || {};
+    if ((+etat.logicId || 0) >= 600) return;            // travaux termines, pret a facturer...
+    if (CEDULE_ETATS_IGNORES.indexOf(_norm(_labelDe(etat))) >= 0) return;
+    var P = t.properties || {};
+    var contact = _plProp(P, 'informations_generales', 'contact_sur_place');
+    var pdf = (t.attachments || []).filter(function (a) {
+      return a && (/pdf/i.test(a.contentType || '') || /\.pdf$/i.test(a.name || ''));
+    }).length;
+    var d = _plDate(t.rv);
+    jobs.push({
+      code: String(t.code || ''),
+      type: _labelDe(t.type),
+      rv: d ? d.toISOString() : '',
+      tech: _labelDe(t.humanResource),
+      client: _labelDe(t.client),
+      lieu: _labelDe(t.location),
+      ville: String((t.locationAddress || {}).city || ''),
+      etat: _labelDe(etat),
+      commande: pdf > 0,
+      contactNom: /[^\W\d_]{2,}/.test(contact),        // au moins un mot (lettres)
+      telOk: _telDixChiffres(contact),
+      telChiffres: contact.replace(/\D/g, '').length,
+      emplacement: !!(t.location && (t.location.id || _labelDe(t.location)))
+    });
+  });
+  jobs.sort(function (a, b) { return (a.rv || '9') < (b.rv || '9') ? -1 : (a.rv || '9') > (b.rv || '9') ? 1 : 0; });
+  return { genere: maintenant.toISOString(), du: j0, au: jFin, jobs: jobs };
+}
+
+// { action:'getprepjobs', token } -> { ok, prep:{ genere, du, au, jobs[] } } | { error }
+// Le PIN ne donne PAS la liste (elle nomme des clients) : une vraie session d'une des
+// personnes admises seulement. Resultat en cache 10 min pour tous les admis.
+function getPrepJobs(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (!_prepJobsAdmis(user)) return { error: 'forbidden' };
+  var cache = CacheService.getScriptCache();
+  var hit = cache.get('prepjobs_v1');
+  if (hit) { try { return { ok: true, prep: JSON.parse(hit) }; } catch (e) {} }
+  var prep;
+  try { prep = _calculPrepJobs(new Date()); }
+  catch (err) { Logger.log('getPrepJobs : ' + err); return { error: 'prepjobs unavailable' }; }
+  try { cache.put('prepjobs_v1', JSON.stringify(prep), PREP_JOBS_CACHE_S); } catch (e) {}
+  return { ok: true, prep: prep };
 }
 
 /* ============================ SAV (demande de service apres-vente) ============================ */

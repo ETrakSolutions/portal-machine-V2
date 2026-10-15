@@ -62,6 +62,7 @@ et le tester par un appel direct.
 | `setprices` / `getpriceslog` | admin / PIN | — / qui a obtenu les prix, quand | idem |
 | `getcedule` | case **Cédule techs** du tableau des permissions (`ceduleAccess`) ; défaut `CEDULE_ROLES` ; **jamais** dealer, distributeur, invité | noms, jours, booléens AM/PM | Jacquot 2026-09-25, réglable 2026-09-30 |
 | `getsav` | case **SAV** (`savAccess`) ; défaut `SAV_ROLES` (= `CEDULE_ROLES`) ; **jamais** dealer, distributeur ; pas le PIN, pas l'invité | clients `[nom, ville, prov, type]`, pièces `[pn, desc]`, produits, routage (courriels), cc | Jacquot 2026-09-29 |
+| `getprepjobs` | **quatre personnes nommées**, pas un rôle : `PREP_JOBS_DEFAUT` (jcaron, dluna, k.berube, steve@gryb.ca), remplaçable sans redéploiement par la Script Property `PREP_JOBS_USERS` (courriels séparés par des virgules, sensible) ; jamais dealer/distributeur ; pas le PIN | Installations + SAV non terminées (logicId < 600, pas annulées) des 30 prochains jours : code, type, date, technicien, client, emplacement + ville, état, verdicts `commande` (≥ 1 PDF joint), `contactNom` + `telOk` (« Contact sur place » = nom + téléphone de 10 chiffres — le champ « Numéro contact » n'est **pas** un téléphone, il porte « 43854 - 12539 »), `emplacement` (champ Emplacement rempli). Jamais téléphone, adresse ni GPS. Cache 10 min. ⚠️ pas de `onlyFieldsToInclude` : il retire `logicId` et le type des pièces jointes | Jacquot 2026-10-15 (aide à Luna) |
 | `setsav` | admin / PIN — `scripts/publier_sav.py` (Master Booking + `sav-reglages.json` de SharePoint) | — | idem |
 | `quota` | admin / PIN — `scripts/mesurer_quota.py` | total, libre, poids **par famille** de clés (préfixes connus regroupés : jamais une valeur, jamais un courriel ni un jeton dans un nom) | Jacquot 2026-10-07 |
 | `adduser` / `listmyusers` / `updatemyuser` | `addUsers` (vente externe) — Dealer/Distributeur seulement | — | Steve 2026-09-24 |
@@ -125,7 +126,7 @@ compris), sauf annulées et feuilles de temps ; durée jamais prolongée ; cache
 ## Tester avant de toucher à la console
 
 `node scripts/banc_backend/tous.js` exécute le **vrai** `Code.gs` en Node, services Google
-simulés (propriétés, cache, verrou, UrlFetch) : comptes 21 cas, prix 23, cédule 18. Code de
+simulés (propriétés, cache, verrou, UrlFetch) : comptes 21 cas, prix 23, cédule 18, préparation des jobs 24 (`banc_prepjobs.js`, mode `reel` → jeu d'essai pour `scripts/selenium_prepjobs_test.py --fixture`). Code de
 retour ≠ 0 si un seul échoue. **Ne jamais le piper dans `| tail` au sein d'une chaîne `&&`** :
 le code de retour se perd et le commit passe (arrivé le 2026-09-25).
 
