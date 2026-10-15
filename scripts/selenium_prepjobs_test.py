@@ -46,11 +46,14 @@ def jeu_fabrique():
         J('INS3', 6, telOk=False, telChiffres=5),
         J('INS4', 8, emplacement=False, lieu=''),
         J('INS5', 9),
+        J('SAV6', 3, type='SAV', commande=False),   # SAV sans PDF mais complet : commande non requise
     ]}
 
 
 PREP = json.load(open(arg('--fixture'), encoding='utf-8')) if arg('--fixture') else jeu_fabrique()
-complete = lambda j: j['commande'] and j['contactNom'] and j['telOk'] and j['emplacement']
+est_sav = lambda j: j['type'].strip().lower() == 'sav'
+cmd_ok = lambda j: est_sav(j) or j['commande']   # SAV : pas de commande avant la visite
+complete = lambda j: cmd_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement']
 A_FAIRE = [j for j in PREP['jobs'] if not complete(j)]
 
 
@@ -156,14 +159,16 @@ try:
     for l in toutes:
         j = par_code[l['code']]
         att_contact = 'OK' if (j['contactNom'] and j['telOk']) else None
-        if (l['cmd'] == 'OK') != j['commande'] or (l['lieu'] == 'OK') != j['emplacement'] or \
+        if est_sav(j) and l['cmd'] != 'Non requise (SAV)':
+            bon = False; print('       SAV sans mention :', l)
+        if not est_sav(j) and (l['cmd'] == 'OK') != j['commande'] or (l['lieu'] == 'OK') != j['emplacement'] or \
            (l['contact'] == 'OK') != bool(att_contact):
             bon = False; print('      ', l, j)
         if not j['telOk'] and j['telChiffres'] and (str(j['telChiffres']) + ' chiffres') not in l['contact']:
             bon = False; print('       chiffres absents :', l)
     check('chaque verdict = les donnees recues (commande, contact, emplacement)', bon)
     resume = dv.execute_script("return document.getElementById('pj-summary').innerText;")
-    n_cmd = sum(1 for j in PREP['jobs'] if not j['commande'])
+    n_cmd = sum(1 for j in PREP['jobs'] if not cmd_ok(j))
     n_lieu = sum(1 for j in PREP['jobs'] if not j['emplacement'])
     check('resume chiffre (%s)' % resume.replace('\n', ' / '),
           ('%d job(s) sur %d' % (len(A_FAIRE), len(PREP['jobs']))) in resume and ('%d sans commande' % n_cmd) in resume

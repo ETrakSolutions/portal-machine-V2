@@ -24,8 +24,12 @@
     var DATA = null;
     var URGENT_MS = 3 * 86400000;
 
+    // Un SAV n'a pas de commande officielle avant la visite : on ne sait pas encore ce
+    // qui sera change (decision Jacquot, 2026-10-15). La commande n'est exigee que hors SAV.
+    function estSav(j) { return String(j.type || '').trim().toLowerCase() === 'sav'; }
+    function commandeOk(j) { return estSav(j) || j.commande; }
     function contactOk(j) { return j.contactNom && j.telOk; }
-    function complete(j) { return j.commande && contactOk(j) && j.emplacement; }
+    function complete(j) { return commandeOk(j) && contactOk(j) && j.emplacement; }
     function urgent(j) {
         if (!j.rv || complete(j)) return false;
         return new Date(j.rv).getTime() - Date.now() <= URGENT_MS;
@@ -56,12 +60,15 @@
         var aFaire = jobs.filter(function (j) { return !complete(j); });
         var n = function (f) { return jobs.filter(f).length; };
         document.getElementById('pj-summary').innerHTML = esc(t('pj.summary', { n: aFaire.length, total: jobs.length })) +
-            '<small>' + esc([t('pj.count_cmd', { n: n(function (j) { return !j.commande; }) }),
+            '<small>' + esc([t('pj.count_cmd', { n: n(function (j) { return !commandeOk(j); }) }),
                              t('pj.count_contact', { n: n(function (j) { return !contactOk(j); }) }),
                              t('pj.count_lieu', { n: n(function (j) { return !j.emplacement; }) })].join(' · ')) + '</small>';
         var liste = document.getElementById('pj-todo').checked ? aFaire : jobs;
         if (!jobs.length) { grid.className = 'pj-msg'; grid.textContent = t('pj.empty'); return; }
         if (!liste.length) { grid.className = 'pj-msg'; grid.textContent = t('pj.all_done'); return; }
+        var celluleCmd = function (j) {
+            return estSav(j) ? '<span class="pj-v pj-na">' + esc(t('pj.cmd_na')) + '</span>' : verdict(j.commande, [t('pj.no_pdf')]);
+        };
         var rows = liste.map(function (j) {
             var lieu = j.lieu ? esc(j.lieu) + (j.ville ? ' — ' + esc(j.ville) : '') : '';
             return '<tr class="pj-row' + (urgent(j) ? ' pj-urgent' : '') + '" data-code="' + esc(j.code) + '">' +
@@ -69,7 +76,7 @@
                 '<td><button type="button" class="pj-code" data-code="' + esc(j.code) + '" title="' + esc(t('pj.copy')) + '">' + esc(j.code) + '</button><small>' + esc(j.type) + '</small></td>' +
                 '<td>' + esc(j.client) + (lieu ? '<small>' + lieu + '</small>' : '') + '</td>' +
                 '<td class="pj-tech">' + esc(j.tech) + '</td>' +
-                '<td class="pj-c pj-cmd">' + verdict(j.commande, [t('pj.no_pdf')]) + '</td>' +
+                '<td class="pj-c pj-cmd">' + celluleCmd(j) + '</td>' +
                 '<td class="pj-c pj-contact">' + verdictContact(j) + '</td>' +
                 '<td class="pj-c pj-lieu">' + verdict(j.emplacement, [t('pj.no_lieu')]) + '</td></tr>';
         }).join('');

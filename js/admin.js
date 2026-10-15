@@ -153,7 +153,8 @@ function updateHubUI() {
                 .then(function (d) {
                     if (!d || !d.ok || !d.prep) return;
                     var n = (d.prep.jobs || []).filter(function (j) {
-                        return !(j.commande && j.contactNom && j.telOk && j.emplacement); }).length;
+                        var cmd = j.commande || String(j.type || '').trim().toLowerCase() === 'sav'; // SAV : pas de commande avant la visite
+                        return !(cmd && j.contactNom && j.telOk && j.emplacement); }).length;
                     tilePJ.style.display = 'block';
                     var desc = document.getElementById('hub-tile-prepjobs-desc');
                     if (desc && n > 0 && typeof i18n !== 'undefined') {
