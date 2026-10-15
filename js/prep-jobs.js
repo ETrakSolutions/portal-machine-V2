@@ -73,6 +73,13 @@
         var celluleCmd = function (j) {
             return estSav(j) ? '<span class="pj-v pj-na">' + esc(t('pj.cmd_na')) + '</span>' : verdict(j.commande, [t('pj.no_pdf')]);
         };
+        // Case « Confirmer client » (decision Jacquot, 2026-10-15) : information, pas un
+        // critere de completude. Une ressource d'attente n'a pas de date reelle : « — ».
+        var celluleConf = function (j) {
+            if (j.confirme) return verdict(true);
+            if (enAttente(j)) return '<span class="pj-v pj-na">—</span>';
+            return '<span class="pj-v pj-warn">' + esc(t('pj.conf_non')) + '</span>';
+        };
         var rows = liste.map(function (j) {
             var lieu = j.lieu ? esc(j.lieu) + (j.ville ? ' — ' + esc(j.ville) : '') : '';
             return '<tr class="pj-row' + (urgent(j) ? ' pj-urgent' : '') + '" data-code="' + esc(j.code) + '">' +
@@ -83,12 +90,13 @@
                 '<td class="pj-tech">' + esc(j.tech) + '</td>' +
                 '<td class="pj-c pj-cmd">' + celluleCmd(j) + '</td>' +
                 '<td class="pj-c pj-contact">' + verdictContact(j) + '</td>' +
-                '<td class="pj-c pj-lieu">' + verdict(j.emplacement, [t('pj.no_lieu')]) + '</td></tr>';
+                '<td class="pj-c pj-lieu">' + verdict(j.emplacement, [t('pj.no_lieu')]) + '</td>' +
+                '<td class="pj-c pj-conf">' + celluleConf(j) + '</td></tr>';
         }).join('');
         grid.className = '';
         grid.innerHTML = '<table class="pj"><thead><tr>' +
             ['pj.col_date', 'pj.col_job', 'pj.col_nocmd', 'pj.col_client', 'pj.col_tech'].map(function (k) { return '<th>' + esc(t(k)) + '</th>'; }).join('') +
-            ['pj.col_cmd', 'pj.col_contact', 'pj.col_lieu'].map(function (k) { return '<th class="pj-c">' + esc(t(k)) + '</th>'; }).join('') +
+            ['pj.col_cmd', 'pj.col_contact', 'pj.col_lieu', 'pj.col_conf'].map(function (k) { return '<th class="pj-c">' + esc(t(k)) + '</th>'; }).join('') +
             '</tr></thead><tbody>' + rows + '</tbody></table>';
         var g = DATA.genere ? new Date(DATA.genere) : null;
         document.getElementById('pj-updated').textContent = g && !isNaN(g) ? t('pj.updated', {
