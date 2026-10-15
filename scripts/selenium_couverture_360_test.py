@@ -118,6 +118,18 @@ try:
     check('statut « %s »' % statut(), statut() == '360 (kit à choisir)')
     check('aucun kit coche', not coche('cam-360') and not coche('cam-360-6'))
 
+    print('--- 1a) dessin selon le type de machine ---')
+    vu = lambda: dv.execute_script("""var g=[...document.querySelectorAll('.cam-schema .sch-veh')].find(g=>g.style.display!=='none');
+        return g ? g.getAttribute('data-type') : (document.getElementById('sch-veh-defaut').style.display!=='none' ? 'defaut' : 'rien');""")
+    check('type %s -> dessin %s' % (dv.execute_script("return document.getElementById('select-type').value;"), vu()),
+          vu() == dv.execute_script("return document.getElementById('select-type').value;"))
+    dv.execute_script("var s=document.getElementById('select-type'); s.value='Nacelle'; s.dispatchEvent(new Event('change',{bubbles:true}));"); time.sleep(0.4)
+    check('choix Nacelle -> dessin %s' % vu(), vu() == 'Nacelle')
+    dv.execute_script("var s=document.getElementById('select-type'); s.value=''; s.dispatchEvent(new Event('change',{bubbles:true}));"); time.sleep(0.4)
+    check('aucun type -> camion par defaut (%s)' % vu(), vu() == 'defaut')
+    charger()
+    clic('cam-360-choix')
+
     print('--- 1b) longueur totale, hauteur de base, unites ---')
     val = lambda i: dv.execute_script("return document.getElementById(arguments[0]).value;", i)
     def taper(i, v):

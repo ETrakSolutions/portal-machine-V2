@@ -179,7 +179,45 @@
         }
     }
 
+    // Dessin du vehicule selon le type de machine (Steve, 2026-10-15) : camion par defaut.
+    // Chaque dessin porte data-cam="x,haut" : la camera, les cotes et les cases suivent.
+    function placerCamera(x, y) {
+        function attr(id, a) { var e = $(id); if (e) for (var k in a) e.setAttribute(k, a[k]); }
+        attr('sch-cam', { x: x - 9, y: y });
+        attr('sch-rappel-cam', { x1: x, x2: x, y2: y });
+        attr('sch-cote-av', { x2: x - 4 });
+        attr('sch-fl-av', { d: 'M24 30 l7 -4 v8 Z M' + (x - 4) + ' 30 l-7 -4 v8 Z' });
+        attr('sch-cote-ar', { x1: x + 4 });
+        attr('sch-fl-ar', { d: 'M' + (x + 4) + ' 30 l7 -4 v8 Z M496 30 l-7 -4 v8 Z' });
+        attr('sch-cote-h', { x1: x, x2: x, y1: y + 12 });
+        attr('sch-fl-h', { d: 'M' + x + ' ' + (y + 12) + ' l-4 7 h8 Z M' + x + ' 222 l-4 -7 h8 Z' });
+        function pos(sel, gauche, haut) {
+            var e = document.querySelector('.cam-schema ' + sel); if (!e) return;
+            e.style.left = (gauche / 520 * 100).toFixed(1) + '%';
+            if (haut != null) e.style.top = (haut / 290 * 100).toFixed(1) + '%';
+        }
+        pos('.sch-av', (20 + x) / 2);
+        pos('.sch-ar', (x + 500) / 2);
+        pos('.sch-h', Math.min(x + 70, 470), (y + 12 + 222) / 2 + 40);
+        pos('.sch-cam-lib', x, y - 14 + 40);
+    }
+    function majVehicule(force) {
+        var type = typeof force === 'string' ? force : (($('select-type') || {}).value || ''), choisi = null;
+        document.querySelectorAll('.cam-schema .sch-veh').forEach(function (g) {
+            var oui = g.getAttribute('data-type') === type;
+            g.style.display = oui ? '' : 'none';
+            if (oui) choisi = g;
+        });
+        var d = $('sch-veh-defaut');
+        if (d) d.style.display = choisi ? 'none' : '';
+        var c = ((choisi || d) && (choisi || d).getAttribute('data-cam') || '186,76').split(',');
+        placerCamera(+c[0], +c[1]);
+    }
+    window.couverture360Vehicule = majVehicule;
+    if ($('select-type')) $('select-type').addEventListener('change', majVehicule);
+
     function majVisibilite() {
+        majVehicule();
         boite.style.display = choix.checked ? '' : 'none';
         majBloc();
         majResultat();

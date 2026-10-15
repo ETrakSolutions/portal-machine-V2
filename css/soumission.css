@@ -760,3 +760,24 @@
 .cam-schema .sch-h { left: 49%; top: 67%; }
 .cam-schema .sch-cam-lib { position: absolute; left: 36.5%; top: 35.8%; transform: translate(-50%, -50%); font-size: 0.6rem; color: #FF8C00; white-space: nowrap; }
 .cam-calc-longueur { font-size: 0.75rem; color: #bbb; margin-bottom: 6px; }
+
+/* Dessins des machines du calculateur 360 (Steve, 2026-10-15) */
+.cam-schema .v-c { fill: url(#v360-corps); stroke: #23282c; stroke-width: 1.4; stroke-linejoin: round; }
+.cam-schema .v-f { fill: url(#v360-fonce); stroke: #23282c; stroke-width: 1.2; stroke-linejoin: round; }
+.cam-schema .v-n { fill: #1b1e21; stroke: #0d0f11; }
+.cam-schema .v-v { fill: url(#v360-vitre); stroke: #23282c; stroke-width: 1.2; }
+.cam-schema .v-a { fill: url(#v360-acier); stroke: #2b3034; stroke-width: 0.8; }
+.cam-schema .v-j { fill: #b5bcc2; stroke: #23282c; stroke-width: 1; }
+.cam-schema .v-l { fill: none; stroke: #4a5258; stroke-width: 1.1; }
+.cam-schema .v-o { fill: #000; opacity: .45; }
+.cam-schema .v-crampon { fill: none; stroke: #34393e; stroke-width: 3; stroke-dasharray: 3 3; }
+.cam-schema .v-grip { fill: none; stroke: #3b4045; stroke-width: 4; stroke-dasharray: 5 4; }
+.cam-schema .v-dent { stroke: #1b1e21; stroke-width: 4; stroke-dasharray: 3 3; }
+.cam-schema .v-cyl { stroke: #4f575e; stroke-width: 7; stroke-linecap: round; }
+.cam-schema .v-tige { stroke: #e6eaed; stroke-width: 3.5; stroke-linecap: round; }
+.cam-schema .v-rail { fill: none; stroke: #b5bcc2; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.cam-schema .v-reflet { fill: none; stroke: #fff; stroke-opacity: .35; stroke-width: 3; stroke-linecap: round; }
+.cam-schema .v-boyau { fill: none; stroke: #1b1e21; stroke-width: 6; stroke-linecap: round; }
+.cam-schema .v-tuyau { fill: none; stroke: #9aa2a8; stroke-width: 3; }
+.cam-schema .v-phare { fill: #ffe7a3; }
+.cam-schema .v-feu { fill: #e04a3a; }
