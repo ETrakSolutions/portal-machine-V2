@@ -6,11 +6,12 @@ place avec un telephone de 10 chiffres, ou l'emplacement. Memes regles que la pa
 prep-jobs.html : le calcul est celui du serveur (Code.gs, via scripts/prep_jobs_local.js),
 et un SAV n'exige pas de commande (on ne sait pas encore ce qui sera change).
 
-Envoi par Outlook classique (COM) depuis la boite de Jacquot : le Gmail du serveur ne
+Envoi a 8 h par Outlook classique (COM) depuis la boite de Jacquot (le portable doit etre
+allume, session ouverte) : le Gmail du serveur ne
 livre pas. Le courriel ne porte aucun telephone, adresse ni nom de contact, comme la page.
 
     py -3.13 scripts/recap_prep_jobs.py              envoi du jour (une seule fois par jour,
-                                                     en semaine, avant midi)
+                                                     en semaine, de 8 h a midi)
     py -3.13 scripts/recap_prep_jobs.py --apercu     ecrit le courriel en HTML, n'envoie rien
     py -3.13 scripts/recap_prep_jobs.py --a x@y.ca   envoie a x@y.ca seulement (essai)
     --forcer                                         ignore le jour, l'heure et l'envoi deja fait
@@ -33,6 +34,7 @@ import unicodedata
 DESTINATAIRES = ['dluna@e-trak.ca']
 PAGE = 'https://etraksolutions.github.io/portal-machine-V2/prep-jobs.html'
 URGENT_JOURS = 3
+HEURE_DEBUT = 8            # une ouverture de session avant 8 h n'envoie rien : la tache de 8 h le fera
 HEURE_LIMITE = 12          # un rattrapage a l'ouverture de session n'envoie plus apres midi
 REPO = pathlib.Path(__file__).resolve().parent.parent
 ETAT = pathlib.Path.home() / 'CLAUDE_CODE' / 'recap_prep_jobs.etat'
@@ -94,10 +96,15 @@ def construire(prep, maintenant):
     jobs = prep.get('jobs') or []
     a_faire = [j for j in jobs if manques(j)]
     limite = maintenant + datetime.timedelta(days=URGENT_JOURS)
-    urgentes, plus_tard = [], []
+    # Ressource d'attente (« _A Planifier », « _HOLD », « _Pas prêt ») : date pas reelle,
+    # jamais urgente, section a part (decision Jacquot, 2026-10-15) ; meme regle que la page.
+    urgentes, plus_tard, attente = [], [], []
     for j in a_faire:
         d = date_locale(j.get('rv'))
-        (urgentes if d and d <= limite else plus_tard).append(j)
+        if str(j.get('tech') or '').strip().startswith('_'):
+            attente.append(j)
+        else:
+            (urgentes if d and d <= limite else plus_tard).append(j)
     n = lambda f: sum(1 for j in jobs if f(j))
     n_cmd = n(lambda j: not (est_sav(j) or j.get('commande')))
     n_contact = n(lambda j: not (j.get('contactNom') and j.get('telOk')))
@@ -135,6 +142,9 @@ def construire(prep, maintenant):
     if plus_tard:
         corps.append('<h3 style="margin:18px 0 6px">Plus tard (%d)</h3>' % len(plus_tard))
         corps.append(tableau(plus_tard))
+    if attente:
+        corps.append('<h3 style="margin:18px 0 6px;color:#555">En attente : à planifier, HOLD, pas prêt (%d)</h3>' % len(attente))
+        corps.append(tableau(attente))
     corps.append('<p style="margin-top:18px">La liste à jour : <a href="%s">Préparation des jobs</a> '
                  '(portail e-Trak).</p>' % PAGE)
     corps.append('<p style="color:#888;font-size:12px">Envoyé automatiquement chaque matin de semaine. '
@@ -172,6 +182,9 @@ def main():
             return 0
         if ETAT.exists() and ETAT.read_text(encoding='utf-8').strip() == jour:
             print('deja fait aujourd\'hui : rien')
+            return 0
+        if maintenant.hour < HEURE_DEBUT:
+            print('avant %dh : rien' % HEURE_DEBUT)
             return 0
         if maintenant.hour >= HEURE_LIMITE:
             print('apres %dh : le recapitulatif du jour n\'est plus envoye' % HEURE_LIMITE)

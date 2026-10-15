@@ -47,6 +47,7 @@ def jeu_fabrique():
         J('INS4', 8, emplacement=False, lieu='', noCommande=''),
         J('INS5', 9),
         J('SAV6', 3, type='SAV', commande=False),   # SAV sans PDF mais complet : commande non requise
+        J('INS7', 1, tech='_A Planifier', emplacement=False),   # en attente : incomplete mais jamais urgente
     ]}
 
 
@@ -180,10 +181,10 @@ try:
     print('--- 4) urgence, copie ---')
     now = time.time()
     def att_urgent(j):
-        if complete(j) or not j['rv']:
+        if complete(j) or not j['rv'] or j['tech'].strip().startswith('_'):
             return False
         return datetime.datetime.fromisoformat(j['rv'].replace('Z', '+00:00')).timestamp() - now <= 3 * 86400
-    check('liseré exactement sur les jobs incompletes a 3 jours ou moins',
+    check('liseré exactement sur les jobs incompletes a 3 jours ou moins, sauf _A Planifier / _HOLD / _Pas prêt',
           all(l['urgent'] == att_urgent(par_code[l['code']]) for l in toutes))
     premier = toutes[0]['code']
     dv.execute_script("document.querySelector('.pj-code').click();"); time.sleep(0.3)

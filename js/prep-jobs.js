@@ -30,8 +30,12 @@
     function commandeOk(j) { return estSav(j) || j.commande; }
     function contactOk(j) { return j.contactNom && j.telOk; }
     function complete(j) { return commandeOk(j) && contactOk(j) && j.emplacement; }
+    // Ressource d'attente de ProgressionLive (« _A Planifier », « _HOLD », « _Pas prêt ») :
+    // la date n'est pas reelle, la job reste dans le tableau mais n'est jamais urgente
+    // (decision Jacquot, 2026-10-15).
+    function enAttente(j) { return String(j.tech || '').trim().charAt(0) === '_'; }
     function urgent(j) {
-        if (!j.rv || complete(j)) return false;
+        if (!j.rv || complete(j) || enAttente(j)) return false;
         return new Date(j.rv).getTime() - Date.now() <= URGENT_MS;
     }
 
