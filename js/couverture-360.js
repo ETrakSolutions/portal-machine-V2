@@ -118,11 +118,13 @@
     function totaleSaisie() {
         var tot = lire('cam-calc-total');
         if (tot >= 0) { ecrire('cam-calc-av', tot / 2); ecrire('cam-calc-ar', tot / 2); }
+        else if (!String($('cam-calc-total').value).trim()) { $('cam-calc-av').value = ''; $('cam-calc-ar').value = ''; }   // totale effacee -> longueurs effacees
         majResultat();
     }
     function partieSaisie() {
         var av = lire('cam-calc-av'), ar = lire('cam-calc-ar');
         if (av >= 0 && ar >= 0) ecrire('cam-calc-total', av + ar);
+        else $('cam-calc-total').value = '';     // une longueur effacee -> plus de totale
         majResultat();
     }
     // Changement d'unite : les valeurs deja entrees sont converties (2 m ne devient pas 2 pi).

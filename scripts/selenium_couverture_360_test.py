@@ -131,6 +131,12 @@ try:
     check('arriere 9 -> totale 14,5 (%s)' % val('cam-calc-total'), val('cam-calc-total') == '14,5')
     taper('cam-calc-av', '2')
     check('avant 2 -> totale 11 (%s)' % val('cam-calc-total'), val('cam-calc-total') == '11')
+    taper('cam-calc-total', '')
+    check('totale effacee -> longueurs effacees (%s / %s)' % (val('cam-calc-av'), val('cam-calc-ar')), val('cam-calc-av') == '' and val('cam-calc-ar') == '')
+    taper('cam-calc-total', '11')
+    taper('cam-calc-ar', '')
+    check('arriere efface -> totale effacee (%s)' % val('cam-calc-total'), val('cam-calc-total') == '')
+    taper('cam-calc-ar', '9'); taper('cam-calc-av', '2')
     dv.execute_script("var u=document.getElementById('cam-calc-unite'); u.value='pi'; u.dispatchEvent(new Event('change',{bubbles:true}));"); time.sleep(0.3)
     check('passage en pi : 2 m -> 6,56 pi, 11 m -> 36,09 pi (%s / %s)' % (val('cam-calc-h'), val('cam-calc-total')),
           val('cam-calc-h') == '6,56' and val('cam-calc-total') == '36,09')
