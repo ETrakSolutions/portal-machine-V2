@@ -1128,12 +1128,15 @@ function getCedule(body) {
 //   - contact     : « Contact sur place » porte un nom ET un telephone de 10 chiffres
 //                   (l'equipe y ecrit « Prenom Nom 819-555-1234 ». Le champ « Numero
 //                   contact » n'est PAS un telephone : il porte « 43854 - 12539 ») ;
+//   - noCommande  : # de commande e-Trak, le 2e numero de « Numero contact » (12539 dans
+//                   « 43854 - 12539 », comme le PDF O12539.pdf). Demande de Luna, choix de
+//                   Jacquot 2026-10-15 : notre commande, pas le bon de commande du client.
 //   - emplacement : champ Emplacement (onglet General) rempli.
 // Acces : QUATRE personnes nommees, pas un role (Jacquot, Luna, Kevin Berube, Steve
 // Martineau). La Script Property PREP_JOBS_USERS (courriels separes par des virgules)
 // remplace la liste par defaut sans redeploiement. Dealers et distributeurs : jamais.
 // Sortie (liste blanche) : code, type, date, technicien, client, emplacement et ville, etat,
-// verdicts. JAMAIS le telephone, l'adresse, le GPS ni le contenu des pieces jointes.
+// # de commande e-Trak, verdicts. JAMAIS le telephone, l'adresse, le GPS ni le contenu des pieces jointes.
 // Une seule lecture fixe (task/list), en GET : rien de ce qu'envoie le portail n'est relaye.
 var PREP_JOBS_DEFAUT = ['jcaron@gryb.com', 'dluna@e-trak.ca', 'k.berube@e-trak.ca', 'steve@gryb.ca'];
 var PREP_JOBS_TYPES = ['installation', 'sav'];
@@ -1153,6 +1156,12 @@ function _plProp(P, bloc, champ) {
   var v = P[bloc + '.' + champ];
   if (v === undefined && P[bloc] && typeof P[bloc] === 'object') v = P[bloc][champ];
   return v === null || v === undefined ? '' : String(v);
+}
+
+// « 43854 - 12539 » -> « 12539 » ; « 43959 », « 44373 - », « SANS FRAIS » -> ''
+function _noCommandeEtrak(s) {
+  var m = /\d\s*-\s*(\d{3,7})\s*$/.exec(String(s || ''));
+  return m ? m[1] : '';
 }
 
 // 10 chiffres d'un seul numero (indicatif 1 et poste tolérés), pas 10 chiffres au total
@@ -1187,6 +1196,7 @@ function _calculPrepJobs(maintenant) {
       lieu: _labelDe(t.location),
       ville: String((t.locationAddress || {}).city || ''),
       etat: _labelDe(etat),
+      noCommande: _noCommandeEtrak(_plProp(P, 'informations_generales', 'numero_contact')),
       commande: pdf > 0,
       contactNom: /[^\W\d_]{2,}/.test(contact),        // au moins un mot (lettres)
       telOk: _telDixChiffres(contact),
@@ -1208,12 +1218,12 @@ function getPrepJobs(body) {
   if (!user || user.active === false) return { error: 'authentication required' };
   if (!_prepJobsAdmis(user)) return { error: 'forbidden' };
   var cache = CacheService.getScriptCache();
-  var hit = cache.get('prepjobs_v1');
+  var hit = cache.get('prepjobs_v2');
   if (hit) { try { return { ok: true, prep: JSON.parse(hit) }; } catch (e) {} }
   var prep;
   try { prep = _calculPrepJobs(new Date()); }
   catch (err) { Logger.log('getPrepJobs : ' + err); return { error: 'prepjobs unavailable' }; }
-  try { cache.put('prepjobs_v1', JSON.stringify(prep), PREP_JOBS_CACHE_S); } catch (e) {}
+  try { cache.put('prepjobs_v2', JSON.stringify(prep), PREP_JOBS_CACHE_S); } catch (e) {}
   return { ok: true, prep: prep };
 }
 

@@ -110,6 +110,9 @@ check('telephone 10 chiffres ecrits avec parentheses accepte', J_('INS1').telOk 
 const rep = JSON.stringify(r);
 check('aucun telephone, courriel, adresse, GPS, nom de contact ni lien de piece jointe dans la reponse',
   !/555|@|rue Secrete|latitude|position|Paul Tremblay|secret|PO-77/i.test(rep));
+check('# de commande e-Trak = 2e numero de Numero contact (12539)', J_('INS1').noCommande === '12539' && J_('SAV12').noCommande === '12539');
+check('Numero contact sans tiret (4385412539) ou vide : pas de # de commande', J_('INS3').noCommande === '' && J_('INS5').noCommande === '');
+check('# de commande pris du Numero contact, jamais du bon de commande du client', !/PO-77/.test(rep));
 check('ville et emplacement transmis', J_('INS1').ville === 'Saguenay' && J_('INS1').lieu === 'Chantier INS1');
 check('cache : 2e appel sans nouvel appel a ProgressionLive', (() => { const n = appels.length; post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }); return appels.length === n; })());
 check('Kevin (ingenierie, sur la liste) : admis', post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }).ok === true);

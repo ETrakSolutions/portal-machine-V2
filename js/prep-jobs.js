@@ -74,6 +74,7 @@
             return '<tr class="pj-row' + (urgent(j) ? ' pj-urgent' : '') + '" data-code="' + esc(j.code) + '">' +
                 '<td><span class="pj-date">' + esc(fmtDate(j.rv)) + '</span><small>' + esc(j.etat) + '</small></td>' +
                 '<td><button type="button" class="pj-code" data-code="' + esc(j.code) + '" title="' + esc(t('pj.copy')) + '">' + esc(j.code) + '</button><small>' + esc(j.type) + '</small></td>' +
+                '<td class="pj-nocmd">' + (j.noCommande ? esc(j.noCommande) : '<span class="pj-vide">—</span>') + '</td>' +
                 '<td>' + esc(j.client) + (lieu ? '<small>' + lieu + '</small>' : '') + '</td>' +
                 '<td class="pj-tech">' + esc(j.tech) + '</td>' +
                 '<td class="pj-c pj-cmd">' + celluleCmd(j) + '</td>' +
@@ -82,7 +83,7 @@
         }).join('');
         grid.className = '';
         grid.innerHTML = '<table class="pj"><thead><tr>' +
-            ['pj.col_date', 'pj.col_job', 'pj.col_client', 'pj.col_tech'].map(function (k) { return '<th>' + esc(t(k)) + '</th>'; }).join('') +
+            ['pj.col_date', 'pj.col_job', 'pj.col_nocmd', 'pj.col_client', 'pj.col_tech'].map(function (k) { return '<th>' + esc(t(k)) + '</th>'; }).join('') +
             ['pj.col_cmd', 'pj.col_contact', 'pj.col_lieu'].map(function (k) { return '<th class="pj-c">' + esc(t(k)) + '</th>'; }).join('') +
             '</tr></thead><tbody>' + rows + '</tbody></table>';
         var g = DATA.genere ? new Date(DATA.genere) : null;

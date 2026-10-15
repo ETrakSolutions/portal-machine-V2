@@ -37,14 +37,14 @@ def jeu_fabrique():
     def J(code, jours, **kw):
         j = {'code': code, 'type': 'Installation', 'rv': (now + datetime.timedelta(days=jours)).isoformat(),
              'tech': 'Tech A', 'client': 'Client ' + code, 'lieu': 'Chantier ' + code, 'ville': 'Laval',
-             'etat': 'Assigné', 'commande': True, 'contactNom': True, 'telOk': True, 'telChiffres': 10, 'emplacement': True}
+             'etat': 'Assigné', 'noCommande': '1' + code[-1] * 4, 'commande': True, 'contactNom': True, 'telOk': True, 'telChiffres': 10, 'emplacement': True}
         j.update(kw)
         return j
     return {'genere': now.isoformat(), 'du': '', 'au': '', 'jobs': [
         J('INS1', 1, commande=False),
         J('SAV2', 2, type='SAV', contactNom=False, telOk=False, telChiffres=0),
         J('INS3', 6, telOk=False, telChiffres=5),
-        J('INS4', 8, emplacement=False, lieu=''),
+        J('INS4', 8, emplacement=False, lieu='', noCommande=''),
         J('INS5', 9),
         J('SAV6', 3, type='SAV', commande=False),   # SAV sans PDF mais complet : commande non requise
     ]}
@@ -148,6 +148,7 @@ try:
     LIRE = """return Array.from(document.querySelectorAll('table.pj tbody tr')).map(function(tr){
         var v = function(c){ var s = tr.querySelector(c + ' .pj-v'); return s.classList.contains('pj-ok') ? 'OK' : s.innerText.replace(/\\n/g,' | '); };
         return { code: tr.getAttribute('data-code'), urgent: tr.classList.contains('pj-urgent'),
+                 nocmd: tr.querySelector('.pj-nocmd').innerText.trim(), col2: tr.cells[2].className,
                  cmd: v('.pj-cmd'), contact: v('.pj-contact'), lieu: v('.pj-lieu') }; });"""
     lignes = dv.execute_script(LIRE)
     check('par defaut : %d lignes = jobs a completer (%d)' % (len(lignes), len(A_FAIRE)), len(lignes) == len(A_FAIRE))
@@ -167,6 +168,8 @@ try:
         if not j['telOk'] and j['telChiffres'] and (str(j['telChiffres']) + ' chiffres') not in l['contact']:
             bon = False; print('       chiffres absents :', l)
     check('chaque verdict = les donnees recues (commande, contact, emplacement)', bon)
+    check('# de commande juste apres la job, « — » si absent',
+          all(l['col2'] == 'pj-nocmd' and l['nocmd'] == (par_code[l['code']].get('noCommande') or '—') for l in toutes))
     resume = dv.execute_script("return document.getElementById('pj-summary').innerText;")
     n_cmd = sum(1 for j in PREP['jobs'] if not cmd_ok(j))
     n_lieu = sum(1 for j in PREP['jobs'] if not j['emplacement'])
