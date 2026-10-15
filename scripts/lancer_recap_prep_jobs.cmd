@@ -1,9 +1,10 @@
 @echo off
 rem ===================================================================
-rem  Recapitulatif du matin : Preparation des jobs (ProgressionLive) -> Luna
+rem  Recapitulatif Preparation des jobs (ProgressionLive) -> Luna : 8 h a completer +
+rem  a confirmer (case Confirmer client), 13 h rappel des jobs encore a confirmer
 rem  Lance par la tache planifiee "Recap preparation des jobs Portail e-Trak"
-rem  (8:00 lun-ven + ouverture/deverrouillage de session ; le script n envoie
-rem  qu une fois par jour, en semaine, avant midi).
+rem  (8:00 et 13:00 lun-ven + ouverture/deverrouillage de session ; le script
+rem  n envoie qu une fois par creneau : 8 h-midi, 13 h-17 h, en semaine).
 rem  1) git pull --ff-only (sans conflit seulement), 2) scripts\recap_prep_jobs.py
 rem  Journal : %USERPROFILE%\CLAUDE_CODE\recap_prep_jobs.log
 rem ===================================================================

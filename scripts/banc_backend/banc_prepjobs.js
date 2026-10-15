@@ -86,7 +86,7 @@ FAUX = [
   base('INS3', { properties: { 'informations_generales.contact_sur_place': '12345', 'informations_generales.numero_contact': '4385412539' } }),
   base('SAV12', { type: { label: 'SAV' }, properties: { 'informations_generales.contact_sur_place': 'Marc Gagnon', 'informations_generales.numero_contact': '43854 - 12539' } }),
   base('INS4', { location: null }),                                                      // pas d'emplacement
-  base('INS5', { properties: { informations_generales: { contact_sur_place: 'Imbrique 1-819-555-1234 poste 22' } } }),
+  base('INS5', { properties: { informations_generales: { contact_sur_place: 'Imbrique 1-819-555-1234 poste 22' }, confirmer_client: { confirmer_client: 'true' } } }),
   base('INS6', { currentState: { label: 'Travaux terminés', logicId: 600 } }),           // terminee -> exclue
   base('INS7', { currentState: { label: 'Prêt à facturer', logicId: 650 } }),            // exclue
   base('INS8', { currentState: { label: 'Annulé', logicId: 0 } }),                       // annulee -> exclue
@@ -113,6 +113,7 @@ check('aucun telephone, courriel, adresse, GPS, nom de contact ni lien de piece 
 check('# de commande e-Trak = 2e numero de Numero contact (12539)', J_('INS1').noCommande === '12539' && J_('SAV12').noCommande === '12539');
 check('Numero contact sans tiret (4385412539) ou vide : pas de # de commande', J_('INS3').noCommande === '' && J_('INS5').noCommande === '');
 check('# de commande pris du Numero contact, jamais du bon de commande du client', !/PO-77/.test(rep));
+check('Confirmer client : cochee (INS5) -> true, absente (INS1) -> false', J_('INS5').confirme === true && J_('INS1').confirme === false);
 check('ville et emplacement transmis', J_('INS1').ville === 'Saguenay' && J_('INS1').lieu === 'Chantier INS1');
 check('cache : 2e appel sans nouvel appel a ProgressionLive', (() => { const n = appels.length; post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }); return appels.length === n; })());
 check('Kevin (ingenierie, sur la liste) : admis', post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }).ok === true);

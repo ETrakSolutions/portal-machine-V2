@@ -1131,6 +1131,9 @@ function getCedule(body) {
 //   - noCommande  : # de commande e-Trak, le 2e numero de « Numero contact » (12539 dans
 //                   « 43854 - 12539 », comme le PDF O12539.pdf). Demande de Luna, choix de
 //                   Jacquot 2026-10-15 : notre commande, pas le bon de commande du client.
+//   - confirme    : case « Confirmer client » cochee (« true »). Sert au rappel de la veille
+//                   (scripts/recap_prep_jobs.py, decision Jacquot 2026-10-15) ; pas un
+//                   verdict de completude.
 //   - emplacement : champ Emplacement (onglet General) rempli.
 // Acces : QUATRE personnes nommees, pas un role (Jacquot, Luna, Kevin Berube, Steve
 // Martineau). La Script Property PREP_JOBS_USERS (courriels separes par des virgules)
@@ -1197,6 +1200,7 @@ function _calculPrepJobs(maintenant) {
       ville: String((t.locationAddress || {}).city || ''),
       etat: _labelDe(etat),
       noCommande: _noCommandeEtrak(_plProp(P, 'informations_generales', 'numero_contact')),
+      confirme: _plProp(P, 'confirmer_client', 'confirmer_client') === 'true',
       commande: pdf > 0,
       contactNom: /[^\W\d_]{2,}/.test(contact),        // au moins un mot (lettres)
       telOk: _telDixChiffres(contact),
