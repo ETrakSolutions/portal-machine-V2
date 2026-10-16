@@ -80,8 +80,10 @@ def choisir_machine(typ):
 try:
     print('--- 1) donnees ---')
     check('type present dans machines.json', TYPE in MJ)
-    check('catalogue = 1200-0020 Scale Lite',
+    check('catalogue = 1200-0020 Scale Lite (avec cabine)',
           any((v or {}).get('pn') == '1200-0020' for v in MJ[TYPE]['_bom_labels'].values()))
+    check('catalogue = 1200-0023 Scale Lite sans cabine',
+          any((v or {}).get('pn') == '1200-0023' for v in MJ[TYPE]['_bom_labels'].values()))
     check('fichier overrides cree',
           os.path.exists(os.path.join(REPO, 'data', 'overrides', 'tracteur.json')))
 
