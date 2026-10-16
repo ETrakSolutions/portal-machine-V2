@@ -52,6 +52,31 @@ def visible(eid):
         "return !!e && e.offsetParent !== null;", eid)
 
 
+def offerte(eid):
+    """Une sous-option vit dans un panneau replie tant que la tuile n'est pas
+    ouverte : offsetParent y est toujours null. On lit donc le display de la
+    case (ou de son libelle) et celui de la tuile, pas la visibilite a l'ecran."""
+    return dv.execute_script(
+        "var e=document.getElementById(arguments[0]); if(!e) return false;"
+        "var l=e.tagName==='INPUT' ? e.closest('.sub-option') : e;"
+        "var b=document.getElementById('toggle-balance');"
+        "return l.style.display!=='none' && b.style.display!=='none';", eid)
+
+
+def choisir_machine(typ):
+    fabs = [f for f in MJ[typ] if not f.startswith('_')]
+    f = fabs[0]; y = sorted(MJ[typ][f])[0]; m = list(MJ[typ][f][y])[0]
+    for sid, val in (('select-type', typ), ('select-fabricant', f),
+                     ('select-modele', m), ('select-annee', y)):
+        dv.execute_script(
+            "var s=document.getElementById(arguments[0]);"
+            "for (var i=0;i<s.options.length;i++){ if(s.options[i].value===arguments[1]){"
+            "  s.selectedIndex=i; s.dispatchEvent(new Event('change',{bubbles:true})); } }",
+            sid, val)
+        time.sleep(0.8)
+    time.sleep(1.5)
+
+
 try:
     print('--- 1) donnees ---')
     check('type present dans machines.json', TYPE in MJ)
@@ -120,12 +145,38 @@ try:
             time.sleep(0.8)
         time.sleep(1.5)
         check('bloc Balance visible', visible('toggle-balance'))
-        check('Scale Lite proposee', visible('sub-bal-scalelite'))
+        check('Scale Lite avec cabine proposee', offerte('sub-bal-scalelite'))
         check('balance loader MASQUEE', not visible('bal-loader'))
         check('balance valise MASQUEE', not visible('bal-valise'))
         check('imprimante thermique MASQUEE', not visible('bal-imp-therm'))
         check('imprimante carbone MASQUEE', not visible('bal-imp-carb'))
         check('bloc Limiteur masque', not visible('toggle-limiteur'))
+
+        # 2026-10-16 : titre « Balance Scale Lite » (plus « ST-7 ») au tracteur, et
+        # deux variantes exclusives : 0020 avec cabine, 0023 sans cabine.
+        titre = lambda: dv.execute_script(
+            "return document.querySelector('#toggle-balance .toggle-label').textContent.trim();")
+        check('titre = Balance Scale Lite (%s)' % titre(), titre() == 'Balance Scale Lite')
+        check('variante sans cabine proposee', offerte('sub-bal-scalelite-sc'))
+        def cocher(eid):
+            dv.execute_script("var c=document.getElementById(arguments[0]); c.click();", eid)
+            time.sleep(0.6)
+        def resume():
+            return dv.execute_script(
+                "var e=document.getElementById('selected-summary')||document.body; return e.innerText;")
+        cocher('bal-scalelite')
+        r = resume()
+        check('avec cabine -> 1200-0020 au resume', '1200-0020' in r and '1200-0023' not in r)
+        cocher('bal-scalelite-sc')
+        r = resume()
+        check('sans cabine -> 1200-0023 seul (exclusif)', '1200-0023' in r and '1200-0020' not in r)
+        check('une seule case cochee', dv.execute_script(
+            "return document.querySelectorAll('input[name=\"balance-type\"]:checked').length;") == 1)
+        # retour a une vraie machine Loader : le titre redevient ST-7
+        choisir_machine('Loader')
+        check('Loader : titre = Balance ST-7 (%s)' % titre(), titre() == 'Balance ST-7')
+        check('Loader : Scale Lite masquee', not offerte('sub-bal-scalelite') and not offerte('sub-bal-scalelite-sc'))
+        check('Loader : balance loader offerte', offerte('bal-loader'))
 
     errs = [e for e in dv.get_log('browser')
             if e['level'] == 'SEVERE' and 'beforeunload' not in e.get('message', '')]

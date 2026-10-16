@@ -33,15 +33,17 @@ var OPTION_CODES = {
 };
 
 // Balance : produits derriere chaque sous-option. Deux groupes exclusifs — le
-// modele de balance, puis l'imprimante. La Scale Lite (1200-0020) est reservee
-// au tracteur (type de machine a creer) et n'a pas d'imprimante.
+// modele de balance, puis l'imprimante. La Scale Lite est reservee au tracteur
+// et n'a pas d'imprimante : avec cabine 1200-0020, sans cabine 1200-0023
+// (ajoutee par Jacquot le 2026-10-16).
 // Balance ST-7 : on ne vend plus que la balance loader 1200-0010. La balance en
 // valise 1200-0011 est retiree du portail (decision de Steve, 2026-09-30).
 var BALANCE_PRODUITS = {
     'Balance loader':       { code: '1200-0010', desc: 'Balance loader' },
     'Imprimante thermique': { code: '1200-0014', desc: 'Imprimante thermique' },
     'Imprimante carbone':   { code: '1200-0015', desc: 'Imprimante carbone' },
-    'Balance Scale Lite':   { code: '1200-0020', desc: 'Balance Scale Lite (tracteur)' }
+    'Scale Lite avec cabine': { code: '1200-0020', desc: 'Balance Scale Lite avec cabine (tracteur)' },
+    'Scale Lite sans cabine': { code: '1200-0023', desc: 'Balance Scale Lite sans cabine (tracteur)' }
 };
 
 // Load option codes from API (override defaults)
@@ -1083,9 +1085,20 @@ function applyTypeRestrictions(type) {
             balBox.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
                   .forEach(function(c) { c.checked = false; });
         } else {
-            // Tracteur : Scale Lite (1200-0020) SEULEMENT, sans imprimante.
-            // Loader : la balance loader 0010 + le choix d'imprimante.
-            [['sub-bal-scalelite', 'bal-scalelite', isTracteur]].concat(
+            // Tracteur : Scale Lite SEULEMENT (0020 avec cabine / 0023 sans
+            // cabine), sans imprimante. Loader : la balance loader 0010 + le
+            // choix d'imprimante.
+            // Le titre « Balance ST-7 » melait les vendeurs sur un tracteur
+            // (demande de Jacquot, 2026-10-16) : il devient « Balance Scale Lite ».
+            var balLab = balBox.querySelector('.toggle-label');
+            if (balLab) {
+                var balCle = isTracteur ? 'soumission.balance_tracteur' : 'soumission.balance';
+                balLab.setAttribute('data-i18n', balCle);
+                balLab.textContent = (typeof i18n !== 'undefined') ? i18n.t(balCle)
+                                   : (isTracteur ? 'Balance Scale Lite' : 'Balance ST-7');
+            }
+            [['sub-bal-scalelite', 'bal-scalelite', isTracteur],
+             ['sub-bal-scalelite-sc', 'bal-scalelite-sc', isTracteur]].concat(
                 [['', 'bal-loader', !isTracteur],
                  ['', 'bal-imp-therm', !isTracteur], ['', 'bal-imp-carb', !isTracteur]]
             ).forEach(function(t) {
