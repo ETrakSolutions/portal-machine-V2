@@ -84,5 +84,26 @@ for (const k of Object.keys(GRAPH)) {
 }
 check('save sans jeton admin refuse sur GRAPH_SENDER', post({ action: 'save', key: 'GRAPH_SENDER', value: 'pirate@x.ca' }).error !== undefined && store.GRAPH_SENDER === 'noreply@e-trak.ca');
 
+
+reset(true);
+r = post({ action: 'sendsoumission', pin: 'P', to: 'ventes@e-trak.ca; autre@x.ca', cc: 'vendeur@e-trak.ca', replyTo: 'client@napa.ca',
+           subject: 'Demande de soumission', html: '<table><tr><td>Kit</td></tr></table>', text: 'Kit' });
+const ms = appels.length ? JSON.parse(appels[appels.length - 1].opt.payload).message : {};
+check('sendsoumission par Graph : 2 destinataires, cc, replyTo, HTML', r.ok === true && mailapp.length === 0
+  && (ms.toRecipients || []).map(x => x.emailAddress.address).join() === 'ventes@e-trak.ca,autre@x.ca'
+  && ms.ccRecipients[0].emailAddress.address === 'vendeur@e-trak.ca' && ms.replyTo[0].emailAddress.address === 'client@napa.ca'
+  && ms.body.contentType === 'HTML' && /<table>/.test(ms.body.content));
+reset(true); rep.send = [reponse(500, 'boom')];
+check('sendsoumission : echec Graph -> send_failed', post({ action: 'sendsoumission', pin: 'P', to: 'ventes@e-trak.ca', subject: 's', html: '<p>x</p>' }).error === 'send_failed');
+reset(true);
+ctx._envoyerCourriel('a@x.ca', 'Sujet', 'Texte seul', '', 'Portail e-Trak');
+const mt = JSON.parse(appels[appels.length - 1].opt.payload).message;
+check('sans HTML : corps en texte', mt.body.contentType === 'Text' && mt.body.content === 'Texte seul' && !mt.ccRecipients && !mt.replyTo);
+reset(false);
+post({ action: 'sendsoumission', pin: 'P', to: 'ventes@e-trak.ca', cc: 'v@e-trak.ca', replyTo: 'c@napa.ca', subject: 's', html: '<p>x</p>' });
+check('sans Graph : sendsoumission reste sur MailApp', mailapp.length === 1 && appels.length === 0);
+const rap = fs.readFileSync(path.join(__dirname, '..', '..', 'apps-script', 'RappelsInactivite.gs'), 'utf8');
+check("rappels d'inactivite : envoi par _envoyerCourriel, plus de MailApp", /_envoyerCourriel\(vend, m\.sujet, m\.texte, m\.html/.test(rap) && !/MailApp\.sendEmail/.test(rap));
+
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);

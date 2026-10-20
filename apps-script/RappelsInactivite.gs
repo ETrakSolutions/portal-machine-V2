@@ -179,7 +179,7 @@ function rappelsInactivite(envoyer, maintenant, debutSimule) {
     if (!envoyer) return;
     var m = _courrielRappel(nomVendeur, clients);
     try {
-      MailApp.sendEmail(vend, m.sujet, m.texte, { htmlBody: m.html, name: 'Portail e-Trak' });
+      _envoyerCourriel(vend, m.sujet, m.texte, m.html, 'Portail e-Trak');   // noreply@e-trak.ca (2026-10-20)
       resume.envoyes++;
       var iso = now.toISOString();
       clients.forEach(function (c) {

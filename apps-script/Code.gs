@@ -543,12 +543,27 @@ function _graphToken(c, neuf) {
 }
 
 // Envoie un courriel HTML (+ texte brut pour MailApp). Leve une erreur si l'envoi echoue.
-function _envoyerCourriel(a, sujet, texte, html, nom) {
+// opts (facultatif) : { cc, replyTo } — une adresse ou plusieurs separees par des virgules.
+// Utilise par les codes de reset, les rappels d'inactivite et sendsoumission (2026-10-20).
+function _envoyerCourriel(a, sujet, texte, html, nom, opts) {
+  opts = opts || {};
   var c = _graphConfig();
-  if (!c) { MailApp.sendEmail(a, sujet, texte, { htmlBody: html, name: nom }); return 'mailapp'; }
-  var corps = JSON.stringify({ saveToSentItems: false, message: {
-    subject: sujet, body: { contentType: 'HTML', content: html },
-    toRecipients: String(a).split(',').map(function (x) { return { emailAddress: { address: x.trim() } }; }) } });
+  if (!c) {
+    var o = { name: nom };
+    if (html) o.htmlBody = html;
+    if (opts.cc) o.cc = opts.cc;
+    if (opts.replyTo) o.replyTo = opts.replyTo;
+    MailApp.sendEmail(a, sujet, texte, o); return 'mailapp';
+  }
+  var liste = function (x) {
+    return String(x || '').split(',').map(function (y) { return y.trim(); }).filter(Boolean)
+      .map(function (y) { return { emailAddress: { address: y } }; });
+  };
+  var message = { subject: sujet, toRecipients: liste(a),
+    body: html ? { contentType: 'HTML', content: html } : { contentType: 'Text', content: String(texte || '') } };
+  if (opts.cc) message.ccRecipients = liste(opts.cc);
+  if (opts.replyTo) message.replyTo = liste(opts.replyTo);
+  var corps = JSON.stringify({ saveToSentItems: false, message: message });
   var url = 'https://graph.microsoft.com/v1.0/users/' + encodeURIComponent(c.sender) + '/sendMail';
   for (var essai = 0; essai < 2; essai++) {
     var r = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', payload: corps,
@@ -1461,12 +1476,8 @@ function sendSoumission(body) {
   var html = String(body.html || '');
   var text = String(body.text || 'Voir la version HTML de ce courriel.');
 
-  var options = { htmlBody: html, name: 'Portail e-Trak' };
-  if (cc) options.cc = cc;
-  if (replyTo) options.replyTo = replyTo;
-
   try {
-    MailApp.sendEmail(to.join(','), subject, text, options);
+    _envoyerCourriel(to.join(','), subject, text, html, 'Portail e-Trak', { cc: cc, replyTo: replyTo });
   } catch (err) {
     Logger.log('sendSoumission error: ' + err);
     return { error: 'send_failed' };
