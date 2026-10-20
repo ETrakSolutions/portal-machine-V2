@@ -1206,6 +1206,10 @@ function getCedule(body) {
 //                   (« SANS FRAIS ») ; 'nc_absent' = Installation sans # de commande e-Trak
 //                   dans « Numero contact » (normal sur un SAV, donc pas signale).
 //   - emplacement : champ Emplacement (onglet General) rempli.
+//   - lignes      : l'onglet Facture (itemList) porte au moins une ligne (decision Jacquot,
+//                   2026-10-20). Un booleen seulement : jamais un montant ni le libelle
+//                   d'une ligne. Un SAV n'est pas juge (regle cote page, comme la commande) :
+//                   sur 90 jours, aucun SAV facture n'avait de ligne.
 // Acces : QUATRE personnes nommees, pas un role (Jacquot, Luna, Kevin Berube, Steve
 // Martineau). La Script Property PREP_JOBS_USERS (courriels separes par des virgules)
 // remplace la liste par defaut sans redeploiement. Dealers et distributeurs : jamais.
@@ -1290,7 +1294,8 @@ function _calculPrepJobs(maintenant) {
       contactNom: /[^\W\d_]{2,}/.test(contact),        // au moins un mot (lettres)
       telOk: _telDixChiffres(contact),
       telChiffres: contact.replace(/\D/g, '').length,
-      emplacement: !!(t.location && (t.location.id || _labelDe(t.location)))
+      emplacement: !!(t.location && (t.location.id || _labelDe(t.location))),
+      lignes: !!(t.itemList && t.itemList.items && t.itemList.items.length)
     });
   });
   jobs.sort(function (a, b) { return (a.rv || '9') < (b.rv || '9') ? -1 : (a.rv || '9') > (b.rv || '9') ? 1 : 0; });

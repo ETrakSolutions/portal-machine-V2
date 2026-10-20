@@ -8,7 +8,8 @@ Les ressources d'attente (_A Planifier, _HOLD, _Pas pret) ne sont jamais a confi
 urgentes : leur date n'est pas reelle.
 
 Jobs a completer : installations et SAV des 30 prochains jours auxquels il manque la
-commande PDF, le contact sur place avec un telephone de 10 chiffres, ou l'emplacement.
+commande PDF, une ligne dans l'onglet Facture (2026-10-20), le contact sur place avec un
+telephone de 10 chiffres, ou l'emplacement.
 Memes regles que la page prep-jobs.html : le calcul est celui du serveur (Code.gs, via
 scripts/prep_jobs_local.js), et un SAV n'exige pas de commande (on ne sait pas encore ce
 qui sera change).
@@ -92,6 +93,9 @@ def manques(j):
     m = []
     if not (est_sav(j) or j.get('commande')):
         m.append('commande PDF')
+    # Onglet Facture : au moins une ligne, sauf SAV (decision Jacquot, 2026-10-20)
+    if not est_sav(j) and j.get('lignes') is False:
+        m.append('lignes de facture')
     if not (j.get('contactNom') and j.get('telOk')):
         if not j.get('contactNom') and not j.get('telChiffres'):
             m.append('contact sur place')
@@ -151,6 +155,7 @@ def construire(prep, maintenant, creneau):
             (urgentes if d and d <= limite else plus_tard).append(j)
     n = lambda f: sum(1 for j in jobs if f(j))
     n_cmd = n(lambda j: not (est_sav(j) or j.get('commande')))
+    n_fact = n(lambda j: not est_sav(j) and j.get('lignes') is False)
     n_contact = n(lambda j: not (j.get('contactNom') and j.get('telOk')))
     n_lieu = n(lambda j: not j.get('emplacement'))
 
@@ -183,9 +188,10 @@ def construire(prep, maintenant, creneau):
     if creneau == 'matin':
         corps.append('<p style="margin-top:18px"><b>%d job(s) sur %d à compléter dans ProgressionLive</b> '
                      '(installations et SAV du %s au %s).<br>'
-                     '<span style="color:#555">%d sans commande PDF · %d sans contact complet · %d sans emplacement. '
-                     'Un SAV n\'exige pas de commande.</span></p>' % (
-                         len(a_faire), len(jobs), e(prep.get('du', '')), e(prep.get('au', '')), n_cmd, n_contact, n_lieu))
+                     '<span style="color:#555">%d sans commande PDF · %d sans ligne dans l\'onglet Facture · '
+                     '%d sans contact complet · %d sans emplacement. '
+                     'Un SAV n\'exige ni commande ni ligne de facture.</span></p>' % (
+                         len(a_faire), len(jobs), e(prep.get('du', '')), e(prep.get('au', '')), n_cmd, n_fact, n_contact, n_lieu))
         if urgentes:
             corps.append('<h3 style="color:#c0392b;margin:18px 0 6px">Dans %d jours ou moins (%d)</h3>' % (URGENT_JOURS, len(urgentes)))
             corps.append(tableau(urgentes))

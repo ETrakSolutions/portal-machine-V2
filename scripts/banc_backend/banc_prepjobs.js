@@ -60,7 +60,8 @@ if (REEL) {
   const n = f => j.filter(f).length;
   console.log('Sans PDF :', n(x => !x.commande), '| contact sur place vide :', n(x => !x.contactNom),
     '| telephone pas 10 chiffres :', n(x => !x.telOk), '| sans emplacement :', n(x => !x.emplacement),
-    '| completes :', n(x => x.commande && x.contactNom && x.telOk && x.emplacement));
+    '| onglet Facture sans ligne :', n(x => !x.lignes),
+    '| completes :', n(x => x.commande && x.lignes && x.contactNom && x.telOk && x.emplacement));
   j.forEach(x => console.log('  ' + (x.rv || 'sans date').slice(0, 10) + ' ' + x.code.padEnd(11) + x.type.slice(0, 4).padEnd(5) +
     (x.commande ? 'C' : '-') + (x.contactNom ? 'N' : '-') + (x.telOk ? 'T' : '-') + (x.emplacement ? 'E' : '-') +
     ' tel=' + String(x.telChiffres).padEnd(3) + ' ' + x.etat));
@@ -77,6 +78,7 @@ const base = (code, extra) => Object.assign({
   locationAddress: { address: '123 rue Secrete', city: 'Saguenay', phone: '819-555-0000', email: 'client@x.com', position: { latitude: 48.4, longitude: -71 } },
   humanResource: { id: 43, label: 'Tech A' },
   attachments: [{ name: 'commande.pdf', contentType: 'application/pdf', url: 'https://x/secret' }],
+  itemList: { id: 7, subTotal: 8604.2, total: 9892.68, items: [{ id: 1, label: 'Ligne Secrete', price: 8604.2, total: 8604.2 }] },
   properties: { 'informations_generales.contact_sur_place': 'Paul Tremblay (819) 555-1234', 'informations_generales.numero_contact': '43854 - 12539',
                 'informations_generales.bon_commande': 'PO-77' }
 }, extra || {});
@@ -96,11 +98,13 @@ FAUX = [
   base('INS13', { properties: { 'informations_generales.bon_commande': 'Tom Fredette 819-347-4254', 'informations_generales.numero_contact': 'SANS FRAIS' } }),
   base('SAV14', { type: { label: 'SAV' }, properties: { 'informations_generales.bon_commande': 'Maxime Lavoie', 'informations_generales.numero_contact': '44373 -' } }),
   base('INS15', { properties: { 'informations_generales.bon_commande': '2400083630', 'informations_generales.numero_contact': '43830 - 13053' } }),
+  base('INS16', { itemList: { id: 8, subTotal: 0, total: 0, items: [] } }),                // onglet Facture vide
+  base('INS17', { itemList: undefined }),                                                 // pas d'onglet Facture
 ];
 let r = post({ action: 'getprepjobs', token: tok('dluna@e-trak.ca', 'L') });
 const jobs = (r.prep && r.prep.jobs) || [], J_ = c => jobs.find(x => x.code === c) || {};
 check('reponse ok (Luna)', r.ok === true);
-check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2']));
+check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS16', 'INS17', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2']));
 check('triees par date (SAV2 demain en premier)', jobs[0] && jobs[0].code === 'SAV2');
 check('INS1 complete', J_('INS1').commande && J_('INS1').contactNom && J_('INS1').telOk && J_('INS1').emplacement);
 check('SAV2 : photo seulement -> commande manquante', J_('SAV2').commande === false);
@@ -124,6 +128,9 @@ check('champs a corriger : nom dans le bon ; SAV sans # de commande pas signale 
 check('champs a corriger : # de bon de 10 chiffres colles = pas un telephone (INS15)', AC('INS15') === '[]');
 check('champs a corriger : Installation sans # de commande e-Trak (INS3)', AC('INS3') === '["nc_absent"]');
 check('champs a corriger : le contenu des champs ne sort jamais', !/Fredette|Maxime|SANS FRAIS|347-4254/.test(JSON.stringify(r)));
+check('onglet Facture : une ligne -> lignes true (INS1)', J_('INS1').lignes === true);
+check('onglet Facture : vide (INS16) ou absent (INS17) -> lignes false', J_('INS16').lignes === false && J_('INS17').lignes === false);
+check('onglet Facture : ni montant ni libelle de ligne dans la reponse', !/8604|9892|Ligne Secrete|subTotal|itemList/.test(rep));
 check('ville et emplacement transmis', J_('INS1').ville === 'Saguenay' && J_('INS1').lieu === 'Chantier INS1');
 check('cache : 2e appel sans nouvel appel a ProgressionLive', (() => { const n = appels.length; post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }); return appels.length === n; })());
 check('Kevin (ingenierie, sur la liste) : admis', post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }).ok === true);

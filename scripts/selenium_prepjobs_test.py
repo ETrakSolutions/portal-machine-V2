@@ -37,7 +37,7 @@ def jeu_fabrique():
     def J(code, jours, **kw):
         j = {'code': code, 'type': 'Installation', 'rv': (now + datetime.timedelta(days=jours)).isoformat(),
              'tech': 'Tech A', 'client': 'Client ' + code, 'lieu': 'Chantier ' + code, 'ville': 'Laval',
-             'etat': 'Assigné', 'noCommande': '1' + code[-1] * 4, 'confirme': False, 'commande': True, 'contactNom': True, 'telOk': True, 'telChiffres': 10, 'emplacement': True}
+             'etat': 'Assigné', 'noCommande': '1' + code[-1] * 4, 'confirme': False, 'commande': True, 'lignes': True, 'contactNom': True, 'telOk': True, 'telChiffres': 10, 'emplacement': True}
         j.update(kw)
         return j
     return {'genere': now.isoformat(), 'du': '', 'au': '', 'jobs': [
@@ -48,13 +48,17 @@ def jeu_fabrique():
         J('INS5', 9, confirme=True),
         J('SAV6', 3, type='SAV', commande=False),   # SAV sans PDF mais complet : commande non requise
         J('INS7', 1, tech='_A Planifier', emplacement=False),   # en attente : incomplete mais jamais urgente
+        J('INS8', 2, lignes=False),                 # seul manque : aucune ligne dans l'onglet Facture
+        J('SAV9', 4, type='SAV', lignes=False),      # SAV : ligne de facture non requise -> complet
+        J('INS10', 5),                              # serveur < v47 : pas de « lignes » -> non juge
     ]}
 
 
 PREP = json.load(open(arg('--fixture'), encoding='utf-8')) if arg('--fixture') else jeu_fabrique()
 est_sav = lambda j: j['type'].strip().lower() == 'sav'
 cmd_ok = lambda j: est_sav(j) or j['commande']   # SAV : pas de commande avant la visite
-complete = lambda j: cmd_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement']
+fact_ok = lambda j: est_sav(j) or j.get('lignes') is not False   # onglet Facture (2026-10-20), sauf SAV
+complete = lambda j: cmd_ok(j) and fact_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement']
 A_FAIRE = [j for j in PREP['jobs'] if not complete(j)]
 
 
@@ -151,7 +155,7 @@ try:
         return { code: tr.getAttribute('data-code'), urgent: tr.classList.contains('pj-urgent'),
                  nocmd: (tr.querySelector('.pj-nocmd').firstChild.textContent || '').trim(),
                  fix: tr.querySelectorAll('.pj-nocmd .pj-fix').length, col2: tr.cells[2].className,
-                 conf: v('.pj-conf'), cmd: v('.pj-cmd'), contact: v('.pj-contact'), lieu: v('.pj-lieu') }; });"""
+                 conf: v('.pj-conf'), cmd: v('.pj-cmd'), fact: v('.pj-fact'), contact: v('.pj-contact'), lieu: v('.pj-lieu') }; });"""
     lignes = dv.execute_script(LIRE)
     check('par defaut : %d lignes = jobs a completer (%d)' % (len(lignes), len(A_FAIRE)), len(lignes) == len(A_FAIRE))
     dv.execute_script("document.getElementById('pj-todo').click();"); time.sleep(0.3)
@@ -170,6 +174,9 @@ try:
         if not j['telOk'] and j['telChiffres'] and (str(j['telChiffres']) + ' chiffres') not in l['contact']:
             bon = False; print('       chiffres absents :', l)
     check('chaque verdict = les donnees recues (commande, contact, emplacement)', bon)
+    att_fact = lambda j: 'Non requise (SAV)' if est_sav(j) else '—' if 'lignes' not in j else 'OK' if j['lignes'] else 'Aucune ligne'
+    mauvais = [(l['code'], l['fact']) for l in toutes if l['fact'] != att_fact(par_code[l['code']])]
+    check('onglet Facture : OK / « Aucune ligne » / SAV non requise / « — » si le serveur ne le dit pas %s' % (mauvais or ''), not mauvais)
     check('voyant « à corriger » : un par code recu, nulle part ailleurs',
           all(l['fix'] == len(par_code[l['code']].get('aCorriger') or []) for l in toutes))
     check('Confirmé client : OK si cochee, « — » en attente, sinon « À confirmer »',
@@ -180,9 +187,10 @@ try:
     resume = dv.execute_script("return document.getElementById('pj-summary').innerText;")
     n_cmd = sum(1 for j in PREP['jobs'] if not cmd_ok(j))
     n_lieu = sum(1 for j in PREP['jobs'] if not j['emplacement'])
+    n_fact = sum(1 for j in PREP['jobs'] if not fact_ok(j))
     check('resume chiffre (%s)' % resume.replace('\n', ' / '),
           ('%d job(s) sur %d' % (len(A_FAIRE), len(PREP['jobs']))) in resume and ('%d sans commande' % n_cmd) in resume
-          and ('%d sans emplacement' % n_lieu) in resume)
+          and ('%d sans emplacement' % n_lieu) in resume and ('%d sans ligne de facture' % n_fact) in resume)
 
     print('--- 4) urgence, copie ---')
     now = time.time()
