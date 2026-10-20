@@ -145,7 +145,8 @@ function jsonOut(obj) {
 // L'ecriture (save/delete) de ces cles exige un token admin (voir doPost).
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
-                      'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS'];
+                      'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
+                      'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -502,13 +503,61 @@ function authResetRequest(body) {
   cache.put(cle, JSON.stringify({ c: code, t: 0 }), RESET_TTL_S);
   var m = _courrielReset(u.name || '', code, body.lang === 'en');
   try {
-    MailApp.sendEmail(email, m.sujet, m.texte, { htmlBody: m.html, name: 'Portail e-Trak' });
+    _envoyerCourriel(email, m.sujet, m.texte, m.html, 'Portail e-Trak');
   } catch (err) {
     Logger.log('authResetRequest : envoi impossible : ' + err);
     cache.remove(cle); cache.remove(cle + '_rl');
     return { error: 'send_failed' };
   }
   return { ok: true };
+}
+
+/* ============ ENVOI DES COURRIELS PAR noreply@e-trak.ca (Steve, 2026-10-20) ============ */
+// Le Gmail gratuit etrak.portail@gmail.com garde ses envois MailApp dans les Envoyes sans les
+// livrer (voir version 42). Expediteur authentifie : boite M365 noreply@e-trak.ca, application
+// Entra ID avec la permission d'application Microsoft Graph Mail.Send limitee a cette boite
+// (fournie par Rhesus). Les 4 Script Properties (sensibles, jamais dans le depot) :
+//   GRAPH_TENANT_ID, GRAPH_CLIENT_ID, GRAPH_CLIENT_SECRET, GRAPH_SENDER (noreply@e-trak.ca).
+// Tant qu'elles ne sont pas TOUTES posees, l'envoi reste sur MailApp comme avant : rien ne
+// casse pendant la mise en place. Une fois posees, un echec Graph est une erreur (pas de
+// repli silencieux sur le Gmail, qui ne livre pas). Le secret a une date d'expiration :
+// un secret expire donne « graph token 401 » dans le journal.
+function _graphConfig() {
+  var c = { tenant: PROPS.getProperty('GRAPH_TENANT_ID'), client: PROPS.getProperty('GRAPH_CLIENT_ID'),
+            secret: PROPS.getProperty('GRAPH_CLIENT_SECRET'), sender: PROPS.getProperty('GRAPH_SENDER') };
+  return (c.tenant && c.client && c.secret && c.sender) ? c : null;
+}
+
+function _graphToken(c, neuf) {
+  var cache = CacheService.getScriptCache(), cle = 'graph_token_' + c.client;
+  if (!neuf) { var t = cache.get(cle); if (t) return t; }
+  var r = UrlFetchApp.fetch('https://login.microsoftonline.com/' + encodeURIComponent(c.tenant) + '/oauth2/v2.0/token', {
+    method: 'post', muteHttpExceptions: true,
+    payload: { client_id: c.client, client_secret: c.secret, grant_type: 'client_credentials',
+               scope: 'https://graph.microsoft.com/.default' } });
+  if (r.getResponseCode() !== 200) throw new Error('graph token ' + r.getResponseCode());
+  var j = JSON.parse(r.getContentText());
+  var duree = Math.max(60, Math.min(21600, (Number(j.expires_in) || 3600) - 300));
+  cache.put(cle, j.access_token, duree);
+  return j.access_token;
+}
+
+// Envoie un courriel HTML (+ texte brut pour MailApp). Leve une erreur si l'envoi echoue.
+function _envoyerCourriel(a, sujet, texte, html, nom) {
+  var c = _graphConfig();
+  if (!c) { MailApp.sendEmail(a, sujet, texte, { htmlBody: html, name: nom }); return 'mailapp'; }
+  var corps = JSON.stringify({ saveToSentItems: false, message: {
+    subject: sujet, body: { contentType: 'HTML', content: html },
+    toRecipients: String(a).split(',').map(function (x) { return { emailAddress: { address: x.trim() } }; }) } });
+  var url = 'https://graph.microsoft.com/v1.0/users/' + encodeURIComponent(c.sender) + '/sendMail';
+  for (var essai = 0; essai < 2; essai++) {
+    var r = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', payload: corps,
+      muteHttpExceptions: true, headers: { Authorization: 'Bearer ' + _graphToken(c, essai > 0) } });
+    var code = r.getResponseCode();
+    if (code === 202) return 'graph';
+    if (code !== 401) throw new Error('graph sendMail ' + code + ' ' + String(r.getContentText()).slice(0, 200));
+  }
+  throw new Error('graph sendMail 401');
 }
 
 // Courriel du code (Steve, 2026-10-08) : les codes partaient bien (« Envoyés » de
