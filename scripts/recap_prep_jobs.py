@@ -13,18 +13,27 @@ Memes regles que la page prep-jobs.html : le calcul est celui du serveur (Code.g
 scripts/prep_jobs_local.js), et un SAV n'exige pas de commande (on ne sait pas encore ce
 qui sera change).
 
-Envoi par Outlook classique (COM) depuis la boite de Jacquot (le portable doit etre
-allume, session ouverte) : le Gmail du serveur ne livre pas. Le courriel ne porte aucun
-telephone, adresse ni nom de contact, comme la page.
+Envoi par Outlook classique (COM) depuis la boite de la personne dont la session est
+ouverte : le Gmail du serveur ne livre pas. Le courriel ne porte aucun telephone,
+adresse ni nom de contact, comme la page.
+
+Deux postes (decision Jacquot, 2026-10-20) : le portable de Jacquot envoie a 8 h et 13 h ;
+le poste de Steve, lance avec --releve, passe 30 minutes plus tard et n'envoie que si
+le creneau n'est pas deja fait. Le suivi des envois est commun aux deux postes :
+recap_prep_jobs.etat dans le dossier SharePoint « _Portail e-Trak » (synchro OneDrive),
+avec une copie locale si le dossier est introuvable.
 
     py -3.13 scripts/recap_prep_jobs.py              envoi du creneau en cours (une fois par
                                                      creneau : 8 h-midi, 13 h-17 h, en semaine)
+    py -3.13 scripts/recap_prep_jobs.py --releve     poste de relève : creneaux 8 h 30-midi et
+                                                     13 h 30-17 h
     py -3.13 scripts/recap_prep_jobs.py --apercu     ecrit le courriel en HTML, n'envoie rien
     py -3.13 scripts/recap_prep_jobs.py --a x@y.ca   envoie a x@y.ca seulement (essai)
     --creneau matin|midi                             choisit le creneau (essai, apercu)
     --forcer                                         ignore le jour, l'heure et l'envoi deja fait
 
-Cle ProgressionLive : coffre Windows (keyring progressionlive-portail / jcaron).
+Cle ProgressionLive : coffre Windows (keyring progressionlive-portail / <compte>), compte
+jcaron par defaut, autre compte par --compte.
 Journal : %USERPROFILE%/CLAUDE_CODE/recap_prep_jobs.log (via lancer_recap_prep_jobs.cmd).
 Code de sortie : 0 envoye ou rien a envoyer, 1 erreur.
 """
@@ -45,17 +54,19 @@ URGENT_JOURS = 3
 HEURE_DEBUT = 8            # une ouverture de session avant 8 h n'envoie rien : la tache de 8 h le fera
 HEURE_LIMITE = 12          # un rattrapage a l'ouverture de session n'envoie plus le matin apres midi
 HEURE_MIDI, HEURE_MIDI_FIN = 13, 17   # rappel « Confirmer client » de 13 h (rattrapage jusqu'a 17 h)
+RELEVE_MINUTES = 30       # le poste de relève passe 30 min apres le poste principal
 REPO = pathlib.Path(__file__).resolve().parent.parent
-ETAT = pathlib.Path.home() / 'CLAUDE_CODE' / 'recap_prep_jobs.etat'
+ETAT_LOCAL = pathlib.Path.home() / 'CLAUDE_CODE' / 'recap_prep_jobs.etat'
+POSTE = os.environ.get('COMPUTERNAME') or '?'
 JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 MOIS = ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juill.', 'août', 'sept.', 'oct.', 'nov.', 'déc.']
 
 
-def lire_jobs():
+def lire_jobs(compte):
     import keyring
-    cle = keyring.get_password('progressionlive-portail', 'jcaron')
+    cle = keyring.get_password('progressionlive-portail', compte)
     if not cle:
-        raise RuntimeError('cle ProgressionLive absente du coffre (progressionlive-portail / jcaron)')
+        raise RuntimeError('cle ProgressionLive absente du coffre (progressionlive-portail / %s)' % compte)
     r = subprocess.run(['node', str(REPO / 'scripts' / 'prep_jobs_local.js')], capture_output=True,
                        env=dict(os.environ, PL_KEY=cle), timeout=300)
     if r.returncode != 0:
@@ -212,12 +223,54 @@ def envoyer(a, sujet, corps):
     m.Send()
 
 
-def creneau_de(maintenant):
-    if HEURE_DEBUT <= maintenant.hour < HEURE_LIMITE:
+def creneau_de(maintenant, decalage=0):
+    """decalage (minutes) : debut des creneaux retarde pour le poste de relève ; la fin ne
+    bouge pas."""
+    m = maintenant.hour * 60 + maintenant.minute
+    if HEURE_DEBUT * 60 + decalage <= m < HEURE_LIMITE * 60:
         return 'matin'
-    if HEURE_MIDI <= maintenant.hour < HEURE_MIDI_FIN:
+    if HEURE_MIDI * 60 + decalage <= m < HEURE_MIDI_FIN * 60:
         return 'midi'
     return None
+
+
+def fichiers_etat():
+    """Suivi commun (SharePoint) d'abord, copie locale ensuite. Le dossier SharePoint est
+    synchronise par OneDrive sur les deux postes ; s'il manque, le poste travaille seul."""
+    try:
+        from publier_prix import dossier_portail
+        d = dossier_portail()
+    except Exception:
+        d = None
+    return ([d / 'recap_prep_jobs.etat'] if d else []) + [ETAT_LOCAL]
+
+
+def lire_faits():
+    """Creneaux deja faits, « AAAA-MM-JJ creneau », lus dans tous les fichiers de suivi
+    (une ligne peut porter le poste qui a envoye en 3e mot)."""
+    faits = {}
+    for f in fichiers_etat():
+        try:
+            lignes = f.read_text(encoding='utf-8').split('\n') if f.exists() else []
+        except OSError:
+            continue
+        for x in lignes:
+            mots = x.split()
+            if len(mots) >= 2:
+                faits.setdefault(' '.join(mots[:2]), x.strip())
+    return faits
+
+
+def marquer(faits, jour, creneau):
+    depuis = (datetime.date.fromisoformat(jour) - datetime.timedelta(days=7)).isoformat()
+    garde = sorted(v for k, v in faits.items() if k[:10] >= depuis)
+    texte = '\n'.join(garde + ['%s %s %s' % (jour, creneau, POSTE)])
+    for f in fichiers_etat():
+        try:
+            f.parent.mkdir(parents=True, exist_ok=True)
+            f.write_text(texte, encoding='utf-8')
+        except OSError as ex:
+            print('suivi non ecrit dans %s : %s' % (f, ex))
 
 
 def main():
@@ -226,25 +279,36 @@ def main():
     ap.add_argument('--a', action='append')
     ap.add_argument('--forcer', action='store_true')
     ap.add_argument('--creneau', choices=['matin', 'midi'])
+    ap.add_argument('--releve', action='store_true')
+    ap.add_argument('--compte', default='jcaron', help='compte de la cle ProgressionLive dans le coffre Windows')
     o = ap.parse_args()
     maintenant = datetime.datetime.now().astimezone()
     jour = maintenant.date().isoformat()
-    print('==== %s' % maintenant.strftime('%Y-%m-%d %H:%M'))
+    decalage = RELEVE_MINUTES if o.releve else 0
+    print('==== %s%s (%s)' % (maintenant.strftime('%Y-%m-%d %H:%M'), ' releve' if o.releve else '', POSTE))
     reel = not o.apercu and not o.a
-    creneau = o.creneau or creneau_de(maintenant)
-    faits = set(ETAT.read_text(encoding='utf-8').split('\n')) if ETAT.exists() else set()
+    creneau = o.creneau or creneau_de(maintenant, decalage)
+    faits = lire_faits()
     if reel and not o.forcer:
         if maintenant.weekday() >= 5:
             print('fin de semaine : rien')
             return 0
         if not creneau:
-            print('hors des creneaux (%d h-%d h, %d h-%d h) : rien' % (HEURE_DEBUT, HEURE_LIMITE, HEURE_MIDI, HEURE_MIDI_FIN))
+            debut = lambda h: '%d h%s' % (h, (' %02d' % decalage) if decalage else '')
+            print('hors des creneaux (%s-%d h, %s-%d h) : rien' % (debut(HEURE_DEBUT), HEURE_LIMITE, debut(HEURE_MIDI), HEURE_MIDI_FIN))
             return 0
-        if '%s %s' % (jour, creneau) in faits:
-            print('%s deja fait aujourd\'hui : rien' % creneau)
+        cle = '%s %s' % (jour, creneau)
+        if cle in faits:
+            print('%s deja fait aujourd\'hui (%s) : rien' % (creneau, faits[cle]))
             return 0
     creneau = creneau or 'matin'
-    prep = lire_jobs()
+    prep = lire_jobs(o.compte)
+    if reel and not o.forcer:
+        # La lecture ProgressionLive prend du temps : l'autre poste a pu envoyer entre-temps.
+        faits = lire_faits()
+        if '%s %s' % (jour, creneau) in faits:
+            print('%s fait par l\'autre poste pendant la lecture (%s) : rien' % (creneau, faits['%s %s' % (jour, creneau)]))
+            return 0
     a_envoyer, n_faire, n_conf, sujet, corps = construire(prep, maintenant, creneau)
     print('%s : %d jobs, %d a completer, %d a confirmer' % (creneau, len(prep.get('jobs') or []), n_faire, n_conf))
     if o.apercu:
@@ -259,10 +323,7 @@ def main():
         envoyer(dest, sujet, corps)
         print('envoye a %s : %s' % (', '.join(dest), sujet))
     if reel:
-        ETAT.parent.mkdir(parents=True, exist_ok=True)
-        depuis = (maintenant.date() - datetime.timedelta(days=7)).isoformat()
-        garde = sorted(x for x in faits if x[:10] >= depuis)
-        ETAT.write_text('\n'.join(garde + ['%s %s' % (jour, creneau)]), encoding='utf-8')
+        marquer(faits, jour, creneau)
     return 0
 
 
