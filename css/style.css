@@ -1749,3 +1749,18 @@ footer {
     .header-logo { height: 30px; }
     .lang-btn { padding: 4px 6px; font-size: 0.62rem; letter-spacing: 0.2px; }
 }
+
+/* Options compatibles (Portail Machine, Steve 2026-10-21) — js/options-machine.js */
+#options-compat-section { margin-top: 16px; }
+.optm-grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; margin-top: 8px; }
+.optm-carte { background: #262626; border: 1px solid #3a3a3a; border-left: 3px solid #FF8C00; border-radius: 8px; padding: 10px 12px; }
+.optm-titre { color: #FF8C00; font-weight: 700; font-size: .9rem; margin-bottom: 6px; }
+.optm-ligne { display: flex; align-items: center; gap: 8px; font-size: .8rem; color: #ddd; padding: 3px 0; }
+.optm-lab { flex: 1; }
+.optm-code { color: #aaa; font-family: monospace; white-space: nowrap; }
+.optm-dot { width: 11px; height: 11px; border-radius: 50%; flex: none; display: inline-block; }
+.optm-dot.optm-r { background: #FF0000; box-shadow: 0 0 5px rgba(255,0,0,.55); }
+.optm-dot.optm-j { background: #FFFF00; box-shadow: 0 0 5px rgba(255,255,0,.5); }
+.optm-sep { margin-top: 6px; padding-top: 6px; border-top: 1px dashed #444; font-size: .72rem; color: #aaa; }
+.optm-verif { font-size: .68rem; color: #E07B00; }
+@media (max-width: 600px) { .optm-grille { grid-template-columns: 1fr; } }

@@ -875,6 +875,8 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
         }
     }
 
+    // Options compatibles (Steve, 2026-10-21) : memes regles que la Soumission.
+    if (window.OptionsMachine) window.OptionsMachine.render(type, fab, modele, annee);
     updateGearDeleteButton();
 }
 
@@ -909,6 +911,7 @@ function applyBdKitLabels(rootEl, displayMap, type) {
 
 function hideResults() {
     resultsSection.style.display = 'none';
+    if (window.OptionsMachine) window.OptionsMachine.cacher();
     emptyState.style.display = 'block';
     const kitSection = document.getElementById('kit-machine-section');
     if (kitSection) kitSection.style.display = 'none';
