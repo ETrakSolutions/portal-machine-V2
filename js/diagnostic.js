@@ -26,6 +26,13 @@
                           'Limiteur de pompe à béton (LPB)', 'Limiteur de téléhandler (LPT)', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
                           'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance (Scale-Pro / Lite)', 'Caméras', 'Autre'];
     var ETAT = { fiches: [], produits: PRODUITS_REPLI.slice(), peutValider: false, vue: 'tout', ouvertes: {}, edition: null };
+    // Anglais des fiches (Steve, 2026-10-21) : traduit par le serveur, revise par le validateur.
+    function enAnglais() {
+        try { if (window.i18n && i18n.getLang) return i18n.getLang() === 'en'; } catch (e) {}
+        try { return localStorage.getItem('portal_lang') === 'en'; } catch (e) { return false; }
+    }
+    function en(f) { return f.en || { symptome: '', motsCles: '', causes: [] }; }
+    function titre(f) { return (enAnglais() && en(f).symptome) || f.symptome; }
 
     function api(corps) {
         corps.token = user.token;
@@ -36,7 +43,9 @@
     function quand(iso) { var d = iso ? new Date(iso) : null; return d && !isNaN(d) ? d.toLocaleDateString('fr-CA') : ''; }
     var ERREURS = { 'forbidden': 'Action non permise pour votre compte.', 'not found': 'Cette fiche n\'existe plus (supprimée entre-temps).',
                     'authentication required': 'Session expirée : reconnectez-vous au portail.', 'deja validee': 'Cette fiche est déjà validée.',
-                    'fiche trop longue': 'Fiche trop longue : raccourcissez les solutions.' };
+                    'fiche trop longue': 'Fiche trop longue : raccourcissez les solutions.',
+                    'anglais incomplet': 'Anglais incomplet : ouvrez « Modifier », complétez ou corrigez l\'anglais, enregistrez, puis validez.',
+                    'traduction impossible': 'Traduction automatique impossible pour le moment : la fiche n\'a pas été modifiée. Réessayez plus tard ou entrez l\'anglais à la main.' };
     function msgErreur(d) { var e = (d && d.error) || ''; return ERREURS[e] || ('Erreur du serveur' + (e ? ' : ' + e : '') + '.'); }
 
     // ---------- liste ----------
@@ -66,9 +75,10 @@
     }
     function proche(a, b) { return a === b || (a.length >= 3 && b.length >= 3 && (a.indexOf(b) === 0 || b.indexOf(a) === 0)); }
     function points(f, mots) {
-        var zones = [[racines(f.symptome + ' ' + f.code + ' ' + f.motsCles), 3], [racines(f.produit), 2],
-                     [racines(f.causes.map(function (c) { return c.cause + ' ' + c.pieces; }).join(' ')), 2],
-                     [racines(f.causes.map(function (c) { return c.solution; }).join(' ')), 1]];
+        var e = en(f), ec = e.causes || [];
+        var zones = [[racines(f.symptome + ' ' + f.code + ' ' + f.motsCles + ' ' + e.symptome + ' ' + e.motsCles), 3], [racines(f.produit), 2],
+                     [racines(f.causes.map(function (c, i) { return c.cause + ' ' + c.pieces + ' ' + ((ec[i] || {}).cause || ''); }).join(' ')), 2],
+                     [racines(f.causes.map(function (c, i) { return c.solution + ' ' + ((ec[i] || {}).solution || ''); }).join(' ')), 1]];
         var total = 0;
         mots.forEach(function (m) {
             var meilleur = 0;
@@ -93,11 +103,19 @@
     function carte(f) {
         var prop = f.remplace ? original(f.remplace) : null;
         var tags = '<span class="dg-tag prod">' + esc(f.produit) + '</span>' + (f.code ? ' <span class="dg-tag code">' + esc(f.code) + '</span>' : '') +
-            (f.statut === 'brouillon' ? ' <span class="dg-tag brouillon">' + (f.remplace ? 'Proposition de modification' : 'Brouillon à valider') + '</span>' : '');
+            (f.statut === 'brouillon' ? ' <span class="dg-tag brouillon">' + (f.remplace ? 'Proposition de modification' : 'Brouillon à valider') + '</span>' : '') +
+            (f.anglaisComplet === false ? ' <span class="dg-tag en-manque">Anglais incomplet</span>' : '');
+        var ang = enAnglais(), e = en(f), revue = ETAT.peutValider && f.statut === 'brouillon' && !ang;
         var causes = f.causes.map(function (c, i) {
-            return '<div class="dg-cause"><h4>' + (i + 1) + '. ' + esc(c.cause) + '</h4><div class="dg-sol">' + esc(c.solution) + '</div>' +
+            var k = (e.causes || [])[i] || {};
+            var cause = (ang && k.cause) || c.cause, sol = (ang && k.solution) || c.solution;
+            return '<div class="dg-cause"><h4>' + (i + 1) + '. ' + esc(cause) + '</h4>' +
+                (revue ? '<div class="dg-en"><b>EN</b>' + esc(k.cause || '— à traduire —') + '</div>' : '') +
+                '<div class="dg-sol">' + esc(sol) + '</div>' +
+                (revue ? '<div class="dg-en"><b>EN</b>' + esc(k.solution || '— à traduire —') + '</div>' : '') +
                 (c.pieces ? '<div class="dg-pieces">Pièces : ' + esc(c.pieces) + '</div>' : '') + '</div>';
         }).join('');
+        if (revue) causes = '<div class="dg-en"><b>EN</b>' + esc(e.symptome || '— à traduire —') + '</div>' + causes;
         var meta = [f.auteurNom ? 'Écrite par ' + esc(f.auteurNom) + (quand(f.creeLe) ? ' le ' + quand(f.creeLe) : '') : '',
                     f.modifieParNom && f.modifieLe !== f.creeLe ? 'modifiée par ' + esc(f.modifieParNom) + ' le ' + quand(f.modifieLe) : '',
                     f.valideParNom ? 'validée par ' + esc(f.valideParNom) + ' le ' + quand(f.valideLe) : ''].filter(Boolean).join(' · ');
@@ -109,7 +127,7 @@
         else if (f.statut === 'valide') b.push('<button type="button" class="dg-btn" data-act="modifier">Proposer une modification</button>');
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="dg-btn danger" data-act="supprimer">Supprimer</button>');
         return '<div class="dg-card' + (f.statut === 'brouillon' ? ' brouillon' : '') + (ETAT.ouvertes[f.id] ? ' open' : '') + '" data-id="' + esc(f.id) + '">' +
-            '<div class="dg-head"><b>' + esc(f.symptome) + '</b>' + tags + '<span class="dg-nb">' + f.causes.length + ' cause' + (f.causes.length > 1 ? 's' : '') + '</span></div>' +
+            '<div class="dg-head"><b>' + esc(titre(f)) + '</b>' + tags + '<span class="dg-nb">' + f.causes.length + ' cause' + (f.causes.length > 1 ? 's' : '') + '</span></div>' +
             '<div class="dg-body">' + causes + '<div class="dg-meta">' + meta + '</div><div class="dg-actions">' + b.join('') + '</div></div></div>';
     }
     function dessiner() {
@@ -130,6 +148,7 @@
         var a = act.getAttribute('data-act');
         if (a === 'modifier') ouvrirEdition(f);
         else if (a === 'valider') {
+            if (f.anglaisComplet === false) { alert(ERREURS['anglais incomplet']); return; }
             act.disabled = true;
             api({ action: 'validediag', id: id }).then(function (d) {
                 if (!d || !d.ok) { alert(msgErreur(d)); act.disabled = false; return; }
@@ -145,6 +164,7 @@
         }
     });
     $('f-produit').addEventListener('change', dessiner);
+    window.addEventListener('langchange', dessiner);
     $('f-q').addEventListener('input', dessiner);
     [].forEach.call(document.querySelectorAll('.dg-chip'), function (b) {
         b.addEventListener('click', function () {
@@ -164,10 +184,14 @@
             '<button type="button" class="dg-btn x" data-m="x" title="Retirer">✕</button></div>' +
             '<div class="dg-grid"><div class="dg-f full"><label>Cause <span class="req">*</span></label><input type="text" class="c-cause" maxlength="300"></div>' +
             '<div class="dg-f full"><label>Solution (étapes) <span class="req">*</span></label><textarea class="c-sol" maxlength="4000"></textarea></div>' +
-            '<div class="dg-f full"><label>Pièces (numéros)</label><input type="text" class="c-pieces" maxlength="300" placeholder="facultatif"></div></div>';
+            '<div class="dg-f full"><label>Pièces (numéros)</label><input type="text" class="c-pieces" maxlength="300" placeholder="facultatif"></div>' +
+            '<div class="dg-f full en"><label>Cause — anglais</label><input type="text" class="c-cause-en" maxlength="300" placeholder="traduite automatiquement à l\'enregistrement"></div>' +
+            '<div class="dg-f full en"><label>Solution — anglais</label><textarea class="c-sol-en" maxlength="4000" placeholder="traduite automatiquement à l\'enregistrement"></textarea></div></div>';
         d.querySelector('.c-cause').value = (c && c.cause) || '';
         d.querySelector('.c-sol').value = (c && c.solution) || '';
         d.querySelector('.c-pieces').value = (c && c.pieces) || '';
+        d.querySelector('.c-cause-en').value = (c && c.causeEn) || '';
+        d.querySelector('.c-sol-en').value = (c && c.solutionEn) || '';
         $('e-causes').appendChild(d);
         numeroter();
         return d;
@@ -200,8 +224,11 @@
         $('e-symptome').value = f ? f.symptome : '';
         $('e-code').value = f ? f.code : '';
         $('e-mots').value = f ? f.motsCles : '';
+        $('e-symptome-en').value = f ? en(f).symptome : '';
+        $('e-mots-en').value = f ? en(f).motsCles : '';
         $('e-causes').innerHTML = '';
-        (f ? f.causes : [null]).forEach(blocCause);
+        (f ? f.causes.map(function (c, i) { var k = (en(f).causes || [])[i] || {};
+            return { cause: c.cause, solution: c.solution, pieces: c.pieces, causeEn: k.cause, solutionEn: k.solution }; }) : [null]).forEach(blocCause);
         document.querySelectorAll('.dg-f.err').forEach(function (x) { x.classList.remove('err'); });
         $('e-alert').style.display = 'none';
         $('dg-edit').style.display = 'block';
@@ -216,7 +243,11 @@
         var causes = [].map.call($('e-causes').children, function (d) {
             return { cause: d.querySelector('.c-cause').value.trim(), solution: d.querySelector('.c-sol').value.trim(), pieces: d.querySelector('.c-pieces').value.trim() };
         });
-        return { produit: $('e-produit').value, symptome: $('e-symptome').value.trim(), code: $('e-code').value.trim(), motsCles: $('e-mots').value.trim(), causes: causes };
+        var causesEn = [].map.call($('e-causes').children, function (d) {
+            return { cause: d.querySelector('.c-cause-en').value.trim(), solution: d.querySelector('.c-sol-en').value.trim() };
+        });
+        return { produit: $('e-produit').value, symptome: $('e-symptome').value.trim(), code: $('e-code').value.trim(), motsCles: $('e-mots').value.trim(), causes: causes,
+                 en: { symptome: $('e-symptome-en').value.trim(), motsCles: $('e-mots-en').value.trim(), causes: causesEn } };
     }
     function valider(x) {
         var manque = [];
@@ -248,6 +279,10 @@
             if (!d || !d.ok) { var a = $('e-alert'); a.textContent = msgErreur(d); a.style.display = 'block'; return; }
             fermerEdition();
             ETAT.ouvertes[d.fiche.id] = true;
+            if (d.fiche.anglaisComplet === false) {
+                ok('Fiche enregistrée en brouillon, mais la traduction anglaise n\'a pas pu se faire : rouvrez-la plus tard pour la compléter.');
+                charger(); return;
+            }
             ok(d.proposition ? 'Proposition envoyée : le service la verra dans ses brouillons à valider.'
                 : d.fiche.statut === 'brouillon' ? 'Fiche enregistrée en brouillon : elle sera visible de toute l\'équipe après validation.'
                 : 'Fiche enregistrée et publiée.');

@@ -1541,7 +1541,8 @@ function _diagVue(f, a) {
              return { cause: c.cause, solution: c.solution, pieces: c.pieces || '' }; }),
            auteurNom: f.auteurNom || '', creeLe: f.creeLe || '', modifieParNom: f.modifieParNom || '',
            modifieLe: f.modifieLe || '', valideParNom: f.valideParNom || '', valideLe: f.valideLe || '',
-           remplace: f.remplace || '', mien: f.auteur === a.moi };
+           remplace: f.remplace || '', mien: f.auteur === a.moi, en: _diagEnVue(f),
+           anglaisComplet: _diagAnglaisComplet(f) };
 }
 
 // Contenu soumis par la page : champs prevus seulement, longueurs bornees.
@@ -1561,9 +1562,69 @@ function _diagContenu(x) {
     c.causes.push({ cause: cause, solution: solution, pieces: pieces });
   }
   if (!c.causes.length) return { error: 'au moins une cause' };
+  var en = (x.en && typeof x.en === 'object') ? x.en : {}, enc = Array.isArray(en.causes) ? en.causes : [];
+  c.enSoumis = { symptome: str(en.symptome, 300), motsCles: str(en.motsCles, 200), causes: [] };
+  // Les causes vides ont ete sautees : l'anglais suit l'ordre des causes GARDEES.
+  for (var m = 0, g = 0; m < l.length && g < c.causes.length; m++) {
+    var kk = l[m] || {};
+    if (!str(kk.cause, 300) && !str(kk.solution, 4000) && !str(kk.pieces, 300)) continue;
+    var ke = enc[m] || {};
+    c.enSoumis.causes.push({ cause: str(ke.cause, 300), solution: str(ke.solution, 4000) });
+    g++;
+  }
   return c;
 }
-var DIAG_CHAMPS = ['produit', 'symptome', 'code', 'motsCles', 'causes'];
+var DIAG_CHAMPS = ['produit', 'symptome', 'code', 'motsCles', 'causes', 'en', 'enSrc'];
+
+// ---- Anglais des fiches (Steve, 2026-10-21) ----
+// Chaque fiche est traduite en anglais AUTOMATIQUEMENT a l'enregistrement (LanguageApp,
+// Google Translate integre a Apps Script : ni cle ni cout). L'anglais reste modifiable :
+// le validateur le revise. Une fiche ne peut PAS etre validee tant que le symptome, chaque
+// cause et chaque solution n'ont pas leur anglais (_diagAnglaisComplet).
+// Regle par champ : anglais modifie a la main -> garde ; francais inchange -> anglais garde ;
+// sinon (nouveau texte ou francais modifie) -> retraduit. f.enSrc garde le francais traduit.
+function _diagTraduire(t) {
+  if (!t) return '';
+  try { return String(LanguageApp.translate(t, 'fr', 'en') || ''); }
+  catch (e) { Logger.log('diag : traduction impossible : ' + e); return ''; }
+}
+function _diagChampEn(fr, soumis, avantEn, avantSrc) {
+  if (!fr) return { en: '', src: '' };
+  if (soumis && soumis !== (avantEn || '')) return { en: soumis, src: fr };       // corrige a la main
+  if (avantEn && avantSrc === fr) return { en: avantEn, src: fr };               // francais inchange
+  return { en: _diagTraduire(fr), src: fr };                                       // a (re)traduire
+}
+function _diagAnglais(c, avant) {
+  avant = avant || {};
+  var ae = avant.en || {}, as = avant.enSrc || {}, aec = ae.causes || [], asc = as.causes || [];
+  var so = c.enSoumis || { causes: [] };
+  var en = { causes: [] }, src = { causes: [] }, r;
+  r = _diagChampEn(c.symptome, so.symptome, ae.symptome, as.symptome); en.symptome = r.en; src.symptome = r.src;
+  r = _diagChampEn(c.motsCles, so.motsCles, ae.motsCles, as.motsCles); en.motsCles = r.en; src.motsCles = r.src;
+  c.causes.forEach(function (k, i) {
+    var sk = so.causes[i] || {}, ak = aec[i] || {}, ask = asc[i] || {};
+    var rc = _diagChampEn(k.cause, sk.cause, ak.cause, ask.cause);
+    var rs = _diagChampEn(k.solution, sk.solution, ak.solution, ask.solution);
+    en.causes.push({ cause: rc.en, solution: rs.en });
+    src.causes.push({ cause: rc.src, solution: rs.src });
+  });
+  c.en = en; c.enSrc = src;
+  delete c.enSoumis;
+}
+function _diagAnglaisComplet(f) {
+  var en = f.en || {}, ec = en.causes || [];
+  if (!en.symptome) return false;
+  var causes = f.causes || [];
+  if (ec.length < causes.length) return false;
+  for (var i = 0; i < causes.length; i++) if (!ec[i] || !ec[i].cause || !ec[i].solution) return false;
+  return true;
+}
+function _diagEnVue(f) {
+  var en = f.en || {};
+  return { symptome: en.symptome || '', motsCles: en.motsCles || '',
+           causes: (f.causes || []).map(function (c, i) { var k = (en.causes || [])[i] || {};
+             return { cause: k.cause || '', solution: k.solution || '' }; }) };
+}
 
 // { action:'getdiag', token } -> { ok, fiches, produits, peutValider, nom } | { error }
 // Validateur : tout. Autres : fiches validees + leurs propres brouillons.
@@ -1612,6 +1673,13 @@ function saveDiag(body) {
             auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
       if (a.valideur) { f.valideParNom = a.nom; f.valideLe = maintenant; }
     }
+    _diagAnglais(c, (f.en ? f : ex) || null);
+    // Une fiche validee (ou publiee d'office par un validateur) doit rester complete en anglais.
+    var publiee = (f.statut === 'valide');
+    if (publiee && !_diagAnglaisComplet(c)) {
+      if (!ex) { f.statut = 'brouillon'; delete f.valideParNom; delete f.valideLe; }
+      else return { error: 'traduction impossible' };
+    }
     DIAG_CHAMPS.forEach(function (k) { f[k] = c[k]; });
     f.modifieParNom = a.nom; f.modifieLe = maintenant;
     _diagEcrire(sh, f);
@@ -1634,6 +1702,7 @@ function valideDiag(body) {
     for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) f = toutes[i];
     if (!f) return { error: 'not found' };
     if (f.statut !== 'brouillon') return { error: 'deja validee' };
+    if (!_diagAnglaisComplet(f)) return { error: 'anglais incomplet' };
     if (f.remplace) for (var j = 0; j < toutes.length; j++) if (toutes[j].id === f.remplace) cible = toutes[j];
     if (cible) {
       DIAG_CHAMPS.forEach(function (k) { cible[k] = f[k]; });

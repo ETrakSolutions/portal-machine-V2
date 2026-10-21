@@ -5,7 +5,7 @@
 // ingenierie) approuve ; stockage dans une Google Sheet, jamais dans les proprietes.
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const src = fs.readFileSync(path.join(__dirname, '..', '..', 'apps-script', 'Code.gs'), 'utf8');
-let store = {}, feuilles = {}, creees = 0, uuid = 0;
+let store = {}, feuilles = {}, creees = 0, uuid = 0, traductions = 0, panneTraduction = false;
 // Google Sheet simulee : une grille de valeurs ; une valeur qui commence par « = » devient
 // une formule (comme Sheets), ce que le banc doit voir neutralise.
 function feuille(id) {
@@ -35,6 +35,8 @@ const ctx = {
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
   ContentService: { createTextOutput: s => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 'json' } },
   Logger: { log: () => {} }, Session: {}, MailApp: {}, UrlFetchApp: {}, console,
+  // Traducteur simule (LanguageApp) : prefixe « EN: » ; panneTraduction = Google en panne.
+  LanguageApp: { translate: (t, de, vers) => { traductions++; if (panneTraduction) throw new Error('quota'); return 'EN:' + t; } },
 };
 vm.createContext(ctx); vm.runInContext(src, ctx);
 const post = b => JSON.parse(ctx.doPost({ postData: { contents: JSON.stringify(b) } }).s);
@@ -151,6 +153,46 @@ delete store.roles_permissions;
 
 // --- _authDiag (editeur) ---
 check('_authDiag ne recree pas une feuille existante', ctx._authDiag().endsWith('SHEET1') && creees === 1);
+
+// --- Anglais (Steve, 2026-10-21) : traduction automatique, revisable, obligatoire pour valider ---
+let e1 = post({ action: 'savediag', token: T, fiche: fiche('Afficheur noir au demarrage') });
+check('anglais : traduit a l\'enregistrement (symptome, causes, solutions, mots-cles)', e1.ok
+  && e1.fiche.en.symptome === 'EN:Afficheur noir au demarrage' && e1.fiche.en.motsCles === 'EN:alarme rotation'
+  && e1.fiche.en.causes.length === 2 && e1.fiche.en.causes[1].cause === 'EN:Cable CAN abime'
+  && e1.fiche.en.causes[0].solution.startsWith('EN:Refaire') && e1.fiche.anglaisComplet === true);
+const idE = e1.fiche.id;
+traductions = 0;
+let e2 = post({ action: 'savediag', token: T, fiche: fiche('Afficheur noir au demarrage', { id: idE,
+  en: { symptome: 'Black display at startup', causes: [{ cause: 'Tilt sensor out of calibration' }, {}] } }) });
+check('anglais corrige a la main : garde ; francais inchange : pas retraduit', e2.ok && e2.fiche.en.symptome === 'Black display at startup'
+  && e2.fiche.en.causes[0].cause === 'Tilt sensor out of calibration' && e2.fiche.en.causes[1].cause === 'EN:Cable CAN abime' && traductions === 0);
+let f3 = fiche('Afficheur noir au demarrage', { id: idE, en: e2.fiche.en });
+f3.causes = [{ cause: 'Inclino mal calibre', solution: 'Refaire la calibration\n1. ...', pieces: 'C01A-0005' },
+             { cause: 'Connecteur CAN corrode', solution: 'Remplacer le cable', pieces: 'E03A-0013' }];
+let e3 = post({ action: 'savediag', token: T, fiche: f3 });
+check('francais modifie : ce champ seulement est retraduit, la correction manuelle reste', e3.ok
+  && e3.fiche.en.causes[1].cause === 'EN:Connecteur CAN corrode' && e3.fiche.en.causes[0].cause === 'Tilt sensor out of calibration'
+  && e3.fiche.en.symptome === 'Black display at startup' && traductions === 1);
+panneTraduction = true;
+let e4 = post({ action: 'savediag', token: T, fiche: fiche('Bip continu', {}) });
+check('traduction en panne : le brouillon est enregistre, anglais incomplet', e4.ok && e4.fiche.statut === 'brouillon' && e4.fiche.anglaisComplet === false);
+check('validation refusee tant que l\'anglais manque', post({ action: 'validediag', token: K, id: e4.fiche.id }).error === 'anglais incomplet');
+let e5 = post({ action: 'savediag', token: K, fiche: fiche('Bip au levage', {}) });
+check('validateur + traduction en panne : sa fiche reste en brouillon (pas publiee sans anglais)', e5.ok && e5.fiche.statut === 'brouillon');
+panneTraduction = false;
+let e6 = post({ action: 'savediag', token: T, fiche: fiche('Bip continu', { id: e4.fiche.id }) });
+check('reenregistre apres la panne : anglais complete', e6.ok && e6.fiche.anglaisComplet === true);
+check('puis la validation passe', post({ action: 'validediag', token: K, id: e4.fiche.id }).ok === true);
+let e7 = post({ action: 'savediag', token: K, fiche: fiche('Afficheur noir au demarrage', { id: idE,
+  en: { symptome: 'Black screen at power-up', causes: e3.fiche.en.causes } }) });
+check('validateur corrige l\'anglais puis valide', e7.ok && post({ action: 'validediag', token: K, id: idE }).ok === true);
+const vu = post({ action: 'getdiag', token: VI }).fiches.filter(f => f.id === idE)[0];
+check('fiche validee : anglais revise visible de tous', vu && vu.en.symptome === 'Black screen at power-up' && vu.statut === 'valide');
+let p1 = post({ action: 'savediag', token: T2, fiche: fiche('Afficheur noir au demarrage', { id: idE, en: vu.en, motsCles: 'ecran noir' }) });
+check('proposition sur une fiche validee : anglais repris, seul le champ change est traduit', p1.ok && p1.proposition
+  && p1.fiche.en.symptome === 'Black screen at power-up' && p1.fiche.en.motsCles === 'EN:ecran noir');
+check('validation de la proposition : l\'anglais remplace celui de l\'originale', post({ action: 'validediag', token: K, id: p1.fiche.id }).ok
+  && post({ action: 'getdiag', token: VI }).fiches.filter(f => f.id === idE)[0].en.motsCles === 'EN:ecran noir');
 
 console.log(ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);
