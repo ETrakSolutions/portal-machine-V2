@@ -36,7 +36,7 @@ const ctx = {
   ContentService: { createTextOutput: s => ({ s, setMimeType() { return this; } }), MimeType: { JSON: 'json' } },
   Logger: { log: () => {} }, Session: {}, MailApp: {}, UrlFetchApp: {}, console,
   // Traducteur simule (LanguageApp) : prefixe « EN: » ; panneTraduction = Google en panne.
-  LanguageApp: { translate: (t, de, vers) => { traductions++; if (panneTraduction) throw new Error('quota'); return 'EN:' + t; } },
+  LanguageApp: { translate: (t, de, vers) => { traductions++; if (panneTraduction) throw new Error('quota'); return vers.toUpperCase() + ':' + t; } },
 };
 vm.createContext(ctx); vm.runInContext(src, ctx);
 const post = b => JSON.parse(ctx.doPost({ postData: { contents: JSON.stringify(b) } }).s);
@@ -159,11 +159,12 @@ let e1 = post({ action: 'savediag', token: T, fiche: fiche('Afficheur noir au de
 check('anglais : traduit a l\'enregistrement (symptome, causes, solutions, mots-cles)', e1.ok
   && e1.fiche.en.symptome === 'EN:Afficheur noir au demarrage' && e1.fiche.en.motsCles === 'EN:alarme rotation'
   && e1.fiche.en.causes.length === 2 && e1.fiche.en.causes[1].cause === 'EN:Cable CAN abime'
-  && e1.fiche.en.causes[0].solution.startsWith('EN:Refaire') && e1.fiche.anglaisComplet === true);
+  && e1.fiche.en.causes[0].solution.startsWith('EN:Refaire') && e1.fiche.bilingue === true);
 const idE = e1.fiche.id;
 traductions = 0;
 let e2 = post({ action: 'savediag', token: T, fiche: fiche('Afficheur noir au demarrage', { id: idE,
-  en: { symptome: 'Black display at startup', causes: [{ cause: 'Tilt sensor out of calibration' }, {}] } }) });
+  en: Object.assign(JSON.parse(JSON.stringify(e1.fiche.en)), { symptome: 'Black display at startup',
+    causes: [Object.assign({}, e1.fiche.en.causes[0], { cause: 'Tilt sensor out of calibration' }), e1.fiche.en.causes[1]] }) }) });
 check('anglais corrige a la main : garde ; francais inchange : pas retraduit', e2.ok && e2.fiche.en.symptome === 'Black display at startup'
   && e2.fiche.en.causes[0].cause === 'Tilt sensor out of calibration' && e2.fiche.en.causes[1].cause === 'EN:Cable CAN abime' && traductions === 0);
 let f3 = fiche('Afficheur noir au demarrage', { id: idE, en: e2.fiche.en });
@@ -175,13 +176,13 @@ check('francais modifie : ce champ seulement est retraduit, la correction manuel
   && e3.fiche.en.symptome === 'Black display at startup' && traductions === 1);
 panneTraduction = true;
 let e4 = post({ action: 'savediag', token: T, fiche: fiche('Bip continu', {}) });
-check('traduction en panne : le brouillon est enregistre, anglais incomplet', e4.ok && e4.fiche.statut === 'brouillon' && e4.fiche.anglaisComplet === false);
-check('validation refusee tant que l\'anglais manque', post({ action: 'validediag', token: K, id: e4.fiche.id }).error === 'anglais incomplet');
+check('traduction en panne : le brouillon est enregistre, anglais incomplet', e4.ok && e4.fiche.statut === 'brouillon' && e4.fiche.bilingue === false);
+check('validation refusee tant que l\'anglais manque', post({ action: 'validediag', token: K, id: e4.fiche.id }).error === 'traduction incomplete');
 let e5 = post({ action: 'savediag', token: K, fiche: fiche('Bip au levage', {}) });
 check('validateur + traduction en panne : sa fiche reste en brouillon (pas publiee sans anglais)', e5.ok && e5.fiche.statut === 'brouillon');
 panneTraduction = false;
 let e6 = post({ action: 'savediag', token: T, fiche: fiche('Bip continu', { id: e4.fiche.id }) });
-check('reenregistre apres la panne : anglais complete', e6.ok && e6.fiche.anglaisComplet === true);
+check('reenregistre apres la panne : anglais complete', e6.ok && e6.fiche.bilingue === true);
 check('puis la validation passe', post({ action: 'validediag', token: K, id: e4.fiche.id }).ok === true);
 let e7 = post({ action: 'savediag', token: K, fiche: fiche('Afficheur noir au demarrage', { id: idE,
   en: { symptome: 'Black screen at power-up', causes: e3.fiche.en.causes } }) });
@@ -193,6 +194,33 @@ check('proposition sur une fiche validee : anglais repris, seul le champ change 
   && p1.fiche.en.symptome === 'Black screen at power-up' && p1.fiche.en.motsCles === 'EN:ecran noir');
 check('validation de la proposition : l\'anglais remplace celui de l\'originale', post({ action: 'validediag', token: K, id: p1.fiche.id }).ok
   && post({ action: 'getdiag', token: VI }).fiches.filter(f => f.id === idE)[0].en.motsCles === 'EN:ecran noir');
+
+// --- Fiche ecrite en anglais (techniciens de Val-trak) ---
+let a1 = post({ action: 'savediag', token: T, fiche: { produit: 'Caméras', symptome: '', code: '', motsCles: '',
+  causes: [{ cause: '', solution: '', pieces: 'C9' }], en: { symptome: 'Screen flickers', motsCles: 'flicker',
+  causes: [{ cause: 'Loose connector', solution: 'Reseat the connector' }] } } });
+check('ecrite en anglais : acceptee, francais traduit (en -> fr)', a1.ok && a1.fiche.symptome === 'FR:Screen flickers'
+  && a1.fiche.causes[0].cause === 'FR:Loose connector' && a1.fiche.causes[0].solution === 'FR:Reseat the connector'
+  && a1.fiche.causes[0].pieces === 'C9' && a1.fiche.en.symptome === 'Screen flickers' && a1.fiche.bilingue === true);
+traductions = 0;
+let a2 = post({ action: 'savediag', token: T, fiche: { id: a1.fiche.id, produit: 'Caméras', symptome: 'L\'écran clignote', code: '', motsCles: a1.fiche.motsCles,
+  causes: a1.fiche.causes, en: a1.fiche.en } });
+check('original anglais : corriger le francais ne retraduit pas l\'anglais', a2.ok && a2.fiche.symptome === 'L\'écran clignote'
+  && a2.fiche.en.symptome === 'Screen flickers' && traductions === 0);
+let a3en = JSON.parse(JSON.stringify(a2.fiche.en)); a3en.symptome = 'Screen flickers at night';
+let a3 = post({ action: 'savediag', token: T, fiche: { id: a1.fiche.id, produit: 'Caméras', symptome: a2.fiche.symptome, code: '', motsCles: a2.fiche.motsCles,
+  causes: a2.fiche.causes, en: a3en } });
+check('original anglais modifie : le francais est retraduit', a3.ok && a3.fiche.symptome === 'FR:Screen flickers at night' && traductions === 1);
+check('cause en anglais seulement sans solution : refusee', post({ action: 'savediag', token: T, fiche: { produit: 'Caméras', symptome: 's',
+  causes: [{ cause: '', solution: '' }], en: { causes: [{ cause: 'Only a cause', solution: '' }] } } }).error === 'cause et solution requises (cause 1)');
+check('sans symptome dans aucune langue : refusee', post({ action: 'savediag', token: T, fiche: { produit: 'Caméras', symptome: '',
+  causes: [{ cause: 'c', solution: 's' }], en: { symptome: '' } } }).error === 'symptome requis');
+panneTraduction = true;
+let a4 = post({ action: 'savediag', token: T, fiche: { produit: 'Caméras', symptome: '', causes: [{}],
+  en: { symptome: 'No video', causes: [{ cause: 'Bad cable', solution: 'Replace the cable' }] } } });
+panneTraduction = false;
+check('anglais seulement + traduction en panne : brouillon, francais manquant, validation refusee', a4.ok && a4.fiche.bilingue === false
+  && a4.fiche.symptome === '' && post({ action: 'validediag', token: K, id: a4.fiche.id }).error === 'traduction incomplete');
 
 console.log(ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);

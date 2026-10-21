@@ -1542,81 +1542,87 @@ function _diagVue(f, a) {
            auteurNom: f.auteurNom || '', creeLe: f.creeLe || '', modifieParNom: f.modifieParNom || '',
            modifieLe: f.modifieLe || '', valideParNom: f.valideParNom || '', valideLe: f.valideLe || '',
            remplace: f.remplace || '', mien: f.auteur === a.moi, en: _diagEnVue(f),
-           anglaisComplet: _diagAnglaisComplet(f) };
+           bilingue: _diagBilingue(f) };
 }
 
 // Contenu soumis par la page : champs prevus seulement, longueurs bornees.
+// Bilingue (Steve, 2026-10-21) : chaque champ peut venir en francais OU en anglais (les
+// techniciens de Val-trak ecrivent en anglais) ; il en faut au moins une des deux langues.
 function _diagContenu(x) {
   if (!x || typeof x !== 'object') return { error: 'invalid fiche' };
   var str = function (v, n) { return String(v === null || v === undefined ? '' : v).trim().slice(0, n); };
+  var en = (x.en && typeof x.en === 'object') ? x.en : {};
   var c = { produit: str(x.produit, 80), symptome: str(x.symptome, 300), code: str(x.code, 120),
-            motsCles: str(x.motsCles, 200), causes: [] };
+            motsCles: str(x.motsCles, 200), causes: [],
+            enSoumis: { symptome: str(en.symptome, 300), motsCles: str(en.motsCles, 200), causes: [] } };
   if (!c.produit) return { error: 'produit requis' };
-  if (!c.symptome) return { error: 'symptome requis' };
-  var l = Array.isArray(x.causes) ? x.causes : [];
-  for (var i = 0; i < l.length && c.causes.length < DIAG_MAX_CAUSES; i++) {
-    var k = l[i] || {};
+  if (!c.symptome && !c.enSoumis.symptome) return { error: 'symptome requis' };
+  var l = Array.isArray(x.causes) ? x.causes : [], le = Array.isArray(en.causes) ? en.causes : [];
+  for (var i = 0; i < Math.max(l.length, le.length) && c.causes.length < DIAG_MAX_CAUSES; i++) {
+    var k = l[i] || {}, ke = le[i] || {};
     var cause = str(k.cause, 300), solution = str(k.solution, 4000), pieces = str(k.pieces, 300);
-    if (!cause && !solution && !pieces) continue;
-    if (!cause || !solution) return { error: 'cause et solution requises (cause ' + (i + 1) + ')' };
+    var causeEn = str(ke.cause, 300), solutionEn = str(ke.solution, 4000);
+    if (!cause && !solution && !pieces && !causeEn && !solutionEn) continue;
+    if ((!cause && !causeEn) || (!solution && !solutionEn)) return { error: 'cause et solution requises (cause ' + (i + 1) + ')' };
     c.causes.push({ cause: cause, solution: solution, pieces: pieces });
+    c.enSoumis.causes.push({ cause: causeEn, solution: solutionEn });
   }
   if (!c.causes.length) return { error: 'au moins une cause' };
-  var en = (x.en && typeof x.en === 'object') ? x.en : {}, enc = Array.isArray(en.causes) ? en.causes : [];
-  c.enSoumis = { symptome: str(en.symptome, 300), motsCles: str(en.motsCles, 200), causes: [] };
-  // Les causes vides ont ete sautees : l'anglais suit l'ordre des causes GARDEES.
-  for (var m = 0, g = 0; m < l.length && g < c.causes.length; m++) {
-    var kk = l[m] || {};
-    if (!str(kk.cause, 300) && !str(kk.solution, 4000) && !str(kk.pieces, 300)) continue;
-    var ke = enc[m] || {};
-    c.enSoumis.causes.push({ cause: str(ke.cause, 300), solution: str(ke.solution, 4000) });
-    g++;
-  }
   return c;
 }
-var DIAG_CHAMPS = ['produit', 'symptome', 'code', 'motsCles', 'causes', 'en', 'enSrc'];
+var DIAG_CHAMPS = ['produit', 'symptome', 'code', 'motsCles', 'causes', 'en', 'src'];
 
-// ---- Anglais des fiches (Steve, 2026-10-21) ----
-// Chaque fiche est traduite en anglais AUTOMATIQUEMENT a l'enregistrement (LanguageApp,
-// Google Translate integre a Apps Script : ni cle ni cout). L'anglais reste modifiable :
-// le validateur le revise. Une fiche ne peut PAS etre validee tant que le symptome, chaque
-// cause et chaque solution n'ont pas leur anglais (_diagAnglaisComplet).
-// Regle par champ : anglais modifie a la main -> garde ; francais inchange -> anglais garde ;
-// sinon (nouveau texte ou francais modifie) -> retraduit. f.enSrc garde le francais traduit.
-function _diagTraduire(t) {
+// ---- Fiches bilingues (Steve, 2026-10-21) ----
+// On ecrit dans SA langue ; le serveur traduit vers l'autre a l'enregistrement (LanguageApp,
+// Google Translate integre a Apps Script : ni cle ni cout). f.src retient, champ par champ,
+// la langue ORIGINALE ('fr' ou 'en'). Regles par champ :
+//  - une seule langue remplie -> l'autre est traduite, la remplie devient l'originale ;
+//  - l'originale modifiee (et pas l'autre) -> l'autre est retraduite ;
+//  - la traduction modifiee a la main -> c'est une correction : gardee, rien n'est retraduit ;
+//  - les deux modifiees -> les deux gardees.
+// Une fiche ne peut PAS etre validee tant qu'un champ obligatoire manque dans une des deux
+// langues (_diagBilingue) — le validateur revise la traduction.
+function _diagTraduire(t, de, vers) {
   if (!t) return '';
-  try { return String(LanguageApp.translate(t, 'fr', 'en') || ''); }
+  try { return String(LanguageApp.translate(t, de, vers) || ''); }
   catch (e) { Logger.log('diag : traduction impossible : ' + e); return ''; }
 }
-function _diagChampEn(fr, soumis, avantEn, avantSrc) {
-  if (!fr) return { en: '', src: '' };
-  if (soumis && soumis !== (avantEn || '')) return { en: soumis, src: fr };       // corrige a la main
-  if (avantEn && avantSrc === fr) return { en: avantEn, src: fr };               // francais inchange
-  return { en: _diagTraduire(fr), src: fr };                                       // a (re)traduire
+function _diagPaire(fr, en, afr, aen, asrc) {
+  if (!fr && !en) return { fr: '', en: '', src: '' };
+  if (fr && !en) return { fr: fr, en: _diagTraduire(fr, 'fr', 'en'), src: 'fr' };
+  if (en && !fr) return { fr: _diagTraduire(en, 'en', 'fr'), en: en, src: 'en' };
+  var src = asrc === 'en' ? 'en' : 'fr';
+  var frCh = fr !== (afr || ''), enCh = en !== (aen || '');
+  if (frCh && !enCh && src === 'fr') return { fr: fr, en: _diagTraduire(fr, 'fr', 'en'), src: 'fr' };
+  if (enCh && !frCh && src === 'en') return { fr: _diagTraduire(en, 'en', 'fr'), en: en, src: 'en' };
+  return { fr: fr, en: en, src: src };      // inchange, correction de la traduction, ou les deux a la main
 }
-function _diagAnglais(c, avant) {
+function _diagTraduireFiche(c, avant) {
   avant = avant || {};
-  var ae = avant.en || {}, as = avant.enSrc || {}, aec = ae.causes || [], asc = as.causes || [];
-  var so = c.enSoumis || { causes: [] };
-  var en = { causes: [] }, src = { causes: [] }, r;
-  r = _diagChampEn(c.symptome, so.symptome, ae.symptome, as.symptome); en.symptome = r.en; src.symptome = r.src;
-  r = _diagChampEn(c.motsCles, so.motsCles, ae.motsCles, as.motsCles); en.motsCles = r.en; src.motsCles = r.src;
+  var ae = avant.en || {}, as = avant.src || {}, ac = avant.causes || [], aec = ae.causes || [], asc = as.causes || [];
+  var so = c.enSoumis || { causes: [] }, en = { causes: [] }, src = { causes: [] }, r;
+  r = _diagPaire(c.symptome, so.symptome, avant.symptome, ae.symptome, as.symptome);
+  c.symptome = r.fr; en.symptome = r.en; src.symptome = r.src;
+  r = _diagPaire(c.motsCles, so.motsCles, avant.motsCles, ae.motsCles, as.motsCles);
+  c.motsCles = r.fr; en.motsCles = r.en; src.motsCles = r.src;
   c.causes.forEach(function (k, i) {
-    var sk = so.causes[i] || {}, ak = aec[i] || {}, ask = asc[i] || {};
-    var rc = _diagChampEn(k.cause, sk.cause, ak.cause, ask.cause);
-    var rs = _diagChampEn(k.solution, sk.solution, ak.solution, ask.solution);
+    var sk = so.causes[i] || {}, ak = ac[i] || {}, aek = aec[i] || {}, ask = asc[i] || {};
+    var rc = _diagPaire(k.cause, sk.cause, ak.cause, aek.cause, ask.cause);
+    var rs = _diagPaire(k.solution, sk.solution, ak.solution, aek.solution, ask.solution);
+    k.cause = rc.fr; k.solution = rs.fr;
     en.causes.push({ cause: rc.en, solution: rs.en });
     src.causes.push({ cause: rc.src, solution: rs.src });
   });
-  c.en = en; c.enSrc = src;
+  c.en = en; c.src = src;
   delete c.enSoumis;
 }
-function _diagAnglaisComplet(f) {
-  var en = f.en || {}, ec = en.causes || [];
-  if (!en.symptome) return false;
-  var causes = f.causes || [];
-  if (ec.length < causes.length) return false;
-  for (var i = 0; i < causes.length; i++) if (!ec[i] || !ec[i].cause || !ec[i].solution) return false;
+function _diagBilingue(f) {
+  var en = f.en || {}, ec = en.causes || [], causes = f.causes || [];
+  if (!f.symptome || !en.symptome) return false;
+  for (var i = 0; i < causes.length; i++) {
+    var k = ec[i] || {};
+    if (!causes[i].cause || !causes[i].solution || !k.cause || !k.solution) return false;
+  }
   return true;
 }
 function _diagEnVue(f) {
@@ -1673,10 +1679,9 @@ function saveDiag(body) {
             auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
       if (a.valideur) { f.valideParNom = a.nom; f.valideLe = maintenant; }
     }
-    _diagAnglais(c, (f.en ? f : ex) || null);
-    // Une fiche validee (ou publiee d'office par un validateur) doit rester complete en anglais.
-    var publiee = (f.statut === 'valide');
-    if (publiee && !_diagAnglaisComplet(c)) {
+    _diagTraduireFiche(c, (f.en ? f : ex) || null);
+    // Une fiche validee (ou publiee d'office par un validateur) doit rester complete dans les deux langues.
+    if (f.statut === 'valide' && !_diagBilingue(c)) {
       if (!ex) { f.statut = 'brouillon'; delete f.valideParNom; delete f.valideLe; }
       else return { error: 'traduction impossible' };
     }
@@ -1702,7 +1707,7 @@ function valideDiag(body) {
     for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) f = toutes[i];
     if (!f) return { error: 'not found' };
     if (f.statut !== 'brouillon') return { error: 'deja validee' };
-    if (!_diagAnglaisComplet(f)) return { error: 'anglais incomplet' };
+    if (!_diagBilingue(f)) return { error: 'traduction incomplete' };
     if (f.remplace) for (var j = 0; j < toutes.length; j++) if (toutes[j].id === f.remplace) cible = toutes[j];
     if (cible) {
       DIAG_CHAMPS.forEach(function (k) { cible[k] = f[k]; });
