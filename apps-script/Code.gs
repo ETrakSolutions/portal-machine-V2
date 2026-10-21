@@ -1741,10 +1741,12 @@ function deleteDiag(body) {
 }
 
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer), AVANT de deployer la version qui
-   porte la base de diagnostic : autorise l'acces a Google Sheets (scope spreadsheets) et
+   porte la base de diagnostic : autorise Google Sheets (scope spreadsheets) et la traduction, et
    cree la feuille dans le Drive d'etrak.portail. Sans ca, le premier enregistrement
    depuis le portail echoue. Le journal affiche l'adresse de la feuille. */
 function _authDiag() {
+  // Autorise aussi la traduction automatique des fiches (LanguageApp), Steve 2026-10-21.
+  Logger.log('Traduction : ' + LanguageApp.translate('Alarme de hauteur', 'fr', 'en'));
   var sh = _avecVerrou(function () { return _diagFeuille(true); });
   Logger.log('Base de diagnostic : ' + sh.getParent().getUrl() + ' (' + (sh.getLastRow() - 1) + ' fiche(s))');
   return sh.getParent().getUrl();
