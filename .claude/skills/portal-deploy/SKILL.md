@@ -40,9 +40,25 @@ curl -s "https://etraksolutions.github.io/portal-machine-V2/data/overrides/excav
 
 ## 3. Bumper les caches — avec le bon réflexe
 
-Incrémenter `?v=` sur le CSS et le JS **des pages réellement touchées**. Les pages qui en
-portent : `index.html`, `machine.html`, `database.html`, `edit-machine.html`,
-`soumission.html`, `export.html`, `machine-requests.html`, `price-list.html`.
+Incrémenter `?v=` sur le CSS et le JS **des pages réellement touchées**.
+
+⚠️ **TOUTES les pages HTML du portail portent des `?v=` — il n'y en a aucune sans.** Cette
+section listait huit pages nommément et en oubliait trois (`cedule.html`, `sav.html`,
+`prep-jobs.html`). Le 2026-10-22, un changement de libellé sur la Cédule des techniciens
+serait parti sans bump si on avait suivi la liste : le navigateur des techniciens aurait
+gardé l'ancien texte **sans que rien ne le signale**. Une liste nommative dans une doc
+dérive dès qu'on ajoute une page ; on ne la remet donc pas. On vérifie :
+
+```bash
+for f in *.html; do printf "%-24s %s\n" "$f" "$(grep -c '?v=' "$f")"; done
+```
+
+⚠️ **La version d'un même fichier DIFFÈRE d'une page à l'autre, et c'est voulu** — au
+2026-10-22, `translations.js` était en `v=259` sur sept pages, `v=260` sur une et `v=266`
+sur deux. Le bump est **par page touchée**, pas global : la clé de cache est l'URL complète
+de l'asset, donc chaque page gère la sienne. Corollaire utile : choisir un numéro **encore
+inutilisé sur le dépôt** plutôt que « le précédent + 1 », sinon un navigateur qui a déjà
+cette version en cache pour une autre page ne rechargera rien.
 
 ⚠️ **Piège du 2026-07-10 (portail blanc) :** un script de bump qui fait `open(path,'w')`
 avant d'avoir lu le fichier le vide. **Toujours lire AVANT d'ouvrir en écriture.** Un hook
