@@ -1,0 +1,992 @@
+{
+ "lot": "s_nacelle_1",
+ "resultats": [
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-40 TraX",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "chenilles (TraX)"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1"
+   },
+   "remarque": "Plateforme max. 39 pi 8 po (TraX) selon fiche 2026 S-40 XC/S-45 XC/S-40 TraX/S-45 TraX ; arrondi à 40. Capacité 300/454 kg. Pas de page produit séparée : fiche commune liée à la page S-45 XC."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-40 XC",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "XC — capacité 660 / 1 000 lb"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1"
+   },
+   "remarque": "Plateforme max. 39 pi 6 po (pneus) selon fiche 2026 ; arrondi à 40. Fiche commune avec S-45 XC/TraX."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-45 TraX",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "chenilles (TraX), XC — capacité 660 / 1 000 lb, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1"
+   },
+   "remarque": "Plateforme max. 44 pi 8 po (TraX) ; arrondi à 45. Fiche commune S-40/S-45 XC/TraX."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-45 XC",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "XC — capacité 660 / 1 000 lb, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-40-xc-s-45-xc-s-40-trax-s-45-trax---product-specifications---2026---en-us.pdf?sfvrsn=9c0e4cac_1"
+   },
+   "remarque": "Plateforme max. 44 pi 6 po (pneus) ; arrondi à 45. Hauteur de travail 50 pi 6 po."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-65 HF",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "65",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HF (sols sensibles), capacité 600 / 1 000 lb, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-65-hf---product-specifications---2026---en-us.pdf?sfvrsn=804b2190_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-65-hf---product-specifications---2026---en-us.pdf?sfvrsn=804b2190_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-65-hf---product-specifications---2026---en-us.pdf?sfvrsn=804b2190_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-65-hf---product-specifications---2026---en-us.pdf?sfvrsn=804b2190_1"
+   },
+   "remarque": "Plateforme max. 65 pi 2 po ; hauteur de travail 71 pi 2 po. Moteur Deutz TD2.9L diesel (Ford 2.5L essence/GPL aussi listé dans les options de motorisation)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-80 J",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "80",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1"
+   },
+   "remarque": "Plateforme max. 80 pi 5 po (pneus) ; fiche commune S-80 J & S-80 J TraX 2026."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-80 J TraX",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "81",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "chenilles (TraX), jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-80-j-s80-j-trax---product-specifications---2026.pdf?sfvrsn=483e0942_1"
+   },
+   "remarque": "Plateforme max. 80 pi 7 po (TraX) ; arrondi à 81 (le S-80 J sur pneus fait 80 pi 5 po -> 80)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "S-85 XC E",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "85",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "électrique, XC — capacité 660 / 1 000 lb"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-85-xc-fe-s-85-xc-e---product-specifications---2026---en-us.pdf?sfvrsn=9015f83f_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-85-xc-fe-s-85-xc-e---product-specifications---2026---en-us.pdf?sfvrsn=9015f83f_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-85-xc-fe-s-85-xc-e---product-specifications---2026---en-us.pdf?sfvrsn=9015f83f_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/s-85-xc-fe-s-85-xc-e---product-specifications---2026---en-us.pdf?sfvrsn=9015f83f_1"
+   },
+   "remarque": "Plateforme max. 85 pi ; batterie Li-ion 48V DC. Fiche commune S-85 XC FE (déjà en BD) & S-85 XC E."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "SX-125 XC",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "125",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "XC — capacité 660 / 1 000 lb, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/sx-125-xc---product-specifications---2026--en-us.pdf?sfvrsn=edf11155_1",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/sx-125-xc---product-specifications---2026--en-us.pdf?sfvrsn=edf11155_1",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/sx-125-xc---product-specifications---2026--en-us.pdf?sfvrsn=edf11155_1",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/telescopic-booms/en/2026/sx-125-xc---product-specifications---2026--en-us.pdf?sfvrsn=edf11155_1"
+   },
+   "remarque": "Plateforme max. 125 pi ; hauteur de travail 131 pi."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "Z-34/22 DC",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "35",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, jib 4 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-3422-ic-product-specifications---2026---en-us.pdf?sfvrsn=7debb197_6",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-3422-ic-product-specifications---2026---en-us.pdf?sfvrsn=7debb197_6",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-3422-ic-product-specifications---2026---en-us.pdf?sfvrsn=7debb197_6",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-3422-ic-product-specifications---2026---en-us.pdf?sfvrsn=7debb197_6"
+   },
+   "remarque": "Plateforme max. 34 pi 6 po ; arrondi à 35. Alimentation 48V DC (8 x 6V). Attention : le fichier PDF s'appelle « z-3422-ic » mais son contenu est bien le Z-34/22 DC."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "Z-45 HF",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "HF (sols sensibles), capacité 600 lb"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/current/zboomspec_z45_xc_z45_hf_en-us_na_lr.pdf?sfvrsn=2b9bff72_4",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/current/zboomspec_z45_xc_z45_hf_en-us_na_lr.pdf?sfvrsn=2b9bff72_4",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/current/zboomspec_z45_xc_z45_hf_en-us_na_lr.pdf?sfvrsn=2b9bff72_4",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/current/zboomspec_z45_xc_z45_hf_en-us_na_lr.pdf?sfvrsn=2b9bff72_4"
+   },
+   "remarque": "Plateforme max. 45 pi 6 po ; arrondi à 46 (le Z-45 XC en BD est à 45 pour la même hauteur publiée). Fiche commune Z-45 XC & Z-45 HF."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "Z-45/25J DC",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-45_25-j-dc-product-specifications-2026.pdf?sfvrsn=c3a2883b_2",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-45_25-j-dc-product-specifications-2026.pdf?sfvrsn=c3a2883b_2",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-45_25-j-dc-product-specifications-2026.pdf?sfvrsn=c3a2883b_2",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-45_25-j-dc-product-specifications-2026.pdf?sfvrsn=c3a2883b_2"
+   },
+   "remarque": "Plateforme max. 45 pi 9 po ; arrondi à 46. Alimentation 48V DC (8 x 6V). Aussi nommé « Z-45 DC » sur la page Electric Lifts."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "Z-62/40 TraX",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "62",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "chenilles (TraX)"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-6240-z-6240-trax---product-specifications---2026-en-us.pdf?sfvrsn=644e04c7_4",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-6240-z-6240-trax---product-specifications---2026-en-us.pdf?sfvrsn=644e04c7_4",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-6240-z-6240-trax---product-specifications---2026-en-us.pdf?sfvrsn=644e04c7_4",
+    "Note": "https://www.genielift.com/docs/default-source/product-specifications/articulated-boom-lift/en/2026/z-6240-z-6240-trax---product-specifications---2026-en-us.pdf?sfvrsn=644e04c7_4"
+   },
+   "remarque": "Plateforme max. 62 pi 1 po (TraX) ; moteur Deutz TD2.9L4 74 hp (TraX seulement). Variante chenillée du Z-62/40 (déjà en BD) sur la même fiche : à créer seulement si e-Trak la traite comme modèle distinct."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "45 XA",
+   "specs": {
+    "Categorie": "A completer",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "A completer",
+    "Voltage": "24V / essence",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "compacte sur stabilisateurs, double énergie DC / essence, jib 4 pi 3 po"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/45-xa",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/45-xa",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/45-xa",
+    "Note": "https://www.haulotte-usa.com/en_US/product/45-xa"
+   },
+   "remarque": "Haulotte ne dit pas si la flèche est articulée ou télescopique (gamme « Lightweight self-propelled booms ») : Categorie laissée A completer, à trancher (champ de facturation). Plateforme 45 pi ; batteries 4 x 6V + moteur essence 26.5 hp ; poids 5,200 lb. Aucune fiche PDF sur la page."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "55 XA",
+   "specs": {
+    "Categorie": "A completer",
+    "Hauteur plateforme (pi)": "55",
+    "Nb sections fleche": "A completer",
+    "Voltage": "24V / essence",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "compacte sur stabilisateurs, double énergie DC / essence, jib 4 pi 3 po"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/55-xa",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/55-xa",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/55-xa",
+    "Note": "https://www.haulotte-usa.com/en_US/product/55-xa"
+   },
+   "remarque": "Même situation que le 45 XA : type de flèche non publié, Categorie A completer. Plateforme 55 pi 3 po ; batteries 4 x 6V + moteur essence 26.5 hp."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HA46 E PRO",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "PULSEO 100% électrique, 4 roues directrices (PRO)"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ha46-e-pro",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ha46-e-pro",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ha46-e-pro",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ha46-e-pro"
+   },
+   "remarque": "Plateforme 45 pi 11 po ; arrondi à 46. Batteries 48V - 390Ah. Version PRO du HA46 E (déjà en BD)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HA46 RTJ O",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "diesel TT"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ha46-rtj-o",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ha46-rtj-o",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ha46-rtj-o",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ha46-rtj-o"
+   },
+   "remarque": "Plateforme 45 pi 11 po ; arrondi à 46. Kubota V1505 18.5 kW T4f. Version O (de base) du HA46 RTJ PRO déjà en BD."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HA61 E PRO",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "61",
+    "Nb sections fleche": "A completer",
+    "Voltage": "72V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "PULSEO 100% électrique, 4 roues directrices (PRO)"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ha61-e-pro",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ha61-e-pro",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ha61-e-pro",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ha61-e-pro"
+   },
+   "remarque": "Plateforme 60 pi 8 po ; arrondi à 61. Batteries 72V - 390Ah. Version PRO du HA61 E (déjà en BD)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HA80 RTJ O",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "80",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "diesel TT"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ha80-rtj-o",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ha80-rtj-o",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ha80-rtj-o",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ha80-rtj-o"
+   },
+   "remarque": "Plateforme 80 pi 1 po ; Kubota 48.6 kW T4f. Version O du HA80 RTJ PRO déjà en BD."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HT46 RTJ O",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "diesel TT"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ht46-rtj-o",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ht46-rtj-o",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ht46-rtj-o",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ht46-rtj-o"
+   },
+   "remarque": "Plateforme 46 pi 3 po ; Kubota 18.5 kW T4f. Version O du HT46 RTJ PRO déjà en BD."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HT67 RTJ O",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "67",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "diesel TT"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ht67-rtj-o",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ht67-rtj-o",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ht67-rtj-o",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ht67-rtj-o"
+   },
+   "remarque": "Plateforme 67 pi ; Deutz 44.5 kW T4f. Version O du HT67 RTJ PRO déjà en BD."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "HT85 RTJ O",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "85",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "diesel TT, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/ht85-rtj-o",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/ht85-rtj-o",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/ht85-rtj-o",
+    "Note": "https://www.haulotte-usa.com/en_US/product/ht85-rtj-o"
+   },
+   "remarque": "Plateforme 85 pi ; Deutz 55.5 kW. Version O du HT85 RTJ PRO déjà en BD."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "Sigma 46 PRO",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, jib horizontal 3D (PRO)"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/sigma-46-pro",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/sigma-46-pro",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/sigma-46-pro",
+    "Note": "https://www.haulotte-usa.com/en_US/product/sigma-46-pro"
+   },
+   "remarque": "Plateforme 44 pi 10 po ; arrondi à 45 (le SIGMA 46 en BD est à 46). Batteries 8 x 6 V - 435 Ah = 48V (la BD met « électrique » pour le SIGMA 46)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "400S HC3",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HC3"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/400-series/400s-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140195/-1.pdf?timestamp=2026-08-10T18%3a55%3a42.6947255",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140195/-1.pdf?timestamp=2026-08-10T18%3a55%3a42.6947255",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140195/-1.pdf?timestamp=2026-08-10T18%3a55%3a42.6947255"
+   },
+   "remarque": "Plateforme 40 pi ; Deutz D2.9L4 diesel. Capacité 660 lb non restreinte, 750/1 000 lb restreinte."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "450AJ HC3",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "HC3"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/articulating/engine-powered/450-series/450aj-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/142277/-1.pdf?timestamp=2026-08-10T20%3a07%3a14.6172176",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/142277/-1.pdf?timestamp=2026-08-10T20%3a07%3a14.6172176",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/142277/-1.pdf?timestamp=2026-08-10T20%3a07%3a14.6172176"
+   },
+   "remarque": "Plateforme 45 pi ; diesel Deutz ou bicarburant Kubota WG2503. ATTENTION : l'entrée existante « 450AJ » en BD porte déjà la note « HC3 » — possible doublon, à vérifier avant import."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "460SJ HC3",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HC3, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/400-series/460sj-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/129098/-1.pdf?timestamp=2026-08-10T18%3a54%3a40.6506324",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/129098/-1.pdf?timestamp=2026-08-10T18%3a54%3a40.6506324",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/129098/-1.pdf?timestamp=2026-08-10T18%3a54%3a40.6506324"
+   },
+   "remarque": "Plateforme 46 pi ; Deutz D2.9L4 diesel."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "460SJC",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "46",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "chenilles caoutchouc, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/400-crawler-series/460sjc",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/131694/-1.pdf?timestamp=2026-08-10T18%3a57%3a31.3072085",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/131694/-1.pdf?timestamp=2026-08-10T18%3a57%3a31.3072085",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/131694/-1.pdf?timestamp=2026-08-10T18%3a57%3a31.3072085"
+   },
+   "remarque": "Plateforme 45.54 pi publiée ; arrondi à 46. Version chenillée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "600AJ HC3",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "HC3"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/articulating/engine-powered/600-series/600aj-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/109602/-1.pdf?timestamp=2026-08-10T19%3a48%3a10.1017419",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/109602/-1.pdf?timestamp=2026-08-10T19%3a48%3a10.1017419",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/109602/-1.pdf?timestamp=2026-08-10T19%3a48%3a10.1017419"
+   },
+   "remarque": "Plateforme 60 pi ; diesel Deutz ou bicarburant Ford."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "600S HC3",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HC3"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/600-series/600s-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140393/-1.pdf?timestamp=2026-08-10T18%3a59%3a47.1264874",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140393/-1.pdf?timestamp=2026-08-10T18%3a59%3a47.1264874",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140393/-1.pdf?timestamp=2026-08-10T18%3a59%3a47.1264874"
+   },
+   "remarque": "Plateforme 59 pi 8 po ; arrondi à 60. Diesel Deutz ou bicarburant Ford MSG425."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "660SJ HC3",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "66",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HC3, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/600-series/660sj-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/125482/-1.pdf?timestamp=2026-08-10T19%3a06%3a10.9065919",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/125482/-1.pdf?timestamp=2026-08-10T19%3a06%3a10.9065919",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/125482/-1.pdf?timestamp=2026-08-10T19%3a06%3a10.9065919"
+   },
+   "remarque": "Plateforme 65 pi 8 po ; arrondi à 66. Diesel Deutz ou bicarburant Ford."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "660SJC",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "66",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "chenilles acier"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/600-crawler-series/660sjc",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/117990/-1.pdf?timestamp=2026-08-10T18%3a54%3a08.2286038",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/117990/-1.pdf?timestamp=2026-08-10T18%3a54%3a08.2286038",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/117990/-1.pdf?timestamp=2026-08-10T18%3a54%3a08.2286038"
+   },
+   "remarque": "Plateforme 65 pi 7 po ; arrondi à 66. Deutz TD2.9L4 67 hp. Version chenillée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "800AJ HC3",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "80",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "HC3, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/articulating/engine-powered/800-series/800aj-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/147057/-1.pdf?timestamp=2026-08-13T13%3a52%3a46.6991565",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/147057/-1.pdf?timestamp=2026-08-13T13%3a52%3a46.6991565",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/147057/-1.pdf?timestamp=2026-08-13T13%3a52%3a46.6991565"
+   },
+   "remarque": "Plateforme 80 pi 4.4 po ; arrondi à 80. Diesel Deutz ou bicarburant Ford."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "800S HC3",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "80",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HC3"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/800-series/800s-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140440/-1.pdf?timestamp=2026-08-13T16%3a52%3a14.2109417",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140440/-1.pdf?timestamp=2026-08-13T16%3a52%3a14.2109417",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/140440/-1.pdf?timestamp=2026-08-13T16%3a52%3a14.2109417"
+   },
+   "remarque": "Plateforme 80 pi ; diesel Deutz ou bicarburant Ford."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "860SJ HC3",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "86",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "HC3, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/engine-powered/800-series/860sj-hc3",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121728/-1.pdf?timestamp=2026-08-10T20%3a05%3a26.6863648",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121728/-1.pdf?timestamp=2026-08-10T20%3a05%3a26.6863648",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121728/-1.pdf?timestamp=2026-08-10T20%3a05%3a26.6863648"
+   },
+   "remarque": "Plateforme 86 pi ; diesel Deutz ou bicarburant Ford."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "E300AJP",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "29",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/articulating/electric-hybrid/e300-series/e300ajp",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94885/-1.pdf?timestamp=2026-08-17T19%3a15%3a09.0623845",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94885/-1.pdf?timestamp=2026-08-17T19%3a15%3a09.0623845",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94885/-1.pdf?timestamp=2026-08-17T19%3a15%3a09.0623845"
+   },
+   "remarque": "Plateforme 29 pi 5 po ; arrondi à 29. Système électrique 48V DC."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "E400AJPN",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, étroite, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/articulating/electric-hybrid/e400-series/e400ajpn",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94888/-1.pdf?timestamp=2026-08-17T19%3a21%3a41.7986989",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94888/-1.pdf?timestamp=2026-08-17T19%3a21%3a41.7986989",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94888/-1.pdf?timestamp=2026-08-17T19%3a21%3a41.7986989"
+   },
+   "remarque": "Plateforme 40 pi ; 48V DC. La fiche s'intitule « E400AJP Narrow »."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "E400AN",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, étroite"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/articulating/electric-hybrid/e400-series/e400an",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94893/-1.pdf?timestamp=2026-08-17T19%3a22%3a27.2120981",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94893/-1.pdf?timestamp=2026-08-17T19%3a22%3a27.2120981",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/94893/-1.pdf?timestamp=2026-08-17T19%3a22%3a27.2120981"
+   },
+   "remarque": "Plateforme 40 pi ; 48V DC. La fiche s'intitule « E400A Narrow »."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "EC600SJ",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "électrique, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/electric-hybrid/ec600-and-h600-series/ec600sj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121336/-1.pdf?timestamp=2026-08-13T14%3a01%3a27.8942821",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121336/-1.pdf?timestamp=2026-08-13T14%3a01%3a27.8942821",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121336/-1.pdf?timestamp=2026-08-13T14%3a01%3a27.8942821"
+   },
+   "remarque": "Plateforme 60 pi 3 po ; arrondi à 60. 48V DC."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "EC600SJP",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "électrique, jib 6 pi rotatif"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/electric-hybrid/ec600-and-h600-series/ec600sjp",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121335/-1.pdf?timestamp=2026-08-13T13%3a07%3a14.8870830",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121335/-1.pdf?timestamp=2026-08-13T13%3a07%3a14.8870830",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121335/-1.pdf?timestamp=2026-08-13T13%3a07%3a14.8870830"
+   },
+   "remarque": "Plateforme 60 pi 4 po ; arrondi à 60. 48V DC."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "H600SJ",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V (hybride)",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "hybride, jib 6 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/electric-hybrid/ec600-and-h600-series/h600sj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121334/-1.pdf?timestamp=2026-08-13T16%3a12%3a16.9786425",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121334/-1.pdf?timestamp=2026-08-13T16%3a12%3a16.9786425",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121334/-1.pdf?timestamp=2026-08-13T16%3a12%3a16.9786425"
+   },
+   "remarque": "Plateforme 60 pi 3 po ; arrondi à 60. 48V DC + génératrice diesel Kubota."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "H600SJP",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "A completer",
+    "Voltage": "48V (hybride)",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "hybride, jib 6 pi rotatif"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/telescopic/electric-hybrid/ec600-and-h600-series/h600sjp",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121333/-1.pdf?timestamp=2026-08-13T15%3a46%3a26.7164383",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121333/-1.pdf?timestamp=2026-08-13T15%3a46%3a26.7164383",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/121333/-1.pdf?timestamp=2026-08-13T15%3a46%3a26.7164383"
+   },
+   "remarque": "Plateforme 60 pi 4 po ; arrondi à 60. 48V DC + génératrice diesel Kubota."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "X1000AJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "100",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "compacte sur chenilles, option lithium 64V"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/compact-crawlers/articulating/x1000aj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154362/-1.pdf?timestamp=2026-08-17T17%3a34%3a56.6162363",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154362/-1.pdf?timestamp=2026-08-17T17%3a34%3a56.6162363",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154362/-1.pdf?timestamp=2026-08-17T17%3a34%3a56.6162363"
+   },
+   "remarque": "Plateforme 100 pi ; Kubota D902 diesel, option batterie lithium 64V."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "X430AJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "44",
+    "Nb sections fleche": "A completer",
+    "Voltage": "essence",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "compacte sur chenilles, option lithium 36V"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/compact-crawlers/articulating/x430aj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154368/-1.pdf?timestamp=2026-08-17T17%3a56%3a32.9149129",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154368/-1.pdf?timestamp=2026-08-17T17%3a56%3a32.9149129",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154368/-1.pdf?timestamp=2026-08-17T17%3a56%3a32.9149129"
+   },
+   "remarque": "Plateforme 43 pi 6 po ; arrondi à 44. Moteur Honda iGX390 (essence), option lithium 36V."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "X540AJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "54",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "compacte sur chenilles, option lithium 64V ou bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/compact-crawlers/articulating/x540aj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154365/-1.pdf?timestamp=2026-08-17T17%3a34%3a34.1500978",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154365/-1.pdf?timestamp=2026-08-17T17%3a34%3a34.1500978",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154365/-1.pdf?timestamp=2026-08-17T17%3a34%3a34.1500978"
+   },
+   "remarque": "Plateforme 54 pi ; Kubota diesel 14.5 hp."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "X600AJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "59",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "compacte sur chenilles, option lithium 72V, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/compact-crawlers/articulating/x600aj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154366/-1.pdf?timestamp=2026-09-08T15%3a02%3a36.3823758",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154366/-1.pdf?timestamp=2026-09-08T15%3a02%3a36.3823758",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154366/-1.pdf?timestamp=2026-09-08T15%3a02%3a36.3823758"
+   },
+   "remarque": "Plateforme 59 pi 3 po ; arrondi à 59. Kubota Z602 diesel."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "X660SJ",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "66",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "compacte sur chenilles, option lithium 51.4V ou bi-énergie, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/compact-crawlers/telescopic/x660sj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154367/-1.pdf?timestamp=2026-08-17T20%3a09%3a42.8026024",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154367/-1.pdf?timestamp=2026-08-17T20%3a09%3a42.8026024",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154367/-1.pdf?timestamp=2026-08-17T20%3a09%3a42.8026024"
+   },
+   "remarque": "Plateforme 65 pi 7 po ; arrondi à 66. Kubota Z602 diesel."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "X770AJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "77",
+    "Nb sections fleche": "A completer",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "compacte sur chenilles, option lithium ou bi-énergie, jib 5 pi"
+   },
+   "sources": {
+    "Categorie": "https://www.jlg.com/en/equipment/boom-lifts/compact-crawlers/articulating/x770aj",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154363/-1.pdf?timestamp=2026-08-17T17%3a45%3a06.3547589",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154363/-1.pdf?timestamp=2026-08-17T17%3a45%3a06.3547589",
+    "Note": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154363/-1.pdf?timestamp=2026-08-17T17%3a45%3a06.3547589"
+   },
+   "remarque": "Plateforme 77 pi 5 po ; arrondi à 77. Kubota D902 diesel (la fiche indique la batterie lithium à la fois « 76V » et « 83V » : tension non retenue)."
+  }
+ ]
+}

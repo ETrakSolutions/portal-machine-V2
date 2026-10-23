@@ -1,0 +1,1097 @@
+{
+ "lot": "s_loader_tract",
+ "resultats": [
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "121F",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "64 hp",
+    "Poids operationnel": "11 826 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/121f",
+    "Poids operationnel": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/121f"
+   },
+   "remarque": "Engine Output - Gross 64 hp (seule valeur publiee). Full Turn Tipping Load 5 080 lb (donnees structurees de la fiche). Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "121G",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "64 hp",
+    "Poids operationnel": "11 883 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/121g",
+    "Poids operationnel": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/121g"
+   },
+   "remarque": "Valeurs de l'en-tete visible de la fiche 121G. ATTENTION : les donnees structurees cachees des fiches 121G et 21G sont une copie de la 221G (74 hp, 12 549 lb, FTTL 7 897 lb) : non reprises, donc aucune charge de basculement fiable. Machine G 'not an exact representation of the final production model'."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "21F",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "58 hp",
+    "Poids operationnel": "10 518 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/21f",
+    "Poids operationnel": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/21f"
+   },
+   "remarque": "Engine Output - Gross 58 hp (seule valeur publiee). Full Turn Tipping Load 5 536 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "21G",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "58 hp",
+    "Poids operationnel": "10 574 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/21g",
+    "Poids operationnel": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/21g"
+   },
+   "remarque": "Valeurs de l'en-tete visible. Donnees structurees cachees = copie de la 221G (incoherentes), non reprises. Machine G 'not an exact representation of the final production model'."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "221F",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null. NB : la fiche Case actuelle donne 74 hp brut (BD : 70 hp) et FTTL 8 014 lb ; poids 12 547 lb identique a la BD."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "321F",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null. NB : la fiche Case actuelle donne 74 hp / 13 633 lb (BD : 70 hp / 13 303 lb)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Case",
+   "modele": "CL36EV",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "8 911 lb"
+   },
+   "sources": {
+    "Poids operationnel": "https://www.casece.com/en-us/northamerica/products/wheel-loaders/compact-wheel-loaders/cl36ev"
+   },
+   "remarque": "Electrique (batterie 23 kWh) : aucune puissance moteur publiee. Full Turn Tipping Load 3 728 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Caterpillar",
+   "modele": "926M",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null (recopie de l'entree existante)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Caterpillar",
+   "modele": "930M",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null (recopie de l'entree existante)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Caterpillar",
+   "modele": "938M",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null (recopie de l'entree existante)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hitachi",
+   "modele": "ZW160PL-7",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "166 hp",
+    "Poids operationnel": "28 467 - 29 983 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.wajax.com/?p=69597",
+    "Poids operationnel": "https://cdn.wajax.com/wp-content/uploads/wpfiles/2024/05/Hitachi-Wheel-Loader-ZW160PL-7-Brochure.pdf"
+   },
+   "remarque": "Distributeur officiel Wajax. Puissance nette ISO 9249 166 hp retenue (brut 169 hp) : convention de la BD Loader (ZW160-7 = 166 hp). Charge de basculement pleine rotation variable selon godet et bras (brochure : 19 886 a 20 305 lb, bras standard). Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL930A TM",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "130 hp",
+    "Poids operationnel": "26 367 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/tool-master-wheel-loaders/hl930a-tm",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/tool-master-wheel-loaders/hl930a-tm"
+   },
+   "remarque": "Puissance nette (seule publiee). En-tete 26,370 lbs (arrondi du kg), tableau 26,367 lb retenu. Full Turn Tipping Load 15 543 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL930A XT",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "130 hp",
+    "Poids operationnel": "25 794 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl930a-xt",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl930a-xt"
+   },
+   "remarque": "Puissance nette (seule publiee). En-tete 25,795 lbs, tableau 25,794 lb retenu. Full Turn Tipping Load 15 653 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL940A TM",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "154 hp",
+    "Poids operationnel": "30 644 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/tool-master-wheel-loaders/hl940a-tm",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/tool-master-wheel-loaders/hl940a-tm"
+   },
+   "remarque": "Puissance nette (seule publiee). En-tete 30,645 lbs, tableau 30,644 lb retenu. Full Turn Tipping Load 16 314 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL940A XT",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "30 560 lb"
+   },
+   "sources": {
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl940a-xt"
+   },
+   "remarque": "Puissance nette (seule publiee). Puissance incoherente sur la fiche : 154 hp en en-tete, 156 hp au tableau -> laissee vide, a trancher. Full Turn Tipping Load 15 543 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL955A TM",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "197 hp",
+    "Poids operationnel": "36 376 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/tool-master-wheel-loaders/hl955a-tm",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/tool-master-wheel-loaders/hl955a-tm"
+   },
+   "remarque": "Puissance nette (seule publiee). En-tete 36,380 lbs, tableau 36,376 lb retenu. Full Turn Tipping Load 21 054 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL955A XT",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "197 hp",
+    "Poids operationnel": "36 354 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl955a-xt",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl955a-xt"
+   },
+   "remarque": "Puissance nette (seule publiee). En-tete 36,355 lbs, tableau 36,354 lb retenu. Full Turn Tipping Load 17 968 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL960A XT",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "222 hp",
+    "Poids operationnel": "44 159 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl960a-xt",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl960a-xt"
+   },
+   "remarque": "Puissance nette (seule publiee). En-tete 44,160 lbs (arrondi de 20 030 kg), tableau 44,159 lb retenu. Full Turn Tipping Load 24 493 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL970A XT",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "55 116 lb"
+   },
+   "sources": {
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl970a-xt"
+   },
+   "remarque": "Puissance nette (seule publiee). Puissance incoherente sur la fiche : 322 hp en en-tete, 325 hp au tableau -> laissee vide, a trancher. Poids : en-tete 55,120 lbs, tableau 55,116 lb retenu. Full Turn Tipping Load 30 754 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hyundai",
+   "modele": "HL980A XT",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "351 hp",
+    "Poids operationnel": "69 450 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl980a-xt",
+    "Poids operationnel": "https://na.hd-hyundaice.com/equipment/z-bar-xt-wheel-loaders/hl980a-xt"
+   },
+   "remarque": "Puissance nette (seule publiee). 351 hp identique partout ; seul le regime differe (2 200 rpm en-tete, 2 000 rpm tableau). Full Turn Tipping Load 41 226 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "407",
+   "specs": {
+    "Capacite de levage": "3 666 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "64 hp",
+    "Poids operationnel": "11 486 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/407/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/407/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/407/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US. Capacite de levage = 'Payload' publie par JCB (= 50 % du Full Turn Tipping Load 7 335 lb, meme convention que la BD). Puissance = 'Max. Engine Power' (brut/net non precise)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "409",
+   "specs": {
+    "Capacite de levage": "4 021 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "13 296 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/409/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/409/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/409/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US. Capacite de levage = 'Payload' publie par JCB (= 50 % du Full Turn Tipping Load 8 042 lb, meme convention que la BD). Puissance = 'Max. Engine Power' (brut/net non precise). La boutique machinestore.jcb.com affiche 'Overall Weight 13,065 LBS' : ecart avec les 13 296 lb de jcb.com (retenu)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "411",
+   "specs": {
+    "Capacite de levage": "6 010 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "109 hp",
+    "Poids operationnel": "19 229 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/411/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/411/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/411/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US. Capacite de levage = 'Payload' publie par JCB (= 50 % du Full Turn Tipping Load 12 017 lb, meme convention que la BD). Puissance = 'Max. Engine Power' (brut/net non precise)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "417",
+   "specs": {
+    "Capacite de levage": "6 660 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "125 hp",
+    "Poids operationnel": "21 898 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/417/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/417/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/417/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US. Capacite de levage = 'Payload' publie par JCB (= 50 % du Full Turn Tipping Load 13 320 lb, meme convention que la BD). Puissance = 'Max. Engine Power' (brut/net non precise). Puissance publiee 124.7 hp dans les donnees produit et '93kW (125hp)' dans le texte : 125 hp."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "427",
+   "specs": {
+    "Capacite de levage": "10 448 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "179 hp",
+    "Poids operationnel": "31 656 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/427/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/427/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/427/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US. Capacite de levage = 'Payload' publie par JCB (= 50 % du Full Turn Tipping Load 20 896 lb, meme convention que la BD). Puissance = 'Max. Engine Power' (brut/net non precise). La page ne dit pas que la 427 remplace la 426ZX."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "457",
+   "specs": {
+    "Capacite de levage": "15 150 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "282 hp",
+    "Poids operationnel": "47 357 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/457/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/457/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/457/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US. Capacite de levage = 'Payload' publie par JCB (= 50 % du Full Turn Tipping Load 30 181 lb, meme convention que la BD). Puissance = 'Max. Engine Power' (brut/net non precise)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "304K",
+   "specs": {
+    "Capacite de levage": "4 046 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "64 hp",
+    "Poids operationnel": "12 778 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkakldrcwp.pdf",
+    "Puissance moteur": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkakldrcwp.pdf",
+    "Poids operationnel": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkakldrcwp.pdf"
+   },
+   "remarque": "Fiche Deere K-Series. Puissance nette ISO 9249 64 hp retenue (brut 67 hp). Capacite de levage = 'Rated Operating Load, 50% of Full-Turn Tipping Load' 4 046 lb et poids 12 778 lb, configuration godet 1.0 cu. yd. avec attache rapide (FTTL 8 091 lb)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "304L",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {},
+   "remarque": "Aucune spec a la source fabricant : le guide location Deere ne donne aucun chiffre, la fiche deere.com/.../304l-wheel-loader/ repond 404 et aucune fiche technique 304L n'est en ligne."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Komatsu",
+   "modele": "WA270-8 WH",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "149 hp",
+    "Poids operationnel": "28 208 - 29 079 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/mid-size-wheel-loaders/wa270-8-wh",
+    "Poids operationnel": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/mid-size-wheel-loaders/wa270-8-wh"
+   },
+   "remarque": "Waste Handler, fiche distincte. 'Horsepower' Komatsu (convention BD : WA270-8 = 149 hp). Full turn tip load 18,761 - 19,886 lbs. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Komatsu",
+   "modele": "WA320-8 WH",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "165 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/mid-size-wheel-loaders/wa320-8-wh"
+   },
+   "remarque": "Waste Handler, fiche distincte. 'Horsepower' Komatsu (convention BD : WA270-8 = 149 hp). Poids laisse vide : la page affiche '5 480 - 15 870 kg' pour '34,128 - 34,987 lbs' (5 480 kg est manifestement 15 480 kg ; 15 870 kg = 34 987 lb) et un 'Full turn tip load' de '3.0 - 4.2 lbs' (valeurs de godet). Donnee fabricant fautive : a confirmer avant de saisir 34 128 - 34 987 lb. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Komatsu",
+   "modele": "WA380-8 WH",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "191 hp",
+    "Poids operationnel": "40 532 - 41 932 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/wa380-8-wh.html",
+    "Poids operationnel": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/wa380-8-wh.html"
+   },
+   "remarque": "Waste Handler, fiche distincte. 'Horsepower' Komatsu (convention BD : WA270-8 = 149 hp). Fiche propre ouverte (.../wheel-loaders/wa380-8-wh.html). Full turn tip load 22,943 - 29,630 lbs. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 504 Compact",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "43 hp",
+    "Poids operationnel": "10 141 - 10 759 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/p/645318-5376616",
+    "Poids operationnel": "https://www.liebherr.com/en-int/p/645318-5376616"
+   },
+   "remarque": "Fiche produit Liebherr en-int (la page gamme en-us ne publie pas de chiffres ; brochure https://www-assets.liebherr.com/media/bu-media/lhbu-emt/brochures/wheel-loader/compact/l-504-l-508-compact-2.pdf). Puissance ISO 9249 / SAE J1349 retenue (ISO 14396 : 46 HP). Poids converti de 4,600 - 4,880 kg. Charge de basculement articulee 2,700 - 3,000 kg (aucun payload publie). Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 506 Compact",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "60 hp",
+    "Poids operationnel": "10 847 - 11 574 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/p/242808-5376616",
+    "Poids operationnel": "https://www.liebherr.com/en-int/p/242808-5376616"
+   },
+   "remarque": "Fiche produit Liebherr en-int (la page gamme en-us ne publie pas de chiffres ; brochure https://www-assets.liebherr.com/media/bu-media/lhbu-emt/brochures/wheel-loader/compact/l-504-l-508-compact-2.pdf). Puissance ISO 9249 / SAE J1349 retenue (ISO 14396 : 64 HP). Poids converti de 4,920 - 5,250 kg. Charge de basculement articulee 2,950 - 3,500 kg (aucun payload publie). Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 508 Compact",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "60 hp",
+    "Poids operationnel": "12 566 - 12 985 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/earthmoving/products/wheel-loaders/l-508-compact-5376639",
+    "Poids operationnel": "https://www.liebherr.com/en-int/earthmoving/products/wheel-loaders/l-508-compact-5376639"
+   },
+   "remarque": "Fiche produit Liebherr en-int (la page gamme en-us ne publie pas de chiffres ; brochure https://www-assets.liebherr.com/media/bu-media/lhbu-emt/brochures/wheel-loader/compact/l-504-l-508-compact-2.pdf). Puissance ISO 9249 / SAE J1349 retenue (ISO 14396 : 64 HP. La brochure liee sur la page en-us est incoherente pour la L 508 (64 HP en couverture, 55/74 et 52/70 kW/HP au tableau) ; la fiche produit tranche a 45 kW / 60 hp ISO 9249). Poids converti de 5,700 - 5,890 kg. Charge de basculement articulee 3,370 - 3,900 kg (aucun payload publie). Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 580 LogHandler XPower",
+   "specs": {
+    "Capacite de levage": "19 401 - 19 842 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "340 hp",
+    "Poids operationnel": "82 453 - 82 784 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.liebherr.com/en-us/p/69280-4342697",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/69280-4342697",
+    "Poids operationnel": "https://www.liebherr.com/en-us/p/69280-4342697"
+   },
+   "remarque": "Fiche en-us Liebherr /p/69280-4342697 (l'ancienne URL l-580-loghandler-4342725 est en 404). Capacite de levage = 'Payload' 8,800 - 9,000 kg converti (Liebherr : payload = 50 % de la charge de basculement, convention BD). Puissance ISO 9249 250 kW / 340 hp (ISO 14396 : 344 HP). Poids 37,400 - 37,550 kg converti."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W100D",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "112 hp",
+    "Poids operationnel": "19 775 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w100d",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w100d"
+   },
+   "remarque": "Gross HP. Lift Capacity at Full Height 14,826 lbs (capacite hydraulique, pas une charge de basculement). New Holland ne publie pas de charge de basculement : levage vide."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W70D",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "12 547 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w70d",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w70d"
+   },
+   "remarque": "Gross HP. Specs identiques a la Case 221F/221G (12 547 lb, 74 hp) : plateforme CNH commune. Disponible T3 2026. Lift Capacity at Full Height 8,309 lb (hydraulique). New Holland ne publie pas de charge de basculement : levage vide."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W80C",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "70 hp",
+    "Poids operationnel": "13 184 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://media.cnh.com/north-america/new-holland-construction/compact-wheel-loaders/s/026e1dba-f332-4cc3-a716-6200f740cc9d",
+    "Poids operationnel": "https://media.cnh.com/north-america/new-holland-construction/compact-wheel-loaders/s/026e1dba-f332-4cc3-a716-6200f740cc9d"
+   },
+   "remarque": "Communique CNH NA du 2017-02-05 : 'Horsepower, net 70 (52 kW)', 'Operating weight 13,184 (5980)'. Le site NA actuel n'a plus de W80C de base (seulement W80C HS et W80C LR) : confirmer que la W80C standard merite une entree."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W80C HS",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "13 668 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w80c-hs",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w80c-hs"
+   },
+   "remarque": "Gross HP, fiche NA actuelle. Le communique CNH 2017 donnait 70 hp net / 13 184 lb pour W80C et W80C HS. Lift Capacity at Full Height 8424 lbs (hydraulique). New Holland ne publie pas de charge de basculement : levage vide."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W80D",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "13 633 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w80d",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w80d"
+   },
+   "remarque": "Gross HP. Specs identiques a la Case 321F (13 633 lb, 74 hp). Disponible T3 2026. Lift Capacity at Full Height 7,999 lb (hydraulique). New Holland ne publie pas de charge de basculement : levage vide."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W80D Long Reach",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "13 900 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w80d-lr",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w80d-lr"
+   },
+   "remarque": "Gross HP. Fiche NA nommee 'W80D LR'. Disponible T3 2026. Lift Capacity at Full Height 6,602 lb (hydraulique). New Holland ne publie pas de charge de basculement : levage vide."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L120 Electric",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "43 431 - 46 297 lb"
+   },
+   "sources": {
+    "Poids operationnel": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/"
+   },
+   "remarque": "Carte de la page gamme US (fiche propre en 404). Electrique, batterie 282 kWh : pas de puissance moteur publiee. Aucune charge de basculement publiee."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L150",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null. La nouvelle generation 2025 differe de l'entree BD 2015 (fiche US : 299.04 hp net, 53,131 - 56,438 lbs) : entree distincte recommandee."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L180",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null. La nouvelle generation 2025 differe de l'entree BD 2015 (fiche US : 335.25 hp net, 59,525 - 62,611 lbs) : entree distincte recommandee."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L20 Electric",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "10 031 lb"
+   },
+   "sources": {
+    "Poids operationnel": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/"
+   },
+   "remarque": "Carte de la page gamme US (fiche propre en 404). Electrique, batterie 40 kWh : pas de puissance moteur."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L220",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "374 hp",
+    "Poids operationnel": "68 784 - 72 973 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/l220/",
+    "Poids operationnel": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/l220/"
+   },
+   "remarque": "Puissance ISO 9249 / SAE J1349 net 374.14 hp (ECE R120 net 375.48). Static tipping load at full turn 46,297.02 lbs. Capacite de levage laissee vide : la BD Loader porte ~50 % de la charge de basculement pleine rotation (verifie : HL930A 9 060 lb = 18 122/2 ; WA270-8 9 943 lb = 19 886/2), valeur que ce fabricant ne publie pas ; je ne la calcule pas."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L25 Electric",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "10 693 - 11 354 lb"
+   },
+   "sources": {
+    "Poids operationnel": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/"
+   },
+   "remarque": "Carte de la page gamme US (fiche propre en 404). Electrique, batterie 40 kWh : pas de puissance moteur."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L260H",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millesime : specs null."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.330 CMATIC",
+   "specs": {
+    "Capacite de levage": "26 455 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "326 hp",
+    "Poids operationnel": "30 865 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 12000 kg / 26 455 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.360 CMATIC",
+   "specs": {
+    "Capacite de levage": "26 455 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "360 hp",
+    "Poids operationnel": "30 865 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 12000 kg / 26 455 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Brochure : tare '13999 / 30865' pour ce modele (les autres colonnes : 14000 kg = 30865 lb) - coquille kg probable. Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.360 TERRA TRAC",
+   "specs": {
+    "Capacite de levage": "24 250 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "360 hp",
+    "Poids operationnel": "37 479 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 11000 kg / 24 250 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.390 CMATIC",
+   "specs": {
+    "Capacite de levage": "26 455 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "394 hp",
+    "Poids operationnel": "30 865 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 12000 kg / 26 455 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.420 CMATIC",
+   "specs": {
+    "Capacite de levage": "26 455 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "419 hp",
+    "Poids operationnel": "30 865 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 12000 kg / 26 455 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.450 CMATIC",
+   "specs": {
+    "Capacite de levage": "26 455 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "448 hp",
+    "Poids operationnel": "30 865 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 12000 kg / 26 455 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 9.450 TERRA TRAC",
+   "specs": {
+    "Capacite de levage": "24 250 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "448 hp",
+    "Poids operationnel": "37 479 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-9-cmatic",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417666/data/15ff9631d91b1be0c270ddab2e70d263"
+   },
+   "remarque": "Puissance = 'Max. output ECE R 120' (convention BD CLAAS = puissance moteur max). Brochure AXION 9 liee sur la page en-us (document mondial) : relevage arriere aux rotules 11000 kg / 24 250 lb ; poids = 'Tare weight' (poids a vide, pas un poids en ordre de marche). Le tableau de la brochure est decale ligne/etiquette a l'extraction texte : affectation relue colonne par colonne."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Case IH",
+   "modele": "Farmall Compact 45A",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "47 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.caseih.com/en-us/unitedstates/products/tractors/farmall-compact-series/compact-farmall-a-series/compact-farmall-45a"
+   },
+   "remarque": "Fiche : 'Horsepower 47', 'PTO Horsepower 41/38' ; brut/net non precise (valeur moteur, distincte de la PTO). La brochure Farmall Compact A liee ne couvre pas la 45A. Poids et relevage non publies."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Fendt",
+   "modele": "310 Vario Gen5",
+   "specs": {
+    "Capacite de levage": "13 399 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "103 hp",
+    "Poids operationnel": "11 883 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Puissance moteur": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Poids operationnel": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5"
+   },
+   "remarque": "Puissance = 'Maximum power' sans DP (convention BD Fendt 300 Gen4 : 311 = 113 hp) ; avec DP ECE R120 : 113 hp. Relevage arriere 5960 daN converti en lbf (meme valeur que la BD 300 Gen4 : 13 399 lb). Poids 5390 kg converti ('+/- 5%')."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Fendt",
+   "modele": "311 Vario Gen5",
+   "specs": {
+    "Capacite de levage": "13 399 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "113 hp",
+    "Poids operationnel": "11 883 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Puissance moteur": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Poids operationnel": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5"
+   },
+   "remarque": "Puissance = 'Maximum power' sans DP (convention BD Fendt 300 Gen4 : 311 = 113 hp) ; avec DP ECE R120 : 123 hp. Relevage arriere 5960 daN converti en lbf (meme valeur que la BD 300 Gen4 : 13 399 lb). Poids 5390 kg converti ('+/- 5%')."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Fendt",
+   "modele": "312 Vario Gen5",
+   "specs": {
+    "Capacite de levage": "13 399 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "123 hp",
+    "Poids operationnel": "12 147 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Puissance moteur": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Poids operationnel": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5"
+   },
+   "remarque": "Puissance = 'Maximum power' sans DP (convention BD Fendt 300 Gen4 : 311 = 113 hp) ; avec DP ECE R120 : 133 hp. Relevage arriere 5960 daN converti en lbf (meme valeur que la BD 300 Gen4 : 13 399 lb). Poids 5510 kg converti ('+/- 5%')."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Fendt",
+   "modele": "313 Vario Gen5",
+   "specs": {
+    "Capacite de levage": "13 399 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "133 hp",
+    "Poids operationnel": "12 147 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Puissance moteur": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Poids operationnel": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5"
+   },
+   "remarque": "Puissance = 'Maximum power' sans DP (convention BD Fendt 300 Gen4 : 311 = 113 hp) ; avec DP ECE R120 : 143 hp. Relevage arriere 5960 daN converti en lbf (meme valeur que la BD 300 Gen4 : 13 399 lb). Poids 5510 kg converti ('+/- 5%')."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Fendt",
+   "modele": "314 Vario Gen5",
+   "specs": {
+    "Capacite de levage": "13 399 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "142 hp",
+    "Poids operationnel": "12 147 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Puissance moteur": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5",
+    "Poids operationnel": "https://www.fendt.com/us/products/tractors/fendt-300-vario-gen5"
+   },
+   "remarque": "Puissance = 'Maximum power' sans DP (convention BD Fendt 300 Gen4 : 311 = 113 hp) ; avec DP ECE R120 : 152 hp. Relevage arriere 5960 daN converti en lbf (meme valeur que la BD 300 Gen4 : 13 399 lb). Poids 5510 kg converti ('+/- 5%')."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "JCB",
+   "modele": "Fastrac 6300",
+   "specs": {
+    "Capacite de levage": "24 250 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "335 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/agricultural-tractors/6000-series",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/agricultural-tractors/6000-series"
+   },
+   "remarque": "Donnees produit '6000 Series ENUS' de la page jcb.com/en-US : 'Rated Power 335 hp' (puissance moteur nominale ; la BD JCB utilise la Max power, non publiee ici), 'Rear Lift Capacity 24250 lb'. Aucun poids NA publie."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "B2401N",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "22 hp",
+    "Poids operationnel": "1 334 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.kubota.ca/en/products/B01N-Series",
+    "Poids operationnel": "https://www.kubotausa.com/docs/default-source/brochure-sheets/b01-specs.pdf?sfvrsn=3d3a6e71_1"
+   },
+   "remarque": "Puissance 'Rated Engine' 21.9 HP (= brut SAE J1995 selon la fiche B01 US). Poids 1334 lb = colonne B2401DTN de la fiche B01 US. Relevage : 1290 lb a 24 po affiche en cellule fusionnee sur les colonnes B2401, attribution a la DTN non certaine -> vide. ATTENTION : l'import tracteur avait traite la B2401 Narrow comme une CONFIGURATION de la B2401 (note dans scripts/data/tracteurs_recherche/kubota.json) - a trancher avant d'ajouter."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "L4802N",
+   "specs": {
+    "Capacite de levage": "2 320 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "48 hp",
+    "Poids operationnel": "3 362 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/L4802N",
+    "Puissance moteur": "https://www.kubota.ca/en/products/L4802N",
+    "Poids operationnel": "https://www.kubota.ca/en/products/L4802N"
+   },
+   "remarque": "Engine gross 48.4 HP (net 46, PTO 40.5). Relevage 24\" behind lift point 2320 lb (convention BD Kubota) ; aux rotules 2870 lb. Poids 3362 lb."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "LX3520N",
+   "specs": {
+    "Capacite de levage": "1 819 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "35 hp",
+    "Poids operationnel": "2 154 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/LX3520N",
+    "Puissance moteur": "https://www.kubota.ca/en/products/LX3520N",
+    "Poids operationnel": "https://www.kubota.ca/en/products/LX3520N"
+   },
+   "remarque": "Fiche kubota.ca/en/products/LX3520N ouverte (HTML brut) : engine gross 34.9 HP, PTO 29.6 HP, relevage 24\" behind 1819 lb (aux rotules 2348 lb), poids 2154 lb. ATTENTION : l'import tracteur avait deja vu la LX3520 Narrow (DTN, 2 154 lb) et l'avait traitee comme une CONFIGURATION de la LX3520 (kubota.json) - doublon probable, a trancher."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 100 PLUS",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "101 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-95-105-and-120"
+   },
+   "remarque": "Gross engine horsepower 101 hp (PTO 85). Relevage : le tableau de la brochure PLUS (sitecorecontenthub 4ae839447ddc...) est illisible a l'extraction (4874 / 7238 / 4120 / 6076 lb, valeurs 'calculated... target for OECD test', colonnes fusionnees) et le texte marketing dit '6,000-lb rear lift capacity' -> vide. Seul le poids total en charge (GVW) est publie, pas de poids operationnel."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 110 PLUS",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "110 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-95-105-and-120"
+   },
+   "remarque": "Gross engine horsepower 110 hp (PTO 93). Relevage : le tableau de la brochure PLUS (sitecorecontenthub 4ae839447ddc...) est illisible a l'extraction (4874 / 7238 / 4120 / 6076 lb, valeurs 'calculated... target for OECD test', colonnes fusionnees) et le texte marketing dit '6,000-lb rear lift capacity' -> vide. Seul le poids total en charge (GVW) est publie, pas de poids operationnel."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 120 PLUS",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "117 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-95-105-and-120"
+   },
+   "remarque": "Gross engine horsepower 117 hp (PTO 99). Relevage : le tableau de la brochure PLUS (sitecorecontenthub 4ae839447ddc...) est illisible a l'extraction (4874 / 7238 / 4120 / 6076 lb, valeurs 'calculated... target for OECD test', colonnes fusionnees) et le texte marketing dit '6,000-lb rear lift capacity' -> vide. Seul le poids total en charge (GVW) est publie, pas de poids operationnel."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 45C",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "47 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-compact-tractors"
+   },
+   "remarque": "'Engine Horsepower' (brut/net non precise). Page sans relevage ni poids ; la seule brochure liee couvre 35C/40C."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 50C",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "52 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-compact-tractors"
+   },
+   "remarque": "'Engine Horsepower' (brut/net non precise). Page sans relevage ni poids ; la seule brochure liee couvre 35C/40C."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 55C",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "57 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-compact-tractors"
+   },
+   "remarque": "'Engine Horsepower' (brut/net non precise). Page sans relevage ni poids ; la seule brochure liee couvre 35C/40C."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "New Holland Agriculture",
+   "modele": "WORKMASTER 90 PLUS",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "90 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://agriculture.newholland.com/en-us/nar/products/tractors-telehandlers/workmaster-95-105-and-120"
+   },
+   "remarque": "Gross engine horsepower 90 hp (PTO 75). Relevage : le tableau de la brochure PLUS (sitecorecontenthub 4ae839447ddc...) est illisible a l'extraction (4874 / 7238 / 4120 / 6076 lb, valeurs 'calculated... target for OECD test', colonnes fusionnees) et le texte marketing dit '6,000-lb rear lift capacity' -> vide. Seul le poids total en charge (GVW) est publie, pas de poids operationnel."
+  }
+ ]
+}

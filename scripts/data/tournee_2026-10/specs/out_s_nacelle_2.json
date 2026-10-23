@@ -1,0 +1,865 @@
+{
+ "lot": "s_nacelle_2",
+ "resultats": [
+  {
+   "type": "Nacelle",
+   "fabricant": "MEC (Dingli)",
+   "modele": "DualReach 85-J Hybrid",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "85",
+    "Nb sections fleche": "n/d",
+    "Voltage": "hybride",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "télescopique OU articulée commutable, hybride"
+   },
+   "sources": {
+    "Categorie": "https://www.mecawp.com/products/dualreach-85-j-hybrid/",
+    "Hauteur plateforme (pi)": "https://www.mecawp.com/products/dualreach-85-j-hybrid/",
+    "Voltage": "https://www.mecawp.com/products/dualreach-85-j-hybrid/"
+   },
+   "remarque": "Page : 85 ft Platform Height. MEC : « switches between telescopic and articulated modes » ; catégorie alignée sur le DualReach 85-J déjà en BD (Flèche télescopique, Voltage « diesel / hybride ») — cette entrée BD couvre peut-être déjà la version hybride."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "MEC (Dingli)",
+   "modele": "Titan 40-S",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "Titan 3-en-1, plateforme ultra-deck 22 pi x 90 po, 4 000 lb"
+   },
+   "sources": {
+    "Categorie": "https://www.mecawp.com/products/titan-40-s-telescopic-diesel/",
+    "Hauteur plateforme (pi)": "https://www.mecawp.com/products/titan-40-s-telescopic-diesel/",
+    "Voltage": "https://www.mecawp.com/products/titan-40-s-telescopic-diesel/"
+   },
+   "remarque": "Page : 40 ft Platform Height, « Titan 40-S Telescopic Diesel »."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "MEC (Dingli)",
+   "modele": "Titan 60-S",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "Titan 3-en-1, plateforme ultra-deck 22 pi x 90 po, 3 000 lb"
+   },
+   "sources": {
+    "Categorie": "https://www.mecawp.com/products/titan-60-s-telescopic-diesel/",
+    "Hauteur plateforme (pi)": "https://www.mecawp.com/products/titan-60-s-telescopic-diesel/",
+    "Voltage": "https://www.mecawp.com/products/titan-60-s-telescopic-diesel/"
+   },
+   "remarque": "Page : 60 ft Platform Height, « Titan 60-S Telescopic Diesel »."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Manitou",
+   "modele": "ATJ 60 RC",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "tout-terrain, rotation tourelle continue, Kubota D1803"
+   },
+   "sources": {
+    "Categorie": "https://www.manitou.com/en-US/our-machines/mobile-elevating-work-platforms/atj-60-rc",
+    "Hauteur plateforme (pi)": "https://www.manitou.com/en-US/our-machines/mobile-elevating-work-platforms/atj-60-rc",
+    "Voltage": "https://www.manitou.com/en-US/our-machines/mobile-elevating-work-platforms/atj-60-rc"
+   },
+   "remarque": "Page : Platform height 60 ft 3 in, « articulated arm ». Le texte de la page parle de « ATJ 60 » : l'ATJ 60 déjà en BD est peut-être la même machine (à trancher)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SD50 4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "n/d",
+    "Voltage": "hybride",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "Self Drive remorquable, flèche sup. télescopique, Bi-Energy"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-drive/sd50-4x4",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-drive/sd50-4x4",
+    "Voltage": "https://www.niftylift.com/usa/products/self-drive/sd50-4x4"
+   },
+   "remarque": "Platform Height 49 ft 6 in arrondi à 50. Équivalent européen sur niftylift.com/uk : SD170. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SD64 4x4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "64",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "Self Drive 4x4x4, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-drive/sd64-4x4x4",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-drive/sd64-4x4x4",
+    "Voltage": "https://www.niftylift.com/usa/products/self-drive/sd64-4x4x4"
+   },
+   "remarque": "Platform Height 63 ft 6 in (fiche) arrondi à 64 ; la meta-description dit 63 ft 4 in. Équivalent européen sur niftylift.com/uk : SD210 4x4x4. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP34 4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "33",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel/hybride",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "flèche sup. télescopique, 4RM"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp34-4x4",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp34-4x4",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp34-4x4"
+   },
+   "remarque": "Platform Height 33 ft. Options Diesel only / Hybrid. Équivalent européen sur niftylift.com/uk : HR12 4x4 — déjà en BD sous ce nom, risque de doublon : à trancher. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP34LE",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "33",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique, flèche sup. télescopique"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp34le",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp34le",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp34le"
+   },
+   "remarque": "Platform Height 33 ft, All-Electric, « articulating boom lift » (meta). Équivalent européen sur niftylift.com/uk : HR12LE."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP34NE",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "33",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique / diesel-électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique étroit (4 pi 11 po)"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp34ne",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp34ne",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp34ne"
+   },
+   "remarque": "Platform Height 33 ft, « electric narrow articulating boom lift », options All-Electric / Diesel-Electric. Équivalent européen sur niftylift.com/uk : HR12NE."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP45 4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel/hybride",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp45-4x4",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp45-4x4",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp45-4x4"
+   },
+   "remarque": "Platform Height 45 ft. Équivalent européen sur niftylift.com/uk : HR15 4x4 — déjà en BD sous ce nom, risque de doublon : à trancher. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP45E",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique (option hydrogène-électrique), jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp45e",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp45e",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp45e"
+   },
+   "remarque": "Platform Height 45 ft, All-Electric / Hydrogen-Electric. Équivalent européen sur niftylift.com/uk : HR15E. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP45N",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "44",
+    "Nb sections fleche": "n/d",
+    "Voltage": "hybride/électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "étroit (4 pi 11 po), jib"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp45n",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp45n",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp45n"
+   },
+   "remarque": "Platform Height 44 ft (fiche) ; meta : 44 ft 7 in. Équivalent européen sur niftylift.com/uk : HR15N. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP50 4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel/hybride",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp50-4x4-1",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp50-4x4-1",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp50-4x4-1"
+   },
+   "remarque": "Platform Height 50 ft (fiche) ; meta : 49 ft 10 in. Équivalent européen sur niftylift.com/uk : HR17 4x4 — déjà en BD sous ce nom, risque de doublon : à trancher. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP50E",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique (option hydrogène-électrique), jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp50e",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp50e",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp50e"
+   },
+   "remarque": "Platform Height 50 ft. Équivalent européen sur niftylift.com/uk : HR17E. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP50N",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "n/d",
+    "Voltage": "hybride/électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "étroit (4 pi 11 po), jib"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp50n",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp50n",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp50n"
+   },
+   "remarque": "Platform Height 49 ft 6 in (fiche) arrondi à 50 ; meta : 49 ft 10 in. Équivalent européen sur niftylift.com/uk : HR17N. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP64 4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "62",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel/hybride",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp64-4x4-1",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp64-4x4-1",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp64-4x4-1"
+   },
+   "remarque": "Platform Height 62 ft. Équivalent européen sur niftylift.com/uk : HR21 4x4 — déjà en BD sous ce nom, risque de doublon : à trancher. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP64E",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "62",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique (option hydrogène-électrique), jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp64e",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp64e",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp64e"
+   },
+   "remarque": "Platform Height 62 ft. Équivalent européen sur niftylift.com/uk : HR21E. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP65SE",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "65",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique / diesel-électrique",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "stick boom électrique, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp65se",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp65se",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp65se"
+   },
+   "remarque": "Platform Height 65 ft, « Telescopic Stick-Boom ». Équivalent européen sur niftylift.com/uk : HR22SE."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "SP85 4x4",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "86",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique/hybride",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "jib 150°"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/self-propelled/sp85-4x4",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/self-propelled/sp85-4x4",
+    "Voltage": "https://www.niftylift.com/usa/products/self-propelled/sp85-4x4"
+   },
+   "remarque": "Platform Height 85 ft 6 in arrondi à 86 ; options Battery only / Hybrid. Équivalent européen sur niftylift.com/uk : HR28 4x4. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TD34T",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "34",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "sur chenilles (TrackDrive)"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/track-drive/td34t",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/track-drive/td34t",
+    "Voltage": "https://www.niftylift.com/usa/products/track-drive/td34t"
+   },
+   "remarque": "Platform Height 33 ft 6 in arrondi à 34. Équivalent européen sur niftylift.com/uk : TD120T. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TD34TN",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "34",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "sur chenilles, étroit (2 pi 6 po)"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/track-drive/td34tn",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/track-drive/td34tn",
+    "Voltage": "https://www.niftylift.com/usa/products/track-drive/td34tn"
+   },
+   "remarque": "Platform Height 33 ft 6 in arrondi à 34. Équivalent européen sur niftylift.com/uk : TD120TN. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TD42T",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "42",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "sur chenilles (TrackDrive)"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/track-drive/td42t",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/track-drive/td42t",
+    "Voltage": "https://www.niftylift.com/usa/products/track-drive/td42t"
+   },
+   "remarque": "Platform Height 42 ft. Équivalent européen sur niftylift.com/uk : TD150T. Catégorie : Niftylift n'emploie pas le mot « articulée » sur cette page ; catégorie posée par : flèche supérieure télescopique + jib sur flèche (architecture HeightRider), seul le SP65SE est présenté par Niftylift comme « telescopic stick boom », pages SP34LE/SP34NE explicitement « articulating boom lift », et l'équivalent européen est déjà en BD en Flèche articulée."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB1530RJ Plus",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "153",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "Deutz TCD3.6"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab1530rj/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab1530rj/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab1530rj/"
+   },
+   "remarque": "Max Platform Height 152'11\" arrondi à 153 ; « Articulating Boom Lift »."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB430ERJN",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "43",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique 48V, étroit, jib rotatif"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab430erjn/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab430erjn/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab430erjn/"
+   },
+   "remarque": "Max Platform Height 42'8\" arrondi à 43 ; batteries 48V."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB480J",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "48",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "diesel Deutz, 2RM"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab480j/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab480j/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab480j/"
+   },
+   "remarque": "Max Platform Height 48'3\". Distinct de l'AB480J Plus déjà en BD (Sinoboom liste les deux)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB490ERJN",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "49",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique 48V, étroit, jib rotatif"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab490erjn/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab490erjn/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab490erjn/"
+   },
+   "remarque": "Max Platform Height 48'7\" arrondi à 49."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB520EJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "52",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique 48V"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab520EJ/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab520EJ/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab520EJ/"
+   },
+   "remarque": "Max Platform Height 51'6\" arrondi à 52."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB520EJ Plus",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "52",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique 48V"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab520ejp/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab520ejp/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab520ejp/"
+   },
+   "remarque": "Max Platform Height 51'10\" arrondi à 52."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "AB850J Plus",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "A completer",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "diesel Deutz TCD3.6"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/articulating-boom-ab850jp/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/articulating-boom-ab850jp/",
+    "Voltage": "https://sinoboom.us/articulating-boom-ab850jp/"
+   },
+   "remarque": "Fiche Sinoboom incohérente : le tableau de la page AB850J Plus reprend les chiffres de l'AB480J Plus (plateforme 48'3\", 16 976 lb) alors que la liste Sinoboom donne 90'2\" de hauteur de travail et 41 358 lb. Hauteur plateforme non publiée correctement : il faut la fiche PDF ou le concessionnaire."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "TB1060JN Plus",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "106",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "diesel Deutz TD2.9, jib rotatif"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/telescopic-boom-lift-tb1060jn-plus/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/telescopic-boom-lift-tb1060jn-plus/",
+    "Voltage": "https://sinoboom.us/telescopic-boom-lift-tb1060jn-plus/"
+   },
+   "remarque": "Max Platform Height 106'."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "TB1370RJ Plus",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "137",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "diesel Cummins, jib rotatif 235°"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/telescopic-boom-lift-tb1370rj-plus/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/telescopic-boom-lift-tb1370rj-plus/",
+    "Voltage": "https://sinoboom.us/telescopic-boom-lift-tb1370rj-plus/"
+   },
+   "remarque": "Max Platform Height 136'6\" arrondi à 137."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Sinoboom",
+   "modele": "TB1900RJ Plus",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "190",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "diesel Deutz, jib rotatif 170°"
+   },
+   "sources": {
+    "Categorie": "https://sinoboom.us/telescopic-boom-lift-tb1900rj-plus/",
+    "Hauteur plateforme (pi)": "https://sinoboom.us/telescopic-boom-lift-tb1900rj-plus/",
+    "Voltage": "https://sinoboom.us/telescopic-boom-lift-tb1900rj-plus/"
+   },
+   "remarque": "Max Platform Height 190'."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Skyjack",
+   "modele": "SJ40 T+",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "41",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "sans jib, SMARTORQUE"
+   },
+   "sources": {
+    "Categorie": "https://www.skyjack.com/product/sj4045t-plus",
+    "Hauteur plateforme (pi)": "https://www.skyjack.com/product/sj4045t-plus",
+    "Voltage": "https://www.skyjack.com/product/sj4045t-plus"
+   },
+   "remarque": "Platform Height 40' 7\" arrondi à 41 (page commune SJ40/45 T+)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Skyjack",
+   "modele": "SJ45 T+",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "jib 5 pi, SMARTORQUE"
+   },
+   "sources": {
+    "Categorie": "https://www.skyjack.com/product/sj4045t-plus",
+    "Hauteur plateforme (pi)": "https://www.skyjack.com/product/sj4045t-plus",
+    "Voltage": "https://www.skyjack.com/product/sj4045t-plus"
+   },
+   "remarque": "Platform Height 45' 1.5\" arrondi à 45."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Skyjack",
+   "modele": "SJ61 T+",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "62",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel / bicarburant",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "sans jib"
+   },
+   "sources": {
+    "Categorie": "https://www.skyjack.com/product/sj6166t-plus",
+    "Hauteur plateforme (pi)": "https://www.skyjack.com/product/sj6166t-plus",
+    "Voltage": "https://www.skyjack.com/product/sj6166t-plus"
+   },
+   "remarque": "Platform Height 61' 8\" arrondi à 62 ; moteur diesel Deutz ou Dual Fuel Kubota WG2503 (page commune SJ61/66 T+)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "2100SJ",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "210",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "jib 30 pi, la plus haute Snorkel"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/2100sj/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/2100sj/",
+    "Voltage": "https://snorkellifts.com/equipment/2100sj/"
+   },
+   "remarque": "Max. platform height 210 ft ; catégorie Snorkel « telescopic-boom-lifts »."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "600AJ",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "60",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "zéro tailswing, jib"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/600aj/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/600aj/",
+    "Voltage": "https://snorkellifts.com/equipment/600aj/"
+   },
+   "remarque": "Max. platform height 60 ft 2 in ; catégorie Snorkel « articulated-boom-lifts ». Distinct du 600AJN (48V) déjà en BD."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "600S All Terrain",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "61",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "4 chenilles indépendantes, sans jib"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/600s-all-terrain/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/600s-all-terrain/",
+    "Voltage": "https://snorkellifts.com/equipment/600s-all-terrain/"
+   },
+   "remarque": "Max. platform height 60 ft 8 in arrondi à 61."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "660SJ All Terrain",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "66",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "4 chenilles indépendantes, jib"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/660sj-all-terrain/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/660sj-all-terrain/",
+    "Voltage": "https://snorkellifts.com/equipment/660sj-all-terrain/"
+   },
+   "remarque": "Max. platform height 66 ft 3 in arrondi à 66."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "A46JRTE",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "47",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "électrique Li-ion, tout-terrain"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/a46jrte/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/a46jrte/",
+    "Voltage": "https://snorkellifts.com/equipment/a46jrte/"
+   },
+   "remarque": "Max. platform height 46 ft 11 in arrondi à 47 ; « articulating boom lift », batteries Li-ion 333Ah (tension non publiée)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "AB80J",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "80",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "jib"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/ab80j/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/ab80j/",
+    "Voltage": "https://snorkellifts.com/equipment/ab80j/"
+   },
+   "remarque": "Max. platform height 79 ft 11 in arrondi à 80."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "AB85J",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "85",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/a",
+    "Longueur telescopique": "n/a",
+    "Note": "jib rotatif 140°"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/ab85j/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/ab85j/",
+    "Voltage": "https://snorkellifts.com/equipment/ab85j/"
+   },
+   "remarque": "Max. platform height 84 ft 6 in arrondi à 85."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "TB80",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "80",
+    "Nb sections fleche": "n/d",
+    "Voltage": "diesel",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": ""
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/tb80/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/tb80/",
+    "Voltage": "https://snorkellifts.com/equipment/tb80/"
+   },
+   "remarque": "Max. platform height 80 ft."
+  }
+ ]
+}

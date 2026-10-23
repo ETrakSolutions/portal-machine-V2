@@ -1,0 +1,1544 @@
+{
+ "lot": "s_grue",
+ "resultats": [
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Altec",
+   "modele": "AC40E-152S-TC",
+   "specs": {
+    "Capacite max": "36.3 t",
+    "Fleche telescopique": "46.3 m",
+    "Hauteur max": "62.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.altec.com/products/cranes/boom-truck/ac40e-152s-tc",
+    "Fleche telescopique": "https://www.altec.com/products/cranes/boom-truck/ac40e-152s-tc",
+    "Hauteur max": "https://www.altec.com/wp-content/uploads/Altec_AC4045E152STC_digital_KME_12325.pdf",
+    "Essieux": "https://www.altec.com/wp-content/uploads/Altec_AC4045E152STC_digital_KME_12325.pdf"
+   },
+   "remarque": "Grue AC40E-152S montée sur porteur à chenilles Prinoth Panther T22 (moteur CAT C9.3 Tier 4 Final, puissance non publiée). Capacité 80 000 lb (36 287,4 kg). Hauteur = hauteur max. de réa avec fléchette télescopique selon la fiche (205 ft / 62,4 m) ; la page web indique 207 ft (63,1 m)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Altec",
+   "modele": "AC45E-127S-TC",
+   "specs": {
+    "Capacite max": "40.8 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "56.9 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.altec.com/wp-content/uploads/Altec_AC4045E152STC_digital_KME_12325.pdf",
+    "Fleche telescopique": "https://www.altec.com/products/cranes/boom-truck/ac45e-127s-tc",
+    "Hauteur max": "https://www.altec.com/wp-content/uploads/Altec_AC4045E152STC_digital_KME_12325.pdf",
+    "Essieux": "https://www.altec.com/wp-content/uploads/Altec_AC4045E152STC_digital_KME_12325.pdf"
+   },
+   "remarque": "Porteur à chenilles Prinoth Panther T22 (CAT C9.3 Tier 4 Final, puissance non publiée). Capacité 90 000 lb (40 823,3 kg) tirée de la fiche ; la page web ne la donne pas. Hauteur = réa max. avec fléchette télescopique (187 ft / 56,9 m) ; la page web indique 135 ft (41,1 m)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GHC110",
+   "specs": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "46.8 m",
+    "Hauteur max": "65 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "249 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "45.2 t (28.2 t + 17 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc110",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc110",
+    "Hauteur max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc110",
+    "Essieux": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc110",
+    "Puissance moteur": "https://www.manitowoc.com/media/16460/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/16460/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/16460/download"
+   },
+   "remarque": "Grue télescopique sur chenilles. Puissance = moteur Tier 4 Amérique du Nord (186 kW / 249 bhp). Contrepoids = supérieur 28 200 kg + carrosserie 17 000 kg (Product Guide)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GHC140",
+   "specs": {
+    "Capacite max": "127 t",
+    "Fleche telescopique": "52.1 m",
+    "Hauteur max": "70 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "249 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "35.3 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc140",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc140",
+    "Hauteur max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc140",
+    "Essieux": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc140",
+    "Puissance moteur": "https://www.manitowoc.com/media/16458/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/16458/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/16458/download"
+   },
+   "remarque": "Grue télescopique sur chenilles. Moteur Tier 4 : 186 kW / 249 bhp. Contrepoids 35 300 kg total (Product Guide)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GHC220",
+   "specs": {
+    "Capacite max": "200 t",
+    "Fleche telescopique": "56.4 m",
+    "Hauteur max": "81 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "260 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "71.6 t (56.6 t + 15 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc220",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc220",
+    "Hauteur max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc220",
+    "Essieux": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc220",
+    "Puissance moteur": "https://www.manitowoc.com/media/18135/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/18135/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/18135/download"
+   },
+   "remarque": "Grue télescopique sur chenilles. Cummins B6.7, 260 bhp (194 kW). Contrepoids = supérieur 56 600 kg + carrosserie 15 000 kg."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GHC50",
+   "specs": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "30.4 m",
+    "Hauteur max": "45.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "173 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "8.9 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc50",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc50",
+    "Hauteur max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc50",
+    "Essieux": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc50",
+    "Puissance moteur": "https://www.manitowoc.com/media/14115/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/14115/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/14115/download"
+   },
+   "remarque": "Grue télescopique sur chenilles. Cummins QSB4.5 Tier 4 : 129 kW / 173 bhp. Contrepoids 8 900 kg."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GHC55",
+   "specs": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "30.4 m",
+    "Hauteur max": "45.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "173 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "8.9 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc55",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc55",
+    "Hauteur max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc55",
+    "Essieux": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc55",
+    "Puissance moteur": "https://www.manitowoc.com/media/16526/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/16526/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/16526/download"
+   },
+   "remarque": "Grue télescopique sur chenilles. Flèche, hauteur et poids publiés identiques à la GHC50 (seule la capacité diffère). Contrepoids 8 900 kg."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GHC85",
+   "specs": {
+    "Capacite max": "80 t",
+    "Fleche telescopique": "11-42 m",
+    "Hauteur max": "60.7 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "249 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "34.3 t (28.3 t + 6 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc85",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc85",
+    "Hauteur max": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc85",
+    "Essieux": "https://www.manitowoc.com/grove/telescoping-crawler-cranes/ghc85",
+    "Puissance moteur": "https://www.manitowoc.com/media/16183/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/16183/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/16183/download"
+   },
+   "remarque": "Grue télescopique sur chenilles. Moteur Tier 4 : 186 kW / 249 bhp. Contrepoids = supérieur 28 300 kg + carrosserie 6 000 kg."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GMK5150L-1e",
+   "specs": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "60 m",
+    "Hauteur max": "97 m",
+    "Essieux": "5",
+    "Puissance moteur": "390 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "44.5 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/all-terrain-cranes/gmk5150l-1e",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/all-terrain-cranes/gmk5150l-1e",
+    "Hauteur max": "https://www.manitowoc.com/grove/all-terrain-cranes/gmk5150l-1e",
+    "Essieux": "https://www.manitowoc.com/media/18553/download",
+    "Puissance moteur": "https://www.manitowoc.com/media/18553/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/18553/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/18553/download"
+   },
+   "remarque": "Hybride rechargeable (batterie 160 kWh, moteur électrique 163 kW pour la superstructure). Diesel Mercedes-Benz OM471LA 390 kW (puissance en hp non publiée). 10 x 6 x 10."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GMK5150XLe",
+   "specs": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "68.7 m",
+    "Hauteur max": "96 m",
+    "Essieux": "5",
+    "Puissance moteur": "390 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "44.5 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/all-terrain-cranes/gmk5150xle",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/all-terrain-cranes/gmk5150xle",
+    "Hauteur max": "https://www.manitowoc.com/grove/all-terrain-cranes/gmk5150xle",
+    "Essieux": "https://www.manitowoc.com/media/18805/download",
+    "Puissance moteur": "https://www.manitowoc.com/media/18805/download",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/18805/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/18805/download"
+   },
+   "remarque": "Hybride rechargeable (batterie 160 kWh). Mercedes-Benz OM471LA 390 kW (hp non publié). 10 x 6 x 10."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "GRT550",
+   "specs": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "9.9-39 m",
+    "Hauteur max": "49 m",
+    "Essieux": "A completer",
+    "Puissance moteur": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/grove/rough-terrain-cranes/grt550",
+    "Fleche telescopique": "https://www.manitowoc.com/grove/rough-terrain-cranes/grt550",
+    "Hauteur max": "https://www.manitowoc.com/grove/rough-terrain-cranes/grt550"
+   },
+   "remarque": "La page fabricant ne publie que capacité, flèche, hauteur et poids (29 200 kg) ; aucun Product Guide téléchargeable sur la page."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "TMS9000-2",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : existe déjà en BD (2015-2020 ; encore en vente (2021-2024 manquent aussi)) ; specs à recopier de l'entrée existante."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Grove (Manitowoc)",
+   "modele": "TTS9000-2",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : existe déjà en BD (2018-2024) ; specs à recopier de l'entrée existante."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Kobelco",
+   "modele": "CK1200G-2 HDO",
+   "specs": {
+    "Capacite max": "109 t (120 USt)",
+    "Fleche telescopique": "70 m (230 ft) treillis",
+    "Hauteur max": "A completer",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "285 hp / 213 kW (Hino)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://kcmu-cranes.com/products/ck1200g-2-hdo/",
+    "Fleche telescopique": "https://kcmu-cranes.com/products/ck1200g-2-hdo/",
+    "Essieux": "https://kcmu-cranes.com/products/ck1200g-2-hdo/",
+    "Puissance moteur": "https://kcmu-cranes.com/products/ck1200g-2-hdo/"
+   },
+   "remarque": "Grue treillis sur chenilles. 120 USt et 230 ft convertis (108,9 t ; 70,1 m). Flèche + fléchette max. 190 ft + 70 ft. Moteur Hino Tier 4 intérimaire. La fiche technique n'existe qu'en flipbook anyflip (non lisible) : hauteur, voltage et contrepoids non trouvés. KCMU liste aussi une CK1200G-3 HDO plus récente."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTC 1050-3.1E",
+   "specs": {
+    "Capacite max": "50 t",
+    "Fleche telescopique": "8.1-36 m",
+    "Hauteur max": "48 m",
+    "Essieux": "3",
+    "Puissance moteur": "243 kW (Cummins) + 72 kW électrique (grue)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "6.5 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/mobile-cranes/ltc-compact-cranes/ltc-1050-3-1-e-4407366",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/mobile-cranes/ltc-compact-cranes/ltc-1050-3-1-e-4407366",
+    "Hauteur max": "https://www.liebherr.com/en-us/mobile-cranes/ltc-compact-cranes/ltc-1050-3-1-e-4407366",
+    "Essieux": "https://www.liebherr.com/en-us/mobile-cranes/ltc-compact-cranes/ltc-1050-3-1-e-4407366",
+    "Puissance moteur": "https://www.liebherr.com/en-us/mobile-cranes/ltc-compact-cranes/ltc-1050-3-1-e-4407366",
+    "Contrepoids max": "https://www.liebherr.com/en-us/mobile-cranes/ltc-compact-cranes/ltc-1050-3-1-e-4407366"
+   },
+   "remarque": "Grue compacte avec entraînement électrique de la grue (72 kW) ; fiche séparée de la LTC 1050-3.1 diesel (variante possible). Voltage non trouvé dans la fiche technique."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTM 1090-4.2",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : existe déjà en BD (2015-2023 ; toujours dans la liste US (2024 manque aussi)) ; specs à recopier de l'entrée existante."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTM 1150-5.4",
+   "specs": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "12.3-66 m",
+    "Hauteur max": "92 m",
+    "Essieux": "5",
+    "Puissance moteur": "400 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "45 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4-7482951",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4-7482951",
+    "Hauteur max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4-7482951",
+    "Essieux": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4-7482951",
+    "Puissance moteur": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4-7482951",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/5643cffc-97da-4b8e-b794-3436aadf9282/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4-7482951"
+   },
+   "remarque": "10 x 6 x 10 standard (10 x 8 x 10 en option). Puissance publiée en kW seulement."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTM 1150-5.4E",
+   "specs": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "12.3-66 m",
+    "Hauteur max": "92 m",
+    "Essieux": "5",
+    "Puissance moteur": "400 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "45 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4e-7490068",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4e-7490068",
+    "Hauteur max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4e-7490068",
+    "Essieux": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4e-7490068",
+    "Puissance moteur": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4e-7490068",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/019fb2bd-7725-7cac-8c7b-798102336d45/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1150-5-4e-7490068"
+   },
+   "remarque": "Version électrique (fiche séparée) ; données grue identiques à la LTM 1150-5.4."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTM 1300-6.3",
+   "specs": {
+    "Capacite max": "300 t",
+    "Fleche telescopique": "14.7-90 m",
+    "Hauteur max": "120 m",
+    "Essieux": "6",
+    "Puissance moteur": "455 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "88 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1300-6-3-4407354",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1300-6-3-4407354",
+    "Hauteur max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1300-6-3-4407354",
+    "Essieux": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1300-6-3-4407354",
+    "Puissance moteur": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1300-6-3-4407354",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/24faacdb-486d-4968-a383-de8e7f0ef8f4/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1300-6-3-4407354"
+   },
+   "remarque": "12 x 6 x 12 standard."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTM 1400-6.1",
+   "specs": {
+    "Capacite max": "450 t",
+    "Fleche telescopique": "14.8-70 m",
+    "Hauteur max": "120 m",
+    "Essieux": "6",
+    "Puissance moteur": "455 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "140 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1400-6-1-6910741",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1400-6-1-6910741",
+    "Hauteur max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1400-6-1-6910741",
+    "Essieux": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1400-6-1-6910741",
+    "Puissance moteur": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1400-6-1-6910741",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/01a00f2e-81b8-7a56-b32d-187666ac5889/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/mobile-cranes/ltm-mobile-cranes/ltm-1400-6-1-6910741"
+   },
+   "remarque": "Capacité max. 450 t malgré le nom « 1400 ». 12 x 6 x 12 standard."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTR 1040",
+   "specs": {
+    "Capacite max": "42 t",
+    "Fleche telescopique": "10.2-40 m",
+    "Hauteur max": "55 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "129 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "5.6 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1040-4407456",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1040-4407456",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1040-4407456",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1040-4407456",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1040-4407456",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/01a06c50-be6e-786c-b241-463ef9288c4a/original/",
+    "Contrepoids max": "https://assets-cdn.liebherr.com/versions/01a06c50-be6e-786c-b241-463ef9288c4a/original/"
+   },
+   "remarque": "Grue télescopique sur chenilles (version allégée de la LTR 1060). Lest 5,6 t selon la fiche technique."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTR 1060",
+   "specs": {
+    "Capacite max": "60 t",
+    "Fleche telescopique": "10.2-40 m",
+    "Hauteur max": "55 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "129 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "15.6 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1060-4407455",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1060-4407455",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1060-4407455",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1060-4407455",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1060-4407455",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/019f7f63-404f-7038-94b8-3612021a47d5/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1060-4407455"
+   },
+   "remarque": "Grue télescopique sur chenilles."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTR 1100",
+   "specs": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "11.5-52 m",
+    "Hauteur max": "83 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "129 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "32 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1100-4407458",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1100-4407458",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1100-4407458",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1100-4407458",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1100-4407458",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/6bc7c073-bc29-4772-b418-bdaad9aa30ee/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1100-4407458"
+   },
+   "remarque": "Grue télescopique sur chenilles."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTR 1150",
+   "specs": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "11.4-52 m",
+    "Hauteur max": "89 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "218 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "41 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1150-4407457",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1150-4407457",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1150-4407457",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1150-4407457",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1150-4407457",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/019f92de-21be-75c6-a63d-0ce891174c7a/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1150-4407457"
+   },
+   "remarque": "Grue télescopique sur chenilles."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LTR 1220",
+   "specs": {
+    "Capacite max": "220 t",
+    "Fleche telescopique": "13.3-60 m",
+    "Hauteur max": "101 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "230 kW",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "90 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1220-4407459",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1220-4407459",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1220-4407459",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1220-4407459",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1220-4407459",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/449da078-e55b-4a27-8230-f4c81e4e8227/original/",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/ltr-telescopic-crawler-cranes/ltr-1220-4407459"
+   },
+   "remarque": "Grue télescopique sur chenilles."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "120|TT",
+   "specs": {
+    "Capacite max": "110 t",
+    "Fleche telescopique": "11.7-50 m",
+    "Hauteur max": "79.7 m",
+    "Essieux": "4",
+    "Puissance moteur": "445 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "22.2 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/120tt/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/truck-terrain-cranes/120tt/",
+    "Hauteur max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/120tt/",
+    "Essieux": "https://www.linkbelt.com/wp-content/uploads/2024/01/120TT-Technical-Data.pdf",
+    "Puissance moteur": "https://www.linkbelt.com/wp-content/uploads/2024/01/120TT-Technical-Data.pdf",
+    "Voltage machine (V/type)": "https://www.linkbelt.com/wp-content/uploads/2024/01/120TT-Technical-Data.pdf",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/120TT-Technical-Data.pdf"
+   },
+   "remarque": "Truck Terrain 8 x 4. Puissance : la fiche technique dit 445 hp (339 kW) @ 1 600 rpm, la page web « 455 HP » (écart chez le fabricant). Contrepoids max. 49 100 lb (22,2 t)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "120|TTLB",
+   "specs": {
+    "Capacite max": "110 t",
+    "Fleche telescopique": "12.1-60 m",
+    "Hauteur max": "80.1 m",
+    "Essieux": "4",
+    "Puissance moteur": "445 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "22.2 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/120ttlb/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/truck-terrain-cranes/120ttlb/",
+    "Hauteur max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/120ttlb/",
+    "Essieux": "https://www.linkbelt.com/wp-content/uploads/2025/01/LIT5867_120TTLB.pdf",
+    "Puissance moteur": "https://www.linkbelt.com/wp-content/uploads/2025/01/LIT5867_120TTLB.pdf",
+    "Voltage machine (V/type)": "https://www.linkbelt.com/wp-content/uploads/2025/01/LIT5867_120TTLB.pdf",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2025/01/LIT5867_120TTLB.pdf"
+   },
+   "remarque": "Truck Terrain 8 x 4, flèche longue. Page et fiche : Cummins X12 445 hp. Contrepoids max. 49 100 lb (22,2 t)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "248|V",
+   "specs": {
+    "Capacite max": "181 t",
+    "Fleche telescopique": "16.8-83.8 m treillis",
+    "Hauteur max": "105.76 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "282 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "80.1 t (64.2 t supérieur + 16 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/248v/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/248v/",
+    "Hauteur max": "https://www.linkbelt.com/wp-content/uploads/2026/04/LIT5874_V8_248V_Book.pdf",
+    "Essieux": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/248v/",
+    "Puissance moteur": "https://www.linkbelt.com/wp-content/uploads/2026/04/LIT5874_V8_248V_Book.pdf",
+    "Voltage machine (V/type)": "https://www.linkbelt.com/wp-content/uploads/2026/04/LIT5874_V8_248V_Book.pdf",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2026/04/LIT5874_V8_248V_Book.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles (fiche marquée « PRELIMINARY »). Hauteur = flèche 245 ft + fléchette fixe 100 ft (347 ft / 105,76 m) ; flèche seule 85,14 m. Contrepoids = supérieur 64 183 kg + 2 x 7 983 kg carrosserie (somme 80 149 kg)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "HTT-86100",
+   "specs": {
+    "Capacite max": "85 t",
+    "Fleche telescopique": "11.6-42.7 m",
+    "Hauteur max": "72.2 m",
+    "Essieux": "4",
+    "Puissance moteur": "450 hp",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "17.9 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-86100/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-86100/",
+    "Hauteur max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-86100/",
+    "Essieux": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86100-Technical-Data.pdf",
+    "Puissance moteur": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86100-Technical-Data.pdf",
+    "Voltage machine (V/type)": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86100-Technical-Data.pdf",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86100-Technical-Data.pdf"
+   },
+   "remarque": "Truck Terrain 8 x 4. Le fabricant publie 100 USt = 85 t métriques (cote métrique distincte, pas une conversion). Contrepoids max. 39 500 lb (17,9 t)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "HTT-86110",
+   "specs": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "11.7-50 m",
+    "Hauteur max": "79.7 m",
+    "Essieux": "4",
+    "Puissance moteur": "450 hp",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "22 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-86110/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-86110/",
+    "Hauteur max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-86110/",
+    "Essieux": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86110-Technical-Data.pdf",
+    "Puissance moteur": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86110-Technical-Data.pdf",
+    "Voltage machine (V/type)": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86110-Technical-Data.pdf",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT86110-Technical-Data.pdf"
+   },
+   "remarque": "Truck Terrain 8 x 4. Puissance : la fiche technique dit 450 hp (336 kW) version EPA, la page web « 455 HP » (écart chez le fabricant). Contrepoids max. 48 600 lb (22 t)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "HTT-8675 Series II",
+   "specs": {
+    "Capacite max": "A completer",
+    "Fleche telescopique": "12.5-38.7 m",
+    "Hauteur max": "70.2 m",
+    "Essieux": "4",
+    "Puissance moteur": "450 hp",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "8.2 t"
+   },
+   "sources": {
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-8675-series-ii/",
+    "Hauteur max": "https://www.linkbelt.com/cranes/truck-terrain-cranes/htt-8675-series-ii/",
+    "Essieux": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT-8675-Technical-Data.pdf",
+    "Puissance moteur": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT-8675-Technical-Data.pdf",
+    "Voltage machine (V/type)": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT-8675-Technical-Data.pdf",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/HTT-8675-Technical-Data.pdf"
+   },
+   "remarque": "Capacité métrique contradictoire chez le fabricant : la page web dit 75 USt = 65 mt, la fiche technique HTT-8675 II dit 70 metric ton. À trancher avant import. Contrepoids max. 18 400 lb (8,2 t)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "LBC1000",
+   "specs": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "12-60 m treillis",
+    "Hauteur max": "A completer",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "280 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "49.5 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1000/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1000/",
+    "Essieux": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1000/",
+    "Puissance moteur": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1000/",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/LBC1000-Tech-Data.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles (Isuzu 6HK1). La page dit 280 hp / 209 kW, la fiche technique (Tier 3) 200,6 kW (272 ps) : écart chez le fabricant. Hauteur de pointe non publiée. Contrepoids 49,5 t (37,5 supérieur + 12 inférieur)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "LBC1200",
+   "specs": {
+    "Capacite max": "120 t",
+    "Fleche telescopique": "15-75 m treillis",
+    "Hauteur max": "A completer",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "269 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "49.6 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1200/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1200/",
+    "Essieux": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1200/",
+    "Puissance moteur": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1200/",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/LBC1200-Tech-Data.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles (Isuzu 6HK1, 201 kW). Hauteur de pointe non publiée."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "LBC1500",
+   "specs": {
+    "Capacite max": "150 t",
+    "Fleche telescopique": "15-75 m treillis",
+    "Hauteur max": "A completer",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "269 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "65.4 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1500/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1500/",
+    "Essieux": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1500/",
+    "Puissance moteur": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1500/",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/LBC1500-Tech-Data.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles (Isuzu 6HK1, 201 kW). Contrepoids 65,4 t (56,4 superstructure + 9,0 train de roulement)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "LBC1800",
+   "specs": {
+    "Capacite max": "180 t",
+    "Fleche telescopique": "12-84 m treillis",
+    "Hauteur max": "A completer",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "280 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "83 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1800/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1800/",
+    "Essieux": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1800/",
+    "Puissance moteur": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc1800/",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/LBC1800-Tech-Data.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles (Cummins QSB6.7, 209 kW). Contrepoids 83 t (67 superstructure + 16 inférieur)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Link-Belt",
+   "modele": "LBC2800",
+   "specs": {
+    "Capacite max": "275 t",
+    "Fleche telescopique": "15.3-91.5 m treillis",
+    "Hauteur max": "A completer",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "364 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "124.3 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc2800/",
+    "Fleche telescopique": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc2800/",
+    "Essieux": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc2800/",
+    "Puissance moteur": "https://www.linkbelt.com/cranes/lattice-crawler-cranes/lbc2800/",
+    "Contrepoids max": "https://www.linkbelt.com/wp-content/uploads/2024/01/LBC2800-Tech-Data.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles (Cummins QSL9). La page dit 364 hp / 272 kW, la fiche technique 280 kW (375 PS) : écart chez le fabricant. Contrepoids 124,3 t (100,2 + 24,1)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Maeda",
+   "modele": "MC285CB",
+   "specs": {
+    "Capacite max": "2.82 t",
+    "Fleche telescopique": "2.535-8.575 m",
+    "Hauteur max": "8.7 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "7.5 kW (électrique)",
+    "Voltage machine (V/type)": "Batterie lithium-titanate DC55V",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://maedaamerica.com/product/mc285cb/",
+    "Fleche telescopique": "https://maedaamerica.com/wp-content/uploads/MC285CB-3-1.pdf",
+    "Hauteur max": "https://maedaamerica.com/wp-content/uploads/MC285CB-3-1.pdf",
+    "Essieux": "https://maedaamerica.com/wp-content/uploads/MC285CB-3-1.pdf",
+    "Puissance moteur": "https://maedaamerica.com/wp-content/uploads/MC285CB-3-1.pdf",
+    "Voltage machine (V/type)": "https://maedaamerica.com/wp-content/uploads/MC285CB-3-1.pdf"
+   },
+   "remarque": "Mini-grue 100 % électrique à batterie (code fiche MC285CWMB-3US). Contrepoids non mentionné dans la fiche."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Maeda",
+   "modele": "MC305CB",
+   "specs": {
+    "Capacite max": "2.98 t",
+    "Fleche telescopique": "3.695-12.485 m",
+    "Hauteur max": "12.52 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "7.5 kW (électrique)",
+    "Voltage machine (V/type)": "Batterie lithium-titanate DC55V",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://maedaamerica.com/product/mc305cb/",
+    "Fleche telescopique": "https://maedaamerica.com/wp-content/uploads/MC305CB-3-1.pdf",
+    "Hauteur max": "https://maedaamerica.com/wp-content/uploads/MC305CB-3-1.pdf",
+    "Essieux": "https://maedaamerica.com/wp-content/uploads/MC305CB-3-1.pdf",
+    "Puissance moteur": "https://maedaamerica.com/wp-content/uploads/MC305CB-3-1.pdf",
+    "Voltage machine (V/type)": "https://maedaamerica.com/wp-content/uploads/MC305CB-3-1.pdf"
+   },
+   "remarque": "Mini-grue 100 % électrique à batterie (code fiche MC305CRMB-3US). Contrepoids non mentionné."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Maeda",
+   "modele": "MK3053C",
+   "specs": {
+    "Capacite max": "3 t (6 560 lb)",
+    "Fleche telescopique": "A completer",
+    "Hauteur max": "16.95 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://maedaamerica.com/product/mk3053c/",
+    "Hauteur max": "https://maedaamerica.com/product/mk3053c/",
+    "Essieux": "https://maedaamerica.com/product/mk3053c/"
+   },
+   "remarque": "Mini-grue à flèche articulée (knuckle boom) : type à décider avant import. 6 560 lb converti (2 976 kg). Hauteur 16,95 m avec fléchette (12,0 m flèche seule). La page indique aussi « 2,200t x 17.1ft with Jib » (incohérent) ; la fiche PDF est en image, illisible. Versions batterie et diesel/électrique offertes."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "1970 C",
+   "specs": {
+    "Capacite max": "17.2 t",
+    "Fleche telescopique": "21.3 m",
+    "Hauteur max": "36.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/c-mount/1970-c/",
+    "Fleche telescopique": "https://www.manitex.com/c-mount/1970-c/",
+    "Hauteur max": "https://www.manitex.com/wp-content/uploads/2025/12/Doc_Tadano_cm-190_datasheet_imperial_en.pdf",
+    "Essieux": "https://www.manitex.com/c-mount/1970-c/",
+    "Puissance moteur": "https://www.manitex.com/c-mount/1970-c/"
+   },
+   "remarque": "Grue sur camion (c-mount). 19 ton (17,2 mton) ; flèche 3 sections 27-70 ft. Hauteur 121 ft 3 in (36,9 m) avec fléchette télescopique."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "2281 C/T",
+   "specs": {
+    "Capacite max": "19.9 t",
+    "Fleche telescopique": "24.7 m",
+    "Hauteur max": "40.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/c-mount/2281-c-t/",
+    "Fleche telescopique": "https://www.manitex.com/wp-content/uploads/2025/12/Doc_Tadano_cm-220_datasheet_imperial_en.pdf",
+    "Hauteur max": "https://www.manitex.com/wp-content/uploads/2025/12/Doc_Tadano_cm-220_datasheet_imperial_en.pdf",
+    "Essieux": "https://www.manitex.com/c-mount/2281-c-t/",
+    "Puissance moteur": "https://www.manitex.com/c-mount/2281-c-t/"
+   },
+   "remarque": "Grue sur camion. 22 ton (19,9 mton) ; flèche 4 sections 81 ft. Hauteur 132 ft (40,2 m) avec fléchette selon la fiche (la page dit 133 ft)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "35100C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : existe déjà en BD (2015-2022 ; encore listé (2023-2024 manquent aussi)) ; specs à recopier de l'entrée existante."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "TC40127",
+   "specs": {
+    "Capacite max": "36.3 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "57.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Hauteur max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Essieux": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Puissance moteur": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf"
+   },
+   "remarque": "ERREUR SUR LA PAGE : la page TC40127 recopie celle de la TC45142 (45 t, 142 ft). La fiche TC400/TC450 donne 40 ton (36,3 mt), flèche 127 ft (38,7 m), hauteur 190 ft (57,9 m) avec fléchette. La capacité 45 t du fichier d'entrée est donc fausse."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "TC45127",
+   "specs": {
+    "Capacite max": "40.8 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "57.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Hauteur max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Essieux": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Puissance moteur": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf"
+   },
+   "remarque": "La page TC45127 affiche 142 ft (copie de la TC45142) ; la fiche TC400/TC450 donne flèche 127 ft (38,7 m) et hauteur 190 ft (57,9 m) avec fléchette."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "TC45142",
+   "specs": {
+    "Capacite max": "40.8 t",
+    "Fleche telescopique": "43.3 m",
+    "Hauteur max": "62.5 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V ou 24V (selon châssis)",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/tc/tc45142/",
+    "Fleche telescopique": "https://www.manitex.com/tc/tc45142/",
+    "Hauteur max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf",
+    "Essieux": "https://www.manitex.com/tc/tc45142/",
+    "Puissance moteur": "https://www.manitex.com/tc/tc45142/",
+    "Voltage machine (V/type)": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-400_tc-450_datasheet_imperial_en.pdf"
+   },
+   "remarque": "Hauteur 205 ft (62,5 m) avec fléchette selon la fiche ; la page indique 204 ft (62,1 m)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "TC50128X",
+   "specs": {
+    "Capacite max": "45 t (50 USt)",
+    "Fleche telescopique": "39 m (128 ft)",
+    "Hauteur max": "A completer",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "5 t (10 000 lb)"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/wp-content/uploads/2023/10/TC500XBrochure-1.pdf",
+    "Fleche telescopique": "https://www.manitex.com/wp-content/uploads/2023/10/TC500XBrochure-1.pdf",
+    "Essieux": "https://www.manitex.com/wp-content/uploads/2023/10/TC500XBrochure-1.pdf",
+    "Puissance moteur": "https://www.manitex.com/wp-content/uploads/2023/10/TC500XBrochure-1.pdf",
+    "Contrepoids max": "https://www.manitex.com/wp-content/uploads/2023/10/TC500XBrochure-1.pdf"
+   },
+   "remarque": "La page TC50128X ne publie aucune valeur. Capacité 100 000 lb (charte TC500X), flèche 38,5-128 ft et contrepoids amovible 10 000 lb convertis. La fiche TC500.1 liée sur la page porte sur la TC50128 (série .1), pas la X : non utilisée."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "TC50155X",
+   "specs": {
+    "Capacite max": "45 t (50 USt)",
+    "Fleche telescopique": "47 m (155 ft)",
+    "Hauteur max": "62 m (204 ft)",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "5 t (10 000 lb)"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/wp-content/uploads/2023/10/TC50155X-Brochure.pdf",
+    "Fleche telescopique": "https://www.manitex.com/wp-content/uploads/2023/10/TC50155X-Brochure.pdf",
+    "Hauteur max": "https://www.manitex.com/tc/tc50155x/",
+    "Essieux": "https://www.manitex.com/tc/tc50155x/",
+    "Puissance moteur": "https://www.manitex.com/tc/tc50155x/",
+    "Contrepoids max": "https://www.manitex.com/wp-content/uploads/2023/10/TC50155X-Brochure.pdf"
+   },
+   "remarque": "Page : 50t, 128' & 155', 204'. Brochure : 100 000 lb, flèche 38,5-155 ft, contrepoids 10 000 lb. Valeurs converties."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Manitex",
+   "modele": "TC65131",
+   "specs": {
+    "Capacite max": "59 t",
+    "Fleche telescopique": "39.92 m",
+    "Hauteur max": "59.1 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "4.536 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitex.com/tc/tc65131/",
+    "Fleche telescopique": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-650_datasheet_imperial_en.pdf",
+    "Hauteur max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-650_datasheet_imperial_en.pdf",
+    "Essieux": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-650_datasheet_imperial_en.pdf",
+    "Puissance moteur": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-650_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://www.manitex.com/wp-content/uploads/2025/10/doc_tadano_tc-650_datasheet_imperial_en.pdf"
+   },
+   "remarque": "65 USt (59 mt). Hauteur 194 ft (59,1 m) avec fléchette 2 pièces. Contrepoids 10 000 lb (4 536 kg)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "1400A",
+   "specs": {
+    "Capacite max": "29.9 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "52.4 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/swing-seat-boom-trucks/1400a",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/swing-seat-boom-trucks/1400a",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/swing-seat-boom-trucks/1400a",
+    "Essieux": "https://www.manitowoc.com/national-crane/swing-seat-boom-trucks/1400a",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/swing-seat-boom-trucks/1400a",
+    "Contrepoids max": "https://www.manitowoc.com/media/12881/download"
+   },
+   "remarque": "Siège pivotant (swing seat). 33 USt. Fléchette 9,1 m. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "1400H",
+   "specs": {
+    "Capacite max": "29.9 t",
+    "Fleche telescopique": "38.7 m",
+    "Hauteur max": "50.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/1400h",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/1400h",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/1400h",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/1400h",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/1400h",
+    "Contrepoids max": "https://www.manitowoc.com/media/12835/download"
+   },
+   "remarque": "Stand-up boom truck. 33 USt. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "400B",
+   "specs": {
+    "Capacite max": "9.1 t",
+    "Fleche telescopique": "17.1 m",
+    "Hauteur max": "20.1 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/400b",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/400b",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/400b",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/400b",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/400b",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/12769/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/12769/download"
+   },
+   "remarque": "Stand-up boom truck. 10 USt. Circuit grue 12 VDC. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "500E2",
+   "specs": {
+    "Capacite max": "16.3 t",
+    "Fleche telescopique": "21.6 m",
+    "Hauteur max": "36.9 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/500e2",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/500e2",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/500e2",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/500e2",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/500e2",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/15093/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/15093/download"
+   },
+   "remarque": "Stand-up boom truck. 18 USt. Circuit grue 12 VDC. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "600E2",
+   "specs": {
+    "Capacite max": "18.1 t",
+    "Fleche telescopique": "27.4 m",
+    "Hauteur max": "44 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600e2",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600e2",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600e2",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600e2",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600e2",
+    "Contrepoids max": "https://www.manitowoc.com/media/12787/download"
+   },
+   "remarque": "Stand-up boom truck. 20 USt. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "600H",
+   "specs": {
+    "Capacite max": "18.1 t",
+    "Fleche telescopique": "27.4 m",
+    "Hauteur max": "30.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600h",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600h",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600h",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600h",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/600h",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/12794/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/12794/download"
+   },
+   "remarque": "Stand-up boom truck. 20 USt. Circuit grue 12 VDC. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "800D",
+   "specs": {
+    "Capacite max": "20.9 t",
+    "Fleche telescopique": "30.5 m",
+    "Hauteur max": "46.3 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "12V DC",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/800d",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/800d",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/800d",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/800d",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/800d",
+    "Voltage machine (V/type)": "https://www.manitowoc.com/media/12801/download",
+    "Contrepoids max": "https://www.manitowoc.com/media/12801/download"
+   },
+   "remarque": "Stand-up boom truck. 23 USt. Circuit grue 12 VDC. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "National Crane",
+   "modele": "900A",
+   "specs": {
+    "Capacite max": "23.6 t",
+    "Fleche telescopique": "31.4 m",
+    "Hauteur max": "47.2 m",
+    "Essieux": "Selon châssis",
+    "Puissance moteur": "Selon châssis",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "Selon châssis"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/900a",
+    "Fleche telescopique": "https://www.manitowoc.com/national-crane/stand-boom-trucks/900a",
+    "Hauteur max": "https://www.manitowoc.com/national-crane/stand-boom-trucks/900a",
+    "Essieux": "https://www.manitowoc.com/national-crane/stand-boom-trucks/900a",
+    "Puissance moteur": "https://www.manitowoc.com/national-crane/stand-boom-trucks/900a",
+    "Contrepoids max": "https://www.manitowoc.com/media/12808/download"
+   },
+   "remarque": "Stand-up boom truck. 26 USt. Contrepoids : la fiche dit qu'un contrepoids est requis si le poids minimum du camion n'est pas atteint (selon châssis)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "AC 3.045-1 City",
+   "specs": {
+    "Capacite max": "45 t",
+    "Fleche telescopique": "7.8-31.2 m",
+    "Hauteur max": "46 m",
+    "Essieux": "3",
+    "Puissance moteur": "348 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "5.3 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.tadano.com/uscan/en/lifting-equipment/city-cranes/ac-3-045-1-city/",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/city-cranes/ac-3-045-1-city/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/city-cranes/ac-3-045-1-city/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/city-cranes/ac-3-045-1-city/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/408382246333bbac/original/doc_tadano_AC3045-1-City_datasheet_metric_en_de_fr_it_es_pt_ru.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/city-cranes/ac-3-045-1-city/"
+   },
+   "remarque": "Grue de ville 3 essieux, 6 x 4 x 6 (6 x 6 x 6 en option). Mercedes-Benz OM936LA 260 kW (348 HP). Voltage non trouvé."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "CC 78.1250-1",
+   "specs": {
+    "Capacite max": "1250 t",
+    "Fleche telescopique": "30-209.5 m treillis",
+    "Hauteur max": "229 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "2 x 429 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "290 t (+ lest central 180 t, Superlift 540 t)"
+   },
+   "sources": {
+    "Capacite max": "https://www.tadano.com/uscan/en/lifting-equipment/lattice-boom-crawler-cranes/cc-78-1250-1/",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/lattice-boom-crawler-cranes/cc-78-1250-1/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/lattice-boom-crawler-cranes/cc-78-1250-1/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/lattice-boom-crawler-cranes/cc-78-1250-1/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/675ef0e0883dc200/original/doc_tadano_CC781250-1_datasheet_metric_en_de_fr_it_es_pt_ru.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/675ef0e0883dc200/original/doc_tadano_CC781250-1_datasheet_metric_en_de_fr_it_es_pt_ru.pdf",
+    "Contrepoids max": "https://mediahub.tadano.com/m/675ef0e0883dc200/original/doc_tadano_CC781250-1_datasheet_metric_en_de_fr_it_es_pt_ru.pdf"
+   },
+   "remarque": "Grue treillis sur chenilles. 2 moteurs Mercedes-Benz OM470LA 2 x 320 kW. Contrepoids superstructure max. 290 t ; lest central max. 180 t ; contrepoids Superlift max. 540 t en opération."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-1300",
+   "specs": {
+    "Capacite max": "118 t (130 USt)",
+    "Fleche telescopique": "12.8-47.2 m",
+    "Hauteur max": "79 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "350 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "31.75 t"
+   },
+   "sources": {
+    "Capacite max": "https://mediahub.tadano.com/m/55fd9a58db5401b0/original/doc_tadano_GTC1300_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1300/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1300/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1300/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/55fd9a58db5401b0/original/doc_tadano_GTC1300_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/55fd9a58db5401b0/original/doc_tadano_GTC1300_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1300/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis les USt : la page Tadano US affiche en « t » le même chiffre qu'en USt (fiche impériale : 130 US TON), la valeur « t » du site n'est donc pas fiable."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-1390",
+   "specs": {
+    "Capacite max": "91 t (100 USt)",
+    "Fleche telescopique": "12.8-47.2 m",
+    "Hauteur max": "79 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "31.75 t"
+   },
+   "sources": {
+    "Capacite max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1390/",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1390/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1390/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1390/",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-1390/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis 100 USt (page métrique : 90 t). Aucune fiche technique sur la page : puissance et voltage non trouvés."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-350",
+   "specs": {
+    "Capacite max": "32 t (35 USt)",
+    "Fleche telescopique": "10.9-27.2 m",
+    "Hauteur max": "40 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "173 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "5.67 t"
+   },
+   "sources": {
+    "Capacite max": "https://mediahub.tadano.com/m/1cdd42e77aabf1f2/original/doc_tadano_GTC350_datasheet_metric_en_de_fr_it_es_pt.pdf",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-350/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-350/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-350/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/1cdd42e77aabf1f2/original/doc_tadano_GTC350_datasheet_metric_en_de_fr_it_es_pt.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/1cdd42e77aabf1f2/original/doc_tadano_GTC350_datasheet_metric_en_de_fr_it_es_pt.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-350/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis les USt : la page Tadano US affiche en « t » le même chiffre qu'en USt (la fiche métrique montre un crochet max. de 31,7 t), la valeur « t » du site n'est donc pas fiable."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-600-2",
+   "specs": {
+    "Capacite max": "54 t (60 USt)",
+    "Fleche telescopique": "11.0-34.7 m",
+    "Hauteur max": "49.9 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "260 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "12.791 t"
+   },
+   "sources": {
+    "Capacite max": "https://mediahub.tadano.com/m/200f8014f83d65a9/original/doc_tadano_GTC600-2_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-600-2/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-600-2/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-600-2/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/200f8014f83d65a9/original/doc_tadano_GTC600-2_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/200f8014f83d65a9/original/doc_tadano_GTC600-2_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-600-2/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis les USt : la page Tadano US affiche en « t » le même chiffre qu'en USt (fiche impériale : 60 US TON), la valeur « t » du site n'est donc pas fiable."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-700",
+   "specs": {
+    "Capacite max": "64 t (70 USt)",
+    "Fleche telescopique": "11.5-36.0 m",
+    "Hauteur max": "55.2 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "310 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "13.608 t"
+   },
+   "sources": {
+    "Capacite max": "https://mediahub.tadano.com/m/4d3a2d8e2cc982d8/original/doc_tadano_GTC700_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-700/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-700/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-700/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/4d3a2d8e2cc982d8/original/doc_tadano_GTC700_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/4d3a2d8e2cc982d8/original/doc_tadano_GTC700_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-700/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis les USt : la page Tadano US affiche en « t » le même chiffre qu'en USt (fiche impériale : 70 US TON), la valeur « t » du site n'est donc pas fiable."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-900",
+   "specs": {
+    "Capacite max": "82 t (90 USt)",
+    "Fleche telescopique": "11.5-43.0 m",
+    "Hauteur max": "60.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "310 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "20.411 t"
+   },
+   "sources": {
+    "Capacite max": "https://mediahub.tadano.com/m/584fda98808c46fb/original/doc_tadano_GTC900_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-900/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-900/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-900/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/584fda98808c46fb/original/doc_tadano_GTC900_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/584fda98808c46fb/original/doc_tadano_GTC900_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-900/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis les USt : la page Tadano US affiche en « t » le même chiffre qu'en USt (fiche impériale : 90 US TON), la valeur « t » du site n'est donc pas fiable."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Tadano",
+   "modele": "GTC-980",
+   "specs": {
+    "Capacite max": "73 t (80 USt)",
+    "Fleche telescopique": "11.5-43.0 m",
+    "Hauteur max": "60.4 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "310 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "20.411 t"
+   },
+   "sources": {
+    "Capacite max": "https://mediahub.tadano.com/m/19509f24e42ea85/original/doc_tadano_GTC980_datasheet_imperial_en.pdf",
+    "Fleche telescopique": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-980/",
+    "Hauteur max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-980/",
+    "Essieux": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-980/",
+    "Puissance moteur": "https://mediahub.tadano.com/m/19509f24e42ea85/original/doc_tadano_GTC980_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://mediahub.tadano.com/m/19509f24e42ea85/original/doc_tadano_GTC980_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://www.tadano.com/uscan/en/lifting-equipment/telescopic-boom-crawler-cranes/gtc-980/"
+   },
+   "remarque": "Grue télescopique sur chenilles. Capacité convertie depuis les USt : la page Tadano US affiche en « t » le même chiffre qu'en USt (fiche impériale : 80 US TON ; flèche, hauteur et contrepoids identiques à la GTC-900), la valeur « t » du site n'est donc pas fiable."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Terex",
+   "modele": "TRT 40US",
+   "specs": {
+    "Capacite max": "36 t (40 USt)",
+    "Fleche telescopique": "30.1 m",
+    "Hauteur max": "41.1 m",
+    "Essieux": "2",
+    "Puissance moteur": "173 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "4 t (9 260 lb)"
+   },
+   "sources": {
+    "Capacite max": "https://raimondi.com/en/product/terex-trt-40us-rough-terrain-crane/",
+    "Fleche telescopique": "https://raimondi.com/en/product/terex-trt-40us-rough-terrain-crane/",
+    "Hauteur max": "https://raimondi.com/en/product/terex-trt-40us-rough-terrain-crane/",
+    "Essieux": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt40us-datasheet-imperial.pdf",
+    "Puissance moteur": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt40us-datasheet-imperial.pdf",
+    "Voltage machine (V/type)": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt40us-datasheet-imperial.pdf",
+    "Contrepoids max": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt40us-datasheet-imperial.pdf"
+   },
+   "remarque": "Grue tout-terrain (RT) Terex publiée par Raimondi ; lien avec les anciens RT Terex de la BD non établi. Capacité 80 000 lb convertie. Cummins QSB4.5 Tier 4F 173 BHP. Hauteur 135 ft avec fléchette."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Terex",
+   "modele": "TRT 55US",
+   "specs": {
+    "Capacite max": "50 t (55 USt)",
+    "Fleche telescopique": "37.4 m",
+    "Hauteur max": "47.5 m",
+    "Essieux": "2",
+    "Puissance moteur": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://raimondi.com/en/product/terex-trt-55us-rough-terrain-crane/",
+    "Fleche telescopique": "https://raimondi.com/en/product/terex-trt-55us-rough-terrain-crane/",
+    "Hauteur max": "https://raimondi.com/en/product/terex-trt-55us-rough-terrain-crane/",
+    "Essieux": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt55us_datasheet_imperial_en.pdf"
+   },
+   "remarque": "Grue tout-terrain (RT) Terex publiée par Raimondi ; lien avec les anciens RT Terex de la BD non établi. Capacité 110 000 lb convertie. Hauteur 156 ft (47,5 m) avec fléchette selon la page ; la fiche dit 157,5 ft. Fiche peu lisible : Cummins QSB6.7 Tier 4F/Stage V sans puissance chiffrée ; contrepoids et voltage non trouvés."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Terex",
+   "modele": "TRT 70US",
+   "specs": {
+    "Capacite max": "64 t (70 USt)",
+    "Fleche telescopique": "43.5 m",
+    "Hauteur max": "46 m",
+    "Essieux": "2",
+    "Puissance moteur": "225 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "4 t (8 820 lb)"
+   },
+   "sources": {
+    "Capacite max": "https://raimondi.com/en/product/terex-trt-70us-rough-terrain-crane/",
+    "Fleche telescopique": "https://raimondi.com/en/product/terex-trt-70us-rough-terrain-crane/",
+    "Hauteur max": "https://raimondi.com/en/product/terex-trt-70us-rough-terrain-crane/",
+    "Essieux": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt70us_datasheet_imperial_en.pdf",
+    "Puissance moteur": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt70us_datasheet_imperial_en.pdf",
+    "Voltage machine (V/type)": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt70us_datasheet_imperial_en.pdf",
+    "Contrepoids max": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt70us_datasheet_imperial_en.pdf"
+   },
+   "remarque": "Grue tout-terrain (RT) Terex publiée par Raimondi ; lien avec les anciens RT Terex de la BD non établi. La page affiche « 70T » pour 140 000 lb (= 70 USt, pas 70 t) : capacité recalculée. Hauteur 151 ft (46 m) flèche principale ; la page cite aussi 192 ft avec fléchette treillis optionnelle. Cummins QSB6.7 Tier 4f 225 hp."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Terex",
+   "modele": "TRT 80US",
+   "specs": {
+    "Capacite max": "73 t (80 USt)",
+    "Fleche telescopique": "42.1 m",
+    "Hauteur max": "A completer",
+    "Essieux": "2",
+    "Puissance moteur": "225 hp",
+    "Voltage machine (V/type)": "24V DC",
+    "Contrepoids max": "8 t (17 600 lb)"
+   },
+   "sources": {
+    "Capacite max": "https://raimondi.com/en/product/terex-trt-80us-rough-terrain-crane/",
+    "Fleche telescopique": "https://raimondi.com/en/product/terex-trt-80us-rough-terrain-crane/",
+    "Essieux": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt80us-datasheet-imperialef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bb.pdf",
+    "Puissance moteur": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt80us-datasheet-imperialef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bb.pdf",
+    "Voltage machine (V/type)": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt80us-datasheet-imperialef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bb.pdf",
+    "Contrepoids max": "https://aradawebcontent.blob.core.windows.net/raimondi-co/2026/06/trt80us-datasheet-imperialef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bbef41c5af47124ba0b6405354d7cdd5bb.pdf"
+   },
+   "remarque": "Grue tout-terrain (RT) Terex publiée par Raimondi ; lien avec les anciens RT Terex de la BD non établi. La page affiche « 80T » pour 160 000 lb (= 80 USt) : capacité recalculée. Hauteur contradictoire : page 195 ft (59,5 m), fiche 148 ft : à trancher. Cummins QSB6.7 Tier 4f 225 hp."
+  }
+ ]
+}

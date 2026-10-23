@@ -1,0 +1,1203 @@
+{
+ "lot": "s_excav",
+ "resultats": [
+  {
+   "type": "Excavatrice",
+   "fabricant": "Case",
+   "modele": "CX290D",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Case",
+   "modele": "CX30D",
+   "specs": {
+    "Puissance moteur (kW / HP)": "18.2 kW / 24.4 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.2 m / 3'11\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "3240 kg / 7143 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745",
+    "Longueur de stick (m / pi)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745",
+    "Swing boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/215498cea6ac4e13bafde0558ba1bf62?v=b3792745"
+   },
+   "remarque": "Fiche CX30D. Poids = cabine, chenilles caoutchouc (canopy 3020 kg / 6658 lbs). Bras court 1.2 m standard (long 1.4 m / 4'7\" en option). Swing boom en équipement standard. Système 12 volts. Longueur de flèche non publiée."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Case",
+   "modele": "CX34D",
+   "specs": {
+    "Puissance moteur (kW / HP)": "18.2 kW / 24.4 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.20 m / 3'11\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "3480 kg / 7672 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6",
+    "Longueur de stick (m / pi)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6",
+    "Swing boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/6a51279dbd7647e7b05e1d219b89a457?v=56042dc6"
+   },
+   "remarque": "Fiche CX34D (Form CCE202512CX34D). Poids = cabine (canopy 3350 kg / 7385 lbs). Bras court 1.20 m standard (long 1.40 m / 4'7\" en option). Swing boom standard (67° G / 60° D). Système 12 volts. Flèche non publiée."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Case",
+   "modele": "CX38D",
+   "specs": {
+    "Puissance moteur (kW / HP)": "18.2 kW / 24.4 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.65 m / 5'5\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "3910 kg / 8620 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91",
+    "Longueur de stick (m / pi)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91",
+    "Swing boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/744701c54cba4f6ea1463096f7479921?v=c3857c91"
+   },
+   "remarque": "Fiche CX38D. Standard : cabine fermée + bras long 1.65 m ; bras court 1.4 m / 4'7\" en option ; canopy 3780 kg / 8333 lbs. Swing boom standard. Système 12 volts. Flèche non publiée."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Case",
+   "modele": "CX500D",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Case",
+   "modele": "CX70E",
+   "specs": {
+    "Puissance moteur (kW / HP)": "44.3 kW / 59.4 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "7290 kg / 16072 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e98dfe01a9884c0f9c810c454ea1b604?v=3ba9e154",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e98dfe01a9884c0f9c810c454ea1b604?v=3ba9e154",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e98dfe01a9884c0f9c810c454ea1b604?v=3ba9e154",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e98dfe01a9884c0f9c810c454ea1b604?v=3ba9e154",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e98dfe01a9884c0f9c810c454ea1b604?v=3ba9e154"
+   },
+   "remarque": "Fiche CX70E (Form CCE202601CX70E) contradictoire : (1) équipement standard « Fixed Boom » sans option de flèche déportée, mais les commandes listent un « Boom swing » au joystick gauche (page produit aussi) et aucun angle de déport n'est publié -> Swing boom A completer ; (2) bras : dimensions à 1.76 m / 2.11 m, tableau de levage à 1900 / 2100 mm, « Long arm » en standard -> stick A completer. Système 12 volts malgré 7290 kg (fiche). Jumeau CNH du New Holland E70D (mêmes chiffres)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Develon (Doosan)",
+   "modele": "DX170LC-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "87.1 kW / 115.0 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.1 m / 16'9\"",
+    "Longueur de stick (m / pi)": "2.5 m / 8'2\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "17400 kg / 38360 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Type de traction": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Type de boom": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Longueur de fleche (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Longueur de stick (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Swing boom": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Voltage machine (V/type)": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b",
+    "Poids operationnel (kg / lbs)": "https://snxmbt.files.cmp.optimizely.com/download/10432b2c699411f18102c649d586fb4b"
+   },
+   "remarque": "Fiche Develon NA (D033126) : net SAE J1349 115.0 hp (87.1 kW) ; fleche 5100 mm (16' 8.8\"), bras standard 2500 mm (8' 2.4\") ; systeme 24 V ; aucune fleche a deport offerte (seulement 'intelligent floating boom' en option). Levage : tableau seulement, pas de max unique. Page : https://na.develon-ce.com/en/construction-equipment/crawler-excavators/dx170lc-7"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Develon (Doosan)",
+   "modele": "DX300LC-9",
+   "specs": {
+    "Puissance moteur (kW / HP)": "207.0 kW / 277.6 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.245 m / 20'6\"",
+    "Longueur de stick (m / pi)": "3.1 m / 10'2\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "34010 kg / 74979 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Type de traction": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Type de boom": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Longueur de fleche (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Longueur de stick (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Swing boom": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Voltage machine (V/type)": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753",
+    "Poids operationnel (kg / lbs)": "https://snxmbt.files.cmp.optimizely.com/download/08a8fdd4a18d11f19136e6a0331a1753"
+   },
+   "remarque": "Fiche Develon NA : net SAE J1349 277.6 hp (207.0 kW) ; poids = config. bras standard (US20/US25) ; bras long 3750 mm = 34420 kg / 75883 lb ; Super-Long-Reach (fleche 10200 mm, bras 7850 mm) = 34623 kg / 76331 lb ; 24 V. Page : https://na.develon-ce.com/en/construction-equipment/-9-series-excavators/dx300lc-9"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Develon (Doosan)",
+   "modele": "DX350LCR-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "199.0 kW / 266.9 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 ou 2 parties (au choix)",
+    "Longueur de fleche (m / pi)": "6.245 m / 20'6\"",
+    "Longueur de stick (m / pi)": "3.1 m / 10'2\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "36152 kg / 79702 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Type de traction": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Type de boom": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Longueur de fleche (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Longueur de stick (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Swing boom": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Voltage machine (V/type)": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c",
+    "Poids operationnel (kg / lbs)": "https://snxmbt.files.cmp.optimizely.com/download/141117c8699411f1ad90c261ab93569c"
+   },
+   "remarque": "Fiche Develon NA : fleche mono (US20) ou 2 pieces '2-PC' (US45, 6255 mm) offertes -> 'au choix'. Poids = mono + bras standard ; 2-PC = 36709 kg / 80929 lb. Net SAE J1349 266.9 hp (199.0 kW) ; 24 V. Page : https://na.develon-ce.com/en/construction-equipment/crawler-excavators/dx350lcr-7-crawler-excavator"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Develon (Doosan)",
+   "modele": "DX63-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "42.9 kW / 57.5 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "2.9 m / 9'6\"",
+    "Longueur de stick (m / pi)": "1.6 m / 5'3\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "6218 kg / 13708 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Type de traction": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Type de boom": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Longueur de fleche (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Longueur de stick (m / pi)": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Swing boom": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Voltage machine (V/type)": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec",
+    "Poids operationnel (kg / lbs)": "https://snxmbt.files.cmp.optimizely.com/download/994a1672699111f1861dea5b10937fec"
+   },
+   "remarque": "Fiche Develon NA : 'One-piece boom' avec verin de deport (boom swing 60 / 53 deg) -> Swing boom Oui. Poids = bras standard + cabine HVAC (13708.3 lb / 6218 kg) ; bras long 1900 mm = 6252 kg, bras long + SS = 6402 kg. Systeme 12 V (alternateur 12 V, batterie 12 V) malgre poids > 5000 kg -> 12V DC selon la fiche. Pas mini. Page : https://na.develon-ce.com/en/construction-equipment/mini-excavators/dx63-7"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hyundai",
+   "modele": "HW250A MH",
+   "specs": {
+    "Puissance moteur (kW / HP)": "127.0 kW / 170.0 HP",
+    "Type de traction": "Roue",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.5 m / 21'04\"",
+    "Longueur de stick (m / pi)": "4.5 m / 14'09\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "26500 kg / 58422 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Type de traction": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Type de boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Longueur de fleche (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Longueur de stick (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Swing boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Voltage machine (V/type)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf",
+    "Poids operationnel (kg / lbs)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hw250amh-ex-sp-0424-asv2lr.pdf"
+   },
+   "remarque": "Fiche PDF Hyundai NA : net SAE J1349 170 hp (127 kW) @ 2,200 rpm partout dans la fiche ; poids sans grappin 26,500 kg (58,420 lb au tableau, 58,422 lb en tete ; lbs = conversion exacte de 26500 kg). La note d'entree citait 26,400 kg sur la page web : la fiche dit 26,500 kg. Fleche droite (mono/straight) 6.5 m -> Boom 1 partie ; bras col-de-cygne 4.5 m (bras droit optionnel 4.0 m). Demarreur/alternateur 24 V. Avec grappin d'usine : 27,900 kg. Page : https://na.hd-hyundaice.com/equipment/special-equipment/hw250a-mh"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hyundai",
+   "modele": "HX220LL",
+   "specs": {
+    "Puissance moteur (kW / HP)": "121.4 kW / 163.0 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.15 m / 20'02\"",
+    "Longueur de stick (m / pi)": "3.66 m / 12'00\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "31200 kg / 68784 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Type de traction": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Type de boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Longueur de fleche (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Longueur de stick (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Swing boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Voltage machine (V/type)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf",
+    "Poids operationnel (kg / lbs)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220ll-1130-ex-spv7_0.pdf"
+   },
+   "remarque": "Fiche PDF : chargeur forestier (live heel 810 mm). 163 hp = net SAE J1349, 167 hp = brut (explique l'ecart releve sur la page). Poids = cabine standard ; cabine forestiere = 32,100 kg. Voltage non publie dans la fiche -> 24V DC par regle. Page : https://na.hd-hyundaice.com/equipment/special-equipment/hx220ll"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hyundai",
+   "modele": "HX220RB",
+   "specs": {
+    "Puissance moteur (kW / HP)": "121.4 kW / 163.0 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.7 m / 18'08\"",
+    "Longueur de stick (m / pi)": "2.9 m / 9'06\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "29900 kg / 65918 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Type de traction": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Type de boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Longueur de fleche (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Longueur de stick (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Swing boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Voltage machine (V/type)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf",
+    "Poids operationnel (kg / lbs)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx220rb-1131-ex-spv9.pdf"
+   },
+   "remarque": "Fiche PDF 'HX220RB Road Builder' : poids 29,900 kg (65,918 lb, coherent) ; 163 hp net / 167 hp brut (explique l'ecart de la page). L'autre poids vu sur la page web (63,714 lb) n'est pas dans la fiche. Bras 2.9 m retenu ; bras 3.5 m (11'6\") aussi publie. Voltage non publie -> 24V DC par regle. Page : https://na.hd-hyundaice.com/equipment/special-equipment/hx220rb"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hyundai",
+   "modele": "HX300LL",
+   "specs": {
+    "Puissance moteur (kW / HP)": "196.0 kW / 266.6 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.3 m / 20'08\"",
+    "Longueur de stick (m / pi)": "3.912 m / 12'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "37500 kg / 82673 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Type de traction": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Type de boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Longueur de fleche (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Longueur de stick (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Swing boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Voltage machine (V/type)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf",
+    "Poids operationnel (kg / lbs)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300ll-1126-ex-spv12.pdf"
+   },
+   "remarque": "Fiche PDF : chargeur forestier (live heel 990 mm). Net SAE J1349 196 kW (266.6 hp). Poids = cabine standard ; cabine forestiere = 38,300 kg / 84,437 lb. Voltage non publie -> 24V DC par regle. Page : https://na.hd-hyundaice.com/equipment/special-equipment/hx300ll"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hyundai",
+   "modele": "HX300RB",
+   "specs": {
+    "Puissance moteur (kW / HP)": "196.0 kW / 266.6 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.245 m / 20'06\"",
+    "Longueur de stick (m / pi)": "3.1 m / 10'02\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "A completer",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf",
+    "Type de traction": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf",
+    "Type de boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf",
+    "Longueur de fleche (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf",
+    "Longueur de stick (m / pi)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf",
+    "Swing boom": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf",
+    "Voltage machine (V/type)": "https://na.hd-hyundaice.com/sites/default/files/_documents/hx300rb-1127-ex-spv12.pdf"
+   },
+   "remarque": "POIDS INCOHERENT dans la fiche PDF : cabine standard '37,200 kg (83,012 lb)' alors que 37,200 kg = 82,012 lb et 83,012 lb = 37,654 kg ; cabine forestiere 37,600 kg (82,894 lb, coherente) serait plus legere en lb que la standard. Page web : 83,012 lbs vs 81,370 lb. Poids laisse 'A completer' : a trancher (probablement 37,200 kg / 82,012 lb, faute de frappe sur les lb, mais non prouve). Road Builder ; net 196 kW (266.6 hp) ; voltage non publie -> 24V DC par regle. Page : https://na.hd-hyundaice.com/equipment/special-equipment/hx300rb"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Kobelco",
+   "modele": "SK1300DLC-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "382 kW / 512.3 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "126601-136899 kg / 279105-301812 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk1300dlc-11",
+    "Poids operationnel (kg / lbs)": "https://issuu.com/kobelcousa/docs/sk1300dlc-11 (p.14, brochure Kobelco USA)",
+    "Voltage machine (V/type)": "https://issuu.com/kobelcousa/docs/sk1300dlc-11 (p.19 : Starting motor 24V, 2 x 12V)",
+    "Type de traction": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk1300dlc-11",
+    "Swing boom": "https://issuu.com/kobelcousa/docs/sk1300dlc-11"
+   },
+   "remarque": "Démolition très grande hauteur (101 à 130 pi), plusieurs configurations de flèche : flèche/bras sans valeur unique. Poids = plage de la brochure (lbs, kg convertis) : 279 105 à 301 812 lbs selon l'attachement. La page web affiche en tête 279,100-302,000 lbs (126,600-137,000 kg) mais 303,600 lbs (137,600 kg) dans son tableau : incohérence de la page, non retenue. Brochure marquée « Preliminary » ; puissance brochure = 380 kW ISO 14396, page web = 382 kW / 512.3 hp. Aucune flèche à déport offerte."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Kobelco",
+   "modele": "SK260DLC-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "145 kW / 194 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "33700-33900 kg / 74300-74700 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://issuu.com/kobelcousa/docs/sk260d-11_si_na_4_1220_3_3000 (couverture : 194 hp {145 kW} @ 2,200 rpm SAE NET)",
+    "Poids operationnel (kg / lbs)": "https://issuu.com/kobelcousa/docs/sk260d-11_si_na_4_1220_3_3000 (p.5 : 74,300 {33,700} bras 1-Pin ; 74,700 {33,900} bras 2-Pin)",
+    "Type de traction": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk260dlc-11-material-handler",
+    "Swing boom": "https://issuu.com/kobelcousa/docs/sk260d-11_si_na_4_1220_3_3000"
+   },
+   "remarque": "Deux versions publiées : Scrap Loader (bras droit 1-Pin 5.90 m / 19'4\", 33700 kg / 74300 lbs) et Material Handler (bras 2-Pin 5.05 m / 16'7\", 33900 kg / 74700 lbs) ; poids = plage des deux. Stick laissé à compléter (aucun bras standard unique) ; longueur de flèche non publiée. Cabine surélevée hydraulique. La page web Material Handler affiche 74,300 lbs en tête et 74,700 lbs au tableau (la brochure tranche : 74,700 = 2-Pin). Voltage non publié : 24V DC par défaut. Le parent peut choisir de créer deux entrées."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Kobelco",
+   "modele": "SK270SRLC-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.65 m / 18'6\"",
+    "Longueur de stick (m / pi)": "2.94 m / 9'8\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "27700 kg / 61100 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.kobelco-usa.com/excavators/excavators/north-america/sr-series-excavators/sk270srlc-7 et https://issuu.com/kobelcousa/docs/kobelco_sk270srlc-7 (164 hp {122 kW} SAE NET)",
+    "Poids operationnel (kg / lbs)": "https://www.kobelco-usa.com/excavators/excavators/north-america/sr-series-excavators/sk270srlc-7 et https://issuu.com/kobelcousa/docs/kobelco_sk270srlc-7 (p.16)",
+    "Longueur de fleche (m / pi)": "https://issuu.com/kobelcousa/docs/kobelco_sk270srlc-7 (p.20 : Standard HD boom 18'6\" {5.65 m})",
+    "Longueur de stick (m / pi)": "https://issuu.com/kobelcousa/docs/kobelco_sk270srlc-7 (p.20 : Standard HD arm 9'8\" {2.94 m})",
+    "Type de traction": "https://www.kobelco-usa.com/excavators/excavators/north-america/sr-series-excavators/sk270srlc-7",
+    "Swing boom": "https://issuu.com/kobelcousa/docs/kobelco_sk270srlc-7 (p.20, aucune flèche à déport)"
+   },
+   "remarque": "Poids sans lame ; avec lame optionnelle : 29300 kg / 64600 lbs. Bras long optionnel 3.33 m / 10'11\". Voltage non publié : 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Kobelco",
+   "modele": "SK650DLC-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "345 kW / 463 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "75500-80800 kg / 166400-178100 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk650dlc-11",
+    "Poids operationnel (kg / lbs)": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk650dlc-11",
+    "Type de traction": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk650dlc-11",
+    "Swing boom": "https://www.kobelco-usa.com/excavators/excavators/north-america/specialty-excavators/sk650dlc-11"
+   },
+   "remarque": "Démolition (high-reach et standard, système NEXT) : flèche/bras multiples, non retenus. Poids = plage de la page (tableau : 174,400 lbs / 79,100 kg, dans la plage). Brochure issuu inaccessible (403) : voltage non vérifié, 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Kobelco",
+   "modele": "SK850LC-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "380 kW / 510 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "8.25 m / 27'1\"",
+    "Longueur de stick (m / pi)": "3.6 m / 11'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "A completer",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://issuu.com/kobelcousa/docs/sk850lc-11 (p.16 : 510 hp {380 kW} SAE NET)",
+    "Longueur de fleche (m / pi)": "https://issuu.com/kobelcousa/docs/sk850lc-11 (p.19 : 27' 1\" {8.25 m} standard boom)",
+    "Longueur de stick (m / pi)": "https://issuu.com/kobelcousa/docs/sk850lc-11 (p.23 : 11' 10\" (3.6m) arm, équipement standard)",
+    "Type de traction": "https://www.kobelco-usa.com/excavators/excavators/north-america/conventional-excavators/sk850lc-11",
+    "Swing boom": "https://issuu.com/kobelcousa/docs/sk850lc-11"
+   },
+   "remarque": "POIDS CONTRADICTOIRE, non repris : brochure Kobelco USA (avril 2025) = 84500-85000 kg / 185700-187400 lbs selon le bras (186,300 {84,500} avec bras 3.6 m) ; page web actuelle = 190,700-192,300 lbs (86,500-87,200 kg). Puissance aussi : brochure 380 kW / 510 hp SAE NET vs page web 382 kW / 512 hp. À trancher (les deux sont > 80 t, même classe probable). Voltage non publié : 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC158USLCi-12",
+   "specs": {
+    "Puissance moteur (kW / HP)": "A completer",
+    "Type de traction": "A completer",
+    "Type de boom": "A completer",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "A completer",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "A completer",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "remarque": "https://www.komatsu.com/en-us/newsroom/2026/komatsu-to-introduce-the-pc158uslc-12-and-pc158uslci-12-tight-tail-swing-excavators"
+   },
+   "remarque": "Aucune spec publiée : communiqué du 3 mars 2026 annonce un lancement « later in 2026 », specs complètes à venir ; page produit pc158uslci-12 en 404 et absente de la liste Komatsu US. Successeur du PC138USLC-11 (tight tail swing, chenille). Traction/poids non remplis faute de fiche. Le PC158USLC-12 (sans i) existe aussi selon le communiqué."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC365LC-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "201 kW / 269 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.5 m / 21'3\"",
+    "Longueur de stick (m / pi)": "3.185 m / 10'5\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "37180-38780 kg / 81791-85495 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11 (ISO 9249 / SAE J1349 Net)",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11 (operating weight features : 6 500 mm one-piece HD boom)",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11 (3 185 mm arm)",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11 (Alternator, 24 V/90 A)",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc365lc-11"
+   },
+   "remarque": "Hybride (rotation électrique, ultracondensateur). Poids = plage d'en-tête ; tableau selon patins : 37654-38254 kg / 83012-84335 lbs. Aucune flèche à déport sur la fiche."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC390LCi-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "192 kW / 257 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.5 m / 21'3\"",
+    "Longueur de stick (m / pi)": "3.185 m / 10'5\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "39856-41023 kg / 87867-90441 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11 (ISO 9249 / SAE J1349 Net)",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11 (operating weight features : 6 500 mm one-piece HD boom)",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11 (3 185 mm arm)",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11 (Alternator 90Amp, 24Volt)",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc390lci-11"
+   },
+   "remarque": "Version IMC (3D GNSS d'usine). Aucune flèche à déport sur la fiche."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "A 909 Compact",
+   "specs": {
+    "Puissance moteur (kW / HP)": "55 kW / 75 HP",
+    "Type de traction": "Roue",
+    "Type de boom": "Boom 2 parties (articule)",
+    "Longueur de fleche (m / pi)": "4.4 m / 14'5\"",
+    "Longueur de stick (m / pi)": "1.9 m / 6'3\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "9900-11500 kg / 21826-25353 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-int/p/658991-5376584",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-int/p/658991-5376584",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/"
+   },
+   "remarque": "Nom officiel : A 909 Compact Litronic (G8). Absent des fiches produit en-us (seule la page US « Two for all » le présente, poids 9 900-11 500 kg identique) ; fiche produit en-int + fiche technique PI_A909-A911Compact_G8. Fleche : seulement en 2 parties (4,40 m standard) ou 2 parties à déport « Offset two-piece boom 4.50 m » -> Swing boom Oui. Bras de série du poids opérationnel 1,90 m (aussi 1,75 m). Puissance ISO 9249 ; option 80 kW / 109 HP. Levage : tableaux seulement, pas de valeur maximale unique."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "A 911 Compact Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "55 kW / 75 HP",
+    "Type de traction": "Roue",
+    "Type de boom": "Boom 2 parties (articule)",
+    "Longueur de fleche (m / pi)": "4.65 m / 15'3\"",
+    "Longueur de stick (m / pi)": "2.05 m / 6'9\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "11000-12800 kg / 24251-28219 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-int/p/659002-5376584",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-int/p/659002-5376584",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/4b2b2074-eab1-44a6-b40e-2a35ccd26c5e/original/"
+   },
+   "remarque": "G8. Absent des fiches produit en-us (page US « Two for all » seulement, poids 11 000-12 800 kg identique) ; fiche produit en-int + fiche technique commune A909-A911. Fleche 2 parties 4,65 m ou 2 parties à déport « Offset two-piece boom 4.80 m » -> Swing boom Oui. Bras 2,05 m (config. du poids opérationnel). Option moteur 80 kW / 109 HP."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "A 917 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "115 kW / 156 HP",
+    "Type de traction": "Roue",
+    "Type de boom": "Boom 2 parties (articule)",
+    "Longueur de fleche (m / pi)": "5.05 m / 16'7\"",
+    "Longueur de stick (m / pi)": "2.45 m / 8'0\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "16900-19200 kg / 37258-42329 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/1023424-4342665",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/1023424-4342665",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/01a041f5-748e-7854-affd-b18986af0165/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/01a041f5-748e-7854-affd-b18986af0165/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/01a041f5-748e-7854-affd-b18986af0165/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/01a041f5-748e-7854-affd-b18986af0165/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/01a041f5-748e-7854-affd-b18986af0165/original/"
+   },
+   "remarque": "G8, « New product ». Fiche technique TB_A917_G8 : seule fleche offerte = « Two-piece boom 5.05 m » (aucune mono ni à déport) ; bras 2,25 / 2,45 / 2,65 m, 2,45 m = config. du poids opérationnel. Puissance ISO 9249 (SAE J1349 : 115 kW / 154 hp)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "A 918 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "125 kW / 170 HP",
+    "Type de traction": "Roue",
+    "Type de boom": "Boom 2 parties (articule)",
+    "Longueur de fleche (m / pi)": "5.25 m / 17'3\"",
+    "Longueur de stick (m / pi)": "2.45 m / 8'0\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "17700-19500 kg / 39022-42990 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/660349-4342665",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/660349-4342665",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/c85a29e8-104a-484a-a9ee-b0e578b4b1ec/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/c85a29e8-104a-484a-a9ee-b0e578b4b1ec/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/c85a29e8-104a-484a-a9ee-b0e578b4b1ec/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/c85a29e8-104a-484a-a9ee-b0e578b4b1ec/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/c85a29e8-104a-484a-a9ee-b0e578b4b1ec/original/"
+   },
+   "remarque": "G8 (fiche TB_A918_G8). Seule fleche offerte = « Two-piece boom 5.25 m » ; bras 2,25 / 2,45 / 2,65 m, 2,45 m = config. du poids opérationnel. Puissance ISO 9249."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 936 Compact Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "190 kW / 258 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.2 m / 20'4\"",
+    "Longueur de stick (m / pi)": "3.2 m / 10'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "33750-37200 kg / 74406-82012 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/95366-4342673",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/95366-4342673",
+    "Type de traction": "https://www.liebherr.com/en-us/p/95366-4342673",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/0cbb0b88-c7f5-4d90-b85d-19db89552ea0/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/0cbb0b88-c7f5-4d90-b85d-19db89552ea0/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/0cbb0b88-c7f5-4d90-b85d-19db89552ea0/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/0cbb0b88-c7f5-4d90-b85d-19db89552ea0/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/0cbb0b88-c7f5-4d90-b85d-19db89552ea0/original/"
+   },
+   "remarque": "Génération 6.1 (fiche R936Compact-Tier4Final-US-PI-2022-09), pas G8. Mono boom 6,20 m seulement ; bras 2,50 / 3,20 / 3,70 m (3,20 m = config. du poids opérationnel). Poids : plage de la page US ; la fiche donne 34 800 kg / 76 720 lb pour la config. de référence. Puissance ISO 9249 (SAE : 190 kW / 255 HP)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 948 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "280 kW / 381 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.95 m / 22'10\"",
+    "Longueur de stick (m / pi)": "2.9 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "48600-51180 kg / 107145-112833 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/659873-4342673",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/659873-4342673",
+    "Type de traction": "https://www.liebherr.com/en-us/p/659873-4342673",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/01a0429a-2238-7777-af89-086979f5d2bf/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/01a0429a-2238-7777-af89-086979f5d2bf/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/01a0429a-2238-7777-af89-086979f5d2bf/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/01a0429a-2238-7777-af89-086979f5d2bf/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/01a0429a-2238-7777-af89-086979f5d2bf/original/"
+   },
+   "remarque": "G8 (fiche R948-G8-Tier4Final-US-PI-2026-08). Flèches mono 6,95 m, 7,70 m, ME 6,50 m ; bras 2,90 / 3,35 / 3,90 m (ME 2,50 m). Poids : plage de la page US ; la fiche donne 51 180 kg / 112 830 lb. Puissance ISO 9249 (SAE : 280 kW / 375 hp)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 952 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "300 kW / 408 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.95 m / 22'10\"",
+    "Longueur de stick (m / pi)": "2.9 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "51110-58930 kg / 112678-129918 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/659881-4342673",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/659881-4342673",
+    "Type de traction": "https://www.liebherr.com/en-us/p/659881-4342673",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/01a0cebd-ebb3-74d1-b04b-576d8923784f/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/01a0cebd-ebb3-74d1-b04b-576d8923784f/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/01a0cebd-ebb3-74d1-b04b-576d8923784f/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/01a0cebd-ebb3-74d1-b04b-576d8923784f/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/01a0cebd-ebb3-74d1-b04b-576d8923784f/original/"
+   },
+   "remarque": "Génération vérifiée : G8 (fiche R952-G8-Tier4Final-US-PI-2026-09). Flèches mono 6,95 / 7,70 / ME 6,50 m et Multi-User 9,50 / 11,50 m ; bras 2,90 / 3,35 / 3,90 m. Poids : plage de la page US ; la fiche donne 58 930 kg / 129 920 lb. Puissance ISO 9249 (SAE : 300 kW / 402 HP)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 958 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "300 kW / 408 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.95 m / 22'10\"",
+    "Longueur de stick (m / pi)": "2.9 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "57100-59160 kg / 125884-130425 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/659941-4342673",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/659941-4342673",
+    "Type de traction": "https://www.liebherr.com/en-us/p/659941-4342673",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/01a0429b-baf2-740e-a4b5-bb3468f1f13c/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/01a0429b-baf2-740e-a4b5-bb3468f1f13c/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/01a0429b-baf2-740e-a4b5-bb3468f1f13c/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/01a0429b-baf2-740e-a4b5-bb3468f1f13c/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/01a0429b-baf2-740e-a4b5-bb3468f1f13c/original/"
+   },
+   "remarque": "G8 (fiche R958-G8-Tier4Final-US-PI-2026-08). Flèche mono ME 6,95 m ; bras ME 2,50 / 2,90 m. Poids : plage de la page US ; la fiche donne 59 160 kg / 130 425 lb. Puissance ISO 9249 (SAE : 300 kW / 402 HP)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 972 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "330 kW / 449 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'0\"",
+    "Longueur de stick (m / pi)": "2.6 m / 8'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "68450-77550 kg / 150906-170968 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/652619-4342673",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/652619-4342673",
+    "Type de traction": "https://www.liebherr.com/en-us/p/652619-4342673",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/76028ff0-e95e-4116-b36a-cdb6e0a9ef58/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/76028ff0-e95e-4116-b36a-cdb6e0a9ef58/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/76028ff0-e95e-4116-b36a-cdb6e0a9ef58/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/76028ff0-e95e-4116-b36a-cdb6e0a9ef58/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/76028ff0-e95e-4116-b36a-cdb6e0a9ef58/original/"
+   },
+   "remarque": "Génération 6.2 (fiche R972-Tier4Final-US-PI-2023-01). Rétro : flèches mono 7,00 / 8,20 / 10,00 m, bras 2,60 à 5,00 m ; existe aussi en pelle frontale (shovel 70 650 kg). Poids : plage de la page US (rétro 77 550 kg / 170 970 lb à la fiche). Puissance ISO 9249 (SAE : 330 kW / 443 hp)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 978 SME Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "330 kW / 449 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'0\"",
+    "Longueur de stick (m / pi)": "2.6 m / 8'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "78350-81000 kg / 172732-178574 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/652620-4342673",
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/652620-4342673",
+    "Type de traction": "https://www.liebherr.com/en-us/p/652620-4342673",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/dea71059-0409-4cea-8c61-c32bd22206cd/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/dea71059-0409-4cea-8c61-c32bd22206cd/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/dea71059-0409-4cea-8c61-c32bd22206cd/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/dea71059-0409-4cea-8c61-c32bd22206cd/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/dea71059-0409-4cea-8c61-c32bd22206cd/original/"
+   },
+   "remarque": "Génération 6.2 (fiche R978SME-Tier4Final-US-PI-2022-11). Rétro : flèche mono SME 7,00 m, bras SME 2,60 / 3,00 m ; existe aussi en pelle frontale (shovel 81 000 kg). Poids : plage de la page US (rétro 80 150 kg / 176 700 lb à la fiche)."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E17C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2023, 2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E26C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2023, 2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E30C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2023, 2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E37C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2023, 2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E57C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2023, 2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E60C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E70D",
+   "specs": {
+    "Puissance moteur (kW / HP)": "44.3 kW / 60.2 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.9 m / 6'3\"",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "7290 kg / 16072 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/afb3e87138da47d0b4d04c246128d8ae?v=3ad79b7f",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/afb3e87138da47d0b4d04c246128d8ae?v=3ad79b7f",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/afb3e87138da47d0b4d04c246128d8ae?v=3ad79b7f",
+    "Longueur de stick (m / pi)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/afb3e87138da47d0b4d04c246128d8ae?v=3ad79b7f",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/afb3e87138da47d0b4d04c246128d8ae?v=3ad79b7f",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/afb3e87138da47d0b4d04c246128d8ae?v=3ad79b7f"
+   },
+   "remarque": "Fiche E70D : bras standard 1900 mm (74.8 in), optionnel 2100 mm (la ligne « Digging arm length standard (optional) » dit 2100 : incohérence interne). Swing boom A completer : la fiche liste une commande « Boom swing » au joystick gauche et l'option « Block valves on swing cylinder », mais la page produit parle de « monoboom » et aucun angle de déport n'est publié. Alternateur/batterie 12 V. Jumeau du Case CX70E."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E85D",
+   "specs": {
+    "Puissance moteur (kW / HP)": "53.7 kW / 73 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.76 m / 5'9\"",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "8830 kg / 19467 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/midi-excavators",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/2943578ef5ea41c788d2843858cd5505?v=4731c7f6",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/2943578ef5ea41c788d2843858cd5505?v=4731c7f6",
+    "Longueur de stick (m / pi)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/2943578ef5ea41c788d2843858cd5505?v=4731c7f6",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/2943578ef5ea41c788d2843858cd5505?v=4731c7f6",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/2943578ef5ea41c788d2843858cd5505?v=4731c7f6"
+   },
+   "remarque": "Puissance : la fiche PDF imprime « 73 (537) » kW (coquille) ; 53.7 kW pris sur la page midi NH. Bras standard 1760 mm (69.3 in), optionnel 2110 mm. Swing boom A completer : aucune commande de boom swing listée, page « monoboom » et zero tail swing, mais option « Block valves on swing cylinder ». Système 12 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "New Holland",
+   "modele": "E90D",
+   "specs": {
+    "Puissance moteur (kW / HP)": "53.7 kW / 73 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.76 m / 5'9\"",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "9210 kg / 20305 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/f0c4353ff0b344399719d7dfddead3d3?v=8b02fdaf",
+    "Type de traction": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/f0c4353ff0b344399719d7dfddead3d3?v=8b02fdaf",
+    "Type de boom": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/f0c4353ff0b344399719d7dfddead3d3?v=8b02fdaf",
+    "Longueur de stick (m / pi)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/f0c4353ff0b344399719d7dfddead3d3?v=8b02fdaf",
+    "Voltage machine (V/type)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/f0c4353ff0b344399719d7dfddead3d3?v=8b02fdaf",
+    "Poids operationnel (kg / lbs)": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/f0c4353ff0b344399719d7dfddead3d3?v=8b02fdaf"
+   },
+   "remarque": "Fiche E90D : bras standard 1760 mm (69.3 in). Swing boom A completer : commande « Boom swing » au joystick gauche + option « Block valves on swing cylinder », mais page « monoboom » et aucun angle de déport publié. Système 12 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "SANY",
+   "modele": "SY265C",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2021, 2022, 2023, 2024, 2025, 2026]"
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "SANY",
+   "modele": "SY355LC",
+   "specs": {
+    "Puissance moteur (kW / HP)": "209 kW / 280.3 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.15 m / 20'2\"",
+    "Longueur de stick (m / pi)": "3.75 m / 12'4\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "35500 kg / 78264 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy355lc/",
+    "Type de traction": "https://www.sanyamerica.com/wp-content/uploads/2026/09/sany-SY355LC-large-excavator-4pg-specsheet-05-12-2026_d1.pdf",
+    "Type de boom": "https://www.sanyamerica.com/wp-content/uploads/2026/09/sany-SY355LC-large-excavator-4pg-specsheet-05-12-2026_d1.pdf",
+    "Longueur de fleche (m / pi)": "https://www.sanyamerica.com/wp-content/uploads/2026/09/sany-SY355LC-large-excavator-4pg-specsheet-05-12-2026_d1.pdf",
+    "Longueur de stick (m / pi)": "https://www.sanyamerica.com/wp-content/uploads/2026/09/sany-SY355LC-large-excavator-4pg-specsheet-05-12-2026_d1.pdf",
+    "Swing boom": "https://www.sanyamerica.com/wp-content/uploads/2026/09/sany-SY355LC-large-excavator-4pg-specsheet-05-12-2026_d1.pdf",
+    "Voltage machine (V/type)": "https://www.sanyamerica.com/wp-content/uploads/2026/09/sany-SY355LC-large-excavator-4pg-specsheet-05-12-2026_d1.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy355lc/"
+   },
+   "remarque": "Puissance BRUTE (nette non publiée). Batteries 24V (2 x 12V). Flèche/bras standard. Aucune flèche déportée offerte."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "SANY",
+   "modele": "SY365C",
+   "specs": {
+    "Puissance moteur (kW / HP)": "205 kW / 275 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.47 m / 21'3\"",
+    "Longueur de stick (m / pi)": "3.178 m / 10'5\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "36700 kg / 80910 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/",
+    "Type de traction": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/",
+    "Type de boom": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/",
+    "Longueur de fleche (m / pi)": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/",
+    "Longueur de stick (m / pi)": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/",
+    "Swing boom": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/",
+    "Voltage machine (V/type)": "https://www.sanyamerica.com/wp-content/uploads/2019/02/sany-sy365c-lc-large-excavator-4pg-specsheet-d2.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.sanyamerica.com/products/construction-equipment/excavators/large/sy365c/"
+   },
+   "remarque": "La page dit « Gross Power » 205 kW / 275 HP, la fiche PDF (2019, d2) dit « Net Power » pour les mêmes chiffres. Bras 3,178 mm (page) / 3.2 m (fiche). Batteries 24V. Fiche datée 2019 : vérifier s'il s'agit d'une génération antérieure au SY365H déjà en BD."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC230 Electric",
+   "specs": {
+    "Puissance moteur (kW / HP)": "160 kW / 215 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 ou 2 parties (au choix)",
+    "Longueur de fleche (m / pi)": "5.7 m / 18'8\"",
+    "Longueur de stick (m / pi)": "2.9 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "5070 kg / 11177 lbs",
+    "Poids operationnel (kg / lbs)": "22690-24390 kg / 50030-53780 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Type de traction": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Longueur de fleche (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw",
+    "Capacite max de levage (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ec230-electric/",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec230-electric/product-guide-ec230-electric-na-en-22-20064870-d.pdf?v=w8yBPw"
+   },
+   "remarque": "Puissance = moteur électrique en pointe (continu 110 kW / 148 HP). Flèche GP mono 5.7 m ou 2 pièces 5.57 m / 18'3\" offertes. Poids : tableau du guide produit NA (22690-24390 kg) ; la page US affiche 47,010 - 57,690 lbs, plage plus large et incohérente avec le guide -> à trancher. Levage = « Lifting capacity, along undercarriage » 11,177 lbs (page), converti. Batterie traction 650 V ; système électrique machine 24 V. L'URL d'entrée /united-states/en-us/... renvoie 404 ; page valide : volvoce.com/en-us/..."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC300E Hybrid",
+   "specs": {
+    "Puissance moteur (kW / HP)": "188 kW / 252 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.2 m / 20'4\"",
+    "Longueur de stick (m / pi)": "3.05 m / 10'0\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "11460 kg / 25265 lbs",
+    "Poids operationnel (kg / lbs)": "31120-32720 kg / 68620-72150 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Type de traction": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Longueur de fleche (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw",
+    "Capacite max de levage (kg / lbs)": "https://www.volvoce.com/united-states/en-us/products/excavators/ec300e-hybrid/",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300e-hybrid/brochure-ec300e-hybrid-t4f-en-22-20059918-d.pdf?v=FcKBPw"
+   },
+   "remarque": "Brochure EC300EL Hybrid T4F : puissance nette ISO 9249/SAE J1349, flèche monobloc seulement. Poids = tableau brochure (la page affiche 68,608 - 72,135 lbs, léger écart). Levage = « along undercarriage » 25,264.9 lbs (page), converti. 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "ECR18 Electric",
+   "specs": {
+    "Puissance moteur (kW / HP)": "18 kW / 24.14 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "0.95 m / 3'1\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "1792-1869 kg / 3950-4120 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/en-us/products/excavators/ecr18-electric/",
+    "Type de traction": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr18-electric/product-guide-ecr18-electric-en-22-20062975-a.pdf?v=hsyBPw",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr18-electric/product-guide-ecr18-electric-en-22-20062975-a.pdf?v=hsyBPw",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr18-electric/product-guide-ecr18-electric-en-22-20062975-a.pdf?v=hsyBPw",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr18-electric/product-guide-ecr18-electric-en-22-20062975-a.pdf?v=hsyBPw",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr18-electric/product-guide-ecr18-electric-en-22-20062975-a.pdf?v=hsyBPw",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ecr18-electric/"
+   },
+   "remarque": "Moteur électrique pointe 18 kW (fiche) / 24.14 hp (page). Poids = plage de la page US convertie (fiche ISO 6016 : 1795 kg / 3957 lb de base). Déport de flèche publié (516 mm D / 640 mm G) -> swing boom. Batterie traction 48 V, batterie auxiliaire 12 V -> 12V DC. Bras court 950 mm standard (long 1150 mm / 3'9\"). URL d'entrée /united-states/ en 404 ; page valide volvoce.com/en-us/..."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "ECR25 Electric",
+   "specs": {
+    "Puissance moteur (kW / HP)": "18 kW / 24 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "1.05 m / 3'5\"",
+    "Swing boom": "Oui",
+    "Voltage machine (V/type)": "12V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "2680-2780 kg / 5908-6129 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/en-us/products/excavators/ecr25-electric/",
+    "Type de traction": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr25-electric/product-guide-ecr25-electric-en-21-20061921-a.pdf?v=hsyBPw",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr25-electric/product-guide-ecr25-electric-en-21-20061921-a.pdf?v=hsyBPw",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr25-electric/product-guide-ecr25-electric-en-21-20061921-a.pdf?v=hsyBPw",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr25-electric/product-guide-ecr25-electric-en-21-20061921-a.pdf?v=hsyBPw",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/electric-compact-excavators/ecr25-electric/product-guide-ecr25-electric-en-21-20061921-a.pdf?v=hsyBPw",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ecr25-electric/"
+   },
+   "remarque": "Moteur électrique pointe 18 kW (fiche) / 24 hp (page). Poids = plage page US convertie (fiche ISO 6016 : 2675 kg de base). Angle de boom swing et déport publiés -> swing boom. Batterie traction 48 V, auxiliaire 12 V (alternateur 12/40). Bras court 1050 mm standard (long 1350 mm). URL d'entrée /united-states/ en 404 ; page valide volvoce.com/en-us/..."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Wacker Neuson",
+   "modele": "803",
+   "specs": null,
+   "sources": {},
+   "remarque": "Millésime : entrée existante à recopier. Années à ajouter [2022, 2023, 2024, 2025, 2026]"
+  }
+ ]
+}

@@ -1,0 +1,1119 @@
+{
+ "lot": "s_pompe_for_vac",
+ "resultats": [
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "GapVax",
+   "modele": "Recycle JetVac",
+   "specs": {
+    "Longueur de boom": "A completer",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "page": "https://www.gapvax.com/products/recycle/"
+   },
+   "remarque": "Page fabricant ouverte (GapVax-Wiedemann Recycle JetVac) : aucune donnee de boom (seulement 317 gpm recyclage, 110 gpm jetter, boyau 66 ft). Brochure liee (Google Drive) renvoie 404."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Camel Max Series 1200 Dump",
+   "specs": {
+    "Longueur de boom": "Extension hydraulique 8 ft (boom 8\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "217°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "Angle de rotation": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "page": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/camel-1200-dump-max-series/"
+   },
+   "remarque": "Idem 900 Dump (brochure commune Camel Max : boom 8\", extension 8 ft, 217°). Le 270° de la page = devidoir, pas le boom."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Camel Max Series 1200 Eject",
+   "specs": {
+    "Longueur de boom": "Extension hydraulique 8 ft (boom 8\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "217°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "Angle de rotation": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "page": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/camel-1200-eject-max-series/"
+   },
+   "remarque": "Idem 900 Dump (brochure commune Camel Max : boom 8\", extension 8 ft, 217°). Le 270° de la page = devidoir, pas le boom."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Camel Max Series 1600 Eject",
+   "specs": {
+    "Longueur de boom": "Extension hydraulique 8 ft (boom 8\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "217°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "Angle de rotation": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "page": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/camel-max-series-1600-eject/"
+   },
+   "remarque": "Idem 900 Dump (brochure commune Camel Max : boom 8\", extension 8 ft, 217°). Le 270° de la page = devidoir, pas le boom."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Camel Max Series 900 Dump",
+   "specs": {
+    "Longueur de boom": "Extension hydraulique 8 ft (boom 8\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "217°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "Angle de rotation": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "page": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/camel-max-series-900/"
+   },
+   "remarque": "Brochure Camel Max (commune 900/1200/1600) : boom standard 8\" avec extension hydraulique 8 ft, 217° de rotation, levage 1000 lb. Longueur totale du boom non publiee. Option Super Boom : 17-27 ft, 180°. Le 270° de la page = devidoir (hose reel), pas le boom."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Camel Max Series Wastewater Recycler",
+   "specs": {
+    "Longueur de boom": "Extension hydraulique 8 ft (boom 8\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "217°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "Angle de rotation": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf",
+    "page": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/camel-1200-wastewater-recycle-max-series/"
+   },
+   "remarque": "A DECIDER : la brochure presente Wastewater Recycle comme une OPTION des modeles 1200 et 1600, pas un modele distinct. Specs = boom standard Camel Max. Suggere de ne pas creer ce modele."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Camel Super Boom",
+   "specs": {
+    "Longueur de boom": "17-27 ft (section telescopique 10 ft, payout 15 ft)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "180°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/super-boom/",
+    "Angle de rotation": "https://www.superproducts.com/products/vacuum-trucks/camel-combination-sewer-cleaners/super-boom/",
+    "brochure": "https://www.superproducts.com/wp-content/uploads/2026/02/CamelMax_Brochure_020926-1.pdf"
+   },
+   "remarque": "A DECIDER : Super Boom est un boom OPTIONNEL des Camel Max (brochure : 'Super Boom (Optional) NEW'), pas un camion. Suggere de ne pas creer ce modele ; noter plutot l'option sur les Camel Max. Nombre de sections non publie."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Super Products",
+   "modele": "Supersucker",
+   "specs": {
+    "Longueur de boom": "Option : boom extensible 5 ft (portee 10-15 ft)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.superproducts.com/wp-content/uploads/2026/02/SP_Supersucker_Brochure_011426-2.pdf",
+    "page": "https://www.superproducts.com/products/vacuum-trucks/supersucker-air-mover/"
+   },
+   "remarque": "Nom fabricant : Supersucker Air Mover. Le boom est une option (5' Extendable Boom, 10'-15' reach). Rotation et voltage non publies."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Tornado Global Hydrovacs",
+   "modele": "EF4",
+   "specs": {
+    "Longueur de boom": "A completer",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "brochure": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/EF_4_Brochure_e1bde5758c.pdf"
+   },
+   "remarque": "Brochure EF4 : 'Reach: Maintains the same reach as the current model' (F4, en BD a 26 ft / 342°) — aucune valeur chiffree propre a l'EF4, boom redessine. A confirmer avant de recopier les valeurs du F4."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Tornado Global Hydrovacs",
+   "modele": "F-Series F2",
+   "specs": {
+    "Longueur de boom": "A completer",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Voltage": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/F_Series_F2_Brochure_02791c3c72.pdf"
+   },
+   "remarque": "CONFLIT dans la brochure F2 : la fiche 'F2 Spec Sheet' dit Boom Extended Reach 23 ft, rotation 340°, boyau 25 ft ; le tableau comparatif F-Series de la meme brochure dit 26 ft / 342°. Laisse en A completer. Voltage : chauffe-eau '12 Volt' (meme base que Supervac en BD)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Tornado Global Hydrovacs",
+   "modele": "F-Series F3",
+   "specs": {
+    "Longueur de boom": "26 ft",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "342°",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Longueur de boom": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/P118715_F3_F4_F5_Operation_and_Maintenance_Manual_260330_e989f10092.pdf",
+    "Angle de rotation": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/P118715_F3_F4_F5_Operation_and_Maintenance_Manual_260330_e989f10092.pdf",
+    "Voltage": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/F_Series_F2_Brochure_02791c3c72.pdf"
+   },
+   "remarque": "Manuel F3/F4/F5 (section 1.8) : Boom Reach 26-ft, Boom Rotation 342-deg. Voltage = chauffe-eau 12 Volt (tableau comparatif F-Series)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Tornado Global Hydrovacs",
+   "modele": "F-Series F5",
+   "specs": {
+    "Longueur de boom": "26 ft",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "342°",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Longueur de boom": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/P118715_F3_F4_F5_Operation_and_Maintenance_Manual_260330_e989f10092.pdf",
+    "Angle de rotation": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/P118715_F3_F4_F5_Operation_and_Maintenance_Manual_260330_e989f10092.pdf",
+    "Voltage": "https://tornado-s3-bucket.s3.us-east-2.amazonaws.com/F_Series_F2_Brochure_02791c3c72.pdf"
+   },
+   "remarque": "Manuel F3/F4/F5 (section 1.10) : Boom Reach 26-ft, Boom Rotation 342-deg. Voltage = chauffe-eau 12 Volt (tableau comparatif F-Series)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "CXT",
+   "specs": {
+    "Longueur de boom": "7 ft (extensible)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "310°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/hydro-excavators/cxt",
+    "Angle de rotation": "https://vac-con.com/hydro-excavators/cxt"
+   },
+   "remarque": "Page : 'Boom 7-ft extendable', 'Boom Rotation 310-degrees horizontally and +45/-22 vertically'. 7 ft = course d'extension, longueur totale non publiee (BD X-Cavator : 28.5 ft)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "Dual Engine Combo",
+   "specs": {
+    "Longueur de boom": "6 ft ou 10 ft (telescopique)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "270°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/combination-sewer-cleaners/dual-engine",
+    "Angle de rotation": "https://vac-con.com/combination-sewer-cleaners/dual-engine"
+   },
+   "remarque": "Page : '6-ft or 10-ft telescopic boom', '270-degree rotation'. Meme boom que BD 'Combination 12yd/5yd' (10 ft, 270°)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "EXT",
+   "specs": {
+    "Longueur de boom": "7 ft (extensible)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "310°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/hydro-excavators/ext",
+    "Angle de rotation": "https://vac-con.com/hydro-excavators/ext"
+   },
+   "remarque": "Page : 'Boom 7-ft extendable', 'Boom Rotation 310-degrees horizontally and +45/-22 vertically'. 7 ft = course d'extension."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "MXT",
+   "specs": {
+    "Longueur de boom": "10 ft (telescopique)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "270°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/hydro-excavators/mxt",
+    "Angle de rotation": "https://vac-con.com/hydro-excavators/mxt"
+   },
+   "remarque": "Page : 'Boom 10-ft telescopic', 'Boom Rotation 270-degrees'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "Non-CDL Combo",
+   "specs": {
+    "Longueur de boom": "5 ft (extensible)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "200°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/combination-sewer-cleaners/non-cdl",
+    "Angle de rotation": "https://vac-con.com/combination-sewer-cleaners/non-cdl"
+   },
+   "remarque": "Page : '5-ft extendable boom', '200-degree rotation'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "Recycler",
+   "specs": {
+    "Longueur de boom": "6 ft ou 10 ft (telescopique)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "270°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/combination-sewer-cleaners/recycler",
+    "Angle de rotation": "https://vac-con.com/combination-sewer-cleaners/recycler"
+   },
+   "remarque": "Fiche ouverte : vac-con.com/combination-sewer-cleaners/recycler. '6-ft or 10-ft telescopic boom', '270-degree rotation'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vac-Con",
+   "modele": "Single Engine Combo",
+   "specs": {
+    "Longueur de boom": "6 ft ou 10 ft (telescopique)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "270°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://vac-con.com/combination-sewer-cleaners/single-engine",
+    "Angle de rotation": "https://vac-con.com/combination-sewer-cleaners/single-engine"
+   },
+   "remarque": "Fiche ouverte : vac-con.com/combination-sewer-cleaners/single-engine. '6-ft or 10-ft telescopic boom', '270-degree rotation'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vacall",
+   "modele": "AE 1213",
+   "specs": {
+    "Longueur de boom": "26'8\" (portee max ; min 13'9\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "327°",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.vacall.com/library/specs/allexcavate-1213-specifications.pdf",
+    "Angle de rotation": "https://www.vacall.com/library/specs/allexcavate-1213-specifications.pdf",
+    "Voltage": "https://www.vacall.com/library/specs/allexcavate-1213-specifications.pdf"
+   },
+   "remarque": "Fiche AE 1213 : Boom Max Reach ~26'8\" (8.12 m), Min ~13'9\", Boom Rotation 327°, boom arriere, 'Electrical: 12 volt CAN bus'. La page web generique AllExcavate dit 8'6\" / 330° (autre modele)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vacall",
+   "modele": "AJV 1015",
+   "specs": {
+    "Longueur de boom": "23'6\" (portee max ; min 15'0\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "180°",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.vacall.com/library/specs/alljetvac-1015-specifications.pdf",
+    "Angle de rotation": "https://www.vacall.com/library/specs/alljetvac-1015-specifications.pdf",
+    "Voltage": "https://www.vacall.com/library/specs/alljetvac-1015-specifications.pdf"
+   },
+   "remarque": "Fiche AJV 1015 : boom tube-in-tube, Boom Reach 23'6\" (min 15'0\"), Boom Rotation 180°, 'Electrical: 12-volt CAN bus'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vacall",
+   "modele": "AJV 610",
+   "specs": {
+    "Longueur de boom": "23'6\" (portee max ; min 15'0\")",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "180°",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.vacall.com/library/specs/alljetvac-610-specifications.pdf",
+    "Angle de rotation": "https://www.vacall.com/library/specs/alljetvac-610-specifications.pdf",
+    "Voltage": "https://www.vacall.com/library/specs/alljetvac-610-specifications.pdf"
+   },
+   "remarque": "Fiche AJV 610 : boom tube-in-tube, Boom Reach 23'6\" (min 15'0\"), Boom Rotation 180°, 'Electrical: 12-volt CAN bus'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vacall",
+   "modele": "AllCatch",
+   "specs": {
+    "Longueur de boom": "A completer",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "fiche": "https://www.vacall.com/library/specs/allcatch-specifications.pdf"
+   },
+   "remarque": "Fiche AllCatch : boom en option seulement ('optional boom', 'rear boom'), aucune dimension, rotation ni voltage publie."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vacall",
+   "modele": "AllVac",
+   "specs": {
+    "Longueur de boom": "A completer",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "12V"
+   },
+   "sources": {
+    "Voltage": "https://www.vacall.com/library/specs/allvac-specifications.pdf"
+   },
+   "remarque": "Fiche AllVac : 'Electrical - 12 volt' ; boom 'Manual or Hydraulic Boom' (option) sans dimension ni rotation."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vactor",
+   "modele": "2100i CB",
+   "specs": {
+    "Longueur de boom": "10 ft (telescopique ou extensible) ; options 5x5 et RDB 1015",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.vactor.com/hubfs/vactor/files/2100i-catchbasin-sellsheet.pdf",
+    "page": "https://www.vactor.com/2100i-cb"
+   },
+   "remarque": "Fiche 2100i CB : Boom Options 5x5, RDB 1015 (telescope 10 ft + descente 15 ft), 10' Telescoping, 10' Extendable. Rotation non publiee (BD 2100i : 180°, non confirme pour le CB)."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vactor",
+   "modele": "APXX",
+   "specs": {
+    "Longueur de boom": "Jusqu'a 24.5 ft (extensible/telescopique)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "320°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.truvac.com/equipment/apxx",
+    "Angle de rotation": "https://www.truvac.com/equipment/apxx"
+   },
+   "remarque": "Marque TRUVAC (Federal Signal), pas Vactor : decider le fabricant d'inscription (HXX deja sous Vactor en BD). Page : 320° Rotation, Extendable/Telescoping up to 24.5'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vactor",
+   "modele": "FLXX",
+   "specs": {
+    "Longueur de boom": "Jusqu'a 22 ft (extensible)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "340°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.truvac.com/equipment/flxx",
+    "Angle de rotation": "https://www.truvac.com/equipment/flxx"
+   },
+   "remarque": "Marque TRUVAC (voir APXX). Page : 340° Rotation, Extendable up to 22'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vactor",
+   "modele": "Paradigm",
+   "specs": {
+    "Longueur de boom": "Jusqu'a 17 ft (extensible)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "195°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.truvac.com/equipment/paradigm",
+    "Angle de rotation": "https://www.truvac.com/equipment/paradigm"
+   },
+   "remarque": "Marque TRUVAC (voir APXX). Page : 195° Rotation, Extendable up to 17'."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vactor",
+   "modele": "iMPACT",
+   "specs": {
+    "Longueur de boom": "Boom extensible 5.4 m de couverture (std) ; telescopique 5.56 m (config. custom)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "180°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.vactor.com/hubfs/2026%2004%2006%20-%20Vactor%20iMPACT%20Brochure%20Web.pdf",
+    "Angle de rotation": "https://www.vactor.com/hubfs/2026%2004%2006%20-%20Vactor%20iMPACT%20Brochure%20Web.pdf"
+   },
+   "remarque": "Brochure iMPACT : 'Fully hydraulic boom - Proportional boom controls with 180° rotation' ; 'Extendable boom 17-? ft (5.4 m) coverage' (fraction illisible dans le PDF, valeur metrique retenue) ; config. custom 'Telescoping boom 18-? ft (5.56 m) coverage'."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Liebherr",
+   "modele": "LB 25 unplugged",
+   "specs": {
+    "Diametre forage": "3300 mm (max. Kelly)",
+    "Profondeur max": "53.2 m (175 ft) (Kelly)",
+    "Type de mat (lead/kelly)": "A completer",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "71.1 - 82.1 t (156 749 - 181 000 lbs)",
+    "Type": "Foreuse rotative LB a barre Kelly, entrainement electrique (batterie ou branchement secteur), couple max. 252 kNm"
+   },
+   "sources": {
+    "Diametre forage": "https://www.liebherr.com/en-us/p/lb25unplugged-4424786",
+    "Profondeur max": "https://www.liebherr.com/en-us/p/lb25unplugged-4424786",
+    "Poids operationnel": "https://www.liebherr.com/en-us/p/lb25unplugged-4424786",
+    "Type": "https://www.liebherr.com/en-us/p/lb25unplugged-4424786"
+   },
+   "remarque": "Fiche NA Liebherr : poids 71.1-82.1 t, couple 252 kNm, Kelly profondeur 53.2 m, diametre 3,300 mm. Moteur electrique : puissance non publiee sur la page. lbs/ft convertis depuis les valeurs metriques exactes."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SF-55",
+   "specs": {
+    "Diametre forage": "900 mm (CFA)",
+    "Profondeur max": "27 m (CFA)",
+    "Type de mat (lead/kelly)": "A completer",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "N/A (CFA ; extension de tariere max. 6 m)",
+    "Puissance moteur": "168 kW (moteur diesel)",
+    "Poids operationnel": "37 200 kg (transport min. 34 800 kg)",
+    "Type": "Foreuse a pieux dediee CFA (tariere continue), couple max. 100 kNm"
+   },
+   "sources": {
+    "Diametre forage": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-55/",
+    "Profondeur max": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-55/",
+    "Longueur du kelly": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-55/",
+    "Puissance moteur": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-55/",
+    "Poids operationnel": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-55/",
+    "Type": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-55/"
+   },
+   "remarque": "Page Soilmec : couple 100 kNm, poids 37.2 t, diesel 168 kW, extraction 510 kN, treuil 102 kN, extension tariere 6 m, transport min 34.8 t ; CFA diam. 900 mm, prof. 27 m."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SF-65",
+   "specs": {
+    "Diametre forage": "1000 mm (CFA)",
+    "Profondeur max": "27 m (CFA)",
+    "Type de mat (lead/kelly)": "A completer",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "N/A (CFA ; extension de tariere max. 3 m)",
+    "Puissance moteur": "205 kW (moteur diesel)",
+    "Poids operationnel": "52 000 kg (transport min. 46 000 kg)",
+    "Type": "Foreuse a pieux CFA (tariere continue) sur porteur Soilmec, couple max. 165 kNm"
+   },
+   "sources": {
+    "Diametre forage": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-65/",
+    "Profondeur max": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-65/",
+    "Longueur du kelly": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-65/",
+    "Puissance moteur": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-65/",
+    "Poids operationnel": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-65/",
+    "Type": "https://www.soilmec.com/en/prodotti/piling-rigs/sf-series/sf-65/"
+   },
+   "remarque": "Page Soilmec : couple 165 kNm, poids 52 t, diesel 205 kW, extraction 572 kN, treuil 140 kN, extension tariere 3 m, transport min 46 t ; CFA diam. 1000 mm, prof. 27 m."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "STM-20",
+   "specs": {
+    "Diametre forage": "1100/1800 mm (LDP, CCS/WCS)",
+    "Profondeur max": "30 m (LDP)",
+    "Type de mat (lead/kelly)": "A completer",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "A completer",
+    "Puissance moteur": "119 kW (moteur diesel)",
+    "Poids operationnel": "20 000 kg",
+    "Type": "Foreuse hydraulique montee sur camion, pieux fores LDP (boue ou a sec), couple max. 85 kNm"
+   },
+   "sources": {
+    "Diametre forage": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-20/",
+    "Profondeur max": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-20/",
+    "Puissance moteur": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-20/",
+    "Poids operationnel": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-20/",
+    "Type": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-20/"
+   },
+   "remarque": "Page Soilmec : couple 85 kNm, poids 20 t, diesel 119 kW, LDP prof. 30 m, diam. 1100/1800 mm (CCS/WCS). Pas de donnee mat/kelly sur la page."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "STM-30",
+   "specs": {
+    "Diametre forage": "1500/2200 mm (LDP, CCS/WCS)",
+    "Profondeur max": "55 m (LDP)",
+    "Type de mat (lead/kelly)": "A completer",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "A completer",
+    "Puissance moteur": "164 kW (moteur diesel)",
+    "Poids operationnel": "29 000 kg",
+    "Type": "Foreuse hydraulique montee sur camion 6 x 4, pieux fores LDP (boue ou a sec), couple max. 130 kNm"
+   },
+   "sources": {
+    "Diametre forage": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-30/",
+    "Profondeur max": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-30/",
+    "Puissance moteur": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-30/",
+    "Poids operationnel": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-30/",
+    "Type": "https://www.soilmec.com/en/prodotti/piling-rigs/stm-series/stm-30/"
+   },
+   "remarque": "Page Soilmec : couple 130 kNm, poids 29 t, diesel 164 kW, LDP prof. 55 m, diam. 1500/2200 mm (CCS/WCS). Pas de donnee mat/kelly sur la page."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "TEI Rock Drills",
+   "modele": "Skid Steer Drill Attachment",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "A completer",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer",
+    "Type": "Attachement de forage pour chargeuse compacte (skid steer), plaque de montage universelle"
+   },
+   "sources": {
+    "Type": "https://teirockdrills.com/rock-drill-excavator-attachments/skid-steer-drill-attachment/"
+   },
+   "remarque": "Page TEI : aucune specification chiffree ni numero de modele publie. Nom generique : a decider si on l'inscrit."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Betonstar",
+   "modele": "H37-4Z",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Z-Fold",
+    "Longueur de chaque section": "Portee 37m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360°",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 36.3 m, horizontale 32.3 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.betonstar.com/usa/product/h37-4z-4-2/",
+    "Nombre de sections": "https://www.betonstar.com/usa/product/h37-4z-4-2/",
+    "Type de pliage": "https://www.betonstar.com/usa/product/h37-4z-4-2/",
+    "Longueur de chaque section": "https://www.betonstar.com/usa/product/h37-4z-4-2/",
+    "Type de rotation": "https://www.betonstar.com/usa/product/h37-4z-4-2/",
+    "Console operateur": "https://www.betonstar.com/usa/product/h37-4z-4-2/",
+    "Notes": "https://www.betonstar.com/usa/product/h37-4z-4-2/"
+   },
+   "remarque": "Fiche produit : Boom type Z, Sections 4, Boom swinging angle 360° (continu non precise), Remote Control HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Betonstar",
+   "modele": "H37-5Z",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "Z-Fold",
+    "Longueur de chaque section": "Portee 37m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360°",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 36.3 m, horizontale 32.3 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.betonstar.com/usa/product/h37-5z-5-2/",
+    "Nombre de sections": "https://www.betonstar.com/usa/product/h37-5z-5-2/",
+    "Type de pliage": "https://www.betonstar.com/usa/product/h37-5z-5-2/",
+    "Longueur de chaque section": "https://www.betonstar.com/usa/product/h37-5z-5-2/",
+    "Type de rotation": "https://www.betonstar.com/usa/product/h37-5z-5-2/",
+    "Console operateur": "https://www.betonstar.com/usa/product/h37-5z-5-2/",
+    "Notes": "https://www.betonstar.com/usa/product/h37-5z-5-2/"
+   },
+   "remarque": "Fiche produit : Sections 5 (five-arm boom), type Z, 360°, HBC. Attention : la page liste US affiche 'Sections: 4' pour le H37-5Z (erreur de la page liste ; la fiche produit dit 5)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Betonstar",
+   "modele": "H51-5RZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "Portee 51m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360°",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 50.2 m, horizontale 46.2 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.betonstar.com/usa/product/h51-5rz-4-2/",
+    "Nombre de sections": "https://www.betonstar.com/usa/product/h51-5rz-4-2/",
+    "Type de pliage": "https://www.betonstar.com/usa/product/h51-5rz-4-2/",
+    "Longueur de chaque section": "https://www.betonstar.com/usa/product/h51-5rz-4-2/",
+    "Type de rotation": "https://www.betonstar.com/usa/product/h51-5rz-4-2/",
+    "Console operateur": "https://www.betonstar.com/usa/product/h51-5rz-4-2/",
+    "Notes": "https://www.betonstar.com/usa/product/h51-5rz-4-2/"
+   },
+   "remarque": "Fiche produit : Boom type RZ, Sections 5, 360°, HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Concord",
+   "modele": "38m 5-section Multi-Z",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "A completer",
+    "Longueur de chaque section": "7.8 / 6.6 / 6.6 / 6.4 / 6.2 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "370°",
+    "Console operateur": "Telecommande radio proportionnelle",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 37.5 m, horizontale 33.6 m; articulation 91/180/240/180/240",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://concordpumps.com/pumps/38-meter-z-r-fold/",
+    "Nombre de sections": "https://concordpumps.com/pumps/38-meter-z-r-fold/",
+    "Type de pliage": "https://concordpumps.com/pumps/38-meter-z-r-fold/",
+    "Longueur de chaque section": "https://concordpumps.com/pumps/38-meter-z-r-fold/",
+    "Type de rotation": "https://concordpumps.com/pumps/38-meter-z-r-fold/",
+    "Console operateur": "https://concordpumps.com/pumps/38-meter-z-r-fold/",
+    "Notes": "https://concordpumps.com/pumps/38-meter-z-r-fold/"
+   },
+   "remarque": "Type de pliage CONTRADICTOIRE sur la page : titre '38-METER MULTI-Z' et resume '5 section Z fold', mais specs '5 SECTION Z-R BOOM' et URL 'z-r-fold'. Laisse en A completer : a trancher (Z-Fold ou ZR-Fold). La page affiche 213' pour 37,5 m (erreur fabricant)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Concord",
+   "modele": "40m 4-section Z-fold",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Z-Fold",
+    "Longueur de chaque section": "9.5 / 8.6 / 8.7 / 8.9 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "370°",
+    "Console operateur": "Telecommande radio HBC ou Autec",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 39.7 m, horizontale 35.8 m; articulation 92/180/240/245",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://concordpumps.com/pumps/40-meter-z-fold/",
+    "Nombre de sections": "https://concordpumps.com/pumps/40-meter-z-fold/",
+    "Type de pliage": "https://concordpumps.com/pumps/40-meter-z-fold/",
+    "Longueur de chaque section": "https://concordpumps.com/pumps/40-meter-z-fold/",
+    "Type de rotation": "https://concordpumps.com/pumps/40-meter-z-fold/",
+    "Console operateur": "https://concordpumps.com/pumps/40-meter-z-fold/",
+    "Notes": "https://concordpumps.com/pumps/40-meter-z-fold/"
+   },
+   "remarque": "Page '40-METER Z FOLD' : 4 sections Z fold, rotation 370 degrees."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Concord",
+   "modele": "40m 5-section Z-R fold",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "ZR-Fold",
+    "Longueur de chaque section": "9 / 6.8 / 6.8 / 6.6 / 6.4 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "370°",
+    "Console operateur": "Telecommande radio proportionnelle",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 39.6 m, horizontale 35.7 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://concordpumps.com/pumps/40-meter-z-r-fold/",
+    "Nombre de sections": "https://concordpumps.com/pumps/40-meter-z-r-fold/",
+    "Type de pliage": "https://concordpumps.com/pumps/40-meter-z-r-fold/",
+    "Longueur de chaque section": "https://concordpumps.com/pumps/40-meter-z-r-fold/",
+    "Type de rotation": "https://concordpumps.com/pumps/40-meter-z-r-fold/",
+    "Console operateur": "https://concordpumps.com/pumps/40-meter-z-r-fold/",
+    "Notes": "https://concordpumps.com/pumps/40-meter-z-r-fold/"
+   },
+   "remarque": "Page '40 METER Z-R FOLD' : 5 sections, rotation 370 degrees. Incoherence fabricant : l'articulation publiee n'a que 4 valeurs (92/180/240/180) pour 5 sections, et l'en-tete specs dit 'SECTION Z-BOOM' (gabarit du 40 m Z)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "20X-4ZR",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "ZR-Fold",
+    "Longueur de chaque section": "5.5 / 3.5 / 3.5 / 3.7 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 19.85 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/20x-4zr/"
+   },
+   "remarque": "Titre fiche : '20 Meter 4 Section ZR-Fold Boom Pump (20X-4ZR)'. Telecommande radio HBC. Rotation non publiee sur la fiche."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "33X-5ZZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "ZZ-Fold",
+    "Longueur de chaque section": "7.9 / 5 / 5 / 5.25 / 5.25 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360 continu",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 32.2 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/33x-5zz/"
+   },
+   "remarque": "Titre fiche : '33 Meter 5 Section ZZ-Fold Boom Pump (33X-5ZZ)'. Telecommande radio HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "37X-4R",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Roll Fold",
+    "Longueur de chaque section": "8.9 / 7.85 / 7.9 / 7.85 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 36.5 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/37x-4r/"
+   },
+   "remarque": "Titre fiche : '37 Meter 4 Section Roll-Fold Boom Pump (37X-4R)'. Telecommande radio HBC. Rotation non publiee sur la fiche."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "40X-5ZR",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "ZR-Fold",
+    "Longueur de chaque section": "8.4 / 6.7 / 6.7 / 7 / 7 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360 continu",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 39.7 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/40x-5zr/"
+   },
+   "remarque": "Titre fiche : '40 Meter 5 Section ZR-Fold Boom Pump (40X-5ZR)'. Telecommande radio HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "43X-5RZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "7.8 / 6.8 / 7.2 / 8 / 8.39 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360 continu",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 42.3 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/43x-5rz/"
+   },
+   "remarque": "Titre fiche : '43 Meter 5 Section RZ-Fold Boom Pump (43X-5RZ)'. Telecommande radio HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "48X-5RZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "9.5 / 7.8 / 7.7 / 9 / 9.4 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360 continu",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 47.5 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/48x-5rz/"
+   },
+   "remarque": "Titre fiche : '48 Meter 5 Section RZ-Fold Boom Pump (48X-5RZ)'. Telecommande radio HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "52X-5RZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "10.2 / 8.85 / 8.75 / 9.65 / 9.75 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "360 continu",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 51.2 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/52x-5rz/"
+   },
+   "remarque": "Titre fiche : '52 Meter 5 Section RZ-Fold Boom Pump (52X-5RZ)'. Telecommande radio HBC."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "57X-6RZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "6",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "11.3 / 9.25 / 9.25 / 11 / 6.9 / 4.8 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 56.5 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/57x-6rz/"
+   },
+   "remarque": "Titre fiche : '57 Meter 6 Section RZ-Fold Boom Pump (57X-6RZ)'. Telecommande radio HBC. Rotation non publiee sur la fiche."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "DY",
+   "modele": "63X-5RZ",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "12.5 / 10.2 / 10.1 / 12.5 / 12.8 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio HBC",
+    "E-stop": "A completer",
+    "Notes": "Portée 63 m (verticale non affichee)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/",
+    "Nombre de sections": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/",
+    "Type de pliage": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/",
+    "Longueur de chaque section": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/",
+    "Type de rotation": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/",
+    "Console operateur": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/",
+    "Notes": "https://dyconcretepumps.com/concrete-pumps/boom-pumps/63-meter-5-section-rz-fold-boom-pump-63x-5rz/"
+   },
+   "remarque": "Titre fiche : '63 Meter 5 Section RZ-Fold Boom Pump (63X-5RZ)'. Telecommande radio HBC. Rotation non publiee sur la fiche."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Liebherr",
+   "modele": "32 XXT",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "Z-Fold",
+    "Longueur de chaque section": "Portee 32m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "A completer",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 31.7 m; hauteur de depliage 5.94 m; stabilisateurs XXT",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.liebherr.com/en-us/p/85079-4360150",
+    "Nombre de sections": "https://www.liebherr.com/en-us/p/85079-4360150",
+    "Type de pliage": "https://www.liebherr.com/en-us/p/85079-4360150",
+    "Notes": "https://www.liebherr.com/en-us/p/85079-4360150"
+   },
+   "remarque": "Fiche NA : '32 XXT with 5-part Z-fold distribution booms', 31.7 m vertical. La BD a '31 XXT' (5 sections, Z-Fold, portee 31 m) absent du site NA : tres probablement le meme modele mal nomme -> renommer plutot qu'ajouter (a confirmer)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Putzmeister",
+   "modele": "BSF 27-4",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Z-Fold",
+    "Longueur de chaque section": "Portee 27m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "365°",
+    "Console operateur": "A completer",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 26.4 m, horizontale 22.1 m; pied TRC",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/5301/bsf-27-4",
+    "Nombre de sections": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/5301/bsf-27-4",
+    "Type de pliage": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/5301/bsf-27-4",
+    "Longueur de chaque section": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/5301/bsf-27-4",
+    "Type de rotation": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/5301/bsf-27-4",
+    "Notes": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/5301/bsf-27-4"
+   },
+   "remarque": "Fiche NA : Number of sections 4, Boom Style Z, Rotation 365°."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Putzmeister",
+   "modele": "BSF 39-4",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Z-Fold",
+    "Longueur de chaque section": "Portee 39m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "365°",
+    "Console operateur": "Ergonic 3.0, telecommande radio (radiomatic iLOG)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 38.30 m, horizontale 33.60 m; boom Multi-Z fixe ou detachable",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4",
+    "Nombre de sections": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4",
+    "Type de pliage": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4",
+    "Longueur de chaque section": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4",
+    "Type de rotation": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4",
+    "Console operateur": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4",
+    "Notes": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/216/bsf-39-4"
+   },
+   "remarque": "Fiche NA : 4 sections, Boom Style Z (Multi-Z), Rotation 365°. Distinct du M39Z-5 (5 sections) deja en BD."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Putzmeister",
+   "modele": "BSF 51-5",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "Portee 51m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "365°",
+    "Console operateur": "Ergonic 3.0",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 50.10 m, horizontale 44.90 m",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Type": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5",
+    "Nombre de sections": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5",
+    "Type de pliage": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5",
+    "Longueur de chaque section": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5",
+    "Type de rotation": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5",
+    "Console operateur": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5",
+    "Notes": "https://www.putzmeister.com/en-US/web/northamerica/product-detail/-/product/224/bsf-51-5"
+   },
+   "remarque": "Fiche NA : 5 sections, Boom Style 'Roll Z-folding (RZ)', Rotation 365°."
+  }
+ ]
+}

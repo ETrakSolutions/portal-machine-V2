@@ -1,0 +1,1099 @@
+{
+ "lot": "s_girafe",
+ "resultats": [
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "K-HiPro 285",
+   "specs": {
+    "Longueur de boom": "16.1 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "450°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/1Ec8la8x/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/1Ec8la8x/"
+   },
+   "remarque": "Variante 2-3 : 52' 10\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Nomenclature K « 2-3 » (flèche + jib) : nombre de sections non déduit."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "K-HiPro 425",
+   "specs": {
+    "Longueur de boom": "19.1 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "460°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/22F7B2bB/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/22F7B2bB/"
+   },
+   "remarque": "Variante 2-4 : 62' 8\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Nomenclature K « 2-4 » : nombre de sections non déduit."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "K-HiPro 515",
+   "specs": {
+    "Longueur de boom": "25.1 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/eTsYqxbh/"
+   },
+   "remarque": "Variante 2-4 : 82' 4\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Angle de rotation publié « - » sur la fiche. Nomenclature « 2-4 » : sections non déduites. Le « 505 » cité sur la page K-cranes est une coquille : fiche et page de gamme = 515."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "S130 HiPro",
+   "specs": {
+    "Longueur de boom": "7.0 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "270°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/9ZxIkIFE/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/9ZxIkIFE/"
+   },
+   "remarque": "Variante S-HiPro 130 : 22' 11\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Fiche commune S-130 & S-230, nom fiche « S-HiPro 130 ». Absent des pages de gamme : présence au catalogue actuel à confirmer. Rallonges mécaniques +13' 5\" non comptées."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "S230 HiPro",
+   "specs": {
+    "Longueur de boom": "10.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/9ZxIkIFE/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/9ZxIkIFE/"
+   },
+   "remarque": "Variante S-HiPro 230 : 35' 4\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Fiche commune S-130 & S-230, nom fiche « S-HiPro 230 ». Absent des pages de gamme : présence au catalogue actuel à confirmer. Rallonges mécaniques +23' 9\" non comptées."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "T-CLX 009",
+   "specs": {
+    "Longueur de boom": "2.8 m",
+    "Nombre de sections de boom": "2",
+    "Angle de rotation": "322°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/REq2wpXn/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/REq2wpXn/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/REq2wpXn/"
+   },
+   "remarque": "Variante B-2 : 9' 2\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "T-Duo 018",
+   "specs": {
+    "Longueur de boom": "4.2 m",
+    "Nombre de sections de boom": "3",
+    "Angle de rotation": "330°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/6eusnnom/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/6eusnnom/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/6eusnnom/"
+   },
+   "remarque": "Variante B-3 : 13' 9\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Absent de la page de gamme T-cranes US (seulement sur la page des fiches) : à confirmer s'il est encore offert."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "T-Duo 023",
+   "specs": {
+    "Longueur de boom": "4.5 m",
+    "Nombre de sections de boom": "3",
+    "Angle de rotation": "330°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/o1CBC33P/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/o1CBC33P/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/o1CBC33P/"
+   },
+   "remarque": "Variante B-3 : 14' 9\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "T-Duo 029",
+   "specs": {
+    "Longueur de boom": "5.6 m",
+    "Nombre de sections de boom": "4",
+    "Angle de rotation": "330°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/ZZfO0340/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/ZZfO0340/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/ZZfO0340/"
+   },
+   "remarque": "Variante B-4 : 18' 4\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. La fiche technique est titrée « T-HiDuo 029 » (page de gamme : « T-Duo 029 ») ; nom à trancher (la BD a « T-HiDuo 038 »)."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 058",
+   "specs": {
+    "Longueur de boom": "9.3 m",
+    "Nombre de sections de boom": "3",
+    "Angle de rotation": "410°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/8u5zKyCk/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/8u5zKyCk/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/8u5zKyCk/"
+   },
+   "remarque": "Variante D-3 : 30' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 068",
+   "specs": {
+    "Longueur de boom": "9.3 m",
+    "Nombre de sections de boom": "3",
+    "Angle de rotation": "410°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/3jz7v3Jm/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/3jz7v3Jm/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/3jz7v3Jm/"
+   },
+   "remarque": "Variante D-3 : 30' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 078",
+   "specs": {
+    "Longueur de boom": "11.6 m",
+    "Nombre de sections de boom": "4",
+    "Angle de rotation": "406°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/ifLZD2bg/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/ifLZD2bg/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/ifLZD2bg/"
+   },
+   "remarque": "Variante E-4 : 38' 1\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 088",
+   "specs": {
+    "Longueur de boom": "11.6 m",
+    "Nombre de sections de boom": "4",
+    "Angle de rotation": "406°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/RYQ2MSpr/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/RYQ2MSpr/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/RYQ2MSpr/"
+   },
+   "remarque": "Variante E-4 : 38' 1\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 102",
+   "specs": {
+    "Longueur de boom": "14.3 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "406°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/iky7I1Bb/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/iky7I1Bb/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/iky7I1Bb/"
+   },
+   "remarque": "Variante E-5 : 46' 11\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 112",
+   "specs": {
+    "Longueur de boom": "14.6 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "406°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/46oBaFp8/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/46oBaFp8/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/46oBaFp8/"
+   },
+   "remarque": "Variante E-5 : 48' 0\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 178",
+   "specs": {
+    "Longueur de boom": "17.5 m",
+    "Nombre de sections de boom": "6",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/YJeLUIhg/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/YJeLUIhg/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/YJeLUIhg/"
+   },
+   "remarque": "Variante E-6 : 57' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 218",
+   "specs": {
+    "Longueur de boom": "12.9 m",
+    "Nombre de sections de boom": "4",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/y39WNGWy/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/y39WNGWy/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/y39WNGWy/"
+   },
+   "remarque": "Variante B-4 : 42' 5\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Sortie max = B-4 (42' 5\") ; la E-4 donne 41' 10\"."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-Duo 248",
+   "specs": {
+    "Longueur de boom": "15.1 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "410°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/D3LdHwl2/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/D3LdHwl2/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/D3LdHwl2/"
+   },
+   "remarque": "Variante EP-5 : 49' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-HiPro 122",
+   "specs": {
+    "Longueur de boom": "14.6 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "406°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/G29jLF9P/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/G29jLF9P/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/G29jLF9P/"
+   },
+   "remarque": "Variante E-5 : 48' 0\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-HiPro 352",
+   "specs": {
+    "Longueur de boom": "18.6 m",
+    "Nombre de sections de boom": "7",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/MP82bJmD/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/MP82bJmD/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/MP82bJmD/"
+   },
+   "remarque": "Variante E-7 : 61' 0\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Version E-5 + JIB 100X-2 existe aussi (jib non compté)."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "X-HiPro 418",
+   "specs": {
+    "Longueur de boom": "15.1 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/TE3oYKwR/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/TE3oYKwR/"
+   },
+   "remarque": "Variante EP-5 : 49' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Angle de rotation imprimé « 999 » sur la fiche (probablement rotation continue, non confirmé) : laissé à compléter."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "eX.142 HiPro",
+   "specs": {
+    "Longueur de boom": "15.1 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/5uU7HJkc/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/5uU7HJkc/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/5uU7HJkc/"
+   },
+   "remarque": "Variante E-5 : 49' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "eX.162 HiPro",
+   "specs": {
+    "Longueur de boom": "15.1 m",
+    "Nombre de sections de boom": "5",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/fGM4NN7W/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/fGM4NN7W/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/fGM4NN7W/"
+   },
+   "remarque": "Variante E-5 : 49' 6\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "eX.262 HiPro",
+   "specs": {
+    "Longueur de boom": "21.0 m",
+    "Nombre de sections de boom": "8",
+    "Angle de rotation": "410°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/B1z8lqjZ/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/B1z8lqjZ/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/B1z8lqjZ/"
+   },
+   "remarque": "Variante E-8 : 68' 10\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. La fiche contient des restes d'une autre fiche (en-tête iX.148, poids incohérents) ; sortie, variantes et angle sont cohérents entre eux."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "iQ.1188 HiPro",
+   "specs": {
+    "Longueur de boom": "23.8 m",
+    "Nombre de sections de boom": "10",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://cms.hiab.com/globalassets/documents/local/united-states/iq1188_spec_v2022-08-15-1.pdf",
+    "Nombre de sections de boom": "https://cms.hiab.com/globalassets/documents/local/united-states/iq1188_spec_v2022-08-15-1.pdf"
+   },
+   "remarque": "Variante E-10 : 78' 0\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche. Angle de rotation publié « - ». Fiche datée 2022-08-15 (PDF cms.hiab.com). Version E-9 + JIB 155Q-6 non comptée."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "iX.128 Duo",
+   "specs": {
+    "Longueur de boom": "11.0 m",
+    "Nombre de sections de boom": "3",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/LG231WvS/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/LG231WvS/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/LG231WvS/"
+   },
+   "remarque": "Variante B-3 : 36' 1\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "iX.148 Duo",
+   "specs": {
+    "Longueur de boom": "11.0 m",
+    "Nombre de sections de boom": "3",
+    "Angle de rotation": "415°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/BUtGMFL3/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/BUtGMFL3/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/BUtGMFL3/"
+   },
+   "remarque": "Variante B-3 : 36' 1\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "iX.258 HiDuo",
+   "specs": {
+    "Longueur de boom": "21.0 m",
+    "Nombre de sections de boom": "8",
+    "Angle de rotation": "410°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/O7OEZ7w0/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/O7OEZ7w0/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/O7OEZ7w0/"
+   },
+   "remarque": "Variante E-8 : 68' 10\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "HIAB",
+   "modele": "iX.298 HiDuo",
+   "specs": {
+    "Longueur de boom": "21.0 m",
+    "Nombre de sections de boom": "8",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://hiab.cdn.picturepark.com/v/CUezQuGO/",
+    "Nombre de sections de boom": "https://hiab.cdn.picturepark.com/v/CUezQuGO/",
+    "Angle de rotation": "https://hiab.cdn.picturepark.com/v/CUezQuGO/"
+   },
+   "remarque": "Variante E-8 : 68' 10\". Longueur = sortie hydraulique max de la plus grande variante sur la fiche US, convertie de pi-po en m (0,0254 m/po) à 1 décimale comme les entrées HIAB de la BD. Sections = nombre d'extensions hydrauliques de cette variante (même convention que la BD : X-HiDuo 108 = 14,3 m / 5). Voltage absent de la fiche."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PC 1500 Compact",
+   "specs": {
+    "Longueur de boom": "3.1 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "325°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pc-1500-compact.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pc-1500-compact.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PC 2700 Compact",
+   "specs": {
+    "Longueur de boom": "5 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "325°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pc-2700-compact.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pc-2700-compact.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PC 3800 Compact",
+   "specs": {
+    "Longueur de boom": "5 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "325°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pc-3800-compact.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pc-3800-compact.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 11.001 SLD 1",
+   "specs": {
+    "Longueur de boom": "12 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-11-001-sld-1.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-11-001-sld-1.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 11.001 SLD 3",
+   "specs": {
+    "Longueur de boom": "12 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-11-001-sld-3.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-11-001-sld-3.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 110002 SH",
+   "specs": {
+    "Longueur de boom": "22 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-110002-sh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-110002-sh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 11001 CM",
+   "specs": {
+    "Longueur de boom": "10.2 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "390°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-11001-cm.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-11001-cm.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 12.501 SLD 5",
+   "specs": {
+    "Longueur de boom": "12 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-12-501-sld-5.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-12-501-sld-5.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 13.501 SLD 1",
+   "specs": {
+    "Longueur de boom": "14.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-13-501-sld-1.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-13-501-sld-1.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 13.501 SLD 3",
+   "specs": {
+    "Longueur de boom": "14.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-13-501-sld-3.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-13-501-sld-3.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 14.501 SLD 5",
+   "specs": {
+    "Longueur de boom": "14.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-14-501-sld-5.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-14-501-sld-5.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent. Liste de specs métrique dit 11.7 m mais US 48' 7\" et tableau des variantes métrique (D = 14.8 m) concordent : 14.8 m retenu."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 14002 EH",
+   "specs": {
+    "Longueur de boom": "17 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-14002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-14002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 17.001 SLD 1",
+   "specs": {
+    "Longueur de boom": "14.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-17-001-sld-1.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-17-001-sld-1.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 17.001 SLD 3",
+   "specs": {
+    "Longueur de boom": "14.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-17-001-sld-3.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-17-001-sld-3.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 18002 EH",
+   "specs": {
+    "Longueur de boom": "17 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-18002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-18002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 19.001 SLD 5",
+   "specs": {
+    "Longueur de boom": "14.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "420°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-19-001-sld-5.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-19-001-sld-5.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 200002 L SH",
+   "specs": {
+    "Longueur de boom": "25.6 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-200002-l-sh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-200002-l-sh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 21.501 SLD 3",
+   "specs": {
+    "Longueur de boom": "14.9 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-21-501-sld-3.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-21-501-sld-3.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 22002 EH",
+   "specs": {
+    "Longueur de boom": "17.1 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-22002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-22002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 24.001 SLD 5",
+   "specs": {
+    "Longueur de boom": "14.9 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-24-001-sld-5.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-24-001-sld-5.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 33002 EH",
+   "specs": {
+    "Longueur de boom": "21.3 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-33002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-33002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 4200",
+   "specs": {
+    "Longueur de boom": "9.7 m",
+    "Nombre de sections de boom": "4",
+    "Angle de rotation": "370°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-4200.html",
+    "Nombre de sections de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-4200.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-4200.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Voltage absent. « up to four hydraulic extensions » sur la page."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 42002 SH High Performance",
+   "specs": {
+    "Longueur de boom": "21 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-42002-sh-high-performance.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-42002-sh-high-performance.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 44502",
+   "specs": {
+    "Longueur de boom": "16.3 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-44502.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-44502.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 46002",
+   "specs": {
+    "Longueur de boom": "21.01 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-46002.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-46002.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 5.001 SLD 3",
+   "specs": {
+    "Longueur de boom": "11.1 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-5-001-sld-3.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-5-001-sld-3.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 63002 EH",
+   "specs": {
+    "Longueur de boom": "20.4 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-63002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-63002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent. US affiche 66' 1\" (20,14 m) mais tableau métrique variante G = 20.4 m : 20.4 m retenu."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 65002 SH",
+   "specs": {
+    "Longueur de boom": "20.4 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-65002-sh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-65002-sh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 7.001 SLD 1",
+   "specs": {
+    "Longueur de boom": "11.2 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-7-001-sld-1.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-7-001-sld-1.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 7.501 SLD 5",
+   "specs": {
+    "Longueur de boom": "11.2 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-7-501-sld-5.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-7-501-sld-5.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 720 TEC",
+   "specs": {
+    "Longueur de boom": "22 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-720-tec.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-720-tec.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent. Angle US affiché « sans finite », métrique ∞."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 76002 EH",
+   "specs": {
+    "Longueur de boom": "20.4 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-76002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-76002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 78002 SH",
+   "specs": {
+    "Longueur de boom": "20.4 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-78002-sh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-78002-sh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 8.501 SLD 1",
+   "specs": {
+    "Longueur de boom": "11.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-8-501-sld-1.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-8-501-sld-1.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 8501 CM",
+   "specs": {
+    "Longueur de boom": "9.9 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "390°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-8501-cm.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-8501-cm.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent. Angle pris de la liste US (métrique absent)."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 880 TEC",
+   "specs": {
+    "Longueur de boom": "21.7 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-880-tec.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-880-tec.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent. US affiche 73' 5\" (22,38 m) mais tableau métrique variante H = 21.7 m : 21.7 m retenu."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 88002 EH",
+   "specs": {
+    "Longueur de boom": "22.5 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "continu",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-88002-eh.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-88002-eh.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  },
+  {
+   "type": "Camion Girafe (Boom Truck)",
+   "fabricant": "Palfinger",
+   "modele": "PK 9.501 SLD 5",
+   "specs": {
+    "Longueur de boom": "11.8 m",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "400°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-9-501-sld-5.html",
+    "Angle de rotation": "https://www.palfinger.com/us/en/our-products/cranes/knuckle-boom-cranes/models/pk-9-501-sld-5.html"
+   },
+   "remarque": "Longueur = Max. hydraulic outreach (liste métrique de la page US). Nombre de sections non publié explicitement (variantes à lettres seulement). Voltage absent."
+  }
+ ]
+}

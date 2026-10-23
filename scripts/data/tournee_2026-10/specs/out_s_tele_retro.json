@@ -1,0 +1,1295 @@
+{
+ "lot": "s_tele_retro",
+ "resultats": [
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "580 Super N WT",
+   "specs": {
+    "Puissance moteur": "110 hp",
+    "Profondeur fouille max": "18.0 ft",
+    "Hauteur chargement": "11.5 ft",
+    "Godet chargeur": "1.29 yd3",
+    "Force cavage": "15 070 lb",
+    "Poids operationnel": "20 760 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/5049cdc8c2144766828aee6d690f28d4?v=0252a0ce",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/5049cdc8c2144766828aee6d690f28d4?v=0252a0ce",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/5049cdc8c2144766828aee6d690f28d4?v=0252a0ce",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/5049cdc8c2144766828aee6d690f28d4?v=0252a0ce",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/5049cdc8c2144766828aee6d690f28d4?v=0252a0ce",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/5049cdc8c2144766828aee6d690f28d4?v=0252a0ce"
+   },
+   "remarque": "Fiche : brut 110 hp / net 108 hp ; profondeur Extendahoe sorti 18' 0\" (18' 6\" avec godet haute capacite) ; godet Long Lip 1.29 yd3 comble (4-en-1 : 1.20 yd3) ; poids SAE transport 20 760 lb (cabine, E-hoe, contrepoids 1 100 lb). Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/580-super-n-wt-construction-king. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "580N EP",
+   "specs": {
+    "Puissance moteur": "74 hp",
+    "Profondeur fouille max": "18.5 ft",
+    "Hauteur chargement": "11.3 ft",
+    "Godet chargeur": "1.03 yd3",
+    "Force cavage": "11 517 lb",
+    "Poids operationnel": "15 995 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/333359b906da452a93cba02e99da2bc4?v=30fef79a",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/333359b906da452a93cba02e99da2bc4?v=30fef79a",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/333359b906da452a93cba02e99da2bc4?v=30fef79a",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/333359b906da452a93cba02e99da2bc4?v=30fef79a",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/333359b906da452a93cba02e99da2bc4?v=30fef79a",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/333359b906da452a93cba02e99da2bc4?v=30fef79a"
+   },
+   "remarque": "Fiche : brut 74 hp / net 68 hp ; profondeur Extendahoe sorti 18' 6\" ; axe 11' 3\" ; godet GP 82 in 1.03 yd3 comble ; poids = configuration 1 (2WD, canopy, Extendahoe) 15 995 lb, configuration 2 (4WD, cabine) 16 093 lb. Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/580n-ep. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "580SV Center Pivot",
+   "specs": {
+    "Puissance moteur": "97 hp",
+    "Profondeur fouille max": "18.5 ft",
+    "Hauteur chargement": "11.1 ft",
+    "Godet chargeur": "1.30 yd3",
+    "Force cavage": "15 302 lb",
+    "Poids operationnel": "18 717 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/bcf13323f46c4c6ea8d41bb5c4463900?v=08a6b16b",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/bcf13323f46c4c6ea8d41bb5c4463900?v=08a6b16b",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/bcf13323f46c4c6ea8d41bb5c4463900?v=08a6b16b",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/bcf13323f46c4c6ea8d41bb5c4463900?v=08a6b16b",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/bcf13323f46c4c6ea8d41bb5c4463900?v=08a6b16b",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/bcf13323f46c4c6ea8d41bb5c4463900?v=08a6b16b"
+   },
+   "remarque": "Fiche : brut 97 hp / net 95 hp ; 18' 6\" = retro 15 ft in-line avec Extendahoe sorti (la page produit affiche 14' 5\", retro standard) ; poids configuration 1 18 717 lb, configuration 2 19 600 lb. Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/580sv-center-pivot-construction-king. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "580SV Side Shift",
+   "specs": {
+    "Puissance moteur": "97 hp",
+    "Profondeur fouille max": "18.5 ft",
+    "Hauteur chargement": "11.1 ft",
+    "Godet chargeur": "1.30 yd3",
+    "Force cavage": "15 302 lb",
+    "Poids operationnel": "19 445 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/dda983a67808430d8cfe67da4064c488?v=6b4e1ea7",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/dda983a67808430d8cfe67da4064c488?v=6b4e1ea7",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/dda983a67808430d8cfe67da4064c488?v=6b4e1ea7",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/dda983a67808430d8cfe67da4064c488?v=6b4e1ea7",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/dda983a67808430d8cfe67da4064c488?v=6b4e1ea7",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/dda983a67808430d8cfe67da4064c488?v=6b4e1ea7"
+   },
+   "remarque": "Fiche : brut 97 hp / net 95 hp ; 18' 6\" = retro 15 ft in-line avec Extendahoe sorti (page produit : 14' 5\", retro standard) ; poids configuration 1 19 445 lb, configuration 2 20 590 lb. Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/580sv-side-shift-construction-king. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "695SV Center Pivot",
+   "specs": {
+    "Puissance moteur": "110 hp",
+    "Profondeur fouille max": "19.6 ft",
+    "Hauteur chargement": "11.4 ft",
+    "Godet chargeur": "1.50 yd3",
+    "Force cavage": "15 302 lb",
+    "Poids operationnel": "19 930 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e5757486089e453a9ccb42e2cede8d9d?v=0f96cdb1",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e5757486089e453a9ccb42e2cede8d9d?v=0f96cdb1",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e5757486089e453a9ccb42e2cede8d9d?v=0f96cdb1",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e5757486089e453a9ccb42e2cede8d9d?v=0f96cdb1",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e5757486089e453a9ccb42e2cede8d9d?v=0f96cdb1",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/e5757486089e453a9ccb42e2cede8d9d?v=0f96cdb1"
+   },
+   "remarque": "Fiche : brut 110 hp / net 108 hp ; profondeur max 19' 7\" (deuxieme configuration de retro, Extendahoe sorti) ; axe 11' 5\". Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/695sv-center-pivot-construction-king. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "695SV Side Shift",
+   "specs": {
+    "Puissance moteur": "110 hp",
+    "Profondeur fouille max": "19.6 ft",
+    "Hauteur chargement": "11.4 ft",
+    "Godet chargeur": "1.50 yd3",
+    "Force cavage": "15 302 lb",
+    "Poids operationnel": "22 245 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/7e7f618f554f42e78a118d7786e0c66a?v=50076a25",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/7e7f618f554f42e78a118d7786e0c66a?v=50076a25",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/7e7f618f554f42e78a118d7786e0c66a?v=50076a25",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/7e7f618f554f42e78a118d7786e0c66a?v=50076a25",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/7e7f618f554f42e78a118d7786e0c66a?v=50076a25",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/7e7f618f554f42e78a118d7786e0c66a?v=50076a25"
+   },
+   "remarque": "Fiche : brut 110 hp / net 108 hp ; profondeur max 19' 7\" ; axe 11' 5\". Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/695sv-side-shift-construction-king. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Case",
+   "modele": "Utility Plus",
+   "specs": {
+    "Puissance moteur": "74 hp",
+    "Profondeur fouille max": "18.3 ft",
+    "Hauteur chargement": "11.8 ft",
+    "Godet chargeur": "1.20 yd3",
+    "Force cavage": "12 381 lb",
+    "Poids operationnel": "18 298 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/92a900b9caa640ff94d6d326a08ef0d7?v=60194986",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/92a900b9caa640ff94d6d326a08ef0d7?v=60194986",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/92a900b9caa640ff94d6d326a08ef0d7?v=60194986",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/92a900b9caa640ff94d6d326a08ef0d7?v=60194986",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/92a900b9caa640ff94d6d326a08ef0d7?v=60194986",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/92a900b9caa640ff94d6d326a08ef0d7?v=60194986"
+   },
+   "remarque": "NOM : la fiche technique liee a la page Utility Plus est intitulee \"575N EP\" sur toutes ses pages - le modele Utility Plus semble etre la 575N EP (verifier le nom a inscrire et si une 575N EP existe deja en BD). Fiche : brut 74 hp / net 68 hp ; profondeur Extendahoe sorti 18' 4\" (page produit : 14' 5\", retro standard) ; axe 11' 9\" ; godet standard 1.20 yd3 (fiche sans mention comble/ras). Source : fiche technique PDF liee depuis https://www.casece.com/en-us/northamerica/products/backhoe-loaders/utility-plus. Convention calee sur la fiche Case de la 580 Super N (entree BD) : puissance BRUTE, profondeur max avec Extendahoe sorti, hauteur = axe d'articulation du godet chargeur leve (hinge pin), godet = capacite comblee du godet standard, force = verin de godet retro en PowerLift/PowerBoost. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Caterpillar",
+   "modele": "432",
+   "specs": {
+    "Puissance moteur": "92 hp",
+    "Profondeur fouille max": "20 ft",
+    "Hauteur chargement": "A completer",
+    "Godet chargeur": "1.3 yd3",
+    "Force cavage": "A completer",
+    "Poids operationnel": "18 671 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/432-2/",
+    "Profondeur fouille max": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/432-2/",
+    "Hauteur chargement": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/432-2/",
+    "Godet chargeur": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/432-2/",
+    "Force cavage": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/432-2/",
+    "Poids operationnel": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/432-2/"
+   },
+   "remarque": "DISTRIBUTION NA DOUTEUSE : la fiche Ziegler Cat (concessionnaire officiel US) affiche un moteur 'EU Stage V' seulement, aucun Tier 4 - modele de gamme internationale (side-shift). A confirmer avant import. Puissance = nette SAE J1349 (valeur vedette Cat), brute SAE J1995 103 hp. Profondeur = bras extensible (E-Stick), convertie mm -> pi arrondie a l'entier (regle). Force cavage laissee A completer : la seule force publiee est le 'Breakout Force' du CHARGEUR, alors que les autres fiches de ce lot utilisent la force du godet retro. Hauteur d'axe non publiee. Fiche 432 : E-Stick 6150 mm (std 4778 mm) ; godet MP 1.03 m3 / 1.3 yd3 ; breakout chargeur 12 297 (unite affichee 'ft-lbf', manifestement lbf) ; moteur optionnel 82 kW brut 114 hp."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Caterpillar",
+   "modele": "434",
+   "specs": {
+    "Puissance moteur": "92 hp",
+    "Profondeur fouille max": "19 ft",
+    "Hauteur chargement": "A completer",
+    "Godet chargeur": "1.50 yd3",
+    "Force cavage": "A completer",
+    "Poids operationnel": "20 216 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/434-2/",
+    "Profondeur fouille max": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/434-2/",
+    "Hauteur chargement": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/434-2/",
+    "Godet chargeur": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/434-2/",
+    "Force cavage": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/434-2/",
+    "Poids operationnel": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/434-2/"
+   },
+   "remarque": "DISTRIBUTION NA DOUTEUSE : la fiche Ziegler Cat (concessionnaire officiel US) affiche un moteur 'EU Stage V' seulement, aucun Tier 4 - modele de gamme internationale (side-shift). A confirmer avant import. Puissance = nette SAE J1349 (valeur vedette Cat), brute SAE J1995 103 hp. Profondeur = bras extensible (E-Stick), convertie mm -> pi arrondie a l'entier (regle). Force cavage laissee A completer : la seule force publiee est le 'Breakout Force' du CHARGEUR, alors que les autres fiches de ce lot utilisent la force du godet retro. Hauteur d'axe non publiee. Fiche 434 : E-Stick 5748 mm (std 4827 mm) ; godet MP 1.15 m3 / 1.50 yd3 ; breakout chargeur 13 646 lbf."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "JCB",
+   "modele": "1CXT",
+   "specs": {
+    "Puissance moteur": "49 hp",
+    "Profondeur fouille max": "8.3 - 10.1 ft",
+    "Hauteur chargement": "A completer",
+    "Godet chargeur": "A completer",
+    "Force cavage": "A completer",
+    "Poids operationnel": "9 396 - 9 572 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.jcb.com/en-us/products/backhoe-loaders/1cxt",
+    "Profondeur fouille max": "https://www.jcb.com/en-us/products/backhoe-loaders/1cxt",
+    "Hauteur chargement": "https://www.jcb.com/en-us/products/backhoe-loaders/1cxt",
+    "Godet chargeur": "https://www.jcb.com/en-us/products/backhoe-loaders/1cxt",
+    "Force cavage": "https://www.jcb.com/en-us/products/backhoe-loaders/1cxt",
+    "Poids operationnel": "https://www.jcb.com/en-us/products/backhoe-loaders/1cxt"
+   },
+   "remarque": "Page en-us : seules les specs cles sont publiees (fiche PDF derriere formulaire). Profondeur publiee en plage 8' 4\" a 10' 1\" (bras standard / extensible) ; poids en plage. ATTENTION : la 1CXT est sur CHENILLES (retrocaveuse compacte a chenilles). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "JCB",
+   "modele": "3CX Compact",
+   "specs": {
+    "Puissance moteur": "74 hp",
+    "Profondeur fouille max": "A completer",
+    "Hauteur chargement": "A completer",
+    "Godet chargeur": "A completer",
+    "Force cavage": "A completer",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.jcb.com/en-us/products/backhoe-loaders/3cx-compact",
+    "Profondeur fouille max": "https://www.jcb.com/en-us/products/backhoe-loaders/3cx-compact",
+    "Hauteur chargement": "https://www.jcb.com/en-us/products/backhoe-loaders/3cx-compact",
+    "Godet chargeur": "https://www.jcb.com/en-us/products/backhoe-loaders/3cx-compact",
+    "Force cavage": "https://www.jcb.com/en-us/products/backhoe-loaders/3cx-compact",
+    "Poids operationnel": "https://www.jcb.com/en-us/products/backhoe-loaders/3cx-compact"
+   },
+   "remarque": "Poids laisse A completer : INCOHERENCE sur la meme page - texte '13,514 lb (6,130 kg)' vs fiche de specs '13834 lb'. Lequel retenir ? Profondeur de fouille vide dans les donnees de la page ; fiche PDF derriere formulaire."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "John Deere",
+   "modele": "310 G-Tier",
+   "specs": {
+    "Puissance moteur": "68 hp",
+    "Profondeur fouille max": "13.7 ft",
+    "Hauteur chargement": "A completer",
+    "Godet chargeur": "A completer",
+    "Force cavage": "A completer",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.deere.com/service/data/specifications/17A1T/356308",
+    "Profondeur fouille max": "https://www.deere.com/en-us/products-and-solutions/loaders/backhoes/310-g-tier-backhoe-mtdbmvq",
+    "Hauteur chargement": "https://www.deere.com/en-us/products-and-solutions/loaders/backhoes/310-g-tier-backhoe-mtdbmvq",
+    "Godet chargeur": "https://www.deere.com/en-us/products-and-solutions/loaders/backhoes/310-g-tier-backhoe-mtdbmvq",
+    "Force cavage": "https://www.deere.com/en-us/products-and-solutions/loaders/backhoes/310-g-tier-backhoe-mtdbmvq",
+    "Poids operationnel": "https://www.deere.com/en-us/products-and-solutions/loaders/backhoes/310-g-tier-backhoe-mtdbmvq"
+   },
+   "remarque": "Specs lues via l'API de specs de la page deere.com (baseCode 17A1T). Puissance nette ISO 9249 68 hp (brute 71 hp). Profondeur = bras standard 13' 8\" (bras extensible en option, profondeur non publiee). Poids laisse A completer : INCOHERENCE - page '14,376 lb' vs API specs 'Operator and standard equipment with full fuel tank 13 822 lb' (typique cabine + bras extensible + contrepoids 405 lb : 15 516 lb). Dimensions chargeur, godet et forces non publiees dans l'API. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "New Holland",
+   "modele": "B75D",
+   "specs": {
+    "Puissance moteur": "74 hp",
+    "Profondeur fouille max": "18.3 ft",
+    "Hauteur chargement": "11.7 ft",
+    "Godet chargeur": "1.3 yd3",
+    "Force cavage": "12 138 lb",
+    "Poids operationnel": "17 487 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/B75D",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/B75D"
+   },
+   "remarque": "Source : page B75D + brochure Loader Backhoes (fiche B75D). Axe 11' 8\" ; poids unite de base 4WD cabine 17 487 lb. Puissance brute (valeur vedette NH). Profondeur max = Extendahoe sorti ; hauteur = axe d'articulation chargeur ; force = force de godet retro (bucket digging force). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "New Holland",
+   "modele": "B95D Long Reach",
+   "specs": {
+    "Puissance moteur": "97 hp",
+    "Profondeur fouille max": "18.4 ft",
+    "Hauteur chargement": "A completer",
+    "Godet chargeur": "A completer",
+    "Force cavage": "12 933 lb",
+    "Poids operationnel": "18 805 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-lr",
+    "Profondeur fouille max": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-lr",
+    "Hauteur chargement": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-lr",
+    "Godet chargeur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-lr",
+    "Force cavage": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-lr",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-lr"
+   },
+   "remarque": "Aucune fiche technique propre a la LR (la brochure couvre B75D/B95D/B95D TC/B110D). Page : profondeur 18' 5\", hauteur de chargement RETRO 12' 8\" (pas l'axe chargeur), poids 18,805 lbs (8529 kg - coherent : 18 805 lb = 8 530 kg, la note 'kg incoherent' de l'etape precedente ne tient pas), force de godet etendu 12,933 lbs (texte commun aux B95D). Godet : la page dit '1.3 cu yd standard bucket' (serie D) mais la fiche B95D donne 1.1 yd3 comble -> A completer. Puissance brute (valeur vedette NH). Profondeur max = Extendahoe sorti ; hauteur = axe d'articulation chargeur ; force = force de godet retro (bucket digging force). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "New Holland",
+   "modele": "B95D Tool Carrier",
+   "specs": {
+    "Puissance moteur": "97 hp",
+    "Profondeur fouille max": "18.5 ft",
+    "Hauteur chargement": "11.1 ft",
+    "Godet chargeur": "1.3 yd3",
+    "Force cavage": "12 933 lb",
+    "Poids operationnel": "17 703 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/loader-backhoes/b95d-tc",
+    "Profondeur fouille max": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Hauteur chargement": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Godet chargeur": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Force cavage": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b",
+    "Poids operationnel": "https://cnhi-p-001-delivery.sitecorecontenthub.cloud/api/public/content/3832c2b4d4c74114be74523fe55daa3e?v=ebfcf43b"
+   },
+   "remarque": "Source : brochure Loader Backhoes, fiche B95D TC (axe 11' 1\", godet HD GP 1.3 yd3 comble, poids base 4WD cabine 17 703 lb, Extendahoe sorti 18' 6\"). La page cite 14,711 lbf = breakout du CHARGEUR, non retenu. Puissance brute (valeur vedette NH). Profondeur max = Extendahoe sorti ; hauteur = axe d'articulation chargeur ; force = force de godet retro (bucket digging force). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "505-20E",
+   "specs": {
+    "Capacite max": "A completer",
+    "Hauteur levee max": "20 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/505-20e"
+   },
+   "remarque": "100 % electrique (batterie 24 kWh), pas de puissance publiee. Capacite A completer : INCOHERENCE page '5250 lb' vs '2500 kg' (2 500 kg = 5 512 lb). Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "509-23TC",
+   "specs": {
+    "Capacite max": "9 000 lb",
+    "Hauteur levee max": "23 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "109 hp",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/509-23tc"
+   },
+   "remarque": "Page : 4090 kg / 9000 lb, 7 m / 23 ft, 81 kW / 109 hp. Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "525-60 Agri",
+   "specs": {
+    "Capacite max": "5 500 lb",
+    "Hauteur levee max": "20 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/525-60-agri"
+   },
+   "remarque": "Page : 2500 kg / 5500 lb, 6 m / 20 ft, 55 kW / 74 hp. Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "536-95 Agri",
+   "specs": {
+    "Capacite max": "7 937 lb",
+    "Hauteur levee max": "31.1 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/536-95-agri"
+   },
+   "remarque": "Puissance A completer : INCOHERENCE page '125 hp' vs '129 kW' (125 hp = 93 kW). Hauteur 31' 1\" (9.49 m). Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "538-60 Agri",
+   "specs": {
+    "Capacite max": "8 000 lb",
+    "Hauteur levee max": "20.4 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/538-60-agri"
+   },
+   "remarque": "Puissance A completer : INCOHERENCE page '125 hp' vs '81 kW' (81 kW = 109 hp). Hauteur 20' 5\" (6.22 m). Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "542-70 Agri",
+   "specs": {
+    "Capacite max": "9 000 lb",
+    "Hauteur levee max": "22.9 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "125 hp",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/542-70-agri"
+   },
+   "remarque": "Texte de la page : '125 hp (93 kW)' ; options moteur de 109 a 145 hp. (La fiche cle affiche 125 hp / 81 kW, kW errone.) Hauteur 22' 11\". Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JCB",
+   "modele": "560-80 Agri",
+   "specs": {
+    "Capacite max": "12 000 lb",
+    "Hauteur levee max": "25.8 ft",
+    "Portee avant max": "A completer",
+    "Puissance moteur": "145 hp",
+    "Poids operationnel": "A completer",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "A completer"
+   },
+   "sources": {
+    "Capacite max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri",
+    "Hauteur levee max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri",
+    "Portee avant max": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri",
+    "Base rotative": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri",
+    "Pattes stabilisatrices": "https://www.jcb.com/en-US/products/machines/telescopic-handlers/560-80-agri"
+   },
+   "remarque": "Texte de la page : '145hp (108kW)' (la fiche cle affiche 145 hp / 81 kW, kW errone). Hauteur 25' 10\". Page en-us : seules 4 specs cles publiees (pas de portee, pas de poids ; fiche PDF derriere formulaire). Base rotative = Non : modele classe par JCB dans 'Telescopic Handlers' (fixe), les rotatifs sont une categorie distincte. Pattes stabilisatrices A completer : rien sur la page ne permet de l'affirmer. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JLG",
+   "modele": "313",
+   "specs": {
+    "Capacite max": "3 500 lb",
+    "Hauteur levee max": "13.1 ft",
+    "Portee avant max": "7.6 ft",
+    "Puissance moteur": "24.8 hp",
+    "Poids operationnel": "7 430 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf",
+    "Hauteur levee max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf",
+    "Portee avant max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf",
+    "Puissance moteur": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf",
+    "Poids operationnel": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf",
+    "Base rotative": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf",
+    "Pattes stabilisatrices": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/151753/-1.pdf"
+   },
+   "remarque": "Source : fiche technique PDF liee depuis https://www.jlg.com/en/equipment/telehandlers/jlg/313. Puissance brute (Gross Power Basic). Base rotative Non (telescopique fixe). Pattes = Non : la fiche (std + options) ne mentionne aucun stabilisateur/outrigger. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JLG",
+   "modele": "SkyTrak 10042",
+   "specs": {
+    "Capacite max": "10 000 lb",
+    "Hauteur levee max": "42.1 ft",
+    "Portee avant max": "26.8 ft",
+    "Puissance moteur": "110 hp",
+    "Poids operationnel": "26 600 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf",
+    "Hauteur levee max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf",
+    "Portee avant max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf",
+    "Puissance moteur": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf",
+    "Poids operationnel": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf",
+    "Base rotative": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf",
+    "Pattes stabilisatrices": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/154397/-1.pdf"
+   },
+   "remarque": "Source : fiche technique PDF liee depuis https://www.jlg.com/en/equipment/telehandlers/skytrak/10042. Puissance brute (Gross Power Basic). Base rotative Non (telescopique fixe). Pattes = Oui : charges publiees 'with outriggers down', vannes de maintien sur stabilisateurs, option 'Non-Outriggers' (donc stabilisateurs de serie). Portee : fiche 26' 9\" vs page web 26' 7\" - fiche retenue. Moteur 74 hp en option. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JLG",
+   "modele": "SkyTrak 12054",
+   "specs": {
+    "Capacite max": "12 000 lb",
+    "Hauteur levee max": "53.2 ft",
+    "Portee avant max": "38.8 ft",
+    "Puissance moteur": "110 hp",
+    "Poids operationnel": "30 100 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf",
+    "Hauteur levee max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf",
+    "Portee avant max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf",
+    "Puissance moteur": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf",
+    "Poids operationnel": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf",
+    "Base rotative": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf",
+    "Pattes stabilisatrices": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148121/-1.pdf"
+   },
+   "remarque": "Source : fiche technique PDF liee depuis https://www.jlg.com/en/equipment/telehandlers/skytrak/12054. Puissance brute (Gross Power Basic). Base rotative Non (telescopique fixe). Pattes = Oui : 'with outriggers down', largeur 'Outriggers Down' 13' 1\". Moteur 74 hp en option. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "JLG",
+   "modele": "SkyTrak 3013",
+   "specs": {
+    "Capacite max": "2 700 lb",
+    "Hauteur levee max": "13.1 ft",
+    "Portee avant max": "7.1 ft",
+    "Puissance moteur": "24.8 hp",
+    "Poids operationnel": "5 280 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf",
+    "Hauteur levee max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf",
+    "Portee avant max": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf",
+    "Puissance moteur": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf",
+    "Poids operationnel": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf",
+    "Base rotative": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf",
+    "Pattes stabilisatrices": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/45861/-1.pdf"
+   },
+   "remarque": "Source : fiche technique PDF liee depuis https://www.jlg.com/en/equipment/telehandlers/skytrak/3013. Puissance brute (Gross Power Basic). Base rotative Non (telescopique fixe). Pattes = Non : la fiche (std + options) ne mentionne aucun stabilisateur. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 1041-145 PS+L",
+   "specs": {
+    "Capacite max": "9 039 lb",
+    "Hauteur levee max": "31.7 ft",
+    "Portee avant max": "21.3 ft",
+    "Puissance moteur": "141 hp",
+    "Poids operationnel": "21 363 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-1041-145-ps-plusl"
+   },
+   "remarque": "Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 420-60 H",
+   "specs": {
+    "Capacite max": "4 409 lb",
+    "Hauteur levee max": "14.3 ft",
+    "Portee avant max": "8.7 ft",
+    "Puissance moteur": "57 hp",
+    "Poids operationnel": "9 237 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-420-60-h"
+   },
+   "remarque": "Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 625-75 H",
+   "specs": {
+    "Capacite max": "5 512 lb",
+    "Hauteur levee max": "19.3 ft",
+    "Portee avant max": "10.8 ft",
+    "Puissance moteur": "75 hp",
+    "Poids operationnel": "10 851 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-625-75-h"
+   },
+   "remarque": "Puissance publiee '75 Hp / 55.40 kW' (55.4 kW = 74.3 hp). Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 630-115 V CP",
+   "specs": {
+    "Capacite max": "6 614 lb",
+    "Hauteur levee max": "20.1 ft",
+    "Portee avant max": "11.5 ft",
+    "Puissance moteur": "116 hp",
+    "Poids operationnel": "14 595 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-630-115-v-cp-s2"
+   },
+   "remarque": "Titre de page : 'MLT 630-115 V CP (S2)'. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 635-130 PS+",
+   "specs": {
+    "Capacite max": "7 716 lb",
+    "Hauteur levee max": "20.1 ft",
+    "Portee avant max": "10.7 ft",
+    "Puissance moteur": "129 hp",
+    "Poids operationnel": "16 513 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-635-130-ps-plus-s2"
+   },
+   "remarque": "Titre de page : '(S2)'. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 733-115",
+   "specs": {
+    "Capacite max": "7 275 lb",
+    "Hauteur levee max": "22.6 ft",
+    "Portee avant max": "13 ft",
+    "Puissance moteur": "116 hp",
+    "Poids operationnel": "15 763 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-733-115-s2"
+   },
+   "remarque": "Titre de page : '(S2)'. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 738-130 PS+",
+   "specs": {
+    "Capacite max": "8 378 lb",
+    "Hauteur levee max": "22.7 ft",
+    "Portee avant max": "13.1 ft",
+    "Puissance moteur": "129 hp",
+    "Poids operationnel": "16 557 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-738-130-ps-plus-s1"
+   },
+   "remarque": "Titre de page : '(S1)'. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 841-145 PS+",
+   "specs": {
+    "Capacite max": "9 039 lb",
+    "Hauteur levee max": "24.9 ft",
+    "Portee avant max": "14.6 ft",
+    "Puissance moteur": "141 hp",
+    "Poids operationnel": "20 194 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-841-145-ps-plus"
+   },
+   "remarque": "Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 850-145 V+",
+   "specs": {
+    "Capacite max": "11 020 lb",
+    "Hauteur levee max": "24.8 ft",
+    "Portee avant max": "15.1 ft",
+    "Puissance moteur": "141 hp",
+    "Poids operationnel": "23 766 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-850-145-v-plus"
+   },
+   "remarque": "Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MLT 961-160 V+ L",
+   "specs": {
+    "Capacite max": "13 228 lb",
+    "Hauteur levee max": "29.5 ft",
+    "Portee avant max": "17.4 ft",
+    "Puissance moteur": "156 hp",
+    "Poids operationnel": "26 345 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mlt-961-160-v-plus-l"
+   },
+   "remarque": "Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MTA 519e",
+   "specs": {
+    "Capacite max": "5 512 lb",
+    "Hauteur levee max": "19.2 ft",
+    "Portee avant max": "11 ft",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "10 483 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-519e"
+   },
+   "remarque": "Electrique (Li-ion 35 kWh) : moteur de traction 40 kW, moteur hydraulique 30 kW, pas de puissance en hp -> A completer. Poids = 'Overall weight'. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MTA 634",
+   "specs": {
+    "Capacite max": "6 000 lb",
+    "Hauteur levee max": "34.3 ft",
+    "Portee avant max": "23.3 ft",
+    "Puissance moteur": "74.29 hp",
+    "Poids operationnel": "15 100 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-634"
+   },
+   "remarque": "Le texte de la page nomme la machine 'MTA 6034' et annonce 34 ft 1 in ; la fiche technique dit 'MTA 634' et 34 ft 3 in (retenu). Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MTA 644",
+   "specs": {
+    "Capacite max": "6 000 lb",
+    "Hauteur levee max": "43.5 ft",
+    "Portee avant max": "29.8 ft",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "22 851 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-644"
+   },
+   "remarque": "Poids = 'Overall weight'. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MTA 844",
+   "specs": {
+    "Capacite max": "8 000 lb",
+    "Hauteur levee max": "43.5 ft",
+    "Portee avant max": "29.8 ft",
+    "Puissance moteur": "127 hp",
+    "Poids operationnel": "23 951 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844"
+   },
+   "remarque": "Poids = 'Overall weight'. (Le bandeau du haut de page decale les libelles : 29' 9\" y est etiquete hauteur ; la fiche technique donne hauteur 43' 6\", portee 29' 9\".) Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MTA 844 E74",
+   "specs": {
+    "Capacite max": "8 000 lb",
+    "Hauteur levee max": "42.5 ft",
+    "Portee avant max": "28.5 ft",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "23 951 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/mta-844-e74"
+   },
+   "remarque": "Poids 'Unladen weight' 23 951 lb, identique a la MTA 844 sur le site - possible copie, a surveiller. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "ULM 412 H",
+   "specs": {
+    "Capacite max": "2 756 lb",
+    "Hauteur levee max": "14.1 ft",
+    "Portee avant max": "8.6 ft",
+    "Puissance moteur": "35.1 hp",
+    "Poids operationnel": "5 622 - 6 063 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-412-h"
+   },
+   "remarque": "Poids = 'Shipping mass (min. / max.)', aucun poids operationnel publie. Puissance publiee 35.10 Hp / 26.20 kW. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "ULM 415 H",
+   "specs": {
+    "Capacite max": "3 307 lb",
+    "Hauteur levee max": "14.1 ft",
+    "Portee avant max": "8.6 ft",
+    "Puissance moteur": "35.1 hp",
+    "Poids operationnel": "5 952 - 6 393 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/fixed-telehandlers/ulm-415-h"
+   },
+   "remarque": "Poids = 'Shipping mass (min. / max.)', aucun poids operationnel publie. Puissance publiee 35.10 Hp / 26.20 kW. Source : 'Technical sheet' (Imperial) de la page Manitou en-US, lue par requete HTTP directe. Poids = Unladen weight (with forks) sauf mention. Base rotative Non (gamme 'fixed telehandlers'). Pattes = Non : la fiche technique complete ne comporte aucun stabilisateur (les 'stabilizer spear' cites sont des pics a balles, un accessoire). Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N)."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "MF34.7",
+   "specs": {
+    "Capacite max": "7 000 lb",
+    "Hauteur levee max": "22.7 ft",
+    "Portee avant max": "12.8 ft",
+    "Puissance moteur": "136 hp",
+    "Poids operationnel": "17 600 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/",
+    "Hauteur levee max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/",
+    "Portee avant max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/",
+    "Puissance moteur": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/",
+    "Poids operationnel": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/",
+    "Base rotative": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/",
+    "Pattes stabilisatrices": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-7/"
+   },
+   "remarque": "Site Merlo USA, variantes 'Versione_NA' (MF34.7-140 / CS-140 / CS-140-CVT identiques) : 7000 lb, 22' 8\", 12' 10\", 17600 lb, 100 kW/136 HP. Le bandeau de page affiche 22' 5\" et 140 (designation commerciale) - fiche retenue. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N). Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "MF34.9",
+   "specs": {
+    "Capacite max": "7 496 lb",
+    "Hauteur levee max": "29 ft",
+    "Portee avant max": "20 ft",
+    "Puissance moteur": "136 hp",
+    "Poids operationnel": "8 400 - 8 500 kg",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/",
+    "Hauteur levee max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/",
+    "Portee avant max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/",
+    "Puissance moteur": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/",
+    "Poids operationnel": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/",
+    "Base rotative": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/",
+    "Pattes stabilisatrices": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf34-9/"
+   },
+   "remarque": "Present sur le site Merlo USA mais seules des variantes metriques sont publiees (pas de 'Versione_NA') : 3400 kg, 8.8 m, 6 m, 8400-8500 kg selon variante. Conversions kg -> lb et m -> pi arrondies a l'entier (regle). Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "MF44.7",
+   "specs": {
+    "Capacite max": "9 700 lb",
+    "Hauteur levee max": "22 ft",
+    "Portee avant max": "13 ft",
+    "Puissance moteur": "170 hp",
+    "Poids operationnel": "9 000 - 9 450 kg",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/telescopic-tractors/mf44-7/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes : 4000 ou 4400 kg, 6.8 m, 3.8-3.9 m, 9000-9450 kg, 125 kW/170 HP. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "MF44.9",
+   "specs": {
+    "Capacite max": "8 800 lb",
+    "Hauteur levee max": "29.2 ft",
+    "Portee avant max": "20.1 ft",
+    "Puissance moteur": "170 hp",
+    "Poids operationnel": "21 000 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/",
+    "Hauteur levee max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/",
+    "Portee avant max": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/",
+    "Puissance moteur": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/",
+    "Poids operationnel": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/",
+    "Base rotative": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/",
+    "Pattes stabilisatrices": "https://www.merlo.com/usa/en/p/telehandlers/telescopic-tractors/mf44-9/"
+   },
+   "remarque": "Site Merlo USA, variante 'Versione_NA' MF44.9CS-170-CVT : 8800 lb, 29' 2\", 20' 1\", 21000 lb, 125 kW/170 HP. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N). Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "P30.10",
+   "specs": {
+    "Capacite max": "6 614 lb",
+    "Hauteur levee max": "32 ft",
+    "Portee avant max": "22 ft",
+    "Puissance moteur": "75.1 hp",
+    "Poids operationnel": "7 600 kg",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p30-10/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes P30.10 / L / EE4 : 3000 kg, 9.8 m, 6.7 m, 7600 kg, 55.4 kW/75.1 HP ; stabilisateurs hydrauliques 'Narrow' ; rotation '-'. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "P30.7",
+   "specs": {
+    "Capacite max": "6 614 lb",
+    "Hauteur levee max": "22 ft",
+    "Portee avant max": "12 ft",
+    "Puissance moteur": "75.1 hp",
+    "Poids operationnel": "6 450 kg",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/compact-telehandlers/p30-7/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes P30.7 / L : 3000 kg, 6.7 m, 3.7 m, 6450 kg, 55.4 kW/75.1 HP ; stabilisateurs '-', rotation '-'. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "P40.14",
+   "specs": {
+    "Capacite max": "8 818 lb",
+    "Hauteur levee max": "44 ft",
+    "Portee avant max": "31 ft",
+    "Puissance moteur": "75.1 - 136 hp",
+    "Poids operationnel": "9 950 - 10 300 kg",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/stabilized-telehandlers/p40-14/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes P40.14 (55.4 kW/75.1 HP), PLUS (85.9 kW/116.8 HP), CSTOP (100 kW/136 HP) : 4000 kg, 13.5 m, 9.3 m ; stabilisateurs 'Narrow' ; rotation '-'. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "ROTO50.16",
+   "specs": {
+    "Capacite max": "10 913 lb",
+    "Hauteur levee max": "52 ft",
+    "Portee avant max": "43 ft",
+    "Puissance moteur": "74.8 - 122 hp",
+    "Poids operationnel": "14 000 kg",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-50-16/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes ROTO50.16 (55 kW/74.8 HP), S et EE (90 kW/122 HP) : 4950 kg, 15.8 m, 13.2 m, 14000 kg ; rotation tourelle 415 deg ; stabilisateurs 'On/Off'. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "ROTO60.22",
+   "specs": {
+    "Capacite max": "13 228 lb",
+    "Hauteur levee max": "73 ft",
+    "Portee avant max": "62 ft",
+    "Puissance moteur": "170 hp",
+    "Poids operationnel": "17 300 kg",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-22/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes S / S PLUS : 6000 kg, 22.1 m, 18.8 m, 17300 kg, 125 kW/170 HP ; rotation continue ; stabilisateurs 'Multiposition'. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "ROTO60.27",
+   "specs": {
+    "Capacite max": "13 228 lb",
+    "Hauteur levee max": "88 ft",
+    "Portee avant max": "78 ft",
+    "Puissance moteur": "170 hp",
+    "Poids operationnel": "17 900 kg",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/",
+    "Hauteur levee max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/",
+    "Portee avant max": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/",
+    "Puissance moteur": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/",
+    "Poids operationnel": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/",
+    "Base rotative": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/",
+    "Pattes stabilisatrices": "https://www.merlo.com/nor/en/p/telehandlers/rotating-telehandlers/roto-60-27/"
+   },
+   "remarque": "HORS AMERIQUE DU NORD : l'URL fournie (merlo.com/nor) est le site Merlo NORVEGE, pas NA ; ce modele est ABSENT du site Merlo USA (merlo.com/usa). A confirmer avant import. Valeurs metriques converties : kg -> lb arrondi a l'entier, m -> pi arrondi a l'entier (regle) ; poids laisse en kg comme l'exemple Merlo de la BD. Variantes S / S PLUS : 6000 kg, 26.9 m, 23.7 m, 17900 kg, 125 kW/170 HP ; rotation continue ; stabilisateurs 'Multiposition'. Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "TF45.11",
+   "specs": {
+    "Capacite max": "9 900 lb",
+    "Hauteur levee max": "34.8 ft",
+    "Portee avant max": "23.8 ft",
+    "Puissance moteur": "170 hp",
+    "Poids operationnel": "22 300 - 22 800 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/",
+    "Hauteur levee max": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/",
+    "Portee avant max": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/",
+    "Puissance moteur": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/",
+    "Poids operationnel": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/",
+    "Base rotative": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/",
+    "Pattes stabilisatrices": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf45-11/"
+   },
+   "remarque": "Site Merlo USA, variantes 'Versione_NA' TF45.11T-170-HF / TCS-170-HF / TCS-170-CVT-HF : 9900 lb, 34' 9\", 23' 10\", 22300-22800 lb selon variante. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N). Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Merlo",
+   "modele": "TF50.8",
+   "specs": {
+    "Capacite max": "11 000 lb",
+    "Hauteur levee max": "25.6 ft",
+    "Portee avant max": "13.8 ft",
+    "Puissance moteur": "170 hp",
+    "Poids operationnel": "21 500 - 22 000 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/",
+    "Hauteur levee max": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/",
+    "Portee avant max": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/",
+    "Puissance moteur": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/",
+    "Poids operationnel": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/",
+    "Base rotative": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/",
+    "Pattes stabilisatrices": "https://www.merlo.com/usa/en/p/telehandlers/high-capacity-telehandlers/tf50-8/"
+   },
+   "remarque": "Site Merlo USA, variantes 'Versione_NA' TF50.8T-170-HF / TCS-170-HF / TCS-170-CVT-HF : 11000 lb, 25' 7\", 13' 9\", 21500-22000 lb selon variante. Pieds-pouces convertis en pieds decimaux a 1 decimale (arrondi au plus proche ; ex. 11' 3\" = 11.25 -> 11.3 ; NB la BD a 11.2 ft pour le 11' 3\" de la 580 Super N). Source : tableau des variantes (donnees de la page Merlo). Base rotative / Pattes = champs fabricant 'Turret rotation' et 'Hydraulically controlled stabilizers'. Puissance = valeur 'HP' du couple kW/HP Merlo (HP = ch metriques ; ex. 100 kW = 134 hp SAE). "
+  }
+ ]
+}
