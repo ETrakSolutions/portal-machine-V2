@@ -1,0 +1,681 @@
+{
+ "lot": "s3_foreuse",
+ "resultats": [
+  {
+   "type": "Foreuse",
+   "fabricant": "Furukawa",
+   "modele": "AHD709",
+   "specs": {
+    "Diametre forage": "64-89 mm (2,5-3,5 po)",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Glissiere (feed)",
+    "Longueur du mat": "4089 mm (course d'avance)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "N/A (attachement sans moteur : hydraulique de l'excavatrice porteuse, 160 L/min)",
+    "Poids operationnel": "1970-2260 kg",
+    "Type": "Foreuse hydraulique en attachement pour bras d'excavatrice 20-30 t, marteau hors-trou (top hammer), perforatrice HD709"
+   },
+   "sources": {
+    "Diametre forage": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Profondeur max": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Type de mat (lead/kelly)": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Longueur du mat": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Longueur du kelly": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Puissance moteur": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Poids operationnel": "https://frdusa.com/rock-drill-division/ahd709/",
+    "Type": "https://frdusa.com/rock-drill-division/ahd709/"
+   },
+   "remarque": "Modele actif (absent de la page Discontinued FRD). C'est un ATTACHEMENT monte au bout du bras d'une excavatrice 20-30 t, pas une foreuse autonome. Poids : 1970 kg (type 20 t) / 2260 kg (type 30 t) ; INCOHERENCE a la source : la page donne 4,497 lbs pour 1,970 kg (4497 lb = 2040 kg ; 1970 kg = 4343 lb) - valeur kg retenue, a trancher. Profondeur max non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Furukawa",
+   "modele": "DCRL130",
+   "specs": {
+    "Diametre forage": "89-165 mm (3,5-6,5 po)",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Glissiere (feed)",
+    "Longueur du mat": "5694 mm (course d'avance)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "456 hp / 340 kW (CAT C13)",
+    "Poids operationnel": "24800 kg",
+    "Type": "Foreuse de surface hydraulique sur chenilles, fond de trou (DTH), moteur de rotation DOWMAX/ME350, compresseur 858-953 CFM"
+   },
+   "sources": {
+    "Diametre forage": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Profondeur max": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Type de mat (lead/kelly)": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Longueur du mat": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Longueur du kelly": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Puissance moteur": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Poids operationnel": "https://frdusa.com/rock-drill-division/dcrl130/",
+    "Type": "https://frdusa.com/rock-drill-division/dcrl130/"
+   },
+   "remarque": "Modele actif (absent de la page Discontinued FRD). Tier 4 Final / Stage V. Poids publie 54,675 lbs (24,800 kg). Profondeur max non publiee. Systeme electrique DC 24V."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Furukawa",
+   "modele": "HCRL90-E5",
+   "specs": {
+    "Diametre forage": "76-127 mm (3-5 po)",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Glissiere (feed)",
+    "Longueur du mat": "4595 mm (course d'avance, tiges 12 pi); 5225 mm (tiges 14 pi)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "260 hp / 194 kW (Cummins B6.7)",
+    "Poids operationnel": "16810 kg",
+    "Type": "Foreuse de surface hydraulique sur chenilles, marteau hors-trou (top hammer), perforatrice HD828S, fleche a extension"
+   },
+   "sources": {
+    "Diametre forage": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Profondeur max": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Type de mat (lead/kelly)": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Longueur du mat": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Longueur du kelly": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Puissance moteur": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Poids operationnel": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/",
+    "Type": "https://frdusa.com/rock-drill-division/tier-iv/hcrl90-e5/"
+   },
+   "remarque": "Modele actif (absent de la page Discontinued FRD). Stage V / Tier 4 Final. Poids publie 37,060 lbs (16,810 kg). Profondeur max non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A140",
+   "specs": {
+    "Diametre forage": "1500 mm (60 in)",
+    "Profondeur max": "33 m (barre Kelly 4/33 std); jusqu'a 57 m avec option 6/57",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/33 std (4 elements, 33 m); options 3/27, 4/38, 5/47, 6/57",
+    "Puissance moteur": "169 kW (227 hp) - moteur Cummins QSB 6.7 T3/T4",
+    "Poids operationnel": "39 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base IMT (chenilles), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/a140/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A1402021.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/a140/",
+    "Longueur du mat": "https://imtspa.com/project/a140/",
+    "Longueur du kelly": "https://imtspa.com/project/a140/",
+    "Puissance moteur": "https://imtspa.com/project/a140/",
+    "Poids operationnel": "https://imtspa.com/project/a140/",
+    "Type": "https://imtspa.com/project/a140/"
+   },
+   "remarque": "Page produit IMT. Le 2e chiffre de la barre Kelly = profondeur (confirme par le tableau Kelly de la brochure A140 : 4/33 -> C = 33 m). Ecart : brochure 2021 donne Kelly std 4/38 et 39,5 t ; page web : 4/33 et 39 t (85980 lbs) - page web retenue. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A150",
+   "specs": {
+    "Diametre forage": "1600 mm (63 in)",
+    "Profondeur max": "33 m (barre Kelly 4/33 std); jusqu'a 42 m avec option 5/42",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/33 std (4 elements, 33 m); options 4/25, 5/42",
+    "Puissance moteur": "169 kW (227 hp) - moteur CAT C7.1 Tier 4 Final",
+    "Poids operationnel": "46.75 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base IMT (train CAT, chenilles), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/a150/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A150-min.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/a150/",
+    "Longueur du mat": "https://imtspa.com/project/a150/",
+    "Longueur du kelly": "https://imtspa.com/project/a150/",
+    "Puissance moteur": "https://imtspa.com/project/a150/",
+    "Poids operationnel": "https://imtspa.com/project/a150/",
+    "Type": "https://imtspa.com/project/a150/"
+   },
+   "remarque": "Page produit IMT. Poids 46,75 t avec Kelly std (40,5 t sans Kelly). Brochure : « Kelly bar intelocking 4/33 (33m depth) ». Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A215",
+   "specs": {
+    "Diametre forage": "2000 mm (79 in)",
+    "Profondeur max": "42 m (barre Kelly 4/42 std); jusqu'a 60 m avec option 5/60",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/42 std (4 elements, 42 m); options 4/46, 4/48, 5/60",
+    "Puissance moteur": "254 kW (340 hp) - moteur Cummins QSL 9 Tier 3",
+    "Poids operationnel": "60 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base IMT (chenilles), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/a215/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A2152021.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/a215/",
+    "Longueur du mat": "https://imtspa.com/project/a215/",
+    "Longueur du kelly": "https://imtspa.com/project/a215/",
+    "Puissance moteur": "https://imtspa.com/project/a215/",
+    "Poids operationnel": "https://imtspa.com/project/a215/",
+    "Type": "https://imtspa.com/project/a215/"
+   },
+   "remarque": "Page produit IMT. Couple nominal 240 kNm. Brochure : « Kelly bar intelocking 4/42 (42m depth) ». Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A250",
+   "specs": {
+    "Diametre forage": "2000 mm (79 in)",
+    "Profondeur max": "46 m (barre Kelly 4/46 std); jusqu'a 66 m avec option 5/66",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/46 std (4 elements, 46 m); options 4/48, 5/66",
+    "Puissance moteur": "280 kW (375 hp) - moteur CAT C9.3 Tier 4 Stage V",
+    "Poids operationnel": "69 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base IMT (train CAT, chenilles), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Longueur du mat": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Longueur du kelly": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Puissance moteur": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Poids operationnel": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf",
+    "Type": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A250-min.pdf"
+   },
+   "remarque": "ATTENTION : la carte A250 de imtspa.com/products pointe vers https://imtspa.com/project/a250/ qui repond 404 (aussi /de/ et /it/). Specs tirees de la brochure fabricant A250 (2022) toujours hebergee sur imtspa.com. Statut commercial du modele a confirmer. Couple 260 kNm. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A330",
+   "specs": {
+    "Diametre forage": "2500 mm (99 in)",
+    "Profondeur max": "46 m (barre Kelly 4/46 std); jusqu'a 70 m avec option 5/70",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/46 std (4 elements, 46 m); options 4/35, 4/56, 5/70 (une 4e option « 5/8.. » est tronquee sur la page)",
+    "Puissance moteur": "340 kW (465 hp) - moteur CAT C13B Stage V",
+    "Poids operationnel": "94.5 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base IMT (chenilles), forage de pieux grand diametre"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/a330/",
+    "Profondeur max": "https://imtspa.com/project/a330/",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/a330/",
+    "Longueur du mat": "https://imtspa.com/project/a330/",
+    "Longueur du kelly": "https://imtspa.com/project/a330/",
+    "Puissance moteur": "https://imtspa.com/project/a330/",
+    "Poids operationnel": "https://imtspa.com/project/a330/",
+    "Type": "https://imtspa.com/project/a330/"
+   },
+   "remarque": "Page produit IMT (pas de brochure publiee : « NOT AVALIABLE JET »). Couple 330 kNm. Liste d'options Kelly tronquee a la source (« 5/70 -5/8 ») : profondeur max possiblement superieure a 70 m. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A45",
+   "specs": {
+    "Diametre forage": "1100 mm (44 in)",
+    "Profondeur max": "22 m (barre Kelly 6/22 std); jusqu'a 30 m avec option 6/30",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 6/22 std (6 elements, 22 m); option 6/30",
+    "Puissance moteur": "53.7 kW (72 hp) - moteur Yanmar 4TNV",
+    "Poids operationnel": "16.2 t",
+    "Type": "Foreuse rotative hydraulique compacte a barre Kelly sur base IMT (chenilles), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/a45/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A452024.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/a45/",
+    "Longueur du mat": "https://imtspa.com/project/a45/",
+    "Longueur du kelly": "https://imtspa.com/project/a45/",
+    "Puissance moteur": "https://imtspa.com/project/a45/",
+    "Poids operationnel": "https://imtspa.com/project/a45/",
+    "Type": "https://imtspa.com/project/a45/"
+   },
+   "remarque": "Page produit IMT. Poids 16,2 t (35720 lbs) avec Kelly std. Couple 45 kNm. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "A90",
+   "specs": {
+    "Diametre forage": "1300 mm (52 in)",
+    "Profondeur max": "28 m (barre Kelly 4/28 std); jusqu'a 35 m avec option 4/35",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/28 std (4 elements, 28 m); options 4/22, 4/32, 4/35",
+    "Puissance moteur": "100 kW (135 hp) - moteur Cummins F3.8 Stage V",
+    "Poids operationnel": "26.8 t",
+    "Type": "Foreuse rotative hydraulique compacte a barre Kelly sur base IMT (chenilles), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf",
+    "Longueur du mat": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf",
+    "Longueur du kelly": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf",
+    "Puissance moteur": "https://imtspa.com/project/a90/",
+    "Poids operationnel": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf",
+    "Type": "https://imtspa.com/wp-content/uploads/2024/02/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A902024.pdf"
+   },
+   "remarque": "Diametre, Kelly, profondeur et poids tires de la brochure A90 2024 (version Kelly / verin de poussee). La page produit https://imtspa.com/project/a90/ affiche une autre configuration (version treuil de poussee / tariere) : 25,5 t, pieu max 600 mm, profondeur 10,3 m (14,4 m avec rallonge de tariere). Puissance : page web 135 HP, brochure 136 HP. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "AF460",
+   "specs": {
+    "Diametre forage": "4000 mm (157 in)",
+    "Profondeur max": "74 m (barre Kelly 4/74 std); jusqu'a 110 m avec option 5/110",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/74 std (4 elements, 74 m); options 4/60, 4/90, 5/110",
+    "Puissance moteur": "390 kW (530 hp) - moteur CAT C18",
+    "Poids operationnel": "165 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base excavatrice (CAT 385C), forage de pieux grand diametre"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/af460/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2022/09/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-AF460-min.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/af460/",
+    "Longueur du mat": "https://imtspa.com/project/af460/",
+    "Longueur du kelly": "https://imtspa.com/project/af460/",
+    "Puissance moteur": "https://imtspa.com/project/af460/",
+    "Poids operationnel": "https://imtspa.com/project/af460/",
+    "Type": "https://imtspa.com/project/af460/"
+   },
+   "remarque": "Page produit IMT + brochure AF460 (diametres jusqu'a 4000 mm et profondeur 110 m, base CAT 385C, moteur C18 Tier 3). La page liste aussi un diametre max disponible de 3200 mm : 4000 mm retenu (brochure). Couple 460 kNm. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "F130",
+   "specs": {
+    "Diametre forage": "1500 mm (60 in)",
+    "Profondeur max": "28 m (barre Kelly 3/28 std); jusqu'a 38 m avec option 4/38",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 3/28 std (3 elements, 28 m); options 4/30, 4/38",
+    "Puissance moteur": "124 kW (166 hp) - base Doosan DX210LC-7",
+    "Poids operationnel": "34 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base excavatrice (Doosan DX210LC-7), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/f130/",
+    "Profondeur max": "https://imtspa.com/project/f130/",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/f130/",
+    "Longueur du mat": "https://imtspa.com/project/f130/",
+    "Longueur du kelly": "https://imtspa.com/project/f130/",
+    "Puissance moteur": "https://imtspa.com/project/f130/",
+    "Poids operationnel": "https://imtspa.com/project/f130/",
+    "Type": "https://imtspa.com/project/f130/"
+   },
+   "remarque": "Page produit IMT (lien du catalogue : /project/a130/ ; /project/f130/ existe aussi). La brochure liee est titree A130 : meme machine, nommee F130 sur le site. Couple 130 kNm. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "F218",
+   "specs": {
+    "Diametre forage": "2000 mm (79 in)",
+    "Profondeur max": "42 m (barre Kelly 4/42 std); jusqu'a 52 m avec option 5/52",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/42 std (4 elements, 42 m); options 4/46, 4/48, 5/52",
+    "Puissance moteur": "202 kW (270 hp) - moteur Doosan DL08",
+    "Poids operationnel": "55 t",
+    "Type": "Foreuse rotative hydraulique a barre Kelly sur base excavatrice (Develon DX300), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/f218/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2025/07/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-F218-2025.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/f218/",
+    "Longueur du mat": "https://imtspa.com/project/f218/",
+    "Longueur du kelly": "https://imtspa.com/project/f218/",
+    "Puissance moteur": "https://imtspa.com/project/f218/",
+    "Poids operationnel": "https://imtspa.com/project/f218/",
+    "Type": "https://imtspa.com/project/f218/"
+   },
+   "remarque": "Page produit IMT + brochure F218 2025 (base Develon DX300). Modele distinct de l'AF218. Couple 215 kNm. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "IMT",
+   "modele": "F75",
+   "specs": {
+    "Diametre forage": "1300 mm (51 in)",
+    "Profondeur max": "25 m (barre Kelly 4/25 std); jusqu'a 32 m avec option 4/32",
+    "Type de mat (lead/kelly)": "Mat avec barre Kelly verrouillable (version verin de poussee/crowd cylinder)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "barre Kelly 4/25 std (4 elements, 25 m); options 4/28, 4/32",
+    "Puissance moteur": "86 kW (115 hp) - base Doosan DX140LC-7K",
+    "Poids operationnel": "24.5 t",
+    "Type": "Foreuse rotative hydraulique compacte a barre Kelly sur base excavatrice (Doosan DX140LC-7K), forage de pieux"
+   },
+   "sources": {
+    "Diametre forage": "https://imtspa.com/project/f75/",
+    "Profondeur max": "https://imtspa.com/wp-content/uploads/2024/12/imt-industria-meccanica-trivelle-drill-rigs-drilling-machines-products-brochure-A752024.pdf",
+    "Type de mat (lead/kelly)": "https://imtspa.com/project/f75/",
+    "Longueur du mat": "https://imtspa.com/project/f75/",
+    "Longueur du kelly": "https://imtspa.com/project/f75/",
+    "Puissance moteur": "https://imtspa.com/project/f75/",
+    "Poids operationnel": "https://imtspa.com/project/f75/",
+    "Type": "https://imtspa.com/project/f75/"
+   },
+   "remarque": "Page produit IMT. La brochure liee est titree A75 : meme machine, nommee F75 sur le site. Brochure : Kelly bar intelocking 4/25 (25 m depth). Couple 75 kNm. Longueur du mat non publiee."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Commando DC310RiE",
+   "specs": {
+    "Diametre forage": "37-76 mm",
+    "Profondeur max": "7,55 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "5695 mm (glissiere CF300)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "55 kW (moteur electrique; option batterie 25 kW)",
+    "Poids operationnel": "6 445 kg",
+    "Type": "Surface top hammer, 100 % electrique (cable/batterie), sur pneus"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/commando-dc310rie/",
+    "Profondeur max": "https://storage.pardot.com/490131/1786009240zsRGYTIy/dc310rie_specification_sheet_english.pdf",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/commando-dc310rie/",
+    "Longueur du mat": "https://storage.pardot.com/490131/1786009240zsRGYTIy/dc310rie_specification_sheet_english.pdf",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/commando-dc310rie/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/commando-dc310rie/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/commando-dc310rie/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/commando-dc310rie/"
+   },
+   "remarque": "Fiche Sandvik : 6 445 kg de base, 7 018 kg avec enrouleur et cable, 7 500 kg avec batterie + enrouleur + cable (la page web affiche 7 500 kg). Pas de moteur diesel ; puissance publiee en kW seulement."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Dino DC410Ri",
+   "specs": {
+    "Diametre forage": "51-76 mm",
+    "Profondeur max": "10 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "6900 mm (glissiere a chaine CF400)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "141 hp (105 kW, Volvo TAD570VE Tier 3)",
+    "Poids operationnel": "10 000 kg",
+    "Type": "Surface top hammer"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc400rri-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.mining.sandvik/l/490131/2026-08-13/fgn847/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc400rri-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.mining.sandvik/l/490131/2026-08-13/fgn847/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc400rri-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc400rri-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc400rri-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc400rri-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "NOM A CONFIRMER : la page et la fiche (DC410 T3) titrent Dino DC410R ; seules les images portent DC410Ri ; URL dc400rri. Fiche Tier 3 seulement (pas de fiche T4F/Stage V). Profondeur fiche : 10 m +. Poids : abt. 10 000 kg."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Dino DC420Ri",
+   "specs": {
+    "Diametre forage": "51-76 mm",
+    "Profondeur max": "14,5 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "6900 mm (glissiere a chaine CF400)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "105 kW (Volvo Penta TAD580VE Stage V)",
+    "Poids operationnel": "11 000 kg",
+    "Type": "Surface top hammer, sans cabine (telecommande)"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc420ri-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.rocktechnology.sandvik/l/490131/2023-07-11/dwnmcg/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc420ri-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.rocktechnology.sandvik/l/490131/2023-07-11/dwnmcg/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc420ri-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc420ri-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc420ri-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/dino-dc420ri-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Puissance publiee en kW seulement (pas de hp). Poids abt. 11 000 kg (24,250 lb)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Pantera DP1110i",
+   "specs": {
+    "Diametre forage": "89-140 mm",
+    "Profondeur max": "33 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "9770 mm (glissiere LF 1520 HR)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "335 hp (250 kW, Caterpillar C9.3B T4F/Stage V)",
+    "Poids operationnel": "22 900 kg",
+    "Type": "Surface top hammer, fleche telescopique"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1110i-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.mining.sandvik/l/490131/2026-02-16/fghzy6/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1110i-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.mining.sandvik/l/490131/2026-02-16/fghzy6/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1110i-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1110i-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1110i-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1110i-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Profondeur max fiche S5 : 33 m (7+1) x 14'."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Pantera DP1510i",
+   "specs": {
+    "Diametre forage": "89-152 mm",
+    "Profondeur max": "33 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "9770 mm (glissiere LF 1520 HR)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "375 hp (280 kW, Caterpillar C9.3B T4F/Stage V)",
+    "Poids operationnel": "23 000 kg",
+    "Type": "Surface top hammer, fleche telescopique"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1510i-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.mining.sandvik/l/490131/2026-02-16/fghzxw/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1510i-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.mining.sandvik/l/490131/2026-02-16/fghzxw/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1510i-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1510i-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1510i-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1510i-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Profondeur max fiche S5 : 33 m (7+1) x 14'."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Pantera DP1610i",
+   "specs": {
+    "Diametre forage": "102-178 mm",
+    "Profondeur max": "32,6 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "9770 mm (glissiere LF 1520 HR)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "375 hp (280 kW, Caterpillar C9.3B Tier 4f/Stage V)",
+    "Poids operationnel": "23 000 kg",
+    "Type": "Surface top hammer, fleche telescopique"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1610i-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.mining.sandvik/l/490131/2026-02-16/fghzxz/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1610i-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.mining.sandvik/l/490131/2026-02-16/fghzxz/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1610i-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1610i-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1610i-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/pantera-dp1610i-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Profondeur max fiche S5 : 32,6 m (7+1) x 14' ; 24,2 m (5+1) x 14' en LT90."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Ranger DX1010i",
+   "specs": {
+    "Diametre forage": "89-140 mm",
+    "Profondeur max": "33,7 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "9696 mm (glissiere CylF 22); 8410 mm option",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "210 kW (Volvo TAD882VE Stage V/T4F)",
+    "Poids operationnel": "20 100 kg",
+    "Type": "Surface top hammer, fleche articulee"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx1010i/",
+    "Profondeur max": "https://storage.pardot.com/490131/1782127124Q95LFWh0/dx1010i_s5_specification_sheet_english.pdf",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx1010i/",
+    "Longueur du mat": "https://storage.pardot.com/490131/1782127124Q95LFWh0/dx1010i_s5_specification_sheet_english.pdf",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx1010i/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx1010i/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx1010i/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx1010i/"
+   },
+   "remarque": "Puissance publiee en kW seulement. Profondeur : 33,7 m (CT55), 28,2 m (CT67)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Ranger DX600",
+   "specs": {
+    "Diametre forage": "64-102 mm",
+    "Profondeur max": "26,8 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "7700 mm (glissiere CF 145H)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "225 hp (168 kW, Caterpillar C7.1 T4F/Stage V)",
+    "Poids operationnel": "15 600 kg",
+    "Type": "Surface top hammer"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx600-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgb8/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx600-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgb8/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx600-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx600-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx600-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx600-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Poids : 15 600 kg (T4F / Stage V, retenu) ; 15 200 kg en version Tier 3. Profondeur 26,8 m (6x12'+1x16')."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Ranger DX700",
+   "specs": {
+    "Diametre forage": "76-115 mm",
+    "Profondeur max": "26,8 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "7700 mm (glissiere CF 145H)",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "225 hp (168 kW, Caterpillar C7.1 T4F/Stage V)",
+    "Poids operationnel": "15 600 kg",
+    "Type": "Surface top hammer"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx700-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgc2/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx700-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgc2/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx700-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx700-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx700-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx700-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Poids : fiches T4F et S5 = 15 600 kg (retenu) ; la page web affiche 15,200 kg = valeur de la fiche Tier 3. Profondeur 26,8 m (6x12'+1x16')."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Ranger DX810i",
+   "specs": {
+    "Diametre forage": "64-127 mm",
+    "Profondeur max": "30 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "7500 mm (glissiere CylF 16); 8410 mm option",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "185 kW (Volvo TAD881VE Stage V/T4F)",
+    "Poids operationnel": "19 600 kg",
+    "Type": "Surface top hammer, fleche articulee"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx810i-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgd8/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx810i-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgd8/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx810i-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx810i-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx810i-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx810i-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Puissance publiee en kW seulement. Profondeur 30 m (7x12'+1x16') ; 34,3 m avec glissiere longue en option."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Sandvik",
+   "modele": "Ranger DX910i",
+   "specs": {
+    "Diametre forage": "89-140 mm",
+    "Profondeur max": "30 m",
+    "Type de mat (lead/kelly)": "Glissière (feed) — pas de Kelly",
+    "Longueur du mat": "7500 mm (glissiere CylF 16); 8410 mm option",
+    "Longueur du kelly": "N/A",
+    "Puissance moteur": "210 kW (Volvo TAD882VE Stage V/T4F)",
+    "Poids operationnel": "19 600 kg",
+    "Type": "Surface top hammer, fleche articulee"
+   },
+   "sources": {
+    "Diametre forage": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx910i-surface-top-hammer-drill-rig/",
+    "Profondeur max": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgdr/",
+    "Type de mat (lead/kelly)": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx910i-surface-top-hammer-drill-rig/",
+    "Longueur du mat": "https://go.rocktechnology.sandvik/l/490131/2023-07-13/dwsgdr/",
+    "Longueur du kelly": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx910i-surface-top-hammer-drill-rig/",
+    "Puissance moteur": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx910i-surface-top-hammer-drill-rig/",
+    "Poids operationnel": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx910i-surface-top-hammer-drill-rig/",
+    "Type": "https://www.mining.sandvik/en/products/equipment/surface-drill-rigs/ranger-dx910i-surface-top-hammer-drill-rig/"
+   },
+   "remarque": "Puissance publiee en kW seulement. Profondeur 30 m (7x12'+1x16') ; 34,3 m avec glissiere longue en option."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Watson",
+   "modele": "5000CA",
+   "specs": {
+    "Diametre forage": "max. 120 in (3050 mm)",
+    "Profondeur max": "Variable (selon la grue et la configuration)",
+    "Type de mat (lead/kelly)": "Kelly télescopique (jusqu'à 4 éléments), entraînement Kelly à rouleaux (Kelly extérieur 6, 7 ou 8 po)",
+    "Longueur du mat": "N/A (montée sur grue; pont 19 ft (5,8 m) standard)",
+    "Longueur du kelly": "N/D (jusqu'à 4 éléments)",
+    "Puissance moteur": "200 hp (John Deere diesel)",
+    "Poids operationnel": "12 000 lb (5 443 kg)",
+    "Type": "Unité de forage rotative montée sur grue (40 t ou plus), couple 113 000 lb-pi"
+   },
+   "sources": {
+    "Diametre forage": "https://s3.amazonaws.com/media.cloversites.com/b0/b08c4662-06ae-4d75-89b9-d4b32542eccc/documents/5000Flyer_6.2_notg.pdf",
+    "Profondeur max": "https://watsonusa.com/rigs/5000",
+    "Type de mat (lead/kelly)": "https://watsonusa.com/rigs/5000",
+    "Longueur du mat": "https://s3.amazonaws.com/media.cloversites.com/b0/b08c4662-06ae-4d75-89b9-d4b32542eccc/documents/5000Flyer_6.2_notg.pdf",
+    "Longueur du kelly": "https://watsonusa.com/rigs/5000",
+    "Puissance moteur": "https://s3.amazonaws.com/media.cloversites.com/b0/b08c4662-06ae-4d75-89b9-d4b32542eccc/documents/5000Flyer_6.2_notg.pdf",
+    "Poids operationnel": "https://watsonusa.com/rigs/5000",
+    "Type": "https://watsonusa.com/rigs/5000"
+   },
+   "remarque": "Attachement de forage monte sur grue de 40 t ou plus (pas une foreuse autonome) - inscrit au type Foreuse selon decision de Jacquot. Poids : page web 12,000 lb (5,448 kg), fiche PDF 12,000 lb (5,443 kg) ; 12 000 lb = 5 443 kg (retenu). Couple : page web 113,000 ft-lb (153 kNm) ; la fiche PDF (6/2012) indique 113,0000 - 180,000 ft lb / 145-244 kNm (coquille a la source) - valeur web retenue. Diametre max, moteur et pont viennent de la fiche 2012."
+  }
+ ]
+}

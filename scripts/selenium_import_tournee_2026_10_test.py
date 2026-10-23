@@ -52,6 +52,15 @@ TEMOINS = [
     ('Excavatrice', 'Komatsu', '2026', 'PC4000-11', 'Poids operationnel (kg / lbs)'),
     ('Excavatrice', 'Liebherr', '2026', 'R 992 E Litronic', 'Poids operationnel (kg / lbs)'),
     ('Foreuse', 'Bauer', '2026', 'BG 28', 'Poids operationnel'),
+    # lot 3 + corrections
+    ('Telehandler', 'LGMG', '2026', 'H1256', 'Capacite max'),
+    ('Telehandler', 'Manitou', '2026', 'MRT 2660', 'Capacite max'),
+    ('Nacelle', 'Niftylift', '2026', 'SP45 4x4', 'Hauteur plateforme (pi)'),
+    ('Loader', 'John Deere', '2017', '944K', 'Puissance moteur'),
+    ('Tracteur', 'Kubota', '2026', 'BX2390', 'Puissance moteur'),
+    ('Foreuse', 'Sandvik', '2026', 'Ranger DX700', 'Poids operationnel'),
+    ('Pompe a Beton', 'Liebherr', '2026', '32 XXT', 'Nombre de sections'),
+    ('Telehandler', 'JLG', '2026', 'SkyTrak 10054', 'Capacite max'),
 ]
 
 opts = Options()
@@ -164,6 +173,18 @@ try:
         k = oblig('Excavatrice', 'Hitachi', '2026', 'ZX490LC-7H')
         check('ZX490LC-7H : support Z01A-0279 obligatoire %s' % k, a('Z01A-0279', k))
         check('ZX490LC-7H : harnais Hitachi -7 Z03B-0121', a('Z03B-0121', k))
+    # Corrections : renommage = meme kit qu'avant ; suppressions effectives
+    if '32 XXT' in DB['Pompe a Beton']['Liebherr'].get('2026', {}):
+        k = oblig('Pompe a Beton', 'Liebherr', '2026', '32 XXT')
+        check('32 XXT (ex 31 XXT) garde son kit 0203 + 0208 obligatoires %s' % k, a('0203', k) and a('0208', k))
+        check('31 XXT n existe plus', not dv.execute_script(
+            "return !!(machinesData['Pompe a Beton']['Liebherr']['2026']['31 XXT']);"))
+        k = oblig('Telehandler', 'JLG', '2026', 'SkyTrak 10054')
+        check('SkyTrak 10054 (ex 10054) garde 0070 obligatoire %s' % k, a('0070', k))
+        check('Takeuchi TB350CR retire', not dv.execute_script(
+            "return !!(machinesData['Excavatrice']['Takeuchi']['2026']['TB350CR']);"))
+        check('Hitachi ZW160-7 : 2023 retiree, 2024 gardee', dv.execute_script(
+            "var h=machinesData['Loader']['Hitachi']; return !(h['2023']||{})['ZW160-7'] && !!h['2024']['ZW160-7'];"))
     errs = [e for e in dv.get_log('browser') if e['level'] == 'SEVERE']
     check('aucune erreur JS SEVERE en soumission (%d)' % len(errs), not errs)
     for e in errs[:5]:

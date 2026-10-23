@@ -1,0 +1,371 @@
+{
+ "lot": "s3_loader",
+ "resultats": [
+  {
+   "type": "Loader",
+   "fabricant": "Caterpillar",
+   "modele": "986",
+   "specs": {
+    "Capacite de levage": "22 000 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "373 hp",
+    "Poids operationnel": "97 785 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.miltoncat.com/machinery-equipment/new/c/986-wheel-loader",
+    "Puissance moteur": "https://www.miltoncat.com/machinery-equipment/new/c/986-wheel-loader",
+    "Poids operationnel": "https://www.miltoncat.com/machinery-equipment/new/c/986-wheel-loader"
+   },
+   "remarque": "Milton CAT (concessionnaire Cat officiel). Puissance nette SAE J1349 373 hp retenue (brut ISO 14396 449 hp, SAE J1995 456 hp). Poids = Operating Weight - Standard 97 785 lb (High Lift 104 005 lb). Capacite de levage = Rated Payload - Standard (Quarry Face) 11 ton (US) = 22 000 lb (metrique publie : 10 t). A TRANCHER : Cat publie aussi Rated Payload - Loose Material (Standard) 14 ton (US) / 12.7 t = 28 000 lb ; j'ai retenu front de taille (valeur la plus prudente). NB : la BD 988 porte 27 558 lb (= 12,5 t), base de payload a harmoniser. Aucune charge de basculement publiee sur la page."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Caterpillar",
+   "modele": "986K",
+   "specs": {
+    "Capacite de levage": "22 000 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "373 hp",
+    "Poids operationnel": "97 785 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://quinncompany.com/product/986k-wheel-loader",
+    "Puissance moteur": "https://quinncompany.com/product/986k-wheel-loader",
+    "Poids operationnel": "https://quinncompany.com/product/986k-wheel-loader"
+   },
+   "remarque": "L'URL fournie (petersoncat.com/node/95666) est la version 986K Block Handler (116 688 lb, godet 7 yd3) : non retenue. Valeurs de Quinn Company (concessionnaire Cat officiel, Californie), version standard : Net Power 373 hp ; Operating Weight - Standard 97 785 lb (l'en-tete affiche 98 806 lb ; High Lift 104 005 lb). Capacite de levage = Rated Payload - Standard (Quarry Face) 11 ton (US) = 22 000 lb ; Loose Material (Standard) 14 ton (US) = 28 000 lb, meme choix a trancher que la 986. Specs identiques a celles de la 986 sur les pages concessionnaires."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Hitachi",
+   "modele": "ZW100-7",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "97 hp",
+    "Poids operationnel": "17 250 - 18 110 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://cdn.wajax.com/wp-content/uploads/wpfiles/2026/04/ZW100-7.pdf",
+    "Poids operationnel": "https://cdn.wajax.com/wp-content/uploads/wpfiles/2026/04/ZW100-7.pdf"
+   },
+   "remarque": "Brochure Hitachi Construction Machinery Americas (c) 2026, hebergee par Wajax (distributeur officiel). Puissance nette ISO 9249 97 hp retenue (brut ISO 14396 / ECE R120 100 hp). ATTENTION : la page produit Wajax ecrit 'Net Rated Power 100 HP', ce qui contredit la brochure ; j'ai suivi la brochure du fabricant. Poids 17 250 - 18 110 lb (godet general / attache rapide). Pas de charge utile publiee : charge de basculement pleine rotation ISO 14397-1 11 360 lb (godet general, bras standard) ; 9 660 lb avec attache rapide."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "435S",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {},
+   "remarque": "Modele NON distribue en Amerique du Nord : les fiches jcb.com/en-US/.../435s/ et en-CA renvoient 404, et la 435S n'est pas dans la gamme chargeuses en-US ni en-CA (407 a 457S). Elle n'apparait qu'en legende d'image (usage agricole) et sur les sites JCB Australie/Europe. Je recommande de ne pas l'ajouter. Aucune valeur reprise."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "JCB",
+   "modele": "437",
+   "specs": {
+    "Capacite de levage": "10 862 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "183 hp",
+    "Poids operationnel": "35 274 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.jcb.com/en-US/products/machines/wheel-loaders/437/",
+    "Puissance moteur": "https://www.jcb.com/en-US/products/machines/wheel-loaders/437/",
+    "Poids operationnel": "https://www.jcb.com/en-US/products/machines/wheel-loaders/437/"
+   },
+   "remarque": "Donnees produit jcb.com/en-US (meme methode que 407-457 en BD). Capacite de levage = 'Payload' publie par JCB 10 862 lb (Full Turn Tipping Load 21 175 lb). Puissance = 'Max. Engine Power' 183 hp (seule valeur publiee, base brut/net non precisee). Le nom d'image '437-2' n'est qu'un fichier ; le modele s'appelle bien 437. Variante 437 Agri distincte : payload 10 448 lb, 183 hp, 35 000 lb."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "204K",
+   "specs": {
+    "Capacite de levage": "3 616 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "59 hp",
+    "Poids operationnel": "11 806 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkakldrcwp.pdf",
+    "Puissance moteur": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkakldrcwp.pdf",
+    "Poids operationnel": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkakldrcwp.pdf"
+   },
+   "remarque": "Brochure Deere K-Series 204K/304K. Puissance nette ISO 9249 59 hp retenue (brut 62 hp). Capacite de levage = 'Rated Operating Load, 50% of Full-Turn Tipping Load' 3 616 lb, configuration attache rapide + godet 1.0 cu. yd. (FTTL 7 231 lb) ; poids 11 806 lb (meme methode que la 304K deja livree)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "204L",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {},
+   "remarque": "Aucune source fabricant trouvee : le guide de flotte de location Deere (URL fournie) nomme la 204L sans aucun chiffre ; la page deere.com 204l-wheel-loader renvoie 404 et aucune brochure L-Series n'est en ligne. Les chiffres qui circulent (61-62 hp, 11 806 lb) viennent de sites tiers : non repris. A completer depuis une fiche Deere ou un concessionnaire."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "244K",
+   "specs": {
+    "Capacite de levage": "4 092 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "64 hp",
+    "Poids operationnel": "12 060 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkak244324kii.pdf",
+    "Puissance moteur": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkak244324kii.pdf",
+    "Poids operationnel": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkak244324kii.pdf"
+   },
+   "remarque": "Brochure Deere 244K-II / 324K (colonne 244K). Puissance nette 64 hp (SAE J1349 / ISO 9249 ; brut ISO 14396 67 hp). Capacite de levage = Rated Operating Load 50 % FTTL 4 092 lb, attache rapide ISO + godet 1.0 cu. yd. (FTTL 8 183 lb) ; poids 12 060 lb dans la meme configuration. La brochure donne le meme tableau de chargement pour 244K et 244K-II."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "244K-II",
+   "specs": {
+    "Capacite de levage": "4 092 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "70 hp",
+    "Poids operationnel": "12 060 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkak244324kii.pdf",
+    "Puissance moteur": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkak244324kii.pdf",
+    "Poids operationnel": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/compact-wheel-loaders-k-series-dkak244324kii.pdf"
+   },
+   "remarque": "Brochure Deere 244K-II / 324K. Puissance nette 70 hp (SAE J1349 / ISO 9249 ; brut ISO 14396 73 hp). Capacite de levage = Rated Operating Load 50 % FTTL 4 092 lb, attache rapide ISO + godet 1.0 cu. yd. (FTTL 8 183 lb) ; poids 12 060 lb. Godet 1.4 cu. yd. : ROL 4 069 lb, 12 325 lb."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "644 X-Tier",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "231 hp",
+    "Poids operationnel": "41 571 - 41 649 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://wiclark.com/catalog/site-development/loaders/wheel-loaders/mid-size-wheel-loaders/644-x-tier-mid-size-wheel-loader/",
+    "Poids operationnel": "https://wiclark.com/catalog/site-development/loaders/wheel-loaders/mid-size-wheel-loaders/644-x-tier-mid-size-wheel-loader/"
+   },
+   "remarque": "Fiche W.I. Clark (concessionnaire Deere officiel) : Net Power 172 kW (231 hp) a 1 500 rpm ; Operating Weight 41,571-41,649 lb (le tableau detaille donne 41 571 lb). Aucune charge de basculement ni charge utile publiee sur la fiche. Hybride electrique E-Drive."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "644K Hybrid",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "229 hp",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/wheel-loaders-k-series-624k-644k-724k.pdf"
+   },
+   "remarque": "Brochure Deere K-Series 624K/644K/724K : 644K Hybrid = 171 kW (229 hp) net ISO 9249, moteur PowerTech PSX 6068 EPA IT4 avec entrainement hybride electrique. Les tableaux de poids et de ROL sont etablis avec le moteur PSX 6090 (644K conventionnelle : 41 188 lb, ROL 14 107 lb godet 4.25 cu. yd.) ; pour le PSX 6068 Z-bar la brochure ne donne qu'un ajustement (-753 lb au poids, -1 222 lb a la charge de basculement pleine rotation) sur une base godet 4.0 cu. yd. dont le poids n'est pas publie seul : poids et capacite laisses a completer (pas de calcul). NE PAS CONFONDRE avec la '644K HL' de la BD (232 hp, 41 187 lb) : ces valeurs sont celles de la 644K conventionnelle et 'HL' designe vraisemblablement High-Lift (brochure : High-Lift 42 088 lb), pas Hybrid Loader. Donc ne pas renommer 644K HL en 644K Hybrid."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "John Deere",
+   "modele": "944K",
+   "specs": {
+    "Capacite de levage": "35 236 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "536 hp",
+    "Poids operationnel": "119 607 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/944k-wheel-loader-dka944.pdf",
+    "Puissance moteur": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/944k-wheel-loader-dka944.pdf",
+    "Poids operationnel": "https://www.deere.com/assets/pdfs/common/products/wheel-loaders/944k-wheel-loader-dka944.pdf"
+   },
+   "remarque": "Brochure Deere 944K. Net Peak Power ISO 9249 400 kW (536 hp). Capacite de levage = 'Rated Operating Capacity, 50% Full-Turn Tipping Load, with Tire Deflection' 35 236 lb ; poids 119 607 lb ; configuration fleche standard + godet general 10.0 cu. yd. (plage tous godets/fleches : ROC 30 144 - 35 236 lb, poids 119 607 - 124 614 lb). ATTENTION : la '944 X-Tier' de la BD porte exactement ces valeurs (35 236 lb, 536 hp, 119 607 lb) ; elles semblent recopiees de la 944K, a verifier."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Komatsu",
+   "modele": "WA475-10",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "290 hp",
+    "Poids operationnel": "56 240 - 60 400 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://smsequipment.com/getmedia/bb88fe4a-d24d-4974-8d90-ef7bbd0bd121/WA475_10_AESS942_02.pdf",
+    "Poids operationnel": "https://smsequipment.com/getmedia/bb88fe4a-d24d-4974-8d90-ef7bbd0bd121/WA475_10_AESS942_02.pdf"
+   },
+   "remarque": "Brochure Komatsu AESS942-02 (hebergee par SMS Equipment, distributeur Komatsu). Puissance nette ISO 9249 / SAE J1349 290 hp (brut SAE J1995 291 hp). Poids = plage de la couverture 56,240 - 60,400 lb (le tableau donne 56 239 lb pour la 1re colonne). Pas de charge utile publiee : charge de basculement pleine rotation 39 176 lb (1re colonne du tableau). Communique Komatsu du 2020-03-10 : modele lance a CONEXPO 2020."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 507 Stereo",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "64 hp",
+    "Poids operationnel": "12 235 - 12 865 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/p/241834-5376616",
+    "Poids operationnel": "https://www.liebherr.com/en-int/p/241834-5376616"
+   },
+   "remarque": "Charge de basculement 7 145 - 8 265 lb ; ISO 14396 67 hp. Fiche produit liebherr.com/en-int (valeurs imperiales de la fiche). DISTRIBUTION NA NON CONFIRMEE : la liste de disponibilite de la fiche ne comprend ni les Etats-Unis ni le Canada (Europe, Australie, Nouvelle-Zelande, Turquie, Israel...), et la meme fiche en-us est vide ; seule une page de gamme en-us decrit les Stereoloaders sans chiffres. Je recommande de confirmer avec Liebherr Canada/USA avant d'ajouter. Pas de charge utile publiee (seulement la charge de basculement articulee) ; puissance ISO 9249 / SAE J1349 retenue."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 509 Stereo",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "70 hp",
+    "Poids operationnel": "14 085 - 15 155 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/p/241835-5376616",
+    "Poids operationnel": "https://www.liebherr.com/en-int/p/241835-5376616"
+   },
+   "remarque": "Charge de basculement 7 495 - 9 765 lb ; ISO 14396 72 hp. Fiche produit liebherr.com/en-int (valeurs imperiales de la fiche). DISTRIBUTION NA NON CONFIRMEE : la liste de disponibilite de la fiche ne comprend ni les Etats-Unis ni le Canada (Europe, Australie, Nouvelle-Zelande, Turquie, Israel...), et la meme fiche en-us est vide ; seule une page de gamme en-us decrit les Stereoloaders sans chiffres. Je recommande de confirmer avec Liebherr Canada/USA avant d'ajouter. Pas de charge utile publiee (seulement la charge de basculement articulee) ; puissance ISO 9249 / SAE J1349 retenue."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 514 Stereo",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "102 hp",
+    "Poids operationnel": "19 535 - 22 015 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/p/642646-5376616",
+    "Poids operationnel": "https://www.liebherr.com/en-int/p/642646-5376616"
+   },
+   "remarque": "Charge de basculement 8 310 - 12 675 lb ; ISO 14396 102 hp. Fiche produit liebherr.com/en-int (valeurs imperiales de la fiche). DISTRIBUTION NA NON CONFIRMEE : la liste de disponibilite de la fiche ne comprend ni les Etats-Unis ni le Canada (Europe, Australie, Nouvelle-Zelande, Turquie, Israel...), et la meme fiche en-us est vide ; seule une page de gamme en-us decrit les Stereoloaders sans chiffres. Je recommande de confirmer avec Liebherr Canada/USA avant d'ajouter. Pas de charge utile publiee (seulement la charge de basculement articulee) ; puissance ISO 9249 / SAE J1349 retenue."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 518 Stereo",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "102 hp",
+    "Poids operationnel": "20 260 - 23 025 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-int/p/642647-5376616",
+    "Poids operationnel": "https://www.liebherr.com/en-int/p/642647-5376616"
+   },
+   "remarque": "Charge de basculement 8 530 - 14 440 lb ; ISO 14396 102 hp. Fiche produit liebherr.com/en-int (valeurs imperiales de la fiche). DISTRIBUTION NA NON CONFIRMEE : la liste de disponibilite de la fiche ne comprend ni les Etats-Unis ni le Canada (Europe, Australie, Nouvelle-Zelande, Turquie, Israel...), et la meme fiche en-us est vide ; seule une page de gamme en-us decrit les Stereoloaders sans chiffres. Je recommande de confirmer avec Liebherr Canada/USA avant d'ajouter. Pas de charge utile publiee (seulement la charge de basculement articulee) ; puissance ISO 9249 / SAE J1349 retenue."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 542",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "161 hp",
+    "Poids operationnel": "36 600 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.liebherr.com/en-il/n/conexpo-con/agg-2014-new-generation-of-liebherr-midsize-and-large-wheel-loaders-22665-5345836",
+    "Poids operationnel": "https://www.liebherr.com/en-il/n/conexpo-con/agg-2014-new-generation-of-liebherr-midsize-and-large-wheel-loaders-22665-5345836"
+   },
+   "remarque": "Seule source fabricant : communique Liebherr ConExpo 2014 (Las Vegas), machine exposee en version recyclage (godet 3.3 yd3 a pince hydraulique, Tier 4i) : 161 HP / 120 kW, poids 36 600 lb, charge de basculement 19 070 lb. Base de puissance non precisee (le communique ecrit 'HP (l)') et poids propre a cette configuration. Aucune fiche produit en ligne (ancienne generation). Pas de charge utile publiee."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Liebherr",
+   "modele": "L 576 XPower",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "A completer"
+   },
+   "sources": {},
+   "remarque": "Aucune fiche produit trouvee : la L 576 XPower n'est pas dans les fiches en-us (L 550, 556, 566, 580, 580 LogHandler, 586 XPower) ni en-int ; seule mention en-us = une brochure 'L 550 XPower Tunnel - L 576 XPower Tunnel G6' dont le lien est mort. Distribution NA non etablie : je recommande de ne pas l'ajouter sans confirmation Liebherr."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "New Holland",
+   "modele": "W50C",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "55 hp",
+    "Poids operationnel": "11 111 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://media.cnh.com/north-america/new-holland-construction/compact-wheel-loaders/s/026e1dba-f332-4cc3-a716-6200f740cc9d",
+    "Poids operationnel": "https://construction.newholland.com/en-us/northamerica/products/light-construction-equipment/compact-wheel-loaders/w50c-zb"
+   },
+   "remarque": "Puissance nette 55 hp @ 2 500 rpm (communique CNH NA du 2017-02-05, ZB et TC) ; la fiche actuelle New Holland NA ne publie que 58 hp brut. Poids 11 111 lb = W50C ZB (fiche NA actuelle et communique) ; W50C TC 10 913 lb (communique 2017). NOM : la gamme NA actuelle liste seulement 'W50C ZB' (la TC n'y est plus) ; envisager 'W50C ZB' comme nom de modele, comme 'W80C HS' en BD. Pas de charge utile publiee : charge de basculement en ligne droite 8 534 lb ; la fiche donne aussi une capacite de levage hydraulique de 7 227 lb a pleine hauteur, qui n'est pas une charge utile nominale (non reprise)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L180H High-Lift",
+   "specs": {
+    "Capacite de levage": "18 739 - 19 401 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "329 hp",
+    "Poids operationnel": "77 020 - 83 860 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.volvoce.com/-/media/volvoce/global/products/wheel-loaders/wheel-loaders/brochures/brochure_l180h_hl_t4f_en_22_voe2230009331.pdf?v=JLViPw",
+    "Puissance moteur": "https://www.volvoce.com/-/media/volvoce/global/products/wheel-loaders/wheel-loaders/brochures/brochure_l180h_hl_t4f_en_22_voe2230009331.pdf?v=JLViPw",
+    "Poids operationnel": "https://www.volvoce.com/-/media/volvoce/global/products/wheel-loaders/wheel-loaders/brochures/brochure_l180h_hl_t4f_en_22_voe2230009331.pdf?v=JLViPw"
+   },
+   "remarque": "Brochure Volvo L180H High-Lift T4F (EPA Tier 4 Final, donc version NA), liee depuis la page d'archives Volvo (production 2014-2021). Machine forestiere a grappin. Capacite de levage = 'Working load' publie par Volvo selon le grappin, 8 500 - 8 800 kg / 18 739 - 19 401 lb. Puissance nette ISO 9249 / SAE J1349 329 hp (brut SAE J1995 330 hp). Poids = plage de la couverture 77,020 - 83,860 lb (tableau : 77 018 - 77 746 lb avec liquide dans les pneus arriere)."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L250H",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "397 hp",
+    "Poids operationnel": "74 957 - 77 823 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.volvoce.com/global/en/products-and-services/past-products/wheel-loaders/volvo-h-series/l250h/",
+    "Poids operationnel": "https://www.volvoce.com/global/en/products-and-services/past-products/wheel-loaders/volvo-h-series/l250h/"
+   },
+   "remarque": "Page d'archives Volvo (production 2014-2017) : puissance nette ISO 9249 / SAE J1349 397 hp (brut 400 hp) ; poids 74,957 - 77,823 lb ; charge de basculement pleine rotation 49 472 lb. Pas de charge utile publiee. Seule une brochure T3 est en ligne (pas de version T4F) : distribution NA toujours non confirmee."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Volvo",
+   "modele": "L260",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "414 hp",
+    "Poids operationnel": "74 957 - 85 980 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/l260/",
+    "Poids operationnel": "https://www.volvoce.com/united-states/en-us/products/wheel-loaders/l260/"
+   },
+   "remarque": "Fiche Volvo US. Puissance nette ISO 9249 / SAE J1349 414.37 hp, inscrite '414 hp' (ECE R120 415.71 hp). Poids 74,957 - 85,980 lb. Pas de charge utile publiee : charge de basculement pleine rotation 52 469.95 lb."
+  }
+ ]
+}

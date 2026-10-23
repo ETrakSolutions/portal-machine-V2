@@ -88,7 +88,8 @@ OVERRIDE_0004 = {('Develon (Doosan)', 'DX63-7')}   # gamme mini Develon jusqu'a 
 
 # Marques presque vides dans ce type (1-2 modeles) mais qui vendent bien la gamme : on cree
 # les annees manquantes (meme exception que Yanmar a l'import du 2026-08-05).
-ANNEES_CREEES = {('Loader', 'JCB'), ('Loader', 'New Holland')}
+ANNEES_CREEES = {('Loader', 'JCB'), ('Loader', 'New Holland'),
+                 ('Telehandler', 'LGMG'), ('Telehandler', 'Liebherr')}   # lot 3 : LGMG entre dans le type ; Liebherr n'y avait qu'un modele
 
 # Hitachi -7H (decision 4 : modele distinct du -7, on garde les deux) : le kit de la jumelle
 # -7 a deja ete ajuste a la main (ZX210LC-7 : drain 0009 = na ; ZX490LC-7 : support Z01A-0279
@@ -143,11 +144,11 @@ def main():
     retenus, collisions, sans_specs, rognees, plan = [], [], [], [], []
     for x in lot:
         t, fab, mod, statut = x['Type'], x['Fabricant'], x['Modèle (nom officiel)'], x['Statut']
-        why = RETENUS.get((t, fab, mod)) or RETENUS.get((t, fab, None))
+        why = None if x.get('Forcer') else (RETENUS.get((t, fab, mod)) or RETENUS.get((t, fab, None)))
         if why:
             retenus.append((t, fab, mod, why))
             continue
-        yy = db[t][fab]
+        yy = db[t].setdefault(fab, {}) if (t, fab) in ANNEES_CREEES else db[t][fab]
         voulues = [str(a) for a in json.loads(x['Années à ajouter'])]
         annees = [a for a in voulues if a in yy or (t, fab) in ANNEES_CREEES]
         if len(annees) != len(voulues):
@@ -188,6 +189,10 @@ def main():
             e['Test Robin'] = ''
             e['_harnais'] = ex_imp.harnais_pour(fab, mod)
         e.update(META.get(t, META_DEFAUT))
+        if x.get('Note tech'):
+            e['_note_tech_texte'] = x['Note tech']
+            e['_note_tech_auteur'] = 'Claude (tournee 2026-10)'
+            e['_note_tech_date'] = '2026-10-23'
         ovn = {'_bom': {'0004': 'r'}} if (t == 'Excavatrice' and (fab, mod) in OVERRIDE_0004) else None
         if t == 'Excavatrice' and jumelle_7(fab, mod):
             for a in annees:   # un override par annee : on decoupe pour garder l'annee de la jumelle

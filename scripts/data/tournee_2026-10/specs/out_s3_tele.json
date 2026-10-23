@@ -1,0 +1,557 @@
+{
+ "lot": "s3_tele",
+ "resultats": [
+  {
+   "type": "Telehandler",
+   "fabricant": "LGMG",
+   "modele": "H1056",
+   "specs": {
+    "Capacite max": "10 000 lb",
+    "Hauteur levee max": "56.1 ft",
+    "Portee avant max": "42 ft",
+    "Puissance moteur": "74 hp",
+    "Poids operationnel": "33 730 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.lgmgna.com/h1056-rough-terrain-telehandler",
+    "Hauteur levee max": "https://www.lgmgna.com/h1056-rough-terrain-telehandler",
+    "Portee avant max": "https://www.lgmgna.com/h1056-rough-terrain-telehandler",
+    "Puissance moteur": "https://irp.cdn-website.com/094d570e/files/uploaded/LG_SpecSheet_H1056_FINAL+01.26.pdf",
+    "Poids operationnel": "https://www.lgmgna.com/h1056-rough-terrain-telehandler",
+    "Base rotative": "https://irp.cdn-website.com/094d570e/files/uploaded/LG_SpecSheet_H1056_FINAL+01.26.pdf",
+    "Pattes stabilisatrices": "https://irp.cdn-website.com/094d570e/files/uploaded/LG_SpecSheet_H1056_FINAL+01.26.pdf"
+   },
+   "remarque": "Page LGMG NA + fiche technique PDF (dec. 2025). Valeurs source : 10,000 lb, 56'1\", 42', 33730 lb. Puissance : moteur standard Cummins QSF 3.8L 74 hp (55 kW) ; 120 hp en option. Pattes stabilisatrices = Oui : la fiche publie deux abaques 'Load Chart - Outriggers Up' et 'Outriggers Down'. Base rotative = Non : telehandler a chassis fixe (4 roues directrices, devers de chassis +/-10 deg), aucune tourelle dans la fiche. Format repris de l'exemple Bobcat (LGMG absent du type Telehandler). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "LGMG",
+   "modele": "H1256",
+   "specs": {
+    "Capacite max": "12 000 lb",
+    "Hauteur levee max": "56.1 ft",
+    "Portee avant max": "42 ft",
+    "Puissance moteur": "120.7 hp",
+    "Poids operationnel": "34 833 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.lgmgna.com/lgmg-h1256-12-000-lb-rough-terrain-telehandler",
+    "Hauteur levee max": "https://www.lgmgna.com/lgmg-h1256-12-000-lb-rough-terrain-telehandler",
+    "Portee avant max": "https://www.lgmgna.com/lgmg-h1256-12-000-lb-rough-terrain-telehandler",
+    "Puissance moteur": "https://irp.cdn-website.com/094d570e/files/uploaded/LG_SpecSheet_H1256_FINAL+01.26.pdf",
+    "Poids operationnel": "https://www.lgmgna.com/lgmg-h1256-12-000-lb-rough-terrain-telehandler",
+    "Base rotative": "https://irp.cdn-website.com/094d570e/files/uploaded/LG_SpecSheet_H1256_FINAL+01.26.pdf",
+    "Pattes stabilisatrices": "https://irp.cdn-website.com/094d570e/files/uploaded/LG_SpecSheet_H1256_FINAL+01.26.pdf"
+   },
+   "remarque": "Page LGMG NA + fiche technique PDF (dec. 2025). Valeurs source : 12,000 lb, 56'1\", 42', 34833 lb. Puissance : fiche technique 120.7 hp (90 kW) ; la page web arrondit a '120 hp'. Pattes stabilisatrices = Oui : la fiche publie deux abaques 'Load Chart - Outriggers Up' et 'Outriggers Down'. Base rotative = Non : telehandler a chassis fixe (4 roues directrices, devers de chassis +/-10 deg), aucune tourelle dans la fiche. Format repris de l'exemple Bobcat (LGMG absent du type Telehandler). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 32-7",
+   "specs": {
+    "Capacite max": "7 055 lb",
+    "Hauteur levee max": "22.8 ft",
+    "Portee avant max": "13.1 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "16 204 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-32-7-4089893",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-32-7-4089893",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-32-7-4089893",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-32-7-4089893",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-32-7-4089893",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 3 200 kg / 6 925 mm / 3 996 mm / 7 350 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 33-10",
+   "specs": {
+    "Capacite max": "7 275 lb",
+    "Hauteur levee max": "32 ft",
+    "Portee avant max": "23.6 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "17 659 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Hauteur levee max": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Portee avant max": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Puissance moteur": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Poids operationnel": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/"
+   },
+   "remarque": "Pas de page produit trouvee dans la liste en-ca (12 modeles annonces, 10 affiches) : donnees tirees de la brochure fabricant 'T32-7, T41-7, T33-10' liee depuis les pages en-ca (tableau Performance data : 8 010 kg / 17 659 lb, 3 300 kg / 7 275 lb, 9 747 mm / 32', 7 176 mm / 23'7\", 105 kW / 143 HP). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 33-10s",
+   "specs": {
+    "Capacite max": "7 275 lb",
+    "Hauteur levee max": "32 ft",
+    "Portee avant max": "23.6 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "17 857 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-10s-4089894",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-10s-4089894",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-10s-4089894",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-10s-4089894",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-10s-4089894",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 3 300 kg / 9 747 mm / 7 176 mm / 8 100 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 33-7s",
+   "specs": {
+    "Capacite max": "7 275 lb",
+    "Hauteur levee max": "22.8 ft",
+    "Portee avant max": "13.1 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "16 535 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-7s-7138516",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-7s-7138516",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-7s-7138516",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-7s-7138516",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-33-7s-7138516",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 3 300 kg / 6 925 mm / 3 996 mm / 7 500 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 38-6s",
+   "specs": {
+    "Capacite max": "8 378 lb",
+    "Hauteur levee max": "20.4 ft",
+    "Portee avant max": "10.5 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "16 358 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-6s-7138515",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-6s-7138515",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-6s-7138515",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-6s-7138515",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-6s-7138515",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 3 800 kg / 6 225 mm / 3 204 mm / 7 420 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 38-7s",
+   "specs": {
+    "Capacite max": "8 378 lb",
+    "Hauteur levee max": "22.8 ft",
+    "Portee avant max": "13.1 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "16 623 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-7s-7138517",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-7s-7138517",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-7s-7138517",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-7s-7138517",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-38-7s-7138517",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 3 800 kg / 6 925 mm / 3 996 mm / 7 540 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 41-7",
+   "specs": {
+    "Capacite max": "9 039 lb",
+    "Hauteur levee max": "22.8 ft",
+    "Portee avant max": "13.2 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "16 755 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-41-7s-7138519",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-41-7s-7138519",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-41-7s-7138519",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-41-7s-7138519",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-41-7s-7138519",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/67b2b995-a7f2-4334-97d8-9547cf3651ba/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 4 100 kg / 6 925 mm / 4 001 mm / 7 600 kg). La page porte le nom 'T 41-7' mais son URL contient 't-41-7s'. Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 42-7s",
+   "specs": {
+    "Capacite max": "9 259 lb",
+    "Hauteur levee max": "22.8 ft",
+    "Portee avant max": "13.2 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "17 086 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-42-7s-7138518",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-42-7s-7138518",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-42-7s-7138518",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-42-7s-7138518",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-42-7s-7138518",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/019f8e34-490e-72ca-884c-1ea790b543f9/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 4 200 kg / 6 925 mm / 4 001 mm / 7 750 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 46-7s",
+   "specs": {
+    "Capacite max": "10 141 lb",
+    "Hauteur levee max": "23.1 ft",
+    "Portee avant max": "12.5 ft",
+    "Puissance moteur": "143 hp",
+    "Poids operationnel": "19 831 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/p/94869-4089891",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/p/94869-4089891",
+    "Portee avant max": "https://www.liebherr.com/en-ca/p/94869-4089891",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/p/94869-4089891",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/p/94869-4089891",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/482a9b0d-aaea-4a3e-9a3e-726013b0621b/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/482a9b0d-aaea-4a3e-9a3e-726013b0621b/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 4 600 kg / 7 032 mm / 3 800 mm / 8 995 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (143 hp ; la vue imperial affiche 141 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 48-8s",
+   "specs": {
+    "Capacite max": "10 583 lb",
+    "Hauteur levee max": "26.3 ft",
+    "Portee avant max": "16.5 ft",
+    "Puissance moteur": "156 hp",
+    "Poids operationnel": "23 369 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-48-8s-7454742",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-48-8s-7454742",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-48-8s-7454742",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-48-8s-7454742",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-48-8s-7454742",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/482a9b0d-aaea-4a3e-9a3e-726013b0621b/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/482a9b0d-aaea-4a3e-9a3e-726013b0621b/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 4 800 kg / 8 013 mm / 5 039 mm / 10 600 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (156 hp ; la vue imperial affiche 154 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Liebherr",
+   "modele": "T 55-7s",
+   "specs": {
+    "Capacite max": "12 125 lb",
+    "Hauteur levee max": "23.1 ft",
+    "Portee avant max": "12.9 ft",
+    "Puissance moteur": "156 hp",
+    "Poids operationnel": "25 353 lb",
+    "Base rotative": "Non",
+    "Pattes stabilisatrices": "Non"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-55-7s-4089896",
+    "Hauteur levee max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-55-7s-4089896",
+    "Portee avant max": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-55-7s-4089896",
+    "Puissance moteur": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-55-7s-4089896",
+    "Poids operationnel": "https://www.liebherr.com/en-ca/products/telescopic-handlers/t-55-7s-4089896",
+    "Base rotative": "https://assets-cdn.liebherr.com/versions/482a9b0d-aaea-4a3e-9a3e-726013b0621b/original/",
+    "Pattes stabilisatrices": "https://assets-cdn.liebherr.com/versions/482a9b0d-aaea-4a3e-9a3e-726013b0621b/original/"
+   },
+   "remarque": "Page produit en-ca, valeurs de la vue 'imperial' publiees par Liebherr (metrique : 5 500 kg / 7 032 mm / 3 930 mm / 11 500 kg). Puissance = valeur 'hp' de la puissance ISO 3046 en vue metrique (156 hp ; la vue imperial affiche 154 hp, en hp SAE). Base rotative / Pattes = Non : chassis fixe, aucune tourelle ni stabilisateur dans les donnees techniques ni dans la liste d'equipements standard / options de la brochure fabricant (seule une compensation de niveau d'essieu est offerte). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Disponibilite au Canada : modele liste sur le site Liebherr en-ca (aussi en-us) ; l'importation reelle par Liebherr Canada n'est pas confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 1845 115",
+   "specs": {
+    "Capacite max": "9 921 lb",
+    "Hauteur levee max": "59.1 ft",
+    "Portee avant max": "49.8 ft",
+    "Puissance moteur": "116 hp",
+    "Poids operationnel": "31 085 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-1845-115"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 9921 lb, 59 ft 1 in, 49 ft 10 in, 116 Hp / 85 kW, 31085 lb. Base rotative = Oui (Turret rotation 400 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Wing Type', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (116 Hp / 85 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 2145 115",
+   "specs": {
+    "Capacite max": "9 921 lb",
+    "Hauteur levee max": "67.6 ft",
+    "Portee avant max": "59.1 ft",
+    "Puissance moteur": "116 hp",
+    "Poids operationnel": "32 849 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2145-115"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 9921 lb, 67 ft 7 in, 59 ft 1 in, 116 Hp / 85 kW, 32849 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Spider Type', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (116 Hp / 85 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 2260",
+   "specs": {
+    "Capacite max": "13 228 lb",
+    "Hauteur levee max": "71.5 ft",
+    "Portee avant max": "59.8 ft",
+    "Puissance moteur": "156 hp",
+    "Poids operationnel": "39 683 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2260"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 13228 lb, 71 ft 6 in, 59 ft 9 in, 156 Hp / 115 kW, 39683 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Duplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (156 Hp / 115 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Attention : la BD contient deja 'MRT 2260 e' (version electrique) ; ce modele-ci est la version diesel, distincte. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 2545 115",
+   "specs": {
+    "Capacite max": "9 921 lb",
+    "Hauteur levee max": "80.8 ft",
+    "Portee avant max": "64 ft",
+    "Puissance moteur": "116 hp",
+    "Poids operationnel": "35 076 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2545-115"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 9921 lb, 80 ft 9 in, 64 ft, 116 Hp / 85 kW, 35076 lb. Base rotative = Oui (Turret rotation 400 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Spider Type', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (116 Hp / 85 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 2570",
+   "specs": {
+    "Capacite max": "15 432 lb",
+    "Hauteur levee max": "81.3 ft",
+    "Portee avant max": "67.3 ft",
+    "Puissance moteur": "173 hp",
+    "Poids operationnel": "46 958 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2570"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 15432 lb, 81 ft 4 in, 67 ft 3 in, 173 Hp / 127 kW, 46958 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Duplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (173 Hp / 127 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 2660",
+   "specs": {
+    "Capacite max": "13 228 lb",
+    "Hauteur levee max": "85 ft",
+    "Portee avant max": "71.2 ft",
+    "Puissance moteur": "156 hp",
+    "Poids operationnel": "39 683 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-2660"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 13228 lb, 85 ft, 71 ft 2 in, 156 Hp / 115 kW, 39683 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Duplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (156 Hp / 115 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Attention : la BD contient deja 'MRT 2660 e' (version electrique) ; ce modele-ci est la version diesel, distincte. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 3060",
+   "specs": {
+    "Capacite max": "13 228 lb",
+    "Hauteur levee max": "98.1 ft",
+    "Portee avant max": "85 ft",
+    "Puissance moteur": "173 hp",
+    "Poids operationnel": "48 061 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3060"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 13228 lb, 98 ft 1 in, 85 ft, 173 Hp / 127 kW, 48061 lb. Base rotative = Oui (pas de ligne 'Turret rotation' dans la fiche ; description fabricant : 'Its 360 deg rotation allows you to perform different operations without having to move the machine'). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Duplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (173 Hp / 127 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 3570",
+   "specs": {
+    "Capacite max": "15 432 lb",
+    "Hauteur levee max": "113.8 ft",
+    "Portee avant max": "91.8 ft",
+    "Puissance moteur": "211 hp",
+    "Poids operationnel": "52 470 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 15432 lb, 113 ft 10 in, 91 ft 10 in, 211 Hp / 155 kW, 52470 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Triplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (211 Hp / 155 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 3570 ES",
+   "specs": {
+    "Capacite max": "15 432 lb",
+    "Hauteur levee max": "113.8 ft",
+    "Portee avant max": "91.8 ft",
+    "Puissance moteur": "211 hp",
+    "Poids operationnel": "52 911 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-3570-es"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 15432 lb, 113 ft 10 in, 91 ft 10 in, 211 Hp / 155 kW, 52911 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Triplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (211 Hp / 155 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  },
+  {
+   "type": "Telehandler",
+   "fabricant": "Manitou",
+   "modele": "MRT 4080",
+   "specs": {
+    "Capacite max": "17 637 lb",
+    "Hauteur levee max": "131.3 ft",
+    "Portee avant max": "88.6 ft",
+    "Puissance moteur": "211 hp",
+    "Poids operationnel": "61 289 lb",
+    "Base rotative": "Oui",
+    "Pattes stabilisatrices": "Oui"
+   },
+   "sources": {
+    "Capacite max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080",
+    "Hauteur levee max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080",
+    "Portee avant max": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080",
+    "Puissance moteur": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080",
+    "Poids operationnel": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080",
+    "Base rotative": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080",
+    "Pattes stabilisatrices": "https://www.manitou.com/en-US/our-machines/rotating-telehandlers/mrt-4080"
+   },
+   "remarque": "Page fabricant en-US lue par requete HTTP directe (fiche technique 'Machine on tires with forks Imperial'). Valeurs source : 17637 lb, 131 ft 3 in, 88 ft 7 in, 211 Hp / 155 kW, 61289 lb. Base rotative = Oui (Turret rotation 360 deg). Pattes stabilisatrices = Oui (fiche : 'Stabilizers Type : Telescopic Triplex', commandes individuelles ou simultanees). Puissance = valeur Hp publiee par Manitou (211 Hp / 155 kW ; meme convention que les MHT/MRT deja en BD). Hauteur / portee : valeur fabricant en pieds-pouces convertie en pieds decimaux a 1 decimale (format de la BD, ex. MRT 2260 e = 71.5 ft), arrondi au plus proche. Modele de gamme europeenne presente sur le site Manitou en-US ; disponibilite reelle chez les concessionnaires NA non confirmee par la page."
+  }
+ ]
+}

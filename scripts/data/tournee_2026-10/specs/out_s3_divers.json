@@ -1,0 +1,310 @@
+{
+ "lot": "s3_divers",
+ "resultats": [
+  {
+   "type": "Excavatrice",
+   "fabricant": "Caterpillar",
+   "modele": "317 GC",
+   "specs": {
+    "Puissance moteur (kW / HP)": "89 kW / 119 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.1 m / 16'09\"",
+    "Longueur de stick (m / pi)": "3.1 m / 10'02\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "17200 kg / 38000 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce",
+    "Type de traction": "https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce",
+    "Longueur de fleche (m / pi)": "https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce",
+    "Longueur de stick (m / pi)": "https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce",
+    "Swing boom": "https://www.warrencat.com/new/equipment/excavators/small-excavators/317-gc-hydraulic-excavator/ + https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce",
+    "Poids operationnel (kg / lbs)": "https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce",
+    "Voltage machine (V/type)": "https://s7d2.scene7.com/is/content/Caterpillar/CM20241121-1258b-173ce"
+   },
+   "remarque": "Fiche technique Cat N. Am. (PDF scene7 de Caterpillar, lien depuis Warren Cat ; cat.com renvoie 403). Poids : 17 200 kg / 38,000 lb tels que publies (config. de reference : long undercarriage, Reach boom, stick R3.1 m, godet GD 0,76 m3, patins 600 mm, contrepoids 3,05 t) ; selon la configuration le tableau va de 17 200 a 19 100 kg. Puissance = nette ISO 9249 (brute ISO 14396 : 90 kW / 121 hp). Stick 3.1 m = celui de la config. de reference ; 2.6 m et 2.9 m offerts. Swing boom Non : la seule fleche listee (standard et options) est la Reach boom 5.1 m, aucune fleche a deport. Voltage : la fiche ne donne pas la tension ; 24V DC applique par la regle (> 5000 kg). Capacite max de levage : tableaux ISO 10567 illisibles a l'extraction (colonnes melees), laisse A completer plutot que deviner. La machine a une lame (2,7 m) dans les tableaux de levage."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TM34",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "34",
+    "Nb sections fleche": "A completer",
+    "Voltage": "A completer",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "remorquable, stabilisateurs manuels, options secteur / batterie / essence ou diesel / bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/trailer-mounted/tm34",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/trailer-mounted/tm34",
+    "Note": "https://www.niftylift.com/usa/products/trailer-mounted/tm34"
+   },
+   "remarque": "Categorie deduite (Niftylift ne range pas ses TM en articulee/telescopique ; il les appelle « towable cherry picker », categorie « Trailer Mounted ») : la gamme TM est une nacelle remorquable a fleche a bras articules (bras inferieur + bras superieur), comme la Snorkel TL37J deja classee « Flèche articulée » en BD. Indice : la fiche ne mentionne aucun bras telescopique (contrairement aux TM34T/TM42T/TM50), seulement des essieux telescopiques. Hauteur plateforme publiee : 34ft. Voltage : tension de batterie non publiee (options d'energie mises dans Note). Nb sections telescopiques : aucune mention de telescope, mais pas mis « n/a » faute de preuve ecrite. Remorquable : perimetre a confirmer (note d'entree)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TM34T",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "34",
+    "Nb sections fleche": "A completer",
+    "Voltage": "A completer",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "remorquable, bras supérieur télescopique, stabilisateurs hydrauliques, traction en option, options secteur / batterie / essence ou diesel / bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/trailer-mounted/tm34t",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/trailer-mounted/tm34t",
+    "Note": "https://www.niftylift.com/usa/products/trailer-mounted/tm34t"
+   },
+   "remarque": "Categorie deduite (Niftylift ne range pas ses TM en articulee/telescopique ; il les appelle « towable cherry picker », categorie « Trailer Mounted ») : la gamme TM est une nacelle remorquable a fleche a bras articules (bras inferieur + bras superieur), comme la Snorkel TL37J deja classee « Flèche articulée » en BD. Indice : la fiche dit « telescopic upper boom » : bras articule dont le bras superieur telescope, donc articulee et non telescopique. Hauteur plateforme publiee : 33ft 6in ; convertie en pieds et arrondie a l'entier (demi vers le haut) pour le format BD. Voltage : tension de batterie non publiee (options d'energie mises dans Note). Nombre de sections telescopiques non publie. Remorquable : perimetre a confirmer (note d'entree)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TM40S",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "40",
+    "Nb sections fleche": "A completer",
+    "Voltage": "A completer",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "remorquable, stabilisateurs hydrauliques, options batterie / bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/trailer-mounted/tm40s",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/trailer-mounted/tm40s",
+    "Note": "https://www.niftylift.com/usa/products/trailer-mounted/tm40s"
+   },
+   "remarque": "Categorie deduite (Niftylift ne range pas ses TM en articulee/telescopique ; il les appelle « towable cherry picker », categorie « Trailer Mounted ») : la gamme TM est une nacelle remorquable a fleche a bras articules (bras inferieur + bras superieur), comme la Snorkel TL37J deja classee « Flèche articulée » en BD. Indice faible : aucune mention de bras telescopique ; la fiche ne decrit pas la cinematique de la fleche (deduction la moins solide du lot, a confirmer sur photo). Hauteur plateforme publiee : 40ft. Voltage : tension de batterie non publiee (options d'energie mises dans Note). Remorquable : perimetre a confirmer (note d'entree)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TM42T",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "42",
+    "Nb sections fleche": "A completer",
+    "Voltage": "A completer",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "remorquable, bras supérieur télescopique, stabilisateurs hydrauliques, traction en option, options secteur / batterie / essence ou diesel / bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/trailer-mounted/tm42t",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/trailer-mounted/tm42t",
+    "Note": "https://www.niftylift.com/usa/products/trailer-mounted/tm42t"
+   },
+   "remarque": "Categorie deduite (Niftylift ne range pas ses TM en articulee/telescopique ; il les appelle « towable cherry picker », categorie « Trailer Mounted ») : la gamme TM est une nacelle remorquable a fleche a bras articules (bras inferieur + bras superieur), comme la Snorkel TL37J deja classee « Flèche articulée » en BD. Indices : « telescopic upper boom » et « up-and-over clearance of more than 18ft 4in » (passer par-dessus un obstacle suppose une fleche articulee). Hauteur plateforme publiee : 42ft. Voltage : tension de batterie non publiee (options d'energie mises dans Note). Nombre de sections telescopiques non publie. Remorquable : perimetre a confirmer (note d'entree)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TM50",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "A completer",
+    "Voltage": "A completer",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "remorquable, bras supérieur télescopique, stabilisateurs hydrauliques, traction en option, options secteur / batterie / essence ou diesel / bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/trailer-mounted/tm50",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/trailer-mounted/tm50",
+    "Note": "https://www.niftylift.com/usa/products/trailer-mounted/tm50"
+   },
+   "remarque": "Categorie deduite (Niftylift ne range pas ses TM en articulee/telescopique ; il les appelle « towable cherry picker », categorie « Trailer Mounted ») : la gamme TM est une nacelle remorquable a fleche a bras articules (bras inferieur + bras superieur), comme la Snorkel TL37J deja classee « Flèche articulée » en BD. Indice : « telescopic upper boom » (bras articule a bras superieur telescopique). Hauteur plateforme publiee : 49ft 6in ; convertie en pieds et arrondie a l'entier (demi vers le haut) pour le format BD. Voltage : tension de batterie non publiee (options d'energie mises dans Note). Nombre de sections telescopiques non publie. Remorquable : perimetre a confirmer (note d'entree)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Niftylift",
+   "modele": "TM64",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "63",
+    "Nb sections fleche": "A completer",
+    "Voltage": "A completer",
+    "Nb sections telescopiques": "A completer",
+    "Longueur telescopique": "A completer",
+    "Note": "remorquable, rotation panier 100°, traction de série, stabilisateurs hydrauliques, options diesel / bi-énergie (moteur et secteur)"
+   },
+   "sources": {
+    "Categorie": "https://www.niftylift.com/usa/products/trailer-mounted/tm64",
+    "Hauteur plateforme (pi)": "https://www.niftylift.com/usa/products/trailer-mounted/tm64",
+    "Note": "https://www.niftylift.com/usa/products/trailer-mounted/tm64"
+   },
+   "remarque": "Categorie deduite (Niftylift ne range pas ses TM en articulee/telescopique ; il les appelle « towable cherry picker », categorie « Trailer Mounted ») : la gamme TM est une nacelle remorquable a fleche a bras articules (bras inferieur + bras superieur), comme la Snorkel TL37J deja classee « Flèche articulée » en BD. Indice : la fiche decrit un panier qui monte a la verticale en restant parallele (« move vertically while remaining parallel »), propre au bras articule ; aucune mention de telescope. Hauteur plateforme publiee : 62ft 6in ; convertie en pieds et arrondie a l'entier (demi vers le haut) pour le format BD. Voltage : tension de batterie non publiee (options d'energie mises dans Note). Remorquable : perimetre a confirmer (note d'entree)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Caterpillar",
+   "modele": "416",
+   "specs": {
+    "Puissance moteur": "75 hp / 96 hp",
+    "Profondeur fouille max": "14 ft",
+    "Hauteur chargement": "12.2 ft",
+    "Godet chargeur": "1.25 yd3",
+    "Force cavage": "13 291 lb",
+    "Poids operationnel": "16 532 lb",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-ef9fb-4ff4e",
+    "Profondeur fouille max": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-ef9fb-4ff4e",
+    "Hauteur chargement": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-ef9fb-4ff4e",
+    "Godet chargeur": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-ef9fb-4ff4e",
+    "Force cavage": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-ef9fb-4ff4e",
+    "Poids operationnel": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-ef9fb-4ff4e",
+    "page_concessionnaire": "https://www.westernstatescat.com/new-cat-equipment/backhoe-loaders/416/"
+   },
+   "remarque": "Fiche technique Cat 416 (PDF scene7 de Caterpillar via Western States Cat ; cat.com hors delai). Deux moteurs C3.6 : 75 hp et 96 hp bruts SAE J1995 (nets SAE J1349 : 70 / 85 hp), plage conservee. Profondeur SAE max 4277 mm (14'0\"). Loading Height 3710 mm (12'2\"). Force cavage = Bucket Dig Force stick std 59 119 N (13,291 lbf). Godet GP 0,96 m3 (1.25 yd3) de la config. de reference. Poids estime 7499 kg / 16,532 lb. Hauteur chargement = « Loading Height » de la retro, stick standard, en pieds a 1 decimale pour suivre le format BD (« 10.8 ft ») alors que la consigne dit arrondi a l'entier : a trancher. Poids = « Operating Weight (estimated) » de la config. de reference ; le « maximum » 24,251 lb est la capacite ROPS, pas un poids de machine. Puissance = brute SAE J1995 (le 420 en BD semble en brut)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Caterpillar",
+   "modele": "420 XE",
+   "specs": {
+    "Puissance moteur": "102 hp / 112 hp",
+    "Profondeur fouille max": "14 ft",
+    "Hauteur chargement": "12.2 ft",
+    "Godet chargeur": "1.25 yd3",
+    "Force cavage": "14 431 lb",
+    "Poids operationnel": "17 271 lb",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-635ab-bc58f",
+    "Profondeur fouille max": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-635ab-bc58f",
+    "Hauteur chargement": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-635ab-bc58f",
+    "Godet chargeur": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-635ab-bc58f",
+    "Force cavage": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-635ab-bc58f",
+    "Poids operationnel": "https://s7d2.scene7.com/is/content/Caterpillar/CM20200122-635ab-bc58f",
+    "page_concessionnaire": "https://www.westernstatescat.com/new-cat-equipment/backhoe-loaders/420-xe/"
+   },
+   "remarque": "Fiche technique Cat 420 XE (PDF scene7 via Western States Cat). Deux moteurs C3.6 : 102 hp et 112 hp bruts SAE J1995 (nets 91 / 101 hp). Profondeur SAE max 4278 mm (14'0\"). Loading Height 3709 mm (12'2\"). Bucket Dig Force 64 193 N (14,431 lbf). Godet GP 0,96 m3 (1.25 yd3). Poids estime 7834 kg / 17,271 lb (la page du concessionnaire montre 16279 lb, qui est le poids MINIMUM dans le PDF : j'ai pris le PDF). Le 420 deja en BD (97 hp, 21 000 lb, 12 469 lb) ne concorde pas avec les fiches actuelles : a revoir a part. Hauteur chargement = « Loading Height » de la retro, stick standard, en pieds a 1 decimale pour suivre le format BD (« 10.8 ft ») alors que la consigne dit arrondi a l'entier : a trancher. Poids = « Operating Weight (estimated) » de la config. de reference ; le « maximum » 24,251 lb est la capacite ROPS, pas un poids de machine. Puissance = brute SAE J1995 (le 420 en BD semble en brut)."
+  },
+  {
+   "type": "Retrocaveuse",
+   "fabricant": "Caterpillar",
+   "modele": "428",
+   "specs": {
+    "Puissance moteur": "97 hp",
+    "Profondeur fouille max": "14.1 ft",
+    "Hauteur chargement": "13.1 ft",
+    "Godet chargeur": "1.35 yd3",
+    "Force cavage": "14 263 lb",
+    "Poids operationnel": "20 840 lb",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur": "https://s7d2.scene7.com/is/content/Caterpillar/CM20210215-0302b-edb87",
+    "Profondeur fouille max": "https://s7d2.scene7.com/is/content/Caterpillar/CM20210215-0302b-edb87",
+    "Hauteur chargement": "https://s7d2.scene7.com/is/content/Caterpillar/CM20210215-0302b-edb87",
+    "Godet chargeur": "https://s7d2.scene7.com/is/content/Caterpillar/CM20210215-0302b-edb87",
+    "Force cavage": "https://s7d2.scene7.com/is/content/Caterpillar/CM20210215-0302b-edb87",
+    "Poids operationnel": "https://s7d2.scene7.com/is/content/Caterpillar/CM20210215-0302b-edb87",
+    "page_concessionnaire": "https://www.zieglercat.com/new-equipment/backhoe-loaders/side-shift-backhoe-loaders/428-2/"
+   },
+   "remarque": "Doute de distribution NA leve : Caterpillar publie une fiche « 428 Backhoe Loader (North America) » AEHQ8345-01 (08-2023), lien depuis Ziegler Cat. Retro a deport lateral (side shift), fabriquee a Desford (R.-U.). Version NA : un seul moteur C3.6, 97 hp brut SAE J1995 (86 hp net) ; la page Ziegler affiche aussi 76 hp et 103 hp, issus de la fiche Europe : non retenus. Profondeur SAE max 4298 mm (14'1\") ; max fabricant 4778 mm (15'8\"). Loading Height 3991 mm (13'1\"). Bucket Dig Force 63 447 N (14,263 lbf). Godet MP 1,03 m3 (1.35 yd3). Poids estime 9453 kg / 20,840 lb (config. stick extensible, cabine deluxe, contrepoids 460 kg) ; Ziegler affiche 18232 lb « nominal », absent de la fiche NA, non retenu. Hauteur chargement = « Loading Height » de la retro, stick standard, en pieds a 1 decimale pour suivre le format BD (« 10.8 ft ») alors que la consigne dit arrondi a l'entier : a trancher. Poids = « Operating Weight (estimated) » de la config. de reference ; le « maximum » 24,251 lb est la capacite ROPS, pas un poids de machine. Puissance = brute SAE J1995 (le 420 en BD semble en brut)."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "BX2190",
+   "specs": {
+    "Capacite de levage": "950 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "19 hp",
+    "Poids operationnel": "1 433 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/BX2190",
+    "Puissance moteur": "https://www.kubota.ca/en/products/BX2190",
+    "Poids operationnel": "https://www.kubota.ca/en/products/BX2190"
+   },
+   "remarque": "Valeurs lues dans les donnees de specifications integrees a la page produit kubota.ca (WebFetch ne rend que le titre). Puissance : « Engine gross horsepower » 19.3 HP, arrondie a l'entier. Levage : « Lift capacity - 24\" behind lift point » (section Hydraulic system, attelage 3 points categorie I) 431 kg / 950 lb, lb repris tel quel. Poids : « Weight » 1433 lb publie. Les BX80 en BD sont a 680 lb : le saut a ~900-950 lb sur les BX90 est celui que publie Kubota. Annee modele : annonce Kubota du 29 sept. 2026, disponibilite en concession annoncee debut 2027 selon la presse ; annee a inscrire (2026 ou 2027) a trancher."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "BX2390",
+   "specs": {
+    "Capacite de levage": "892 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "22 hp",
+    "Poids operationnel": "1 477 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/BX2390",
+    "Puissance moteur": "https://www.kubota.ca/en/products/BX2390",
+    "Poids operationnel": "https://www.kubota.ca/en/products/BX2390"
+   },
+   "remarque": "Valeurs lues dans les donnees de specifications integrees a la page produit kubota.ca (WebFetch ne rend que le titre). Puissance : « Engine gross horsepower » 21.6 HP, arrondie a l'entier. Levage : « Lift capacity - 24\" behind lift point » (section Hydraulic system, attelage 3 points categorie I) 405 kg / 892 lb, lb repris tel quel. Poids : « Weight » 1477 lb publie. Les BX80 en BD sont a 680 lb : le saut a ~900-950 lb sur les BX90 est celui que publie Kubota. Annee modele : annonce Kubota du 29 sept. 2026, disponibilite en concession annoncee debut 2027 selon la presse ; annee a inscrire (2026 ou 2027) a trancher."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "BX2390S",
+   "specs": {
+    "Capacite de levage": "905 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "22 hp",
+    "Poids operationnel": "1 607 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/BX2390S",
+    "Puissance moteur": "https://www.kubota.ca/en/products/BX2390S",
+    "Poids operationnel": "https://www.kubota.ca/en/products/BX2390S"
+   },
+   "remarque": "Valeurs lues dans les donnees de specifications integrees a la page produit kubota.ca (WebFetch ne rend que le titre). Puissance : « Engine gross horsepower » 21.6 HP, arrondie a l'entier. Levage : « Lift capacity - 24\" behind lift point » (section Hydraulic system, attelage 3 points categorie I) 407 kg / 905 lb, lb repris tel quel. Poids : « Weight » 1607 lb publie. INCOHERENCE a valider : 407 kg = 897 lb, mais la page affiche 905 lb ; garde 905 lb tel que publie. Attelage 3 points « Category I (Optional) » (TLB). Les BX80 en BD sont a 680 lb : le saut a ~900-950 lb sur les BX90 est celui que publie Kubota. Annee modele : annonce Kubota du 29 sept. 2026, disponibilite en concession annoncee debut 2027 selon la presse ; annee a inscrire (2026 ou 2027) a trancher."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "BX2690",
+   "specs": {
+    "Capacite de levage": "898 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "24 hp",
+    "Poids operationnel": "1 477 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/BX2690",
+    "Puissance moteur": "https://www.kubota.ca/en/products/BX2690",
+    "Poids operationnel": "https://www.kubota.ca/en/products/BX2690"
+   },
+   "remarque": "Valeurs lues dans les donnees de specifications integrees a la page produit kubota.ca (WebFetch ne rend que le titre). Puissance : « Engine gross horsepower » 23.9 HP, arrondie a l'entier. Levage : « Lift capacity - 24\" behind lift point » (section Hydraulic system, attelage 3 points categorie I) 407 kg / 898 lb, lb repris tel quel. Poids : « Weight » 1477 lb publie. Les BX80 en BD sont a 680 lb : le saut a ~900-950 lb sur les BX90 est celui que publie Kubota. Annee modele : annonce Kubota du 29 sept. 2026, disponibilite en concession annoncee debut 2027 selon la presse ; annee a inscrire (2026 ou 2027) a trancher."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "Kubota",
+   "modele": "BX2690S",
+   "specs": {
+    "Capacite de levage": "898 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "24 hp",
+    "Poids operationnel": "1 655 lb"
+   },
+   "sources": {
+    "Capacite de levage": "https://www.kubota.ca/en/products/BX2690S",
+    "Puissance moteur": "https://www.kubota.ca/en/products/BX2690S",
+    "Poids operationnel": "https://www.kubota.ca/en/products/BX2690S"
+   },
+   "remarque": "Valeurs lues dans les donnees de specifications integrees a la page produit kubota.ca (WebFetch ne rend que le titre). Puissance : « Engine gross horsepower » 23.9 HP, arrondie a l'entier. Levage : « Lift capacity - 24\" behind lift point » (section Hydraulic system, attelage 3 points categorie I) 407 kg / 898 lb, lb repris tel quel. Poids : « Weight » 1655 lb publie. Attelage 3 points « Category I (Optional) » (TLB). Les BX80 en BD sont a 680 lb : le saut a ~900-950 lb sur les BX90 est celui que publie Kubota. Annee modele : annonce Kubota du 29 sept. 2026, disponibilite en concession annoncee debut 2027 selon la presse ; annee a inscrire (2026 ou 2027) a trancher."
+  }
+ ]
+}
