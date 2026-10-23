@@ -1,0 +1,488 @@
+{
+ "lot": "s2_grue",
+ "resultats": [
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1100.1",
+   "specs": {
+    "Capacite max": "100 t",
+    "Fleche telescopique": "62 m treillis",
+    "Hauteur max": "60 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "308 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "51 t (32 t supérieur + 19 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1100-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1100-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1100-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1100-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1100-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1100-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (62 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 20.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (230 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US). Attention : la fiche technique US (PDF) donne une config. contrepoids 64 600 lbs tourelle + 33 700 lbs carrosserie, différente du tableau web (32 t + 19 t) ; tableau web retenu."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 11000",
+   "specs": {
+    "Capacite max": "1000 t",
+    "Fleche telescopique": "168 m treillis",
+    "Hauteur max": "220 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "686 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "340 t (250 t supérieur + 90 t carrosserie, + 450 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11000-4407443",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11000-4407443",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11000-4407443",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11000-4407443",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11000-4407443",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11000-4407443"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (168 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (505 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1110",
+   "specs": {
+    "Capacite max": "110 t",
+    "Fleche telescopique": "71 m treillis",
+    "Hauteur max": "106 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "308 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "51 t (34 t supérieur + 17 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1100neu-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1100neu-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1100neu-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1100neu-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1100neu-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1100neu-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (71 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 66.80 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (230 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US). L'URL Liebherr porte « lr1100neu » mais le modèle publié est bien « LR 1110 » (110 t), distinct du LR 1100.1."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1130.1",
+   "specs": {
+    "Capacite max": "137 t",
+    "Fleche telescopique": "80 m treillis",
+    "Hauteur max": "126 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "308 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "72 t (52 t supérieur + 20 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1130-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1130-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1130-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1130-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1130-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1130-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (80 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 78.50 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (230 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1130.1 unplugged",
+   "specs": {
+    "Capacite max": "137 t",
+    "Fleche telescopique": "80 m treillis",
+    "Hauteur max": "126 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "342 hp (moteur électrique)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "72 t (52 t supérieur + 20 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1130unplugged-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1130unplugged-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1130unplugged-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1130unplugged-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1130unplugged-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1130unplugged-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (80 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 78.50 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (255 kW) — moteur électrique à batterie, version « unplugged ». Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 11350",
+   "specs": {
+    "Capacite max": "1350 t",
+    "Fleche telescopique": "150 m treillis",
+    "Hauteur max": "220 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "898 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "370 t (340 t supérieur + 30 t carrosserie, + 600 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11350-4407448",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11350-4407448",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11350-4407448",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11350-4407448",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11350-4407448",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_11350-4407448"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (150 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (660 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1160.1",
+   "specs": {
+    "Capacite max": "160 t",
+    "Fleche telescopique": "87 m treillis",
+    "Hauteur max": "136 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "308 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "82 t (62 t supérieur + 20 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1160-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1160-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1160-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1160-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1160-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1160-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (87 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 83.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (230 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1160.1 unplugged",
+   "specs": {
+    "Capacite max": "160 t",
+    "Fleche telescopique": "87 m treillis",
+    "Hauteur max": "136 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "342 hp (moteur électrique)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "82 t (62 t supérieur + 20 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1160unplugged-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1160unplugged-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1160unplugged-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1160unplugged-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1160unplugged-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1160unplugged-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (87 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 83.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (255 kW) — moteur électrique à batterie, version « unplugged ». Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1200.1",
+   "specs": {
+    "Capacite max": "220 t",
+    "Fleche telescopique": "89 m treillis",
+    "Hauteur max": "148 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "308 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "118 t (82 t supérieur + 36 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1200-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1200-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1200-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1200-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1200-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1200-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (89 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 95.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (230 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1200.1 unplugged",
+   "specs": {
+    "Capacite max": "220 t",
+    "Fleche telescopique": "89 m treillis",
+    "Hauteur max": "148 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "342 hp (moteur électrique)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "118 t (82 t supérieur + 36 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1200unplugged-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1200unplugged-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1200unplugged-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1200unplugged-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1200unplugged-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1200unplugged-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (89 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 95.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (255 kW) — moteur électrique à batterie, version « unplugged ». Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1250.1",
+   "specs": {
+    "Capacite max": "250 t",
+    "Fleche telescopique": "86 m treillis",
+    "Hauteur max": "148 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "308 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "118 t (82 t supérieur + 36 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1250-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1250-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1250-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1250-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1250-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1250-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (86 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 95.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (230 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1250.1 unplugged",
+   "specs": {
+    "Capacite max": "250 t",
+    "Fleche telescopique": "86 m treillis",
+    "Hauteur max": "148 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "342 hp (moteur électrique)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "118 t (82 t supérieur + 36 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr12501unplugged-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr12501unplugged-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr12501unplugged-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr12501unplugged-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr12501unplugged-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr12501unplugged-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (86 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 95.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (255 kW) — moteur électrique à batterie, version « unplugged ». Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 12500-1.0",
+   "specs": {
+    "Capacite max": "2500 t",
+    "Fleche telescopique": "162 m treillis",
+    "Hauteur max": "200 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "1080 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "420 t (320 t supérieur + 100 t carrosserie, + 1400 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_12500_1_0-4407444",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_12500_1_0-4407444",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_12500_1_0-4407444",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_12500_1_0-4407444",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_12500_1_0-4407444",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_12500_1_0-4407444"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (162 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (800 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1300.1 SX",
+   "specs": {
+    "Capacite max": "300 t",
+    "Fleche telescopique": "92 m treillis",
+    "Hauteur max": "169 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "523 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "181 t (124 t supérieur + 57 t carrosserie, + 120 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr1300-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr1300-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr1300-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr1300-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr1300-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr1300-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (92 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 113.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (390 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US). Total publié par Liebherr : 181.00 t (= 124 + 57), cohérent."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1300.2 SX unplugged",
+   "specs": {
+    "Capacite max": "300 t",
+    "Fleche telescopique": "92 m treillis",
+    "Hauteur max": "169 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "587 hp (moteur électrique)",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "181 t (124 t supérieur + 57 t carrosserie, + 120 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr13002sxunplugged-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr13002sxunplugged-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr13002sxunplugged-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr13002sxunplugged-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr13002sxunplugged-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr13002sxunplugged-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (92 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 113.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (438 kW) — moteur électrique à batterie, version « unplugged ». Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US). Total publié par Liebherr : 181.00 t (= 124 + 57), cohérent."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 13000",
+   "specs": {
+    "Capacite max": "3000 t",
+    "Fleche telescopique": "144 m treillis",
+    "Hauteur max": "236 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "1360 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "900 t (750 t supérieur + 150 t carrosserie, + 1500 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_13000-4407449",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_13000-4407449",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_13000-4407449",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_13000-4407449",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_13000-4407449",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_13000-4407449"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (144 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (1000 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1400.1 SX",
+   "specs": {
+    "Capacite max": "400 t",
+    "Fleche telescopique": "95 m treillis",
+    "Hauteur max": "173 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "612 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "202 t (150 t supérieur + 52 t carrosserie)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/p/lr14001sx-4407440",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/p/lr14001sx-4407440",
+    "Hauteur max": "https://www.liebherr.com/en-us/p/lr14001sx-4407440",
+    "Essieux": "https://www.liebherr.com/en-us/p/lr14001sx-4407440",
+    "Puissance moteur": "https://www.liebherr.com/en-us/p/lr14001sx-4407440",
+    "Contrepoids max": "https://www.liebherr.com/en-us/p/lr14001sx-4407440"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (95 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 113.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (450 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie). Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1500",
+   "specs": {
+    "Capacite max": "500 t",
+    "Fleche telescopique": "132 m treillis",
+    "Hauteur max": "164 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "449 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "210 t (170 t supérieur + 40 t carrosserie, + 280 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1500-4407442",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1500-4407442",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1500-4407442",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1500-4407442",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1500-4407442",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1500-4407442"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (132 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (330 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1700-1.0",
+   "specs": {
+    "Capacite max": "700 t",
+    "Fleche telescopique": "165 m treillis",
+    "Hauteur max": "196 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "544 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "320 t (230 t supérieur + 90 t carrosserie, + 375 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1-4407446",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1-4407446",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1-4407446",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1-4407446",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1-4407446",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1-4407446"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (165 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 96.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (400 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1700-1.0W",
+   "specs": {
+    "Capacite max": "700 t",
+    "Fleche telescopique": "165 m treillis",
+    "Hauteur max": "198 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "544 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "295 t (230 t supérieur + 65 t carrosserie, + 375 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1w-4407445",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1w-4407445",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1w-4407445",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1w-4407445",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1w-4407445",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1700_1w-4407445"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (165 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD ; fléchette treillis jusqu'à 96.00 m en plus. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (400 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US)."
+  },
+  {
+   "type": "Grue Mobile",
+   "fabricant": "Liebherr",
+   "modele": "LR 1800-1.0",
+   "specs": {
+    "Capacite max": "800 t",
+    "Fleche telescopique": "180 m treillis",
+    "Hauteur max": "202 m",
+    "Essieux": "Chenilles",
+    "Puissance moteur": "619 hp",
+    "Voltage machine (V/type)": "A completer",
+    "Contrepoids max": "320 t (230 t supérieur + 90 t carrosserie, + 400 t lest derrick)"
+   },
+   "sources": {
+    "Capacite max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1800_1_5-4407447",
+    "Fleche telescopique": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1800_1_5-4407447",
+    "Hauteur max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1800_1_5-4407447",
+    "Essieux": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1800_1_5-4407447",
+    "Puissance moteur": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1800_1_5-4407447",
+    "Contrepoids max": "https://www.liebherr.com/en-us/crawler-cranes/lr-crawler-cranes/lr_1800_1_5-4407447"
+   },
+   "remarque": "Grue treillis sur chenilles. Valeurs du tableau « Technical data » de la page Liebherr en-us. Flèche = flèche principale treillis max (180 m), convention « m treillis » des LR comme Link-Belt/Kobelco/Manitowoc en BD. Hauteur = hauteur de levage max. Puissance = valeur impériale publiée (455 kW). Contrepoids = contrepoids de tourelle + lest central (carrosserie), lest derrick indiqué à part. Tension du circuit de bord non publiée (page et fiche technique US). L'URL Liebherr porte « lr_1800_1_5 » mais le titre officiel de la page est bien « LR 1800-1.0 »."
+  }
+ ]
+}

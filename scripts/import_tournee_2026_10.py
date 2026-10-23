@@ -25,6 +25,7 @@ Regles appliquees :
 Usage :
   python scripts/import_tournee_2026_10.py            # simulation + rapport
   python scripts/import_tournee_2026_10.py --write    # ecrit machines.json + override
+  python scripts/import_tournee_2026_10.py --lot lot_2.json [--write]   # lot 2
 """
 import copy, glob, json, os, re, sys, collections
 
@@ -41,6 +42,8 @@ SLUGS = {'Excavatrice': 'excavatrice', 'Pompe a Beton': 'pompe-a-beton', 'Grue M
          'Nacelle': 'nacelle', 'Tracteur': 'tracteur'}   # miroir de js/overrides-loader.js TYPE_SLUGS
 DATA = os.path.join(ROOT, 'scripts', 'data', 'tournee_2026-10')
 WRITE = '--write' in sys.argv
+# --lot lot_2.json : deuxieme lot (decisions 2, 3 et 4 de Jacquot, 2026-10-23)
+LOT = sys.argv[sys.argv.index('--lot') + 1] if '--lot' in sys.argv else 'lot_A.json'
 AC = 'A completer'
 
 # Retenus hors import (passe de specs du 2026-10-23) : (type, fabricant, modele) ou (type, fabricant, None)
@@ -66,6 +69,15 @@ RETENUS = {
     ('Tracteur', 'Kubota', 'B2401N'): 'classee configuration de la B2401 a l import tracteur',
     ('Tracteur', 'Kubota', 'LX3520N'): 'classee configuration de la LX3520 a l import tracteur',
 }
+# Lot 2 : nacelles remorquables dont la categorie n'est pas ECRITE par le fabricant (lue
+# sur un dessin ou une photo) -> retenues comme Niftylift ; « articulee » ajoute ~1 190 $.
+for _f, _m in [('Genie', 'TZ-34/20'), ('Haulotte', '3522 A'), ('Haulotte', '3632 T'), ('Haulotte', '4527 A'),
+               ('Haulotte', '5533 A'), ('Haulotte', '6543 A'), ('JLG', 'ET350'), ('JLG', 'ET500J'),
+               ('JLG', 'T350'), ('JLG', 'T500J')]:
+    RETENUS[('Nacelle', _f, _m)] = 'remorquable : categorie lue sur dessin/photo, non ecrite par le fabricant'
+RETENUS[('Loader', 'Komatsu', 'WA1200-6')] = 'discontinuee, annees de vente NA non publiees'
+RETENUS[('Pompe a Beton', 'Alliance', '43-5 Meter')] = 'probablement la 42-5 Meter deja en BD (renommee)'
+
 MERLO_HORS_NA = {'MF44.7', 'P30.10', 'P30.7', 'P40.14', 'ROTO50.16', 'ROTO60.22', 'ROTO60.27'}
 for _m in MERLO_HORS_NA:
     RETENUS[('Telehandler', 'Merlo', _m)] = 'source = site Merlo Norvege, absent du site Merlo USA'
@@ -77,6 +89,13 @@ OVERRIDE_0004 = {('Develon (Doosan)', 'DX63-7')}   # gamme mini Develon jusqu'a 
 # Marques presque vides dans ce type (1-2 modeles) mais qui vendent bien la gamme : on cree
 # les annees manquantes (meme exception que Yanmar a l'import du 2026-08-05).
 ANNEES_CREEES = {('Loader', 'JCB'), ('Loader', 'New Holland')}
+
+# Hitachi -7H (decision 4 : modele distinct du -7, on garde les deux) : le kit de la jumelle
+# -7 a deja ete ajuste a la main (ZX210LC-7 : drain 0009 = na ; ZX490LC-7 : support Z01A-0279
+# obligatoire). La -7H recoit l'override de sa jumelle, annee par annee.
+def jumelle_7(fab, mod):
+    return mod[:-1] if fab == 'Hitachi' and mod.endswith('-7H') else None
+
 
 META = {   # cles techniques d'une nouvelle entree, par type (valeurs majoritaires en BD)
     'Excavatrice': {'_source_bom': 'Defaut', '_note_tech_texte': '', '_note_tech_auteur': '',
@@ -107,7 +126,7 @@ def cles_du_type(db, t):
 
 def specs_relevees():
     out = {}
-    for f in glob.glob(os.path.join(DATA, 'specs', 'out_s_*.json')):
+    for f in glob.glob(os.path.join(DATA, 'specs', 'out_s*.json')):
         for r in json.load(open(f, encoding='utf-8'))['resultats']:
             out[(r['type'], r['fabricant'], r['modele'])] = r
     return out
@@ -116,7 +135,7 @@ def specs_relevees():
 def main():
     db = json.load(open(MJ, encoding='utf-8'))
     ovs = {t: json.load(open(os.path.join(OV_DIR, sl + '.json'), encoding='utf-8')) for t, sl in SLUGS.items()}
-    lot = json.load(open(os.path.join(DATA, 'lot_A.json'), encoding='utf-8'))
+    lot = json.load(open(os.path.join(DATA, LOT), encoding='utf-8'))
     specs = specs_relevees()
     pts = ex_imp.db_weight_points(db['Excavatrice'])
     keys = {t: cles_du_type(db, t) for t in db if not t.startswith('_')}
@@ -170,14 +189,19 @@ def main():
             e['_harnais'] = ex_imp.harnais_pour(fab, mod)
         e.update(META.get(t, META_DEFAUT))
         ovn = {'_bom': {'0004': 'r'}} if (t == 'Excavatrice' and (fab, mod) in OVERRIDE_0004) else None
+        if t == 'Excavatrice' and jumelle_7(fab, mod):
+            for a in annees:   # un override par annee : on decoupe pour garder l'annee de la jumelle
+                oj = ovs[t][t].get(fab, {}).get(a, {}).get(jumelle_7(fab, mod))
+                plan.append((t, fab, mod, [a], e, copy.deepcopy(oj) if oj else None))
+            continue
         plan.append((t, fab, mod, annees, e, ovn))
 
     plan = [p for p in plan if p[3]]
     n_ent = sum(len(p[3]) for p in plan)
-    print('=== IMPORT TOURNEE 2026-10 (%s) ===' % ('ECRITURE' if WRITE else 'SIMULATION'))
-    print('lot A : %d | a importer : %d modeles, %d entrees annee-modele | retenus : %d | collisions : %d'
-          % (len(lot), len(plan), n_ent, len(retenus), len(collisions)))
-    c = collections.Counter(p[0] for p in plan)
+    print('=== IMPORT TOURNEE 2026-10 — %s (%s) ===' % (LOT, 'ECRITURE' if WRITE else 'SIMULATION'))
+    print('lot : %d | a importer : %d modeles, %d entrees annee-modele | retenus : %d | collisions : %d'
+          % (len(lot), len({(q[0], q[1], q[2]) for q in plan}), n_ent, len(retenus), len(collisions)))
+    c = collections.Counter(p[0] for p in {(q[0], q[1], q[2]): q for q in plan}.values())
     for t in sorted(c):
         print('  %-28s %3d modeles  %4d entrees' % (t, c[t], sum(len(p[3]) for p in plan if p[0] == t)))
     for lab, L in (('RETENUS', retenus), ('COLLISIONS', collisions), ('SANS SPECS RELEVEES', sans_specs),

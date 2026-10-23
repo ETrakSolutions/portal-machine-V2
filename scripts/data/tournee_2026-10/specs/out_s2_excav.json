@@ -1,0 +1,1035 @@
+{
+ "lot": "s2_excav",
+ "resultats": [
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "EX1200-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "567 kW / 760 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "9.0 m / 29'06\"",
+    "Longueur de stick (m / pi)": "3.6 m / 11'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "115000-117000 kg / 253532-257951 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex1200-7b/Hitachi-EX1200-Mining-Excavator-Brochure.pdf",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex1200-7b/Hitachi-EX1200-Mining-Excavator-Brochure.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex1200-7b/Hitachi-EX1200-Mining-Excavator-Brochure.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex1200-7b/Hitachi-EX1200-Mining-Excavator-Brochure.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex1200-7b/Hitachi-EX1200-Mining-Excavator-Brochure.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex1200-7b/Hitachi-EX1200-Mining-Excavator-Brochure.pdf",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/content/hitachicm/us/en/products/excavators/mining/jcr:content/root/containercomponent/productlisting.json"
+   },
+   "remarque": "Nom exact confirmé : « EX1200-7 » = code modèle officiel (version FCO, Fuel Consumption Optimization) dans la brochure Hitachi KS-EN408Q ; la liste US affiche EX1200-7-FCO et EX1200-7B-T4F (Tier 4 Final, code EX1200-7B). Poids = rétro (backhoe) FCO 115 000 kg - T4F 117 000 kg ; pelle frontale 118 000-120 000 kg ; BE-front 117 000-119 000 kg. Rétro : flèche 9,0 m + bras 3,6 m (BE : 7,55 m + 3,4 m). Puissance = Cummins QSK23 ISO 14396 (brute), identique FCO/T4F. Tension non publiée (seule une prise 12 V en cabine) -> 24V DC par défaut, à confirmer. Classe minière."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "EX2000-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "746 kW / 1000 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "8.3 m / 27'03\"",
+    "Longueur de stick (m / pi)": "3.6 m / 11'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "193000-195000 kg / 425492-429901 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2000-7b/Hitachi-EX2000-Mining-Excavator-Brochure.pdf",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2000-7b/Hitachi-EX2000-Mining-Excavator-Brochure.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2000-7b/Hitachi-EX2000-Mining-Excavator-Brochure.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2000-7b/Hitachi-EX2000-Mining-Excavator-Brochure.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2000-7b/Hitachi-EX2000-Mining-Excavator-Brochure.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2000-7b/Hitachi-EX2000-Mining-Excavator-Brochure.pdf",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/content/hitachicm/us/en/products/excavators/mining/jcr:content/root/containercomponent/productlisting.json"
+   },
+   "remarque": "Nom exact confirmé : « EX2000-7 » = code modèle FCO (brochure) ; liste US : EX2000-7-FCO, EX2000-7B-T4F et EX2000-7E-ELEC (électrique, 610 kW, rétro 191 000 kg). Poids = rétro FCO 193 000 - T4F 195 000 kg ; pelle 192 000-194 000 kg. Flèche/bras = BE-boom 8,3 m / BE-arm 3,6 m (rétro). Puissance brute ISO 14396 Cummins. La fiche web EX2000-7-FCO affiche « 1000 HP (764 kW) » : coquille, la brochure dit 746 kW. Tension non publiée -> 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "EX2600-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "1119 kW / 1500 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "256000-257000 kg / 564383-566588 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2600-7b/Hitachi-EX2600-Mining-Excavator-Brochure.pdf",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2600-7b/Hitachi-EX2600-Mining-Excavator-Brochure.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2600-7b/Hitachi-EX2600-Mining-Excavator-Brochure.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex2600-7b/Hitachi-EX2600-Mining-Excavator-Brochure.pdf",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/content/hitachicm/us/en/products/excavators/mining/jcr:content/root/containercomponent/productlisting.json"
+   },
+   "remarque": "Nom exact confirmé : « EX2600-7 » = code modèle FCO (brochure) ; liste US : EX2600-7-FCO, EX2600-7B-T4F, EX2600-7E-ELEC (860 kW). Poids = rétro Cummins FCO 256 000 - T4F 257 000 kg (option moteur MTU 1 150 kW : rétro 258 000-259 000 kg ; pelle 258 000-261 000 kg). Longueurs flèche/bras non publiées dans la brochure ni sur la fiche web. Tension non publiée -> 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "EX3600-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "1450 kW / 1944 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "9.6 m / 31'06\"",
+    "Longueur de stick (m / pi)": "4.5 m / 14'09\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "366000-370000 kg / 806892-815710 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex3600-7b/Hitachi-EX3600-Mining-Excavator-Brochure.pdf",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex3600-7b/Hitachi-EX3600-Mining-Excavator-Brochure.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex3600-7b/Hitachi-EX3600-Mining-Excavator-Brochure.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex3600-7b/Hitachi-EX3600-Mining-Excavator-Brochure.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex3600-7b/Hitachi-EX3600-Mining-Excavator-Brochure.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex3600-7b/Hitachi-EX3600-Mining-Excavator-Brochure.pdf",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/content/hitachicm/us/en/products/excavators/mining/jcr:content/root/containercomponent/productlisting.json"
+   },
+   "remarque": "Nom exact confirmé : « EX3600-7 » = modèle FCO (brochure) ; liste US : EX3600-7-FCO, EX3600-7B-T4F, EX3600-7E-ELEC (1 200 kW). Poids = rétro Cummins FCO 366 000 - T4F 370 000 kg (MTU : 367 000 kg). BE-boom 9,6 m / BE-arm 4,5 m. Puissance brute ISO 14396 (option MTU T4F 1 500 kW / 2 010 HP). Tension non publiée -> 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "EX5600-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "2 x 1119 kW / 2 x 1500 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "545000-549000 kg / 1201519-1210338 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex5600-7b/Hitachi-EX5600-Mining-Excavator-Brochure.pdf",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex5600-7b/Hitachi-EX5600-Mining-Excavator-Brochure.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex5600-7b/Hitachi-EX5600-Mining-Excavator-Brochure.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex5600-7b/Hitachi-EX5600-Mining-Excavator-Brochure.pdf",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/content/hitachicm/us/en/products/excavators/mining/jcr:content/root/containercomponent/productlisting.json"
+   },
+   "remarque": "Nom exact confirmé : « EX5600-7 » = modèle FCO (brochure) ; liste US : EX5600-7-FCO, EX5600-7B-T4F, EX5600-7E-ELEC (2 x 860 kW). Bimoteur. Poids = rétro Cummins FCO 545 000 - T4F 549 000 kg (MTU 553 000 kg ; pelle 541 000-544 000 kg). Longueurs flèche/bras non publiées. Tension non publiée -> 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "EX8000-7",
+   "specs": {
+    "Puissance moteur (kW / HP)": "2 x 1450 kW / 2 x 1944 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "11.5 m / 37'09\"",
+    "Longueur de stick (m / pi)": "5.8 m / 19'00\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "839000-842000 kg / 1849678-1856292 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex8000-7b/Hitachi-EX8000-Mining-Excavator-Brochure.pdf",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex8000-7b/Hitachi-EX8000-Mining-Excavator-Brochure.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex8000-7b/Hitachi-EX8000-Mining-Excavator-Brochure.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex8000-7b/Hitachi-EX8000-Mining-Excavator-Brochure.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex8000-7b/Hitachi-EX8000-Mining-Excavator-Brochure.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/cf/products/excavators/mining/ex8000-7b/Hitachi-EX8000-Mining-Excavator-Brochure.pdf",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/content/hitachicm/us/en/products/excavators/mining/jcr:content/root/containercomponent/productlisting.json"
+   },
+   "remarque": "Nom exact confirmé : « EX8000-7 » = modèle FCO (brochure) ; liste US : EX8000-7-FCO, EX8000-7B-T4F, EX8000-7E-ELEC (2 x 1 200 kW). Bimoteur. Poids = rétro Cummins FCO 839 000 - T4F 842 000 kg (pelle 827 000-830 000 kg). BE-boom 11,5 m / BE-arm 5,8 m. Tension non publiée -> 24V DC par défaut."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC1250SP-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "565 kW / 758 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.8 m / 25'07\"",
+    "Longueur de stick (m / pi)": "3.4 m / 11'02\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "118164-120864 kg / 259960-265900 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc1250sp-11"
+   },
+   "remarque": "Puissance nette ISO 9249 / SAE J1349. Poids = valeurs publiées de la page (patins 700 mm triple / 1 000 mm double) ; incohérence interne Komatsu : 259 960 lb = 117 916 kg, mais la ligne métrique dit 118 164 kg. Config. du poids : flèche 7,8 m, bras 3,4 m. Alternateur 24 V. Aucune flèche à déport."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC2000-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "780 kW / 1046 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "8.7 m / 28'07\"",
+    "Longueur de stick (m / pi)": "3.9 m / 12'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "201930-207258 kg / 445179-456926 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc2000-11"
+   },
+   "remarque": "Classe minière, rétro (backhoe). Puissance nette ISO 9249 / SAE J1349 (brute 794 kW). Config. du poids : flèche 8,7 m, bras 3,9 m. Alternateurs 24 V. Aucune flèche à déport."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC3000-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "940 kW / 1260 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "8.6 m / 28'03\"",
+    "Longueur de stick (m / pi)": "4.0 m / 13'01\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "250000-261000 kg / 551156-575407 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc3000-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc3000-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc3000-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/en-pc3000-11sp01-excavator.pdf",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/en-pc3000-11sp01-excavator.pdf",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc3000-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc3000-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc3000-11"
+   },
+   "remarque": "Classe minière. Puissance « rated power per engine » (norme non précisée) ; version électrique 900 kW. Poids = plage d'en-tête de la page en tonnes métriques (250-261 mt), lbs convertis ; fiche : pelle 250 t, rétro 252 t. Flèche/bras = équipement rétro de la fiche (pelle : 6,0 m / 4,3 m). Système 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC4000-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "1400 kW / 1875 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "9.75 m / 32'00\"",
+    "Longueur de stick (m / pi)": "4.5 m / 14'09\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "393000-409000 kg / 866417-901691 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc4000-11"
+   },
+   "remarque": "Classe minière. Puissance « rated power per engine ». Poids = plage d'en-tête (393-409 mt), lbs convertis ; la page étiquette « backhoe » des poids pris avec flèche 7,15 m / bras 4,9 m (config. pelle) : 404-409 t. Flèche/bras = équipement rétro de la page (9,75 m / 4,5 m). Système 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC5500-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "2 x 940 kW / 2 x 1260 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "11.0 m / 36'01\"",
+    "Longueur de stick (m / pi)": "5.1 m / 16'09\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "533000-552000 kg / 1175064-1216952 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc5500-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc5500-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc5500-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/en-pc5500-11sp01-0721-v5.pdf",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/en-pc5500-11sp01-0721-v5.pdf",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc5500-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc5500-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc5500-11"
+   },
+   "remarque": "Bimoteur, classe minière. Poids = plage d'en-tête (533-552 mt), lbs convertis (les lbs de la fiche sont incohérents). Flèche/bras = rétro de la fiche (pelle 7,6 m / 5,6 m). Système 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC7000-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "2 x 1250 kW / 2 x 1675 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "11.0 m / 36'01\"",
+    "Longueur de stick (m / pi)": "5.1 m / 16'09\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "678000-699000 kg / 1494734-1541031 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc7000-11"
+   },
+   "remarque": "Bimoteur, classe minière. Poids = plage d'en-tête (678-699 mt), lbs convertis. Flèche/bras = rétro listé sur la page (11,0 m / 5,1 m ; 36'1\" / 16'9\") — mêmes valeurs que le PC5500, à vérifier. Système 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC8000-11",
+   "specs": {
+    "Puissance moteur (kW / HP)": "2 x 1500 kW / 2 x 2010 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "11.5 m / 37'09\"",
+    "Longueur de stick (m / pi)": "5.5 m / 18'01\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "752000-773000 kg / 1657876-1704173 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc8000-11",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc8000-11",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc8000-11",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/en-pc8000-11sp01-excavator.pdf",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/en-pc8000-11sp01-excavator.pdf",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc8000-11",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc8000-11",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc8000-11"
+   },
+   "remarque": "Bimoteur, classe minière. Poids = plage d'en-tête de la page (752-773 mt), lbs convertis ; la fiche donne 768-790 t (écart non expliqué). Flèche/bras = rétro de la fiche (11,5 m / 5,5 m ; pieds convertis). Système 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Komatsu",
+   "modele": "PC9000-12",
+   "specs": {
+    "Puissance moteur (kW / HP)": "2 x 1678 kW / 2 x 2250 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "11.7 m / 38'05\"",
+    "Longueur de stick (m / pi)": "5.6 m / 18'04\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "884000-896000 kg / 1948886-1975342 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc9000-12",
+    "Type de traction": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc9000-12",
+    "Type de boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc9000-12",
+    "Longueur de fleche (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/PC9000_%20SP-0426-V1.pdf",
+    "Longueur de stick (m / pi)": "https://www.komatsu.com/content/dam/komatsu/sales-and-marketing-documents/spec-sheet/excavators/PC9000_%20SP-0426-V1.pdf",
+    "Swing boom": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc9000-12",
+    "Voltage machine (V/type)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc9000-12",
+    "Poids operationnel (kg / lbs)": "https://www.komatsu.com/en-us/products/equipment/excavators/crawler-excavators/pc9000-12"
+   },
+   "remarque": "Bimoteur, classe minière (génération -12). Puissance nette = brute 1 678 kW par moteur. Poids = plage d'en-tête (884-896 t), lbs convertis ; la fiche donne 884-909 t selon config. Flèche/bras = rétro de la fiche (11,7 m / 5,6 m ; pelle 8,3 m / 5,85 m). Système 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 930 Tunnel Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "129 kW / 175 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "3.00 m / 9'10\"",
+    "Longueur de stick (m / pi)": "3.20 m / 10'6\"",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "33700-34550 kg / 74296-76170 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/655809-4342673",
+    "Type de traction": "https://assets-cdn.liebherr.com/versions/a88a931f-5377-4187-827a-f7c68a63189d/original/",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/a88a931f-5377-4187-827a-f7c68a63189d/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/a88a931f-5377-4187-827a-f7c68a63189d/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/a88a931f-5377-4187-827a-f7c68a63189d/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/a88a931f-5377-4187-827a-f7c68a63189d/original/",
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/655809-4342673"
+   },
+   "remarque": "Génération 6 (fiche R930Tunnel-StageV-Tier4Final-EN-US-PI-2023-09). Flèche tunnel spéciale 3,00 m + bras 3,20 m (config. du poids) ; option 3,30 m + bras 4,20 m. Swing boom A completer : la flèche est montée sur un berceau basculant « 2 x 45° tilting bear » (inclinaison latérale de tout l'équipement), sans offset/déport nommé — à trancher. Lame de série. Puissance ISO 9249 (SAE 129 kW / 173 HP). 24 V. Hauteur de tunnel 4,75-7,50 m."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 950 Tunnel Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "150-190 kW / 204-258 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "3.50 m / 11'6\"",
+    "Longueur de stick (m / pi)": "4.50 m / 14'9\"",
+    "Swing boom": "A completer",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "43200-45300 kg / 95240-99869 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/69409-4342673",
+    "Type de traction": "https://assets-cdn.liebherr.com/versions/fcb5158a-2084-4a47-9428-477a39baba06/original/",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/fcb5158a-2084-4a47-9428-477a39baba06/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/fcb5158a-2084-4a47-9428-477a39baba06/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/fcb5158a-2084-4a47-9428-477a39baba06/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/fcb5158a-2084-4a47-9428-477a39baba06/original/",
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/69409-4342673"
+   },
+   "remarque": "Fiche R950Tunnel-StageV-Tier4Final-EN-US-PI-2022-11 : moteur de base 150 kW / 204 HP ISO 9249, option 190 kW / 258 HP (application tête de fraisage) ; la page US n'affiche que 190 kW / 258 HP -> plage publiée. Flèche tunnel 3,50 m + bras 4,50 m. Swing boom A completer : berceau basculant « 2 x 45° tilting bear », pas d'offset nommé. 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 992 E Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "400 kW / 544 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.20 m / 23'7\"",
+    "Longueur de stick (m / pi)": "2.90 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "90550-97100 kg / 199629-214069 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/652820-4342673",
+    "Type de traction": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/652820-4342673"
+   },
+   "remarque": "Nom officiel : « R 992 E Litronic » (génération 6, fiche R992-E-R998SME-E-G6-EN-PI-2025-12). Moteur électrique 400 kW alimenté en 6 000 V / 50 Hz par câble ; circuit auxiliaire 24 V -> 24V DC (type courant du 24 V non précisé). Flèche mono 7,20 m + bras 2,90 m (config. du poids ; aussi 8,60 m et 10,50 m) ; existe en pelle frontale."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 992 Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "420 kW / 571 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.20 m / 23'7\"",
+    "Longueur de stick (m / pi)": "2.90 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "85800-96500 kg / 189157-212746 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/652622-4342673",
+    "Type de traction": "https://assets-cdn.liebherr.com/versions/9f22df18-1098-40b9-aee1-8e0fd369bf78/original/",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/9f22df18-1098-40b9-aee1-8e0fd369bf78/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/9f22df18-1098-40b9-aee1-8e0fd369bf78/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/9f22df18-1098-40b9-aee1-8e0fd369bf78/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/9f22df18-1098-40b9-aee1-8e0fd369bf78/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/9f22df18-1098-40b9-aee1-8e0fd369bf78/original/",
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/652622-4342673"
+   },
+   "remarque": "Génération 6.2 (fiche R992-Tier4Final-US-PI-2022-11). Rétro : flèches mono 7,20 / 8,60 / 10,50 m, bras 2,90 à 5,80 m ; 7,20 m + 2,90 m = config. du poids. Poids = plage de la page US (rétro 96 500 kg / 212 750 lb ; pelle 93 300 kg). Puissance ISO 9249 (SAE 420 kW / 563 HP). 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Liebherr",
+   "modele": "R 998 SME E Litronic",
+   "specs": {
+    "Puissance moteur (kW / HP)": "400 kW / 544 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.20 m / 23'7\"",
+    "Longueur de stick (m / pi)": "2.90 m / 9'6\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "100450-104200 kg / 221454-229722 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.liebherr.com/en-us/p/652821-4342673",
+    "Type de traction": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Type de boom": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Longueur de fleche (m / pi)": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Longueur de stick (m / pi)": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Swing boom": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Voltage machine (V/type)": "https://assets-cdn.liebherr.com/versions/1ba73620-b4ad-45d7-9ad5-47080186968a/original/",
+    "Poids operationnel (kg / lbs)": "https://www.liebherr.com/en-us/p/652821-4342673"
+   },
+   "remarque": "Nom officiel : « R 998 SME E Litronic » (génération 6, fiche commune avec le R 992 E). Électrique 400 kW, alimentation 6 000 V / 50 Hz ; auxiliaire 24 V. Flèche mono SME 7,20 m + bras SME 2,90 m (config. du poids) ; existe en pelle frontale."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC300 Straight Boom",
+   "specs": {
+    "Puissance moteur (kW / HP)": "188 kW / 252 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'0\"",
+    "Longueur de stick (m / pi)": "3.05 m / 10'0\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "33540-34850 kg / 73943-76831 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec300-straight-boom/",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Longueur de fleche (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf"
+   },
+   "remarque": "Guide produit EC300F/EC400F/EC500F Straight Boom (génération F, T4F) : puissance nette ISO 9249 (brute 189 kW / 253 HP = page). Poids = tableau du guide (patins 600-900 mm) ; la page US affiche 31 766-33 304 kg / 70 032-73 423 lbs (écart non expliqué, peut-être génération E). Flèche droite 7,0 m (23'0\") + bras 3,05 m. 24 V. URL d'entrée /united-states/en-us/ en 404 ; page valide volvoce.com/en-us/..."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC300E Straight Boom",
+   "specs": {
+    "Puissance moteur (kW / HP)": "188 kW / 252 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'0\"",
+    "Longueur de stick (m / pi)": "3.05 m / 10'0\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "34327-35658 kg / 75519-78448 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec300e-straight-boom/",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf",
+    "Longueur de fleche (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec380e-straight-boom/brochure-ec300e-ec380e-straight-boom-t4f-en-22-20059878-d.pdf"
+   },
+   "remarque": "Brochure EC300E/EC380E Straight Boom T4F : puissance nette ISO 9249 (brute 189 kW / 253 HP ; la page affiche 256 hp). Poids = tableau de la brochure (EC300EL) ; la page affiche 35 286 kg / 77 792 lbs (une seule config.). Flèche droite 7,0 m + bras HD 3,05 m. 24 V. URL d'entrée en 404 ; page valide volvoce.com/en-us/..."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC400 High Reach",
+   "specs": {
+    "Puissance moteur (kW / HP)": "252 kW / 344 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "A completer",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "47800 kg / 105380 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/en-us/products/excavators/ec400-high-reach/",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec400-high-reach/",
+    "Swing boom": "https://www.volvoce.com/en-us/products/excavators/ec400-high-reach/",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ec400-high-reach/"
+   },
+   "remarque": "Page US seulement (aucune fiche PDF liée) : puissance BRUTE 252 kW / « 344 hp » — 344 correspond à des ch métriques (PS), pas à des HP SAE ; à confirmer. Poids page : 47 800 kg / 105 380 lbs. Équipement démolition multi-pièces interchangeable (Ultra High Reach, flèche droite ou conventionnelle) : type et longueurs de flèche non publiés -> A completer. Outil max 5 900 kg. 24V DC par défaut. Démolition : à décider si modèle distinct de l'EC400 en BD."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC400 Straight Boom",
+   "specs": {
+    "Puissance moteur (kW / HP)": "252 kW / 338 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'0\"",
+    "Longueur de stick (m / pi)": "3.9 m / 12'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "42433-43965 kg / 93549-96926 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec400-straight-boom/",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Longueur de fleche (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf"
+   },
+   "remarque": "Guide produit Straight Boom F : puissance nette ISO 9249 (brute 253 kW / 339 HP = page). Poids = tableau du guide (EC400F SB L) ; la page affiche 41 771-43 326 kg / 92 089-95 517 lbs. Flèche GP droite 7,0 m + bras HD 3,9 m. 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC500 High Reach",
+   "specs": {
+    "Puissance moteur (kW / HP)": "311 kW / 423 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "A completer",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "61300 kg / 135140 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/en-us/products/excavators/ec500-high-reach/",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec500-high-reach/",
+    "Swing boom": "https://www.volvoce.com/en-us/products/excavators/ec500-high-reach/",
+    "Voltage machine (V/type)": "regle par defaut (non publie)",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ec500-high-reach/"
+   },
+   "remarque": "Page US seulement : puissance BRUTE 311 kW / « 423 hp » (423 = ch métriques PS ; 311 kW = 417 HP SAE) — à confirmer. Poids page 61 300 kg / 135 140 lbs. Équipement démolition multi-pièces : type/longueurs non publiés. Outil max 7 300 kg. 24V DC par défaut. À décider si modèle distinct."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC500 Straight Boom",
+   "specs": {
+    "Puissance moteur (kW / HP)": "311 kW / 417 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'0\"",
+    "Longueur de stick (m / pi)": "3.0 m / 9'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "13870 kg / 29950 lbs",
+    "Poids operationnel (kg / lbs)": "48130-52800 kg / 106110-116400 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec500-straight-boom/",
+    "Type de boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Longueur de fleche (m / pi)": "https://www.volvoce.com/en-us/products/excavators/ec500-straight-boom/",
+    "Longueur de stick (m / pi)": "https://www.volvoce.com/en-us/products/excavators/ec500-straight-boom/",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/crawler-excavators/ec300-straight-boom/product-guide-ec300-ec400-ec500-straight-boom-t4f-en-22-20064672-b.pdf",
+    "Capacite max de levage (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ec500-straight-boom/",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ec500-straight-boom/"
+   },
+   "remarque": "Page US : poids 48 130-52 800 kg / 106 110-116 400 lbs pour la config. flèche 7,0 m (23'0\") + bras 3,0 m (9'10\") ; levage = « along undercarriage » 13 870 kg / 29 950 lbs à 4,5 m / 6 m (page). Puissance nette ISO 9249 du guide (brute 312 kW / 418 HP = page). Le guide produit ne présente que l'EC500F SB LR (train rétractable) : flèche 7,8 m, bras 3,9 m, 55 170-56 680 kg — écart avec la page."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Volvo CE",
+   "modele": "EC750E HR",
+   "specs": {
+    "Puissance moteur (kW / HP)": "392 kW / 526 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "A completer",
+    "Longueur de fleche (m / pi)": "A completer",
+    "Longueur de stick (m / pi)": "A completer",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "103028 kg / 227138 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.volvoce.com/-/media/aprimo/pdf/high-reach-excavators/ec380ehr/specsheet-ec380ehr-ec480ehr-ec750ehr-t4f-en-22-voe2230009468.pdf",
+    "Type de traction": "https://www.volvoce.com/en-us/products/excavators/ec750e-hr/",
+    "Swing boom": "https://www.volvoce.com/-/media/aprimo/pdf/high-reach-excavators/ec380ehr/specsheet-ec380ehr-ec480ehr-ec750ehr-t4f-en-22-voe2230009468.pdf",
+    "Voltage machine (V/type)": "https://www.volvoce.com/-/media/aprimo/pdf/high-reach-excavators/ec380ehr/specsheet-ec380ehr-ec480ehr-ec750ehr-t4f-en-22-voe2230009468.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.volvoce.com/en-us/products/excavators/ec750e-hr/"
+   },
+   "remarque": "Fiche EC380EHR/EC480EHR/EC750EHR : puissance nette ISO 9249 392 kW / 526 HP (brute 393 / 527) ; la page US affiche « 393 kW / 381 hp » (381 hp = EC480EHR, erreur de la page). Poids page 103 028 kg / 227 138 lbs (flèche HR 36 m) ; fiche : 95 875-108 440 kg selon équipement (HR 26 m / 36 m, flèche de creusage). Équipement démolition 3 pièces + flèche de creusage (longueur 8,87 m, bras 4,2 m) : type/longueurs à décider -> A completer. Train hydrauliquement rétractable. 24 V."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX130-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "74.9 kW / 100 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "4.60 m / 15'01\"",
+    "Longueur de stick (m / pi)": "3.01 m / 9'11\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "14000-15400 kg / 30865-33951 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx130-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX130-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX130-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX130-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX130-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX130-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX130-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx130-7h/"
+   },
+   "remarque": "Nom exact « ZX130-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche monobloc 4,60 m, bras unique 3,01 m. Lame en option (poids max de la plage). Fiche datée 09/2026. Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX160LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "98.6 kW / 132 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.10 m / 16'09\"",
+    "Longueur de stick (m / pi)": "3.08 m / 10'01\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "18000 kg / 39683 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx160lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX160LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX160LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX160LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX160LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX160LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX160LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx160lc-7h/"
+   },
+   "remarque": "Nom exact « ZX160LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche monobloc 5,10 m, bras unique 3,08 m. La fiche donne 18 000-18 200 kg selon patins (600/700 mm). Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX210LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.68 m / 18'08\"",
+    "Longueur de stick (m / pi)": "2.91 m / 9'07\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "23100 kg / 50927 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx210lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX210LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX210LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX210LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX210LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX210LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX210LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx210lc-7h/"
+   },
+   "remarque": "Nom exact « ZX210LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche monobloc 5,68 m, bras unique 2,91 m. Fiche : 122,0 kW ; 24 300 kg avec pouce + attache rapide. Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX245USLC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "122 kW / 164 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "5.68 m / 18'08\"",
+    "Longueur de stick (m / pi)": "2.91 m / 9'07\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "25700-26400 kg / 56669-58212 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx245uslc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX245USLC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX245USLC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX245USLC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX245USLC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX245USLC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX245USLC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx245uslc-7h/"
+   },
+   "remarque": "Nom exact « ZX245USLC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Rayon court (US). Flèche monobloc 5,68 m, bras 2,91 m. Fiche : 25 900 kg (28 000 kg avec lame en option ; 27 200 kg avec pouce + attache) — la plage de la page diffère légèrement. Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX250LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "132 kW / 177 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.00 m / 19'08\"",
+    "Longueur de stick (m / pi)": "3.61 m / 11'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "27300 kg / 60186 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx250lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX250LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX250LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX250LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX250LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX250LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX250LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx250lc-7h/"
+   },
+   "remarque": "Nom exact « ZX250LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche monobloc 6,00 m ; bras de série 3,61 m (● à la fiche), option 2,96 m. Poids de la page = config. bras 3,61 m (fiche : 27 200-27 300 kg). Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX300LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "186 kW / 249 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.20 m / 20'04\"",
+    "Longueur de stick (m / pi)": "3.76 m / 12'04\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "31300 kg / 69005 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx300lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX300LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX300LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX300LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX300LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX300LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX300LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx300lc-7h/"
+   },
+   "remarque": "Nom exact « ZX300LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche monobloc 6,20 m ; bras de série 3,76 m, option 3,11 m. Poids = config. bras 3,76 m (fiche : 31 200-31 300 kg). Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX350LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "202 kW / 271 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "6.40 m / 21'00\"",
+    "Longueur de stick (m / pi)": "4.00 m / 13'02\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "36400 kg / 80248 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx350lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX350LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX350LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX350LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX350LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX350LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX350LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx350lc-7h/"
+   },
+   "remarque": "Nom exact « ZX350LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche monobloc 6,40 m (21') ; bras de série 4,00 m (13'2\" à la fiche, gardé tel quel ; 4,00 m converti = 13'1\"), option 3,20 m. Poids = config. bras 4,00 m (fiche : 36 200-36 400 kg). Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX490LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "289 kW / 388 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.0 m / 23'00\"",
+    "Longueur de stick (m / pi)": "3.9 m / 12'10\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "49100-50200 kg / 108026-110672 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx490lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX490LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX490LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX490LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX490LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX490LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX490LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx490lc-7h/"
+   },
+   "remarque": "Nom exact « ZX490LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche H 7,0 m + bras Semilong 3,9 m de série (● à la fiche) ; options flèche BE 6,3 m, bras 2,9 BE / 3,4 H. La fiche donne 49 300 kg (train fixe) à 50 700 kg (train à voie variable) : léger écart avec la page. Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX690LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "347 kW / 465 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "7.8 m / 25'07\"",
+    "Longueur de stick (m / pi)": "4.2 m / 13'09\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "69100-69300 kg / 152340-152780 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx690lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX690LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX690LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX690LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX690LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX690LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX690LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx690lc-7h/"
+   },
+   "remarque": "Nom exact « ZX690LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche H 7,8 m + bras Semilong 4,2 m de série ; option BE 6,8 m / 2,9 m. ÉCART : la fiche 09/2026 donne 344 kW / 461 HP net et 69 000-69 500 kg ; valeurs de la page retenues — à trancher. Levage : tableaux seulement."
+  },
+  {
+   "type": "Excavatrice",
+   "fabricant": "Hitachi",
+   "modele": "ZX890LC-7H",
+   "specs": {
+    "Puissance moteur (kW / HP)": "380 kW / 510 HP",
+    "Type de traction": "Chenille",
+    "Type de boom": "Boom 1 partie",
+    "Longueur de fleche (m / pi)": "8.4 m / 27'07\"",
+    "Longueur de stick (m / pi)": "4.4 m / 14'05\"",
+    "Swing boom": "Non",
+    "Voltage machine (V/type)": "24V DC",
+    "Capacite max de levage (kg / lbs)": "A completer",
+    "Poids operationnel (kg / lbs)": "85700-85800 kg / 188936-189157 lbs",
+    "Classe machine": "",
+    "Test Robin": ""
+   },
+   "sources": {
+    "Puissance moteur (kW / HP)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx890lc-7h/",
+    "Type de traction": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX890LC-7H_Spec%20Sheet.pdf",
+    "Type de boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX890LC-7H_Spec%20Sheet.pdf",
+    "Longueur de fleche (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX890LC-7H_Spec%20Sheet.pdf",
+    "Longueur de stick (m / pi)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX890LC-7H_Spec%20Sheet.pdf",
+    "Swing boom": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX890LC-7H_Spec%20Sheet.pdf",
+    "Voltage machine (V/type)": "https://www.hitachicm.com/content/dam/hitachicm/us/en/products/new-spec-sheets-2026/excavator--7/ZX890LC-7H_Spec%20Sheet.pdf",
+    "Poids operationnel (kg / lbs)": "https://www.hitachicm.com/us/en/products/excavators/medium-large/product.zx890lc-7h/"
+   },
+   "remarque": "Nom exact « ZX890LC-7H » confirmé dans la liste officielle productlisting.json (medium-large, North America) et sur sa fiche produit hitachicm.com/us. Puissance nette ISO 9249 ; batteries 2 x 12 V -> 24V DC. Seule flèche offerte : monobloc (aucune flèche à déport ni 2 pièces à la fiche). Flèche H 8,4 m + bras Semilong 4,4 m de série ; option BE 7,1 m / 2,95 m. ÉCART : la fiche donne 84 600-85 600 kg (186 500-189 000 lb) ; valeurs de la page retenues — à trancher. Levage : tableaux seulement."
+  }
+ ]
+}

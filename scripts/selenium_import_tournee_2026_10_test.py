@@ -47,6 +47,11 @@ TEMOINS = [
     ('Foreuse', 'Soilmec', '2026', 'SF-65', 'Poids operationnel'),
     ('Camion Vacuum', 'Vacall', '2026', None, 'Longueur de boom'),
     ('Retrocaveuse', 'JCB', '2026', '3CX Compact', 'Puissance moteur'),
+    # lot 2
+    ('Grue Mobile', 'Liebherr', '2026', 'LR 1300.1 SX', 'Capacite max'),
+    ('Excavatrice', 'Komatsu', '2026', 'PC4000-11', 'Poids operationnel (kg / lbs)'),
+    ('Excavatrice', 'Liebherr', '2026', 'R 992 E Litronic', 'Poids operationnel (kg / lbs)'),
+    ('Foreuse', 'Bauer', '2026', 'BG 28', 'Poids operationnel'),
 ]
 
 opts = Options()
@@ -151,6 +156,14 @@ try:
     if pz:
         k = oblig('Pompe a Beton', 'DY', '2026', pz)
         check('Pompe 5 sections %s : 0204 + 0205 obligatoires %s' % (pz, k), a('0204', k) and a('0205', k))
+    # Lot 2 : les Hitachi -7H heritent du kit ajuste a la main sur leur jumelle -7
+    if 'ZX210LC-7H' in DB['Excavatrice']['Hitachi'].get('2026', {}):
+        k = oblig('Excavatrice', 'Hitachi', '2026', 'ZX210LC-7H')
+        k7 = oblig('Excavatrice', 'Hitachi', '2026', 'ZX210LC-7')
+        check('ZX210LC-7H : meme kit que ZX210LC-7, sans drain 0009 %s' % k, sorted(k) == sorted(k7) and not a('0009', k))
+        k = oblig('Excavatrice', 'Hitachi', '2026', 'ZX490LC-7H')
+        check('ZX490LC-7H : support Z01A-0279 obligatoire %s' % k, a('Z01A-0279', k))
+        check('ZX490LC-7H : harnais Hitachi -7 Z03B-0121', a('Z03B-0121', k))
     errs = [e for e in dv.get_log('browser') if e['level'] == 'SEVERE']
     check('aucune erreur JS SEVERE en soumission (%d)' % len(errs), not errs)
     for e in errs[:5]:

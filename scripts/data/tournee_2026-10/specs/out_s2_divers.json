@@ -1,0 +1,560 @@
+{
+ "lot": "s2_divers",
+ "resultats": [
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "KAISER Premier",
+   "modele": "TerraVac Xpose800",
+   "specs": {
+    "Longueur de boom": "Aucun boom de serie ; option boom manuel (longueur non publiee)",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "A completer",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.kaiserpremier.com/fileadmin/user_upload/Premier/TerraVac/Kaiser_Produktfolder_TerraVac_USLetter_260512_web.pdf",
+    "page": "https://www.kaiserpremier.com/products/terravac-xpose800-hydrovac-trailer"
+   },
+   "remarque": "Remorque hydrovac (unite seulement). Page : aucun boom dans les specs, 30' suction hose 3\" ; brochure : 'Option: Manual Boom'. Moteur 49 hp diesel, 800 gal debris, 400 gal eau. Rotation et voltage non publies. Pertinence a juger : pas de boom hydraulique de serie."
+  },
+  {
+   "type": "Camion Vacuum",
+   "fabricant": "Vactor",
+   "modele": "TRXX",
+   "specs": {
+    "Longueur de boom": "Jusqu'a 16.25 ft (extensible) ; boom en option",
+    "Nombre de sections de boom": "A completer",
+    "Angle de rotation": "170°",
+    "Voltage": "A completer"
+   },
+   "sources": {
+    "Longueur de boom": "https://www.truvac.com/equipment/trxx",
+    "Angle de rotation": "https://www.truvac.com/equipment/trxx",
+    "options boom": "https://www.truvac.com/hubfs/TRXX%20Spec%20Sheet%208.2026.pdf"
+   },
+   "remarque": "Marque TRUVAC (Federal Signal), pas Vactor : meme question d'inscription que APXX/FLXX/Paradigm. Remorque (unite seulement). Page : 'Boom 170° Rotation, Extendable up to 16.25 ft'. Fiche 8.2026 : 'Optional Boom', 'Strong arm or hydraulically operated boom available'. Deux versions TRXX 500 / TRXX 800 (debris 500 / 800 gal), Kubota diesel 49-64 HP."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Komatsu",
+   "modele": "WA1200-6",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "1 765 hp",
+    "Poids operationnel": "482 000 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://smsequipment.com/en-us/new-equipment/wheel-loaders/komatsu-wa1200-6",
+    "Poids operationnel": "https://smsequipment.com/en-us/new-equipment/wheel-loaders/komatsu-wa1200-6"
+   },
+   "remarque": "SMS Equipment (distributeur Komatsu) : 'Discontinued', 'Net Horsepower 1765 HP' (page ecrit '@180 rpm'), 'Max Operating Weight 482000 lb / 218300 kg' (poids MAX, pas nominal). Charge de basculement non publiee. Annees NA non publiees : liste d'annees vide, a fournir. Chargeuse miniere, pertinence faible."
+  },
+  {
+   "type": "Loader",
+   "fabricant": "Komatsu",
+   "modele": "WA200-8 WH",
+   "specs": {
+    "Capacite de levage": "A completer",
+    "Gage port": "A completer",
+    "Puissance moteur": "126 hp",
+    "Poids operationnel": "25 827 - 26 489 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/mid-size-wheel-loaders/wa200-8-wh",
+    "Poids operationnel": "https://www.komatsu.com/en-us/products/equipment/wheel-loaders/mid-size-wheel-loaders/wa200-8-wh"
+   },
+   "remarque": "Waste Handler, fiche distincte (meme traitement que WA270-8 WH / WA320-8 WH / WA380-8 WH deja en BD). '126 HP @ 2,000 rpm' ; 'Operating weight 25,827 - 26,489 lbs'. Full turn tip load 13,558 - 16,854 lbs ; Capacite de levage laissee vide (convention BD ~50 % du basculement, non publiee par Komatsu, non calculee)."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Genie",
+   "modele": "TZ-34/20",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "34",
+    "Nb sections fleche": "n/d",
+    "Voltage": "24V",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable"
+   },
+   "sources": {
+    "Categorie": "https://www.genielift.com/docs/default-source/product-specifications/trailer-mountain-booms/en/current/tzspec_tz34_20_tz50_en-us_na_lr.pdf?sfvrsn=87505d21_10",
+    "Hauteur plateforme (pi)": "https://www.genielift.com/docs/default-source/product-specifications/trailer-mountain-booms/en/current/tzspec_tz34_20_tz50_en-us_na_lr.pdf?sfvrsn=87505d21_10",
+    "Voltage": "https://www.genielift.com/docs/default-source/product-specifications/trailer-mountain-booms/en/current/tzspec_tz34_20_tz50_en-us_na_lr.pdf?sfvrsn=87505d21_10",
+    "page": "https://www.genielift.com/en/aerial-lifts/trailer-mounted-boom-lifts/tz3420"
+   },
+   "remarque": "Remorquable (trailer-mounted). Fiche Genie 2026 : Platform height 34ft / 10.36m, working 40ft, power '24V (4x6V 225Ah)'. Articulee : le texte dit seulement 'Extension boom' ; classee articulee d'apres le diagramme 'Range of motion TZ-34/20' de la fiche (fleche inferieure articulee + fleche superieure telescopique, up-and-over 16ft 1in). Perimetre e-Trak des remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "3522 A",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "36",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/3522-a",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/3522-a",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/3522-a",
+    "photo gamme": "https://www.haulotte-usa.com/en_US/products/range/articulated-telescopic-trailers"
+   },
+   "remarque": "Remorquable. Page Haulotte USA : Platform height 35 ft 9 in (arrondi 36), working 41 ft 9 in, jib 4 ft 3 in, up and over 19 ft ; 'Power source 4 x 6 V 245 amp-hr', '100% Battery powered' (tension non ecrite -> 'électrique'). La page ne nomme pas le type par modele (gamme 'Articulated & telescopic trailers') : categorie fixee par la photo officielle (fleche articulee) et la presence d'un jib et d'un up-and-over. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "3632 T",
+   "specs": {
+    "Categorie": "Flèche télescopique",
+    "Hauteur plateforme (pi)": "36",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/3632-t",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/3632-t",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/3632-t",
+    "photo gamme": "https://www.haulotte-usa.com/en_US/products/range/articulated-telescopic-trailers"
+   },
+   "remarque": "Remorquable. Page Haulotte USA : Platform height 36 ft, working 43 ft 6 in, outreach 32 ft, turntable 700° (le texte de la page dit par erreur 'working height of 41 feet') ; 'Power source 4 x 6 V 245 amp-hr', '100% Battery powered' (tension non ecrite -> 'électrique'). La page ne nomme pas le type par modele (gamme 'Articulated & telescopic trailers') : categorie fixee par la photo officielle (fleche droite telescopique), 'Up and over height N/A' et 'Jib N/A'. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "4527 A",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "45",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/4527-a",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/4527-a",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/4527-a",
+    "photo gamme": "https://www.haulotte-usa.com/en_US/products/range/articulated-telescopic-trailers"
+   },
+   "remarque": "Remorquable. Page Haulotte USA : Platform height 45 ft, working 51 ft, jib 4 ft 3 in, up and over 20 ft 9 in ; 'Power source 4 x 6 V 245 amp-hr', '100% Battery powered' (tension non ecrite -> 'électrique'). La page ne nomme pas le type par modele (gamme 'Articulated & telescopic trailers') : categorie fixee par la photo officielle (fleche articulee) et la presence d'un jib et d'un up-and-over. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "5533 A",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "55",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/5533-a",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/5533-a",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/5533-a",
+    "photo gamme": "https://www.haulotte-usa.com/en_US/products/range/articulated-telescopic-trailers"
+   },
+   "remarque": "Remorquable. Page Haulotte USA : Platform height 55 ft 3 in (arrondi 55), working 61 ft 3 in, jib 4 ft 3 in, up and over 23 ft 1 in ; 'Power source 4 x 6 V 245 amp-hr', '100% Battery powered' (tension non ecrite -> 'électrique'). La page ne nomme pas le type par modele (gamme 'Articulated & telescopic trailers') : categorie fixee par la photo officielle (fleche articulee) et la presence d'un jib et d'un up-and-over. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Haulotte",
+   "modele": "6543 A",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "65",
+    "Nb sections fleche": "n/d",
+    "Voltage": "électrique",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, jib"
+   },
+   "sources": {
+    "Categorie": "https://www.haulotte-usa.com/en_US/product/6543-a",
+    "Hauteur plateforme (pi)": "https://www.haulotte-usa.com/en_US/product/6543-a",
+    "Voltage": "https://www.haulotte-usa.com/en_US/product/6543-a",
+    "photo gamme": "https://www.haulotte-usa.com/en_US/products/range/articulated-telescopic-trailers"
+   },
+   "remarque": "Remorquable. Page Haulotte USA : Platform height 65 ft, working 71 ft, jib 4 ft 3 in, up and over 24 ft 2 in ; 'Power source 4 x 6 V 245 amp-hr', '100% Battery powered' (tension non ecrite -> 'électrique'). La page ne nomme pas le type par modele (gamme 'Articulated & telescopic trailers') : categorie fixee par la photo officielle (fleche articulee) et la presence d'un jib et d'un up-and-over. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "ET350",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "35",
+    "Nb sections fleche": "n/d",
+    "Voltage": "24V",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, électrique"
+   },
+   "sources": {
+    "Categorie": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148108/-1.pdf",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148108/-1.pdf",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148108/-1.pdf",
+    "page": "https://www.jlg.com/en/equipment/boom-lifts/towable/tow-pro/et350"
+   },
+   "remarque": "Remorquable Tow-Pro. Fiche JLG : Platform Height 34-ft 6-in / 10.5-m (34,5 pi arrondi a 35 ; 34 si la BD tronque) ; 'DC Power 24V DC', batteries 4 x 6V 220 amp-hr. Articulee : fiche 'Telescopic Upper Boom' + photo de la fiche (fleche inferieure articulee) ; JLG ne l'ecrit pas en toutes lettres. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "ET500J",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "n/d",
+    "Voltage": "24V",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, électrique, jib"
+   },
+   "sources": {
+    "Categorie": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/122229/-1.pdf",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/122229/-1.pdf",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/122229/-1.pdf",
+    "page": "https://www.jlg.com/en/equipment/boom-lifts/towable/tow-pro/et500j"
+   },
+   "remarque": "Remorquable Tow-Pro. Fiche JLG : Platform Height 50-ft .5-in / 15.2-m ; 'DC Power 24V DC', batteries 4 x 6V 220 amp-hr, jib 4-ft (la page web reprend par erreur le texte du T500J / T350, la fiche PDF est propre). Articulee : fiche 'Telescopic Upper Boom' + photo de la fiche (fleche inferieure articulee) ; JLG ne l'ecrit pas en toutes lettres. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "T350",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "35",
+    "Nb sections fleche": "n/d",
+    "Voltage": "essence",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable"
+   },
+   "sources": {
+    "Categorie": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148107/-1.pdf",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148107/-1.pdf",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148107/-1.pdf",
+    "page": "https://www.jlg.com/en/equipment/boom-lifts/towable/tow-pro/t350"
+   },
+   "remarque": "Remorquable Tow-Pro. Fiche JLG : Platform Height 34-ft 6-in / 10.5-m (34,5 pi arrondi a 35 ; 34 si la BD tronque) ; moteur essence Honda GX390 11.7 hp + 'DC Power 24V DC'. Articulee : fiche 'Telescopic Upper Boom' + photo de la fiche (fleche inferieure articulee) ; JLG ne l'ecrit pas en toutes lettres. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "JLG",
+   "modele": "T500J",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "50",
+    "Nb sections fleche": "n/d",
+    "Voltage": "essence",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, jib"
+   },
+   "sources": {
+    "Categorie": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148106/-1.pdf",
+    "Hauteur plateforme (pi)": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148106/-1.pdf",
+    "Voltage": "https://dam.jlg.com/DigizuiteCore/LegacyService/api/assetstream/148106/-1.pdf",
+    "page": "https://www.jlg.com/en/equipment/boom-lifts/towable/tow-pro/t500j"
+   },
+   "remarque": "Remorquable Tow-Pro. Fiche JLG : Platform Height 50-ft .5-in / 15.2-m ; moteur essence Honda GX390 11.7 hp + 'DC Power 24V DC', jib 4-ft. Articulee : fiche 'Telescopic Upper Boom' + photo de la fiche (fleche inferieure articulee) ; JLG ne l'ecrit pas en toutes lettres. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "TL37J",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "36",
+    "Nb sections fleche": "n/d",
+    "Voltage": "24V",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable, jib, option bi-énergie"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/tl37j/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/tl37j/",
+    "Voltage": "https://snorkellifts.com/equipment/tl37j/"
+   },
+   "remarque": "Page Snorkel : 'This articulating boom', Max. platform height 35 ft 9 in (arrondi 36), working 41 ft 9 in, 'Power source 24V DC battery', options essence / bi-energy / AC, jib 4 ft 3 in 130°. Perimetre remorquables a confirmer."
+  },
+  {
+   "type": "Nacelle",
+   "fabricant": "Snorkel",
+   "modele": "TL39",
+   "specs": {
+    "Categorie": "Flèche articulée",
+    "Hauteur plateforme (pi)": "38",
+    "Nb sections fleche": "n/d",
+    "Voltage": "24V",
+    "Nb sections telescopiques": "n/d",
+    "Longueur telescopique": "n/d",
+    "Note": "remorquable"
+   },
+   "sources": {
+    "Categorie": "https://snorkellifts.com/equipment/tl39/",
+    "Hauteur plateforme (pi)": "https://snorkellifts.com/equipment/tl39/",
+    "Voltage": "https://snorkellifts.com/equipment/tl39/"
+   },
+   "remarque": "Page Snorkel : 'compact articulating/telescopic trailer boom', 'Articulating / telescopic boom configuration' -> classee 'Flèche articulée' (convention BD des articulees a fleche superieure telescopique, ex. JLG 450AJ) ; a confirmer si la facturation doit la traiter en telescopique. Max. platform height 37 ft 9 in (arrondi 38), working 43 ft 9 in, '24V DC battery', options essence / bi-energy / AC / diesel."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Alliance",
+   "modele": "20-4 Meter",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "ZR-Fold",
+    "Longueur de chaque section": "5.5 m / 3.52 m / 3.54 m / 3.64 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio (Dual Wireless Transmitter System)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 20.0 m, horizontale 16.2 m (JXZR 20-4.10)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Nombre de sections": "https://www.allianceconcretepumps.com/concrete-pumps/20m-4-section-zr",
+    "Type de pliage": "https://www.allianceconcretepumps.com/concrete-pumps/20m-4-section-zr",
+    "Longueur de chaque section": "https://cdn.sanity.io/files/9ki41rwm/production/895f5ac6625eb927e006fbe579d080fa27da5e93.pdf",
+    "Console operateur": "https://cdn.sanity.io/files/9ki41rwm/production/895f5ac6625eb927e006fbe579d080fa27da5e93.pdf",
+    "Type": "https://www.allianceconcretepumps.com/concrete-pumps/20m-4-section-zr"
+   },
+   "remarque": "Alliance (distributeur NA Junjin). Page : '4 Sections', 'ZR Fold', Vertical Height 20 m. Fiche JXZR 20-4.10. Ecart interne : debit 164 m3/h sur la page vs 96 m3/h sur la fiche (sans effet ici). Pompe sur camion (page 'Boom Pumps', options de chassis Mack/Peterbilt/Kenworth...). Rotation, voltage, E-stop et section telescopique non publies (le gabarit BD Alliance porte '360 continu' / '24V DC' sans source : non recopies)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Alliance",
+   "modele": "33-4 Roll Meter",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Roll Fold",
+    "Longueur de chaque section": "8.1 m / 6.7 m / 6.9 m / 6.6 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio (Dual Wireless Transmitter System)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 32.5 m, horizontale 28.5 m (JXLR 33-4.16)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Nombre de sections": "https://www.allianceconcretepumps.com/concrete-pumps/33m-4-section-roll",
+    "Type de pliage": "https://www.allianceconcretepumps.com/concrete-pumps/33m-4-section-roll",
+    "Longueur de chaque section": "https://cdn.sanity.io/files/9ki41rwm/production/82769d981442e12ff208ae803f791749d187d828.pdf",
+    "Console operateur": "https://cdn.sanity.io/files/9ki41rwm/production/82769d981442e12ff208ae803f791749d187d828.pdf",
+    "Type": "https://www.allianceconcretepumps.com/concrete-pumps/33m-4-section-roll"
+   },
+   "remarque": "Alliance (distributeur NA Junjin). Page : '4 Sections', 'R Fold'. Fiche JXLR 33-4.16. Distinct du '33-4 Meter' BD (Z-Fold) : la page vend aussi un 33m 4-SECTION Z. Pompe sur camion (page 'Boom Pumps', options de chassis Mack/Peterbilt/Kenworth...). Rotation, voltage, E-stop et section telescopique non publies (le gabarit BD Alliance porte '360 continu' / '24V DC' sans source : non recopies)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Alliance",
+   "modele": "38-4 Roll Meter",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Roll Fold",
+    "Longueur de chaque section": "8.7 m / 7.89 m / 8.08 m / 8.43 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio (Dual Wireless Transmitter System)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 37.1 m, horizontale 33.1 m (JXLR 38-4.16)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Nombre de sections": "https://www.allianceconcretepumps.com/concrete-pumps/38m-4-section-roll",
+    "Type de pliage": "https://www.allianceconcretepumps.com/concrete-pumps/38m-4-section-roll",
+    "Longueur de chaque section": "https://cdn.sanity.io/files/9ki41rwm/production/1f88b9607d7223c2e3700841043f646cfd44f029.pdf",
+    "Console operateur": "https://cdn.sanity.io/files/9ki41rwm/production/1f88b9607d7223c2e3700841043f646cfd44f029.pdf",
+    "Type": "https://www.allianceconcretepumps.com/concrete-pumps/38m-4-section-roll"
+   },
+   "remarque": "Alliance (distributeur NA Junjin). Page : '4 Sections', 'R Fold'. Fiche JXLR 38-4.16. Distinct du 38Z Meter et du 38-5 Meter BD. Pompe sur camion (page 'Boom Pumps', options de chassis Mack/Peterbilt/Kenworth...). Rotation, voltage, E-stop et section telescopique non publies (le gabarit BD Alliance porte '360 continu' / '24V DC' sans source : non recopies)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Alliance",
+   "modele": "41-4 Roll Meter",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "4",
+    "Type de pliage": "Roll Fold",
+    "Longueur de chaque section": "9.7 m / 8.8 m / 8.9 m / 9.1 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio (Dual Wireless Transmitter System)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 40.5 m, horizontale 36.5 m (JXR 41-4.16)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Nombre de sections": "https://www.allianceconcretepumps.com/concrete-pumps/41m-4-section-roll",
+    "Type de pliage": "https://www.allianceconcretepumps.com/concrete-pumps/41m-4-section-roll",
+    "Longueur de chaque section": "https://cdn.sanity.io/files/9ki41rwm/production/065aaed20b3f6b33febbe2df7b3abcb2e3be4385.pdf",
+    "Console operateur": "https://cdn.sanity.io/files/9ki41rwm/production/065aaed20b3f6b33febbe2df7b3abcb2e3be4385.pdf",
+    "Type": "https://www.allianceconcretepumps.com/concrete-pumps/41m-4-section-roll"
+   },
+   "remarque": "Alliance (distributeur NA Junjin). Page : '4 Sections', 'R Fold'. Fiche JXR 41-4.16. La BD a un '41-5 Meter' (5 sections, Z-Fold) que la page actuelle ne vend plus : modele different, pas un doublon. Pompe sur camion (page 'Boom Pumps', options de chassis Mack/Peterbilt/Kenworth...). Rotation, voltage, E-stop et section telescopique non publies (le gabarit BD Alliance porte '360 continu' / '24V DC' sans source : non recopies)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Alliance",
+   "modele": "43-5 Meter",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "8.4 m / 7.0 m / 6.9 m / 7.9 m / 8.3 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio (Dual Wireless Transmitter System)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 42.5 m, horizontale 38.5 m (JXRZ 43-5.16)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Nombre de sections": "https://www.allianceconcretepumps.com/concrete-pumps/43m-5-section-rz",
+    "Type de pliage": "https://www.allianceconcretepumps.com/concrete-pumps/43m-5-section-rz",
+    "Longueur de chaque section": "https://cdn.sanity.io/files/9ki41rwm/production/225bd5935771bdf3f1e657d76f222b5d1183323a.pdf",
+    "Console operateur": "https://cdn.sanity.io/files/9ki41rwm/production/225bd5935771bdf3f1e657d76f222b5d1183323a.pdf",
+    "Type": "https://www.allianceconcretepumps.com/concrete-pumps/43m-5-section-rz"
+   },
+   "remarque": "Alliance (distributeur NA Junjin). Page : '5 Sections', 'RZ Fold', Vertical Height 42.5 m. Fiche JXRZ 43-5.16. ATTENTION : la BD a deja un '42-5 Meter' RZ-Fold absent de la page actuelle ; 42.5 m de hauteur verticale = probablement le meme appareil renomme 43 m. A trancher avant de creer un doublon. Pompe sur camion (page 'Boom Pumps', options de chassis Mack/Peterbilt/Kenworth...). Rotation, voltage, E-stop et section telescopique non publies (le gabarit BD Alliance porte '360 continu' / '24V DC' sans source : non recopies)."
+  },
+  {
+   "type": "Pompe a Beton",
+   "fabricant": "Alliance",
+   "modele": "61-5 Meter",
+   "specs": {
+    "Type": "Automotrice",
+    "Nombre de sections": "5",
+    "Type de pliage": "RZ-Fold",
+    "Longueur de chaque section": "11.96 m / 9.32 m / 9.89 m / 12.32 m / 12.72 m",
+    "Voltage machine (V/type)": "A completer",
+    "Type de rotation": "A completer",
+    "Console operateur": "Telecommande radio (Dual Wireless Transmitter System)",
+    "E-stop": "A completer",
+    "Notes": "Portée verticale 60.2 m, horizontale 55.4 m (JXRZ 61-5.18)",
+    "Section telescopique": "A completer"
+   },
+   "sources": {
+    "Nombre de sections": "https://www.allianceconcretepumps.com/concrete-pumps/61m-5-section-rz",
+    "Type de pliage": "https://www.allianceconcretepumps.com/concrete-pumps/61m-5-section-rz",
+    "Longueur de chaque section": "https://cdn.sanity.io/files/9ki41rwm/production/5450043ffd7f2841c215bbd53106b190ef9a2057.pdf",
+    "Console operateur": "https://cdn.sanity.io/files/9ki41rwm/production/5450043ffd7f2841c215bbd53106b190ef9a2057.pdf",
+    "Type": "https://www.allianceconcretepumps.com/concrete-pumps/61m-5-section-rz"
+   },
+   "remarque": "Alliance (distributeur NA Junjin). Page : '5 Sections', 'RZ Fold', Vertical Height 60.2 m. Fiche JXRZ 61-5.18. Pompe sur camion (page 'Boom Pumps', options de chassis Mack/Peterbilt/Kenworth...). Rotation, voltage, E-stop et section telescopique non publies (le gabarit BD Alliance porte '360 continu' / '24V DC' sans source : non recopies)."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "ARION 6.160 CMATIC",
+   "specs": {
+    "Capacite de levage": "17 637 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "165 hp",
+    "Poids operationnel": "18 376 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/caas/v1/media/1417662/data/e9370e95bdce3e2edf72a03ba6797d34",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417662/data/e9370e95bdce3e2edf72a03ba6797d34",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417662/data/e9370e95bdce3e2edf72a03ba6797d34",
+    "page": "https://www.claas.com/en-us/agricultural-machinery/tractors/arion-6"
+   },
+   "remarque": "Brochure ARION 6 CMATIC (liee sur la page en-us), tableau p. 26-27 : Max. output (ECE R 120) 121/165 kW/hp (pas de CPM sur ce modele) ; Rear linkage 'Max. lifting capacity at ball ends' 8000 / 17637 kg/lbs ; 'Weight (depending on specification)' 8335 / 18376 kg/lbs (meme valeur pour 6.160 et 6.190)."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "ARION 6.190 CMATIC",
+   "specs": {
+    "Capacite de levage": "17 637 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "185 hp",
+    "Poids operationnel": "18 376 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/caas/v1/media/1417662/data/e9370e95bdce3e2edf72a03ba6797d34",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417662/data/e9370e95bdce3e2edf72a03ba6797d34",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417662/data/e9370e95bdce3e2edf72a03ba6797d34",
+    "page": "https://www.claas.com/en-us/agricultural-machinery/tractors/arion-6"
+   },
+   "remarque": "Brochure : Max. output (ECE R 120) 136/185 kW/hp ; Max. output with CPM 151/205. Puissance = 185 hp, sans la surpuissance CPM (meme convention que l'ARION 660 en BD = 185 hp) ; la page web affiche 205 hp sous 'Max. output ECE R 120' : c'est la valeur CPM. Relevage arriere 8000 / 17637 ; poids 8335 / 18376 (depending on specification)."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 8.240 CMATIC",
+   "specs": {
+    "Capacite de levage": "21 385 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "240 hp",
+    "Poids operationnel": "21 936 - 23 038 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "page": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-8-cmatic"
+   },
+   "remarque": "Brochure AXION 8 (liee sur la page en-us), tableau p. 8 : Max. output (ECE R 120) 240 hp ; Max. output with DYNAMIC POWER 264 hp (valeur affichee sur la page web). Puissance retenue sans surpuissance (meme convention que l'ARION 6.190). 'Max. lifting capacity at rear ball ends' 21 385 lb ; 'Empty weight' 21 936 - 23 038 lb (poids a vide, plage publiee). Remplace la serie AXION 800 (820/840/860/880 restent en BD)."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 8.270 CMATIC",
+   "specs": {
+    "Capacite de levage": "22 487 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "270 hp",
+    "Poids operationnel": "22 377 - 23 480 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "page": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-8-cmatic"
+   },
+   "remarque": "Brochure AXION 8 (liee sur la page en-us), tableau p. 8 : Max. output (ECE R 120) 270 hp ; Max. output with DYNAMIC POWER 291 hp (valeur affichee sur la page web). Puissance retenue sans surpuissance (meme convention que l'ARION 6.190). 'Max. lifting capacity at rear ball ends' 22 487 lb ; 'Empty weight' 22 377 - 23 480 lb (poids a vide, plage publiee). Remplace la serie AXION 800 (820/840/860/880 restent en BD)."
+  },
+  {
+   "type": "Tracteur",
+   "fabricant": "CLAAS",
+   "modele": "AXION 8.290 CMATIC",
+   "specs": {
+    "Capacite de levage": "22 487 lb",
+    "Gage port": "A completer",
+    "Puissance moteur": "290 hp",
+    "Poids operationnel": "22 377 - 23 480 lb"
+   },
+   "sources": {
+    "Puissance moteur": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "Capacite de levage": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "Poids operationnel": "https://www.claas.com/caas/v1/media/1417664/data/0294ff43cf779d1962b5f30313dcf0df",
+    "page": "https://www.claas.com/en-us/agricultural-machinery/tractors/axion-8-cmatic"
+   },
+   "remarque": "Brochure AXION 8 (liee sur la page en-us), tableau p. 8 : Max. output (ECE R 120) 290 hp ; Max. output with DYNAMIC POWER 313 hp (valeur affichee sur la page web). Puissance retenue sans surpuissance (meme convention que l'ARION 6.190). 'Max. lifting capacity at rear ball ends' 22 487 lb ; 'Empty weight' 22 377 - 23 480 lb (poids a vide, plage publiee). Remplace la serie AXION 800 (820/840/860/880 restent en BD)."
+  }
+ ]
+}

@@ -1,0 +1,638 @@
+{
+ "lot": "s2_foreuse",
+ "resultats": [
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 15 H",
+   "specs": {
+    "Diametre forage": "1 500 mm max",
+    "Profondeur max": "44,5 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "22,3 m étendu (BK170/343/3/21)",
+    "Puissance moteur": "249 hp",
+    "Poids operationnel": "50.5 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/1911/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/1911/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/1911/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/1911/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/1911/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-15-h-bt-50",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/1911/download?inline"
+   },
+   "remarque": "Config. retenue : BT 50, vérin de poussée, mât sup. 3,8 m (51.2 t avec mât 6,7 m ; 51.0 t version treuil de poussée, diam. max 1 300 mm). Brochure 07/2026 : 44,5 m / 155 kNm ; la page web affiche 44,0 m / 150 kNm. Moteur CAT C 7.1 186 kW. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 20 H",
+   "specs": {
+    "Diametre forage": "1 300 mm max",
+    "Profondeur max": "40,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "23,4 m étendu (BK200/368/3/21)",
+    "Puissance moteur": "249 / 275 hp",
+    "Poids operationnel": "55.5 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/1914/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/1914/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/1914/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/1914/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/1914/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-20-h-bt-50",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/1914/download?inline"
+   },
+   "remarque": "Config. BT 50 (treuil de poussée). CAT C 7.1 : 186 kW (UN/ECE R96) / 205 kW (EU Stage V). Poids 55.5 t tel qu'illustré avec kelly BK 200/368/3/21. Brochure 04/2024. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 23",
+   "specs": {
+    "Diametre forage": "1 700 mm max",
+    "Profondeur max": "51,4 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (4 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "31,1 m étendu (BK200/368/4/28)",
+    "Puissance moteur": "249 / 319 hp",
+    "Poids operationnel": "73.3 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/6524/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/6524/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/6524/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/6524/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/6524/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-23-bt-65",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/6524/download?inline"
+   },
+   "remarque": "Config. BT 65 (V-kinematics). CAT C 7.1 : 186 kW (UN/ECE R96) / 238 kW (EU Stage V). Poids 73.3 t tel qu'illustré. Brochure 07/2026. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 23 H",
+   "specs": {
+    "Diametre forage": "1 500 mm max",
+    "Profondeur max": "31,0 / 53,7 m (UW 50 / UW 60)",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "20,4 m étendu (BK200/368/3/18)",
+    "Puissance moteur": "249 / 319 hp",
+    "Poids operationnel": "62.2 / 69.7 t (UW 50 / UW 60)",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2057/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2057/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2057/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2057/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2057/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-23-h-bt-65",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/2057/download?inline"
+   },
+   "remarque": "Config. retenue : BT 65 (brochure 07/2026). Existe aussi sur BT 75 (PremiumLine, brochure 4/2018) : 53,2 m, CAT C9/C9.3 280/298 kW, 75.2 t ; la page web BT 75 affiche 310 kW. CAT C 7.1 186 kW (UN/ECE R96) / 238 kW (Stage V). Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 28",
+   "specs": {
+    "Diametre forage": "2 500 mm max",
+    "Profondeur max": "77,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (4 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "18,7 m rétracté (BK250/394/4/64)",
+    "Puissance moteur": "375 hp",
+    "Poids operationnel": "93 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2089/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2089/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2089/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2089/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2089/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-28-bt-70",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/2089/download?inline"
+   },
+   "remarque": "KellyLine (ValueLine) BT 70, brochure 8/2020. Kelly : seule la longueur rétractée (A = 18 715 mm) est publiée. Poids approx. 93 t tel qu'illustré (kelly 4/64) ; le comparatif KellyLine (03/2025) donne 70 t sans train de tiges. CAT C9.3 280 kW (Stage V). Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 30",
+   "specs": {
+    "Diametre forage": "2 500 mm max",
+    "Profondeur max": "87,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3, 4 ou 5 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "A completer",
+    "Puissance moteur": "416 hp",
+    "Poids operationnel": "102 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2091/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2091/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2091/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2091/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2091/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-30-bt-80"
+   },
+   "remarque": "KellyLine (ValueLine) BT 80, brochure 11/2019. Kelly de la config. illustrée illisible dans le PDF. Poids approx. 102 t tel qu'illustré ; le comparatif KellyLine (03/2025) donne 91 t sans train de tiges. CAT C 9.3 310 kW. Ne pas confondre avec le BG 30 H (H-kinematics). Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 30 H",
+   "specs": {
+    "Diametre forage": "2 500 mm max",
+    "Profondeur max": "64,7 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "26,4 m étendu (BK300/419/3/24)",
+    "Puissance moteur": "416 / 456 hp",
+    "Poids operationnel": "83.8 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/6085/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/6085/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/6085/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/6085/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/6085/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-30-h-bt-75",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/6085/download?inline"
+   },
+   "remarque": "Config. retenue : BT 75, version de base (brochure 06/2026) : CAT C 9.3 B 310 kW (UN/ECE R96) / 340 kW (Stage V). ÉCART : la page web BT 75 affiche 405 kW et 65,7 m. Existe aussi sur BT 85 : Volvo TAD 13 345/405 kW, 85.0 t (brochure media 7048). Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 33",
+   "specs": {
+    "Diametre forage": "2 500 mm max",
+    "Profondeur max": "72,4 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "32,4 m étendu (BK300/419/3/30)",
+    "Puissance moteur": "463 / 543 hp",
+    "Poids operationnel": "102.0 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2073/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2073/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2073/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2073/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2073/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-33-bt-85",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/2073/download?inline"
+   },
+   "remarque": "Config. BT 85, version de base, brochure 05/2026. Volvo TAD 13 : 345 kW (UN/ECE R96) / 405 kW (Stage V). Existe aussi une eBG 33 électrique (non demandée). Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 36",
+   "specs": {
+    "Diametre forage": "2 500 mm max",
+    "Profondeur max": "100,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "38,2 m étendu (BK420/470/3/36)",
+    "Puissance moteur": "540 / 581 hp",
+    "Poids operationnel": "114 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2078/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2078/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2078/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2078/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2078/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-36-bs-95",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/2078/download?inline"
+   },
+   "remarque": "Config. retenue : BS 95 (V-kinematics, PremiumLine, brochure 10/2020), selon l'URL d'entrée. CAT C 15 403 - 433 kW. Existe aussi un BG 36 BT 90 KellyLine (Volvo TAD 13 345 kW, 115 m, 3 000 mm) : à créer à part si voulu. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 36 H",
+   "specs": {
+    "Diametre forage": "2 500 mm max",
+    "Profondeur max": "68,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "38,2 m étendu (BK420/470/3/36)",
+    "Puissance moteur": "463 / 543 hp",
+    "Poids operationnel": "110.8 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/6059/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/6059/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/6059/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/6059/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/6059/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-36-h-bt-85",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/6059/download?inline"
+   },
+   "remarque": "Config. retenue : BT 85 (brochure 07/2026). Volvo TAD 13 : 345 kW (UN/ECE R96) / 405 kW (Stage V). Existe aussi sur BS 95 (brochure 05/2023) : CAT C 15 403/433 kW, 115.6 t. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 42",
+   "specs": {
+    "Diametre forage": "3 000 mm max",
+    "Profondeur max": "115 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3, 4 ou 5 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "23,85 m max. rétracté (« A »), config. Allround",
+    "Puissance moteur": "463 / 543 hp",
+    "Poids operationnel": "128 t (sans kelly) / 148 t (avec kelly BK420/560/4/80)",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2095/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2095/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2095/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2095/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2095/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-42-bt-110",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/2095/download?inline"
+   },
+   "remarque": "KellyLine BT 110, brochure 03/2025. Volvo TAD 13 : 345 kW (Stage III) / 405 kW (Stage V). ÉCART interne de la brochure : le tableau des configurations donne A max 23,85 m et 128 t sans kelly, la page Allround donne A max 23,2 m et 148 t avec kelly ; le comparatif donne 140 t. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 50",
+   "specs": {
+    "Diametre forage": "3 700 mm max",
+    "Profondeur max": "121,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (3 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "38,0 m étendu (BK420/470/3/36)",
+    "Puissance moteur": "630 hp",
+    "Poids operationnel": "157 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/7393/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/7393/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/7393/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/7393/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/7393/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-50-bt-145",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/7393/download?inline"
+   },
+   "remarque": "Config. BT 145, version de base, brochure 04/2026. CAT C18 470 kW. Couple max 500 kNm (page web). Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 52",
+   "specs": {
+    "Diametre forage": "3 100 mm max",
+    "Profondeur max": "125 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (4 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "26,1 m max. rétracté (« A »), config. Allround (BK500/559/4/66)",
+    "Puissance moteur": "758 / 784 hp",
+    "Poids operationnel": "166 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/7945/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/7945/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/7945/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/7945/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/7945/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-52-bt-160",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/7945/download?inline"
+   },
+   "remarque": "KellyLine BT 160, brochure 09/2026. Volvo TAD/TWD 16 : 565 / 585 kW. ÉCART interne : 166 t est dit « sans kelly » dans le tableau des configurations et « avec kelly BK 500/559/4/66 » sur la page Allround. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Bauer",
+   "modele": "BG 55",
+   "specs": {
+    "Diametre forage": "3 700 mm max",
+    "Profondeur max": "126,0 m",
+    "Type de mat (lead/kelly)": "Kelly télescopique (4 sections)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "99,9 m étendu (BK500/559/4/96)",
+    "Puissance moteur": "764 / 801 hp",
+    "Poids operationnel": "179.5 t",
+    "Type": "Piling rig"
+   },
+   "sources": {
+    "Diametre forage": "https://www.bauer-equipment.com/en/media/2082/download?inline",
+    "Profondeur max": "https://www.bauer-equipment.com/en/media/2082/download?inline",
+    "Type de mat (lead/kelly)": "https://www.bauer-equipment.com/en/media/2082/download?inline",
+    "Puissance moteur": "https://www.bauer-equipment.com/en/media/2082/download?inline",
+    "Poids operationnel": "https://www.bauer-equipment.com/en/media/2082/download?inline",
+    "Type": "https://www.bauer-equipment.com/en/drilling-rig-bg-55-bs-115",
+    "Longueur du kelly": "https://www.bauer-equipment.com/en/media/2082/download?inline"
+   },
+   "remarque": "Config. BS 115, version de base, PremiumLine, brochure 2/2021. CAT C 18 570-597 kW. Puissance convertie de kW en hp (1 hp = 0,745699872 kW). Longueur du mat non publiée (seule la hauteur hors tout l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-11",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "12,5 m (jet grouting en une passe, max; 9,8 m min)",
+    "Type de mat (lead/kelly)": "Mât modulaire, avance par moto-réducteur; course 1850 / 2500 / 3800 / 4200 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "115 kW (154 HP) @ 2200 rpm, moteur Cummins F 3.8 (Stage V); 116 kW/155 HP Deutz TCD 2013 Tier 3 en option",
+    "Poids operationnel": "10 700 - 11 250 kg (poids de transport)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/798_SM-11_02-2021.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/798_SM-11_02-2021.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/798_SM-11_02-2021.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/798_SM-11_02-2021.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/798_SM-11_02-2021.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-11-2/"
+   },
+   "remarque": "Page web : 11 t, 116/115 kW. Brochure 02/2021. Diamètre de forage non publié (mâchoires 50-320 mm). Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-13e Etech",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "14 m (jet grouting)",
+    "Type de mat (lead/kelly)": "Mât à glissière; course 1850 / 2500 / 3800 / 4200 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "A completer",
+    "Poids operationnel": "13 800 kg (config. illustrée : mât course 4,2 m, joint 90°)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting électrique (chenilles, batterie / branchement)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-13e_05_2023.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-13e_05_2023.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-13e_05_2023.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-13e_05_2023.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/e-tech-series/sm-13e-etech/"
+   },
+   "remarque": "Foreuse 100 % électrique : 4 moteurs synchrones à aimants permanents, batteries LiFePO4 ; puissance totale non publiée (chargeur embarqué 6 ou 40 kW, station externe 60 kW). Brochure 05/2023. Mâchoires 50-320 / 60-415 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-14",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "18 m (jet grouting en une passe, avec rallonges de mât)",
+    "Type de mat (lead/kelly)": "Mât à glissière; course 4000 mm (vérin) ou 4300-7000 mm (moto-réducteur)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "119 kW (160 HP) @ 2200 rpm, moteur Cummins QSB 4.5 (Stage III / Tier 3)",
+    "Poids operationnel": "14 300 / 15 000 kg (transport, course 4000 / 7000 mm)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-14_BRA_05-2024_web-1-1.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-14_BRA_05-2024_web-1-1.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-14_BRA_05-2024_web-1-1.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-14_BRA_05-2024_web-1-1.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/SM-14_BRA_05-2024_web-1-1.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-14/"
+   },
+   "remarque": "Brochure version Brésil 05/2024 (moteur Stage III seulement). Page web : 14 t, 119 kW. Mâchoires 50-415 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-15",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "19 m (jet grouting en une passe, mât course 4300 mm)",
+    "Type de mat (lead/kelly)": "Mât monolithique course 4000 mm ou modulaire 4300 / 5300 / 7000 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "142 kW (190 HP) @ 2000 rpm, moteur Cummins QSB 4.5 (Stage V); 119 kW/159 HP Cummins B 6.7 Tier 3 en option",
+    "Poids operationnel": "17 450 - 17 800 kg (sans tiges ni tubage, selon tête rotative; 17 600 kg version jet grouting)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/766_SM-15_003-12-2020_web.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/766_SM-15_003-12-2020_web.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/766_SM-15_003-12-2020_web.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/766_SM-15_003-12-2020_web.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/766_SM-15_003-12-2020_web.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-15/"
+   },
+   "remarque": "Page web : 16 t et « 142/123 kW T3/Stage V » (étiquettes inversées par rapport à la brochure 12/2020). Mâchoires 50-315 / 60-415 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-15 HD",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "20 m (jet grouting en une passe, mât course 7000 mm)",
+    "Type de mat (lead/kelly)": "Mât monolithique course 4000 mm ou modulaire 4300 / 5300 / 7000 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "186 kW (249 HP) @ 2000 rpm, moteur Cummins B 6.7 (Stage V); 179 kW/240 HP Tier 3 en option",
+    "Poids operationnel": "19 350 - 19 770 kg (sans tiges ni tubage, selon tête rotative; 21 100 kg version jet grouting)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/767_SM-15HD_003-12-2020_WEB.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/767_SM-15HD_003-12-2020_WEB.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/767_SM-15HD_003-12-2020_WEB.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/767_SM-15HD_003-12-2020_WEB.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/767_SM-15HD_003-12-2020_WEB.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-15-hd/"
+   },
+   "remarque": "Page web : 19 t, 186/179 kW, couple « 400 daNm » (valeur web douteuse ; la brochure 12/2020 donne jusqu'à 3348 daNm). Mâchoires 45-415 / 180-520 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-18",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Mât modulaire; course 4400 mm std, rallonges 5800 / 7300 / 10300 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "194 kW (260 HP) @ 2200 rpm, moteur Cummins QSB6.7 (Stage IV / Tier 4f)",
+    "Poids operationnel": "23 430 kg (transport, course 4400 mm; 23 600 kg course 5800, 23 890 kg course 7300)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/853_SM18_2022.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/853_SM18_2022.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/853_SM18_2022.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/853_SM18_2022.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-18/"
+   },
+   "remarque": "ÉCART : la page web affiche 19 t et 176 kW ; la brochure 2022 donne 194 kW et 23 430 - 23 890 kg (transport). Valeurs de la brochure retenues : à trancher. Mâchoires jusqu'à 60-415 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-22",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "27 m (jet grouting en une passe, mât 10200 mm + stabilisateurs rotatifs)",
+    "Type de mat (lead/kelly)": "Mât monolithique; course 7200 mm ou 10200 mm (modulaire)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "209 kW (280 HP) @ 2000 rpm, moteur Cummins B6.7 (Stage V); 194 kW/260 HP Cummins QSB6.7 Tier 3 en option",
+    "Poids operationnel": "22 000 / 22 500 kg (transport, mât 7200 / 10200 mm; 27 200 kg version 27 m)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/469_SM22_web.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/469_SM22_web.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/469_SM22_web.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/469_SM22_web.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/469_SM22_web.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-22/"
+   },
+   "remarque": "Page web : 22 t, 194 kW (= option Tier 3). Tige max 114 mm (127 opt.), tubage max 178 mm, mâchoires 60-515 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-25",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "21,4 - 27,3 m (jet grouting en une passe, selon le mât)",
+    "Type de mat (lead/kelly)": "Mât à glissière; course 7300 mm std (4400 / 5800 / 10300 mm disponibles)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "209 kW (280 HP) @ 2200 rpm, moteur Cummins B6.7 (Stage V)",
+    "Poids operationnel": "23 200 - 26 800 kg (transport, selon le mât)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-25-2026.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-25-2026.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-25-2026.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-25-2026.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-25-2026.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-25/"
+   },
+   "remarque": "Nouvelle fiche 10/2026. Page web : 25 t, 209 kW. Tiges 76-114 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-4",
+   "specs": {
+    "Diametre forage": "610 mm max (CFA)",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Mât télescopique; avance par vérin course 1500 mm (course rotary 2500 mm)",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "115 kW (154 HP) @ 2200 rpm, moteur Cummins F3.8 (Stage V) sur groupe de puissance séparé; 116 kW Deutz TCD2013 Tier 3 en option",
+    "Poids operationnel": "6 550 kg (transport, version standard; 8 200 kg version oversize) + groupe de puissance 4 000 kg",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Diametre forage": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/790_SM-4_02-2021.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/790_SM-4_02-2021.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/790_SM-4_02-2021.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/790_SM-4_02-2021.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/790_SM-4_02-2021.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-4/"
+   },
+   "remarque": "Groupe de puissance séparé (flexibles 20-150 m) ; version électrique 110 kW citée sur la page web. Page web : 5.8 t. Largeur mini 740 mm. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-6",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Mât modulaire, avance par moto-réducteur; course 1400 / 1900 / 2400 / 3400 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "100 kW (134 HP) @ 2000 rpm, moteur Deutz (Stage V / Tier 4f)",
+    "Poids operationnel": "7 000 - 7 500 kg (transport)",
+    "Type": "Foreuse micropieux / ancrages / jet grouting (chenilles)"
+   },
+   "sources": {
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/830_SM-6.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/830_SM-6.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/830_SM-6.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/830_SM-6.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-6/"
+   },
+   "remarque": "Brochure non datée. Page web : 7 t, 100 kW. Mâchoires 50-220 mm (options 50-320 / 50-360). Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "SM-7G",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "A completer",
+    "Type de mat (lead/kelly)": "Glissière, avance par vérin; course 3700 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "110 kW (147 HP) @ 2200 rpm, moteur Cummins F3.8 (Stage V / Tier 4f)",
+    "Poids operationnel": "7 800 - 11 500 kg (transport)",
+    "Type": "Foreuse géotechnique / carottage (chenilles)"
+   },
+   "sources": {
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-7G-2026.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-7G-2026.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-7G-2026.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2026/10/SM-7G-2026.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/sm-series/sm-7g/"
+   },
+   "remarque": "Machine de reconnaissance géotechnique et carottage (treuil wire-line 254 m), pas une foreuse micropieux. ÉCART : page web 7,5-9 t et 104/110 kW ; brochure 09/2026 : 7 800 - 11 500 kg et 110 kW (Stage V seul). Brochure retenue. Longueur du mat non publiée (seule la course d'avance l'est)."
+  },
+  {
+   "type": "Foreuse",
+   "fabricant": "Soilmec",
+   "modele": "ST-60",
+   "specs": {
+    "Diametre forage": "A completer",
+    "Profondeur max": "19 m en une passe (24 m avec mandrin et option)",
+    "Type de mat (lead/kelly)": "Mât de forage course 19000 mm",
+    "Longueur du mat": "A completer",
+    "Longueur du kelly": "Sans objet (tête rotative, pas de kelly)",
+    "Puissance moteur": "209 kW (280 HP) @ 2000 rpm, moteur Cummins B 6.7 (Stage V); 194 kW/260 HP Tier 3 en option; moteur électrique 110 kW (147 HP)",
+    "Poids operationnel": "52 000 - 53 500 kg (transport)",
+    "Type": "Foreuse de tunnel, consolidation sub-horizontale (chenilles)"
+   },
+   "sources": {
+    "Profondeur max": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/839_ST-60__03-03-2022_web.pdf",
+    "Type de mat (lead/kelly)": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/839_ST-60__03-03-2022_web.pdf",
+    "Longueur du kelly": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/839_ST-60__03-03-2022_web.pdf",
+    "Puissance moteur": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/839_ST-60__03-03-2022_web.pdf",
+    "Poids operationnel": "https://www.soilmec.com/en/wp-content/uploads/sites/2/2025/08/839_ST-60__03-03-2022_web.pdf",
+    "Type": "https://www.soilmec.com/en/prodotti/micropiles-tunnels/st-series/st-60/"
+   },
+   "remarque": "Foreuse de tunnel (consolidation en voûte, rayon de travail 3700-6500 mm, hauteur max 10 700 mm). ÉCART : page web 60 t et « 135 + (116) kW » ; brochure 03/2022 : 52 000 - 53 500 kg (transport), 209 kW + électrique 110 kW. Brochure retenue. Longueur du mat non publiée (seule la course d'avance l'est)."
+  }
+ ]
+}
