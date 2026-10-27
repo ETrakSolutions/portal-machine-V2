@@ -71,9 +71,9 @@
     var TYPE_LBL = { dealer: 'Dealer', direct: 'Client direct', interco: 'Intercompagnie' };
     function tagType(t) { return t ? '<span class="sav-tag ' + t + '">' + (TYPE_LBL[t] || t) + '</span>' : ''; }
 
-    // Changement de client (Steve, 2026-10-07) : le contact, le telephone, le courriel, le
-    // type de client, le client final et le lieu (section 3) du client precedent ne doivent
-    // pas rester. On vide
+    // Changement de client (Steve, 2026-10-07) : le contact, les telephones, le courriel, le
+    // type de client, le client final, le lieu, l'adresse et le nombre de machines (section 3)
+    // du client precedent ne doivent pas rester. On vide
     // quand le client reconnu change (A -> B, ou A -> nom tape d'un nouveau client), AVANT
     // d'appliquer le type du nouveau client. Le premier choix de client ne vide rien.
     var clientCle = null;
@@ -83,7 +83,8 @@
         var avant = clientCle;
         clientCle = cle;
         if (avant === null) return;
-        ['f-contact', 'f-tel', 'f-courriel', 'f-final', 'f-lieu'].forEach(function (id) { $(id).value = ''; });
+        ['f-contact', 'f-tel', 'f-tel2', 'f-courriel', 'f-final', 'f-lieu', 'f-adresse', 'f-nb']
+            .forEach(function (id) { $(id).value = ''; });
         document.querySelectorAll('input[name="f-type"]').forEach(function (r) { r.checked = false; });
         majType();
     }
@@ -236,32 +237,68 @@
     }
 
     // ---------- fiche texte ----------
+    // Mise en page refaite le 2026-10-27 pour Luna, qui recevait avant une fiche a quatre
+    // sections numerotees et trouvait la panne trop loin. Trois regles tiennent la fiche :
+    //   1. Ce qui sert a trier un appel — qui, quel produit, urgence — tient dans les quatre
+    //      premieres lignes ; l'administratif (date, recu par, billet) descend a la fin.
+    //   2. Les trois oui/non partagent UNE ligne au lieu de trois. Un « non » se lit encore,
+    //      il ne coute juste plus une ligne a lui seul.
+    //   3. Une section vide ne s'imprime pas DU TOUT, titre compris : pas de ligne « Machine :
+    //      ? » ni de titre orphelin.
     function fiche() {
-        var L = [], ajoute = function (k, v) { if (v) L.push(k + ' : ' + v); };
-        var dt = $('f-date').value ? $('f-date').value.replace('T', ' ') : '';
-        L.push('DEMANDE DE SERVICE APRÈS-VENTE — e-Trak');
+        var L = [];
+        var txt = function (id) { return ($(id).value || '').trim(); };
+        var joint = function (parts) { return parts.filter(Boolean).join(' · '); };
+        var bloc = function (titre, contenu) {
+            var lignes = [].concat(contenu || []).filter(Boolean);
+            if (!lignes.length) return;
+            L.push(''); L.push(titre);
+            lignes.forEach(function (x) { L.push(x); });
+        };
+        // Un « oui » crie, un « non » murmure : c'est l'urgence qui doit sauter aux yeux.
+        var ON = function (v) { return v === 'oui' ? 'OUI' : v; };
+
+        L.push('DEMANDE DE SERVICE — e-Trak');
         L.push('');
-        L.push('1. APPEL'); ajoute('Date/heure', dt); ajoute('Reçu par', $('f-recu').value); ajoute('N° de billet', $('f-billet').value);
-        L.push(''); L.push('2. CLIENT');
-        ajoute('Compagnie', $('f-compagnie').value + (clientChoisi ? '' : ' (nouveau client, pas dans Epicor)'));
-        ajoute('Contact', $('f-contact').value); ajoute('Téléphone', $('f-tel').value); ajoute('Courriel', $('f-courriel').value);
-        ajoute('Type de client', ({ dealer: 'Dealer', direct: 'Client direct' })[val('f-type')] || '');
-        if (val('f-type') === 'dealer') ajoute('Client final', $('f-final').value);
-        L.push(''); L.push('3. MACHINE ET SYSTÈME');
-        ajoute('Produit', produitsCoches().join(', '));
-        ajoute('Machine', $('f-machine').value); ajoute('N° série système', $('f-serie').value); ajoute('Lieu', $('f-lieu').value);
-        L.push(''); L.push('4. PROBLÈME');
-        ajoute('Machine arrêtée', val('f-arret').toUpperCase()); ajoute('Demande de bypass', val('f-bypass').toUpperCase());
-        ajoute('Code / message écran', $('f-code').value);
-        L.push('Description (mots du client) :'); L.push($('f-desc').value.trim());
-        if ($('f-diag').value.trim()) { L.push('Diagnostic préliminaire :'); L.push($('f-diag').value.trim()); }
-        if ($('f-prevoir').value.trim()) { L.push('Pièces à prévoir :'); L.push($('f-prevoir').value.trim()); }
-        var p = pieces();
-        if (p.length) { L.push('Pièces demandées :'); p.forEach(function (x) { L.push('  - ' + x.qte + ' × ' + x.txt); }); }
-        ajoute('Déplacement technicien', ({ oui: 'OUI', non: 'Non', '?': 'À valider' })[val('f-depl')] || '');
-        if (techTexte()) L.push(techTexte());
-        if (val('f-depl') === 'oui') ajoute('Temps approximatif prévu', $('f-tech-temps').value.trim());
-        ajoute('Facturation / compte', val('f-fact') === 'oui' ? 'OUI' : '');
+
+        // En-tete : une phrase, comme le courriel que Luna recevait avant.
+        var coord = joint([txt('f-tel'), txt('f-tel2'), txt('f-courriel')]);
+        L.push('Demande de ' + (txt('f-contact') || 'un client')
+            + (coord ? ' (' + coord + ')' : '')
+            + ' chez ' + (txt('f-compagnie') || 'client à identifier')
+            + (clientChoisi ? '' : ' — nouveau client, pas dans Epicor'));
+
+        var prod = produitsCoches().join(', ');
+        var nb = txt('f-nb');
+        if (prod || nb) L.push(joint(['Produit : ' + (prod || 'à préciser'),
+            nb ? nb + ' machines touchées' : '']));
+        var mach = joint([txt('f-machine'), txt('f-serie') ? 'n° série ' + txt('f-serie') : '']);
+        if (mach) L.push('Machine : ' + mach);
+
+        var DEPL = { oui: 'OUI', non: 'non', '?': 'à valider' };
+        L.push(joint([
+            val('f-arret') ? 'Arrêt machine : ' + ON(val('f-arret')) : '',
+            val('f-bypass') ? 'bypass : ' + ON(val('f-bypass')) : '',
+            val('f-depl') ? 'déplacement technicien : ' + DEPL[val('f-depl')] : '']));
+        if (val('f-fact') === 'oui') L.push('Question de facturation, compte ou paiement : OUI');
+
+        bloc('PROBLÈME', [txt('f-code') ? 'Code / message à l’écran : ' + txt('f-code') : '',
+            txt('f-desc')]);
+        bloc('DIAGNOSTIC PRÉLIMINAIRE', txt('f-diag'));
+        bloc('PIÈCES À PRÉVOIR', txt('f-prevoir'));
+        bloc('PIÈCES DEMANDÉES', pieces().map(function (x) { return '  - ' + x.qte + ' × ' + x.txt; }));
+        // L'adresse d'abord : c'est avec elle que le technicien part sur la route.
+        bloc('EMPLACEMENT', [txt('f-adresse'), txt('f-lieu')]);
+        if (val('f-depl') === 'oui') {
+            bloc('TECHNICIEN', joint([techTexte(),
+                txt('f-tech-temps') ? 'temps prévu : ' + txt('f-tech-temps') : '']));
+        }
+        var dt = $('f-date').value ? $('f-date').value.replace('T', ' ') : '';
+        bloc('APPEL', [
+            joint([dt, txt('f-recu') ? 'reçu par ' + txt('f-recu') : '',
+                txt('f-billet') ? 'billet ' + txt('f-billet') : '']),
+            joint([({ dealer: 'Dealer', direct: 'Client direct' })[val('f-type')] || '',
+                val('f-type') === 'dealer' && txt('f-final') ? 'client final : ' + txt('f-final') : ''])]);
         return L.join('\n');
     }
     // Cases « Produit ». Cocher « Autre » fait apparaitre un champ de precision, obligatoire

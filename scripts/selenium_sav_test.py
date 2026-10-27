@@ -234,9 +234,9 @@ def main():
         v('sujet : URGENT (bypass) + compagnie + produit',
           (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Duncan Simard — Limiteur d'excavatrice (LPE) / Autre : Module GPS", prm.get('subject'))
         v('corps : produits avec la precision de « Autre »', "Produit : Limiteur d'excavatrice (LPE), Autre : Module GPS" in corps, corps[:400])
-        v('corps : client, contact, piece, bypass ; plus de routage ni de suivi',
-          all(x in corps for x in ('Compagnie : Gravier Duncan Simard', 'Contact : Marc Girard', '1 × E03A-0013',
-                                   'Demande de bypass : OUI'))
+        v('corps : client et contact dans la phrase d en-tete, piece, bypass ; plus de routage ni de suivi',
+          all(x in corps for x in ('Demande de Marc Girard', 'chez Gravier Duncan Simard', '1 × E03A-0013',
+                                   'bypass : OUI'))
           and not any(x in corps for x in ('ROUTAGE', 'SUIVI', 'Assigné à', 'Rappel promis')), corps[:200])
         print('6) Fermeture de la demande apres l envoi')
         fin = d.execute_script("var f=document.getElementById('sav-fin'); return f ? f.textContent : null;")
@@ -282,9 +282,10 @@ def main():
         d.find_element(By.ID, 'f-prevoir').send_keys('1 capteur de pression, câble M12')
         v('champ temps approximatif affiche avec les menus', d.find_element(By.ID, 'f-tech-temps').is_displayed())
         d.find_element(By.ID, 'f-tech-temps').send_keys('4 h')
-        attendus = ('Diagnostic préliminaire :\nCapteur de pression probablement HS.',
-                    'Pièces à prévoir :\n1 capteur de pression, câble M12',
-                    'Déplacement technicien : OUI\nTechnicien prioritaire : Pierre ou Michel\nTemps approximatif prévu : 4 h')
+        attendus = ('DIAGNOSTIC PRÉLIMINAIRE\nCapteur de pression probablement HS.',
+                    'PIÈCES À PRÉVOIR\n1 capteur de pression, câble M12',
+                    'déplacement technicien : OUI',
+                    'TECHNICIEN\nTechnicien prioritaire : Pierre ou Michel · temps prévu : 4 h')
         d.execute_script("window.__copie = null; navigator.clipboard.writeText = function (t) { window.__copie = t; return Promise.resolve(); };")
         d.find_element(By.ID, 'b-copier').click(); time.sleep(0.3)
         copie = d.execute_script('return window.__copie') or ''
@@ -292,6 +293,43 @@ def main():
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
         corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
         v('courriel : diagnostic, pieces a prevoir, technicien, temps', all(x in corps for x in attendus), corps[-400:])
+        print('8) Mise en page du courriel, demandee par Luna (2026-10-27)')
+        d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
+        d.find_element(By.ID, 'f-tel2').send_keys('418 642-2002')
+        d.find_element(By.ID, 'f-courriel').clear()
+        d.find_element(By.ID, 'f-courriel').send_keys('mgirard@test')
+        d.find_element(By.ID, 'f-nb').send_keys('2')
+        d.find_element(By.ID, 'f-adresse').send_keys('280, chemin du Trait-Carré, Saint-Henri, QC, G0R 3E0')
+        d.find_element(By.ID, 'f-lieu').send_keys('chantier Lévis')
+        d.execute_script('window.__mailto = null')
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
+        corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
+        lignes = corps.split('\n')
+        v('en-tete : contact, les DEUX telephones et le courriel dans une phrase',
+          'Demande de Marc Girard (819-555-0101 · 418 642-2002 · mgirard@test) chez Gravier Duncan Simard' in corps,
+          next((l for l in lignes if l.startswith('Demande de ')), ''))
+        v('nombre de machines touchees sur la ligne du produit',
+          any(l.startswith('Produit : ') and '2 machines touchées' in l for l in lignes),
+          next((l for l in lignes if l.startswith('Produit : ')), ''))
+        une = [l for l in lignes if l.startswith('Arrêt machine : ')]
+        v('arret, bypass et deplacement sur UNE seule ligne',
+          len(une) == 1 and 'bypass : ' in une[0] and 'déplacement technicien : ' in une[0], une)
+        v('adresse avant le lieu, sous EMPLACEMENT',
+          'EMPLACEMENT\n280, chemin du Trait-Carré, Saint-Henri, QC, G0R 3E0\nchantier Lévis' in corps,
+          corps[corps.find('EMPLACEMENT'):][:140])
+        v('la panne passe avant l administratif',
+          0 < corps.find('PROBLÈME') < corps.find('APPEL'), (corps.find('PROBLÈME'), corps.find('APPEL')))
+        v('plus de sections numerotees',
+          not any(x in corps for x in ('1. APPEL', '2. CLIENT', '3. MACHINE ET SYSTÈME', '4. PROBLÈME')), corps[:80])
+        # Regle 3 de la fiche : une section vide ne sort pas du tout, titre compris.
+        d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
+        for champ in ('f-diag', 'f-prevoir', 'f-adresse', 'f-lieu'):
+            d.find_element(By.ID, champ).clear()
+        d.execute_script('window.__mailto = null')
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
+        vide = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
+        v('section vide : aucun titre orphelin',
+          not any(x in vide for x in ('DIAGNOSTIC PRÉLIMINAIRE', 'PIÈCES À PRÉVOIR', 'EMPLACEMENT')), vide[-200:])
         d.find_element(By.ID, 'b-fin-oui').click(); time.sleep(0.2)
         v('« Oui » : retour a l accueil', d.execute_script('return window.__accueil') == 1)
         v('aucune erreur console', not [l for l in d.get_log('browser') if l['level'] == 'SEVERE'],
