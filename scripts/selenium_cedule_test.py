@@ -9,8 +9,9 @@ Verifie :
   1. tuile de l'accueil : visible pour vente externe / technicien, cachee pour dealer,
      distributeur et invite ;
   2. page : acces refuse pour dealer et invite, sans appel getcedule ;
-  3. compte interne : une ligne par technicien, nom + competence, 10 cases (5 jours x
-     AM/PM), chaque case = la cedule recue (Ouvert / Ferme) ;
+  3. compte interne : une ligne par technicien, nom + competence, 14 cases (7 jours x
+     AM/PM, samedi et dimanche compris), chaque case = la cedule recue (Libre / Occupe),
+     fin de semaine marquee ced-we ;
   4. navigation semaine par semaine, boutons bornes aux 4 semaines ;
   5. aucune donnee client dans la page (seulement noms, jours, cases) ;
   6. anglais sans perdre la grille ; erreur serveur -> message, pas de page blanche ;
@@ -36,10 +37,11 @@ os.chdir(REPO)
 
 def cedule_fabriquee():
     d = datetime.date.today()
+    # 28 jours CIVILS depuis le 2026-10-27 : la cedule porte desormais le samedi et le
+    # dimanche, et c'est ce que le serveur renvoie.
     jours = []
-    while len(jours) < 20:
-        if d.weekday() < 5:
-            jours.append(d.isoformat())
+    while len(jours) < 28:
+        jours.append(d.isoformat())
         d += datetime.timedelta(days=1)
     techs = []
     for i, nom in enumerate(['Alpha Test (hydraulique)', 'Bravo Test']):
@@ -135,10 +137,10 @@ try:
                  cases: Array.from(tr.querySelectorAll('.ced-cell')).map(function(c){
                      return c.classList.contains('ced-closed') ? 'F' : c.classList.contains('ced-open') ? 'O' : '-'; }) }; });""")
     check('%d lignes = %d techniciens' % (len(lignes), len(CED['techs'])), len(lignes) == len(CED['techs']))
-    check('10 cases par ligne', all(len(l['cases']) == 10 for l in lignes))
+    check('14 cases par ligne (7 jours x AM/PM)', all(len(l['cases']) == 14 for l in lignes))
     # Semaine affichee = celle du premier jour de la cedule
     j0 = datetime.date.fromisoformat(CED['jours'][0]); lun = j0 - datetime.timedelta(days=j0.weekday())
-    semaine = [(lun + datetime.timedelta(days=i)).isoformat() for i in range(5)]
+    semaine = [(lun + datetime.timedelta(days=i)).isoformat() for i in range(7)]
     bon = True
     for l, tech in zip(lignes, sorted(CED['techs'], key=lambda t: CED['techs'].index(t))):
         att = []
@@ -150,6 +152,21 @@ try:
             print('      ', l['nom'], l['cases'], '!=', att)
     check('chaque case = la cedule recue (semaine du %s)' % lun, bon)
     check('competence affichee sous le nom (%s)' % lignes[0]['note'], any(l['note'] for l in lignes))
+
+    # Samedi et dimanche (2026-10-27) : presents, a la bonne place, et marques comme tels.
+    entetes = dv.execute_script("return Array.from(document.querySelectorAll('table.ced thead tr:first-child th'))"
+                                ".slice(1).map(function(th){ return th.textContent.trim(); });")
+    check('7 colonnes de jours, lundi au dimanche (%s)' % ' | '.join(entetes), len(entetes) == 7)
+    marques = dv.execute_script("""return Array.from(document.querySelectorAll('table.ced tbody tr')).map(function(tr){
+        return Array.from(tr.querySelectorAll('td')).slice(1).map(function(td){
+            return td.classList.contains('ced-we') ? 'W' : '.'; }).join(''); });""")
+    check('seules les 4 dernieres cases sont marquees fin de semaine (%s)' % (marques[0] if marques else ''),
+          all(x == '.' * 10 + 'W' * 4 for x in marques))
+    occupe_we = dv.execute_script("""var tr = document.querySelector('table.ced tbody tr');
+        var tds = Array.from(tr.querySelectorAll('td')).slice(1).filter(function(td){ return td.classList.contains('ced-we'); });
+        return tds.map(function(td){ var c = td.querySelector('.ced-cell');
+            return c.classList.contains('ced-closed') ? 'F' : c.classList.contains('ced-open') ? 'O' : '-'; }).join('');""")
+    check('les cases de fin de semaine portent un vrai etat, pas un tiret (%s)' % occupe_we, '-' not in occupe_we)
 
     print('--- 4) navigation ---')
     check('Semaine precedente desactivee au depart', dv.execute_script("return document.getElementById('ced-prev').disabled;"))

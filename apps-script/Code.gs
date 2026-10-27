@@ -1115,12 +1115,13 @@ function _jourSuivant(j) {
 }
 
 function _calculCedule(maintenant) {
+  // Samedi et dimanche inclus depuis le 2026-10-27 (demande de Jacquot). Avant, les deux
+  // jours etaient filtres ici : une tache planifiee la fin de semaine tombait dans le vide
+  // (voir « hors periode » plus bas) et le technicien paraissait disponible le lundi sans
+  // que rien ne signale qu'il avait travaille. CEDULE_JOURS compte des jours CIVILS, donc
+  // passer de 5/7 a 7/7 ne reduit pas le nombre de semaines couvertes : 28 jours = 4 semaines.
   var j0 = _local(maintenant).jour, jours = [], j = j0;
-  for (var i = 0; i < CEDULE_JOURS; i++) {
-    var dow = new Date(j + 'T12:00:00Z').getUTCDay();
-    if (dow >= 1 && dow <= 5) jours.push(j);
-    j = _jourSuivant(j);
-  }
+  for (var i = 0; i < CEDULE_JOURS; i++) { jours.push(j); j = _jourSuivant(j); }
   var jFin = j;                                       // exclu
 
   var techs = [], parId = {};
@@ -1154,7 +1155,7 @@ function _calculCedule(maintenant) {
       var pm = m0 < CEDULE_PM[1] && m1 > CEDULE_PM[0];
       qui.forEach(function (tech) {
         var c = tech.cases[jj];
-        if (!c) return;                               // fin de semaine ou hors periode
+        if (!c) return;                               // hors periode
         if (am) c[0] = true;
         if (pm) c[1] = true;
       });
@@ -1174,13 +1175,16 @@ function getCedule(body) {
   var user = _findUser(sess.u);
   if (!user || user.active === false) return { error: 'authentication required' };
   if (!_roleHasAccess(user.role, 'ceduleAccess', CEDULE_ROLES)) return { error: 'forbidden' };
+  // Cle bumpee a _v2 le 2026-10-27 avec l'ajout du samedi et du dimanche : sinon le
+  // cache de 15 min aurait continue a servir l'ancienne cedule, sans les deux colonnes,
+  // apres le redeploiement.
   var cache = CacheService.getScriptCache();
-  var hit = cache.get('cedule_v1');
+  var hit = cache.get('cedule_v2');
   if (hit) { try { return { ok: true, cedule: JSON.parse(hit) }; } catch (e) {} }
   var ced;
   try { ced = _calculCedule(new Date()); }
   catch (err) { Logger.log('getCedule : ' + err); return { error: 'cedule unavailable' }; }
-  try { cache.put('cedule_v1', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
+  try { cache.put('cedule_v2', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
   return { ok: true, cedule: ced };
 }
 
