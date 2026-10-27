@@ -168,15 +168,40 @@ try:
             return c.classList.contains('ced-closed') ? 'F' : c.classList.contains('ced-open') ? 'O' : '-'; }).join('');""")
     check('les cases de fin de semaine portent un vrai etat, pas un tiret (%s)' % occupe_we, '-' not in occupe_we)
 
+    # Jour courant : la colonne entiere est teintee, pas seulement l'en-tete.
+    i_auj = datetime.date.today().weekday()
+    cols = dv.execute_script("""return Array.from(document.querySelectorAll('table.ced thead tr:first-child th')).slice(1)
+        .map(function(th){ return th.classList.contains('ced-jour') ? 'J' : '.'; }).join('');""")
+    check('en-tete du jour courant marquee, et elle seule (%s)' % cols,
+          cols == '.' * i_auj + 'J' + '.' * (6 - i_auj))
+    cells = dv.execute_script("""return Array.from(document.querySelectorAll('table.ced tbody tr')).map(function(tr){
+        return Array.from(tr.querySelectorAll('td')).slice(1).map(function(td){
+            return td.classList.contains('ced-jour') ? 'J' : '.'; }).join(''); });""")
+    attendu = '.' * (i_auj * 2) + 'JJ' + '.' * ((6 - i_auj) * 2)
+    check('les cases du jour courant aussi (%s)' % (cells[0] if cells else ''), all(x == attendu for x in cells))
+
+    # Colonne des noms figee : sous ~950 px la grille defile, et sans ca on lit une ligne
+    # de Libre / Occupe sans savoir de qui il s'agit.
+    fige = dv.execute_script("""var td = document.querySelector('table.ced td.ced-name');
+        var th = document.querySelector('table.ced thead th');
+        var a = getComputedStyle(td), b = getComputedStyle(th);
+        return [a.position, a.left, b.position, b.left].join('|');""")
+    check('colonne des noms figee a gauche, en-tete comprise (%s)' % fige, fige == 'sticky|0px|sticky|0px')
+
     print('--- 4) navigation ---')
     check('Semaine precedente desactivee au depart', dv.execute_script("return document.getElementById('ced-prev').disabled;"))
+    check('« Cette semaine » grisee quand on y est deja', dv.execute_script("return document.getElementById('ced-auj').disabled;"))
     n = 0
     while not dv.execute_script("return document.getElementById('ced-next').disabled;") and n < 10:
         dv.execute_script("document.getElementById('ced-next').click();"); n += 1
     check('%d clics jusqu a la derniere semaine (4 ou 5 semaines civiles)' % n, n in (3, 4))
     check('Semaine precedente reactivee', not dv.execute_script("return document.getElementById('ced-prev').disabled;"))
-    for _ in range(n):
-        dv.execute_script("document.getElementById('ced-prev').click();")
+    check('« Cette semaine » active des qu on est ailleurs', not dv.execute_script("return document.getElementById('ced-auj').disabled;"))
+    loin = dv.execute_script("return document.getElementById('ced-week').textContent;")
+    dv.execute_script("document.getElementById('ced-auj').click();"); time.sleep(0.3)
+    check('« Cette semaine » ramene a la semaine courante en un clic',
+          dv.execute_script("return document.getElementById('ced-week').textContent;") != loin
+          and dv.execute_script("return document.getElementById('ced-prev').disabled && document.getElementById('ced-auj').disabled;"))
 
     print('--- 5) aucune donnee client ---')
     txt = dv.execute_script("return document.getElementById('ced-root').innerText;")

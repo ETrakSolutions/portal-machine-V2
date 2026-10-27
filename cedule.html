@@ -41,6 +41,17 @@
            couleurs — un technicien occupe le samedi doit se voir autant qu'en semaine. */
         table.ced th.ced-we { color: #6f7f8d; background: rgba(0,0,0,0.22); }
         table.ced td.ced-we { background: rgba(0,0,0,0.22); }
+        /* Colonne du jour : teintee sur TOUTE la hauteur. Avant, seul l'en-tete passait en
+           orange et l'oeil devait redescendre jusqu'a la bonne colonne pour repondre a
+           « qui est libre cet apres-midi ». Declaree APRES .ced-we : si aujourd'hui tombe
+           un samedi, c'est le jour courant qui doit gagner. */
+        table.ced th.ced-jour, table.ced td.ced-jour { background: rgba(255,140,0,0.10); }
+        /* La colonne des noms suit le defilement horizontal. Sous ~950 px la grille defile,
+           et sans ca on lisait une ligne de Libre / Occupe sans savoir de qui il s'agit.
+           Le fond doit etre opaque, sinon les cases defilent par transparence dessous. */
+        table.ced thead th:first-child, table.ced td.ced-name {
+            position: sticky; left: 0; z-index: 2; background: #1f1f1f; border-right: 1px solid #3a3a3a;
+        }
         tr.ced-today-row th.ced-today { color: #FF8C00; }
         .ced-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 10px; color: #9aa7b2; font-size: 0.78rem; align-items: center; }
         .ced-legend .ced-cell { width: 58px; }
@@ -81,6 +92,7 @@
                 <div class="ced-bar">
                     <div class="ced-week" id="ced-week"></div>
                     <div class="ced-nav">
+                        <button type="button" id="ced-auj" data-i18n="ced.this_week">Cette semaine</button>
                         <button type="button" id="ced-prev" data-i18n="ced.prev">&larr; Semaine précédente</button>
                         <button type="button" id="ced-next" data-i18n="ced.next">Semaine suivante &rarr;</button>
                     </div>
@@ -98,10 +110,10 @@
 
     <script src="js/config.js?v=2"></script>
     <script src="js/perm-access.js?v=1"></script>
-    <script src="js/translations.js?v=267"></script>
+    <script src="js/translations.js?v=268"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/cedule.js?v=3"></script>
+    <script src="js/cedule.js?v=4"></script>
 </body>
 </html>
