@@ -64,7 +64,7 @@
 
         var h1 = '<tr class="ced-today-row"><th></th>', h2 = '<tr><th></th>';
         jours.forEach(function (j) {
-            var cl = (estFinSemaine(j) ? ' ced-we' : '') + (j === auj ? ' ced-jour' : '');
+            var cl = estFinSemaine(j) ? ' ced-we' : '';
             h1 += '<th colspan="2" class="ced-day' + cl + (j === auj ? ' ced-today' : '') + '">' +
                   esc(fmtJour(j, { weekday: 'short', day: 'numeric', month: 'short' })) + '</th>';
             h2 += '<th class="ced-day' + cl + '">' + t('ced.am') + '</th>' +
@@ -74,10 +74,9 @@
             var n = nomEtNote(tech.nom);
             var r = '<tr><td class="ced-name">' + esc(n.nom) + (n.note ? '<small>' + esc(n.note) + '</small>' : '') + '</td>';
             jours.forEach(function (j) {
-                var c = tech.cases[j];
-                var extra = (estFinSemaine(j) ? ' ced-we' : '') + (j === auj ? ' ced-jour' : '');
+                var c = tech.cases[j], we = estFinSemaine(j) ? ' ced-we' : '';
                 [0, 1].forEach(function (k) {
-                    var cl = ((k === 0 ? 'ced-am' : '') + extra).trim();
+                    var cl = ((k === 0 ? 'ced-am' : '') + we).trim();
                     var cls = cl ? ' class="' + cl + '"' : '';
                     if (!c) { r += '<td' + cls + '><span class="ced-cell ced-none">—</span></td>'; return; }
                     r += '<td' + cls + '><span class="ced-cell ' + (c[k] ? 'ced-closed">' + t('ced.closed') : 'ced-open">' + t('ced.open')) + '</span></td>';
