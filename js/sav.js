@@ -280,7 +280,6 @@
             val('f-arret') ? 'Arrêt machine : ' + ON(val('f-arret')) : '',
             val('f-bypass') ? 'bypass : ' + ON(val('f-bypass')) : '',
             val('f-depl') ? 'déplacement technicien : ' + DEPL[val('f-depl')] : '']));
-        if (val('f-fact') === 'oui') L.push('Question de facturation, compte ou paiement : OUI');
 
         bloc('PROBLÈME', [txt('f-code') ? 'Code / message à l’écran : ' + txt('f-code') : '',
             txt('f-desc')]);
