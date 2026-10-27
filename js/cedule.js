@@ -37,6 +37,11 @@
         return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Toronto', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
     }
 
+    // Samedi et dimanche (ajoutes le 2026-10-27, demande de Jacquot) : la grille les montre
+    // comme les autres jours, mais grises, pour que l'oeil ne les lise pas comme des jours
+    // ouvrables. Les cases restent vraies — le serveur renvoie desormais les 7 jours.
+    function estFinSemaine(j) { var d = new Date(j + 'T12:00:00Z').getUTCDay(); return d === 0 || d === 6; }
+
     // Separe le nom de la competence entre parentheses : « Jean Mallet (limiteur ...) »
     function nomEtNote(n) {
         var m = /^(.*?)\s*\((.*)\)\s*$/.exec(n);
@@ -47,7 +52,7 @@
         var grid = document.getElementById('ced-grid');
         if (!DATA) return;
         if (!DATA.techs.length) { grid.className = 'ced-msg'; grid.textContent = t('ced.empty'); return; }
-        var lun = semaines[semaine], jours = [0, 1, 2, 3, 4].map(function (i) { return plus(lun, i); });
+        var lun = semaines[semaine], jours = [0, 1, 2, 3, 4, 5, 6].map(function (i) { return plus(lun, i); });
         var auj = aujourdhui();
         document.getElementById('ced-week').textContent = t('ced.week_of', { date: fmtJour(lun, { day: 'numeric', month: 'long', year: 'numeric' }) });
         document.getElementById('ced-prev').disabled = (semaine === 0);
@@ -55,17 +60,20 @@
 
         var h1 = '<tr class="ced-today-row"><th></th>', h2 = '<tr><th></th>';
         jours.forEach(function (j) {
-            h1 += '<th colspan="2" class="ced-day' + (j === auj ? ' ced-today' : '') + '">' +
+            var we = estFinSemaine(j) ? ' ced-we' : '';
+            h1 += '<th colspan="2" class="ced-day' + we + (j === auj ? ' ced-today' : '') + '">' +
                   esc(fmtJour(j, { weekday: 'short', day: 'numeric', month: 'short' })) + '</th>';
-            h2 += '<th class="ced-day">' + t('ced.am') + '</th><th>' + t('ced.pm') + '</th>';
+            h2 += '<th class="ced-day' + we + '">' + t('ced.am') + '</th>' +
+                  (we ? '<th class="ced-we">' : '<th>') + t('ced.pm') + '</th>';
         });
         var rows = DATA.techs.map(function (tech) {
             var n = nomEtNote(tech.nom);
             var r = '<tr><td class="ced-name">' + esc(n.nom) + (n.note ? '<small>' + esc(n.note) + '</small>' : '') + '</td>';
             jours.forEach(function (j) {
-                var c = tech.cases[j];
+                var c = tech.cases[j], we = estFinSemaine(j) ? ' ced-we' : '';
                 [0, 1].forEach(function (k) {
-                    var cls = k === 0 ? ' class="ced-am"' : '';
+                    var cl = ((k === 0 ? 'ced-am' : '') + we).trim();
+                    var cls = cl ? ' class="' + cl + '"' : '';
                     if (!c) { r += '<td' + cls + '><span class="ced-cell ced-none">—</span></td>'; return; }
                     r += '<td' + cls + '><span class="ced-cell ' + (c[k] ? 'ced-closed">' + t('ced.closed') : 'ced-open">' + t('ced.open')) + '</span></td>';
                 });
