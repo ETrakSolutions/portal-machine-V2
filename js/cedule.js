@@ -57,22 +57,27 @@
         document.getElementById('ced-week').textContent = t('ced.week_of', { date: fmtJour(lun, { day: 'numeric', month: 'long', year: 'numeric' }) });
         document.getElementById('ced-prev').disabled = (semaine === 0);
         document.getElementById('ced-next').disabled = (semaine === semaines.length - 1);
+        // « Cette semaine » : grise quand on y est deja, ou si la semaine courante n'est pas
+        // dans la cedule recue (cas theorique — le serveur part toujours d'aujourd'hui).
+        var iAuj = semaines.indexOf(lundiDe(auj));
+        document.getElementById('ced-auj').disabled = (iAuj < 0 || iAuj === semaine);
 
         var h1 = '<tr class="ced-today-row"><th></th>', h2 = '<tr><th></th>';
         jours.forEach(function (j) {
-            var we = estFinSemaine(j) ? ' ced-we' : '';
-            h1 += '<th colspan="2" class="ced-day' + we + (j === auj ? ' ced-today' : '') + '">' +
+            var cl = (estFinSemaine(j) ? ' ced-we' : '') + (j === auj ? ' ced-jour' : '');
+            h1 += '<th colspan="2" class="ced-day' + cl + (j === auj ? ' ced-today' : '') + '">' +
                   esc(fmtJour(j, { weekday: 'short', day: 'numeric', month: 'short' })) + '</th>';
-            h2 += '<th class="ced-day' + we + '">' + t('ced.am') + '</th>' +
-                  (we ? '<th class="ced-we">' : '<th>') + t('ced.pm') + '</th>';
+            h2 += '<th class="ced-day' + cl + '">' + t('ced.am') + '</th>' +
+                  (cl ? '<th class="' + cl.trim() + '">' : '<th>') + t('ced.pm') + '</th>';
         });
         var rows = DATA.techs.map(function (tech) {
             var n = nomEtNote(tech.nom);
             var r = '<tr><td class="ced-name">' + esc(n.nom) + (n.note ? '<small>' + esc(n.note) + '</small>' : '') + '</td>';
             jours.forEach(function (j) {
-                var c = tech.cases[j], we = estFinSemaine(j) ? ' ced-we' : '';
+                var c = tech.cases[j];
+                var extra = (estFinSemaine(j) ? ' ced-we' : '') + (j === auj ? ' ced-jour' : '');
                 [0, 1].forEach(function (k) {
-                    var cl = ((k === 0 ? 'ced-am' : '') + we).trim();
+                    var cl = ((k === 0 ? 'ced-am' : '') + extra).trim();
                     var cls = cl ? ' class="' + cl + '"' : '';
                     if (!c) { r += '<td' + cls + '><span class="ced-cell ced-none">—</span></td>'; return; }
                     r += '<td' + cls + '><span class="ced-cell ' + (c[k] ? 'ced-closed">' + t('ced.closed') : 'ced-open">' + t('ced.open')) + '</span></td>';
@@ -116,6 +121,12 @@
             });
     }
 
+    // Retour direct a la semaine courante : la navigation va jusqu'a quatre semaines en
+    // avant, et il fallait cliquer « precedente » autant de fois pour revenir.
+    document.getElementById('ced-auj').addEventListener('click', function () {
+        var i = semaines.indexOf(lundiDe(aujourdhui()));
+        if (i >= 0 && i !== semaine) { semaine = i; dessiner(); }
+    });
     document.getElementById('ced-prev').addEventListener('click', function () { if (semaine > 0) { semaine--; dessiner(); } });
     document.getElementById('ced-next').addEventListener('click', function () { if (semaine < semaines.length - 1) { semaine++; dessiner(); } });
     window.addEventListener('langchange', dessiner);
