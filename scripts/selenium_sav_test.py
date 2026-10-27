@@ -295,18 +295,18 @@ def main():
         v('courriel : diagnostic, pieces a prevoir, technicien, temps', all(x in corps for x in attendus), corps[-400:])
         print('8) Mise en page du courriel, demandee par Luna (2026-10-27)')
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
-        d.find_element(By.ID, 'f-tel2').send_keys('418 642-2002')
+        d.find_element(By.ID, 'f-tel2').send_keys('819-555-0102')
         d.find_element(By.ID, 'f-courriel').clear()
         d.find_element(By.ID, 'f-courriel').send_keys('mgirard@test')
         d.find_element(By.ID, 'f-nb').send_keys('2')
-        d.find_element(By.ID, 'f-adresse').send_keys('280, chemin du Trait-Carré, Saint-Henri, QC, G0R 3E0')
+        d.find_element(By.ID, 'f-adresse').send_keys('1, rue de l’Atelier, Victoriaville, QC, G6P 0A1')
         d.find_element(By.ID, 'f-lieu').send_keys('chantier Lévis')
         d.execute_script('window.__mailto = null')
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
         corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
         lignes = corps.split('\n')
         v('en-tete : contact, les DEUX telephones et le courriel dans une phrase',
-          'Demande de Marc Girard (819-555-0101 · 418 642-2002 · mgirard@test) chez Gravier Duncan Simard' in corps,
+          'Demande de Marc Girard (819-555-0101 · 819-555-0102 · mgirard@test) chez Gravier Duncan Simard' in corps,
           next((l for l in lignes if l.startswith('Demande de ')), ''))
         v('nombre de machines touchees sur la ligne du produit',
           any(l.startswith('Produit : ') and '2 machines touchées' in l for l in lignes),
@@ -315,7 +315,7 @@ def main():
         v('arret, bypass et deplacement sur UNE seule ligne',
           len(une) == 1 and 'bypass : ' in une[0] and 'déplacement technicien : ' in une[0], une)
         v('adresse avant le lieu, sous EMPLACEMENT',
-          'EMPLACEMENT\n280, chemin du Trait-Carré, Saint-Henri, QC, G0R 3E0\nchantier Lévis' in corps,
+          'EMPLACEMENT\n1, rue de l’Atelier, Victoriaville, QC, G6P 0A1\nchantier Lévis' in corps,
           corps[corps.find('EMPLACEMENT'):][:140])
         v('la panne passe avant l administratif',
           0 < corps.find('PROBLÈME') < corps.find('APPEL'), (corps.find('PROBLÈME'), corps.find('APPEL')))
