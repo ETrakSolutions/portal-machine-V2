@@ -337,6 +337,40 @@ def main():
         d.save_screenshot(str(Path.home() / 'AppData' / 'Local' / 'Temp' / 'sav_test.png'))
     finally:
         d.quit()
+
+    print('9) Avertissement avant de quitter une fiche commencee (Steve, 2026-10-27)')
+    d = navigateur('technicien')
+    try:
+        d.execute_script("window.__allerA = null; window.__savAller = function (u) { window.__allerA = u; };")
+        quitte = "return !window.dispatchEvent(new Event('beforeunload', { cancelable: true }));"
+        v('fiche vierge (date et recu par remplis seuls) : aucun avertissement', not d.execute_script(quitte)
+          and not d.execute_script('return window.__savModifiee()'))
+        d.find_element(By.CSS_SELECTOR, 'a.header-back').click(); time.sleep(0.2)
+        v('fiche vierge : Retour part sans fenetre', not d.find_elements(By.ID, 'sav-quitter'))
+        d.get(PAGE); time.sleep(1.5)
+        d.execute_script("window.__allerA = null; window.__savAller = function (u) { window.__allerA = u; };")
+        d.find_element(By.ID, 'f-desc').send_keys('Écran noir')
+        v('fiche commencee : avertissement du navigateur (onglet ferme, actualisation)', d.execute_script(quitte))
+        d.find_element(By.CSS_SELECTOR, 'a.header-back').click(); time.sleep(0.2)
+        fen = d.execute_script("var f=document.getElementById('sav-quitter'); return f ? f.textContent : null;")
+        v('fiche commencee : Retour ouvre « Voulez-vous vraiment quitter ? »', bool(fen) and 'Voulez-vous vraiment quitter ?' in fen
+          and not d.execute_script('return window.__allerA'), fen)
+        d.find_element(By.ID, 'b-quitter-non').click(); time.sleep(0.2)
+        v('« Rester » : fenetre fermee, fiche conservee', not d.find_elements(By.ID, 'sav-quitter')
+          and d.find_element(By.ID, 'f-desc').get_attribute('value') == 'Écran noir' and not d.execute_script('return window.__allerA'))
+        d.find_element(By.CSS_SELECTOR, '.logo-section a').click(); time.sleep(0.2)
+        d.find_element(By.ID, 'b-quitter-oui').click(); time.sleep(0.2)
+        v('logo puis « Quitter sans envoyer » : depart vers l accueil, sans 2e avertissement',
+          (d.execute_script('return window.__allerA') or '').endswith('index.html') and not d.execute_script(quitte),
+          d.execute_script('return window.__allerA'))
+        d.find_element(By.ID, 'f-desc').send_keys(' encore')
+        d.execute_script("window.confirm = function () { return true; };")
+        d.find_element(By.ID, 'b-nouveau').click(); time.sleep(0.3)
+        v('« Nouvelle demande » : fiche vide, plus d avertissement', not d.execute_script(quitte))
+        v('aucune erreur console (avertissement)', not [l for l in d.get_log('browser') if l['level'] == 'SEVERE'],
+          [l['message'][:120] for l in d.get_log('browser') if l['level'] == 'SEVERE'])
+    finally:
+        d.quit()
     print('\nRESULTAT : %d/%d' % (len(ok), len(ok) + len(ko)))
     sys.exit(1 if ko else 0)
 

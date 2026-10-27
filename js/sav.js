@@ -372,6 +372,7 @@
         var url = function (b) { return 'mailto:' + dest.join(',') + '?subject=' + encodeURIComponent(sujet()) +
             (cc.length ? '&cc=' + cc.join(',') : '') + '&body=' + encodeURIComponent(b); };
         copier(txt).then(function () {}, function () {});
+        modifiee = false;
         if (url(corps).length > 1900) {
             corps = 'La fiche complète est dans votre presse-papiers : collez-la ici (Ctrl+V).\n\n' + sujet();
             ok('Fiche copiée dans le presse-papiers : collez-la dans le courriel (Ctrl+V).');
@@ -403,6 +404,44 @@
         $('b-fin-non').addEventListener('click', function () { v.remove(); });
         $('b-fin-oui').focus();
     }
+    // Avertissement avant de quitter une fiche commencee (Steve, 2026-10-27).
+    // « Modifiee » = un champ touche depuis l'ouverture ou depuis « Nouvelle demande » ; la
+    // date et « Recu par », remplis seuls, ne comptent pas. L'envoi par courriel remet a zero
+    // (l'ouverture du lien mailto ne doit pas declencher l'avertissement, et « Oui, retour a
+    // l'accueil » non plus). Liens du portail (Retour, logo) : fenetre du portail. Fermeture
+    // de l'onglet ou actualisation : avertissement du navigateur (son texte ne se change pas).
+    var modifiee = false;
+    $('sav-form').addEventListener('input', function () { modifiee = true; });
+    $('sav-form').addEventListener('change', function () { modifiee = true; });
+    $('f-contacts').addEventListener('click', function () { modifiee = true; });
+    window.__savModifiee = function () { return modifiee; };
+    window.addEventListener('beforeunload', function (e) {
+        if (!modifiee) return;
+        e.preventDefault(); e.returnValue = ''; return '';
+    });
+    function confirmerQuitter(aller) {
+        var ancien = $('sav-quitter'); if (ancien) ancien.remove();
+        var v = document.createElement('div');
+        v.id = 'sav-quitter'; v.className = 'sav-fin';
+        v.innerHTML = '<div class="sav-fin-boite" role="dialog" aria-modal="true" aria-labelledby="sav-quitter-titre">' +
+            '<h3 id="sav-quitter-titre">Voulez-vous vraiment quitter ?</h3>' +
+            '<p>La demande est commencée mais n’a pas été envoyée : ce qui est rempli sera perdu.</p>' +
+            '<div class="sav-fin-btns">' +
+            '<button type="button" class="sav-btn" id="b-quitter-oui">Quitter sans envoyer</button>' +
+            '<button type="button" class="sav-btn main" id="b-quitter-non">Rester sur la demande</button>' +
+            '</div></div>';
+        document.body.appendChild(v);
+        $('b-quitter-non').addEventListener('click', function () { v.remove(); });
+        $('b-quitter-oui').addEventListener('click', function () { modifiee = false; v.remove(); aller(); });
+        $('b-quitter-non').focus();
+    }
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href]');
+        if (!a || !modifiee || a.target === '_blank' || /^(mailto|tel):|^#/.test(a.getAttribute('href'))) return;
+        e.preventDefault();
+        confirmerQuitter(function () { (window.__savAller || function (u) { window.location.href = u; })(a.href); });
+    }, true);
+
     $('b-copier').addEventListener('click', function () { copier(fiche()).then(function () { ok('Fiche copiée dans le presse-papiers.'); }); });
     $('b-nouveau').addEventListener('click', function () {
         if (!confirm('Effacer la fiche et commencer une nouvelle demande ?')) return;
@@ -410,6 +449,7 @@
         document.querySelectorAll('.sav-f.err').forEach(function (e) { e.classList.remove('err'); });
         $('sav-alert').style.display = 'none';
         init();
+        modifiee = false;
     });
 
     function init() {
