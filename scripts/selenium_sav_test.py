@@ -18,6 +18,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 
 PAGE = (Path(__file__).resolve().parent.parent / 'sav.html').as_uri()
 SAV = {
@@ -63,7 +64,9 @@ def navigateur(role):
         window.__appels = [];
         window.fetch = function (url, o) {
             var b = JSON.parse((o && o.body) || '{}'); window.__appels.push(b.action);
-            var r = b.action === 'getsav' ? { ok: true, sav: %s } : { ok: true };
+            var r = b.action === 'getsav' ? { ok: true, sav: %s }
+                  : b.action === 'getcedule' ? { ok: true, cedule: { techs: [{ nom: 'Jean Mallet (limiteur grue)' }, { nom: 'Michel Landry' }] } }
+                  : { ok: true };
             return Promise.resolve({ json: function () { return Promise.resolve(r); } });
         };
         window.__savMailto = function (u) { window.__mailto = u; };
@@ -241,7 +244,54 @@ def main():
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
         v('« Non » : fenetre fermee, fiche conservee, pas de retour', not d.execute_script("return !!document.getElementById('sav-fin');")
           and d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Marc Girard' and not d.execute_script('return window.__accueil'))
+        print('7) Diagnostic, pieces a prevoir et technicien (Steve, 2026-10-27)')
+        champs = d.execute_script("return [...document.querySelectorAll('#sav-form .sav-f label')].map(l=>l.textContent.trim())")
+        i = next((k for k, t in enumerate(champs) if t.startswith('Description')), -1)
+        v('Diagnostic preliminaire puis Pieces a prevoir sous la description',
+          champs[i + 1:i + 3] == ['Diagnostic préliminaire', 'Pièces à prévoir'], champs[i:i + 3])
+        hd = d.find_element(By.ID, 'f-desc').size['height']
+        v('meme hauteur que la description', all(d.find_element(By.ID, x).size['height'] == hd for x in ('f-diag', 'f-prevoir')), hd)
+        v('deplacement non choisi : menus technicien caches', not d.find_element(By.ID, 'w-tech').is_displayed())
+        d.find_element(By.CSS_SELECTOR, 'input[name=f-depl][value=oui]').click(); time.sleep(0.2)
+        v('deplacement Oui : menus technicien affiches', d.find_element(By.ID, 'w-tech').is_displayed())
+        exig = [o.text for o in Select(d.find_element(By.ID, 'f-tech-exig')).options][1:]
+        v('menu exigence : 3 choix', exig == ['Technicien obligatoire', 'Technicien prioritaire', "N'importe quel technicien"], exig)
+        noms = [o.text for o in Select(d.find_element(By.ID, 'f-tech-nom')).options][1:]
+        v('menu noms : techs ProgressionLive (sans la note) + Pierre ou Michel',
+          noms == ['Jean Mallet', 'Michel Landry', 'Pierre ou Michel'], noms)
+        v('noms demandes au serveur (getcedule)', 'getcedule' in d.execute_script('return window.__appels'))
+        d.execute_script('window.__mailto = null')
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
+        v('Oui sans exigence : envoi refuse', 'type de technicien' in d.find_element(By.ID, 'sav-alert').text
+          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-alert').text)
+        Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('obligatoire'); time.sleep(0.2)
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
+        v('obligatoire sans nom : envoi refuse', 'nom du technicien' in d.find_element(By.ID, 'sav-alert').text
+          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-alert').text)
+        Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('tous'); time.sleep(0.2)
+        v("N'importe quel technicien : menu des noms grise", not d.find_element(By.ID, 'f-tech-nom').is_enabled())
+        Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('prioritaire'); time.sleep(0.2)
+        Select(d.find_element(By.ID, 'f-tech-nom')).select_by_visible_text('Pierre ou Michel')
+        d.find_element(By.CSS_SELECTOR, 'input[name=f-depl][value=non]').click(); time.sleep(0.2)
+        v('deplacement Non : menus caches et vides', not d.find_element(By.ID, 'w-tech').is_displayed()
+          and d.find_element(By.ID, 'f-tech-exig').get_attribute('value') == '' and d.find_element(By.ID, 'f-tech-nom').get_attribute('value') == '')
+        d.find_element(By.CSS_SELECTOR, 'input[name=f-depl][value=oui]').click(); time.sleep(0.2)
+        Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('prioritaire'); time.sleep(0.2)
+        Select(d.find_element(By.ID, 'f-tech-nom')).select_by_visible_text('Pierre ou Michel')
+        d.find_element(By.ID, 'f-diag').send_keys('Capteur de pression probablement HS.')
+        d.find_element(By.ID, 'f-prevoir').send_keys('1 capteur de pression, câble M12')
+        v('champ temps approximatif affiche avec les menus', d.find_element(By.ID, 'f-tech-temps').is_displayed())
+        d.find_element(By.ID, 'f-tech-temps').send_keys('4 h')
+        attendus = ('Diagnostic préliminaire :\nCapteur de pression probablement HS.',
+                    'Pièces à prévoir :\n1 capteur de pression, câble M12',
+                    'Déplacement technicien : OUI\nTechnicien prioritaire : Pierre ou Michel\nTemps approximatif prévu : 4 h')
+        d.execute_script("window.__copie = null; navigator.clipboard.writeText = function (t) { window.__copie = t; return Promise.resolve(); };")
+        d.find_element(By.ID, 'b-copier').click(); time.sleep(0.3)
+        copie = d.execute_script('return window.__copie') or ''
+        v('copie de la fiche : diagnostic, pieces a prevoir, technicien, temps', all(x in copie for x in attendus), copie[-400:])
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
+        corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
+        v('courriel : diagnostic, pieces a prevoir, technicien, temps', all(x in corps for x in attendus), corps[-400:])
         d.find_element(By.ID, 'b-fin-oui').click(); time.sleep(0.2)
         v('« Oui » : retour a l accueil', d.execute_script('return window.__accueil') == 1)
         v('aucune erreur console', not [l for l in d.get_log('browser') if l['level'] == 'SEVERE'],

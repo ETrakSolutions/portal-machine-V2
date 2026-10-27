@@ -193,6 +193,48 @@
             : 'Destinataires indisponibles (listes non chargées) : utilisez « Copier la fiche ».';
     }
 
+    // ---------- technicien a prevoir (Steve, 2026-10-27) ----------
+    // Deplacement « Oui » : deux menus obligatoires, l'exigence (obligatoire, prioritaire,
+    // n'importe lequel) et le nom. Les noms viennent de ProgressionLive par la meme action
+    // que la Cedule (getcedule) ; « Pierre ou Michel » est toujours ajoute a la fin.
+    // « N'importe quel technicien » n'exige pas de nom : le menu des noms est alors grise.
+    var TECH_EXIG = { obligatoire: 'Technicien obligatoire', prioritaire: 'Technicien prioritaire', tous: "N'importe quel technicien" };
+    var TECH_DUO = 'Pierre ou Michel';
+    function dessinerTechs(noms, note) {
+        var choix = $('f-tech-nom').value;
+        $('f-tech-nom').innerHTML = '<option value="">— Technicien —</option>' +
+            noms.concat([TECH_DUO]).map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
+        $('f-tech-nom').value = choix;
+        if (note) $('f-tech-hint').textContent = note;
+    }
+    function chargerTechs() {
+        fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: 'getcedule', token: user.token }) })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var techs = d && d.ok && d.cedule && d.cedule.techs;
+                if (!techs || !techs.length) { dessinerTechs([], 'Liste des techniciens indisponible : seul « ' + TECH_DUO + ' » est proposé.'); return; }
+                // « Jean Mallet (limiteur ...) » -> « Jean Mallet », comme sur la Cedule.
+                dessinerTechs(techs.map(function (t) { return String(t.nom).replace(/\s*\(.*\)\s*$/, ''); }));
+            })
+            .catch(function () { dessinerTechs([], 'Liste des techniciens indisponible : seul « ' + TECH_DUO + ' » est proposé.'); });
+    }
+    function majDepl() {
+        var oui = val('f-depl') === 'oui';
+        $('w-tech').style.display = oui ? '' : 'none';
+        if (!oui) { $('f-tech-exig').value = ''; $('f-tech-nom').value = ''; $('f-tech-temps').value = ''; }
+        var tous = $('f-tech-exig').value === 'tous';
+        if (tous) $('f-tech-nom').value = '';
+        $('f-tech-nom').disabled = tous;
+    }
+    document.querySelectorAll('input[name="f-depl"]').forEach(function (r) { r.addEventListener('change', majDepl); });
+    $('f-tech-exig').addEventListener('change', majDepl);
+    function techTexte() {
+        var e = $('f-tech-exig').value;
+        if (val('f-depl') !== 'oui' || !e) return '';
+        return TECH_EXIG[e] + (e !== 'tous' && $('f-tech-nom').value ? ' : ' + $('f-tech-nom').value : '');
+    }
+
     // ---------- fiche texte ----------
     function fiche() {
         var L = [], ajoute = function (k, v) { if (v) L.push(k + ' : ' + v); };
@@ -212,9 +254,13 @@
         ajoute('Machine arrêtée', val('f-arret').toUpperCase()); ajoute('Demande de bypass', val('f-bypass').toUpperCase());
         ajoute('Code / message écran', $('f-code').value);
         L.push('Description (mots du client) :'); L.push($('f-desc').value.trim());
+        if ($('f-diag').value.trim()) { L.push('Diagnostic préliminaire :'); L.push($('f-diag').value.trim()); }
+        if ($('f-prevoir').value.trim()) { L.push('Pièces à prévoir :'); L.push($('f-prevoir').value.trim()); }
         var p = pieces();
         if (p.length) { L.push('Pièces demandées :'); p.forEach(function (x) { L.push('  - ' + x.qte + ' × ' + x.txt); }); }
         ajoute('Déplacement technicien', ({ oui: 'OUI', non: 'Non', '?': 'À valider' })[val('f-depl')] || '');
+        if (techTexte()) L.push(techTexte());
+        if (val('f-depl') === 'oui') ajoute('Temps approximatif prévu', $('f-tech-temps').value.trim());
         ajoute('Facturation / compte', val('f-fact') === 'oui' ? 'OUI' : '');
         return L.join('\n');
     }
@@ -259,6 +305,9 @@
         marque('w-arret', !val('f-arret'), 'machine arrêtée ?');
         marque('w-bypass', !val('f-bypass'), 'demande de bypass ?');
         marque('w-desc', !$('f-desc').value.trim(), 'description');
+        var depl = val('f-depl') === 'oui', exig = $('f-tech-exig').value;
+        marque('w-tech', depl && (!exig || (exig !== 'tous' && !$('f-tech-nom').value)),
+            !exig ? 'type de technicien (obligatoire, prioritaire…)' : 'nom du technicien');
         var a = $('sav-alert');
         a.style.display = manque.length ? 'block' : 'none';
         a.textContent = manque.length ? 'À compléter avant l’envoi : ' + manque.join(', ') + '.' : '';
@@ -330,7 +379,7 @@
         var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
         $('f-date').value = d.toISOString().slice(0, 16);
         $('f-recu').value = user.name || user.email || '';
-        majClientTag(); majType(); dessinerDest();
+        majClientTag(); majType(); majDepl(); dessinerDest();
     }
 
     function charger() {
@@ -362,6 +411,8 @@
                     'Limiteur de pompe à béton (LPB)', 'Limiteur de téléhandler (LPT)', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
                     'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance (Scale-Pro / Lite)', 'Caméras', 'Autre'];
     dessinerProduits();
+    dessinerTechs([]);
     init();
     charger();
+    chargerTechs();
 })();
