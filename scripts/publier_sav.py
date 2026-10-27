@@ -246,7 +246,7 @@ def lire_reglages(fichier):
 # facturation (846 clients sur 938 sans personne le 2026-10-07). Salesforce n'a AUCUN
 # lien fiable avec Epicor (pas de numero ERP e-Trak, comptes en double) : appariement
 # par NOM normalise (suffixes legaux retires), ou « nom + ville » pour les succursales
-# (« Wajax Limitee - Laval » = compte « Wajax - Laval »). Mesure du jour : 419 clients,
+# (« Machin Limitee - Laval » = compte « Machin - Laval »). Mesure du jour : 419 clients,
 # 777 personnes. Un contact dont le compte est dans une AUTRE ville est ecarte (85
 # clients : succursale differente ou homonyme). Les interco ne sont pas completes.
 SF_EXPORT = Path(__file__).resolve().parent / 'exporter_contacts_salesforce.mjs'
