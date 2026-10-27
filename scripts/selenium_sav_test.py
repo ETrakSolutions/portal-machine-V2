@@ -23,9 +23,9 @@ from selenium.webdriver.support.ui import Select
 PAGE = (Path(__file__).resolve().parent.parent / 'sav.html').as_uri()
 SAV = {
     'updated': '2026-09-29T15:00:00Z',
-    'clients': [['Gravier Duncan Simard', 'Saint-Ferdinand', 'QC', 'direct'],
-                ['Wajax Limitée - Laval', 'Laval', 'QC', 'dealer'],
-                ['Wajax Limitée - Chambly', 'Chambly', 'QC', 'dealer'],
+    'clients': [['Gravier Modèle Demo', 'Saint-Ferdinand', 'QC', 'direct'],
+                ['Distrex Limitée - Laval', 'Laval', 'QC', 'dealer'],
+                ['Distrex Limitée - Chambly', 'Chambly', 'QC', 'dealer'],
                 ['Prospect Sans Groupe', 'Rimouski', 'QC', '']],
     'pieces': [['E03A-0013', 'Câble Can Femelle et male M12, 5 pôles - 3m, 2 Connecteurs M12'],
                ['C01A-0005-73-360-0-250', 'Inclino e-trak 73 360 pos 0']],
@@ -39,10 +39,10 @@ SAV = {
                 {'cle': 'compta', 'nom': 'Comptabilité', 'courriel': '', 'regle': 'Facturation'},
                 {'cle': 'kevin', 'nom': 'Kevin Bérubé', 'courriel': 'kevin@test', 'regle': 'Directeur de service'}],
     'cc': ['kevin@test'],
-    'contacts': {'Gravier Duncan Simard': [['Marc Girard', 'Contremaître', '819-555-0101', 'mgirard@test'],
-                                           ['Julie Roy', '', '819-555-0102', '']],
+    'contacts': {'Gravier Modèle Demo': [['Marc Exemple', 'Contremaître', '819-555-0101', 'mexemple@test'],
+                                           ['Julie Exemple', '', '819-555-0102', '']],
                  # complete par Salesforce (2026-10-07) : la source est dans la fonction
-                 'Wajax Limitée - Chambly': [['Paul Test', 'Gérant de service · Salesforce', '450-555-0100', 'ptest@test']]},
+                 'Distrex Limitée - Chambly': [['Paul Test', 'Gérant de service · Salesforce', '450-555-0100', 'ptest@test']]},
 }
 ok, ko = [], []
 
@@ -121,15 +121,15 @@ def main():
 
         print('2) Client')
         d.find_element(By.ID, 'f-contact').send_keys('Avant')
-        items = choisir(d, 'f-compagnie', 'waj lav', 'Laval')
+        items = choisir(d, 'f-compagnie', 'dis lav', 'Laval')
         v('premier choix de client : le contact deja tape reste', d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Avant')
-        v('recherche « waj lav » : une seule succursale + nouveau client', len(items) == 2 and 'Laval' in items[0], items)
-        v('client choisi : nom rempli', d.find_element(By.ID, 'f-compagnie').get_attribute('value') == 'Wajax Limitée - Laval')
+        v('recherche « dis lav » : une seule succursale + nouveau client', len(items) == 2 and 'Laval' in items[0], items)
+        v('client choisi : nom rempli', d.find_element(By.ID, 'f-compagnie').get_attribute('value') == 'Distrex Limitée - Laval')
         v('type deduit : Dealer coche', d.find_element(By.CSS_SELECTOR, 'input[name=f-type][value=dealer]').is_selected())
         v('champ client final visible pour un dealer', d.find_element(By.ID, 'w-final').is_displayed())
         v('lieu PAS pre-rempli par la ville (chantiers ailleurs, Steve 2026-10-07)', d.find_element(By.ID, 'f-lieu').get_attribute('value') == '')
         v('client sans contact Epicor : zone contacts masquee', not d.find_element(By.ID, 'w-contacts').is_displayed())
-        choisir(d, 'f-compagnie', 'waj cham', 'Chambly')
+        choisir(d, 'f-compagnie', 'dis cham', 'Chambly')
         btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
         lab = d.find_element(By.CSS_SELECTOR, '#w-contacts label').text
         v('contact Salesforce : propose et marque comme tel', len(btn) == 1 and 'Salesforce' in btn[0].text
@@ -146,7 +146,7 @@ def main():
         v('rien de rempli tant qu on ne clique pas', d.find_element(By.ID, 'f-contact').get_attribute('value') == '')
         btn[0].click(); time.sleep(0.2)
         v('clic : nom, telephone, courriel remplis', [d.find_element(By.ID, i).get_attribute('value') for i in ('f-contact', 'f-tel', 'f-courriel')]
-          == ['Marc Girard', '819-555-0101', 'mgirard@test'])
+          == ['Marc Exemple', '819-555-0101', 'mexemple@test'])
         for i in ('f-contact', 'f-tel', 'f-courriel'): d.find_element(By.ID, i).clear()
         v('changement de client : Client direct coche', d.find_element(By.CSS_SELECTOR, 'input[name=f-type][value=direct]').is_selected())
 
@@ -154,13 +154,13 @@ def main():
         champs = ('f-contact', 'f-tel', 'f-courriel', 'f-final')
         lire = lambda: [d.find_element(By.ID, i).get_attribute('value') for i in champs]
         coches = lambda: [r.get_attribute('value') for r in d.find_elements(By.CSS_SELECTOR, 'input[name=f-type]') if r.is_selected()]
-        d.find_element(By.ID, 'f-contact').send_keys('Marc Girard'); d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
-        d.find_element(By.ID, 'f-courriel').send_keys('mgirard@test')
-        choisir(d, 'f-compagnie', 'waj lav', 'Laval')
-        v('Gravier -> Wajax Laval : contact, telephone, courriel vides', lire()[:3] == ['', '', ''], lire())
-        v('Gravier -> Wajax Laval : type du NOUVEAU client (Dealer)', coches() == ['dealer'], coches())
+        d.find_element(By.ID, 'f-contact').send_keys('Marc Exemple'); d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
+        d.find_element(By.ID, 'f-courriel').send_keys('mexemple@test')
+        choisir(d, 'f-compagnie', 'dis lav', 'Laval')
+        v('Gravier -> Distrex Laval : contact, telephone, courriel vides', lire()[:3] == ['', '', ''], lire())
+        v('Gravier -> Distrex Laval : type du NOUVEAU client (Dealer)', coches() == ['dealer'], coches())
         d.find_element(By.ID, 'f-final').send_keys('Client X'); d.find_element(By.ID, 'f-contact').send_keys('Pierre'); d.find_element(By.ID, 'f-lieu').send_keys('Chantier Laval')
-        choisir(d, 'f-compagnie', 'waj cham', 'Chambly')
+        choisir(d, 'f-compagnie', 'dis cham', 'Chambly')
         v('Laval -> Chambly : contact et client final vides', lire() == ['', '', '', ''], lire())
         v('Laval -> Chambly : lieu vide (le lieu tape pour Laval ne reste pas)', d.find_element(By.ID, 'f-lieu').get_attribute('value') == '',
           d.find_element(By.ID, 'f-lieu').get_attribute('value'))
@@ -174,17 +174,17 @@ def main():
         v('en continuant de taper le nouveau nom : le contact saisi reste', lire()[0] == 'Robert', lire())
         v('nom inconnu : marque « nouveau client »', 'nouveau client' in d.find_element(By.ID, 'f-type-tag').text)
         d.find_element(By.ID, 'f-contact').clear()
-        choisir(d, 'f-compagnie', 'gravier dun', 'Gravier')
+        choisir(d, 'f-compagnie', 'gravier mod', 'Gravier')
 
         print('3) Nom tape sans choisir dans la liste (correctif 2026-09-30)')
         el = d.find_element(By.ID, 'f-compagnie'); el.clear(); time.sleep(0.2)
-        el.send_keys('gravier duncan simard'); d.find_element(By.ID, 'f-billet').click(); time.sleep(0.4)
+        el.send_keys('gravier modèle demo'); d.find_element(By.ID, 'f-billet').click(); time.sleep(0.4)
         btn = d.find_elements(By.CSS_SELECTOR, '#f-contacts button')
         v('nom tape au complet (casse ignoree) : contacts proposes', d.find_element(By.ID, 'w-contacts').is_displayed()
           and len(btn) == 2, [b.text for b in btn])
         el.send_keys(' Inc'); time.sleep(0.3)
         v('nom qui ne correspond plus : contacts masques', not d.find_element(By.ID, 'w-contacts').is_displayed())
-        choisir(d, 'f-compagnie', 'gravier dun', 'Gravier')
+        choisir(d, 'f-compagnie', 'gravier mod', 'Gravier')
 
         print('4) Sections 5 et 6 retirees, destinataires fixes')
         titres = [h.text for h in d.find_elements(By.CSS_SELECTOR, '.sav-sec h2')]
@@ -209,7 +209,7 @@ def main():
         v('envoi refuse tant que manquent contact, tel, produit, description',
           all(x in alerte for x in ('nom du contact', 'téléphone', 'produit', 'description'))
           and 'routage' not in alerte and not d.execute_script('return window.__mailto'), alerte)
-        d.find_element(By.ID, 'f-contact').send_keys('Marc Girard')
+        d.find_element(By.ID, 'f-contact').send_keys('Marc Exemple')
         d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
         d.find_elements(By.CSS_SELECTOR, '#f-produits input')[0].click()
         d.find_element(By.ID, 'f-desc').send_keys('Besoin pièces E03A-0013, câble M12 3 m.')
@@ -232,10 +232,10 @@ def main():
         v('destinataires = Kevin et Luna, meme avec une piece et un bypass', dest == 'kevin@test,luna@test', dest)
         v('pas de copie en double (Kevin deja destinataire)', not prm.get('cc'), prm.get('cc'))
         v('sujet : URGENT (bypass) + compagnie + produit',
-          (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Duncan Simard — Limiteur d'excavatrice (LPE) / Autre : Module GPS", prm.get('subject'))
+          (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Modèle Demo — Limiteur d'excavatrice (LPE) / Autre : Module GPS", prm.get('subject'))
         v('corps : produits avec la precision de « Autre »', "Produit : Limiteur d'excavatrice (LPE), Autre : Module GPS" in corps, corps[:400])
         v('corps : client et contact dans la phrase d en-tete, piece, bypass ; plus de routage ni de suivi',
-          all(x in corps for x in ('Demande de Marc Girard', 'chez Gravier Duncan Simard', '1 × E03A-0013',
+          all(x in corps for x in ('Demande de Marc Exemple', 'chez Gravier Modèle Demo', '1 × E03A-0013',
                                    'bypass : OUI'))
           and not any(x in corps for x in ('ROUTAGE', 'SUIVI', 'Assigné à', 'Rappel promis')), corps[:200])
         print('6) Fermeture de la demande apres l envoi')
@@ -243,7 +243,7 @@ def main():
         v('apres l envoi : fenetre « Retour a l accueil ? »', bool(fin) and 'Retour à l’accueil ?' in fin, fin)
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
         v('« Non » : fenetre fermee, fiche conservee, pas de retour', not d.execute_script("return !!document.getElementById('sav-fin');")
-          and d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Marc Girard' and not d.execute_script('return window.__accueil'))
+          and d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Marc Exemple' and not d.execute_script('return window.__accueil'))
         print('7) Diagnostic, pieces a prevoir et technicien (Steve, 2026-10-27)')
         champs = d.execute_script("return [...document.querySelectorAll('#sav-form .sav-f label')].map(l=>l.textContent.trim())")
         i = next((k for k, t in enumerate(champs) if t.startswith('Description')), -1)
@@ -297,7 +297,7 @@ def main():
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
         d.find_element(By.ID, 'f-tel2').send_keys('819-555-0102')
         d.find_element(By.ID, 'f-courriel').clear()
-        d.find_element(By.ID, 'f-courriel').send_keys('mgirard@test')
+        d.find_element(By.ID, 'f-courriel').send_keys('mexemple@test')
         d.find_element(By.ID, 'f-nb').send_keys('2')
         d.find_element(By.ID, 'f-adresse').send_keys('1, rue de l’Atelier, Victoriaville, QC, G6P 0A1')
         d.find_element(By.ID, 'f-lieu').send_keys('chantier Lévis')
@@ -306,7 +306,7 @@ def main():
         corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
         lignes = corps.split('\n')
         v('en-tete : contact, les DEUX telephones et le courriel dans une phrase',
-          'Demande de Marc Girard (819-555-0101 · 819-555-0102 · mgirard@test) chez Gravier Duncan Simard' in corps,
+          'Demande de Marc Exemple (819-555-0101 · 819-555-0102 · mexemple@test) chez Gravier Modèle Demo' in corps,
           next((l for l in lignes if l.startswith('Demande de ')), ''))
         v('nombre de machines touchees sur la ligne du produit',
           any(l.startswith('Produit : ') and '2 machines touchées' in l for l in lignes),
