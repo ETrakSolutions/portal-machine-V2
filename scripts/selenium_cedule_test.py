@@ -199,6 +199,29 @@ try:
           dv.execute_script("return document.getElementById('ced-week').textContent;") != loin
           and dv.execute_script("return document.getElementById('ced-prev').disabled && document.getElementById('ced-auj').disabled;"))
 
+    print('--- 4b) sous-titre et rafraichissement (2026-10-27) ---')
+    # Le sous-titre annoncait « 4 semaines » en dur ; il annonce maintenant le compte reel,
+    # qui vaut 4 ou 5 selon le jour ou la cedule commence. n = clics pour atteindre la
+    # derniere semaine, donc n + 1 semaines.
+    st = dv.execute_script("return document.getElementById('ced-sous-titre').textContent;")
+    check('sous-titre : %d semaines annoncees (%s)' % (n + 1, st), ('%d semaines' % (n + 1)) in st)
+
+    # Un rafraichissement ne ramene pas la personne a la semaine courante.
+    dv.execute_script("document.getElementById('ced-next').click();"); time.sleep(0.25)
+    avant = dv.execute_script("return document.getElementById('ced-week').textContent;")
+    dv.execute_script("window.__cedCharger();"); time.sleep(0.8)
+    check('rafraichissement : la semaine regardee ne bouge pas (%s)' % avant,
+          dv.execute_script("return document.getElementById('ced-week').textContent;") == avant)
+
+    # Un rafraichissement qui echoue garde la grille a l'ecran : l'heure affichee reste
+    # celle des donnees montrees, donc rien ne ment.
+    dv.execute_script("window.__f = window.fetch; window.fetch = function(){ return Promise.reject(new Error('hors ligne')); };")
+    dv.execute_script("window.__cedCharger();"); time.sleep(0.8)
+    check('rafraichissement en echec : la grille reste affichee',
+          dv.execute_script("return !!document.querySelector('table.ced');"))
+    dv.execute_script("window.fetch = window.__f;")
+    dv.execute_script("document.getElementById('ced-auj').click();"); time.sleep(0.25)
+
     print('--- 5) aucune donnee client ---')
     txt = dv.execute_script("return document.getElementById('ced-root').innerText;")
     check('ni client, ni adresse, ni type de tache dans la page',

@@ -23,6 +23,9 @@
     var lang = function () { return (typeof i18n !== 'undefined' && i18n.getLang) ? i18n.getLang() : 'fr'; };
     var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); };
     var DATA = null, semaine = 0, semaines = [];
+    var MAJ_MS = 15 * 60 * 1000;          // meme rythme que le cache serveur (CEDULE_CACHE_S)
+    var FOCUS_MS = 60 * 1000;             // delai minimal entre deux rechargements au focus
+    var dernierChargement = 0;
 
     function lundiDe(j) {                       // 'yyyy-mm-dd' du lundi de la semaine de j
         var d = new Date(j + 'T12:00:00Z');
@@ -54,6 +57,11 @@
         if (!DATA.techs.length) { grid.className = 'ced-msg'; grid.textContent = t('ced.empty'); return; }
         var lun = semaines[semaine], jours = [0, 1, 2, 3, 4, 5, 6].map(function (i) { return plus(lun, i); });
         var auj = aujourdhui();
+        // Le sous-titre annonçait « 4 semaines » en dur. CEDULE_JOURS vaut 28 jours CIVILS
+        // a partir d'aujourd'hui : ca ne tombe sur quatre lundis que si on est un lundi, les
+        // six autres jours la grille en porte cinq. On affiche le compte reel.
+        var st = document.getElementById('ced-sous-titre');
+        if (st) st.textContent = t('ced.subtitle', { n: semaines.length });
         document.getElementById('ced-week').textContent = t('ced.week_of', { date: fmtJour(lun, { day: 'numeric', month: 'long', year: 'numeric' }) });
         document.getElementById('ced-prev').disabled = (semaine === 0);
         document.getElementById('ced-next').disabled = (semaine === semaines.length - 1);
@@ -91,6 +99,16 @@
             heure: g.toLocaleTimeString(lang() === 'en' ? 'en-CA' : 'fr-CA', { hour: '2-digit', minute: '2-digit' }) }) : '';
     }
 
+    // Un rafraichissement qui echoue ne doit PAS effacer une grille qui marche : on garde
+    // ce qui est a l'ecran. L'heure affichee en bas reste celle des donnees montrees, elle
+    // ne ment donc pas. Seul un premier chargement rate laisse la page sur le message.
+    function echec() {
+        if (DATA) return;
+        var grid = document.getElementById('ced-grid');
+        grid.className = 'ced-msg';
+        grid.textContent = t('ced.error');
+    }
+
     function charger() {
         fetch(window.PORTAL_API_URL, {
             method: 'POST', headers: { 'Content-Type': 'text/plain' },
@@ -98,27 +116,27 @@
         })
             .then(function (r) { return r.json(); })
             .then(function (d) {
-                var grid = document.getElementById('ced-grid');
                 if (d && d.error === 'forbidden') { refuser(); return; }
-                if (!d || !d.ok || !d.cedule) {
-                    grid.className = 'ced-msg';
-                    grid.textContent = (d && d.error === 'forbidden') ? t('ced.denied_desc') : t('ced.error');
-                    return;
-                }
+                if (!d || !d.ok || !d.cedule) { echec(); return; }
+                dernierChargement = Date.now();
+                // La semaine REGARDEE survit au rafraichissement : ramener quelqu'un a la
+                // semaine courante pendant qu'il consulte dans trois semaines serait hostile.
+                var affichee = semaines[semaine] || null;
                 DATA = d.cedule;
                 var vus = {};
                 semaines = [];
                 (DATA.jours || []).forEach(function (j) { var l = lundiDe(j); if (!vus[l]) { vus[l] = 1; semaines.push(l); } });
                 if (!semaines.length) semaines = [lundiDe(aujourdhui())];
-                semaine = 0;
+                var i = affichee ? semaines.indexOf(affichee) : -1;
+                semaine = i >= 0 ? i : 0;
                 dessiner();
             })
-            .catch(function () {
-                var grid = document.getElementById('ced-grid');
-                grid.className = 'ced-msg';
-                grid.textContent = t('ced.error');
-            });
+            .catch(echec);
     }
+
+    // Seam de test, comme window.__savMailto dans js/sav.js : le test navigateur declenche
+    // un rafraichissement sans attendre quinze minutes.
+    window.__cedCharger = charger;
 
     // Retour direct a la semaine courante : la navigation va jusqu'a quatre semaines en
     // avant, et il fallait cliquer « precedente » autant de fois pour revenir.
@@ -129,5 +147,16 @@
     document.getElementById('ced-prev').addEventListener('click', function () { if (semaine > 0) { semaine--; dessiner(); } });
     document.getElementById('ced-next').addEventListener('click', function () { if (semaine < semaines.length - 1) { semaine++; dessiner(); } });
     window.addEventListener('langchange', dessiner);
+
+    // Rafraichissement (2026-10-27). Le bas de la grille annonce « actualise aux 15 min » :
+    // c'etait vrai du cache serveur et faux de la page, qui ne chargeait qu'une seule fois.
+    // Une cedule laissee ouverte toute la matinee montrait des donnees figees, et le jour
+    // courant finissait par etre le mauvais — d'autant plus depuis qu'on repere aujourd'hui
+    // aux tirets des jours passes. Deux declencheurs : le temps, et le retour sur l'onglet.
+    setInterval(function () { charger(); }, MAJ_MS);
+    document.addEventListener('visibilitychange', function () {
+        // Garde-fou : des alt-tab repetes ne doivent pas marteler le serveur.
+        if (document.visibilityState === 'visible' && Date.now() - dernierChargement > FOCUS_MS) charger();
+    });
     charger();
 })();
