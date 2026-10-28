@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Banque d'installation</title>
+    <link rel="stylesheet" href="css/style.css?v=176">
+    <link rel="stylesheet" href="css/admin.css?v=175">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .in-wrap { max-width: 1040px; margin: 0 auto; padding: 1rem; }
+        .in-sub { color: #9aa7b2; font-size: 0.85rem; margin: 0.2rem 0 1rem; }
+        .in-bar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 8px; }
+        .in-bar2 { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-bottom: 10px; }
+        @media (max-width: 800px) { .in-bar { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 520px) { .in-bar, .in-bar2 { grid-template-columns: 1fr; } }
+        .in-bar select, .in-bar2 input, .in-f input, .in-f textarea, .in-f select {
+            width: 100%; box-sizing: border-box; background: #2a2a2a; color: #eee; border: 1px solid #444;
+            border-radius: 8px; padding: 9px 10px; font: inherit; font-size: 0.9rem; }
+        .in-bar select:focus, .in-bar2 input:focus, .in-f input:focus, .in-f textarea:focus, .in-f select:focus { outline: none; border-color: #FF8C00; }
+        .in-filtres { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+        .in-chip { background: #262626; color: #ddd; border: 1px solid #444; border-radius: 99px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }
+        .in-chip.on { border-color: #FF8C00; background: rgba(255,140,0,.12); color: #FFB45C; }
+        .in-compte { color: #8a97a3; font-size: 0.8rem; margin-left: auto; }
+        .in-btn { background: #2A2A2A; color: #ddd; border: 1px solid #444; border-radius: 8px; padding: 8px 14px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+        .in-btn:hover { border-color: #FF8C00; }
+        .in-btn.main { background: #FF8C00; color: #1a1a1a; border-color: #FF8C00; font-weight: 800; }
+        .in-btn.ok { border-color: #2ecc71; color: #9ff0bf; }
+        .in-btn.danger { color: #ffb3aa; }
+        .in-btn.x { padding: 6px 10px; }
+        .in-card { background: #1f1f1f; border: 1px solid rgba(192,192,192,0.18); border-radius: 12px; margin-bottom: 10px; }
+        .in-card.brouillon { border-style: dashed; border-color: rgba(255,140,0,.55); }
+        .in-head { padding: 12px 14px; cursor: pointer; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+        .in-head b { color: #fff; font-size: 0.95rem; }
+        .in-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+        .in-tag.prod { background: rgba(0,98,204,.22); color: #8bb8f0; }
+        .in-tag.type { background: rgba(160,160,160,.2); color: #ddd; }
+        .in-tag.brouillon { background: rgba(255,140,0,.2); color: #FFB45C; }
+        .in-tag.en-manque { background: rgba(220,60,60,.18); color: #ff8a80; }
+        .in-nb { color: #8a97a3; font-size: 0.78rem; margin-left: auto; }
+        .in-body { display: none; padding: 0 14px 14px; }
+        .in-card.open .in-body { display: block; }
+        .in-sec { margin: 10px 0 4px; color: #FFB45C; font-weight: 700; font-size: 0.85rem; }
+        .in-etape { border-left: 3px solid #FF8C00; background: #262626; border-radius: 0 8px 8px 0; padding: 9px 12px; margin-bottom: 8px; }
+        .in-etape h4 { margin: 0 0 6px; color: #FFB45C; font-size: 0.85rem; }
+        .in-txt { color: #e6e6e6; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.45; }
+        .in-autre { color: #9fb0c0; font-size: 0.8rem; margin-top: 4px; white-space: pre-wrap; }
+        .in-autre b { color: #6f8396; font-weight: 600; margin-right: 4px; }
+        .in-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .in-photo { width: 120px; height: 90px; border-radius: 8px; background: #333 center/cover no-repeat; border: 1px solid #444; cursor: zoom-in; position: relative; }
+        .in-photo.charge::after { content: '…'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #888; }
+        .in-photo .x { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,.7); color: #fff; border: 0; border-radius: 99px; width: 22px; height: 22px; cursor: pointer; font-size: 12px; }
+        .in-pieces { margin: 0; padding-left: 18px; color: #8bb8f0; font-size: 0.85rem; }
+        .in-pieges { border-left: 3px solid #e74c3c; background: rgba(231,76,60,.08); border-radius: 0 8px 8px 0; padding: 9px 12px; }
+        .in-meta { color: #8a97a3; font-size: 0.76rem; margin: 10px 0 8px; }
+        .in-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .in-vide { text-align: center; color: #9aa7b2; padding: 2rem 1rem; }
+        .in-msg { text-align: center; color: #bbb; padding: 3rem 1rem; }
+        .in-note { color: #9aa7b2; font-size: 0.8rem; }
+        .in-alert { background: rgba(231,76,60,.12); border: 1px solid rgba(231,76,60,.5); color: #ffb3aa; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin: 8px 0; display: none; }
+        .in-ok { background: rgba(46,204,113,.12); border: 1px solid rgba(46,204,113,.5); color: #9ff0bf; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 10px; display: none; }
+        .in-edit { background: #1f1f1f; border: 1px solid #FF8C00; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: none; }
+        .in-edit h2 { color: #fff; font-size: 1rem; margin: 0 0 10px; }
+        .in-edit h3 { color: #fff; font-size: 0.9rem; margin: 16px 0 6px; }
+        .in-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+        .in-grid .full { grid-column: 1 / -1; }
+        @media (max-width: 700px) { .in-grid { grid-template-columns: 1fr; } }
+        .in-f label { display: block; color: #aab6c2; font-size: 0.78rem; margin-bottom: 3px; }
+        .in-f label .req { color: #FF8C00; }
+        .in-f textarea { min-height: 80px; resize: vertical; }
+        .in-f.err input, .in-f.err textarea, .in-f.err select { border-color: #e74c3c; box-shadow: 0 0 0 1px #e74c3c; }
+        .in-f.autre-l label { color: #7fa3c4; }
+        .in-f.autre-l input, .in-f.autre-l textarea { border-style: dashed; }
+        .in-ennote { color: #7fa3c4; font-size: 0.78rem; margin: 4px 0 8px; }
+        .in-ee { border: 1px solid #3a3a3a; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+        .in-ee-head { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; color: #FFB45C; font-weight: 700; font-size: 0.85rem; }
+        .in-ee-head span { margin-right: auto; }
+        .in-pr { display: grid; grid-template-columns: 1fr 80px 36px; gap: 8px; margin-bottom: 8px; align-items: start; }
+        .in-ac { position: relative; }
+        .in-ac-list { position: absolute; z-index: 20; left: 0; right: 0; top: 100%; background: #262626; border: 1px solid #555;
+                      border-radius: 8px; max-height: 260px; overflow-y: auto; margin-top: 2px; display: none; }
+        .in-ac-list div { padding: 7px 10px; cursor: pointer; font-size: 0.85rem; color: #eee; border-bottom: 1px solid #333; }
+        .in-ac-list div small { color: #8a97a3; margin-left: 6px; }
+        .in-ac-list div:hover, .in-ac-list div.on { background: #3a2a14; }
+        .in-up { display: inline-flex; gap: 6px; align-items: center; margin-top: 8px; }
+        .in-up input { display: none; }
+        .in-boite { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.88); display: none; align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; }
+        .in-boite img { max-width: 100%; max-height: 100%; border-radius: 6px; }
+        .pl-btn { display:inline-block; background:#FF8C00; color:#1a1a1a; text-decoration:none; border-radius:10px; padding:12px 22px; font-weight:800; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="header-back" title="Retour au hub">&larr; <span data-tx="Retour|Back">Retour</span></a>
+            <div class="logo-section">
+                <a href="index.html" title="Retour au hub">
+                    <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+                </a>
+            </div>
+            <div class="lang-switch" style="position:absolute;right:0;">
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="in-wrap">
+            <div id="in-denied" class="in-msg" style="display:none;">
+                <div style="font-size:2.4rem">&#128274;</div>
+                <h2 style="color:#fff;" data-tx="Accès réservé à l'équipe e-Trak|Reserved for the e-Trak team">Accès réservé à l'équipe e-Trak</h2>
+                <p data-tx="La banque d'installation est réservée aux comptes internes.|The installation library is reserved for internal accounts.">La banque d'installation est réservée aux comptes internes.</p>
+                <a href="index.html" class="pl-btn" data-tx="Retour au hub|Back to hub">Retour au hub</a>
+            </div>
+
+            <div id="in-root" style="display:none;">
+                <div class="admin-hero" style="padding-bottom:0.2rem;">
+                    <h1 class="admin-hero-title" data-tx="Banque d'installation|Installation library">Banque d'installation</h1>
+                </div>
+                <p class="in-sub" data-tx="Notes d'installation par modèle de machine et par produit : étapes avec photos, pièces et harnais, pièges connus, temps d'installation. Usage interne. Une note ajoutée ou modifiée reste en brouillon jusqu'à sa validation.|Installation notes by machine model and product: steps with photos, parts and harnesses, known pitfalls, installation time. Internal use. A new or edited note stays a draft until it is approved.">Notes d'installation par modèle de machine et par produit.</p>
+
+                <div class="in-ok" id="in-ok"></div>
+
+                <section class="in-edit" id="in-edit">
+                    <h2 id="e-titre">Nouvelle note</h2>
+                    <div class="in-note" id="e-note" style="margin-bottom:10px;"></div>
+                    <div class="in-grid">
+                        <div class="in-f" id="w-type"><label><span data-tx="Type de machine|Machine type">Type de machine</span> <span class="req">*</span></label><select id="e-type"></select></div>
+                        <div class="in-f" id="w-fab"><label><span data-tx="Fabricant|Manufacturer">Fabricant</span> <span class="req">*</span></label><select id="e-fab"></select></div>
+                        <div class="in-f" id="w-modele"><label><span data-tx="Modèle|Model">Modèle</span> <span class="req">*</span></label><select id="e-modele"></select></div>
+                        <div class="in-f"><label data-tx="Temps d'installation|Installation time">Temps d'installation</label><input type="text" id="e-temps" maxlength="60" data-txp="ex. 6 h, 1 jour et demi|e.g. 6 h, 1.5 days"></div>
+                        <div class="in-f" id="w-produit"><label><span data-tx="Produit|Product">Produit</span> <span class="req">*</span></label><select id="e-produit"></select></div>
+                        <div class="in-f"><label data-tx="Option (facultatif)|Option (optional)">Option (facultatif)</label><select id="e-option"></select></div>
+                    </div>
+                    <div class="in-ennote" data-tx="Écrivez dans votre langue : l'autre (champs en pointillé) est traduite automatiquement à l'enregistrement. Le validateur révise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in your language: the other one (dashed fields) is translated automatically when saving. The approver reviews the translation. No section is mandatory for now.">Écrivez dans votre langue.</div>
+
+                    <h3 data-tx="Étapes et photos|Steps and photos">Étapes et photos</h3>
+                    <div id="e-etapes"></div>
+                    <button type="button" class="in-btn" id="b-etape" data-tx="+ Ajouter une étape|+ Add a step">+ Ajouter une étape</button>
+
+                    <h3 data-tx="Pièces et harnais|Parts and harnesses">Pièces et harnais</h3>
+                    <div id="e-pieces"></div>
+                    <button type="button" class="in-btn" id="b-piece" data-tx="+ Ajouter une pièce|+ Add a part">+ Ajouter une pièce</button>
+                    <div class="in-note" style="margin-top:4px;" data-tx="Recherche par numéro ou par description, ou texte libre.|Search by number or description, or free text.">Recherche par numéro ou par description.</div>
+
+                    <h3 data-tx="Pièges connus|Known pitfalls">Pièges connus</h3>
+                    <div class="in-grid">
+                        <div class="in-f full" data-l="fr"><label data-tx="Pièges connus — français|Known pitfalls — French">Pièges connus — français</label><textarea id="e-pieges" maxlength="3000"></textarea></div>
+                        <div class="in-f full" data-l="en"><label data-tx="Pièges connus — anglais|Known pitfalls — English">Pièges connus — anglais</label><textarea id="e-pieges-en" maxlength="3000"></textarea></div>
+                    </div>
+
+                    <div class="in-alert" id="e-alert"></div>
+                    <div class="in-actions" style="margin-top:12px;">
+                        <button type="button" class="in-btn main" id="b-enreg" data-tx="Enregistrer|Save">Enregistrer</button>
+                        <button type="button" class="in-btn" id="b-annuler" data-tx="Annuler|Cancel">Annuler</button>
+                    </div>
+                </section>
+
+                <div class="in-bar">
+                    <select id="f-type"></select>
+                    <select id="f-fab"></select>
+                    <select id="f-modele"></select>
+                    <select id="f-produit"></select>
+                </div>
+                <div class="in-bar2">
+                    <input type="text" id="f-q" autocomplete="off" data-txp="Rechercher : étape, pièce, piège…|Search: step, part, pitfall…">
+                    <button type="button" class="in-btn main" id="b-nouvelle" data-tx="+ Nouvelle note|+ New note">+ Nouvelle note</button>
+                </div>
+                <div class="in-filtres">
+                    <button type="button" class="in-chip on" data-vue="tout" data-tx="Toutes|All">Toutes</button>
+                    <button type="button" class="in-chip" data-vue="brouillons" id="c-brouillons">Brouillons</button>
+                    <span class="in-compte" id="in-compte">Chargement…</span>
+                </div>
+                <div id="in-liste"></div>
+            </div>
+        </div>
+    </main>
+    <div class="in-boite" id="in-boite"><img alt=""></div>
+
+    <script src="js/config.js?v=2"></script>
+    <script src="js/perm-access.js?v=2"></script>
+    <script src="js/translations.js?v=270"></script>
+    <script src="js/i18n.js?v=167"></script>
+    <script src="js/heartbeat.js?v=5"></script>
+    <script src="js/version-check.js?v=2"></script>
+    <script src="js/installation.js?v=1"></script>
+</body>
+</html>
