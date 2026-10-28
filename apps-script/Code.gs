@@ -80,6 +80,10 @@ function doPost(e) {
     if (action === 'getprepjobs')    return jsonOut(getPrepJobs(body));
     if (action === 'getsav')         return jsonOut(getSav(body));
     if (action === 'setsav')         return jsonOut(setSav(body));
+    if (action === 'getdiag')        return jsonOut(getDiag(body));
+    if (action === 'savediag')       return jsonOut(saveDiag(body));
+    if (action === 'validediag')     return jsonOut(valideDiag(body));
+    if (action === 'deletediag')     return jsonOut(deleteDiag(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
@@ -146,7 +150,8 @@ function jsonOut(obj) {
 var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
-                      'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER'];
+                      'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
+                      'DIAG_SHEET_ID'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -1450,6 +1455,301 @@ function setSav(body) {
     return { ok: true, clients: clients.length, pieces: pieces.length, contacts: Object.keys(contacts).length,
              chunks: n, octets: raw.length };
   });
+}
+
+/* ============================ BASE DE DIAGNOSTIC SAV ============================ */
+// Decision Steve, 2026-10-13 : base des pannes connues et de leurs solutions, remplie
+// depuis le portail par l'equipe interne (techniciens sur la route compris), sans licence
+// Claude. AUCUN historique d'intervention : seulement symptome -> causes -> solutions.
+//  - Lecture et saisie : roles internes avec la case SAV (savAccess) ; jamais dealer,
+//    distributeur, invite ni le PIN seul (il faut une identite pour signer la fiche).
+//  - Interne seulement : rien de cette base ne sort vers un compte externe.
+//  - Toute fiche soumise est un BROUILLON, visible de son auteur et des validateurs, tant
+//    qu'un validateur ne l'a pas approuvee. Validateur = case « Valider diag »
+//    (diagValidate) du tableau des permissions ; defaut : administrateur et ingenierie
+//    (Kevin Berube, service). Une fiche ecrite par un validateur est validee d'office.
+//  - Un non-validateur qui modifie une fiche validee cree une PROPOSITION (brouillon qui
+//    porte remplace = id) ; a la validation, elle remplace le contenu de l'original.
+// STOCKAGE : une Google Sheet privee du compte etrak.portail — PAS les proprietes du
+// script (quota de 500 Ko pour tout le portail, incident du 2026-10-01) et PAS le depot
+// GitHub (public). Creee au premier enregistrement (ou par _authDiag) ; son id est dans
+// la propriete DIAG_SHEET_ID (SENSITIVE_KEYS). Une ligne par fiche. Le serveur ne lit
+// QUE la colonne « donnees » (JSON) ; les autres colonnes sont une copie lisible pour
+// qui ouvre la feuille (neutralisees si elles commencent par = + - @ : pas de formule).
+// Aucun courriel ne sort : seuls les noms des auteurs et validateurs sont renvoyes.
+var DIAG_ROLES_VALIDATION = ['administrateur', 'ingenierie'];
+var DIAG_COLS = ['id', 'statut', 'produit', 'symptome', 'modifie_le', 'modifie_par', 'donnees'];
+var DIAG_COL_DONNEES = 7;
+var DIAG_MAX_CAUSES = 12;
+var DIAG_MAX_FICHE = 40000;   // caracteres de JSON par fiche (une cellule en porte 50 000)
+
+function _diagAppelant(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var u = _findUser(sess.u);
+  if (!u || u.active === false) return { error: 'authentication required' };
+  if (!_roleHasAccess(u.role, 'savAccess', SAV_ROLES)) return { error: 'forbidden' };
+  return { user: u, moi: String(u.email || u.username || '').toLowerCase(),
+           nom: String(u.name || u.email || u.username || ''),
+           valideur: _roleHasAccess(u.role, 'diagValidate', DIAG_ROLES_VALIDATION) };
+}
+
+// Ouvre la feuille ; la cree seulement si creer est vrai (sous verrou : jamais deux feuilles).
+function _diagFeuille(creer) {
+  var id = PROPS.getProperty('DIAG_SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id).getSheets()[0];
+  if (!creer) return null;
+  var ss = SpreadsheetApp.create('Base de diagnostic SAV - Portail e-Trak');
+  var sh = ss.getSheets()[0];
+  sh.setName('Fiches');
+  sh.appendRow(DIAG_COLS);
+  sh.setFrozenRows(1);
+  PROPS.setProperty('DIAG_SHEET_ID', ss.getId());
+  return sh;
+}
+
+function _diagLire(sh) {
+  var out = [];
+  if (!sh) return out;
+  var v = sh.getDataRange().getValues();
+  for (var i = 1; i < v.length; i++) {
+    var f;
+    try { f = JSON.parse(v[i][DIAG_COL_DONNEES - 1]); } catch (e) { continue; }
+    if (f && f.id) { f._ligne = i + 1; out.push(f); }
+  }
+  return out;
+}
+
+function _diagCellule(s) {
+  s = String(s === null || s === undefined ? '' : s);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+
+function _diagEcrire(sh, f) {
+  var copie = {};
+  Object.keys(f).forEach(function (k) { if (k !== '_ligne') copie[k] = f[k]; });
+  var ligne = [f.id, f.statut, _diagCellule(f.produit), _diagCellule(f.symptome), f.modifieLe,
+               _diagCellule(f.modifieParNom), JSON.stringify(copie)];
+  if (f._ligne) sh.getRange(f._ligne, 1, 1, ligne.length).setValues([ligne]);
+  else sh.appendRow(ligne);
+}
+
+// Liste blanche de ce qui sort vers la page : jamais un courriel.
+function _diagVue(f, a) {
+  return { id: f.id, statut: f.statut, produit: f.produit, symptome: f.symptome, code: f.code || '',
+           motsCles: f.motsCles || '', causes: (f.causes || []).map(function (c) {
+             return { cause: c.cause, solution: c.solution, pieces: c.pieces || '' }; }),
+           auteurNom: f.auteurNom || '', creeLe: f.creeLe || '', modifieParNom: f.modifieParNom || '',
+           modifieLe: f.modifieLe || '', valideParNom: f.valideParNom || '', valideLe: f.valideLe || '',
+           remplace: f.remplace || '', mien: f.auteur === a.moi, en: _diagEnVue(f),
+           bilingue: _diagBilingue(f) };
+}
+
+// Contenu soumis par la page : champs prevus seulement, longueurs bornees.
+// Bilingue (Steve, 2026-10-21) : chaque champ peut venir en francais OU en anglais (les
+// techniciens de Val-trak ecrivent en anglais) ; il en faut au moins une des deux langues.
+function _diagContenu(x) {
+  if (!x || typeof x !== 'object') return { error: 'invalid fiche' };
+  var str = function (v, n) { return String(v === null || v === undefined ? '' : v).trim().slice(0, n); };
+  var en = (x.en && typeof x.en === 'object') ? x.en : {};
+  var c = { produit: str(x.produit, 80), symptome: str(x.symptome, 300), code: str(x.code, 120),
+            motsCles: str(x.motsCles, 200), causes: [],
+            enSoumis: { symptome: str(en.symptome, 300), motsCles: str(en.motsCles, 200), causes: [] } };
+  if (!c.produit) return { error: 'produit requis' };
+  if (!c.symptome && !c.enSoumis.symptome) return { error: 'symptome requis' };
+  var l = Array.isArray(x.causes) ? x.causes : [], le = Array.isArray(en.causes) ? en.causes : [];
+  for (var i = 0; i < Math.max(l.length, le.length) && c.causes.length < DIAG_MAX_CAUSES; i++) {
+    var k = l[i] || {}, ke = le[i] || {};
+    var cause = str(k.cause, 300), solution = str(k.solution, 4000), pieces = str(k.pieces, 300);
+    var causeEn = str(ke.cause, 300), solutionEn = str(ke.solution, 4000);
+    if (!cause && !solution && !pieces && !causeEn && !solutionEn) continue;
+    if ((!cause && !causeEn) || (!solution && !solutionEn)) return { error: 'cause et solution requises (cause ' + (i + 1) + ')' };
+    c.causes.push({ cause: cause, solution: solution, pieces: pieces });
+    c.enSoumis.causes.push({ cause: causeEn, solution: solutionEn });
+  }
+  if (!c.causes.length) return { error: 'au moins une cause' };
+  return c;
+}
+var DIAG_CHAMPS = ['produit', 'symptome', 'code', 'motsCles', 'causes', 'en', 'src'];
+
+// ---- Fiches bilingues (Steve, 2026-10-21) ----
+// On ecrit dans SA langue ; le serveur traduit vers l'autre a l'enregistrement (LanguageApp,
+// Google Translate integre a Apps Script : ni cle ni cout). f.src retient, champ par champ,
+// la langue ORIGINALE ('fr' ou 'en'). Regles par champ :
+//  - une seule langue remplie -> l'autre est traduite, la remplie devient l'originale ;
+//  - l'originale modifiee (et pas l'autre) -> l'autre est retraduite ;
+//  - la traduction modifiee a la main -> c'est une correction : gardee, rien n'est retraduit ;
+//  - les deux modifiees -> les deux gardees.
+// Une fiche ne peut PAS etre validee tant qu'un champ obligatoire manque dans une des deux
+// langues (_diagBilingue) — le validateur revise la traduction.
+function _diagTraduire(t, de, vers) {
+  if (!t) return '';
+  try { return String(LanguageApp.translate(t, de, vers) || ''); }
+  catch (e) { Logger.log('diag : traduction impossible : ' + e); return ''; }
+}
+function _diagPaire(fr, en, afr, aen, asrc) {
+  if (!fr && !en) return { fr: '', en: '', src: '' };
+  if (fr && !en) return { fr: fr, en: _diagTraduire(fr, 'fr', 'en'), src: 'fr' };
+  if (en && !fr) return { fr: _diagTraduire(en, 'en', 'fr'), en: en, src: 'en' };
+  var src = asrc === 'en' ? 'en' : 'fr';
+  var frCh = fr !== (afr || ''), enCh = en !== (aen || '');
+  if (frCh && !enCh && src === 'fr') return { fr: fr, en: _diagTraduire(fr, 'fr', 'en'), src: 'fr' };
+  if (enCh && !frCh && src === 'en') return { fr: _diagTraduire(en, 'en', 'fr'), en: en, src: 'en' };
+  return { fr: fr, en: en, src: src };      // inchange, correction de la traduction, ou les deux a la main
+}
+function _diagTraduireFiche(c, avant) {
+  avant = avant || {};
+  var ae = avant.en || {}, as = avant.src || {}, ac = avant.causes || [], aec = ae.causes || [], asc = as.causes || [];
+  var so = c.enSoumis || { causes: [] }, en = { causes: [] }, src = { causes: [] }, r;
+  r = _diagPaire(c.symptome, so.symptome, avant.symptome, ae.symptome, as.symptome);
+  c.symptome = r.fr; en.symptome = r.en; src.symptome = r.src;
+  r = _diagPaire(c.motsCles, so.motsCles, avant.motsCles, ae.motsCles, as.motsCles);
+  c.motsCles = r.fr; en.motsCles = r.en; src.motsCles = r.src;
+  c.causes.forEach(function (k, i) {
+    var sk = so.causes[i] || {}, ak = ac[i] || {}, aek = aec[i] || {}, ask = asc[i] || {};
+    var rc = _diagPaire(k.cause, sk.cause, ak.cause, aek.cause, ask.cause);
+    var rs = _diagPaire(k.solution, sk.solution, ak.solution, aek.solution, ask.solution);
+    k.cause = rc.fr; k.solution = rs.fr;
+    en.causes.push({ cause: rc.en, solution: rs.en });
+    src.causes.push({ cause: rc.src, solution: rs.src });
+  });
+  c.en = en; c.src = src;
+  delete c.enSoumis;
+}
+function _diagBilingue(f) {
+  var en = f.en || {}, ec = en.causes || [], causes = f.causes || [];
+  if (!f.symptome || !en.symptome) return false;
+  for (var i = 0; i < causes.length; i++) {
+    var k = ec[i] || {};
+    if (!causes[i].cause || !causes[i].solution || !k.cause || !k.solution) return false;
+  }
+  return true;
+}
+function _diagEnVue(f) {
+  var en = f.en || {};
+  return { symptome: en.symptome || '', motsCles: en.motsCles || '',
+           causes: (f.causes || []).map(function (c, i) { var k = (en.causes || [])[i] || {};
+             return { cause: k.cause || '', solution: k.solution || '' }; }) };
+}
+
+// { action:'getdiag', token } -> { ok, fiches, produits, peutValider, nom } | { error }
+// Validateur : tout. Autres : fiches validees + leurs propres brouillons.
+function getDiag(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var fiches;
+  try { fiches = _diagLire(_diagFeuille(false)); } catch (e) { return { error: 'diag unreadable' }; }
+  var produits = [];
+  try { var s = _readSav(); if (s && s.produits) produits = s.produits; } catch (e) {}
+  return { ok: true, peutValider: a.valideur, nom: a.nom, produits: produits,
+           fiches: fiches.filter(function (f) { return f.statut === 'valide' || a.valideur || f.auteur === a.moi; })
+                         .map(function (f) { return _diagVue(f, a); }) };
+}
+
+// { action:'savediag', token, fiche:{ id?, produit, symptome, code, motsCles, causes:[{cause, solution, pieces}] } }
+//   -> { ok, fiche, proposition? }
+function saveDiag(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var c = _diagContenu(body.fiche);
+  if (c.error) return c;
+  if (JSON.stringify(c).length > DIAG_MAX_FICHE) return { error: 'fiche trop longue' };
+  var id = String((body.fiche && body.fiche.id) || '');
+  var maintenant = new Date().toISOString();
+  return _avecVerrou(function () {
+    var sh = _diagFeuille(true), toutes = _diagLire(sh), ex = null, prop = false;
+    for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) ex = toutes[i];
+    if (id && !ex) return { error: 'not found' };
+    var f;
+    if (ex && (a.valideur || (ex.statut === 'brouillon' && ex.auteur === a.moi))) {
+      f = ex;                                       // modification en place
+    } else if (ex && ex.statut === 'valide') {
+      prop = true;                                  // proposition de modification
+      f = null;
+      for (var j = 0; j < toutes.length; j++) {
+        var t = toutes[j];
+        if (t.statut === 'brouillon' && t.remplace === ex.id && t.auteur === a.moi) f = t;
+      }
+      if (!f) f = { id: Utilities.getUuid(), statut: 'brouillon', remplace: ex.id,
+                    auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
+    } else if (ex) {
+      return { error: 'forbidden' };                // brouillon d'un autre
+    } else {
+      f = { id: Utilities.getUuid(), statut: a.valideur ? 'valide' : 'brouillon',
+            auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
+      if (a.valideur) { f.valideParNom = a.nom; f.valideLe = maintenant; }
+    }
+    _diagTraduireFiche(c, (f.en ? f : ex) || null);
+    // Une fiche validee (ou publiee d'office par un validateur) doit rester complete dans les deux langues.
+    if (f.statut === 'valide' && !_diagBilingue(c)) {
+      if (!ex) { f.statut = 'brouillon'; delete f.valideParNom; delete f.valideLe; }
+      else return { error: 'traduction impossible' };
+    }
+    DIAG_CHAMPS.forEach(function (k) { f[k] = c[k]; });
+    f.modifieParNom = a.nom; f.modifieLe = maintenant;
+    _diagEcrire(sh, f);
+    var r = { ok: true, fiche: _diagVue(f, a) };
+    if (prop) r.proposition = true;
+    return r;
+  });
+}
+
+// { action:'validediag', token, id } -> { ok, fiche } — validateur seulement.
+// Une proposition remplace le contenu de la fiche d'origine, puis disparait.
+function valideDiag(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  if (!a.valideur) return { error: 'forbidden' };
+  var id = String(body.id || '');
+  var maintenant = new Date().toISOString();
+  return _avecVerrou(function () {
+    var sh = _diagFeuille(false), toutes = _diagLire(sh), f = null, cible = null;
+    for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) f = toutes[i];
+    if (!f) return { error: 'not found' };
+    if (f.statut !== 'brouillon') return { error: 'deja validee' };
+    if (!_diagBilingue(f)) return { error: 'traduction incomplete' };
+    if (f.remplace) for (var j = 0; j < toutes.length; j++) if (toutes[j].id === f.remplace) cible = toutes[j];
+    if (cible) {
+      DIAG_CHAMPS.forEach(function (k) { cible[k] = f[k]; });
+      cible.modifieParNom = f.auteurNom; cible.modifieLe = f.modifieLe;
+      cible.valideParNom = a.nom; cible.valideLe = maintenant;
+      _diagEcrire(sh, cible);
+      sh.deleteRow(f._ligne);                      // en dernier : decale les lignes suivantes
+      return { ok: true, fiche: _diagVue(cible, a), remplacee: cible.id };
+    }
+    delete f.remplace;                             // l'original a ete supprime entre-temps
+    f.statut = 'valide'; f.valideParNom = a.nom; f.valideLe = maintenant;
+    _diagEcrire(sh, f);
+    return { ok: true, fiche: _diagVue(f, a) };
+  });
+}
+
+// { action:'deletediag', token, id } -> { ok }
+// Validateur : toute fiche. Autres : leurs propres brouillons seulement.
+function deleteDiag(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var id = String(body.id || '');
+  return _avecVerrou(function () {
+    var sh = _diagFeuille(false), toutes = _diagLire(sh), f = null;
+    for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) f = toutes[i];
+    if (!f) return { error: 'not found' };
+    if (!a.valideur && !(f.statut === 'brouillon' && f.auteur === a.moi)) return { error: 'forbidden' };
+    sh.deleteRow(f._ligne);
+    return { ok: true };
+  });
+}
+
+/* A EXECUTER UNE FOIS dans l'editeur (menu Executer), AVANT de deployer la version qui
+   porte la base de diagnostic : autorise Google Sheets (scope spreadsheets) et la traduction, et
+   cree la feuille dans le Drive d'etrak.portail. Sans ca, le premier enregistrement
+   depuis le portail echoue. Le journal affiche l'adresse de la feuille. */
+function _authDiag() {
+  // Autorise aussi la traduction automatique des fiches (LanguageApp), Steve 2026-10-21.
+  Logger.log('Traduction : ' + LanguageApp.translate('Alarme de hauteur', 'fr', 'en'));
+  var sh = _avecVerrou(function () { return _diagFeuille(true); });
+  Logger.log('Base de diagnostic : ' + sh.getParent().getUrl() + ' (' + (sh.getLastRow() - 1) + ' fiche(s))');
+  return sh.getParent().getUrl();
 }
 
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
