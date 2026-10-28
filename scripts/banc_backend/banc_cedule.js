@@ -94,7 +94,10 @@ let r = post({ action: 'getcedule', token: tok('v@e', 'V') });
 const c = r.cedule, P = c && c.techs.find(t => t.nom === 'Pierre'), M = c && c.techs.find(t => t.nom === 'Michel');
 check('reponse ok', r.ok === true);
 check('seulement Michel et Pierre (ni _HOLD ni Autre tech), tries', JSON.stringify(c.techs.map(t => t.nom)) === '["Michel","Pierre"]');
-check('20 jours ouvrables (4 semaines, sans fin de semaine)', c.jours.length === 20 && c.jours.every(j => { const d = new Date(j + 'T12:00:00Z').getUTCDay(); return d >= 1 && d <= 5; }));
+// v50 (Jacquot, 2026-10-27, 35c7718) : cedule 7 jours sur 7, CEDULE_JOURS = 28 jours CIVILS.
+check('28 jours civils consecutifs, samedi et dimanche compris (v50)', c.jours.length === 28 &&
+  c.jours.every((j, i) => i === 0 || (new Date(j + 'T12:00:00Z') - new Date(c.jours[i - 1] + 'T12:00:00Z')) === 864e5) &&
+  [0, 6].every(w => c.jours.some(j => new Date(j + 'T12:00:00Z').getUTCDay() === w)));
 check('Pierre lundi : AM et PM fermes', JSON.stringify(P.cases[lundi]) === '[true,true]');
 check('Michel lundi 10 h 30 - 13 h 30 : AM et PM fermes', JSON.stringify(M.cases[lundi]) === '[true,true]');
 check('Michel mardi : annulee et feuille de temps ignorees, aide l apres-midi -> [ouvert, ferme]', JSON.stringify(M.cases[MA]) === '[false,true]');
