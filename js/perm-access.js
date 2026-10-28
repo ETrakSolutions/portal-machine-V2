@@ -10,10 +10,12 @@
         ceduleAccess:    INTERNES,
         savAccess:       INTERNES,
         exportAccess:    ['administrateur'],
-        pricelistAccess: ['administrateur']
+        pricelistAccess: ['administrateur'],
+        // Base de diagnostic SAV (Steve, 2026-10-13) : valider les fiches des techniciens.
+        diagValidate:    ['administrateur', 'ingenierie']
     };
     // Jamais pour les roles externes, meme coches : noms de techniciens, clients, courriels internes.
-    var INTERNE_SEULEMENT = { ceduleAccess: true, savAccess: true };
+    var INTERNE_SEULEMENT = { ceduleAccess: true, savAccess: true, diagValidate: true };
     var EXTERNES = ['dealer', 'distributeur'];
 
     function aAcces(role, perm, sauve) {

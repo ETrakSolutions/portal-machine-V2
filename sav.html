@@ -107,6 +107,7 @@
                 <div class="admin-hero" style="padding-bottom:0.2rem;">
                     <h1 class="admin-hero-title">Demande de service après-vente</h1>
                 </div>
+                <a href="diagnostic.html" class="sav-btn" id="l-diag" style="display:inline-block; text-decoration:none; margin-bottom:8px;">🔎 Base de diagnostic : pannes connues et solutions</a>
                 <p class="sav-sub">Guide d'appel : suivez les sections dans l'ordre pour ne rien oublier. Les champs marqués <b style="color:#FF8C00">*</b> sont obligatoires. Rien n'est enregistré : l'envoi ouvre un courriel Outlook pré-rempli.</p>
                 <div id="sav-load" class="sav-note">Chargement des listes clients et pièces…</div>
 
@@ -159,6 +160,8 @@
                         <div class="sav-f" id="w-bypass"><label>Demande de bypass ? <span class="req">*</span></label>
                             <div class="sav-radios"><label><input type="radio" name="f-bypass" value="oui"> Oui</label><label><input type="radio" name="f-bypass" value="non"> Non</label></div></div>
                         <div class="sav-f full"><label>Code / message à l'écran</label><input type="text" id="f-code"></div>
+                        <div class="sav-f full"><button type="button" class="sav-btn" id="b-diag">🔎 Chercher ce problème dans la base de diagnostic</button>
+                            <div class="sav-hint">S'ouvre dans un nouvel onglet : la fiche en cours reste intacte.</div></div>
                         <div class="sav-f full" id="w-desc"><label>Description (dans les mots du client) <span class="req">*</span></label><textarea id="f-desc"></textarea>
                             <div class="sav-hint">Plusieurs pannes sur le même appel ? Numérotez-les — 1), 2)… Les retours de ligne sont conservés dans le courriel.</div></div>
                         <div class="sav-f full"><label>Diagnostic préliminaire</label><textarea id="f-diag"></textarea></div>
@@ -194,11 +197,11 @@
     </main>
 
     <script src="js/config.js?v=2"></script>
-    <script src="js/perm-access.js?v=1"></script>
-    <script src="js/translations.js?v=259"></script>
+    <script src="js/perm-access.js?v=2"></script>
+    <script src="js/translations.js?v=270"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/sav.js?v=11"></script>
+    <script src="js/sav.js?v=12"></script>
 </body>
 </html>

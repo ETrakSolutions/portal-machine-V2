@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr" data-i18n-title="diag.page_titre">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-Trak | Base de diagnostic</title>
+    <link rel="stylesheet" href="css/style.css?v=176">
+    <link rel="stylesheet" href="css/admin.css?v=175">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        .dg-wrap { max-width: 980px; margin: 0 auto; padding: 1rem; }
+        .dg-sub { color: #9aa7b2; font-size: 0.85rem; margin: 0.2rem 0 1rem; }
+        .dg-bar { display: grid; grid-template-columns: 240px 1fr auto; gap: 10px; margin-bottom: 10px; }
+        @media (max-width: 700px) { .dg-bar { grid-template-columns: 1fr; } }
+        .dg-bar select, .dg-bar input, .dg-f input, .dg-f textarea, .dg-f select {
+            width: 100%; box-sizing: border-box; background: #2a2a2a; color: #eee; border: 1px solid #444;
+            border-radius: 8px; padding: 9px 10px; font: inherit; font-size: 0.9rem; }
+        .dg-bar input:focus, .dg-f input:focus, .dg-f textarea:focus, .dg-f select:focus { outline: none; border-color: #FF8C00; }
+        .dg-filtres { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+        .dg-chip { background: #262626; color: #ddd; border: 1px solid #444; border-radius: 99px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }
+        .dg-chip.on { border-color: #FF8C00; background: rgba(255,140,0,.12); color: #FFB45C; }
+        .dg-compte { color: #8a97a3; font-size: 0.8rem; margin-left: auto; }
+        .dg-btn { background: #2A2A2A; color: #ddd; border: 1px solid #444; border-radius: 8px; padding: 8px 14px; font-size: 0.85rem; cursor: pointer; white-space: nowrap; }
+        .dg-btn:hover { border-color: #FF8C00; }
+        .dg-btn.main { background: #FF8C00; color: #1a1a1a; border-color: #FF8C00; font-weight: 800; }
+        .dg-btn.ok { border-color: #2ecc71; color: #9ff0bf; }
+        .dg-btn.danger { color: #ffb3aa; }
+        .dg-btn.x { padding: 6px 10px; }
+        .dg-card { background: #1f1f1f; border: 1px solid rgba(192,192,192,0.18); border-radius: 12px; margin-bottom: 10px; }
+        .dg-card.brouillon { border-style: dashed; border-color: rgba(255,140,0,.55); }
+        .dg-head { padding: 12px 14px; cursor: pointer; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+        .dg-head b { color: #fff; font-size: 0.95rem; }
+        .dg-tag { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; }
+        .dg-tag.prod { background: rgba(0,98,204,.22); color: #8bb8f0; }
+        .dg-tag.code { background: rgba(160,160,160,.2); color: #ddd; font-family: monospace; }
+        .dg-tag.brouillon { background: rgba(255,140,0,.2); color: #FFB45C; }
+        .dg-nb { color: #8a97a3; font-size: 0.78rem; margin-left: auto; }
+        .dg-body { display: none; padding: 0 14px 14px; }
+        .dg-card.open .dg-body { display: block; }
+        .dg-cause { border-left: 3px solid #FF8C00; background: #262626; border-radius: 0 8px 8px 0; padding: 9px 12px; margin-bottom: 8px; }
+        .dg-cause h4 { margin: 0 0 6px; color: #FFB45C; font-size: 0.88rem; }
+        .dg-sol { color: #e6e6e6; font-size: 0.88rem; white-space: pre-wrap; line-height: 1.45; }
+        .dg-pieces { color: #8bb8f0; font-size: 0.8rem; margin-top: 6px; }
+        /* Anglais des fiches (Steve, 2026-10-21) */
+        .dg-en { color: #9fb0c0; font-size: 0.8rem; margin-top: 4px; white-space: pre-wrap; }
+        .dg-en b { color: #6f8396; font-weight: 600; margin-right: 4px; }
+        .dg-tag.en-manque { background: rgba(220,60,60,.18); color: #ff8a80; }
+        .dg-f.en label { color: #7fa3c4; }
+        .dg-f.en input, .dg-f.en textarea { border-style: dashed; }
+        .dg-ennote { color: #7fa3c4; font-size: 0.78rem; margin: 4px 0 8px; }
+        .dg-meta { color: #8a97a3; font-size: 0.76rem; margin: 8px 0; }
+        .dg-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .dg-vide { text-align: center; color: #9aa7b2; padding: 2rem 1rem; }
+        .dg-msg { text-align: center; color: #bbb; padding: 3rem 1rem; }
+        .dg-note { color: #9aa7b2; font-size: 0.8rem; }
+        .dg-alert { background: rgba(231,76,60,.12); border: 1px solid rgba(231,76,60,.5); color: #ffb3aa; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin: 8px 0; display: none; }
+        .dg-ok { background: rgba(46,204,113,.12); border: 1px solid rgba(46,204,113,.5); color: #9ff0bf; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 10px; display: none; }
+        .dg-edit { background: #1f1f1f; border: 1px solid #FF8C00; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: none; }
+        .dg-edit h2 { color: #fff; font-size: 1rem; margin: 0 0 10px; }
+        .dg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
+        .dg-grid .full { grid-column: 1 / -1; }
+        @media (max-width: 700px) { .dg-grid { grid-template-columns: 1fr; } }
+        .dg-f label { display: block; color: #aab6c2; font-size: 0.78rem; margin-bottom: 3px; }
+        .dg-f label .req { color: #FF8C00; }
+        .dg-f textarea { min-height: 90px; resize: vertical; }
+        .dg-f.err input, .dg-f.err textarea, .dg-f.err select { border-color: #e74c3c; box-shadow: 0 0 0 1px #e74c3c; }
+        .dg-ec { border: 1px solid #3a3a3a; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+        .dg-ec-head { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; color: #FFB45C; font-weight: 700; font-size: 0.85rem; }
+        .dg-ec-head span { margin-right: auto; }
+        .pl-btn { display:inline-block; background:#FF8C00; color:#1a1a1a; text-decoration:none; border-radius:10px; padding:12px 22px; font-weight:800; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="sav.html" class="header-back" title="Retour à la demande SAV" data-i18n-title="diag.retour_sav">&larr; <span>SAV</span></a>
+            <div class="logo-section">
+                <a href="index.html" title="Retour au hub" data-i18n-title="common.back_hub">
+                    <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
+                </a>
+            </div>
+            <div class="lang-switch" style="position:absolute;right:0;">
+                <button class="lang-btn" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="dg-wrap">
+            <div id="dg-denied" class="dg-msg" style="display:none;">
+                <div style="font-size:2.4rem">&#128274;</div>
+                <h2 style="color:#fff;" data-i18n="diag.refus_titre">Accès réservé à l'équipe e-Trak</h2>
+                <p data-i18n="diag.refus_texte">La base de diagnostic est réservée aux comptes internes.</p>
+                <a href="index.html" class="pl-btn" data-i18n="diag.retour_hub">Retour au hub</a>
+            </div>
+
+            <div id="dg-root" style="display:none;">
+                <div class="admin-hero" style="padding-bottom:0.2rem;">
+                    <h1 class="admin-hero-title" data-i18n="diag.titre">Base de diagnostic</h1>
+                </div>
+                <p class="dg-sub" data-i18n="diag.sous_titre">Pannes connues et leurs solutions, de la plus probable à la plus rare. Usage interne seulement. Une fiche ajoutée ou modifiée reste en brouillon jusqu'à sa validation par le service.</p>
+
+                <div class="dg-ok" id="dg-ok"></div>
+
+                <section class="dg-edit" id="dg-edit">
+                    <h2 id="e-titre">Nouvelle fiche</h2>
+                    <div class="dg-note" id="e-note" style="margin-bottom:10px;"></div>
+                    <div class="dg-grid">
+                        <div class="dg-f" id="w-produit"><label><span data-i18n="diag.l_produit">Produit</span> <span class="req">*</span></label><select id="e-produit"></select></div>
+                        <div class="dg-f"><label data-i18n="diag.l_code">Code / message à l'écran</label><input type="text" id="e-code" maxlength="120" placeholder="facultatif" data-i18n-placeholder="diag.facultatif"></div>
+                        <div class="dg-f full" id="w-symptome" data-l="fr"><label><span data-i18n="diag.l_symptome">Symptôme (ce que le client voit)</span> <span class="req">*</span></label><input type="text" id="e-symptome" maxlength="300"></div>
+                        <div class="dg-f full" data-l="fr"><label data-i18n="diag.l_mots">Mots-clés (pour la recherche)</label><input type="text" id="e-mots" maxlength="200" placeholder="ex. alarme, rotation, inclino" data-i18n-placeholder="diag.ph_mots"></div>
+                        <div class="dg-f full en" id="w-symptome-en" data-l="en"><label><span data-i18n="diag.l_symptome_en">Symptôme — anglais</span> <span class="req">*</span></label><input type="text" id="e-symptome-en" maxlength="300"></div>
+                        <div class="dg-f full en" data-l="en"><label data-i18n="diag.l_mots_en">Mots-clés — anglais</label><input type="text" id="e-mots-en" maxlength="200" placeholder="ex. alarm, rotation, tilt sensor" data-i18n-placeholder="diag.ph_mots_en"></div>
+                    </div>
+                    <div class="dg-ennote" data-i18n="diag.note_langues">Écrivez dans votre langue : l'autre (champs en pointillé) est traduite automatiquement à l'enregistrement. Le validateur révise la traduction ; une fiche ne peut pas être validée tant qu'il manque le français ou l'anglais.</div>
+                    <div style="margin:12px 0 6px; color:#fff; font-weight:700; font-size:0.9rem;"><span data-i18n="diag.causes_titre">Causes possibles et solutions</span> <span class="dg-note" data-i18n="diag.causes_note">(la plus probable en premier)</span></div>
+                    <div id="e-causes"></div>
+                    <button type="button" class="dg-btn" id="b-cause" data-i18n="diag.ajouter_cause">+ Ajouter une cause</button>
+                    <div class="dg-alert" id="e-alert"></div>
+                    <div class="dg-actions" style="margin-top:12px;">
+                        <button type="button" class="dg-btn main" id="b-enreg" data-i18n="diag.enregistrer">Enregistrer</button>
+                        <button type="button" class="dg-btn" id="b-annuler" data-i18n="diag.annuler">Annuler</button>
+                    </div>
+                </section>
+
+                <div class="dg-bar">
+                    <select id="f-produit"><option value="">Tous les produits</option></select>
+                    <input type="text" id="f-q" placeholder="Rechercher : symptôme, code, cause, pièce…" data-i18n-placeholder="diag.ph_recherche" autocomplete="off">
+                    <button type="button" class="dg-btn main" id="b-nouvelle" data-i18n="diag.b_nouvelle">+ Nouvelle fiche</button>
+                </div>
+                <div class="dg-filtres">
+                    <button type="button" class="dg-chip on" data-vue="tout" data-i18n="diag.chip_toutes">Toutes</button>
+                    <button type="button" class="dg-chip" data-vue="brouillons" id="c-brouillons">Brouillons</button>
+                    <span class="dg-compte" id="dg-compte">Chargement…</span>
+                </div>
+                <div id="dg-liste"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/config.js?v=2"></script>
+    <script src="js/perm-access.js?v=2"></script>
+    <script src="js/translations.js?v=270"></script>
+    <script src="js/i18n.js?v=167"></script>
+    <script src="js/heartbeat.js?v=5"></script>
+    <script src="js/version-check.js?v=2"></script>
+    <script src="js/diagnostic.js?v=4"></script>
+</body>
+</html>
