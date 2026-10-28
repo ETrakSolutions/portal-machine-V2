@@ -1,8 +1,8 @@
 // Banque d'installation (decision Steve, 2026-10-28) : notes d'installation rattachees a un
 // MODELE de machine (base machines du portail : type > fabricant > modele) ET a un PRODUIT
 // (les options e-Trak de la tuile Soumission), avec filtres par modele et par produit.
-// Une note : etapes avec photos, pieces et harnais, pieges connus, temps d'installation —
-// aucune section obligatoire pour l'instant (Steve). Memes regles que la base de diagnostic :
+// Une note : un grand champ d'informations (pas d'etapes : Steve, 2026-10-28), des photos,
+// pieces et harnais, pieges connus, temps d'installation — aucune section obligatoire. Memes regles que la base de diagnostic :
 // interne seulement (case SAV), brouillon jusqu'a la validation (case « Valider diag »),
 // proposition de modification sur une note validee, notes bilingues traduites par le
 // serveur. Photos reduites ici (~300 Ko) puis gardees par le serveur dans un dossier Drive
@@ -160,13 +160,10 @@
     });
 
     // ---------- contenu dans la langue de l'ecran (l'autre en repli) ----------
-    function enDe(n) { return n.en || { etapes: [], pieges: '' }; }
-    function etapeTxt(n, i, autreL) {
-        var fr = (n.etapes[i] || {}).texte || '', en = ((enDe(n).etapes || [])[i] || {}).texte || '';
-        return (enAnglais() !== !!autreL) ? (en || (autreL ? '' : fr)) : (fr || (autreL ? '' : en));
-    }
-    function piegesTxt(n, autreL) {
-        var fr = n.pieges || '', en = enDe(n).pieges || '';
+    function enDe(n) { return n.en || { texte: '', pieges: '' }; }
+    // champ = 'texte' ou 'pieges' ; autreL vrai = l'autre langue (sans repli).
+    function txt(n, champ, autreL) {
+        var fr = n[champ] || '', en = enDe(n)[champ] || '';
         return (enAnglais() !== !!autreL) ? (en || (autreL ? '' : fr)) : (fr || (autreL ? '' : en));
     }
     function titre(n) {
@@ -184,8 +181,7 @@
     function points(n, mots) {
         var e = enDe(n);
         var tete = racines([n.type, n.fabricant, n.modele, nomProduit(n.produit), produit(n.produit) ? produit(n.produit).en : '', nomOption(n.produit, n.option)].join(' '));
-        var corps = racines(n.etapes.map(function (x) { return x.texte; }).join(' ') + ' ' + (e.etapes || []).map(function (x) { return x.texte; }).join(' ') +
-                            ' ' + n.pieges + ' ' + (e.pieges || '') + ' ' + n.pieces.map(function (p) { return p.txt; }).join(' '));
+        var corps = racines(n.texte + ' ' + (e.texte || '') + ' ' + n.pieges + ' ' + (e.pieges || '') + ' ' + n.pieces.map(function (p) { return p.txt; }).join(' '));
         var total = 0;
         mots.forEach(function (m) {
             var pr = function (x) { return x === m || (x.length >= 3 && m.length >= 3 && (x.indexOf(m) === 0 || m.indexOf(x) === 0)); };
@@ -212,7 +208,6 @@
             return '<div class="in-photo charge" data-pid="' + esc(pid) + '">' + (retirable ? '<button type="button" class="x" title="' + esc(tx('Retirer', 'Remove')) + '">✕</button>' : '') + '</div>';
         }).join('');
     }
-    function nbPhotos(n) { return n.etapes.reduce(function (s, x) { return s + (x.photos || []).length; }, 0); }
     function carte(n) {
         var revue = ETAT.peutValider && n.statut === 'brouillon', lAutre = enAnglais() ? 'FR' : 'EN', manque = tx('— à traduire —', '— to translate —');
         var autreLigne = function (t) { return revue ? '<div class="in-autre"><b>' + lAutre + '</b>' + esc(t || manque) + '</div>' : ''; };
@@ -221,17 +216,13 @@
             (n.bilingue === false ? ' <span class="in-tag en-manque">' + esc(tx('Traduction incomplète', 'Incomplete translation')) + '</span>' : '');
         var corps = '';
         if (n.temps) corps += '<div class="in-sec">⏱ ' + esc(tx('Temps d\'installation', 'Installation time')) + ' : <span style="color:#eee;font-weight:400">' + esc(n.temps) + '</span></div>';
-        if (n.etapes.length) {
-            corps += '<div class="in-sec">' + esc(tx('Étapes', 'Steps')) + '</div>' + n.etapes.map(function (x, i) {
-                return '<div class="in-etape"><h4>' + esc(tx('Étape {n}', 'Step {n}', { n: i + 1 })) + '</h4>' +
-                    (etapeTxt(n, i) ? '<div class="in-txt">' + esc(etapeTxt(n, i)) + '</div>' : '') + (x.texte || ((enDe(n).etapes || [])[i] || {}).texte ? autreLigne(etapeTxt(n, i, true)) : '') +
-                    ((x.photos || []).length ? '<div class="in-photos">' + vignettes(x.photos) + '</div>' : '') + '</div>';
-            }).join('');
-        }
+        if (txt(n, 'texte')) corps += '<div class="in-sec">' + esc(tx('Informations d\'installation', 'Installation information')) + '</div>' +
+            '<div class="in-etape"><div class="in-txt">' + esc(txt(n, 'texte')) + '</div>' + autreLigne(txt(n, 'texte', true)) + '</div>';
+        if (n.photos.length) corps += '<div class="in-sec">' + esc(tx('Photos', 'Photos')) + '</div><div class="in-photos">' + vignettes(n.photos) + '</div>';
         if (n.pieces.length) corps += '<div class="in-sec">' + esc(tx('Pièces et harnais', 'Parts and harnesses')) + '</div><ul class="in-pieces">' +
             n.pieces.map(function (p) { return '<li>' + esc(p.qte || '1') + ' × ' + esc(p.txt) + '</li>'; }).join('') + '</ul>';
         if (n.pieges || enDe(n).pieges) corps += '<div class="in-sec">⚠ ' + esc(tx('Pièges connus', 'Known pitfalls')) + '</div><div class="in-pieges"><div class="in-txt">' +
-            esc(piegesTxt(n)) + '</div>' + autreLigne(piegesTxt(n, true)) + '</div>';
+            esc(txt(n, 'pieges')) + '</div>' + autreLigne(txt(n, 'pieges', true)) + '</div>';
         if (!corps) corps = '<div class="in-note">' + esc(tx('Note vide pour l\'instant.', 'Empty note for now.')) + '</div>';
         var meta = [n.auteurNom ? tx('Écrite par {nom}', 'Written by {nom}', { nom: esc(n.auteurNom) }) + (quand(n.creeLe) ? ' ' + tx('le {d}', 'on {d}', { d: quand(n.creeLe) }) : '') : '',
                     n.modifieParNom && n.modifieLe !== n.creeLe ? tx('modifiée par {nom} le {d}', 'edited by {nom} on {d}', { nom: esc(n.modifieParNom), d: quand(n.modifieLe) }) : '',
@@ -242,8 +233,7 @@
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="in-btn" data-act="modifier">' + esc(tx('Modifier', 'Edit')) + '</button>');
         else if (n.statut === 'valide') b.push('<button type="button" class="in-btn" data-act="modifier">' + esc(tx('Proposer une modification', 'Propose a change')) + '</button>');
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="in-btn danger" data-act="supprimer">' + esc(tx('Supprimer', 'Delete')) + '</button>');
-        var np = nbPhotos(n);
-        var resume = [n.etapes.length ? tx('{n} étape(s)', '{n} step(s)', { n: n.etapes.length }) : '', np ? '📷 ' + np : '', n.temps ? '⏱ ' + n.temps : ''].filter(Boolean).join(' · ');
+        var resume = [n.photos.length ? '📷 ' + n.photos.length : '', n.temps ? '⏱ ' + n.temps : ''].filter(Boolean).join(' · ');
         return '<div class="in-card' + (n.statut === 'brouillon' ? ' brouillon' : '') + (ETAT.ouvertes[n.id] ? ' open' : '') + '" data-id="' + esc(n.id) + '">' +
             '<div class="in-head"><b>' + esc(titre(n)) + '</b>' + tags + '<span class="in-nb">' + esc(resume) + '</span></div>' +
             '<div class="in-body">' + corps + '<div class="in-meta">' + meta + '</div><div class="in-actions">' + b.join('') + '</div></div></div>';
@@ -338,36 +328,10 @@
                 });
         });
     }
-    function blocEtape(x) {
-        var d = document.createElement('div');
-        d.className = 'in-ee';
-        d.innerHTML = '<div class="in-ee-head"><span class="n"></span>' +
-            '<button type="button" class="in-btn x" data-m="haut" title="↑">↑</button><button type="button" class="in-btn x" data-m="bas" title="↓">↓</button>' +
-            '<button type="button" class="in-btn x" data-m="x" title="✕">✕</button></div>' +
-            '<div class="in-grid"><div class="in-f full" data-l="fr"><label data-tx="Étape — français|Step — French">Étape — français</label><textarea class="s-fr" maxlength="4000"></textarea></div>' +
-            '<div class="in-f full" data-l="en"><label data-tx="Étape — anglais|Step — English">Étape — anglais</label><textarea class="s-en" maxlength="4000"></textarea></div></div>' +
-            '<div class="in-photos s-photos"></div>' +
-            '<label class="in-btn in-up"><input type="file" accept="image/*" multiple class="s-file">📷 <span data-tx="Ajouter des photos|Add photos">Ajouter des photos</span></label>';
-        d.querySelector('.s-fr').value = (x && x.fr) || '';
-        d.querySelector('.s-en').value = (x && x.en) || '';
-        d.querySelector('.s-photos').innerHTML = vignettes((x && x.photos) || [], true);
-        $('e-etapes').appendChild(d);
-        traduireZone(d); ordonnerLangues(d); numeroter(); chargerPhotos(d);
-        return d;
-    }
-    function numeroter() { [].forEach.call($('e-etapes').children, function (d, i) { d.querySelector('.n').textContent = tx('Étape {n}', 'Step {n}', { n: i + 1 }); }); }
-    $('e-etapes').addEventListener('click', function (e) {
+    $('e-photos').addEventListener('click', function (e) {
         var x = e.target.closest('.in-photo .x');
-        if (x) { x.parentNode.remove(); return; }
-        var b = e.target.closest('[data-m]');
-        if (!b) return;
-        var d = b.closest('.in-ee'), m = b.getAttribute('data-m');
-        if (m === 'haut' && d.previousElementSibling) d.parentNode.insertBefore(d, d.previousElementSibling);
-        else if (m === 'bas' && d.nextElementSibling) d.parentNode.insertBefore(d.nextElementSibling, d);
-        else if (m === 'x') { if (!confirm(tx('Retirer cette étape et ses photos ?', 'Remove this step and its photos?'))) return; d.remove(); }
-        numeroter();
+        if (x) x.parentNode.remove();
     });
-    $('b-etape').addEventListener('click', function () { blocEtape().querySelector(enAnglais() ? '.s-en' : '.s-fr').focus(); });
 
     // Photo reduite AVANT l'envoi : cote max 1600 px, JPEG, sous ~350 Ko (une photo de
     // telephone fait 3-6 Mo). Une photo = un appel serveur ; la vignette apparait quand
@@ -390,9 +354,8 @@
             img.src = url;
         });
     }
-    $('e-etapes').addEventListener('change', function (e) {
-        if (!e.target.classList.contains('s-file')) return;
-        var zone = e.target.closest('.in-ee').querySelector('.s-photos');
+    $('e-file').addEventListener('change', function (e) {
+        var zone = $('e-photos');
         [].forEach.call(e.target.files, function (f) {
             var tmp = document.createElement('div');
             tmp.className = 'in-photo charge';
@@ -467,33 +430,37 @@
         $('e-temps').value = n ? n.temps || '' : '';
         $('e-pieges').value = n ? n.pieges || '' : '';
         $('e-pieges-en').value = n ? enDe(n).pieges || '' : '';
-        $('e-etapes').innerHTML = '';
-        (n && n.etapes.length ? n.etapes.map(function (x, i) { return { fr: x.texte, en: ((enDe(n).etapes || [])[i] || {}).texte, photos: x.photos }; }) : [null]).forEach(blocEtape);
+        $('e-texte').value = n ? n.texte || '' : '';
+        $('e-texte-en').value = n ? enDe(n).texte || '' : '';
+        $('e-photos').innerHTML = vignettes(n ? n.photos : [], true);
         $('e-pieces').innerHTML = '';
         (n ? n.pieces : []).forEach(lignePiece);
         ordonnerLangues($('in-edit'));
         document.querySelectorAll('.in-f.err').forEach(function (x) { x.classList.remove('err'); });
         $('e-alert').style.display = 'none';
+        // Creation ou modification : les filtres et la liste disparaissent (Steve, 2026-10-28) ;
+        // « Retour aux notes » en haut, Annuler ou Enregistrer en bas y ramenent.
+        $('in-vue-liste').style.display = 'none';
         $('in-edit').style.display = 'block';
-        $('in-edit').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        chargerPhotos($('in-edit'));
+        window.scrollTo(0, 0);
     }
-    function fermerEdition() { $('in-edit').style.display = 'none'; ETAT.edition = null; }
+    function fermerEdition() {
+        $('in-edit').style.display = 'none'; ETAT.edition = null;
+        $('in-vue-liste').style.display = '';
+        window.scrollTo(0, 0);
+    }
+    $('b-retour').addEventListener('click', fermerEdition);
     $('b-nouvelle').addEventListener('click', function () { ouvrirEdition(null); });
     $('b-annuler').addEventListener('click', fermerEdition);
 
     function lireEdition() {
-        var etapes = [], etapesEn = [];
-        [].forEach.call($('e-etapes').children, function (d) {
-            var fr = d.querySelector('.s-fr').value.trim(), en = d.querySelector('.s-en').value.trim();
-            var ph = [].map.call(d.querySelectorAll('.in-photo[data-pid]'), function (p) { return p.getAttribute('data-pid'); });
-            if (!fr && !en && !ph.length) return;
-            etapes.push({ texte: fr, photos: ph }); etapesEn.push({ texte: en });
-        });
+        var photos = [].map.call($('e-photos').querySelectorAll('.in-photo[data-pid]'), function (p) { return p.getAttribute('data-pid'); });
         var pieces = [].map.call($('e-pieces').children, function (r) { return { txt: r.querySelector('.p-txt').value.trim(), qte: r.querySelector('.p-qte').value || '1' }; })
             .filter(function (p) { return p.txt; });
         return { type: $('e-type').value, fabricant: $('e-fab').value, modele: $('e-modele').value, produit: $('e-produit').value, option: $('e-option').value,
-                 temps: $('e-temps').value.trim(), etapes: etapes, pieces: pieces, pieges: $('e-pieges').value.trim(),
-                 en: { etapes: etapesEn, pieges: $('e-pieges-en').value.trim() } };
+                 temps: $('e-temps').value.trim(), texte: $('e-texte').value.trim(), photos: photos, pieces: pieces, pieges: $('e-pieges').value.trim(),
+                 en: { texte: $('e-texte-en').value.trim(), pieges: $('e-pieges-en').value.trim() } };
     }
     function valider(x) {
         var manque = [];
@@ -529,7 +496,7 @@
 
     window.addEventListener('langchange', function () {
         traduireZone(document); dessinerFiltres(); dessiner();
-        if ($('in-edit').style.display === 'block') { noteEdition(ETAT.edition); dessinerChoixEdition(); ordonnerLangues($('in-edit')); numeroter(); }
+        if ($('in-edit').style.display === 'block') { noteEdition(ETAT.edition); dessinerChoixEdition(); ordonnerLangues($('in-edit')); }
     });
 
     // ---------- chargement ----------
@@ -537,7 +504,7 @@
         api({ action: 'getinst' }).then(function (d) {
             if (d && d.error === 'forbidden') { refuser(); return; }
             if (!d || !d.ok) { $('in-compte').textContent = msgErreur(d); return; }
-            ETAT.notes = (d.notes || []).map(function (n) { n.etapes = n.etapes || []; n.pieces = n.pieces || []; n.pieges = n.pieges || ''; return n; });
+            ETAT.notes = (d.notes || []).map(function (n) { n.texte = n.texte || ''; n.photos = n.photos || []; n.pieces = n.pieces || []; n.pieges = n.pieges || ''; return n; });
             ETAT.peutValider = !!d.peutValider;
             dessiner();
         }, function () { $('in-compte').textContent = tx('Banque indisponible pour le moment (serveur injoignable).', 'Library unavailable for now (server unreachable).'); });

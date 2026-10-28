@@ -70,6 +70,7 @@
         .in-f label { display: block; color: #aab6c2; font-size: 0.78rem; margin-bottom: 3px; }
         .in-f label .req { color: #FF8C00; }
         .in-f textarea { min-height: 80px; resize: vertical; }
+        .in-f textarea.grand { min-height: 260px; }
         .in-f.err input, .in-f.err textarea, .in-f.err select { border-color: #e74c3c; box-shadow: 0 0 0 1px #e74c3c; }
         .in-f.autre-l label { color: #7fa3c4; }
         .in-f.autre-l input, .in-f.autre-l textarea { border-style: dashed; }
@@ -125,6 +126,7 @@
                 <div class="in-ok" id="in-ok"></div>
 
                 <section class="in-edit" id="in-edit">
+                    <button type="button" class="in-btn" id="b-retour" style="margin-bottom:12px;" data-tx="← Retour aux notes|← Back to notes">← Retour aux notes</button>
                     <h2 id="e-titre">Nouvelle note</h2>
                     <div class="in-note" id="e-note" style="margin-bottom:10px;"></div>
                     <div class="in-grid">
@@ -137,9 +139,14 @@
                     </div>
                     <div class="in-ennote" data-tx="Écrivez dans votre langue : l'autre (champs en pointillé) est traduite automatiquement à l'enregistrement. Le validateur révise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in your language: the other one (dashed fields) is translated automatically when saving. The approver reviews the translation. No section is mandatory for now.">Écrivez dans votre langue.</div>
 
-                    <h3 data-tx="Étapes et photos|Steps and photos">Étapes et photos</h3>
-                    <div id="e-etapes"></div>
-                    <button type="button" class="in-btn" id="b-etape" data-tx="+ Ajouter une étape|+ Add a step">+ Ajouter une étape</button>
+                    <h3 data-tx="Informations d'installation|Installation information">Informations d'installation</h3>
+                    <div class="in-grid">
+                        <div class="in-f full" data-l="fr"><label data-tx="Informations — français|Information — French">Informations — français</label><textarea id="e-texte" class="grand" maxlength="20000"></textarea></div>
+                        <div class="in-f full" data-l="en"><label data-tx="Informations — anglais|Information — English">Informations — anglais</label><textarea id="e-texte-en" class="grand" maxlength="20000"></textarea></div>
+                    </div>
+                    <h3 data-tx="Photos|Photos">Photos</h3>
+                    <div class="in-photos" id="e-photos"></div>
+                    <label class="in-btn in-up"><input type="file" accept="image/*" multiple id="e-file">📷 <span data-tx="Ajouter des photos|Add photos">Ajouter des photos</span></label>
 
                     <h3 data-tx="Pièces et harnais|Parts and harnesses">Pièces et harnais</h3>
                     <div id="e-pieces"></div>
@@ -159,6 +166,7 @@
                     </div>
                 </section>
 
+                <div id="in-vue-liste">
                 <div class="in-bar">
                     <select id="f-type"></select>
                     <select id="f-fab"></select>
@@ -175,6 +183,7 @@
                     <span class="in-compte" id="in-compte">Chargement…</span>
                 </div>
                 <div id="in-liste"></div>
+                </div>
             </div>
         </div>
     </main>
