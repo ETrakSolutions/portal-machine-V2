@@ -78,6 +78,8 @@ function doPost(e) {
     if (action === 'getpriceslog')   return jsonOut(getPricesLog(body));
     if (action === 'getcedule')      return jsonOut(getCedule(body));
     if (action === 'getprepjobs')    return jsonOut(getPrepJobs(body));
+    if (action === 'getreinst')      return jsonOut(getReinst(body));
+    if (action === 'setreinst')      return jsonOut(setReinst(body));
     if (action === 'getsav')         return jsonOut(getSav(body));
     if (action === 'setsav')         return jsonOut(setSav(body));
     if (action === 'getdiag')        return jsonOut(getDiag(body));
@@ -157,7 +159,8 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
                       'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
-                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID'];
+                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID',
+                      'reinst_prix', 'REINST_USERS'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -1336,6 +1339,62 @@ function getPrepJobs(body) {
   catch (err) { Logger.log('getPrepJobs : ' + err); return { error: 'prepjobs unavailable' }; }
   try { cache.put('prepjobs_v2', JSON.stringify(prep), PREP_JOBS_CACHE_S); } catch (e) {}
   return { ok: true, prep: prep };
+}
+
+/* ============================ REINSTALLATION ============================ */
+// Decision Jacquot, 2026-10-29 : tuile « Reinstallation » (soumission de desinstallation,
+// reinstallation, reinstallation seule) pour QUATRE personnes nommees, comme la
+// Preparation des jobs (Jacquot, Luna, Kevin Berube, Steve Martineau). La Script Property
+// REINST_USERS (courriels separes par des virgules) remplace la liste sans redeploiement.
+// Dealers et distributeurs : jamais, meme nommes. Le PIN ne lit pas les montants.
+// Montants : cle sensible 'reinst_prix' = { prix:{ CODE: nombre }, vigueur, updated },
+// poussee par scripts/publier_reinst.py depuis prix-reinstallation.json (SharePoint,
+// _Portail e-Trak). Jamais dans le depot : le site est public. Ce n'est PAS la liste de
+// prix (getprices), que dealers et distributeurs recoivent.
+var REINST_KEY = 'reinst_prix';
+var REINST_DEFAUT = ['jcaron@gryb.com', 'dluna@e-trak.ca', 'k.berube@e-trak.ca', 'steve@gryb.ca'];
+
+function _reinstAdmis(user) {
+  if (!user || ['dealer', 'distributeur'].indexOf(user.role) >= 0) return false;
+  var liste = String(PROPS.getProperty('REINST_USERS') || REINST_DEFAUT.join(','))
+    .toLowerCase().split(',').map(function (s) { return s.trim(); });
+  return _idsOf(user).some(function (id) { return liste.indexOf(id) >= 0; });
+}
+
+// { action:'getreinst', token } -> { ok, reinst:{ prix, vigueur, updated } } | { error }
+function getReinst(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (!_reinstAdmis(user)) return { error: 'forbidden' };
+  var raw = PROPS.getProperty(REINST_KEY);
+  if (!raw) return { error: 'reinst unavailable' };
+  try { return { ok: true, reinst: JSON.parse(raw) }; } catch (e) { return { error: 'reinst unreadable' }; }
+}
+
+// { action:'setreinst', reinst:{ prix:{ CODE: nombre }, vigueur:'AAAA-MM-JJ' }, pin|token admin }
+//   -> { ok, codes } ; liste blanche : codes [A-Z0-9_-], montants numeriques de 0 a 100 000.
+function setReinst(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var r = body.reinst;
+  if (typeof r === 'string') { try { r = JSON.parse(r); } catch (e) { r = null; } }
+  if (!r || typeof r !== 'object' || Array.isArray(r) ||
+      !r.prix || typeof r.prix !== 'object' || Array.isArray(r.prix)) return { error: 'invalid reinst' };
+  var codes = Object.keys(r.prix);
+  if (!codes.length || codes.length > 80) return { error: 'invalid reinst' };
+  var prix = {};
+  for (var i = 0; i < codes.length; i++) {
+    var c = codes[i], v = r.prix[c];
+    if (!/^[A-Z0-9_-]{2,40}$/.test(c)) return { error: 'invalid code' };
+    if (typeof v !== 'number' || !isFinite(v) || v < 0 || v > 100000) return { error: 'invalid price for ' + c };
+    prix[c] = v;
+  }
+  var vig = /^\d{4}-\d{2}-\d{2}$/.test(String(r.vigueur || '')) ? String(r.vigueur) : '';
+  var raw = JSON.stringify({ prix: prix, vigueur: vig, updated: new Date().toISOString() });
+  if (raw.length > 8500) return { error: 'reinst too large' };
+  return _avecVerrou(function () { PROPS.setProperty(REINST_KEY, raw); return { ok: true, codes: codes.length }; });
 }
 
 /* ============================ SAV (demande de service apres-vente) ============================ */
