@@ -61,7 +61,8 @@ def visible(d, id_):
     return d.execute_script("var e=document.getElementById(arguments[0]); return !!e && getComputedStyle(e).display!=='none';", id_)
 
 
-TUILES = ['hub-tile-cedule', 'hub-tile-sav', 'hub-tile-export', 'hub-tile-pricelist']
+# Soutien technique (Steve, 2026-10-29) : suit la case SAV.
+TUILES = ['hub-tile-cedule', 'hub-tile-sav', 'hub-tile-export', 'hub-tile-pricelist', 'hub-tile-soutien']
 
 
 def hub(role, sauve):
@@ -74,8 +75,8 @@ def hub(role, sauve):
 
 print('Hub — defauts (aucun reglage enregistre)')
 h = hub('ingenierie', None)
-v('ingenierie : Cedule et SAV visibles, Export et Price List caches',
-  h == {'hub-tile-cedule': True, 'hub-tile-sav': True, 'hub-tile-export': False, 'hub-tile-pricelist': False}, h)
+v('ingenierie : Cedule, SAV et Soutien technique visibles, Export et Price List caches',
+  h == {'hub-tile-cedule': True, 'hub-tile-sav': True, 'hub-tile-export': False, 'hub-tile-pricelist': False, 'hub-tile-soutien': True}, h)
 h = hub('administrateur', None)
 v('administrateur : les quatre visibles', all(h.values()), h)
 h = hub('dealer', None)
@@ -83,12 +84,12 @@ v('dealer : aucune des quatre', not any(h.values()), h)
 
 print('Hub — reglages enregistres')
 h = hub('ingenierie', {'ingenierie': {'savAccess': False, 'ceduleAccess': True}})
-v('ingenierie, SAV decoche : tuile SAV cachee, Cedule visible', not h['hub-tile-sav'] and h['hub-tile-cedule'], h)
+v('ingenierie, SAV decoche : tuiles SAV et Soutien technique cachees, Cedule visible', not h['hub-tile-sav'] and not h['hub-tile-soutien'] and h['hub-tile-cedule'], h)
 h = hub('vente_interne', {'vente_interne': {'exportAccess': True}})
 v('vente interne, Export coche : tuile Export visible', h['hub-tile-export'] and not h['hub-tile-pricelist'], h)
 h = hub('dealer', {'dealer': {'savAccess': True, 'ceduleAccess': True, 'exportAccess': True}})
-v('dealer coche par erreur : SAV et Cedule restent caches, Export suit la case',
-  not h['hub-tile-sav'] and not h['hub-tile-cedule'] and h['hub-tile-export'], h)
+v('dealer coche par erreur : SAV, Soutien et Cedule restent caches, Export suit la case',
+  not h['hub-tile-sav'] and not h['hub-tile-soutien'] and not h['hub-tile-cedule'] and h['hub-tile-export'], h)
 h = hub('super_admin', {'super_admin': {'savAccess': False}})
 v('super admin : toujours les quatre', all(h.values()), h)
 

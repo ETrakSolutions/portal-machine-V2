@@ -130,7 +130,8 @@ function updateHubUI() {
         // Tuiles Cedule, SAV, Export, Price List : reglables dans le tableau des permissions
         // (decision Jacquot, 2026-09-30). Pour la Cedule et le SAV, le serveur (getcedule,
         // getsav) refait le controle : la tuile n'est qu'un raccourci.
-        [['hub-tile-cedule', 'ceduleAccess', true], ['hub-tile-sav', 'savAccess', true],
+        // Soutien technique (Steve, 2026-10-29) : memes personnes que le SAV.
+        [['hub-tile-cedule', 'ceduleAccess', true], ['hub-tile-sav', 'savAccess', true], ['hub-tile-soutien', 'savAccess', true],
          ['hub-tile-export', 'exportAccess', false], ['hub-tile-pricelist', 'pricelistAccess', false]].forEach(function (x) {
             var tile = document.getElementById(x[0]);
             if (!tile) return;
@@ -297,6 +298,7 @@ function showAdminSection() {
     loadKitEmails();
     loadNotesEmails();
     loadMachineReqEmails();
+    loadInstallEmails();
     renderPermTable();
     loadAllowedTypes();
 }
@@ -1136,6 +1138,49 @@ function renderNotesEmails() {
     });
 }
 
+// ---- INSTALL EMAILS (banque d'installation : avis de nouvelle fiche / modification proposee) ----
+// Lue et envoyee par le serveur (saveinst) ; Steve, 2026-10-29.
+let installEmails = [];
+
+function loadInstallEmails() {
+    portalFetchKey('install_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) { try { installEmails = JSON.parse(data.value); } catch(e) {} }
+            renderInstallEmails();
+        })
+        .catch(function() { renderInstallEmails(); });
+}
+
+function saveInstallEmails() {
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'install_emails', value: JSON.stringify(installEmails), pin: portalToken() })
+    }).catch(function() {});
+}
+
+function renderInstallEmails() {
+    var list = document.getElementById('admin-install-email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    installEmails.forEach(function(email, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">✕ Supprimer</button>';
+        list.appendChild(item);
+    });
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            installEmails.splice(idx, 1);
+            saveInstallEmails();
+            renderInstallEmails();
+            showToast(i18n.t('admin.install_email_deleted'));
+        });
+    });
+}
+
 // ---- MACHINE REQUEST EMAILS (demande d'ajout de machine) ----
 let machineReqEmails = [];
 
@@ -1877,6 +1922,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderNotesEmails();
                 input.value = '';
                 showToast(i18n.t('admin.notes_email_added'));
+            }
+        };
+    }
+
+    // ADD INSTALL EMAIL
+    var addInstallEmailBtn = document.getElementById('admin-add-install-email-btn');
+    if (addInstallEmailBtn) {
+        addInstallEmailBtn.onclick = function() {
+            var input = document.getElementById('admin-add-install-email');
+            var email = input.value.trim();
+            if (/^[^@\s,;]+@[^@\s,;]+\.[^@\s,;]+$/.test(email) && installEmails.indexOf(email) < 0) {
+                installEmails.push(email);
+                saveInstallEmails();
+                renderInstallEmails();
+                input.value = '';
+                showToast(i18n.t('admin.install_email_added'));
             }
         };
     }

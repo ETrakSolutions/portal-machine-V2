@@ -20,7 +20,7 @@ window.PORTAL_API_URL = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGi
  * session, le serveur repond { error } : data.value est absent, comme une cle vide.
  */
 window.PORTAL_PRIVATE_KEYS = ['machine_requests', 'machine_request_emails', 'notes_emails',
-                              'target_emails', 'kit_emails', 'db_changelog'];
+                              'target_emails', 'kit_emails', 'db_changelog', 'install_emails'];
 window.PORTAL_PRIVATE_PREFIXES = ['user_active_', 'inactivity_notice_'];
 window.portalIsPrivateKey = function (key) {
   key = String(key || '');

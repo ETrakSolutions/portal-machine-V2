@@ -246,19 +246,15 @@ def main():
         d.quit()
     d = navigateur('technicien', page=SAV_PAGE)
     try:
-        v('SAV : lien vers la base en haut de page', d.find_element(By.ID, 'l-diag').get_attribute('href').endswith('diagnostic.html'))
-        d.execute_script("document.querySelector('#f-produits input[value=\"Caméras\"]').click()")
-        d.find_element(By.ID, 'f-code').send_keys('NO SIGNAL')
-        d.find_element(By.ID, 'b-diag').click()
-        u = d.execute_script('return window.__ouvert') or ''
-        v('SAV : bouton « Chercher » ouvre la base avec le produit et le code', u == 'diagnostic.html?produit=' + urllib.parse.quote('Caméras', safe='') + '&q=NO%20SIGNAL', u)
-        d.find_element(By.ID, 'f-code').clear()
-        d.find_element(By.ID, 'f-desc').send_keys("l'écran reste noir quand on démarre la machine")
-        d.find_element(By.ID, 'b-diag').click()
-        u = d.execute_script('return window.__ouvert') or ''
-        v('SAV : sans code, les 4 premiers mots de la description', u.endswith('&q=' + urllib.parse.quote("l'écran reste noir quand", safe="'")), u)
-        v('SAV : la fiche en cours n\'est pas touchee', d.find_element(By.ID, 'f-desc').get_attribute('value').startswith("l'écran"))
+        # Steve, 2026-10-29 : la base est dans la tuile « Soutien technique », plus dans le SAV.
+        v('SAV : plus aucun lien vers la base de diagnostic', not d.find_elements(By.ID, 'l-diag') and not d.find_elements(By.ID, 'b-diag')
+          and 'diagnostic.html' not in d.page_source)
         v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+    d = navigateur('technicien')
+    try:
+        v('retour de la base : vers Soutien technique', d.find_element(By.CSS_SELECTOR, '.header-back').get_attribute('href').endswith('soutien.html'))
     finally:
         d.quit()
 

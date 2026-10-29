@@ -441,15 +441,8 @@
         confirmerQuitter(function () { (window.__savAller || function (u) { window.location.href = u; })(a.href); });
     }, true);
 
-    // Base de diagnostic (Steve, 2026-10-13) : nouvel onglet, pour ne pas perdre la fiche en cours.
-    // Recherche pre-remplie avec le code a l'ecran, sinon les premiers mots de la description.
-    $('b-diag').addEventListener('click', function () {
-        var prod = (document.querySelector('#f-produits input:checked') || {}).value || '';
-        var q = $('f-code').value.trim() || $('f-desc').value.trim().split(/\s+/).slice(0, 4).join(' ');
-        var u = 'diagnostic.html' + (prod && prod !== 'Autre' || q ? '?' + [prod && prod !== 'Autre' ? 'produit=' + encodeURIComponent(prod) : '',
-            q ? 'q=' + encodeURIComponent(q) : ''].filter(Boolean).join('&') : '');
-        (window.__savOuvrir || function (x) { window.open(x, '_blank'); })(u);
-    });
+    // La base de diagnostic n'est plus liee d'ici : elle est dans la tuile « Soutien
+    // technique » (Steve, 2026-10-29).
     $('b-copier').addEventListener('click', function () { copier(fiche()).then(function () { ok('Fiche copiée dans le presse-papiers.'); }); });
     $('b-nouveau').addEventListener('click', function () {
         if (!confirm('Effacer la fiche et commencer une nouvelle demande ?')) return;
