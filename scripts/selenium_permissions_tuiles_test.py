@@ -79,7 +79,8 @@ v('ingenierie : Cedule, SAV et Soutien technique visibles, Export et Price List 
   h == {'hub-tile-cedule': True, 'hub-tile-sav': True, 'hub-tile-export': False, 'hub-tile-pricelist': False, 'hub-tile-soutien': True}, h)
 h_tech = hub('technicien', None)
 h = hub('installateur', None)
-v('installateur : memes tuiles que le technicien (Steve, 2026-10-29)', h == h_tech and h['hub-tile-soutien'] and h['hub-tile-sav'], h)
+v('installateur : memes tuiles que le technicien, sauf SAV (Steve, 2026-10-29)', not h['hub-tile-sav'] and h_tech['hub-tile-sav']
+  and {k: x for k, x in h.items() if k != 'hub-tile-sav'} == {k: x for k, x in h_tech.items() if k != 'hub-tile-sav'} and h['hub-tile-soutien'], h)
 h = hub('administrateur', None)
 v('administrateur : les quatre visibles', all(h.values()), h)
 h = hub('dealer', None)
@@ -122,7 +123,7 @@ try:
     v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗ Valider diag ✓ Soutien ✓', ing[9:] == ['✓', '✓', '✗', '✗', '✓', '✓'], ing[9:])
     v('Dealer : Soutien tech. ✗ par defaut, reglable', dealer[14] == '✗', dealer[9:])
     inst = par_role.get('Installateur', [])
-    v('Installateur : une ligne dans le tableau, Soutien ✓, Valider diag ✗', len(inst) == 15 and inst[13] == '✗' and inst[14] == '✓', inst[9:])
+    v('Installateur : une ligne dans le tableau, SAV ✗, Valider diag ✗, Soutien ✓', len(inst) == 15 and inst[10] == '✗' and inst[13] == '✗' and inst[14] == '✓', inst[9:])
     dist = par_role.get('Distributeur', [])
     v('Distributeur : Soutien tech. ✓ par defaut, reglable', dist[14] == '✓', dist[9:])
     d.execute_script("""var td=[...document.querySelectorAll('#admin-perm-tbody td[data-perm="savAccess"]')]

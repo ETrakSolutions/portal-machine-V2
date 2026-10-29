@@ -8,7 +8,8 @@
     var INTERNES = ['administrateur', 'vente_interne', 'vente_externe', 'technicien', 'installateur', 'ingenierie'];
     var DEFAUTS = {
         ceduleAccess:    INTERNES,
-        savAccess:       INTERNES,
+        // Installateur : pas la tuile SAV (Steve, 2026-10-29).
+        savAccess:       INTERNES.filter(function (r) { return r !== 'installateur'; }),
         exportAccess:    ['administrateur'],
         pricelistAccess: ['administrateur'],
         // Base de diagnostic SAV (Steve, 2026-10-13) : valider les fiches des techniciens.
