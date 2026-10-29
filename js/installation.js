@@ -279,7 +279,13 @@
         if (!c || e.target.closest('.in-photo')) return;
         var id = c.getAttribute('data-id'), act = e.target.closest('[data-act]');
         if (!act) {
-            if (e.target.closest('.in-head')) { ETAT.ouvertes[id] = !ETAT.ouvertes[id]; c.classList.toggle('open'); chargerPhotos(c); }
+            if (e.target.closest('.in-head')) {
+                // Une seule fiche ouverte a la fois (Steve, 2026-10-29)
+                var ouvrir = !ETAT.ouvertes[id];
+                ETAT.ouvertes = {};
+                [].forEach.call($('in-liste').querySelectorAll('.in-card.open'), function (o) { o.classList.remove('open'); });
+                if (ouvrir) { ETAT.ouvertes[id] = true; c.classList.add('open'); chargerPhotos(c); }
+            }
             return;
         }
         var n = original(id), a = act.getAttribute('data-act');
@@ -486,7 +492,7 @@
             remettre();
             if (!d || !d.ok) { var a = $('e-alert'); a.textContent = msgErreur(d); a.style.display = 'block'; return; }
             fermerEdition();
-            ETAT.ouvertes[d.note.id] = true;
+            ETAT.ouvertes = {}; ETAT.ouvertes[d.note.id] = true;
             ok(d.proposition ? tx('Proposition envoyée : elle attend la validation.', 'Proposal sent: it awaits approval.')
                : d.note.statut === 'brouillon' ? tx('Note enregistrée en brouillon : visible de toute l\'équipe après validation.', 'Note saved as draft: visible to the whole team after approval.')
                : tx('Note enregistrée et publiée.', 'Note saved and published.'));
