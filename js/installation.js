@@ -153,28 +153,30 @@
         } while (s !== av);
         return s;
     }
-    // Machines hors base (« Autre… ») : celles des notes existantes s'ajoutent aux listes.
+    var AUTRE = '__autre';
+    // Machines hors base (« Autre… ») : dans le formulaire, celles des notes existantes
+    // s'ajoutent aux listes ; dans les filtres (seulBase), elles sont regroupees sous « Autres ».
     function notesMachines(t, f) {
         return ETAT.notes.filter(function (n) { return (!t || n.type === t) && (!f || n.fabricant === f); });
     }
-    function types() {
+    function types(seulBase) {
         var s = {};
         Object.keys(ETAT.machines).forEach(function (t) { s[t] = 1; });
-        notesMachines().forEach(function (n) { if (n.type) s[n.type] = 1; });
+        if (!seulBase) notesMachines().forEach(function (n) { if (n.type) s[n.type] = 1; });
         return Object.keys(s).sort(tri);
     }
-    function fabricants(t) {
+    function fabricants(t, seulBase) {
         var s = {};
         (t ? [t] : Object.keys(ETAT.machines)).forEach(function (x) { Object.keys(ETAT.machines[x] || {}).forEach(function (f) { s[f] = 1; }); });
-        notesMachines(t).forEach(function (n) { if (n.fabricant) s[n.fabricant] = 1; });
+        if (!seulBase) notesMachines(t).forEach(function (n) { if (n.fabricant) s[n.fabricant] = 1; });
         return Object.keys(s).sort(tri);
     }
     // Liste des modeles de base ; le libelle rappelle les modeles de la base qu'il regroupe.
-    function modeles(t, f) {
+    function modeles(t, f, seulBase) {
         var s = {};
         var ajoute = function (m) { var b = baseModele(m); if (!b) return; s[b] = s[b] || {}; if (m !== b) s[b][m] = 1; };
         (t ? [t] : Object.keys(ETAT.machines)).forEach(function (x) { var fb = ETAT.machines[x] || {}; (f ? [f] : Object.keys(fb)).forEach(function (y) { (fb[y] || []).forEach(ajoute); }); });
-        notesMachines(t, f).forEach(function (n) { ajoute(n.modele); });
+        if (!seulBase) notesMachines(t, f).forEach(function (n) { ajoute(n.modele); });
         return Object.keys(s).sort(tri).map(function (b) {
             var v = Object.keys(s[b]).sort(tri);
             return { v: b, t: v.length ? b + '  (' + v.slice(0, 4).join(', ') + (v.length > 4 ? ', …' : '') + ')' : b };
@@ -193,11 +195,32 @@
     function offerte(liste, v) { return liste.some(function (x) { return (typeof x === 'string' ? x : x.v) === v; }) ? v : ''; }
 
     // ---------- filtres ----------
+    // « Autres (hors base) » dans les filtres (Steve, 2026-10-29). Niveau ou la machine d'une
+    // note sort de la base : 'type', 'fab', 'modele', ou '' si elle y est entierement.
+    function niveauAutre(n) {
+        var fb = ETAT.machines[n.type];
+        if (!fb) return 'type';
+        if (!fb[n.fabricant]) return 'fab';
+        return fb[n.fabricant].map(baseModele).indexOf(baseModele(n.modele)) < 0 ? 'modele' : '';
+    }
+    function filtreType(n, t) { return !t || (t === AUTRE ? niveauAutre(n) === 'type' : n.type === t); }
+    function filtreFab(n, f) { return !f || (f === AUTRE ? ['type', 'fab'].indexOf(niveauAutre(n)) >= 0 : n.fabricant === f); }
+    function filtreModele(n, m) { return !m || (m === AUTRE ? niveauAutre(n) !== '' : baseModele(n.modele) === m); }
+    // Noms tires des notes (sous un « Autres » : la base n'a pas de liste)
+    function nomsNotes(champ, garder) {
+        var s = {};
+        ETAT.notes.forEach(function (n) { if (garder(n) && n[champ]) s[champ === 'modele' ? baseModele(n[champ]) : n[champ]] = 1; });
+        return Object.keys(s).sort(tri);
+    }
     function dessinerFiltres() {
-        remplir($('f-type'), types(), tx('Tous les types', 'All types'));
-        remplir($('f-fab'), fabricants($('f-type').value), tx('Tous les fabricants', 'All manufacturers'));
-        remplir($('f-modele'), modeles($('f-type').value, $('f-fab').value), tx('Tous les modèles', 'All models'));
-        var po = prodOptions($('f-type').value);
+        var autres = { v: AUTRE, t: tx('Autres (hors base)', 'Others (not in database)') };
+        var t = $('f-type').value, f = $('f-fab').value, tA = t === AUTRE, fA = f === AUTRE;
+        remplir($('f-type'), types(true).concat([autres]), tx('Tous les types', 'All types'));
+        remplir($('f-fab'), tA ? nomsNotes('fabricant', function (n) { return filtreType(n, t); })
+                               : fabricants(t, true).concat([autres]), tx('Tous les fabricants', 'All manufacturers'));
+        remplir($('f-modele'), tA || fA ? nomsNotes('modele', function (n) { return filtreType(n, t) && filtreFab(n, f); })
+                                        : modeles(t, f, true).concat([autres]), tx('Tous les modèles', 'All models'));
+        var po = prodOptions(tA ? '' : t);
         remplir($('f-produit'), po, tx('Tous les produits', 'All products'), offerte(po, $('f-produit').value));
     }
     ['f-type', 'f-fab', 'f-modele', 'f-produit'].forEach(function (id) {
@@ -251,7 +274,7 @@
         var t = $('f-type').value, f = $('f-fab').value, m = $('f-modele').value, p = $('f-produit').value, mots = racines($('f-q').value);
         var l = ETAT.notes.filter(function (n) {
             if (ETAT.vue === 'brouillons' && n.statut !== 'brouillon') return false;
-            return (!t || n.type === t) && (!f || n.fabricant === f) && (!m || baseModele(n.modele) === m) && (!p || n.produit === p);
+            return filtreType(n, t) && filtreFab(n, f) && filtreModele(n, m) && (!p || n.produit === p);
         });
         var ordre = function (a, b) { return titre(a).localeCompare(titre(b), 'fr', { numeric: true }); };
         if (!mots.length) return l.sort(ordre);
@@ -369,7 +392,6 @@
     // ---------- edition ----------
     // « Autre… » en fin de liste : machine absente de la base, nom a preciser dans la case
     // qui apparait dessous (Steve, 2026-10-29). Type « Autre » => fabricant et modele aussi.
-    var AUTRE = '__autre';
     function avecAutre(sel, valeurs, garder) {
         remplir(sel, valeurs, tx('— Choisir —', '— Choose —'), garder === AUTRE ? '' : garder);
         var o = document.createElement('option'); o.value = AUTRE; o.textContent = tx('Autre…', 'Other…');
@@ -500,7 +522,8 @@
         noteEdition(n);
         ['type', 'fab', 'modele'].forEach(function (k) { $('e-' + k + '-autre').value = ''; });
         // Nouvelle note : reprend les filtres en cours (ex. Excavatrice > Case > CX19, Limiteur).
-        var src = n || { type: $('f-type').value, fabricant: $('f-fab').value, modele: $('f-modele').value, produit: $('f-produit').value, option: '' };
+        var fv = function (id) { var v = $(id).value; return v === AUTRE ? '' : v; };
+        var src = n || { type: fv('f-type'), fabricant: fv('f-fab'), modele: fv('f-modele'), produit: $('f-produit').value, option: '' };
         avecAutre($('e-type'), types(), src.type || '');
         avecAutre($('e-fab'), fabricants(src.type), src.fabricant || '');
         avecAutre($('e-modele'), src.fabricant ? modeles(src.type, src.fabricant) : [], baseModele(src.modele));
