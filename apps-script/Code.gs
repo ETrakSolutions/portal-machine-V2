@@ -419,6 +419,8 @@ function _permsForRole(role) {
     vente_interne:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     vente_externe:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false, addUsers:true },
     technicien:     { modifBom:false, flagBom:false, writeNotes:true,  modifAccounts:false },
+    // Installateur (Steve, 2026-10-29) : memes acces que le technicien tel que regle en ligne.
+    installateur:   { modifBom:false, flagBom:true,  writeNotes:true,  modifAccounts:false },
     distributeur:   { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     dealer:         { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     ingenierie:     { modifBom:true,  flagBom:true,  writeNotes:true,  modifAccounts:false }
@@ -1047,7 +1049,7 @@ function getPricesLog(body) {
 // task/list) : rien de ce qu'envoie le portail n'est relaye a ProgressionLive.
 var PL_BASE = 'https://ecotrakindustrie.progressionlive.com/server/rest';
 var CEDULE_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe',
-                    'technicien', 'ingenierie'];
+                    'technicien', 'installateur', 'ingenierie'];
 // Depuis le 2026-09-30 (decision Jacquot), l'acces se regle dans le tableau des
 // permissions (ceduleAccess, savAccess) : CEDULE_ROLES n'est plus que la liste par
 // defaut, tant que la permission n'a jamais ete reglee pour un role.
@@ -1467,9 +1469,10 @@ function setSav(body) {
 // Decision Steve, 2026-10-13 : base des pannes connues et de leurs solutions, remplie
 // depuis le portail par l'equipe interne (techniciens sur la route compris), sans licence
 // Claude. AUCUN historique d'intervention : seulement symptome -> causes -> solutions.
-//  - Lecture et saisie : case « Soutien tech. » (soutienAccess, _soutienAcces) — roles internes
-//    ET dealers depuis le 2026-10-29 (Steve) ; jamais distributeur, invite ni le PIN seul
-//    (il faut une identite pour signer la fiche). Avant : case SAV, internes seulement.
+//  - Lecture et saisie : case « Soutien tech. » (soutienAccess, _soutienAcces), reglable
+//    pour tous les roles depuis le 2026-10-29 (Steve ; defaut : internes + distributeur) ;
+//    jamais l'invite ni le PIN seul (il faut une identite pour signer la fiche).
+//    Avant : case SAV, internes seulement.
 //  - Toute fiche soumise est un BROUILLON, visible de son auteur et des validateurs, tant
 //    qu'un validateur ne l'a pas approuvee. Validateur = case « Valider diag »
 //    (diagValidate) du tableau des permissions ; defaut : administrateur et ingenierie
@@ -1485,14 +1488,14 @@ function setSav(body) {
 // Aucun courriel ne sort : seuls les noms des auteurs et validateurs sont renvoyes.
 var DIAG_ROLES_VALIDATION = ['administrateur', 'ingenierie'];
 // Tuile « Soutien technique » (Steve, 2026-10-29) : base de diagnostic + banque d'installation,
-// case « Soutien tech. » (soutienAccess) du tableau des permissions. Ouverte aux DEALERS
-// (lecture + creation / proposition, jamais validation) ; jamais au distributeur. Avant le
-// 2026-10-29, l'acces suivait la case SAV et excluait tous les comptes externes.
-var SOUTIEN_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe', 'technicien', 'ingenierie', 'dealer'];
-var SOUTIEN_INTERDITS = ['distributeur'];
+// case « Soutien tech. » (soutienAccess) du tableau des permissions, REGLABLE pour tous les
+// roles, externes compris (aucun verrou). Par defaut : roles internes + distributeur ; dealer
+// decoche. Un compte externe admis lit, cree et propose ; il ne valide jamais
+// (diagValidate reste verrouille) et n'a jamais la liste SAV. Avant le 2026-10-29,
+// l'acces suivait la case SAV et excluait tous les comptes externes.
+var SOUTIEN_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe', 'technicien', 'installateur', 'ingenierie', 'distributeur'];
 function _soutienAcces(role) {
   if (role === 'super_admin') return true;
-  if (SOUTIEN_INTERDITS.indexOf(role) >= 0) return false;
   var perms = _permsForRole(role);
   if (perms && perms.soutienAccess !== undefined) return !!perms.soutienAccess;
   return SOUTIEN_ROLES.indexOf(role) >= 0;
@@ -1508,7 +1511,7 @@ function _diagAppelant(body) {
   var u = _findUser(sess.u);
   if (!u || u.active === false) return { error: 'authentication required' };
   if (!_soutienAcces(u.role)) return { error: 'forbidden' };
-  // valideur : _roleHasAccess refuse toujours un compte externe (dealer compris).
+  // valideur : _roleHasAccess refuse toujours un compte externe (dealer, distributeur).
   return { user: u, moi: String(u.email || u.username || '').toLowerCase(),
            nom: String(u.name || u.email || u.username || ''),
            externe: ROLES_EXTERNES.indexOf(u.role) >= 0,
@@ -1907,7 +1910,7 @@ function _instAvis(n, proposition) {
            : proposition ? 'Proposition en attente d’approbation — la fiche publiée reste inchangée d’ici là'
            : 'Brouillon en attente d’approbation';
   var lignes = [['Machine', n.type + ' — ' + machine], ['Produit', prod],
-                ['Écrite par', n.auteurNom + (n.auteurExterne ? ' (dealer, compte externe)' : '')], ['État', etat]];
+                ['Écrite par', n.auteurNom + (n.auteurExterne ? ' (' + n.auteurExterne + ', compte externe)' : '')], ['État', etat]];
   var texte = (proposition ? 'Une modification est proposée' : 'Une nouvelle fiche a été ajoutée') + " à la banque d'installation.\n\n" +
               lignes.map(function (l) { return l[0] + ' : ' + l[1]; }).join('\n') + '\n\nOuvrir la fiche : ' + lien + '\n';
   var html = '<p>' + (proposition ? 'Une modification est proposée' : 'Une nouvelle fiche a été ajoutée') + " à la banque d'installation.</p>" +
@@ -1955,7 +1958,7 @@ function saveInst(body) {
       }
       if (!n) {
         n = { id: Utilities.getUuid(), statut: 'brouillon', remplace: ex.id, auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
-        if (a.externe) n.auteurExterne = true;
+        if (a.externe) n.auteurExterne = a.user.role;
         avis = 'proposition';                       // avis a la premiere proposition seulement
       }
     } else if (ex) {
@@ -1963,7 +1966,7 @@ function saveInst(body) {
     } else {
       n = { id: Utilities.getUuid(), statut: a.valideur ? 'valide' : 'brouillon', auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
       if (a.valideur) { n.valideParNom = a.nom; n.valideLe = maintenant; }
-      if (a.externe) n.auteurExterne = true;
+      if (a.externe) n.auteurExterne = a.user.role;
       avis = 'nouvelle';
     }
     _instTraduire(c, (n.en ? n : ex) || null);
