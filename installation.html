@@ -20,7 +20,11 @@
             width: 100%; box-sizing: border-box; background: #2a2a2a; color: #eee; border: 1px solid #444;
             border-radius: 8px; padding: 9px 10px; font: inherit; font-size: 0.9rem; }
         .in-bar select:focus, .in-bar2 input:focus, .in-f input:focus, .in-f textarea:focus, .in-f select:focus { outline: none; border-color: #FF8C00; }
-        .in-filtres { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+        .in-filtres { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        /* Filtres dans un cadre a part, bien separes des notes (Steve, 2026-10-29) */
+        .in-panneau { background: #181818; border: 1px solid #3a3a3a; border-radius: 12px; padding: 14px; margin-bottom: 28px; }
+        .in-titre-liste { color: #8a97a3; font-size: 0.75rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+            border-bottom: 1px solid #333; padding-bottom: 6px; margin-bottom: 12px; }
         .in-chip { background: #262626; color: #ddd; border: 1px solid #444; border-radius: 99px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }
         .in-chip.on { border-color: #FF8C00; background: rgba(255,140,0,.12); color: #FFB45C; }
         .in-compte { color: #8a97a3; font-size: 0.8rem; margin-left: auto; }
@@ -121,7 +125,7 @@
                 <div class="admin-hero" style="padding-bottom:0.2rem;">
                     <h1 class="admin-hero-title" data-tx="Banque d'installation|Installation library">Banque d'installation</h1>
                 </div>
-                <p class="in-sub" data-tx="Notes d'installation par modèle de machine et par produit : étapes avec photos, pièces et harnais, pièges connus, temps d'installation. Usage interne. Une note ajoutée ou modifiée reste en brouillon jusqu'à sa validation.|Installation notes by machine model and product: steps with photos, parts and harnesses, known pitfalls, installation time. Internal use. A new or edited note stays a draft until it is approved.">Notes d'installation par modèle de machine et par produit.</p>
+                <p class="in-sub" data-tx="Notes d'installation par modèle de machine et par produit : informations, photos, pièces et harnais, pièges connus, temps d'installation. Usage interne. Une note ajoutée ou modifiée reste en brouillon jusqu'à sa validation.|Installation notes by machine model and product: information, photos, parts and harnesses, known pitfalls, installation time. Internal use. A new or edited note stays a draft until it is approved.">Notes d'installation par modèle de machine et par produit.</p>
 
                 <div class="in-ok" id="in-ok"></div>
 
@@ -167,6 +171,7 @@
                 </section>
 
                 <div id="in-vue-liste">
+                <div class="in-panneau">
                 <div class="in-bar">
                     <select id="f-type"></select>
                     <select id="f-fab"></select>
@@ -174,7 +179,7 @@
                     <select id="f-produit"></select>
                 </div>
                 <div class="in-bar2">
-                    <input type="text" id="f-q" autocomplete="off" data-txp="Rechercher : étape, pièce, piège…|Search: step, part, pitfall…">
+                    <input type="text" id="f-q" autocomplete="off" data-txp="Rechercher : texte, pièce, piège…|Search: text, part, pitfall…">
                     <button type="button" class="in-btn main" id="b-nouvelle" data-tx="+ Nouvelle note|+ New note">+ Nouvelle note</button>
                 </div>
                 <div class="in-filtres">
@@ -182,6 +187,8 @@
                     <button type="button" class="in-chip" data-vue="brouillons" id="c-brouillons">Brouillons</button>
                     <span class="in-compte" id="in-compte">Chargement…</span>
                 </div>
+                </div>
+                <div class="in-titre-liste" data-tx="Notes d'installation|Installation notes">Notes d'installation</div>
                 <div id="in-liste"></div>
                 </div>
             </div>
