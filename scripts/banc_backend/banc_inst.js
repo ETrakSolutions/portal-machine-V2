@@ -76,10 +76,12 @@ const JPEG = Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 1, 2, 3, 4]).toString('base64'
 // --- Acces ---
 check('sans session : refuse', post({ action: 'getinst' }).error === 'authentication required');
 check('PIN seul : refuse', post({ action: 'getinst', pin: 'PINSECRET' }).error === 'authentication required');
-check('dealer : refuse en lecture', post({ action: 'getinst', token: D }).error === 'forbidden');
+// Soutien technique (Steve, 2026-10-29) : le dealer lit, cree et propose ; jamais le distributeur.
+let rD = post({ action: 'getinst', token: D });
+check('dealer : lit la banque, jamais validateur', rD.ok === true && rD.peutValider === false);
 check('distributeur : refuse', post({ action: 'getinst', token: tok('s@x', 'S') }).error === 'forbidden');
-check('dealer : refuse en ecriture', post({ action: 'saveinst', token: D, note: note() }).error === 'forbidden');
-check('dealer : refuse pour une photo', post({ action: 'uploadinstphoto', token: D, data: JPEG }).error === 'forbidden');
+check('dealer : ne valide pas', post({ action: 'validateinst', token: D, id: 'x' }).error === 'forbidden');
+check('dealer : jamais la liste SAV (clients)', post({ action: 'getsav', token: D }).error === 'forbidden');
 let r = post({ action: 'getinst', token: T });
 check('base vide, aucune feuille creee par une lecture', r.ok && r.notes.length === 0 && creees === 0);
 check('technicien : pas validateur ; Mathieu (ingenierie) : validateur', r.peutValider === false && post({ action: 'getinst', token: M }).peutValider === true);
@@ -162,7 +164,27 @@ check('photo trop grosse : refusee', post({ action: 'uploadinstphoto', token: T,
 fichiers.AUTRE_FICHIER_DRIVE_123 = { octets: [1, 2, 3], parent: 'MON_DRIVE', trashed: false };
 check('fichier du Drive hors du dossier : jamais rendu', post({ action: 'getinstphoto', token: T, id: 'AUTRE_FICHIER_DRIVE_123' }).error === 'not found');
 check('id de photo bidon : not found', post({ action: 'getinstphoto', token: T, id: '../../x' }).error === 'not found');
-check('dealer ne lit pas une photo', post({ action: 'getinstphoto', token: D, id: pid }).error === 'forbidden');
+check('dealer lit une photo', post({ action: 'getinstphoto', token: D, id: pid }).ok === true);
+check('distributeur ne lit pas une photo', post({ action: 'getinstphoto', token: tok('s@x', 'S'), id: pid }).error === 'forbidden');
+
+// --- Dealer : cree et propose, en brouillon, courriel qui le signale ---
+post({ action: 'save', key: 'install_emails', value: '["avis@e-trak.ca"]', token: J });
+let nbAvant = courriels.length;
+r = post({ action: 'saveinst', token: D, note: note({ modele: 'CX57', texte: 'Methode du dealer' }) });
+check('dealer cree : brouillon', r.ok && r.note.statut === 'brouillon' && r.note.mien === true);
+check('courriel : auteur signale comme dealer', courriels.length === nbAvant + 1 && /Dealer \(dealer, compte externe\)/.test(courriels[nbAvant].texte));
+const idD = r.note.id;
+check('technicien ne voit pas le brouillon du dealer', post({ action: 'getinst', token: T }).notes.every(n => n.id !== idD));
+check('dealer ne voit pas les brouillons des autres', post({ action: 'getinst', token: D }).notes.every(n => n.statut === 'valide' || n.id === idD));
+const idV = post({ action: 'getinst', token: D }).notes.filter(n => n.statut === 'valide')[0].id;
+r = post({ action: 'saveinst', token: D, note: note({ id: idV, texte: 'Proposition du dealer' }) });
+check('dealer modifie une note validee : proposition', r.ok && r.proposition === true && r.note.remplace === idV);
+check('dealer ne supprime pas une note validee', post({ action: 'deleteinst', token: D, id: idV }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ dealer: { soutienAccess: false } });
+check('case Soutien tech. retiree au dealer : refuse', post({ action: 'getinst', token: D }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ distributeur: { soutienAccess: true } });
+check('distributeur coche : toujours refuse (verrou dur)', post({ action: 'getinst', token: tok('s@x', 'S') }).error === 'forbidden');
+delete store.roles_permissions;
 
 // --- Suppression ---
 check('validateur supprime une note', post({ action: 'deleteinst', token: M, id: idM }).ok === true);

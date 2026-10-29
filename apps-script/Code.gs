@@ -1467,9 +1467,9 @@ function setSav(body) {
 // Decision Steve, 2026-10-13 : base des pannes connues et de leurs solutions, remplie
 // depuis le portail par l'equipe interne (techniciens sur la route compris), sans licence
 // Claude. AUCUN historique d'intervention : seulement symptome -> causes -> solutions.
-//  - Lecture et saisie : roles internes avec la case SAV (savAccess) ; jamais dealer,
-//    distributeur, invite ni le PIN seul (il faut une identite pour signer la fiche).
-//  - Interne seulement : rien de cette base ne sort vers un compte externe.
+//  - Lecture et saisie : case « Soutien tech. » (soutienAccess, _soutienAcces) — roles internes
+//    ET dealers depuis le 2026-10-29 (Steve) ; jamais distributeur, invite ni le PIN seul
+//    (il faut une identite pour signer la fiche). Avant : case SAV, internes seulement.
 //  - Toute fiche soumise est un BROUILLON, visible de son auteur et des validateurs, tant
 //    qu'un validateur ne l'a pas approuvee. Validateur = case « Valider diag »
 //    (diagValidate) du tableau des permissions ; defaut : administrateur et ingenierie
@@ -1484,6 +1484,19 @@ function setSav(body) {
 // qui ouvre la feuille (neutralisees si elles commencent par = + - @ : pas de formule).
 // Aucun courriel ne sort : seuls les noms des auteurs et validateurs sont renvoyes.
 var DIAG_ROLES_VALIDATION = ['administrateur', 'ingenierie'];
+// Tuile « Soutien technique » (Steve, 2026-10-29) : base de diagnostic + banque d'installation,
+// case « Soutien tech. » (soutienAccess) du tableau des permissions. Ouverte aux DEALERS
+// (lecture + creation / proposition, jamais validation) ; jamais au distributeur. Avant le
+// 2026-10-29, l'acces suivait la case SAV et excluait tous les comptes externes.
+var SOUTIEN_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe', 'technicien', 'ingenierie', 'dealer'];
+var SOUTIEN_INTERDITS = ['distributeur'];
+function _soutienAcces(role) {
+  if (role === 'super_admin') return true;
+  if (SOUTIEN_INTERDITS.indexOf(role) >= 0) return false;
+  var perms = _permsForRole(role);
+  if (perms && perms.soutienAccess !== undefined) return !!perms.soutienAccess;
+  return SOUTIEN_ROLES.indexOf(role) >= 0;
+}
 var DIAG_COLS = ['id', 'statut', 'produit', 'symptome', 'modifie_le', 'modifie_par', 'donnees'];
 var DIAG_COL_DONNEES = 7;
 var DIAG_MAX_CAUSES = 12;
@@ -1494,9 +1507,11 @@ function _diagAppelant(body) {
   if (!sess) return { error: 'authentication required' };
   var u = _findUser(sess.u);
   if (!u || u.active === false) return { error: 'authentication required' };
-  if (!_roleHasAccess(u.role, 'savAccess', SAV_ROLES)) return { error: 'forbidden' };
+  if (!_soutienAcces(u.role)) return { error: 'forbidden' };
+  // valideur : _roleHasAccess refuse toujours un compte externe (dealer compris).
   return { user: u, moi: String(u.email || u.username || '').toLowerCase(),
            nom: String(u.name || u.email || u.username || ''),
+           externe: ROLES_EXTERNES.indexOf(u.role) >= 0,
            valideur: _roleHasAccess(u.role, 'diagValidate', DIAG_ROLES_VALIDATION) };
 }
 
@@ -1891,7 +1906,8 @@ function _instAvis(n, proposition) {
   var etat = n.statut === 'valide' ? 'Publiée (écrite par un validateur)'
            : proposition ? 'Proposition en attente d’approbation — la fiche publiée reste inchangée d’ici là'
            : 'Brouillon en attente d’approbation';
-  var lignes = [['Machine', n.type + ' — ' + machine], ['Produit', prod], ['Écrite par', n.auteurNom], ['État', etat]];
+  var lignes = [['Machine', n.type + ' — ' + machine], ['Produit', prod],
+                ['Écrite par', n.auteurNom + (n.auteurExterne ? ' (dealer, compte externe)' : '')], ['État', etat]];
   var texte = (proposition ? 'Une modification est proposée' : 'Une nouvelle fiche a été ajoutée') + " à la banque d'installation.\n\n" +
               lignes.map(function (l) { return l[0] + ' : ' + l[1]; }).join('\n') + '\n\nOuvrir la fiche : ' + lien + '\n';
   var html = '<p>' + (proposition ? 'Une modification est proposée' : 'Une nouvelle fiche a été ajoutée') + " à la banque d'installation.</p>" +
@@ -1939,6 +1955,7 @@ function saveInst(body) {
       }
       if (!n) {
         n = { id: Utilities.getUuid(), statut: 'brouillon', remplace: ex.id, auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
+        if (a.externe) n.auteurExterne = true;
         avis = 'proposition';                       // avis a la premiere proposition seulement
       }
     } else if (ex) {
@@ -1946,6 +1963,7 @@ function saveInst(body) {
     } else {
       n = { id: Utilities.getUuid(), statut: a.valideur ? 'valide' : 'brouillon', auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
       if (a.valideur) { n.valideParNom = a.nom; n.valideLe = maintenant; }
+      if (a.externe) n.auteurExterne = true;
       avis = 'nouvelle';
     }
     _instTraduire(c, (n.en ? n : ex) || null);

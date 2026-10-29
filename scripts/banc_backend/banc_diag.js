@@ -63,9 +63,11 @@ const fiche = (sympt, extra) => Object.assign({ produit: "Limiteur d'excavatrice
 // --- Acces ---
 check('sans session : refuse', post({ action: 'getdiag' }).error === 'authentication required');
 check('PIN seul : refuse (il faut une identite)', post({ action: 'getdiag', pin: 'PINSECRET' }).error === 'authentication required');
-check('dealer : refuse', post({ action: 'getdiag', token: tok('d@x', 'D') }).error === 'forbidden');
+// Soutien technique (Steve, 2026-10-29) : le dealer lit et propose, le distributeur reste dehors.
+let rD = post({ action: 'getdiag', token: tok('d@x', 'D') });
+check('dealer : lit la base, jamais validateur', rD.ok === true && rD.peutValider === false);
 check('distributeur : refuse', post({ action: 'getdiag', token: tok('s@x', 'S') }).error === 'forbidden');
-check('dealer ne peut pas ecrire', post({ action: 'savediag', token: tok('d@x', 'D'), fiche: fiche('x') }).error === 'forbidden');
+check('dealer ne peut pas valider', post({ action: 'validediag', token: tok('d@x', 'D'), id: 'x' }).error === 'forbidden');
 check('compte desactive : ne se connecte pas', !post({ action: 'login', username: 'off@e', password: 'O' }).ok);
 let r = post({ action: 'getdiag', token: T });
 check('base vide : liste vide, aucune feuille creee par une lecture', r.ok && r.fiches.length === 0 && creees === 0);
@@ -145,10 +147,13 @@ check('DIAG_SHEET_ID non modifiable par un non-admin', post({ action: 'save', ke
 store.roles_permissions = JSON.stringify({ ingenierie: { diagValidate: false }, technicien: { diagValidate: true, savAccess: true } });
 check('case Valider diag decochee pour ingenierie : Kevin ne valide plus', post({ action: 'getdiag', token: K }).peutValider === false);
 check('case cochee pour technicien : il valide', post({ action: 'getdiag', token: T }).peutValider === true);
-store.roles_permissions = JSON.stringify({ dealer: { savAccess: true, diagValidate: true } });
-check('dealer coche quand meme : toujours refuse (verrou dur)', post({ action: 'getdiag', token: tok('d@x', 'D') }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ dealer: { diagValidate: true }, distributeur: { soutienAccess: true } });
+check('dealer coche Valider diag : ne valide toujours pas (verrou dur)', post({ action: 'getdiag', token: tok('d@x', 'D') }).peutValider === false);
+check('distributeur coche Soutien tech. : toujours refuse (verrou dur)', post({ action: 'getdiag', token: tok('s@x', 'S') }).error === 'forbidden');
 store.roles_permissions = JSON.stringify({ technicien: { savAccess: false } });
-check('case SAV retiree au technicien : il ne lit plus la base', post({ action: 'getdiag', token: T }).error === 'forbidden');
+check('case SAV retiree au technicien : la base suit la case Soutien tech., pas SAV', post({ action: 'getdiag', token: T }).ok === true);
+store.roles_permissions = JSON.stringify({ technicien: { soutienAccess: false }, dealer: { soutienAccess: false } });
+check('case Soutien tech. retiree : technicien et dealer refuses', post({ action: 'getdiag', token: T }).error === 'forbidden' && post({ action: 'getdiag', token: tok('d@x', 'D') }).error === 'forbidden');
 delete store.roles_permissions;
 
 // --- _authDiag (editeur) ---
