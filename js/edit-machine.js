@@ -1,3 +1,19 @@
+// Courriel « machine ajoutee » TOUJOURS bilingue, francais puis anglais : des demandeurs
+// sont anglophones et la langue de l'ecran de l'admin n'est pas la leur (Steve, 2026-10-29).
+// Jumelle : notifyRequester de js/machine-requests.js.
+function courrielMachineAjoutee(p, typeCle) {
+    var T = window.TRANSLATIONS || {};
+    var tr = function (lang, cle, q) {
+        var v = (T[lang] && T[lang][cle]) || (T.fr && T.fr[cle]) || cle;
+        Object.keys(q || {}).forEach(function (k) { v = v.split('{' + k + '}').join(q[k]); });
+        return v;
+    };
+    var q = function (lang) { var x = {}; Object.keys(p).forEach(function (k) { x[k] = p[k]; });
+        x.type = tr(lang, 'type.' + typeCle, {}) === 'type.' + typeCle ? typeCle : tr(lang, 'type.' + typeCle, {}); return x; };
+    return { sujet: 'Portail e-Trak : machine ajoutée / Machine added — ' + p.fab + ' ' + p.model + ' (' + p.year + ')',
+             corps: tr('fr', 'edit.notify_body', q('fr')) + '\n\n--------------------------------\n\n' + tr('en', 'edit.notify_body', q('en')) };
+}
+
 (function(){
   var API_URL = window.PORTAL_API_URL;  // #32 : js/config.js
   // Token de session du login (le backend accepte token ou PIN script dans le champ 'pin')
@@ -796,10 +812,9 @@
   window.notifyRequester = function(){
     if (!REQUESTER || !REQUESTER.requesterEmail){ showToast(i18n.t('edit.notify_none'), '#E07B00'); return; }
     var link = 'https://etraksolutions.github.io/portal-machine-V2/machine.html';
-    var subject = i18n.t('edit.notify_subject', { fab: FAB, model: MODEL, year: YEAR });
-    var body = i18n.t('edit.notify_body', { fab: FAB, model: MODEL, year: YEAR, type: TYPE, link: link });
+    var c = courrielMachineAjoutee({ fab: FAB, model: MODEL, year: YEAR, link: link }, TYPE);
     var mailto = 'mailto:' + encodeURIComponent(REQUESTER.requesterEmail) +
-      '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      '?subject=' + encodeURIComponent(c.sujet) + '&body=' + encodeURIComponent(c.corps);
     window.location.href = mailto;
   };
 

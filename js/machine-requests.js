@@ -1,3 +1,19 @@
+// Courriel « machine ajoutee » TOUJOURS bilingue, francais puis anglais : des demandeurs
+// sont anglophones et la langue de l'ecran de l'admin n'est pas la leur (Steve, 2026-10-29).
+// Jumelle : notifyRequester de js/edit-machine.js.
+function courrielMachineAjoutee(p, typeCle) {
+    var T = window.TRANSLATIONS || {};
+    var tr = function (lang, cle, q) {
+        var v = (T[lang] && T[lang][cle]) || (T.fr && T.fr[cle]) || cle;
+        Object.keys(q || {}).forEach(function (k) { v = v.split('{' + k + '}').join(q[k]); });
+        return v;
+    };
+    var q = function (lang) { var x = {}; Object.keys(p).forEach(function (k) { x[k] = p[k]; });
+        x.type = tr(lang, 'type.' + typeCle, {}) === 'type.' + typeCle ? typeCle : tr(lang, 'type.' + typeCle, {}); return x; };
+    return { sujet: 'Portail e-Trak : machine ajoutée / Machine added — ' + p.fab + ' ' + p.model + ' (' + p.year + ')',
+             corps: tr('fr', 'edit.notify_body', q('fr')) + '\n\n--------------------------------\n\n' + tr('en', 'edit.notify_body', q('en')) };
+}
+
     (function () {
         'use strict';
         var API_URL = window.PORTAL_API_URL;  // #32 : js/config.js
@@ -231,11 +247,10 @@
         }
 
         function notifyRequester(req) {
-            var p = { fab: req.fab, model: req.modele, year: req.annee, type: t('type.' + req.type, req.type),
-                      link: 'https://etraksolutions.github.io/portal-machine-V2/machine.html' };
+            var c = courrielMachineAjoutee({ fab: req.fab, model: req.modele, year: req.annee,
+                      link: 'https://etraksolutions.github.io/portal-machine-V2/machine.html' }, req.type);
             window.location.href = 'mailto:' + encodeURIComponent(req.requesterEmail) +
-                '?subject=' + encodeURIComponent(i18n.t('edit.notify_subject', p)) +
-                '&body=' + encodeURIComponent(i18n.t('edit.notify_body', p));
+                '?subject=' + encodeURIComponent(c.sujet) + '&body=' + encodeURIComponent(c.corps);
         }
 
         function rejectRequest(req) {
