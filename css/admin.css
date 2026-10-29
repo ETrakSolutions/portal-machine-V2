@@ -291,6 +291,17 @@
 /* Permission table */
 .admin-perm-table td, .admin-perm-table th { text-align: center; }
 .admin-perm-table td:first-child, .admin-perm-table th:first-child { text-align: left; }
+/* Colonne des roles figee : reste visible quand on fait defiler le tableau vers la droite
+   (Steve, 2026-10-29). Fond opaque = celui de la carte, pour que les cases passent dessous. */
+.admin-perm-table td:first-child, .admin-perm-table th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--bg-card);
+    white-space: nowrap;
+    box-shadow: 1px 0 0 var(--border), 6px 0 8px -6px rgba(0,0,0,0.6);
+}
+.admin-perm-table tbody tr:hover td:first-child { background: #2f2f2f; }
 .perm-yes { color: #00CC66; font-weight: 700; }
 .perm-no { color: #FF4444; opacity: 0.5; }
 
