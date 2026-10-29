@@ -1354,7 +1354,8 @@ function getPrepJobs(body) {
 // Roles : les memes que la cedule (CEDULE_ROLES) — pas dealer, distributeur ni invite.
 var SAV_PREFIX = 'sav_ref_';
 var SAV_CHUNK = 8000;
-var SAV_ROLES = CEDULE_ROLES;
+// Installateur : pas la tuile SAV (Steve, 2026-10-29), le reste comme le technicien.
+var SAV_ROLES = CEDULE_ROLES.filter(function (r) { return r !== 'installateur'; });
 
 function _isSavKey(key) { return String(key || '').indexOf(SAV_PREFIX) === 0; }
 // Cles jamais lisibles, modifiables ni listees par les actions generiques get/save/delete.

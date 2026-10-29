@@ -91,6 +91,7 @@ check('technicien : pas validateur ; Mathieu (ingenierie) : validateur', r.peutV
 r = post({ action: 'getinst', token: tok('i@e', 'I') });
 check('installateur : lit la banque, pas validateur', r.ok === true && r.peutValider === false);
 check('installateur : lit la base de diagnostic', post({ action: 'getdiag', token: tok('i@e', 'I') }).ok === true);
+check('installateur : pas la liste SAV (Steve, 2026-10-29)', post({ action: 'getsav', token: tok('i@e', 'I') }).error === 'forbidden');
 
 // --- Avis : liste d'adresses de la tuile Administrateur (admin seulement) ---
 check('install_emails : un technicien ne peut pas l\'ecrire', !!post({ action: 'save', key: 'install_emails', value: '["pirate@x.com"]', token: T }).error);
