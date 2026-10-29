@@ -87,11 +87,24 @@ let r = post({ action: 'getinst', token: T });
 check('base vide, aucune feuille creee par une lecture', r.ok && r.notes.length === 0 && creees === 0);
 check('technicien : pas validateur ; Mathieu (ingenierie) : validateur', r.peutValider === false && post({ action: 'getinst', token: M }).peutValider === true);
 
-// --- Installateur (Steve, 2026-10-29) : memes acces que le technicien ---
+// --- Installateur (Steve, 2026-10-29) : sous-traitant externe ---
 r = post({ action: 'getinst', token: tok('i@e', 'I') });
 check('installateur : lit la banque, pas validateur', r.ok === true && r.peutValider === false);
 check('installateur : lit la base de diagnostic', post({ action: 'getdiag', token: tok('i@e', 'I') }).ok === true);
 check('installateur : pas la liste SAV (Steve, 2026-10-29)', post({ action: 'getsav', token: tok('i@e', 'I') }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ installateur: { savAccess: true, ceduleAccess: true, diagValidate: true } });
+check('installateur coche SAV : toujours refuse (verrou dur)', post({ action: 'getsav', token: tok('i@e', 'I') }).error === 'forbidden');
+check('installateur coche Cedule : toujours refuse (verrou dur)', post({ action: 'getcedule', token: tok('i@e', 'I') }).error === 'forbidden');
+check('installateur coche Valider diag : ne valide toujours pas', post({ action: 'getinst', token: tok('i@e', 'I') }).peutValider === false
+      && post({ action: 'getdiag', token: tok('i@e', 'I') }).peutValider === false);
+delete store.roles_permissions;
+post({ action: 'save', key: 'install_emails', value: '["avis@e-trak.ca"]', token: J });
+r = post({ action: 'saveinst', token: tok('i@e', 'I'), note: note({ modele: 'CX60', texte: 'Note installateur' }) });
+check('installateur cree : brouillon, courriel « (installateur, compte externe) »', r.ok && r.note.statut === 'brouillon'
+      && /Installateur \(installateur, compte externe\)/.test(courriels[courriels.length - 1].texte));
+post({ action: 'deleteinst', token: J, id: r.note.id });
+post({ action: 'save', key: 'install_emails', value: '[]', token: J });
+courriels.length = 0;   // la section des avis plus bas compte a partir de zero
 
 // --- Avis : liste d'adresses de la tuile Administrateur (admin seulement) ---
 check('install_emails : un technicien ne peut pas l\'ecrire', !!post({ action: 'save', key: 'install_emails', value: '["pirate@x.com"]', token: T }).error);

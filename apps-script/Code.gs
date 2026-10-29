@@ -422,7 +422,8 @@ function _permsForRole(role) {
     vente_interne:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     vente_externe:  { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false, addUsers:true },
     technicien:     { modifBom:false, flagBom:false, writeNotes:true,  modifAccounts:false },
-    // Installateur (Steve, 2026-10-29) : memes acces que le technicien tel que regle en ligne.
+    // Installateur (Steve, 2026-10-29) : sous-traitant EXTERNE (ROLES_EXTERNES) ; outils comme
+    // le technicien regle en ligne, mais jamais Cedule, SAV ni Valider diag.
     installateur:   { modifBom:false, flagBom:true,  writeNotes:true,  modifAccounts:false },
     distributeur:   { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
     dealer:         { modifBom:false, flagBom:false, writeNotes:false, modifAccounts:false },
@@ -1052,13 +1053,16 @@ function getPricesLog(body) {
 // task/list) : rien de ce qu'envoie le portail n'est relaye a ProgressionLive.
 var PL_BASE = 'https://ecotrakindustrie.progressionlive.com/server/rest';
 var CEDULE_ROLES = ['super_admin', 'administrateur', 'vente_interne', 'vente_externe',
-                    'technicien', 'installateur', 'ingenierie'];
+                    'technicien', 'ingenierie'];
 // Depuis le 2026-09-30 (decision Jacquot), l'acces se regle dans le tableau des
 // permissions (ceduleAccess, savAccess) : CEDULE_ROLES n'est plus que la liste par
 // defaut, tant que la permission n'a jamais ete reglee pour un role.
 // Les roles externes n'y ont JAMAIS acces, meme coches : la cedule nomme les techniciens,
 // la liste SAV porte les clients et les courriels internes.
-var ROLES_EXTERNES = ['dealer', 'distributeur'];
+// Installateur = sous-traitant externe (Steve, 2026-10-29) : verrouille comme dealer et
+// distributeur (Cedule, SAV, Valider diag, Preparation des jobs) ; Soutien technique selon
+// sa case, signale « compte externe » dans les avis.
+var ROLES_EXTERNES = ['dealer', 'distributeur', 'installateur'];
 function _roleHasAccess(role, perm, defaults) {
   if (role === 'super_admin') return true;
   if (ROLES_EXTERNES.indexOf(role) >= 0) return false;
@@ -1413,8 +1417,7 @@ function setReinst(body) {
 // Roles : les memes que la cedule (CEDULE_ROLES) — pas dealer, distributeur ni invite.
 var SAV_PREFIX = 'sav_ref_';
 var SAV_CHUNK = 8000;
-// Installateur : pas la tuile SAV (Steve, 2026-10-29), le reste comme le technicien.
-var SAV_ROLES = CEDULE_ROLES.filter(function (r) { return r !== 'installateur'; });
+var SAV_ROLES = CEDULE_ROLES;      // l'installateur (externe) n'y est jamais, meme coche
 
 function _isSavKey(key) { return String(key || '').indexOf(SAV_PREFIX) === 0; }
 // Cles jamais lisibles, modifiables ni listees par les actions generiques get/save/delete.
