@@ -84,6 +84,12 @@ function doPost(e) {
     if (action === 'savediag')       return jsonOut(saveDiag(body));
     if (action === 'validediag')     return jsonOut(valideDiag(body));
     if (action === 'deletediag')     return jsonOut(deleteDiag(body));
+    if (action === 'getinst')        return jsonOut(getInst(body));
+    if (action === 'saveinst')       return jsonOut(saveInst(body));
+    if (action === 'validateinst')   return jsonOut(valideInst(body));
+    if (action === 'deleteinst')     return jsonOut(deleteInst(body));
+    if (action === 'uploadinstphoto') return jsonOut(uploadInstPhoto(body));
+    if (action === 'getinstphoto')   return jsonOut(getInstPhoto(body));
     if (action === 'adduser')        return jsonOut(userAdd(body));
     if (action === 'listmyusers')    return jsonOut(userListMine(body));
     if (action === 'updatemyuser')   return jsonOut(userUpdateMine(body));
@@ -151,7 +157,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
                       'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
-                      'DIAG_SHEET_ID'];
+                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
 // compris) pouvait reecrire roles_permissions, s'accorder modifAccounts, devenir
@@ -160,7 +166,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
 // Toutes ces cles ne sont ecrites que depuis la page Administration (modifAccounts).
 var ADMIN_WRITE_KEYS = ['roles_permissions', 'target_emails', 'sales_emails',
                         'kit_emails', 'notes_emails', 'machine_request_emails',
-                        'vendeurs_list', 'soumission_allowed_types'];
+                        'vendeurs_list', 'soumission_allowed_types', 'install_emails'];
 
 function _isAdminOnlyKey(key) {
   return SENSITIVE_KEYS.indexOf(key) >= 0 || ADMIN_WRITE_KEYS.indexOf(key) >= 0;
@@ -182,7 +188,7 @@ function _isAdminOnlyKey(key) {
 // serveur et en a besoin pour router sa soumission (decision Jacquot 2026-10-06).
 var LECTURE_PUBLIQUE_FERMEE = true;   // etape 3 : fermee le 2026-10-06 (version 39)
 var PRIVATE_READ_KEYS = ['machine_requests', 'machine_request_emails', 'notes_emails',
-                         'target_emails', 'kit_emails', 'db_changelog'];
+                         'target_emails', 'kit_emails', 'db_changelog', 'install_emails'];
 // Le nom de ces cles porte un courriel : lecture reservee a un admin (ecran Administration).
 var ADMIN_READ_PREFIXES = ['user_active_', 'inactivity_notice_'];
 
@@ -1750,6 +1756,304 @@ function _authDiag() {
   var sh = _avecVerrou(function () { return _diagFeuille(true); });
   Logger.log('Base de diagnostic : ' + sh.getParent().getUrl() + ' (' + (sh.getLastRow() - 1) + ' fiche(s))');
   return sh.getParent().getUrl();
+}
+
+/* ========================== BANQUE D'INSTALLATION (v52) ========================== */
+// Decision Steve, 2026-10-28/29 : notes d'installation par modele de machine ET par produit
+// (ex. Limiteur sur une excavatrice Case CX19) : un grand champ d'informations, des photos,
+// pieces et harnais, pieges connus, temps d'installation — aucune section obligatoire.
+// Memes regles que la base de diagnostic, dont elle reprend l'appelant (_diagAppelant) :
+//  - lecture et saisie : case SAV (savAccess) ; jamais dealer, distributeur, invite, PIN ;
+//  - validateurs : case « Valider diag » (diagValidate) — leurs notes et modifications sont
+//    publiees d'office (Steve, 2026-10-29) ; celles des autres restent en brouillon, et une
+//    modification d'une note validee devient une PROPOSITION (remplace = id) ;
+//  - bilingue : _diagPaire (LanguageApp), on n'ecrit que dans la langue de l'ecran.
+// STOCKAGE : Google Sheet privee « Banque d'installation - Portail e-Trak » (INST_SHEET_ID)
+// et photos dans un dossier Drive prive (INST_FOLDER_ID), les deux dans SENSITIVE_KEYS.
+// Photos reduites par la page (1600 px, JPEG, ~350 Ko) ; getinstphoto ne rend QUE un
+// fichier de ce dossier — jamais un autre fichier du Drive d'etrak.portail.
+// COURRIEL (Steve, 2026-10-29) : a chaque nouvelle note et a chaque nouvelle proposition
+// de modification, vers la liste install_emails (tuile Administrateur). Un echec d'envoi
+// n'empeche jamais l'enregistrement.
+var INST_COLS = ['id', 'statut', 'type', 'fabricant', 'modele', 'produit', 'modifie_le', 'modifie_par', 'donnees'];
+var INST_COL_DONNEES = 9;
+var INST_MAX_NOTE = 45000;     // caracteres de JSON par note (une cellule en porte 50 000)
+var INST_MAX_PHOTO = 700000;   // caracteres base64 (~520 Ko) ; la page envoie ~350 Ko
+var INST_PRODUITS = { limiteur: 'Limiteur de portée', godet_avant: 'Limiteur godet avant', idc: 'Indicateur de charge',
+                      creusage: 'Guide de creusage', camera: 'Caméra', nacelle: 'Options nacelle', balance: 'Balance' };
+var INST_SITE = 'https://etraksolutions.github.io/portal-machine-V2/';
+
+function _instFeuille(creer) {
+  var id = PROPS.getProperty('INST_SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id).getSheets()[0];
+  if (!creer) return null;
+  var ss = SpreadsheetApp.create("Banque d'installation - Portail e-Trak");
+  var sh = ss.getSheets()[0];
+  sh.setName('Notes');
+  sh.appendRow(INST_COLS);
+  sh.setFrozenRows(1);
+  PROPS.setProperty('INST_SHEET_ID', ss.getId());
+  return sh;
+}
+function _instDossier(creer) {
+  var id = PROPS.getProperty('INST_FOLDER_ID');
+  if (id) return DriveApp.getFolderById(id);
+  if (!creer) return null;
+  var d = DriveApp.createFolder("Banque d'installation - photos - Portail e-Trak");
+  PROPS.setProperty('INST_FOLDER_ID', d.getId());
+  return d;
+}
+
+function _instLire(sh) {
+  var out = [];
+  if (!sh) return out;
+  var v = sh.getDataRange().getValues();
+  for (var i = 1; i < v.length; i++) {
+    var n;
+    try { n = JSON.parse(v[i][INST_COL_DONNEES - 1]); } catch (e) { continue; }
+    if (n && n.id) { n._ligne = i + 1; out.push(n); }
+  }
+  return out;
+}
+function _instEcrire(sh, n) {
+  var copie = {};
+  Object.keys(n).forEach(function (k) { if (k !== '_ligne') copie[k] = n[k]; });
+  var ligne = [n.id, n.statut, _diagCellule(n.type), _diagCellule(n.fabricant), _diagCellule(n.modele),
+               _diagCellule(n.produit), n.modifieLe, _diagCellule(n.modifieParNom), JSON.stringify(copie)];
+  if (n._ligne) sh.getRange(n._ligne, 1, 1, ligne.length).setValues([ligne]);
+  else sh.appendRow(ligne);
+}
+
+function _instBilingue(n) {
+  var en = n.en || {};
+  return ['texte', 'pieges'].every(function (k) { return !(n[k] || en[k]) || !!(n[k] && en[k]); });
+}
+// Liste blanche de ce qui sort vers la page : jamais un courriel.
+function _instVue(n, a) {
+  var en = n.en || {};
+  return { id: n.id, statut: n.statut, type: n.type, fabricant: n.fabricant, modele: n.modele,
+           produit: n.produit, option: n.option || '', temps: n.temps || '', texte: n.texte || '',
+           photos: n.photos || [], pieces: (n.pieces || []).map(function (p) { return { txt: p.txt, qte: p.qte }; }),
+           pieges: n.pieges || '', en: { texte: en.texte || '', pieges: en.pieges || '' },
+           auteurNom: n.auteurNom || '', creeLe: n.creeLe || '', modifieParNom: n.modifieParNom || '',
+           modifieLe: n.modifieLe || '', valideParNom: n.valideParNom || '', valideLe: n.valideLe || '',
+           remplace: n.remplace || '', mien: n.auteur === a.moi, bilingue: _instBilingue(n) };
+}
+
+// Contenu soumis par la page : champs prevus seulement, longueurs bornees.
+function _instContenu(x) {
+  if (!x || typeof x !== 'object') return { error: 'invalid note' };
+  var str = function (v, n) { return String(v === null || v === undefined ? '' : v).trim().slice(0, n); };
+  var en = (x.en && typeof x.en === 'object') ? x.en : {};
+  var c = { type: str(x.type, 80), fabricant: str(x.fabricant, 80), modele: str(x.modele, 80),
+            produit: str(x.produit, 40), option: str(x.option, 40), temps: str(x.temps, 60),
+            texte: str(x.texte, 10000), pieges: str(x.pieges, 3000), photos: [], pieces: [],
+            enSoumis: { texte: str(en.texte, 10000), pieges: str(en.pieges, 3000) } };
+  if (!c.type || !c.fabricant || !c.modele || !c.produit) return { error: 'modele et produit requis' };
+  if (!INST_PRODUITS[c.produit]) return { error: 'produit inconnu' };
+  (Array.isArray(x.photos) ? x.photos : []).forEach(function (p) {
+    p = String(p || '');
+    if (/^[A-Za-z0-9_-]{10,100}$/.test(p) && c.photos.indexOf(p) < 0 && c.photos.length < 40) c.photos.push(p);
+  });
+  (Array.isArray(x.pieces) ? x.pieces : []).forEach(function (p) {
+    if (!p || c.pieces.length >= 60) return;
+    var t = str(p.txt, 200);
+    if (t) c.pieces.push({ txt: t, qte: str(p.qte, 10) || '1' });
+  });
+  return c;
+}
+var INST_CHAMPS = ['type', 'fabricant', 'modele', 'produit', 'option', 'temps', 'texte', 'photos', 'pieces', 'pieges', 'en', 'src'];
+
+function _instTraduire(c, avant) {
+  avant = avant || {};
+  var ae = avant.en || {}, as = avant.src || {}, so = c.enSoumis || {}, en = {}, src = {};
+  ['texte', 'pieges'].forEach(function (k) {
+    var r = _diagPaire(c[k], so[k], avant[k], ae[k], as[k]);
+    c[k] = r.fr; en[k] = r.en; src[k] = r.src;
+  });
+  c.en = en; c.src = src;
+  delete c.enSoumis;
+}
+
+// Courriel d'avis — sujet different pour une proposition de modification (Steve, 2026-10-29).
+function _instAvis(n, proposition) {
+  var dest;
+  try { dest = JSON.parse(PROPS.getProperty('install_emails') || '[]'); } catch (e) { dest = []; }
+  dest = (Array.isArray(dest) ? dest : []).map(function (x) { return String(x || '').trim(); })
+           .filter(function (x) { return /^[^@\s,;]+@[^@\s,;]+\.[^@\s,;]+$/.test(x); });
+  if (!dest.length) return 'aucun destinataire';
+  var esc = function (s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+  var prod = INST_PRODUITS[n.produit] || n.produit;
+  var machine = n.fabricant + ' ' + n.modele;
+  var sujet = "Banque d'installation — " + (proposition ? 'Modification proposée' : 'Nouvelle fiche') + ' : ' + prod + ' — ' + machine;
+  var lien = INST_SITE + 'installation.html?type=' + encodeURIComponent(n.type) + '&fab=' + encodeURIComponent(n.fabricant) +
+             '&modele=' + encodeURIComponent(n.modele) + '&produit=' + encodeURIComponent(n.produit);
+  var etat = n.statut === 'valide' ? 'Publiée (écrite par un validateur)'
+           : proposition ? 'Proposition en attente d’approbation — la fiche publiée reste inchangée d’ici là'
+           : 'Brouillon en attente d’approbation';
+  var lignes = [['Machine', n.type + ' — ' + machine], ['Produit', prod], ['Écrite par', n.auteurNom], ['État', etat]];
+  var texte = (proposition ? 'Une modification est proposée' : 'Une nouvelle fiche a été ajoutée') + " à la banque d'installation.\n\n" +
+              lignes.map(function (l) { return l[0] + ' : ' + l[1]; }).join('\n') + '\n\nOuvrir la fiche : ' + lien + '\n';
+  var html = '<p>' + (proposition ? 'Une modification est proposée' : 'Une nouvelle fiche a été ajoutée') + " à la banque d'installation.</p>" +
+             '<table style="border-collapse:collapse">' + lignes.map(function (l) {
+               return '<tr><td style="padding:2px 12px 2px 0;color:#555">' + esc(l[0]) + '</td><td style="padding:2px 0"><b>' + esc(l[1]) + '</b></td></tr>'; }).join('') +
+             '</table><p><a href="' + esc(lien) + '">Ouvrir la fiche dans le portail</a></p>';
+  try { return _envoyerCourriel(dest.join(','), sujet, texte, html, 'Portail e-Trak'); }
+  catch (e) { Logger.log('installation : avis non envoye : ' + e); return 'echec'; }
+}
+
+// { action:'getinst', token } -> { ok, notes, peutValider, nom }
+function getInst(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var notes;
+  try { notes = _instLire(_instFeuille(false)); } catch (e) { return { error: 'inst unreadable' }; }
+  return { ok: true, peutValider: a.valideur, nom: a.nom,
+           notes: notes.filter(function (n) { return n.statut === 'valide' || a.valideur || n.auteur === a.moi; })
+                       .map(function (n) { return _instVue(n, a); }) };
+}
+
+// { action:'saveinst', token, note:{ id?, type, fabricant, modele, produit, ... } } -> { ok, note, proposition? }
+function saveInst(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var c = _instContenu(body.note);
+  if (c.error) return c;
+  if (JSON.stringify(c).length * 2 > INST_MAX_NOTE) return { error: 'note trop longue' };   // x2 : la traduction
+  var id = String((body.note && body.note.id) || '');
+  var maintenant = new Date().toISOString();
+  var avis = null;
+  var r = _avecVerrou(function () {
+    var sh = _instFeuille(true), toutes = _instLire(sh), ex = null, prop = false;
+    for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) ex = toutes[i];
+    if (id && !ex) return { error: 'not found' };
+    var n;
+    if (ex && (a.valideur || (ex.statut === 'brouillon' && ex.auteur === a.moi))) {
+      n = ex;                                       // modification en place
+    } else if (ex && ex.statut === 'valide') {
+      prop = true;                                  // proposition de modification
+      n = null;
+      for (var j = 0; j < toutes.length; j++) {
+        var t = toutes[j];
+        if (t.statut === 'brouillon' && t.remplace === ex.id && t.auteur === a.moi) n = t;
+      }
+      if (!n) {
+        n = { id: Utilities.getUuid(), statut: 'brouillon', remplace: ex.id, auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
+        avis = 'proposition';                       // avis a la premiere proposition seulement
+      }
+    } else if (ex) {
+      return { error: 'forbidden' };                // brouillon d'un autre
+    } else {
+      n = { id: Utilities.getUuid(), statut: a.valideur ? 'valide' : 'brouillon', auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
+      if (a.valideur) { n.valideParNom = a.nom; n.valideLe = maintenant; }
+      avis = 'nouvelle';
+    }
+    _instTraduire(c, (n.en ? n : ex) || null);
+    if (n.statut === 'valide' && !_instBilingue(c)) {
+      if (!ex) { n.statut = 'brouillon'; delete n.valideParNom; delete n.valideLe; }
+      else return { error: 'traduction impossible' };
+    }
+    INST_CHAMPS.forEach(function (k) { n[k] = c[k]; });
+    n.modifieParNom = a.nom; n.modifieLe = maintenant;
+    if (JSON.stringify(n).length > INST_MAX_NOTE) return { error: 'note trop longue' };
+    _instEcrire(sh, n);
+    var out = { ok: true, note: _instVue(n, a), _n: n };
+    if (prop) out.proposition = true;
+    return out;
+  });
+  if (r && r._n) {
+    if (avis) _instAvis(r._n, avis === 'proposition');   // hors verrou : Graph peut prendre 1-2 s
+    delete r._n;
+  }
+  return r;
+}
+
+// { action:'validateinst', token, id } -> { ok, note } — validateur seulement.
+function valideInst(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  if (!a.valideur) return { error: 'forbidden' };
+  var id = String(body.id || '');
+  var maintenant = new Date().toISOString();
+  return _avecVerrou(function () {
+    var sh = _instFeuille(false), toutes = _instLire(sh), n = null, cible = null;
+    for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) n = toutes[i];
+    if (!n) return { error: 'not found' };
+    if (n.statut !== 'brouillon') return { error: 'deja validee' };
+    if (!_instBilingue(n)) return { error: 'traduction incomplete' };
+    if (n.remplace) for (var j = 0; j < toutes.length; j++) if (toutes[j].id === n.remplace) cible = toutes[j];
+    if (cible) {
+      INST_CHAMPS.forEach(function (k) { cible[k] = n[k]; });
+      cible.modifieParNom = n.auteurNom; cible.modifieLe = n.modifieLe;
+      cible.valideParNom = a.nom; cible.valideLe = maintenant;
+      _instEcrire(sh, cible);
+      sh.deleteRow(n._ligne);                      // en dernier : decale les lignes suivantes
+      return { ok: true, note: _instVue(cible, a), remplacee: cible.id };
+    }
+    delete n.remplace;
+    n.statut = 'valide'; n.valideParNom = a.nom; n.valideLe = maintenant;
+    _instEcrire(sh, n);
+    return { ok: true, note: _instVue(n, a) };
+  });
+}
+
+// { action:'deleteinst', token, id } -> { ok } — validateur : toute note ; autres : leurs brouillons.
+// Les photos restent dans le dossier (une proposition peut partager celles de l'original).
+function deleteInst(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var id = String(body.id || '');
+  return _avecVerrou(function () {
+    var sh = _instFeuille(false), toutes = _instLire(sh), n = null;
+    for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) n = toutes[i];
+    if (!n) return { error: 'not found' };
+    if (!a.valideur && !(n.statut === 'brouillon' && n.auteur === a.moi)) return { error: 'forbidden' };
+    sh.deleteRow(n._ligne);
+    return { ok: true };
+  });
+}
+
+// { action:'uploadinstphoto', token, type:'image/jpeg', data:<base64> } -> { ok, id }
+function uploadInstPhoto(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var data = String(body.data || '');
+  if (!data || data.length > INST_MAX_PHOTO) return { error: 'photo trop grosse' };
+  var octets;
+  try { octets = Utilities.base64Decode(data); } catch (e) { return { error: 'photo illisible' }; }
+  // JPEG seulement (la page convertit toujours) : signature FF D8 FF
+  if (octets.length < 4 || (octets[0] & 255) !== 0xFF || (octets[1] & 255) !== 0xD8 || (octets[2] & 255) !== 0xFF) return { error: 'photo illisible' };
+  var nom = 'inst_' + new Date().toISOString().replace(/[:.]/g, '-') + '.jpg';
+  var f = _avecVerrou(function () { return _instDossier(true); }).createFile(Utilities.newBlob(octets, 'image/jpeg', nom));
+  f.setDescription('Ajoutee par ' + a.nom);
+  return { ok: true, id: f.getId() };
+}
+
+// { action:'getinstphoto', token, id } -> { ok, type, data } — fichier du dossier SEULEMENT.
+function getInstPhoto(body) {
+  var a = _diagAppelant(body);
+  if (a.error) return a;
+  var id = String(body.id || '');
+  if (!/^[A-Za-z0-9_-]{10,100}$/.test(id)) return { error: 'not found' };
+  var dossierId = PROPS.getProperty('INST_FOLDER_ID');
+  if (!dossierId) return { error: 'not found' };
+  var f;
+  try { f = DriveApp.getFileById(id); } catch (e) { return { error: 'not found' }; }
+  var dedans = false, parents = f.getParents();
+  while (parents.hasNext()) if (parents.next().getId() === dossierId) dedans = true;
+  if (!dedans || f.isTrashed()) return { error: 'not found' };
+  var b = f.getBlob();
+  return { ok: true, type: 'image/jpeg', data: Utilities.base64Encode(b.getBytes()) };
+}
+
+/* A EXECUTER UNE FOIS dans l'editeur (menu Executer), AVANT de deployer la version 52 :
+   autorise Google Drive (dossier des photos), cree la feuille et le dossier dans le Drive
+   d'etrak.portail. Le journal affiche l'adresse de la feuille. */
+function _authInst() {
+  var r = _avecVerrou(function () { return { sh: _instFeuille(true), d: _instDossier(true) }; });
+  Logger.log("Banque d'installation : " + r.sh.getParent().getUrl() + ' (' + (r.sh.getLastRow() - 1) + ' note(s))');
+  Logger.log('Dossier des photos : ' + r.d.getName() + ' (' + r.d.getFiles().hasNext() + ')');
+  return r.sh.getParent().getUrl();
 }
 
 /* A EXECUTER UNE FOIS dans l'editeur (menu Executer) pour autoriser l'envoi
