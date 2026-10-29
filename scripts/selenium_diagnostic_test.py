@@ -109,9 +109,13 @@ def remplir_cause(d, i, cause, sol, pieces=''):
 
 def main():
     print('1) Acces')
-    d = navigateur('dealer')
-    v('dealer : page refusee', d.find_element(By.ID, 'dg-denied').is_displayed() and not d.find_element(By.ID, 'dg-root').is_displayed())
-    v('dealer : aucun appel a la base', not [a for a in d.execute_script('return window.__appels') if 'diag' in str(a.get('action'))])
+    # Soutien technique (Steve, 2026-10-29) : dealer admis, distributeur refuse.
+    d = navigateur('distributeur')
+    v('distributeur : page refusee', d.find_element(By.ID, 'dg-denied').is_displayed() and not d.find_element(By.ID, 'dg-root').is_displayed())
+    v('distributeur : aucun appel a la base', not [a for a in d.execute_script('return window.__appels') if 'diag' in str(a.get('action'))])
+    d.quit()
+    d = navigateur('dealer', fiches=[VALIDEE])
+    v('dealer : page ouverte, fiche validee visible', d.find_element(By.ID, 'dg-root').is_displayed() and len(d.find_elements(By.CSS_SELECTOR, '.dg-card')) == 1)
     d.quit()
 
     print('2) Technicien : base vide, nouvelle fiche')

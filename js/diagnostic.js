@@ -15,7 +15,7 @@
         document.getElementById('dg-root').style.display = 'none';
         document.getElementById('dg-denied').style.display = 'block';
     }
-    if (!user || user.isGuest || !user.token || (window.portalRoleLocked && window.portalRoleLocked(user.role, 'savAccess'))) {
+    if (!user || user.isGuest || !user.token || (window.portalRoleLocked && window.portalRoleLocked(user.role, 'soutienAccess'))) {
         refuser();
         return;
     }

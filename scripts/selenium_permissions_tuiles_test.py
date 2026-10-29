@@ -80,16 +80,20 @@ v('ingenierie : Cedule, SAV et Soutien technique visibles, Export et Price List 
 h = hub('administrateur', None)
 v('administrateur : les quatre visibles', all(h.values()), h)
 h = hub('dealer', None)
-v('dealer : aucune des quatre', not any(h.values()), h)
+v('dealer : seulement Soutien technique (Steve, 2026-10-29)', h['hub-tile-soutien'] and not any(x for k, x in h.items() if k != 'hub-tile-soutien'), h)
+h = hub('distributeur', {'distributeur': {'soutienAccess': True}})
+v('distributeur coche Soutien tech. : toujours cache (verrou dur)', not h['hub-tile-soutien'], h)
 
 print('Hub — reglages enregistres')
 h = hub('ingenierie', {'ingenierie': {'savAccess': False, 'ceduleAccess': True}})
-v('ingenierie, SAV decoche : tuiles SAV et Soutien technique cachees, Cedule visible', not h['hub-tile-sav'] and not h['hub-tile-soutien'] and h['hub-tile-cedule'], h)
+v('ingenierie, SAV decoche : tuile SAV cachee, Soutien technique (sa propre case) et Cedule visibles', not h['hub-tile-sav'] and h['hub-tile-soutien'] and h['hub-tile-cedule'], h)
+h = hub('technicien', {'technicien': {'soutienAccess': False}})
+v('technicien, Soutien tech. decoche : tuile Soutien cachee, SAV visible', not h['hub-tile-soutien'] and h['hub-tile-sav'], h)
 h = hub('vente_interne', {'vente_interne': {'exportAccess': True}})
 v('vente interne, Export coche : tuile Export visible', h['hub-tile-export'] and not h['hub-tile-pricelist'], h)
 h = hub('dealer', {'dealer': {'savAccess': True, 'ceduleAccess': True, 'exportAccess': True}})
-v('dealer coche par erreur : SAV, Soutien et Cedule restent caches, Export suit la case',
-  not h['hub-tile-sav'] and not h['hub-tile-soutien'] and not h['hub-tile-cedule'] and h['hub-tile-export'], h)
+v('dealer coche par erreur : SAV et Cedule restent caches, Export suit la case',
+  not h['hub-tile-sav'] and not h['hub-tile-cedule'] and h['hub-tile-export'], h)
 h = hub('super_admin', {'super_admin': {'savAccess': False}})
 v('super admin : toujours les quatre', all(h.values()), h)
 
@@ -99,16 +103,19 @@ try:
     d.execute_script("showAdminSection()")
     time.sleep(0.8)
     entetes = d.execute_script("return [...document.querySelectorAll('#admin-perm-table thead th')].map(x=>x.textContent.trim())")
-    v('15 colonnes, dont les cinq nouvelles', len(entetes) == 15 and entetes[-5:] == ['Cédule techs', 'SAV', 'Export', 'Price List', 'Valider diag'], entetes)
+    v('16 colonnes, dont les six nouvelles', len(entetes) == 16 and entetes[-6:] == ['Cédule techs', 'SAV', 'Export', 'Price List', 'Valider diag', 'Soutien tech.'], entetes)
     lignes = d.execute_script("""return [...document.querySelectorAll('#admin-perm-tbody tr')].map(tr =>
         [tr.cells[0].innerText.trim(), [...tr.cells].slice(1).map(c => c.textContent + (c.dataset.perm ? '' : '#'))])""")
     par_role = {l[0]: l[1] for l in lignes}
-    v('chaque ligne a 14 cases', all(len(c) == 14 for c in par_role.values()), {k: len(c) for k, c in par_role.items()})
+    v('chaque ligne a 15 cases', all(len(c) == 15 for c in par_role.values()), {k: len(c) for k, c in par_role.items()})
     dealer = par_role.get('Dealer', [])
     v('Dealer : Cedule et SAV verrouillees (✗, non cliquables)', dealer[9:11] == ['✗#', '✗#'], dealer[9:])
     v('Dealer : Export et Price List reglables', dealer[11].endswith('#') is False and dealer[12].endswith('#') is False, dealer[9:])
     ing = par_role.get('Ingenierie') or par_role.get('Ingénierie') or []
-    v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗ Valider diag ✓', ing[9:] == ['✓', '✓', '✗', '✗', '✓'], ing[9:])
+    v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗ Valider diag ✓ Soutien ✓', ing[9:] == ['✓', '✓', '✗', '✗', '✓', '✓'], ing[9:])
+    v('Dealer : Soutien tech. ✓ et reglable', dealer[14] == '✓', dealer[9:])
+    dist = par_role.get('Distributeur', [])
+    v('Distributeur : Soutien tech. verrouille', dist[14] == '✗#', dist[9:])
     d.execute_script("""var td=[...document.querySelectorAll('#admin-perm-tbody td[data-perm="savAccess"]')]
         .find(c=>c.dataset.role==='ingenierie'); td.click();""")
     time.sleep(0.6)

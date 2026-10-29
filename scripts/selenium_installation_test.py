@@ -106,11 +106,19 @@ def titres(d):
 
 def main():
     print('1) Acces et page Soutien technique')
-    d = navigateur('dealer')
-    v('dealer : banque refusee', d.find_element(By.ID, 'in-denied').is_displayed() and not appels(d, 'getinst'))
+    # Dealer admis, distributeur refuse (Steve, 2026-10-29).
+    d = navigateur('distributeur')
+    v('distributeur : banque refusee', d.find_element(By.ID, 'in-denied').is_displayed() and not appels(d, 'getinst'))
+    d.quit()
+    d = navigateur('distributeur', page=SOUTIEN)
+    v('distributeur : Soutien technique refuse', d.find_element(By.ID, 'st-denied').is_displayed() and not d.find_element(By.ID, 'st-root').is_displayed())
     d.quit()
     d = navigateur('dealer', page=SOUTIEN)
-    v('dealer : Soutien technique refuse', d.find_element(By.ID, 'st-denied').is_displayed() and not d.find_element(By.ID, 'st-root').is_displayed())
+    v('dealer : Soutien technique ouvert', d.find_element(By.ID, 'st-root').is_displayed())
+    d.quit()
+    d = navigateur('dealer', notes=[EXEMPLE])
+    v('dealer : banque ouverte, note visible, bouton Nouvelle note', d.find_element(By.ID, 'in-root').is_displayed() and len(titres(d)) == 1
+      and d.find_element(By.ID, 'b-nouvelle').is_displayed())
     d.quit()
     d = navigateur('technicien', page=SOUTIEN)
     try:

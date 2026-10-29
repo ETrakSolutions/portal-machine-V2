@@ -12,15 +12,20 @@
         exportAccess:    ['administrateur'],
         pricelistAccess: ['administrateur'],
         // Base de diagnostic SAV (Steve, 2026-10-13) : valider les fiches des techniciens.
-        diagValidate:    ['administrateur', 'ingenierie']
+        diagValidate:    ['administrateur', 'ingenierie'],
+        // Tuile Soutien technique (Steve, 2026-10-29) : diagnostic + installation, dealers compris.
+        soutienAccess:   INTERNES.concat(['dealer'])
     };
-    // Jamais pour les roles externes, meme coches : noms de techniciens, clients, courriels internes.
-    var INTERNE_SEULEMENT = { ceduleAccess: true, savAccess: true, diagValidate: true };
+    // Roles verrouilles par permission, meme coches. Cedule, SAV, Valider diag : jamais un
+    // compte externe (noms de techniciens, clients, courriels internes). Soutien technique :
+    // jamais le distributeur (le dealer y a acces depuis le 2026-10-29).
     var EXTERNES = ['dealer', 'distributeur'];
+    var VERROUS = { ceduleAccess: EXTERNES, savAccess: EXTERNES, diagValidate: EXTERNES, soutienAccess: ['distributeur'] };
+    function verrouille(role, perm) { return (VERROUS[perm] || []).indexOf(role) >= 0; }
 
     function aAcces(role, perm, sauve) {
         if (role === 'super_admin') return true;
-        if (INTERNE_SEULEMENT[perm] && EXTERNES.indexOf(role) >= 0) return false;
+        if (verrouille(role, perm)) return false;
         var r = sauve && sauve[role];
         if (r && r[perm] !== undefined) return !!r[perm];
         return (DEFAUTS[perm] || []).indexOf(role) >= 0;
@@ -40,6 +45,6 @@
     }
 
     window.PORTAL_PERM_DEFAUTS = DEFAUTS;
-    window.portalRoleLocked = function (role, perm) { return !!INTERNE_SEULEMENT[perm] && EXTERNES.indexOf(role) >= 0; };
+    window.portalRoleLocked = verrouille;
     window.portalAccess = portalAccess;
 })();
