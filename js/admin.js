@@ -170,6 +170,19 @@ function updateHubUI() {
                 })
                 .catch(function () {});
         }
+        // Tuile « Reinstallation » : quatre personnes nommees (decision Jacquot, 2026-10-29),
+        // comme la Preparation des jobs. Le serveur (getreinst) tranche : la tuile n'apparait
+        // que s'il repond ok. Une seule demande par page.
+        var tileRI = document.getElementById('hub-tile-reinst');
+        if (tileRI && !currentUser.isGuest && currentUser.token && window.PORTAL_API_URL &&
+            ['dealer', 'distributeur'].indexOf(currentUser.role) < 0 && !window.__reinstDemande) {
+            window.__reinstDemande = true;
+            fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'getreinst', token: currentUser.token }) })
+                .then(function (r) { return r.json(); })
+                .then(function (d) { if (d && d.ok) tileRI.style.display = 'block'; })
+                .catch(function () {});
+        }
         // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
             hamburgerWrap.style.display = '';
