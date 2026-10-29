@@ -576,12 +576,19 @@
 }
 .hub-logout-btn:hover { color: #FF4444; border-color: #FF4444; }
 
-/* Navigation tiles */
+/* Navigation tiles : 3 par rangee ; une derniere rangee incomplete est CENTREE sous
+   les autres au lieu d'etre tassee a gauche (Steve, 2026-10-29). Flex et non grid :
+   la grille ne sait pas centrer une rangee incomplete. */
 .hub-nav {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 1.25rem;
     margin-bottom: 2rem;
+}
+.hub-nav > .hub-tile { flex: 0 0 calc((100% - 2.5rem) / 3); }
+@media (max-width: 860px) {
+    .hub-nav > .hub-tile { flex-basis: calc((100% - 1.25rem) / 2); }
 }
 .hub-tile {
     background: var(--bg-card);
@@ -669,9 +676,7 @@
 
 /* ---- MOBILE HUB ---- */
 @media (max-width: 600px) {
-    .hub-nav {
-        grid-template-columns: 1fr;
-    }
+    .hub-nav > .hub-tile { flex-basis: 100%; }
     .hub-tile {
         padding: 1.5rem 1rem;
     }

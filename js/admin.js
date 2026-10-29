@@ -97,7 +97,7 @@ function updateHubUI() {
         var adminOpen = document.getElementById('admin-content');
         var muOpen = document.getElementById('mes-usagers-content');
         if (hubNav && !(adminOpen && adminOpen.style.display === 'block') && !(muOpen && muOpen.style.display === 'block')) {
-            hubNav.style.display = 'grid';
+            hubNav.style.display = 'flex';
         }
         if (hubEmpty) hubEmpty.style.display = 'none';
         // Show tiles based on permissions
@@ -277,7 +277,7 @@ function showVenteSection() {
 function hideVenteSection() {
     var venteContent = document.getElementById('vente-content');
     if (venteContent) venteContent.style.display = 'none';
-    document.getElementById('hub-nav').style.display = 'grid';
+    document.getElementById('hub-nav').style.display = 'flex';
     document.querySelector('.admin-hero').style.display = 'block';
 }
 
@@ -401,7 +401,7 @@ function loadRoles(callback) {
 }
 
 function hideAdminSection() {
-    document.getElementById('hub-nav').style.display = 'grid';
+    document.getElementById('hub-nav').style.display = 'flex';
     document.getElementById('admin-content').style.display = 'none';
     document.querySelector('.admin-hero').style.display = 'block';
     var hb = document.getElementById('admin-header-back');
