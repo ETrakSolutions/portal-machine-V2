@@ -46,10 +46,12 @@ SERVEUR = """
     function vue(x) { return JSON.parse(JSON.stringify(x)); }
     var vraiFetch = window.fetch.bind(window);
     window.fetch = function (url, o) {
+        if (String(url).indexOf('key=roles_permissions') >= 0) return Promise.resolve({ json: function () { return Promise.resolve({ value: '' }); } });
         if (!o || o.method !== 'POST') return vraiFetch(url, o);      // data/machines.json : le vrai fichier
         var b = JSON.parse((o && o.body) || '{}'), r;
         window.__appels.push(b.action === 'uploadinstphoto' ? { action: b.action, taille: (b.data || '').length } : b);
-        if (b.action === 'getinst') r = { ok: true, peutValider: S.valideur, nom: 'Testeur', notes: S.notes.map(vue) };
+        if (JSON.parse(%(user)s).role === 'dealer' && /inst/.test(b.action)) r = { error: 'forbidden' };   // case Soutien tech. decochee
+        else if (b.action === 'getinst') r = { ok: true, peutValider: S.valideur, nom: 'Testeur', notes: S.notes.map(vue) };
         else if (b.action === 'saveinst') {
             var x = b.note, ex = S.notes.filter(function (n) { return n.id === x.id; })[0];
             var n = ex || { id: 'n' + (++S.n), statut: S.valideur ? 'valide' : 'brouillon', mien: true, auteurNom: 'Testeur', creeLe: '2026-10-29T12:00:00Z', remplace: '' };
@@ -106,18 +108,18 @@ def titres(d):
 
 def main():
     print('1) Acces et page Soutien technique')
-    # Dealer admis, distributeur refuse (Steve, 2026-10-29).
-    d = navigateur('distributeur')
-    v('distributeur : banque refusee', d.find_element(By.ID, 'in-denied').is_displayed() and not appels(d, 'getinst'))
-    d.quit()
-    d = navigateur('distributeur', page=SOUTIEN)
-    v('distributeur : Soutien technique refuse', d.find_element(By.ID, 'st-denied').is_displayed() and not d.find_element(By.ID, 'st-root').is_displayed())
+    # Case Soutien tech. (Steve, 2026-10-29) : distributeur coche par defaut, dealer decoche.
+    d = navigateur('dealer')
+    v('dealer (case decochee) : refus du serveur -> banque refusee', d.find_element(By.ID, 'in-denied').is_displayed() and not d.find_element(By.ID, 'in-root').is_displayed())
     d.quit()
     d = navigateur('dealer', page=SOUTIEN)
-    v('dealer : Soutien technique ouvert', d.find_element(By.ID, 'st-root').is_displayed())
+    v('dealer (case decochee) : Soutien technique refuse', d.find_element(By.ID, 'st-denied').is_displayed() and not d.find_element(By.ID, 'st-root').is_displayed())
     d.quit()
-    d = navigateur('dealer', notes=[EXEMPLE])
-    v('dealer : banque ouverte, note visible, bouton Nouvelle note', d.find_element(By.ID, 'in-root').is_displayed() and len(titres(d)) == 1
+    d = navigateur('distributeur', page=SOUTIEN)
+    v('distributeur : Soutien technique ouvert', d.find_element(By.ID, 'st-root').is_displayed())
+    d.quit()
+    d = navigateur('distributeur', notes=[EXEMPLE])
+    v('distributeur : banque ouverte, note visible, bouton Nouvelle note', d.find_element(By.ID, 'in-root').is_displayed() and len(titres(d)) == 1
       and d.find_element(By.ID, 'b-nouvelle').is_displayed())
     d.quit()
     d = navigateur('technicien', page=SOUTIEN)

@@ -5,7 +5,7 @@
 // Cedule et le SAV, le serveur refait le controle et fait foi.
 (function () {
     'use strict';
-    var INTERNES = ['administrateur', 'vente_interne', 'vente_externe', 'technicien', 'ingenierie'];
+    var INTERNES = ['administrateur', 'vente_interne', 'vente_externe', 'technicien', 'installateur', 'ingenierie'];
     var DEFAUTS = {
         ceduleAccess:    INTERNES,
         savAccess:       INTERNES,
@@ -13,14 +13,15 @@
         pricelistAccess: ['administrateur'],
         // Base de diagnostic SAV (Steve, 2026-10-13) : valider les fiches des techniciens.
         diagValidate:    ['administrateur', 'ingenierie'],
-        // Tuile Soutien technique (Steve, 2026-10-29) : diagnostic + installation, dealers compris.
-        soutienAccess:   INTERNES.concat(['dealer'])
+        // Tuile Soutien technique (Steve, 2026-10-29) : diagnostic + installation. Reglable
+        // pour tous les roles ; par defaut internes + distributeur (dealer decoche).
+        soutienAccess:   INTERNES.concat(['distributeur'])
     };
     // Roles verrouilles par permission, meme coches. Cedule, SAV, Valider diag : jamais un
     // compte externe (noms de techniciens, clients, courriels internes). Soutien technique :
-    // jamais le distributeur (le dealer y a acces depuis le 2026-10-29).
+    // aucun verrou, la case decide (Steve, 2026-10-29).
     var EXTERNES = ['dealer', 'distributeur'];
-    var VERROUS = { ceduleAccess: EXTERNES, savAccess: EXTERNES, diagValidate: EXTERNES, soutienAccess: ['distributeur'] };
+    var VERROUS = { ceduleAccess: EXTERNES, savAccess: EXTERNES, diagValidate: EXTERNES };
     function verrouille(role, perm) { return (VERROUS[perm] || []).indexOf(role) >= 0; }
 
     function aAcces(role, perm, sauve) {

@@ -80,11 +80,13 @@
     <script src="js/version-check.js?v=2"></script>
     <script>
         // Raccourci seulement : chaque outil refait le controle, et le serveur tranche.
+        // Suit la case « Soutien tech. » du tableau des permissions (portalAccess).
         (function () {
             var u = null;
             try { u = JSON.parse(localStorage.getItem('portal_user')); } catch (e) {}
-            var ok = u && !u.isGuest && u.token && !(window.portalRoleLocked && window.portalRoleLocked(u.role, 'soutienAccess'));
-            document.getElementById(ok ? 'st-root' : 'st-denied').style.display = 'block';
+            var montrer = function (ok) { document.getElementById(ok ? 'st-root' : 'st-denied').style.display = 'block'; };
+            if (!u || u.isGuest || !u.token || !window.portalAccess) { montrer(false); return; }
+            window.portalAccess('soutienAccess', u, montrer);
         })();
     </script>
 </body>
