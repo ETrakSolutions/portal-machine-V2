@@ -61,8 +61,32 @@
             { k: 'fleche', fr: 'Flèche de nacelle', en: 'Boom lift jib' }] },
         { k: 'balance', fr: 'Balance ST-7', en: 'ST-7 Scale', options: [] }
     ];
+    // Produits et options offerts selon le type de machine : memes regles que la tuile
+    // Soumission (applyTypeRestrictions et applyRotationRestriction de soumission.js) —
+    // pas d'options nacelle sur un loader (Steve, 2026-10-29). Type hors base : tout est offert.
+    var PROD_TYPES = {
+        limiteur: function (t) { return t !== 'Tracteur'; },
+        godet_avant: function (t) { return t === 'Retrocaveuse'; },
+        idc: function (t) { return t === 'Excavatrice'; },
+        creusage: function (t) { return t === 'Excavatrice'; },
+        nacelle: function (t) { return t === 'Nacelle'; },
+        balance: function (t) { return t === 'Loader' || t === 'Retrocaveuse' || t === 'Tracteur'; }
+    };
+    var OPT_TYPES = {
+        hauteur_ext: function (t) { return t === 'Camion Vacuum'; },
+        rotation: function (t) { return t !== 'Loader'; },
+        hauteur_rotation: function (t) { return t !== 'Loader' && t !== 'Camion Vacuum'; },
+        multi_axe: function (t) { return t === 'Excavatrice' || t === 'Retrocaveuse'; }
+    };
+    function typeConnu(t) { return !!(t && ETAT.machines[t]); }
+    function produitsPour(t) { return PRODUITS.filter(function (p) { return !typeConnu(t) || !PROD_TYPES[p.k] || PROD_TYPES[p.k](t); }); }
+    function optionsPour(p, t) { return p.options.filter(function (o) { return !typeConnu(t) || !OPT_TYPES[o.k] || OPT_TYPES[o.k](t); }); }
     function produit(k) { return PRODUITS.filter(function (p) { return p.k === k; })[0]; }
-    function nomProduit(k) { var p = produit(k); return p ? (enAnglais() ? p.en : p.fr) : k; }
+    // Sur un tracteur, la balance est la Scale Lite (meme nom que dans Soumission).
+    function nomProduit(k, t) {
+        if (k === 'balance' && t === 'Tracteur') return tx('Balance Scale Lite', 'Scale Lite');
+        var p = produit(k); return p ? (enAnglais() ? p.en : p.fr) : k;
+    }
     function nomOption(pk, ok) {
         var p = produit(pk), o = p && p.options.filter(function (x) { return x.k === ok; })[0];
         return o ? (enAnglais() ? o.en : o.fr) : (ok || '');
@@ -115,16 +139,46 @@
         }, function () { ETAT.machines = {}; });
     }
     var tri = function (a, b) { return a.localeCompare(b, 'fr', { numeric: true }); };
-    function types() { return Object.keys(ETAT.machines).sort(tri); }
-    function fabricants(t) {
+    // Modele de base, sans les suffixes de lettres : CX19D -> CX19, 921G -> 921,
+    // CX145D SR -> CX145, S-40 HF -> S-40. L'installation est souvent la meme et la note
+    // doit se trouver meme si la derniere lettre differe (Steve, 2026-10-29). Il reste
+    // toujours au moins 3 caracteres et un chiffre (JCB 3CX reste 3CX).
+    function baseModele(m) {
+        var s = String(m || '').trim(), av, r;
+        do {
+            av = s;
+            r = s.replace(/[\s-]+[A-Za-z]{1,3}$/, '');
+            if (r === s) r = s.replace(/(\d)[A-Za-z]{1,3}$/, '$1');
+            if (r !== s && r.length >= 3 && /\d/.test(r)) s = r;
+        } while (s !== av);
+        return s;
+    }
+    // Machines hors base (« Autre… ») : celles des notes existantes s'ajoutent aux listes.
+    function notesMachines(t, f) {
+        return ETAT.notes.filter(function (n) { return (!t || n.type === t) && (!f || n.fabricant === f); });
+    }
+    function types() {
         var s = {};
-        (t ? [t] : types()).forEach(function (x) { Object.keys(ETAT.machines[x] || {}).forEach(function (f) { s[f] = 1; }); });
+        Object.keys(ETAT.machines).forEach(function (t) { s[t] = 1; });
+        notesMachines().forEach(function (n) { if (n.type) s[n.type] = 1; });
         return Object.keys(s).sort(tri);
     }
+    function fabricants(t) {
+        var s = {};
+        (t ? [t] : Object.keys(ETAT.machines)).forEach(function (x) { Object.keys(ETAT.machines[x] || {}).forEach(function (f) { s[f] = 1; }); });
+        notesMachines(t).forEach(function (n) { if (n.fabricant) s[n.fabricant] = 1; });
+        return Object.keys(s).sort(tri);
+    }
+    // Liste des modeles de base ; le libelle rappelle les modeles de la base qu'il regroupe.
     function modeles(t, f) {
         var s = {};
-        (t ? [t] : types()).forEach(function (x) { var fb = ETAT.machines[x] || {}; (f ? [f] : Object.keys(fb)).forEach(function (y) { (fb[y] || []).forEach(function (m) { s[m] = 1; }); }); });
-        return Object.keys(s).sort(tri);
+        var ajoute = function (m) { var b = baseModele(m); if (!b) return; s[b] = s[b] || {}; if (m !== b) s[b][m] = 1; };
+        (t ? [t] : Object.keys(ETAT.machines)).forEach(function (x) { var fb = ETAT.machines[x] || {}; (f ? [f] : Object.keys(fb)).forEach(function (y) { (fb[y] || []).forEach(ajoute); }); });
+        notesMachines(t, f).forEach(function (n) { ajoute(n.modele); });
+        return Object.keys(s).sort(tri).map(function (b) {
+            var v = Object.keys(s[b]).sort(tri);
+            return { v: b, t: v.length ? b + '  (' + v.slice(0, 4).join(', ') + (v.length > 4 ? ', …' : '') + ')' : b };
+        });
     }
     function remplir(sel, valeurs, premier, garder) {
         var v = garder !== undefined ? garder : sel.value;
@@ -134,14 +188,17 @@
         if (v && !existe) { var o = document.createElement('option'); o.value = v; o.textContent = v; sel.appendChild(o); }
         sel.value = v || '';
     }
-    function prodOptions() { return PRODUITS.map(function (p) { return { v: p.k, t: enAnglais() ? p.en : p.fr }; }); }
+    function prodOptions(t) { return produitsPour(t).map(function (p) { return { v: p.k, t: nomProduit(p.k, t) }; }); }
+    // Valeur gardee seulement si elle est encore offerte (ex. produit d'un autre type de machine).
+    function offerte(liste, v) { return liste.some(function (x) { return (typeof x === 'string' ? x : x.v) === v; }) ? v : ''; }
 
     // ---------- filtres ----------
     function dessinerFiltres() {
         remplir($('f-type'), types(), tx('Tous les types', 'All types'));
         remplir($('f-fab'), fabricants($('f-type').value), tx('Tous les fabricants', 'All manufacturers'));
         remplir($('f-modele'), modeles($('f-type').value, $('f-fab').value), tx('Tous les modèles', 'All models'));
-        remplir($('f-produit'), prodOptions(), tx('Tous les produits', 'All products'));
+        var po = prodOptions($('f-type').value);
+        remplir($('f-produit'), po, tx('Tous les produits', 'All products'), offerte(po, $('f-produit').value));
     }
     ['f-type', 'f-fab', 'f-modele', 'f-produit'].forEach(function (id) {
         $(id).addEventListener('change', function () {
@@ -167,7 +224,7 @@
         return (enAnglais() !== !!autreL) ? (en || (autreL ? '' : fr)) : (fr || (autreL ? '' : en));
     }
     function titre(n) {
-        return nomProduit(n.produit) + (n.option ? ' (' + nomOption(n.produit, n.option) + ')' : '') + ' — ' + n.fabricant + ' ' + n.modele;
+        return nomProduit(n.produit, n.type) + (n.option ? ' (' + nomOption(n.produit, n.option) + ')' : '') + ' — ' + n.fabricant + ' ' + n.modele;
     }
 
     // ---------- recherche (memes principes que la base de diagnostic) ----------
@@ -180,7 +237,8 @@
     }
     function points(n, mots) {
         var e = enDe(n);
-        var tete = racines([n.type, n.fabricant, n.modele, nomProduit(n.produit), produit(n.produit) ? produit(n.produit).en : '', nomOption(n.produit, n.option)].join(' '));
+        // modele de base aussi : « CX19E » trouve la note du CX19D
+        var tete = racines([n.type, n.fabricant, n.modele, baseModele(n.modele), nomProduit(n.produit, n.type), produit(n.produit) ? produit(n.produit).en : '', nomOption(n.produit, n.option)].join(' '));
         var corps = racines(n.texte + ' ' + (e.texte || '') + ' ' + n.pieges + ' ' + (e.pieges || '') + ' ' + n.pieces.map(function (p) { return p.txt; }).join(' '));
         var total = 0;
         mots.forEach(function (m) {
@@ -193,7 +251,7 @@
         var t = $('f-type').value, f = $('f-fab').value, m = $('f-modele').value, p = $('f-produit').value, mots = racines($('f-q').value);
         var l = ETAT.notes.filter(function (n) {
             if (ETAT.vue === 'brouillons' && n.statut !== 'brouillon') return false;
-            return (!t || n.type === t) && (!f || n.fabricant === f) && (!m || n.modele === m) && (!p || n.produit === p);
+            return (!t || n.type === t) && (!f || n.fabricant === f) && (!m || baseModele(n.modele) === m) && (!p || n.produit === p);
         });
         var ordre = function (a, b) { return titre(a).localeCompare(titre(b), 'fr', { numeric: true }); };
         if (!mots.length) return l.sort(ordre);
@@ -211,7 +269,7 @@
     function carte(n) {
         var revue = ETAT.peutValider && n.statut === 'brouillon', lAutre = enAnglais() ? 'FR' : 'EN', manque = tx('— à traduire —', '— to translate —');
         var autreLigne = function (t) { return revue ? '<div class="in-autre"><b>' + lAutre + '</b>' + esc(t || manque) + '</div>' : ''; };
-        var tags = '<span class="in-tag type">' + esc(n.type) + '</span> <span class="in-tag prod">' + esc(nomProduit(n.produit)) + '</span>' +
+        var tags = '<span class="in-tag type">' + esc(n.type) + '</span> <span class="in-tag prod">' + esc(nomProduit(n.produit, n.type)) + '</span>' +
             (n.statut === 'brouillon' ? ' <span class="in-tag brouillon">' + esc(n.remplace ? tx('Proposition de modification', 'Proposed change') : tx('Brouillon à valider', 'Draft to approve')) + '</span>' : '') +
             (n.bilingue === false ? ' <span class="in-tag en-manque">' + esc(tx('Traduction incomplète', 'Incomplete translation')) + '</span>' : '');
         var corps = '';
@@ -309,20 +367,37 @@
     });
 
     // ---------- edition ----------
+    // « Autre… » en fin de liste : machine absente de la base, nom a preciser dans la case
+    // qui apparait dessous (Steve, 2026-10-29). Type « Autre » => fabricant et modele aussi.
+    var AUTRE = '__autre';
+    function avecAutre(sel, valeurs, garder) {
+        remplir(sel, valeurs, tx('— Choisir —', '— Choose —'), garder === AUTRE ? '' : garder);
+        var o = document.createElement('option'); o.value = AUTRE; o.textContent = tx('Autre…', 'Other…');
+        sel.appendChild(o);
+        if (garder === AUTRE) sel.value = AUTRE;
+    }
     function dessinerChoixEdition() {
-        remplir($('e-type'), types(), tx('— Choisir —', '— Choose —'));
-        remplir($('e-fab'), fabricants($('e-type').value), tx('— Choisir —', '— Choose —'));
-        remplir($('e-modele'), $('e-fab').value ? modeles($('e-type').value, $('e-fab').value) : [], tx('— Choisir —', '— Choose —'));
-        remplir($('e-produit'), prodOptions(), tx('— Choisir —', '— Choose —'));
+        var t = $('e-type').value;
+        avecAutre($('e-type'), types(), t);
+        var tA = t === AUTRE;
+        avecAutre($('e-fab'), tA ? [] : fabricants(t), tA ? AUTRE : $('e-fab').value);
+        var f = $('e-fab').value, fA = f === AUTRE;
+        avecAutre($('e-modele'), fA || !f ? [] : modeles(t, f), fA ? AUTRE : $('e-modele').value);
+        ['type', 'fab', 'modele'].forEach(function (k) { $('e-' + k + '-autre').style.display = $('e-' + k).value === AUTRE ? '' : 'none'; });
+        var tp = tA ? '' : t, po = prodOptions(tp);
+        remplir($('e-produit'), po, tx('— Choisir —', '— Choose —'), offerte(po, $('e-produit').value));
         var p = produit($('e-produit').value);
-        remplir($('e-option'), p ? p.options.map(function (o) { return { v: o.k, t: enAnglais() ? o.en : o.fr }; }) : [], tx('— Aucune —', '— None —'));
-        $('e-option').disabled = !p || !p.options.length;
+        var oo = p ? optionsPour(p, tp).map(function (o) { return { v: o.k, t: enAnglais() ? o.en : o.fr }; }) : [];
+        remplir($('e-option'), oo, tx('— Aucune —', '— None —'), offerte(oo, $('e-option').value));
+        $('e-option').disabled = !oo.length;
     }
     $('e-type').addEventListener('change', function () { $('e-fab').value = ''; $('e-modele').value = ''; dessinerChoixEdition(); });
     $('e-fab').addEventListener('change', function () { $('e-modele').value = ''; dessinerChoixEdition(); });
+    $('e-modele').addEventListener('change', dessinerChoixEdition);
     $('e-produit').addEventListener('change', function () { $('e-option').value = ''; dessinerChoixEdition(); });
 
-    // La langue de l'ecran en premier ; l'autre en dessous, en pointille (traduction auto).
+    // Seule la langue de l'ecran est affichee : l'autre est cachee (CSS .autre-l) et
+    // traduite a l'enregistrement. Changer FR / EN montre l'autre (Steve, 2026-10-29).
     function ordonnerLangues(zone) {
         var premiere = enAnglais() ? 'en' : 'fr';
         [].forEach.call(zone.querySelectorAll('.in-grid'), function (g) {
@@ -423,16 +498,15 @@
     function ouvrirEdition(n) {
         ETAT.edition = n || null;
         noteEdition(n);
-        $('e-type').value = ''; $('e-fab').value = ''; $('e-modele').value = ''; $('e-produit').value = ''; $('e-option').value = '';
-        dessinerChoixEdition();
-        // Nouvelle note : reprend les filtres en cours (ex. Excavatrice > Case > CX19D, Limiteur).
+        ['type', 'fab', 'modele'].forEach(function (k) { $('e-' + k + '-autre').value = ''; });
+        // Nouvelle note : reprend les filtres en cours (ex. Excavatrice > Case > CX19, Limiteur).
         var src = n || { type: $('f-type').value, fabricant: $('f-fab').value, modele: $('f-modele').value, produit: $('f-produit').value, option: '' };
-        remplir($('e-type'), types(), tx('— Choisir —', '— Choose —'), src.type || '');
-        remplir($('e-fab'), fabricants(src.type), tx('— Choisir —', '— Choose —'), src.fabricant || '');
-        remplir($('e-modele'), src.fabricant ? modeles(src.type, src.fabricant) : [], tx('— Choisir —', '— Choose —'), src.modele || '');
-        $('e-produit').value = src.produit || '';
+        avecAutre($('e-type'), types(), src.type || '');
+        avecAutre($('e-fab'), fabricants(src.type), src.fabricant || '');
+        avecAutre($('e-modele'), src.fabricant ? modeles(src.type, src.fabricant) : [], baseModele(src.modele));
+        remplir($('e-produit'), prodOptions(''), '', src.produit || '');
+        remplir($('e-option'), [], '', src.option || '');
         dessinerChoixEdition();
-        $('e-option').value = src.option || '';
         $('e-temps').value = n ? n.temps || '' : '';
         $('e-pieges').value = n ? n.pieges || '' : '';
         $('e-pieges-en').value = n ? enDe(n).pieges || '' : '';
@@ -464,14 +538,15 @@
         var photos = [].map.call($('e-photos').querySelectorAll('.in-photo[data-pid]'), function (p) { return p.getAttribute('data-pid'); });
         var pieces = [].map.call($('e-pieces').children, function (r) { return { txt: r.querySelector('.p-txt').value.trim(), qte: r.querySelector('.p-qte').value || '1' }; })
             .filter(function (p) { return p.txt; });
-        return { type: $('e-type').value, fabricant: $('e-fab').value, modele: $('e-modele').value, produit: $('e-produit').value, option: $('e-option').value,
+        var val = function (k) { var v = $('e-' + k).value; return v === AUTRE ? $('e-' + k + '-autre').value.trim() : v; };
+        return { type: val('type'), fabricant: val('fab'), modele: baseModele(val('modele')), produit: $('e-produit').value, option: $('e-option').value,
                  temps: $('e-temps').value.trim(), texte: $('e-texte').value.trim(), photos: photos, pieces: pieces, pieges: $('e-pieges').value.trim(),
                  en: { texte: $('e-texte-en').value.trim(), pieges: $('e-pieges-en').value.trim() } };
     }
     function valider(x) {
         var manque = [];
         var marque = function (id, ko, nom) { $(id).classList.toggle('err', ko); if (ko) manque.push(nom); };
-        marque('w-type', !x.type, tx('type de machine', 'machine type'));
+        marque('w-type', !x.type, tx('type de machine', 'machine type'));   // « Autre… » sans precision = vide
         marque('w-fab', !x.fabricant, tx('fabricant', 'manufacturer'));
         marque('w-modele', !x.modele, tx('modèle', 'model'));
         marque('w-produit', !x.produit, tx('produit', 'product'));
@@ -512,6 +587,7 @@
             if (!d || !d.ok) { $('in-compte').textContent = msgErreur(d); return; }
             ETAT.notes = (d.notes || []).map(function (n) { n.texte = n.texte || ''; n.photos = n.photos || []; n.pieces = n.pieces || []; n.pieges = n.pieges || ''; return n; });
             ETAT.peutValider = !!d.peutValider;
+            dessinerFiltres();   // machines hors base des notes
             dessiner();
         }, function () { $('in-compte').textContent = tx('Banque indisponible pour le moment (serveur injoignable).', 'Library unavailable for now (server unreachable).'); });
     }
@@ -526,7 +602,7 @@
         var qs = new URLSearchParams(location.search);
         if (qs.get('type')) { $('f-type').value = qs.get('type'); dessinerFiltres(); }
         if (qs.get('fab')) { $('f-fab').value = qs.get('fab'); dessinerFiltres(); }
-        if (qs.get('modele')) { $('f-modele').value = qs.get('modele'); dessinerFiltres(); }
+        if (qs.get('modele')) { $('f-modele').value = baseModele(qs.get('modele')); dessinerFiltres(); }
         if (qs.get('produit')) $('f-produit').value = qs.get('produit');
         charger();
     });

@@ -78,6 +78,9 @@
         .in-f.err input, .in-f.err textarea, .in-f.err select { border-color: #e74c3c; box-shadow: 0 0 0 1px #e74c3c; }
         .in-f.autre-l label { color: #7fa3c4; }
         .in-f.autre-l input, .in-f.autre-l textarea { border-style: dashed; }
+        /* Champs de l'autre langue caches : on n'ecrit que dans la langue de l'ecran (Steve, 2026-10-29) */
+        .in-f.autre-l { display: none; }
+        .in-f input.in-precis { margin-top: 6px; }
         .in-ennote { color: #7fa3c4; font-size: 0.78rem; margin: 4px 0 8px; }
         .in-ee { border: 1px solid #3a3a3a; border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
         .in-ee-head { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; color: #FFB45C; font-weight: 700; font-size: 0.85rem; }
@@ -134,14 +137,14 @@
                     <h2 id="e-titre">Nouvelle note</h2>
                     <div class="in-note" id="e-note" style="margin-bottom:10px;"></div>
                     <div class="in-grid">
-                        <div class="in-f" id="w-type"><label><span data-tx="Type de machine|Machine type">Type de machine</span> <span class="req">*</span></label><select id="e-type"></select></div>
-                        <div class="in-f" id="w-fab"><label><span data-tx="Fabricant|Manufacturer">Fabricant</span> <span class="req">*</span></label><select id="e-fab"></select></div>
-                        <div class="in-f" id="w-modele"><label><span data-tx="Modèle|Model">Modèle</span> <span class="req">*</span></label><select id="e-modele"></select></div>
+                        <div class="in-f" id="w-type"><label><span data-tx="Type de machine|Machine type">Type de machine</span> <span class="req">*</span></label><select id="e-type"></select><input type="text" class="in-precis" id="e-type-autre" maxlength="60" style="display:none" data-txp="Préciser le type de machine|Specify the machine type"></div>
+                        <div class="in-f" id="w-fab"><label><span data-tx="Fabricant|Manufacturer">Fabricant</span> <span class="req">*</span></label><select id="e-fab"></select><input type="text" class="in-precis" id="e-fab-autre" maxlength="60" style="display:none" data-txp="Préciser le fabricant|Specify the manufacturer"></div>
+                        <div class="in-f" id="w-modele"><label><span data-tx="Modèle|Model">Modèle</span> <span class="req">*</span></label><select id="e-modele"></select><input type="text" class="in-precis" id="e-modele-autre" maxlength="60" style="display:none" data-txp="Préciser le modèle|Specify the model"></div>
                         <div class="in-f"><label data-tx="Temps d'installation|Installation time">Temps d'installation</label><input type="text" id="e-temps" maxlength="60" data-txp="ex. 6 h, 1 jour et demi|e.g. 6 h, 1.5 days"></div>
                         <div class="in-f" id="w-produit"><label><span data-tx="Produit|Product">Produit</span> <span class="req">*</span></label><select id="e-produit"></select></div>
                         <div class="in-f"><label data-tx="Option (facultatif)|Option (optional)">Option (facultatif)</label><select id="e-option"></select></div>
                     </div>
-                    <div class="in-ennote" data-tx="Écrivez dans votre langue : l'autre (champs en pointillé) est traduite automatiquement à l'enregistrement. Le validateur révise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in your language: the other one (dashed fields) is translated automatically when saving. The approver reviews the translation. No section is mandatory for now.">Écrivez dans votre langue.</div>
+                    <div class="in-ennote" data-tx="Écrivez dans la langue de l'écran : l'autre langue est traduite automatiquement à l'enregistrement. Pour voir ou corriger la traduction, changez la langue de l'écran (FR / EN). Le validateur révise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in the screen language: the other language is translated automatically when saving. To see or correct the translation, switch the screen language (FR / EN). The approver reviews the translation. No section is mandatory for now.">Écrivez dans votre langue.</div>
 
                     <h3 data-tx="Informations d'installation|Installation information">Informations d'installation</h3>
                     <div class="in-grid">
