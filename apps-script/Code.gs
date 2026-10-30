@@ -1374,7 +1374,25 @@ function getReinst(body) {
   if (!_reinstAdmis(user)) return { error: 'forbidden' };
   var raw = PROPS.getProperty(REINST_KEY);
   if (!raw) return { error: 'reinst unavailable' };
-  try { return { ok: true, reinst: JSON.parse(raw) }; } catch (e) { return { error: 'reinst unreadable' }; }
+  var r;
+  try { r = JSON.parse(raw); } catch (e) { return { error: 'reinst unreadable' }; }
+  try { r.catalogue = _readReinstCatalogue(); } catch (e2) { r.catalogue = null; }
+  return { ok: true, reinst: r };
+}
+
+// Catalogue des pieces de la liste de l'annee, pour l'ajout manuel de pieces (decision
+// Jacquot, 2026-10-30) : { CODE: [description, prix] }. Pieces actives d'Epicor seulement
+// (filtre fait par publier_reinst.py). Stocke en gzip + base64, tranches de 8 Ko, sous le
+// prefixe reserve 'reinst_pc_' (jamais lisible, modifiable ni liste par get/save/delete).
+var REINST_PC_PREFIX = 'reinst_pc_';
+var REINST_PC_CHUNK = 8000;
+function _isReinstPcKey(key) { return String(key || '').indexOf(REINST_PC_PREFIX) === 0; }
+function _readReinstCatalogue() {
+  var n = parseInt(PROPS.getProperty(REINST_PC_PREFIX + 'n') || '0', 10);
+  if (!n) return null;
+  var raw = '';
+  for (var i = 0; i < n; i++) raw += (PROPS.getProperty(REINST_PC_PREFIX + i) || '');
+  return JSON.parse(_ungzB64(raw));
 }
 
 // { action:'setreinst', reinst:{ prix:{ CODE: nombre }, vigueur:'AAAA-MM-JJ' }, pin|token admin }
@@ -1398,7 +1416,36 @@ function setReinst(body) {
   var vig = /^\d{4}-\d{2}-\d{2}$/.test(String(r.vigueur || '')) ? String(r.vigueur) : '';
   var raw = JSON.stringify({ prix: prix, vigueur: vig, updated: new Date().toISOString() });
   if (raw.length > 8500) return { error: 'reinst too large' };
-  return _avecVerrou(function () { PROPS.setProperty(REINST_KEY, raw); return { ok: true, codes: codes.length }; });
+  // Catalogue facultatif. Liste blanche : code [A-Za-z0-9_.+-], description texte
+  // tronquee a 90 caracteres, prix numerique de 0 a 100 000 ; 600 pieces au plus.
+  var catB64 = null, nCat = 0;
+  if (body.catalogueGz !== undefined) {
+    var cat;
+    try { cat = JSON.parse(_ungzB64(String(body.catalogueGz))); } catch (e) { return { error: 'invalid catalogueGz' }; }
+    if (!cat || typeof cat !== 'object' || Array.isArray(cat)) return { error: 'invalid catalogue' };
+    var cc = Object.keys(cat), propre = {};
+    if (!cc.length || cc.length > 600) return { error: 'invalid catalogue' };
+    for (var j = 0; j < cc.length; j++) {
+      var e = cat[cc[j]];
+      if (!/^[A-Za-z0-9_.+-]{2,40}$/.test(cc[j]) || !Array.isArray(e)) return { error: 'invalid catalogue code' };
+      var px = e[1];
+      if (typeof px !== 'number' || !isFinite(px) || px < 0 || px > 100000) return { error: 'invalid catalogue price for ' + cc[j] };
+      propre[cc[j]] = [String(e[0] === null || e[0] === undefined ? '' : e[0]).slice(0, 90), px];
+    }
+    catB64 = _gzB64(JSON.stringify(propre)); nCat = cc.length;
+    if (catB64.length > REINST_PC_CHUNK * 6) return { error: 'catalogue too large' };
+  }
+  return _avecVerrou(function () {
+    PROPS.setProperty(REINST_KEY, raw);
+    if (catB64 !== null) {
+      var old = parseInt(PROPS.getProperty(REINST_PC_PREFIX + 'n') || '0', 10);
+      var n = Math.ceil(catB64.length / REINST_PC_CHUNK);
+      for (var k = 0; k < n; k++) PROPS.setProperty(REINST_PC_PREFIX + k, catB64.substr(k * REINST_PC_CHUNK, REINST_PC_CHUNK));
+      for (var d = n; d < old; d++) PROPS.deleteProperty(REINST_PC_PREFIX + d);
+      PROPS.setProperty(REINST_PC_PREFIX + 'n', String(n));
+    }
+    return { ok: true, codes: codes.length, catalogue: nCat };
+  });
 }
 
 /* ============================ SAV (demande de service apres-vente) ============================ */
@@ -1421,7 +1468,7 @@ var SAV_ROLES = CEDULE_ROLES;      // l'installateur (externe) n'y est jamais, m
 
 function _isSavKey(key) { return String(key || '').indexOf(SAV_PREFIX) === 0; }
 // Cles jamais lisibles, modifiables ni listees par les actions generiques get/save/delete.
-function _isReservedKey(key) { return _isPriceKey(key) || _isSavKey(key) || _isUsersGzKey(key); }
+function _isReservedKey(key) { return _isPriceKey(key) || _isSavKey(key) || _isUsersGzKey(key) || _isReinstPcKey(key); }
 
 // ⚠️ QUOTA : les proprietes du script partagent 500 Ko pour TOUT le portail (comptes,
 // prix, inventaire...). Mesure du 2026-09-29 : il restait ~80 Ko ; la liste brute en

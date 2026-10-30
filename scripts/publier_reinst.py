@@ -17,13 +17,22 @@ Un ecart d'un cent refuse la publication (le sous-total ne peut pas deriver de s
 Seuls "prix" et "vigueur" partent au serveur (action 'setreinst', NIP du portail), qui
 ne les remet qu'aux quatre personnes admises (getreinst).
 
+Catalogue (ajout manuel de pieces, decision Jacquot 2026-10-30) : prix-pieces.json, meme
+dossier, { "vigueur", "source", "prix": { "<PN>": prix } } (onglet Pieces de l'import
+Epicor de l'annee). Les descriptions et le statut viennent d'Epicor (lecture seule, memes
+identifiants que sync_inventaire_epicor.py) : une piece inactive dans Epicor n'est pas
+publiee, puisque Luna ne pourrait pas la commander. Envoye compresse (catalogueGz).
+
 Usage :
-    py -3.13 scripts/publier_reinst.py --dry-run    # valide et resume, n'envoie rien
-    py -3.13 scripts/publier_reinst.py              # envoie au portail
+    py -3.12 scripts/publier_reinst.py --dry-run    # valide et resume, n'envoie rien
+    py -3.12 scripts/publier_reinst.py              # envoie au portail
+    py -3.12 scripts/publier_reinst.py --sans-catalogue   # montants seulement
 
 Options :
     --fichier PATH   liste maitresse (defaut : prix-reinstallation.json dans _Portail e-Trak)
     --pin-file PATH  NIP du portail (defaut : "PIN Portail.txt" a la racine du depot)
+    --pieces PATH    catalogue (defaut : prix-pieces.json dans _Portail e-Trak)
+    --env PATH       identifiants SQL Epicor (defaut : celui de sync_inventaire_epicor.py)
 
 Le NIP n'est jamais affiche.
 """
@@ -108,12 +117,42 @@ def valider(m):
         sys.exit('Liste refusee :\n  ' + '\n  '.join(err))
 
 
+def catalogue(pieces_path, env_path):
+    """{PN: [description Epicor, prix]} des pieces ACTIVES dans Epicor."""
+    import base64, gzip
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import sync_inventaire_epicor as sie
+    src = json.loads(Path(pieces_path).read_text(encoding='utf-8'))
+    prix = src.get('prix') or {}
+    for pn, v in prix.items():
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or v < 0:
+            sys.exit('Catalogue refuse : %s = %r' % (pn, v))
+    conn = sie.sql_connect(env_path or str(Path.home() / 'GRYB-MCP' / 'gryb-epicor' / 'credentials.env'))
+    cur = conn.cursor()
+    pns = sorted(prix)
+    info = {}
+    for i in range(0, len(pns), 200):
+        lot = pns[i:i + 200]
+        cur.execute('SELECT PartNum, PartDescription, InActive FROM dbo.Part WHERE Company = ? AND PartNum IN (%s)'
+                    % ','.join('?' * len(lot)), [sie.COMPANY] + lot)
+        for pn, desc, inact in cur.fetchall():
+            info[pn] = (' '.join(str(desc or '').split()), bool(inact))
+    absents = [pn for pn in pns if pn not in info]
+    inactifs = [pn for pn in pns if pn in info and info[pn][1]]
+    cat = {pn: [info[pn][0][:90], round(float(prix[pn]), 2)] for pn in pns if pn in info and not info[pn][1]}
+    gz = base64.b64encode(gzip.compress(json.dumps(cat, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 9)).decode('ascii')
+    return cat, gz, absents, inactifs
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     d = dossier_portail()
     ap.add_argument('--fichier', default=str(d / 'prix-reinstallation.json') if d else '')
     ap.add_argument('--pin-file', default=str(REPO / 'PIN Portail.txt'))
     ap.add_argument('--dry-run', action='store_true')
+    ap.add_argument('--pieces', default=str(d / 'prix-pieces.json') if d else '')
+    ap.add_argument('--env', default='')
+    ap.add_argument('--sans-catalogue', action='store_true')
     a = ap.parse_args()
 
     if not a.fichier or not Path(a.fichier).is_file():
@@ -124,14 +163,22 @@ def main():
     print('En vigueur : %s | codes : %d' % (m['vigueur'], len(m['prix'])))
     for code in sorted(m['prix']):
         print('  %-20s %s' % (code, m['prix'][code]))
+    body = {'action': 'setreinst', 'reinst': {'prix': m['prix'], 'vigueur': m['vigueur']}}
+    if not a.sans_catalogue:
+        if not a.pieces or not Path(a.pieces).is_file():
+            sys.exit('Catalogue introuvable : %s (ou --sans-catalogue)' % (a.pieces or '?'))
+        cat, gz, absents, inactifs = catalogue(a.pieces, a.env)
+        print('Catalogue : %d pieces publiees | %d inactives dans Epicor, retirees : %s | %d absentes d\'Epicor : %s'
+              % (len(cat), len(inactifs), ', '.join(inactifs) or '-', len(absents), ', '.join(absents) or '-'))
+        body['catalogueGz'] = gz
     if a.dry_run:
         print('--dry-run : rien envoye.')
         return
-    res = post({'action': 'setreinst', 'reinst': {'prix': m['prix'], 'vigueur': m['vigueur']},
-                'pin': read_pin(a.pin_file)})
+    body['pin'] = read_pin(a.pin_file)
+    res = post(body)
     if not res.get('ok'):
         sys.exit('Refus du serveur : %s' % res.get('error', res))
-    print('Serveur : %d codes enregistres.' % res['codes'])
+    print('Serveur : %d codes, %d pieces au catalogue.' % (res['codes'], res.get('catalogue', 0)))
 
 
 if __name__ == '__main__':
