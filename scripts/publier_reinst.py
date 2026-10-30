@@ -117,8 +117,12 @@ def valider(m):
         sys.exit('Liste refusee :\n  ' + '\n  '.join(err))
 
 
-def catalogue(pieces_path, env_path):
-    """{PN: [description Epicor, prix]} des pieces ACTIVES dans Epicor."""
+def catalogue(pieces_path, env_path, standard):
+    """{PN: [description Epicor, prix]} des pieces ACTIVES dans Epicor, plus les pieces
+    des ensembles standard (standard = {PN: prix du fichier maitre}), meme inactives ou
+    absentes de la liste de l'annee : la page coche / decoche chaque piece de l'ensemble et
+    en retire le prix (decision Jacquot 2026-10-30). Une piece standard presente dans la
+    liste de l'annee doit y avoir le meme prix que dans le fichier maitre."""
     import base64, gzip
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import sync_inventaire_epicor as sie
@@ -129,7 +133,7 @@ def catalogue(pieces_path, env_path):
             sys.exit('Catalogue refuse : %s = %r' % (pn, v))
     conn = sie.sql_connect(env_path or str(Path.home() / 'GRYB-MCP' / 'gryb-epicor' / 'credentials.env'))
     cur = conn.cursor()
-    pns = sorted(prix)
+    pns = sorted(set(prix) | set(standard))
     info = {}
     for i in range(0, len(pns), 200):
         lot = pns[i:i + 200]
@@ -139,7 +143,18 @@ def catalogue(pieces_path, env_path):
             info[pn] = (' '.join(str(desc or '').split()), bool(inact))
     absents = [pn for pn in pns if pn not in info]
     inactifs = [pn for pn in pns if pn in info and info[pn][1]]
-    cat = {pn: [info[pn][0][:90], round(float(prix[pn]), 2)] for pn in pns if pn in info and not info[pn][1]}
+    cat = {pn: [info[pn][0][:90], round(float(prix[pn]), 2)] for pn in prix if pn in info and not info[pn][1]}
+    ecarts = []
+    for pn, px in standard.items():
+        if pn in cat:
+            if Decimal(str(cat[pn][1])) != Decimal(str(px)):
+                ecarts.append('%s : %s dans la liste de l annee, %s dans le fichier maitre' % (pn, cat[pn][1], px))
+        else:
+            cat[pn] = [(info.get(pn, ('',))[0] or pn)[:90], round(float(px), 2)]
+    if ecarts:
+        sys.exit('Catalogue refuse, prix divergents :\n  ' + '\n  '.join(ecarts))
+    absents = [pn for pn in absents if pn in prix]
+    inactifs = [pn for pn in inactifs if pn in prix]
     gz = base64.b64encode(gzip.compress(json.dumps(cat, ensure_ascii=False, separators=(',', ':')).encode('utf-8'), 9)).decode('ascii')
     return cat, gz, absents, inactifs
 
@@ -167,7 +182,13 @@ def main():
     if not a.sans_catalogue:
         if not a.pieces or not Path(a.pieces).is_file():
             sys.exit('Catalogue introuvable : %s (ou --sans-catalogue)' % (a.pieces or '?'))
-        cat, gz, absents, inactifs = catalogue(a.pieces, a.env)
+        standard = {}
+        for lignes in (m.get('pieces') or {}).values():
+            for pn, _q, px in lignes:
+                if pn in standard and Decimal(str(standard[pn])) != Decimal(str(px)):
+                    sys.exit('Fichier maitre : %s a deux prix (%s et %s)' % (pn, standard[pn], px))
+                standard[pn] = px
+        cat, gz, absents, inactifs = catalogue(a.pieces, a.env, standard)
         print('Catalogue : %d pieces publiees | %d inactives dans Epicor, retirees : %s | %d absentes d\'Epicor : %s'
               % (len(cat), len(inactifs), ', '.join(inactifs) or '-', len(absents), ', '.join(absents) or '-'))
         body['catalogueGz'] = gz
