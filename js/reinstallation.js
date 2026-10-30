@@ -75,6 +75,12 @@
     var CAT = null;         // { PN: [description, prix] } remis par le serveur
     var VIGUEUR = '';
     var ajouts = [];        // [{ pn, qte }]
+    var decoches = {};      // { 'sys:PN': true } pieces de l'ensemble retirees (cases decochees)
+    var sysAffiche = '';
+    var sansCatalogue = false;
+    // Pieces inactives dans Epicor : jamais ajoutables a la main (elles restent cochables
+    // dans leur ensemble standard, avec la remarque pour Luna).
+    var INACTIFS = ['Z01B-0009'];
     var texteCopie = '', texteEpicor = '';
 
     // Tout en cents entiers : jamais d'arrondi flottant sur un total.
@@ -95,7 +101,8 @@
             gp: $('ri-gp').value, mini: $('ri-mini').checked,
             raccords: entier('ri-fit') * 100,
             km: entier('ri-km'), nuits: entier('ri-nuits'), repas: entier('ri-repas'),
-            ajouts: ajouts.slice()
+            ajouts: ajouts.slice(),
+            decoches: (function (sys) { var o = {}; Object.keys(decoches).forEach(function (k) { if (k.indexOf(sys + ':') === 0) o[k.slice(sys.length + 1)] = true; }); return o; })(document.querySelector('input[name=ri-sys]:checked').value)
         };
     }
 
@@ -133,8 +140,21 @@
         if (sejour) E.push({ code: '1400-0000', desc: 'Hôtel et repas', qte: 1,
                              rem: REMARQUES['1400-0000'] + ' Prix à saisir : ' + argent(sejour) });
         if (reinst) {
-            L.push({ lib: 'Pièces remplacées (ensemble)', note: 'Voir la liste ci-dessous', c: c(S.pieces) });
-            S.liste.forEach(function (x) { E.push({ code: x[0], desc: x[1], qte: 1, rem: REMARQUES[x[0]] }); });
+            // Sans catalogue publie : l'ensemble au complet (PIECES_<X>), cases inactives.
+            // Avec catalogue : il doit couvrir tout l'ensemble et en egaler PIECES_<X>.
+            var garde = sansCatalogue ? S.liste : S.liste.filter(function (x) { return !s.decoches[x[0]]; });
+            var montant = c(S.pieces);
+            if (!sansCatalogue) {
+                var plein = S.liste.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
+                if (plein !== c(S.pieces)) throw new Error('Ensemble ' + S.pieces + ' incoherent avec le catalogue');
+                montant = garde.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
+            }
+            var nRetire = S.liste.length - garde.length;
+            if (garde.length) {
+                L.push({ lib: 'Pièces remplacées (ensemble)', note: nRetire ? garde.length + ' pièce(s) sur ' + S.liste.length + ', voir la liste ci-dessous' : 'Voir la liste ci-dessous',
+                         c: montant });
+            }
+            garde.forEach(function (x) { E.push({ code: x[0], desc: x[1], qte: 1, rem: REMARQUES[x[0]] }); });
         }
         if (reinst && S.raccords) {
             L.push({ lib: 'Raccords hydrauliques', note: 'À valider selon la machine avant la réinstallation', c: s.raccords });
@@ -164,6 +184,7 @@
         var trouve = Object.keys(CAT || {}).filter(function (k) { return k.toLowerCase() === pn.toLowerCase(); })[0];
         var qte = entier('ri-add-qty');
         err.hidden = true;
+        if (trouve && INACTIFS.indexOf(trouve) >= 0) trouve = null;
         if (!trouve) { err.textContent = '« ' + pn + ' » n’est pas dans la liste de prix de l’année (ou est inactif dans Epicor).'; err.hidden = false; return; }
         if (!qte) { err.textContent = 'Quantité d’au moins 1.'; err.hidden = false; return; }
         var dejà = ajouts.filter(function (a) { return a.pn === trouve; })[0];
@@ -180,9 +201,20 @@
         $('ri-mini-row').hidden = !S.mini;
         $('ri-fit-field').hidden = !(S.raccords && reinst);
         $('ri-note-fit').hidden = !(S.raccords && reinst);
-        $('ri-parts').hidden = !reinst;
-        $('ri-parts-box').hidden = !reinst && !s.ajouts.length;
-        $('ri-parts-box').querySelector('h3').hidden = !reinst;
+        $('ri-std-field').hidden = !reinst;
+        if (sysAffiche !== s.sys) {
+            sysAffiche = s.sys;
+            $('ri-std').innerHTML = S.liste.map(function (x, i) {
+                var on = !s.decoches[x[0]];
+                return '<label class="' + (on ? '' : 'off') + '" for="ri-std-' + i + '"><input type="checkbox" id="ri-std-' + i + '" data-pn="' + esc(x[0]) + '"' +
+                    (on ? ' checked' : '') + '><span>' + esc(x[1]) + '<small>' + esc(x[0]) + '</small></span></label>';
+            }).join('');
+        }
+        if (sansCatalogue) $('ri-std').querySelectorAll('input').forEach(function (i) { i.disabled = true; });
+        var gardees = sansCatalogue ? S.liste : S.liste.filter(function (x) { return !s.decoches[x[0]]; });
+        $('ri-parts').hidden = !reinst || !gardees.length;
+        $('ri-parts-box').hidden = !(reinst && gardees.length) && !s.ajouts.length;
+        $('ri-parts-box').querySelector('h3').hidden = !(reinst && gardees.length);
         $('ri-extra-h').hidden = !s.ajouts.length;
         try { r = calculer(s); }
         catch (e) {
@@ -196,7 +228,7 @@
         $('ri-lines').innerHTML = r.lignes.map(function (l) {
             return '<tr><td>' + esc(l.lib) + '<small>' + esc(l.note) + '</small></td><td class="amt">' + argent(l.c) + '</td></tr>';
         }).join('') + '<tr class="tot"><td>Total</td><td class="amt">' + argent(r.total) + '</td></tr>';
-        $('ri-parts').innerHTML = S.liste.map(function (x) { return '<li>' + esc(x[1]) + '</li>'; }).join('');
+        $('ri-parts').innerHTML = gardees.map(function (x) { return '<li>' + esc(x[1]) + '</li>'; }).join('');
         $('ri-extra').innerHTML = s.ajouts.map(function (a) {
             return '<li>' + esc(CAT[a.pn][0]) + (a.qte > 1 ? ' × ' + a.qte : '') + '</li>';
         }).join('');
@@ -212,7 +244,7 @@
             $('ri-qtitle').textContent, $('ri-qinfo').textContent, ''
         ].concat(r.lignes.map(function (l) { return l.lib + ' (' + l.note + ') : ' + argent(l.c); }))
          .concat(['TOTAL : ' + argent(r.total) + ' (CAD, avant taxes)', ''])
-         .concat(reinst ? ['Pièces remplacées incluses :'].concat(S.liste.map(function (x) { return '- ' + x[1]; })).concat(['']) : [])
+         .concat(reinst && gardees.length ? ['Pièces remplacées incluses :'].concat(gardees.map(function (x) { return '- ' + x[1]; })).concat(['']) : [])
          .concat(s.ajouts.length ? ['Pièces additionnelles :'].concat(s.ajouts.map(function (a) {
              return '- ' + CAT[a.pn][0] + (a.qte > 1 ? ' × ' + a.qte : ''); })).concat(['']) : [])
          .concat(noteFit)
@@ -244,14 +276,20 @@
         var vig = VIGUEUR ? new Date(VIGUEUR + 'T12:00:00').toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
         $('ri-vigueur').textContent = (vig ? 'Prix en vigueur le ' + vig + '. ' : '') + 'Soumission valide 30 jours.';
         if (CAT && Object.keys(CAT).length) {
-            $('ri-cat-list').innerHTML = Object.keys(CAT).sort().map(function (pn) {
+            $('ri-cat-list').innerHTML = Object.keys(CAT).sort().filter(function (pn) { return INACTIFS.indexOf(pn) < 0; }).map(function (pn) {
                 return '<option value="' + esc(pn + ' — ' + CAT[pn][0]) + '"></option>';
             }).join('');
         } else {
-            CAT = {};
+            CAT = {}; sansCatalogue = true;
             ['ri-add-code', 'ri-add-qty', 'ri-add-btn'].forEach(function (id) { $(id).disabled = true; });
             $('ri-add-hint').textContent = 'Le catalogue des pièces n’est pas encore publié : ajout manuel indisponible.';
         }
+        $('ri-std').addEventListener('change', function (e) {
+            var cb = e.target; if (!cb.getAttribute('data-pn')) return;
+            var cle = document.querySelector('input[name=ri-sys]:checked').value + ':' + cb.getAttribute('data-pn');
+            if (cb.checked) delete decoches[cle]; else decoches[cle] = true;
+            cb.parentNode.classList.toggle('off', !cb.checked);
+        });
         $('ri-add-btn').addEventListener('click', ajouter);
         $('ri-add-code').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ajouter(); } });
         $('ri-added').addEventListener('click', function (e) {
