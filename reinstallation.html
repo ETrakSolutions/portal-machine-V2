@@ -62,6 +62,24 @@
         .ri-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; align-items: center; }
         .ri-btn { background: #145090; color: #fff; border: 0; border-radius: 8px; padding: 10px 14px; font: inherit; font-weight: 600; cursor: pointer; }
         .ri-toast { font-size: 0.82rem; color: #2E7D32; font-weight: 600; }
+        .ri-add { display: grid; grid-template-columns: minmax(0, 1fr) 80px auto; gap: 8px; align-items: end; }
+        @media (max-width: 600px) { .ri-add { grid-template-columns: minmax(0, 1fr) 70px; } .ri-add .ri-btn { grid-column: 1 / -1; } }
+        .ri-added { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+        .ri-added li { display: flex; gap: 10px; align-items: center; justify-content: space-between; background: #2a2a2c; border: 1px solid #3a3a3d; border-radius: 8px; padding: 8px 10px; color: #f0f0f0; font-size: 0.85rem; }
+        .ri-added li span { min-width: 0; }
+        .ri-added li small { color: #a9acb3; display: block; }
+        .ri-x { background: transparent; color: #ff9d90; border: 1px solid #5a3a3a; border-radius: 6px; padding: 4px 9px; cursor: pointer; font: inherit; flex: none; }
+        .ri-err { color: #ff9d90; font-size: 0.8rem; margin: 0; }
+        .ri-epi { background: #232325; border: 1px solid #3a3a3d; border-radius: 12px; padding: 16px; margin-top: 18px; color: #f0f0f0; }
+        .ri-epi h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9aa7b2; margin: 0 0 4px; }
+        .ri-epi p { color: #a9acb3; font-size: 0.8rem; margin: 0 0 10px; }
+        .ri-epi-scroll { overflow-x: auto; }
+        table.ri-epi-t { border-collapse: collapse; width: 100%; font-size: 0.82rem; }
+        table.ri-epi-t th, table.ri-epi-t td { border-bottom: 1px solid #2f2f32; padding: 6px 8px; text-align: left; vertical-align: top; }
+        table.ri-epi-t th { color: #9fb4c8; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; }
+        table.ri-epi-t td.q { text-align: right; font-variant-numeric: tabular-nums; }
+        table.ri-epi-t code { color: #FFB04D; font-weight: 700; }
+        .ri-warn { color: #FFB04D; }
         .ri-msg { text-align: center; color: #bbb; padding: 3rem 1rem; }
         .pl-btn { display: inline-block; background: #FF8C00; color: #1a1a1a; text-decoration: none; border-radius: 10px; padding: 12px 22px; font-weight: 800; }
     </style>
@@ -120,7 +138,20 @@
                         </section>
 
                         <section class="ri-step" aria-labelledby="ri-s3">
-                            <h2 id="ri-s3"><span class="ri-n">3</span>Déplacement</h2>
+                            <h2 id="ri-s3"><span class="ri-n">3</span>Pièces additionnelles</h2>
+                            <p class="ri-hint" id="ri-add-hint">Tapez un code ou une partie de la description. Le prix vient de la liste de l'année.</p>
+                            <div class="ri-add">
+                                <div class="ri-field"><label for="ri-add-code">Pièce</label><input type="text" id="ri-add-code" list="ri-cat-list" autocomplete="off" placeholder="ex. C02A-0021"></div>
+                                <div class="ri-field"><label for="ri-add-qty">Qté</label><input type="number" id="ri-add-qty" min="1" step="1" value="1" inputmode="numeric"></div>
+                                <button class="ri-btn" id="ri-add-btn" type="button">Ajouter</button>
+                            </div>
+                            <datalist id="ri-cat-list"></datalist>
+                            <p class="ri-err" id="ri-add-err" hidden></p>
+                            <ul class="ri-added" id="ri-added"></ul>
+                        </section>
+
+                        <section class="ri-step" aria-labelledby="ri-s4d">
+                            <h2 id="ri-s4d"><span class="ri-n">4</span>Déplacement</h2>
                             <div class="ri-row">
                                 <div class="ri-field"><label for="ri-km">Km aller-retour depuis l'usine</label><input type="number" id="ri-km" min="0" step="1" value="0" inputmode="numeric"></div>
                                 <div class="ri-field"><label for="ri-nuits">Nuits d'hôtel</label><input type="number" id="ri-nuits" min="0" step="1" value="0" inputmode="numeric"></div>
@@ -130,7 +161,7 @@
                         </section>
 
                         <section class="ri-step" aria-labelledby="ri-s4">
-                            <h2 id="ri-s4"><span class="ri-n">4</span>Client</h2>
+                            <h2 id="ri-s4"><span class="ri-n">5</span>Client</h2>
                             <div class="ri-row2">
                                 <div class="ri-field"><label for="ri-client">Client</label><input type="text" id="ri-client" maxlength="120"></div>
                                 <div class="ri-field"><label for="ri-machine">Machine / no de série</label><input type="text" id="ri-machine" maxlength="120"></div>
@@ -149,8 +180,11 @@
                         <div class="ri-parts" id="ri-parts-box">
                             <h3>Pièces remplacées incluses</h3>
                             <ul id="ri-parts"></ul>
+                            <h3 id="ri-extra-h" style="margin-top:10px;">Pièces additionnelles</h3>
+                            <ul id="ri-extra"></ul>
                         </div>
                         <div class="ri-notes">
+                            <div id="ri-note-fit" hidden><strong>Raccords hydrauliques à valider selon la machine avant la réinstallation.</strong></div>
                             <div id="ri-vigueur"></div>
                             <div>Pièce additionnelle constatée sur place : cotée séparément.</div>
                         </div>
@@ -161,6 +195,22 @@
                         <textarea id="ri-copy-fallback" hidden readonly style="width:100%;height:140px;margin-top:10px;"></textarea>
                     </aside>
                 </div>
+
+                <section class="ri-epi" aria-labelledby="ri-epi-h">
+                    <h2 id="ri-epi-h">Pour Epicor (Luna)</h2>
+                    <p>Une ligne par code, à coller dans la grille de commande : code et quantité. Les remarques ne sont pas copiées.</p>
+                    <div class="ri-epi-scroll">
+                        <table class="ri-epi-t">
+                            <thead><tr><th>Code</th><th>Description</th><th class="q">Qté</th><th>Remarque</th></tr></thead>
+                            <tbody id="ri-epi-rows"></tbody>
+                        </table>
+                    </div>
+                    <div class="ri-actions">
+                        <button class="ri-btn" id="ri-copy-epi" type="button">Copier pour Epicor</button>
+                        <span class="ri-toast" id="ri-toast-epi" hidden></span>
+                    </div>
+                    <textarea id="ri-epi-fallback" hidden readonly style="width:100%;height:120px;margin-top:10px;"></textarea>
+                </section>
             </div>
         </div>
     </main>
@@ -170,6 +220,6 @@
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/reinstallation.js?v=1"></script>
+    <script src="js/reinstallation.js?v=2"></script>
 </body>
 </html>
