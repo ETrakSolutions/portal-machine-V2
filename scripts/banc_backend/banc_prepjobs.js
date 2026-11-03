@@ -70,13 +70,18 @@ if (REEL) {
 
 // ---------------- controles des regles (donnees fabriquees) ----------------
 let ok = 0, ko = 0;
+// Gabarit d'information client que Luna remplit dans la description (2026-11-03)
+const GABARIT = "Installation LP\n\nNuméro d'ordre: 99887\nMachine: Pelle Secrete\nModèle: 336\nAnnée: N/A\n" +
+  "Numéro de série de l'équipement: SNSECRET1\nNuméro d'unité, si nécessaire: N/A\nCode de démarrage, si nécessaire: 4242\n" +
+  "Adresse de l'installation: 9 rue Cachee\nNom de votre client (compagnie): Cie Secrete\n" +
+  "Information de la personne responsable sur place incluant son téléphone: Lucie Secrete 819-555-9999";
 const check = (n, c) => { c ? ok++ : ko++; console.log((c ? 'OK    ' : 'ECHEC ') + n); };
 const J = n => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10) + 'T07:30:00-04'; };
 const base = (code, extra) => Object.assign({
   code, rv: J(2), type: { label: 'Installation' }, currentState: { label: 'Assigné', logicId: 100 },
   client: { id: 1, label: 'Client ' + code }, location: { id: 9, label: 'Chantier ' + code },
   locationAddress: { address: '123 rue Secrete', city: 'Saguenay', phone: '819-555-0000', email: 'client@x.com', position: { latitude: 48.4, longitude: -71 } },
-  humanResource: { id: 43, label: 'Tech A' },
+  humanResource: { id: 43, label: 'Tech A' }, description: GABARIT,
   attachments: [{ name: 'commande.pdf', contentType: 'application/pdf', url: 'https://x/secret' }],
   itemList: { id: 7, subTotal: 8604.2, total: 9892.68, items: [{ id: 1, label: 'Ligne Secrete', price: 8604.2, total: 8604.2 }] },
   properties: { 'informations_generales.contact_sur_place': 'Paul Tremblay (819) 555-1234', 'informations_generales.numero_contact': '43854 - 12539',
@@ -100,11 +105,14 @@ FAUX = [
   base('INS15', { properties: { 'informations_generales.bon_commande': '2400083630', 'informations_generales.numero_contact': '43830 - 13053' } }),
   base('INS16', { itemList: { id: 8, subTotal: 0, total: 0, items: [] } }),                // onglet Facture vide
   base('INS17', { itemList: undefined }),                                                 // pas d'onglet Facture
+  base('INS18', { description: GABARIT.replace('Année: N/A', 'Année:').replace(': 4242', ':   ').replace(/\nNom de votre client[^\n]*/, '') }),
+  base('INS19', { description: '<p>' + GABARIT.replace(/'/g, '&#39;').split('\n').join('</p><p>') + '</p>' }),  // HTML
+  base('SAV20', { type: { label: 'SAV' }, description: 'Code de démarrage :' }),        // un SAV n'a pas de gabarit
 ];
 let r = post({ action: 'getprepjobs', token: tok('dluna@e-trak.ca', 'L') });
 const jobs = (r.prep && r.prep.jobs) || [], J_ = c => jobs.find(x => x.code === c) || {};
 check('reponse ok (Luna)', r.ok === true);
-check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS16', 'INS17', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2']));
+check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS16', 'INS17', 'INS18', 'INS19', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2', 'SAV20']));
 check('triees par date (SAV2 demain en premier)', jobs[0] && jobs[0].code === 'SAV2');
 check('INS1 complete', J_('INS1').commande && J_('INS1').contactNom && J_('INS1').telOk && J_('INS1').emplacement);
 check('SAV2 : photo seulement -> commande manquante', J_('SAV2').commande === false);
@@ -128,6 +136,12 @@ check('champs a corriger : nom dans le bon ; SAV sans # de commande pas signale 
 check('champs a corriger : # de bon de 10 chiffres colles = pas un telephone (INS15)', AC('INS15') === '[]');
 check('champs a corriger : Installation sans # de commande e-Trak (INS3)', AC('INS3') === '["nc_absent"]');
 check('champs a corriger : le contenu des champs ne sort jamais', !/Fredette|Maxime|SANS FRAIS|347-4254/.test(JSON.stringify(r)));
+const IC = c => JSON.stringify(J_(c).infoClient);
+check('info client : gabarit rempli, N/A accepte (INS1)', IC('INS1') === '[]');
+check('info client : annee vide, code blanc, ligne client absente (INS18)', IC('INS18') === '["annee","demarrage","client"]');
+check('info client : description en HTML lue (INS19)', IC('INS19') === '[]');
+check('info client : SAV jamais juge (SAV2, SAV20)', IC('SAV2') === '[]' && IC('SAV20') === '[]');
+check('info client : le contenu de la description ne sort jamais', !/Secrete|Cachee|SNSECRET|99887|4242/.test(JSON.stringify(r)));
 check('onglet Facture : une ligne -> lignes true (INS1)', J_('INS1').lignes === true);
 check('onglet Facture : vide (INS16) ou absent (INS17) -> lignes false', J_('INS16').lignes === false && J_('INS17').lignes === false);
 check('onglet Facture : ni montant ni libelle de ligne dans la reponse', !/8604|9892|Ligne Secrete|subTotal|itemList/.test(rep));

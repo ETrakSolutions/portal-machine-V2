@@ -51,6 +51,8 @@ def jeu_fabrique():
         J('INS8', 2, lignes=False),                 # seul manque : aucune ligne dans l'onglet Facture
         J('SAV9', 4, type='SAV', lignes=False),      # SAV : ligne de facture non requise -> complet
         J('INS10', 5),                              # serveur < v47 : pas de « lignes » -> non juge
+        J('INS11', 7, infoClient=['annee', 'demarrage']),   # gabarit info client incomplet (2026-11-03)
+        J('INS12', 7, infoClient=[]),               # gabarit complet
     ]}
 
 
@@ -58,7 +60,8 @@ PREP = json.load(open(arg('--fixture'), encoding='utf-8')) if arg('--fixture') e
 est_sav = lambda j: j['type'].strip().lower() == 'sav'
 cmd_ok = lambda j: est_sav(j) or j['commande']   # SAV : pas de commande avant la visite
 fact_ok = lambda j: est_sav(j) or j.get('lignes') is not False   # onglet Facture (2026-10-20), sauf SAV
-complete = lambda j: cmd_ok(j) and fact_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement']
+info_ok = lambda j: not j.get('infoClient')   # gabarit d'information client (2026-11-03)
+complete = lambda j: cmd_ok(j) and fact_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement'] and info_ok(j)
 A_FAIRE = [j for j in PREP['jobs'] if not complete(j)]
 
 
@@ -155,7 +158,7 @@ try:
         return { code: tr.getAttribute('data-code'), urgent: tr.classList.contains('pj-urgent'),
                  nocmd: (tr.querySelector('.pj-nocmd').firstChild.textContent || '').trim(),
                  fix: tr.querySelectorAll('.pj-nocmd .pj-fix').length, col2: tr.cells[2].className,
-                 conf: v('.pj-conf'), cmd: v('.pj-cmd'), fact: v('.pj-fact'), contact: v('.pj-contact'), lieu: v('.pj-lieu') }; });"""
+                 conf: v('.pj-conf'), cmd: v('.pj-cmd'), fact: v('.pj-fact'), contact: v('.pj-contact'), lieu: v('.pj-lieu'), info: v('.pj-info') }; });"""
     lignes = dv.execute_script(LIRE)
     check('par defaut : %d lignes = jobs a completer (%d)' % (len(lignes), len(A_FAIRE)), len(lignes) == len(A_FAIRE))
     dv.execute_script("document.getElementById('pj-todo').click();"); time.sleep(0.3)
@@ -177,6 +180,11 @@ try:
     att_fact = lambda j: 'Non requise (SAV)' if est_sav(j) else '—' if 'lignes' not in j else 'OK' if j['lignes'] else 'Aucune ligne'
     mauvais = [(l['code'], l['fact']) for l in toutes if l['fact'] != att_fact(par_code[l['code']])]
     check('onglet Facture : OK / « Aucune ligne » / SAV non requise / « — » si le serveur ne le dit pas %s' % (mauvais or ''), not mauvais)
+    INFO = {'annee': 'année', 'demarrage': 'code de démarrage', 'ordre': "n° d’ordre"}
+    att_info = lambda j: 'Non requise (SAV)' if est_sav(j) else '—' if 'infoClient' not in j else 'OK' if not j['infoClient'] \
+        else 'Manque : ' + ', '.join(INFO.get(c, c) for c in j['infoClient'])
+    mauvais = [(l['code'], l['info']) for l in toutes if l['info'] != att_info(par_code[l['code']])]
+    check('Info client : OK / « Manque : … » / SAV non requise / « — » si le serveur ne le dit pas %s' % (mauvais or ''), not mauvais)
     check('voyant « à corriger » : un par code recu, nulle part ailleurs',
           all(l['fix'] == len(par_code[l['code']].get('aCorriger') or []) for l in toutes))
     check('Confirmé client : OK si cochee, « — » en attente, sinon « À confirmer »',

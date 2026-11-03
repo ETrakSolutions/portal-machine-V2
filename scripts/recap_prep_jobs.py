@@ -4,12 +4,15 @@ Deux envois par jour de semaine :
   8 h   les jobs du lendemain dont la case « Confirmer client » n'est pas cochee (le
         vendredi : samedi, dimanche et lundi), puis les jobs a completer ;
   13 h  rappel des jobs encore a confirmer pour le lendemain, s'il en reste.
-Les ressources d'attente (_A Planifier, _HOLD, _Pas pret) ne sont jamais a confirmer ni
-urgentes : leur date n'est pas reelle.
+Les ressources d'attente (_A Planifier, _HOLD, _Pas pret) ne sont pas dans le courriel : ces
+jobs ne sont pas pretes pour l'installation et leur date n'est pas reelle (decision Jacquot,
+2026-11-03 ; avant, une section « En attente »). La page prep-jobs.html les montre toujours.
 
 Jobs a completer : installations et SAV des 30 prochains jours auxquels il manque la
 commande PDF, une ligne dans l'onglet Facture (2026-10-20), le contact sur place avec un
-telephone de 10 chiffres, ou l'emplacement.
+telephone de 10 chiffres, l'emplacement, ou (installation) une ligne vide du gabarit
+d'information client de la description, « Numero d'ordre » a « Information de la personne
+responsable » (2026-11-03 ; « N/A » si l'info ne s'applique pas).
 Memes regles que la page prep-jobs.html : le calcul est celui du serveur (Code.gs, via
 scripts/prep_jobs_local.js), et un SAV n'exige pas de commande (on ne sait pas encore ce
 qui sera change).
@@ -89,6 +92,11 @@ def en_attente(j):
     return str(j.get('tech') or '').strip().startswith('_')
 
 
+INFO_CLIENT = {'ordre': "n° d'ordre", 'machine': 'machine', 'modele': 'modèle', 'annee': 'année',
+               'serie': 'n° de série', 'unite': "n° d'unité", 'demarrage': 'code de démarrage',
+               'adresse': 'adresse', 'client': 'nom du client', 'responsable': 'responsable sur place'}
+
+
 def manques(j):
     m = []
     if not (est_sav(j) or j.get('commande')):
@@ -106,6 +114,9 @@ def manques(j):
                 m.append('téléphone (%d chiffres)' % j['telChiffres'] if j.get('telChiffres') else 'téléphone')
     if not j.get('emplacement'):
         m.append('emplacement')
+    # Gabarit d'information client de la description (installation, 2026-11-03)
+    if j.get('infoClient'):
+        m.append('info client : ' + ', '.join(INFO_CLIENT.get(c, c) for c in j['infoClient']))
     return m
 
 
@@ -138,26 +149,25 @@ def fmt_jours(jours):
 
 def construire(prep, maintenant, creneau):
     """creneau 'matin' : a confirmer + jobs a completer ; 'midi' : a confirmer seulement."""
-    jobs = prep.get('jobs') or []
+    # Jobs en attente (_A Planifier, _HOLD, _Pas pret) : pas pretes pour l'installation,
+    # hors du courriel (decision Jacquot, 2026-11-03).
+    jobs = [j for j in (prep.get('jobs') or []) if not en_attente(j)]
     a_faire = [j for j in jobs if manques(j)]
     cibles = jours_cibles(maintenant.date())
     # Case « Confirmer client » pas cochee la veille (decision Jacquot, 2026-10-15)
-    a_confirmer = [j for j in jobs if not j.get('confirme') and not en_attente(j)
+    a_confirmer = [j for j in jobs if not j.get('confirme')
                    and date_locale(j.get('rv')) and date_locale(j.get('rv')).date() in cibles]
     limite = maintenant + datetime.timedelta(days=URGENT_JOURS)
-    # Ressource d'attente : jamais urgente, section a part ; meme regle que la page.
-    urgentes, plus_tard, attente = [], [], []
+    urgentes, plus_tard = [], []
     for j in a_faire:
         d = date_locale(j.get('rv'))
-        if en_attente(j):
-            attente.append(j)
-        else:
-            (urgentes if d and d <= limite else plus_tard).append(j)
+        (urgentes if d and d <= limite else plus_tard).append(j)
     n = lambda f: sum(1 for j in jobs if f(j))
     n_cmd = n(lambda j: not (est_sav(j) or j.get('commande')))
     n_fact = n(lambda j: not est_sav(j) and j.get('lignes') is False)
     n_contact = n(lambda j: not (j.get('contactNom') and j.get('telOk')))
     n_lieu = n(lambda j: not j.get('emplacement'))
+    n_info = n(lambda j: j.get('infoClient'))
 
     e = html.escape
     td = 'style="padding:6px 8px;border-bottom:1px solid #e3e3e3;vertical-align:top;font-size:13px"'
@@ -189,18 +199,18 @@ def construire(prep, maintenant, creneau):
         corps.append('<p style="margin-top:18px"><b>%d job(s) sur %d à compléter dans ProgressionLive</b> '
                      '(installations et SAV du %s au %s).<br>'
                      '<span style="color:#555">%d sans commande PDF · %d sans ligne dans l\'onglet Facture · '
-                     '%d sans contact complet · %d sans emplacement. '
-                     'Un SAV n\'exige ni commande ni ligne de facture.</span></p>' % (
-                         len(a_faire), len(jobs), e(prep.get('du', '')), e(prep.get('au', '')), n_cmd, n_fact, n_contact, n_lieu))
+                     '%d sans contact complet · %d sans emplacement · %d avec info client incomplète. '
+                     'Un SAV n\'exige ni commande ni ligne de facture. Info client : chaque ligne du gabarit, '
+                     'de « Numéro d\'ordre » à « Information de la personne responsable », doit être remplie ; '
+                     'écrire N/A si elle ne s\'applique pas. Les jobs à planifier, en HOLD ou pas prêtes '
+                     'ne sont pas dans ce courriel.</span></p>' % (
+                         len(a_faire), len(jobs), e(prep.get('du', '')), e(prep.get('au', '')), n_cmd, n_fact, n_contact, n_lieu, n_info))
         if urgentes:
             corps.append('<h3 style="color:#c0392b;margin:18px 0 6px">Dans %d jours ou moins (%d)</h3>' % (URGENT_JOURS, len(urgentes)))
             corps.append(tableau(urgentes))
         if plus_tard:
             corps.append('<h3 style="margin:18px 0 6px">Plus tard (%d)</h3>' % len(plus_tard))
             corps.append(tableau(plus_tard))
-        if attente:
-            corps.append('<h3 style="margin:18px 0 6px;color:#555">En attente : à planifier, HOLD, pas prêt (%d)</h3>' % len(attente))
-            corps.append(tableau(attente))
     corps.append('<p style="margin-top:18px">La liste à jour : <a href="%s">Préparation des jobs</a> '
                  '(portail e-Trak).</p>' % PAGE)
     corps.append('<p style="color:#888;font-size:12px">Envoyé automatiquement en semaine : à 8 h (jobs à confirmer '

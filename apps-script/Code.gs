@@ -1279,6 +1279,35 @@ function _champsACorriger(P, type) {
   return out;
 }
 
+// Information client d'une installation (decision Jacquot, 2026-11-03) : Luna colle dans la
+// description le gabarit « Numéro d'ordre: … Information de la personne responsable… » et le
+// remplit avec le client. Chaque ligne doit porter une valeur sur la meme ligne, apres le
+// deux-points ; si l'info ne s'applique pas (ex. pas de code de demarrage), Luna ecrit « N/A ».
+// Sortie : les CODES des lignes vides ou absentes, jamais leur contenu. Un SAV n'a pas de gabarit.
+var PREP_INFO_CLIENT = [
+  ['ordre', /^num[ée]ro d['’]ordre(?![a-z])[^:\n]*:(.*)$/im],
+  ['machine', /^machine(?![a-z])[^:\n]*:(.*)$/im],
+  ['modele', /^mod[èe]le(?![a-z])[^:\n]*:(.*)$/im],
+  ['annee', /^ann[ée]e(?![a-z])[^:\n]*:(.*)$/im],
+  ['serie', /^num[ée]ro de s[ée]rie(?![a-z])[^:\n]*:(.*)$/im],
+  ['unite', /^num[ée]ro d['’]unit[ée](?![a-z])[^:\n]*:(.*)$/im],
+  ['demarrage', /^code de d[ée]marrage(?![a-z])[^:\n]*:(.*)$/im],
+  ['adresse', /^adresse de l['’]installation(?![a-z])[^:\n]*:(.*)$/im],
+  ['client', /^nom de votre client(?![a-z])[^:\n]*:(.*)$/im],
+  ['responsable', /^information de la personne responsable(?![a-z])[^:\n]*:(.*)$/im]
+];
+function _infoClientManquante(description) {
+  var txt = String(description || '')
+    .replace(/<br\s*\/?>|<\/(p|div|li)>/gi, '\n').replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/gi, ' ').replace(/&#39;|&apos;/gi, "'").replace(/&amp;/gi, '&')
+    .replace(/\r/g, '').split('\n').map(function (l) { return l.replace(/^[\s*\-•]+/, '').trim(); }).join('\n');
+  return PREP_INFO_CLIENT.filter(function (x) {
+    var re = new RegExp(x[1].source, 'gim'), m, ok = false;
+    while ((m = re.exec(txt))) { if (m[1].replace(/[\s:]+/g, '')) { ok = true; break; } }
+    return !ok;
+  }).map(function (x) { return x[0]; });
+}
+
 // 10 chiffres d'un seul numero (indicatif 1 et poste tolérés), pas 10 chiffres au total
 function _telDixChiffres(s) {
   return /(^|\D)(1\D{0,2})?\d{3}\D{0,3}\d{3}\D{0,3}\d{4}(\D|$)/.test(String(s || ''));
@@ -1319,7 +1348,8 @@ function _calculPrepJobs(maintenant) {
       telOk: _telDixChiffres(contact),
       telChiffres: contact.replace(/\D/g, '').length,
       emplacement: !!(t.location && (t.location.id || _labelDe(t.location))),
-      lignes: !!(t.itemList && t.itemList.items && t.itemList.items.length)
+      lignes: !!(t.itemList && t.itemList.items && t.itemList.items.length),
+      infoClient: _norm(_labelDe(t.type)) === 'installation' ? _infoClientManquante(t.description) : []
     });
   });
   jobs.sort(function (a, b) { return (a.rv || '9') < (b.rv || '9') ? -1 : (a.rv || '9') > (b.rv || '9') ? 1 : 0; });

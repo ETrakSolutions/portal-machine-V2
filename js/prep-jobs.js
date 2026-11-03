@@ -33,7 +33,11 @@
     // que la commande pour un SAV. Un serveur anterieur a la v47 n'envoie pas « lignes » :
     // non juge plutot que tout en rouge.
     function factureOk(j) { return estSav(j) || j.lignes !== false; }
-    function complete(j) { return commandeOk(j) && factureOk(j) && contactOk(j) && j.emplacement; }
+    // Gabarit d'information client de la description, installation seulement (decision
+    // Jacquot, 2026-11-03) : le serveur renvoie les codes des lignes vides. Un serveur
+    // anterieur n'envoie pas « infoClient » : non juge.
+    function infoOk(j) { return !(j.infoClient && j.infoClient.length); }
+    function complete(j) { return commandeOk(j) && factureOk(j) && contactOk(j) && j.emplacement && infoOk(j); }
     // Ressource d'attente de ProgressionLive (« _A Planifier », « _HOLD », « _Pas prêt ») :
     // la date n'est pas reelle, la job reste dans le tableau mais n'est jamais urgente
     // (decision Jacquot, 2026-10-15).
@@ -71,7 +75,8 @@
             '<small>' + esc([t('pj.count_cmd', { n: n(function (j) { return !commandeOk(j); }) }),
                              t('pj.count_fact', { n: n(function (j) { return !factureOk(j); }) }),
                              t('pj.count_contact', { n: n(function (j) { return !contactOk(j); }) }),
-                             t('pj.count_lieu', { n: n(function (j) { return !j.emplacement; }) })]
+                             t('pj.count_lieu', { n: n(function (j) { return !j.emplacement; }) }),
+                             t('pj.count_info', { n: n(function (j) { return !infoOk(j); }) })]
                             .concat(n(function (j) { return (j.aCorriger || []).length; }) ?
                                 [t('pj.count_fix', { n: n(function (j) { return (j.aCorriger || []).length; }) })] : []).join(' · ')) + '</small>';
         var liste = document.getElementById('pj-todo').checked ? aFaire : jobs;
@@ -84,6 +89,11 @@
             if (estSav(j)) return '<span class="pj-v pj-na">' + esc(t('pj.cmd_na')) + '</span>';
             if (j.lignes === undefined) return '<span class="pj-v pj-na">—</span>';
             return verdict(j.lignes, [t('pj.no_lignes')]);
+        };
+        var celluleInfo = function (j) {
+            if (estSav(j)) return '<span class="pj-v pj-na">' + esc(t('pj.cmd_na')) + '</span>';
+            if (j.infoClient === undefined) return '<span class="pj-v pj-na">—</span>';
+            return verdict(infoOk(j), [t('pj.no_info', { liste: j.infoClient.map(function (c) { return t('pj.info_' + c); }).join(', ') })]);
         };
         // Case « Confirmer client » (decision Jacquot, 2026-10-15) : information, pas un
         // critere de completude. Une ressource d'attente n'a pas de date reelle : « — ».
@@ -112,12 +122,13 @@
                 '<td class="pj-c pj-fact">' + celluleFact(j) + '</td>' +
                 '<td class="pj-c pj-contact">' + verdictContact(j) + '</td>' +
                 '<td class="pj-c pj-lieu">' + verdict(j.emplacement, [t('pj.no_lieu')]) + '</td>' +
+                '<td class="pj-c pj-info">' + celluleInfo(j) + '</td>' +
                 '<td class="pj-c pj-conf">' + celluleConf(j) + '</td></tr>';
         }).join('');
         grid.className = '';
         grid.innerHTML = '<table class="pj"><thead><tr>' +
             ['pj.col_date', 'pj.col_job', 'pj.col_nocmd', 'pj.col_client', 'pj.col_tech'].map(function (k) { return '<th>' + esc(t(k)) + '</th>'; }).join('') +
-            ['pj.col_cmd', 'pj.col_fact', 'pj.col_contact', 'pj.col_lieu', 'pj.col_conf'].map(function (k) { return '<th class="pj-c">' + esc(t(k)) + '</th>'; }).join('') +
+            ['pj.col_cmd', 'pj.col_fact', 'pj.col_contact', 'pj.col_lieu', 'pj.col_info', 'pj.col_conf'].map(function (k) { return '<th class="pj-c">' + esc(t(k)) + '</th>'; }).join('') +
             '</tr></thead><tbody>' + rows + '</tbody></table>';
         var g = DATA.genere ? new Date(DATA.genere) : null;
         document.getElementById('pj-updated').textContent = g && !isNaN(g) ? t('pj.updated', {
