@@ -107,41 +107,93 @@ v('dealer coche par erreur : SAV et Cedule restent caches, Export suit la case',
 h = hub('super_admin', {'super_admin': {'savAccess': False}})
 v('super admin : toujours les quatre', all(h.values()), h)
 
+print('Hub — colonnes branchees sur leurs tuiles (2026-11-03)')
+def hub3(role, sauve):
+    d = ouvrir('index.html', role, sauve)
+    try:
+        return {t: visible(d, t) for t in ['hub-tile-admin', 'hub-tile-database', 'hub-tile-machine']}
+    finally:
+        d.quit()
+h = hub3('ingenierie', None)
+v('ingenierie par defaut : BD et Kit machine visibles, Admin cache',
+  h == {'hub-tile-admin': False, 'hub-tile-database': True, 'hub-tile-machine': True}, h)
+h = hub3('vente_interne', {'vente_interne': {'databaseAccess': True, 'modifAccounts': True, 'machineAccess': False}})
+v('vente interne : Acces BD + Acces Admin coches, Kit machine decoche -> tuiles qui suivent',
+  h == {'hub-tile-admin': True, 'hub-tile-database': True, 'hub-tile-machine': False}, h)
+
 print('Tableau des permissions (super admin)')
-d = ouvrir('index.html', 'super_admin', None)
+COLS = ['admin.perm_admin', 'admin.perm_bd', 'admin.perm_modifbom', 'admin.perm_kit', 'admin.perm_soumission', 'admin.perm_qr',
+        'admin.perm_notes', 'admin.perm_flag', 'admin.perm_inventory', 'admin.perm_addusers', 'admin.perm_cedule', 'admin.perm_sav',
+        'admin.perm_export', 'admin.perm_pricelist', 'admin.perm_diag', 'admin.perm_soutien', 'admin.perm_prepjobs', 'admin.perm_reinst']
+PERMS = ['modifAccounts', 'databaseAccess', 'modifBom', 'machineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom',
+         'inventoryAccess', 'addUsers', 'ceduleAccess', 'savAccess', 'exportAccess', 'pricelistAccess', 'diagValidate', 'soutienAccess',
+         'prepJobsAccess', 'reinstAccess']
+# Reglage enregistre en ligne le 2026-11-03 (lu par GET) : la mise en ligne ne doit rien changer.
+EN_LIGNE = {
+    'administrateur': dict(createAccount=True, modifAccounts=True, modifBom=True, databaseAccess=True, kitMachineAccess=True, machineAccess=True),
+    'vente_interne': dict(createAccount=False, modifAccounts=False, modifBom=False, databaseAccess=False, kitMachineAccess=False, machineAccess=True),
+    'technicien': dict(createAccount=False, modifAccounts=False, modifBom=False, databaseAccess=False, kitMachineAccess=True, machineAccess=True),
+    'dealer': dict(createAccount=False, modifAccounts=False, modifBom=False, databaseAccess=False, kitMachineAccess=False, machineAccess=True),
+    'ingenierie': dict(createAccount=False, modifAccounts=False, modifBom=True, databaseAccess=True, kitMachineAccess=True, machineAccess=True),
+}
+d = ouvrir('index.html', 'super_admin', EN_LIGNE)
 try:
     d.execute_script("showAdminSection()")
     time.sleep(0.8)
+    cles = d.execute_script("return [...document.querySelectorAll('#admin-perm-table thead th')].slice(1).map(x=>x.getAttribute('data-i18n'))")
+    v('18 colonnes, dans l\'ordre des permissions (Modif. BOM, Prep. jobs, Reinstallation ajoutees)', cles == COLS, cles)
     entetes = d.execute_script("return [...document.querySelectorAll('#admin-perm-table thead th')].map(x=>x.textContent.trim())")
-    v('16 colonnes, dont les six nouvelles', len(entetes) == 16 and entetes[-6:] == ['Cédule techs', 'SAV', 'Export', 'Price List', 'Valider diag', 'Soutien tech.'], entetes)
+    v('libelles FR des nouvelles colonnes', entetes[3] == 'Modif. BOM' and entetes[-2:] == ['Prép. jobs', 'Réinstallation'], entetes)
     lignes = d.execute_script("""return [...document.querySelectorAll('#admin-perm-tbody tr')].map(tr =>
         [tr.cells[0].innerText.trim(), [...tr.cells].slice(1).map(c => c.textContent + (c.dataset.perm ? '' : '#'))])""")
-    par_role = {l[0]: l[1] for l in lignes}
-    v('chaque ligne a 15 cases', all(len(c) == 15 for c in par_role.values()), {k: len(c) for k, c in par_role.items()})
-    dealer = par_role.get('Dealer', [])
-    v('Dealer : Cedule et SAV verrouillees (✗, non cliquables)', dealer[9:11] == ['✗#', '✗#'], dealer[9:])
-    v('Dealer : Export et Price List reglables', dealer[11].endswith('#') is False and dealer[12].endswith('#') is False, dealer[9:])
-    ing = par_role.get('Ingenierie') or par_role.get('Ingénierie') or []
-    v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗ Valider diag ✓ Soutien ✓', ing[9:] == ['✓', '✓', '✗', '✗', '✓', '✓'], ing[9:])
-    v('Dealer : Soutien tech. ✗ par defaut, reglable', dealer[14] == '✗', dealer[9:])
-    inst = par_role.get('Installateur', [])
-    v('Installateur : Cedule, SAV et Valider diag verrouilles, Soutien ✓ reglable', len(inst) == 15 and inst[9] == '✗#' and inst[10] == '✗#'
-      and inst[13] == '✗#' and inst[14] == '✓', inst[9:])
-    dist = par_role.get('Distributeur', [])
-    v('Distributeur : Soutien tech. ✓ par defaut, reglable', dist[14] == '✓', dist[9:])
-    d.execute_script("""var td=[...document.querySelectorAll('#admin-perm-tbody td[data-perm="savAccess"]')]
-        .find(c=>c.dataset.role==='ingenierie'); td.click();""")
-    time.sleep(0.6)
-    saves = d.execute_script("return window.__saves")
-    enreg = json.loads(saves[-1]['value']) if saves else {}
-    v('clic sur SAV / Ingenierie : enregistre savAccess = false',
-      saves and saves[-1]['key'] == 'roles_permissions' and enreg.get('ingenierie', {}).get('savAccess') is False, saves[-1]['key'] if saves else None)
+    par_role = {l[0]: dict(zip(PERMS, l[1])) for l in lignes}
+    v('chaque ligne a 18 cases', all(len(c) == 18 for c in par_role.values()), {k: len(c) for k, c in par_role.items()})
+    # Rien ne change a la mise en ligne : chaque case = la valeur qui commande la tuile aujourd'hui
+    att = {'Administrateur': ('✓#', '✓', '✓', '✓'), 'Vente interne': ('✗', '✗', '✗', '✓'),
+           'Technicien': ('✗', '✗', '✗', '✓'), 'Dealer': ('✗#', '✗', '✗', '✓'), 'Ingenierie': ('✗', '✓', '✓', '✓')}
+    lu = {r: tuple(par_role.get(r, {}).get(k) for k in PERMS[:4]) for r in att}
+    v('Acces Admin / Acces BD / Modif. BOM / Kit machine = valeurs qui commandent les tuiles aujourd\'hui', lu == att, lu)
+    v('Administrateur : Acces Admin fixe (non cliquable)', par_role['Administrateur']['modifAccounts'] == '✓#')
+    ext = {r: [par_role[r][k] for k in ('modifAccounts', 'prepJobsAccess', 'reinstAccess')] for r in ('Dealer', 'Distributeur', 'Installateur')}
+    v('comptes externes : Acces Admin, Prep. jobs, Reinstallation verrouilles', all(x == ['✗#'] * 3 for x in ext.values()), ext)
+    internes = {r: [par_role[r][k] for k in ('prepJobsAccess', 'reinstAccess')] for r in ('Administrateur', 'Vente interne', 'Vente externe', 'Technicien', 'Ingenierie')}
+    v('roles internes : Prep. jobs et Reinstallation ✗ par defaut, cliquables', all(x == ['✗', '✗'] for x in internes.values()), internes)
+    reglables = [r + '/' + k for r, c in par_role.items() for k, x in c.items()
+                 if x.endswith('#') and r != 'Super Admin'
+                 and not (r in ('Dealer', 'Distributeur', 'Installateur') and k in ('ceduleAccess', 'savAccess', 'diagValidate', 'modifAccounts', 'prepJobsAccess', 'reinstAccess'))
+                 and not (r == 'Administrateur' and k == 'modifAccounts')]
+    v('toutes les autres cases sont cliquables', not reglables, reglables)
+    dealer, ing, inst, dist = par_role['Dealer'], par_role['Ingenierie'], par_role['Installateur'], par_role['Distributeur']
+    v('Dealer : Cedule et SAV verrouillees, Export et Price List reglables',
+      dealer['ceduleAccess'] == dealer['savAccess'] == '✗#' and not dealer['exportAccess'].endswith('#') and not dealer['pricelistAccess'].endswith('#'))
+    v('Ingenierie par defaut : Cedule ✓ SAV ✓ Export ✗ Price List ✗ Valider diag ✓ Soutien ✓',
+      [ing[k] for k in PERMS[10:16]] == ['✓', '✓', '✗', '✗', '✓', '✓'], [ing[k] for k in PERMS[10:16]])
+    v('Installateur : Cedule, SAV et Valider diag verrouilles, Soutien ✓ reglable',
+      inst['ceduleAccess'] == inst['savAccess'] == inst['diagValidate'] == '✗#' and inst['soutienAccess'] == '✓')
+    v('Distributeur : Soutien tech. ✓, Dealer : Soutien tech. ✗, reglables', dist['soutienAccess'] == '✓' and dealer['soutienAccess'] == '✗')
+    def clic(role, perm):
+        d.execute_script("""[...document.querySelectorAll('#admin-perm-tbody td[data-perm="%s"]')].find(c=>c.dataset.role==='%s').click();""" % (perm, role))
+        time.sleep(0.6)
+        saves = d.execute_script("return window.__saves")
+        return saves, (json.loads(saves[-1]['value']) if saves else {})
+    saves, enreg = clic('ingenierie', 'reinstAccess')
+    v('clic sur Reinstallation / Ingenierie : enregistre reinstAccess = true',
+      saves and saves[-1]['key'] == 'roles_permissions' and enreg.get('ingenierie', {}).get('reinstAccess') is True)
+    saves, enreg = clic('vente_interne', 'prepJobsAccess')
+    v('clic sur Prep. jobs / Vente interne : enregistre prepJobsAccess = true', enreg.get('vente_interne', {}).get('prepJobsAccess') is True)
+    saves, enreg = clic('ingenierie', 'savAccess')
+    v('clic sur SAV / Ingenierie : enregistre savAccess = false, reinstAccess garde', enreg.get('ingenierie', {}).get('savAccess') is False
+      and enreg.get('ingenierie', {}).get('reinstAccess') is True)
     v('la case affiche maintenant ✗', d.execute_script("""return [...document.querySelectorAll('#admin-perm-tbody td[data-perm="savAccess"]')]
         .find(c=>c.dataset.role==='ingenierie').textContent""") == '✗')
-    d.execute_script("""[...document.querySelectorAll('#admin-perm-tbody td')].filter(c=>!c.dataset.perm && c.cellIndex===10)
-        .forEach(c=>c.click());""")
+    n = len(saves)
+    d.execute_script("[...document.querySelectorAll('#admin-perm-tbody td')].filter(c=>!c.dataset.perm).forEach(c=>c.click());")
     time.sleep(0.4)
-    v('clic sur une case verrouillee : rien d\'enregistre', len(d.execute_script("return window.__saves")) == len(saves))
+    v('clic sur les cases verrouillees ou fixes : rien d\'enregistre', len(d.execute_script("return window.__saves")) == n)
+    d.execute_script("i18n.setLang ? i18n.setLang('en') : null")
+    time.sleep(0.6)
+    en = d.execute_script("return [...document.querySelectorAll('#admin-perm-table thead th')].map(x=>x.textContent.trim())")
+    v('EN : Edit BOM, Job prep, Reinstallation', 'Edit BOM' in en and 'Job prep' in en and en[-1] == 'Reinstallation', en)
 finally:
     d.quit()
 

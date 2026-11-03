@@ -149,10 +149,20 @@ check('ville et emplacement transmis', J_('INS1').ville === 'Saguenay' && J_('IN
 check('cache : 2e appel sans nouvel appel a ProgressionLive', (() => { const n = appels.length; post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }); return appels.length === n; })());
 check('Kevin (ingenierie, sur la liste) : admis', post({ action: 'getprepjobs', token: tok('k.berube@e-trak.ca', 'K') }).ok === true);
 check('autre vente interne (hors liste) : refuse', post({ action: 'getprepjobs', token: tok('autre@e-trak.ca', 'A') }).error === 'forbidden');
-check('autre super admin (hors liste) : refuse', post({ action: 'getprepjobs', token: tok('boss@x', 'B') }).error === 'forbidden');
+// Super Admin : toutes les cases du tableau des permissions, donc admis (2026-11-03)
+check('autre super admin (hors liste) : admis par son role', post({ action: 'getprepjobs', token: tok('boss@x', 'B') }).ok === true);
 check('dealer : refuse', post({ action: 'getprepjobs', token: tok('Dluna@E-Trak.ca2', 'D') }).error === 'forbidden');
 check('sans session : refuse', post({ action: 'getprepjobs' }).error === 'authentication required');
 check('PIN seul : refuse', post({ action: 'getprepjobs', pin: 'P' }).error === 'authentication required');
+// Colonne « Prep. jobs » du tableau des permissions (2026-11-03)
+store.roles_permissions = JSON.stringify({ vente_interne: { prepJobsAccess: true }, dealer: { prepJobsAccess: true } });
+check('role coche (vente interne) : Autre, hors liste, admis', post({ action: 'getprepjobs', token: tok('autre@e-trak.ca', 'A') }).ok === true);
+check('role externe coche (dealer) : toujours refuse', post({ action: 'getprepjobs', token: tok('Dluna@E-Trak.ca2', 'D') }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ vente_interne: { prepJobsAccess: false } });
+check('role decoche : Autre refuse, Luna (nommee) toujours admise',
+  post({ action: 'getprepjobs', token: tok('autre@e-trak.ca', 'A') }).error === 'forbidden' &&
+  post({ action: 'getprepjobs', token: tok('dluna@e-trak.ca', 'L') }).ok === true);
+delete store.roles_permissions;
 store.PREP_JOBS_USERS = 'autre@e-trak.ca';
 check('PREP_JOBS_USERS remplace la liste : Autre admis, Luna refusee',
   post({ action: 'getprepjobs', token: tok('autre@e-trak.ca', 'A') }).ok === true &&

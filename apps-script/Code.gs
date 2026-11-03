@@ -1247,6 +1247,9 @@ var PREP_JOBS_CACHE_S = 600;                          // 10 min
 
 function _prepJobsAdmis(user) {
   if (!user || ROLES_EXTERNES.indexOf(user.role) >= 0) return false;
+  // Colonne « Prep. jobs » du tableau des permissions (2026-11-03) : un role coche y a acces,
+  // en plus des personnes nommees. Defaut : aucun role (Super Admin toujours).
+  if (_roleHasAccess(user.role, 'prepJobsAccess', [])) return true;
   var liste = String(PROPS.getProperty('PREP_JOBS_USERS') || PREP_JOBS_DEFAUT.join(','))
     .toLowerCase().split(',').map(function (s) { return s.trim(); });
   return _idsOf(user).some(function (id) { return liste.indexOf(id) >= 0; });
@@ -1389,7 +1392,10 @@ var REINST_KEY = 'reinst_prix';
 var REINST_DEFAUT = ['jcaron@gryb.com', 'dluna@e-trak.ca', 'k.berube@e-trak.ca', 'steve@gryb.ca'];
 
 function _reinstAdmis(user) {
-  if (!user || ['dealer', 'distributeur'].indexOf(user.role) >= 0) return false;
+  if (!user || ROLES_EXTERNES.indexOf(user.role) >= 0) return false;
+  // Colonne « Reinstallation » du tableau des permissions (2026-11-03) : un role coche y a
+  // acces, en plus des personnes nommees. Defaut : aucun role (Super Admin toujours).
+  if (_roleHasAccess(user.role, 'reinstAccess', [])) return true;
   var liste = String(PROPS.getProperty('REINST_USERS') || REINST_DEFAUT.join(','))
     .toLowerCase().split(',').map(function (s) { return s.trim(); });
   return _idsOf(user).some(function (id) { return liste.indexOf(id) >= 0; });

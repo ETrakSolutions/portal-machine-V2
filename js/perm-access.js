@@ -21,7 +21,10 @@
     // compte externe (noms de techniciens, clients, courriels internes). Soutien technique :
     // aucun verrou, la case decide (Steve, 2026-10-29). Installateur = sous-traitant externe.
     var EXTERNES = ['dealer', 'distributeur', 'installateur'];
-    var VERROUS = { ceduleAccess: EXTERNES, savAccess: EXTERNES, diagValidate: EXTERNES };
+    // Preparation des jobs, Reinstallation (2026-11-03) : clients et prix, le serveur refuse
+    // aussi les comptes externes. Acces Admin : jamais un compte externe.
+    var VERROUS = { ceduleAccess: EXTERNES, savAccess: EXTERNES, diagValidate: EXTERNES,
+                    prepJobsAccess: EXTERNES, reinstAccess: EXTERNES, modifAccounts: EXTERNES };
     function verrouille(role, perm) { return (VERROUS[perm] || []).indexOf(role) >= 0; }
 
     function aAcces(role, perm, sauve) {

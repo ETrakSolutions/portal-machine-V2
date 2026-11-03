@@ -27,6 +27,7 @@ function reset() {
     { username: 'k.berube@e-trak.ca', email: 'k.berube@e-trak.ca', password: 'K', role: 'vente_interne', name: 'Kevin' },
     { username: 'robin@gryb.ca', email: 'robin@gryb.ca', password: 'R', role: 'administrateur', name: 'Robin' },
     { username: 'dealer@x.ca', email: 'dealer@x.ca', password: 'D', role: 'dealer', name: 'Dealer' },
+    { username: 'inst@x.ca', email: 'inst@x.ca', password: 'I', role: 'installateur', name: 'Installateur' },
     { username: 'dluna@e-trak.ca', email: 'dluna@e-trak.ca', password: 'L', role: 'dealer', name: 'Luna devenue dealer' },
     { username: 'steve@gryb.ca', email: 'steve@gryb.ca', password: 'S', role: 'administrateur', name: 'Steve', active: false },
   ]) };
@@ -58,6 +59,17 @@ store.REINST_USERS = 'robin@gryb.ca';
 check('REINST_USERS : Robin admis', post({ action: 'getreinst', token: r }).ok === true);
 check('REINST_USERS : Kevin retire tout de suite', post({ action: 'getreinst', token: k }).error === 'forbidden');
 delete store.REINST_USERS;
+
+// Colonne « Reinstallation » du tableau des permissions (2026-11-03)
+store.roles_permissions = JSON.stringify({ administrateur: { reinstAccess: true }, dealer: { reinstAccess: true }, installateur: { reinstAccess: true } });
+check('role coche (administrateur) : Robin, hors liste, admis', post({ action: 'getreinst', token: r }).ok === true);
+check('role externe coche (dealer, installateur) : toujours refuse',
+  post({ action: 'getreinst', token: tok('dealer@x.ca', 'D') }).error === 'forbidden' &&
+  post({ action: 'getreinst', token: tok('inst@x.ca', 'I') }).error === 'forbidden');
+store.roles_permissions = JSON.stringify({ administrateur: { reinstAccess: false } });
+check('role decoche : Robin refuse, Kevin (nomme) toujours admis',
+  post({ action: 'getreinst', token: r }).error === 'forbidden' && post({ action: 'getreinst', token: k }).ok === true);
+delete store.roles_permissions;
 
 // Fuites par les autres portes
 check('GET public reinst_prix : vide', get({ action: 'get', key: 'reinst_prix' }).value === '');

@@ -5,17 +5,17 @@
 const API_URL = window.PORTAL_API_URL;  // #32 : centralise dans js/config.js (charge avant)
 
 const ROLES = {
-    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: true, pricelistAccess: true, diagValidate: true, soutienAccess: true, label: 'Super Admin' },
-    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: true, pricelistAccess: true, diagValidate: true, soutienAccess: true, label: 'Administrateur' },
-    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, label: 'Vente interne' },
-    vente_externe:  { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, label: 'Vente externe' },
-    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, label: 'Technicien' },
+    super_admin:    { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: true, pricelistAccess: true, diagValidate: true, soutienAccess: true, prepJobsAccess: true, reinstAccess: true, label: 'Super Admin' },
+    administrateur: { createAccount: true, modifBom: true, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: true, modifAccounts: true, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: true, pricelistAccess: true, diagValidate: true, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Administrateur' },
+    vente_interne:  { createAccount: true, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: true, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Vente interne' },
+    vente_externe:  { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: true, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: true, addUsers: true, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Vente externe' },
+    technicien:     { createAccount: false, modifBom: false, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Technicien' },
     // Installateur (Steve, 2026-10-29) : sous-traitant externe ; outils comme le technicien regle en
     // ligne, mais Cedule, SAV et Valider diag verrouilles (perm-access.js, ROLES_EXTERNES du serveur).
-    installateur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, label: 'Installateur' },
-    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, label: 'Distributeur' },
-    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: false, label: 'Dealer' },
-    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: true, soutienAccess: true, label: 'Ingenierie' }
+    installateur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: true, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Installateur' },
+    distributeur:   { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Distributeur' },
+    dealer:         { createAccount: false, modifBom: false, kitMachineAccess: true, soumissionAccess: true, shareAccess: false, writeNotes: false, modifAccounts: false, machineAccess: true, databaseAccess: false, flagBom: false, inventoryAccess: false, addUsers: false, ceduleAccess: false, savAccess: false, exportAccess: false, pricelistAccess: false, diagValidate: false, soutienAccess: false, prepJobsAccess: false, reinstAccess: false, label: 'Dealer' },
+    ingenierie:     { createAccount: false, modifBom: true, kitMachineAccess: false, soumissionAccess: false, shareAccess: false, writeNotes: true, modifAccounts: false, machineAccess: true, databaseAccess: true, flagBom: true, inventoryAccess: false, addUsers: false, ceduleAccess: true, savAccess: true, exportAccess: false, pricelistAccess: false, diagValidate: true, soutienAccess: true, prepJobsAccess: false, reinstAccess: false, label: 'Ingenierie' }
 };
 
 // Les comptes vivent UNIQUEMENT cote serveur (Apps Script, cle authorized_users_v2).
@@ -172,8 +172,8 @@ function updateHubUI() {
                 })
                 .catch(function () {});
         }
-        // Tuile « Reinstallation » : quatre personnes nommees (decision Jacquot, 2026-10-29),
-        // comme la Preparation des jobs. Le serveur (getreinst) tranche : la tuile n'apparait
+        // Tuile « Reinstallation » : quatre personnes nommees (decision Jacquot, 2026-10-29)
+        // + les roles coches dans la colonne Reinstallation (2026-11-03). Le serveur (getreinst) tranche : la tuile n'apparait
         // que s'il repond ok. Une seule demande par page.
         var tileRI = document.getElementById('hub-tile-reinst');
         if (tileRI && !currentUser.isGuest && currentUser.token && window.PORTAL_API_URL &&
@@ -332,8 +332,12 @@ function showHubSection() {
 }
 
 // ---- PERMISSIONS TABLE (editable) ----
-var PERM_KEYS = ['createAccount', 'modifBom', 'kitMachineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess', 'addUsers', 'ceduleAccess', 'savAccess', 'exportAccess', 'pricelistAccess', 'diagValidate', 'soutienAccess'];
-var PERM_LABELS = {'createAccount':'Acces Admin','modifBom':'Acces BD','kitMachineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire','addUsers':'Ajout usagers','ceduleAccess':'Cedule techs','savAccess':'SAV','exportAccess':'Export','pricelistAccess':'Price List','diagValidate':'Valider diag','soutienAccess':'Soutien tech.'};
+// Colonnes du tableau (2026-11-03) : chaque colonne regle la tuile qu'elle nomme.
+// Acces Admin = modifAccounts (tuile Admin + droits admin du serveur), Acces BD =
+// databaseAccess (tuile BD), Modif. BOM = modifBom, Kit machine = machineAccess (tuile).
+// Avant : createAccount (tuile « Vente » disparue) et kitMachineAccess (lu nulle part).
+var PERM_KEYS = ['modifAccounts', 'databaseAccess', 'modifBom', 'machineAccess', 'soumissionAccess', 'shareAccess', 'writeNotes', 'flagBom', 'inventoryAccess', 'addUsers', 'ceduleAccess', 'savAccess', 'exportAccess', 'pricelistAccess', 'diagValidate', 'soutienAccess', 'prepJobsAccess', 'reinstAccess'];
+var PERM_LABELS = {'modifAccounts':'Acces Admin','databaseAccess':'Acces BD','modifBom':'Modif. BOM','machineAccess':'Kit machine','soumissionAccess':'Soumission','shareAccess':'Partage QR','writeNotes':'Notes','flagBom':'Red Flag','inventoryAccess':'Inventaire','addUsers':'Ajout usagers','ceduleAccess':'Cedule techs','savAccess':'SAV','exportAccess':'Export','pricelistAccess':'Price List','diagValidate':'Valider diag','soutienAccess':'Soutien tech.','prepJobsAccess':'Prep. jobs','reinstAccess':'Reinstallation'};
 
 function renderPermTable() {
     var tbody = document.getElementById('admin-perm-tbody');
@@ -354,8 +358,11 @@ function renderPermTable() {
             td.style.textAlign = 'center';
             var isOn = role[perm];
             var isSuperAdmin = roleKey === 'super_admin';
+            // Acces Admin du role Administrateur : fixe, sinon un clic retire les droits
+            // admin a tous les administrateurs (seul un Super Admin pourrait reparer).
+            var fixe = isSuperAdmin || (roleKey === 'administrateur' && perm === 'modifAccounts');
 
-            if (isSuperAdmin) {
+            if (fixe) {
                 // Super Admin permissions are always on and not editable
                 td.className = 'perm-yes';
                 td.textContent = '\u2713';
