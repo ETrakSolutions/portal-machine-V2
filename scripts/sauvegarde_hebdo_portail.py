@@ -10,7 +10,13 @@ SharePoint E-Trak Production > General > _Portail e-Trak > Sauvegardes > AAAA-MM
   2. serveur_proprietes_lisibles.json : toutes les cles du serveur lisibles sans
      mot de passe (les comptes, sessions, NIP, jeton, prix, SAV et inventaire sont
      proteges par le serveur et n'y sont PAS, par conception).
-  3. etat.json : le resultat des verifications.
+  3. comptes_portail.json.chiffre : la liste COMPLETE des comptes (identifiants, roles,
+     mots de passe -- stockes en clair par le serveur), chiffree par la cle publique de
+     scripts/chiffrement_sauvegarde.py. Ajout du 2026-11-04 (plan de releve).
+  4. projets_locaux_donnees.zip.chiffre : les donnees exclues de Git des projets qui ne
+     vivaient que sur le portable (routes vendeurs, teles OTD, liste marche, portail
+     pieces), chiffrees de la meme facon. Le CODE de ces projets est sur GitHub (prive).
+  5. etat.json : le resultat des verifications.
 
 Rien n'est declare reussi sans preuve : le bundle est verifie, RESTAURE dans un dossier
 jetable et compare a GitHub (meme sommet de main, meme machines.json octet pour octet) ;
@@ -41,11 +47,17 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from publier_prix import REPO, dossier_portail, read_pin  # noqa: E402
+from chiffrement_sauvegarde import chiffrer  # noqa: E402
 
 DEPOT = 'https://github.com/ETrakSolutions/portal-machine-V2.git'
 API = 'https://script.google.com/macros/s/AKfycbxDuq4Qt2mrsLGiOGLrxSFvouttOfjDYzky27tjcKL72QSc__cR4qvu1X2qyDFCuB8V/exec'
 JOUR_DE_SAUVEGARDE = 4          # vendredi (lundi = 0)
 EN_RETARD_APRES = 7             # jours sans sauvegarde reussie = due, quel que soit le jour
+# Projets dont le code est sur GitHub (prive) mais dont les donnees restent locales.
+# _geo/ (34 Mo) se retelecharge de GeoNames : exclu.
+PROJETS_LOCAUX = [Path.home() / 'CLAUDE_CODE' / n
+                  for n in ('routes-vendeurs', 'otd-teles', 'liste-marche-etrak', 'portal-pieces')]
+EXCLUS_PROJETS = ('_geo/', '__pycache__/')
 
 
 def journal(dest, msg):
@@ -169,6 +181,51 @@ def export_serveur(tmp, etat):
     return fichier
 
 
+def export_comptes(tmp, etat):
+    # Le NIP donne le role admin (_authCheck) : listusers renvoie alors la liste COMPLETE,
+    # mots de passe compris. On ne l'ecrit jamais en clair, meme dans tmp.
+    nip = read_pin(REPO / 'PIN Portail.txt')
+    r = post({'action': 'listusers', 'pin': nip})
+    users = r.get('users') if isinstance(r, dict) else None
+    if not isinstance(users, list) or not users:
+        raise RuntimeError('listusers refuse ou vide : %s' % (r.get('error') if isinstance(r, dict) else r))
+    if not all(isinstance(u, dict) and u.get('password') for u in users):
+        raise RuntimeError('liste des comptes incomplete (mot de passe absent) : refus de sauvegarder')
+    clair = json.dumps({'exporte_le': time.strftime('%Y-%m-%d %H:%M:%S'), 'serveur': API,
+                        'comptes': users}, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+    fichier = tmp / 'comptes_portail.json.chiffre'
+    fichier.write_bytes(chiffrer(clair))
+    actifs = sum(1 for u in users if u.get('active') is not False)
+    etat['comptes'] = {'comptes': len(users), 'actifs': actifs, 'octets': fichier.stat().st_size,
+                       'chiffre': True}
+    return fichier
+
+
+def archive_projets(tmp, etat):
+    import io, zipfile
+    tampon, nb, detail = io.BytesIO(), 0, {}
+    with zipfile.ZipFile(tampon, 'w', zipfile.ZIP_DEFLATED) as z:
+        for d in PROJETS_LOCAUX:
+            if not (d / '.git').exists():
+                raise RuntimeError('projet local introuvable ou hors Git : %s' % d)
+            # Exactement ce que Git ne garde pas : le reste est deja sur GitHub.
+            liste = [x for x in git('ls-files', '-z', '--others', '--ignored', '--exclude-standard', cwd=d).split(chr(0)) if x]
+            n = 0
+            for rel in liste:
+                if any(x in rel + '/' for x in EXCLUS_PROJETS) or rel.endswith('.log'):
+                    continue
+                z.write(d / rel, '%s/%s' % (d.name, rel))
+                n += 1
+            detail[d.name] = n
+            nb += n
+    zipfile.ZipFile(io.BytesIO(tampon.getvalue())).testzip()
+    fichier = tmp / 'projets_locaux_donnees.zip.chiffre'
+    fichier.write_bytes(chiffrer(tampon.getvalue()))
+    etat['projets_locaux'] = {'fichiers': nb, 'par_projet': detail,
+                              'octets': fichier.stat().st_size, 'chiffre': True}
+    return fichier
+
+
 def alerte(msg):
     try:
         subprocess.run(['msg', '*', '/TIME:0', msg], capture_output=True, timeout=20)
@@ -210,7 +267,8 @@ def main():
     journal(racine, 'debut de la sauvegarde -> %s' % dest.name)
     tmp = Path(tempfile.mkdtemp(prefix='sauv_portail_'))
     try:
-        fichiers = [bundle(tmp, etat), export_serveur(tmp, etat)]
+        fichiers = [bundle(tmp, etat), export_serveur(tmp, etat), export_comptes(tmp, etat),
+                    archive_projets(tmp, etat)]
         for f in fichiers:
             if (dest / f.name).exists():
                 raise RuntimeError('refus d ecraser %s' % (dest / f.name))
@@ -220,9 +278,10 @@ def main():
         etat['resultat'] = 'OK'
         etat['fin'] = time.strftime('%H:%M:%S')
         (dest / 'etat.json').write_text(json.dumps(etat, ensure_ascii=False, indent=1), encoding='utf-8')
-        journal(racine, 'OK  depot %s (%d commits, %d branches, restauration verifiee), serveur %d cles'
+        journal(racine, 'OK  depot %s (%d commits, %d branches, restauration verifiee), serveur %d cles, '
+                '%d comptes chiffres, %d fichiers de projets locaux chiffres'
                 % (etat['depot']['main'][:7], etat['depot']['commits_main'], etat['depot']['branches'],
-                   etat['serveur']['cles']))
+                   etat['serveur']['cles'], etat['comptes']['comptes'], etat['projets_locaux']['fichiers']))
     except Exception as e:
         etat['resultat'] = 'ECHEC'
         etat['erreur'] = str(e)[:500]
