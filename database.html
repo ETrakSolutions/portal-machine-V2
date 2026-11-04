@@ -7,6 +7,7 @@
     <title>e-Trak | Base de donnees</title>
     <link rel="stylesheet" href="css/style.css?v=176">
     <link rel="stylesheet" href="css/admin.css?v=175">
+    <link rel="stylesheet" href="css/combo-filtre.css?v=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -86,6 +87,19 @@
         .db-search {
             min-width: 250px !important;
         }
+        /* Fabricant et Recherche : menu deroulant + filtre dans une case (comme la Soumission). */
+        .db-control-group .filtre-modele {
+            width: 100%;
+            padding-right: 2rem;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235A6577' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.6rem center;
+        }
+        .db-control-group .filtre-modele::placeholder { color: #fff; opacity: 1; }
+        .db-control-group .filtre-modele.db-search::placeholder { color: #888; }
+        .db-control-group .filtre-modele:focus { cursor: text; }
+        .db-control-group .filtre-resultats { min-width: 100%; width: max-content; max-width: 22rem; }
         .db-stats {
             color: #999;
             font-size: 0.8rem;
@@ -611,9 +625,17 @@
                 </div>
                 <div class="db-control-group">
                     <label data-i18n="db.fabricant">Fabricant</label>
-                    <select id="db-fab">
-                        <option value="" data-i18n="common.tous">Tous</option>
-                    </select>
+                    <!-- Menu Fabricant avec filtre (Steve, 2026-11-04) : meme case que la Soumission
+                         (js/combo-filtre.js). Le vrai <select> reste cache ; tout le code le lit. -->
+                    <div class="combo-modele">
+                        <input type="text" id="db-fab-filtre" class="filtre-modele" autocomplete="off" spellcheck="false"
+                               role="combobox" aria-controls="db-fab-resultats" aria-expanded="false"
+                               data-i18n-placeholder="common.tous" placeholder="Tous">
+                        <ul id="db-fab-resultats" class="filtre-resultats" role="listbox" hidden></ul>
+                        <select id="db-fab" class="select-cache" tabindex="-1" aria-hidden="true">
+                            <option value="" data-i18n="common.tous">Tous</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="db-control-group">
                     <label data-i18n="db.annee">Annee</label>
@@ -623,7 +645,14 @@
                 </div>
                 <div class="db-control-group">
                     <label data-i18n="db.search">Recherche</label>
-                    <input type="text" id="db-search" class="db-search" data-i18n-placeholder="db.search_placeholder" placeholder="Rechercher un modele...">
+                    <!-- Recherche (Steve, 2026-11-04) : taper filtre le tableau en direct, comme avant, et
+                         ouvre la liste des modeles qui correspondent ; un clic n'affiche que ce modele. -->
+                    <div class="combo-modele">
+                        <input type="text" id="db-search" class="db-search filtre-modele" autocomplete="off" spellcheck="false"
+                               role="combobox" aria-controls="db-search-resultats" aria-expanded="false"
+                               data-i18n-placeholder="db.search_placeholder" placeholder="Rechercher un modele...">
+                        <ul id="db-search-resultats" class="filtre-resultats" role="listbox" hidden></ul>
+                    </div>
                 </div>
             </div>
 
@@ -738,6 +767,7 @@
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=6"></script>
     <script src="js/kit-rules.js?v=12"></script>
+    <script src="js/combo-filtre.js?v=1"></script>
     <script src="js/db-requests-box.js?v=2"></script>
     <script>
     // Token de session (renvoye par l'API au login, stocke dans portal_user).
@@ -756,6 +786,7 @@
         var displayedRows = 0;  // combien de lignes sont actuellement rendues
         var allData = [];
         var filtered = [];
+        var comboFab = null;   // case Fabricant (js/combo-filtre.js), creee avec les evenements
         var sortCol = 'fab';
         var sortAsc = true;
         var overridesCache = {};
@@ -1596,6 +1627,7 @@
                 // Reset fab and annee dropdowns
                 var fabSel = document.getElementById('db-fab');
                 if (fabSel) { fabSel.innerHTML = '<option value="">' + i18n.t('common.tous') + '</option>'; }
+                if (comboFab) comboFab.afficher();
                 if (anneeSel) { anneeSel.innerHTML = '<option value="">' + i18n.t('common.toutes') + '</option>'; }
                 var pageInfo = document.getElementById('db-page-info');
                 if (pageInfo) pageInfo.textContent = '0 - 0 sur 0';
@@ -1852,6 +1884,7 @@
                 opt.value = f; opt.textContent = f;
                 fabSelect.appendChild(opt);
             });
+            if (comboFab) comboFab.afficher();
             // Update year filter
             var yearSelect = document.getElementById('db-annee');
             yearSelect.innerHTML = '<option value="">' + i18n.t('common.toutes') + '</option>';
@@ -1911,10 +1944,76 @@
             });
         }
 
+        // Recherche (Steve, 2026-11-04) : la case garde sa saisie libre (le tableau filtre a chaque
+        // touche) et montre sous elle les modeles du fabricant choisi qui contiennent le texte.
+        // Un clic ecrit le modele dans la case : le tableau n'affiche plus que lui.
+        function brancherListeRecherche() {
+            var input = document.getElementById('db-search'), ul = document.getElementById('db-search-resultats');
+            var index = -1, MAX = 300;
+            var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+            function fermer() { ul.hidden = true; ul.innerHTML = ''; index = -1; input.setAttribute('aria-expanded', 'false'); }
+            function surligner() {
+                var items = ul.querySelectorAll('.filtre-item');
+                Array.prototype.forEach.call(items, function (li, i) { li.classList.toggle('actif', i === index); });
+                if (items[index]) items[index].scrollIntoView({ block: 'nearest' });
+            }
+            function ouvrir() {
+                var brut = input.value.trim(), f = normFiltre(brut);
+                var fab = document.getElementById('db-fab').value, vus = {}, liste = [];
+                allData.forEach(function (d) {
+                    if (fab && d.fab !== fab) return;
+                    var cle = d.fab + '|' + d.modele;
+                    if (vus[cle]) return;
+                    if (f && normFiltre(d.modele).indexOf(f) === -1 && normFiltre(d.fab).indexOf(f) === -1) return;
+                    vus[cle] = 1; liste.push(d);
+                });
+                if (!liste.length && !f) { fermer(); return; }
+                liste.sort(function (a, b) { return a.modele.localeCompare(b.modele, undefined, { numeric: true, sensitivity: 'base' }) || a.fab.localeCompare(b.fab); });
+                var html = '';
+                if (f) html += '<li class="filtre-entete">' + esc(liste.length
+                    ? texteI18n('soum.filter_count', '{n} modèle(s) contenant « {f} »', { n: liste.length, f: brut })
+                    : texteI18n('soum.filter_none', 'Aucun modèle ne contient « {f} »', { f: brut })) + '</li>';
+                liste.slice(0, MAX).forEach(function (d) {
+                    html += '<li class="filtre-item" role="option" data-valeur="' + esc(d.modele) + '">' + esc(d.modele) +
+                        (fab ? '' : ' <span style="color:#888;font-size:0.75rem">' + esc(d.fab) + '</span>') + '</li>';
+                });
+                ul.innerHTML = html; ul.hidden = false; input.setAttribute('aria-expanded', 'true');
+                index = f && liste.length ? 0 : -1;
+                surligner();
+            }
+            function choisir(v) {
+                fermer();
+                input.value = v;
+                applyFilters();
+                input.blur();
+            }
+            input.addEventListener('focus', ouvrir);
+            input.addEventListener('input', ouvrir);
+            input.addEventListener('mousedown', function () {
+                if (document.activeElement === input) { if (ul.hidden) ouvrir(); else fermer(); }
+            });
+            ul.addEventListener('mousedown', function (e) {
+                var li = e.target.closest('.filtre-item');
+                e.preventDefault();
+                if (li) choisir(li.getAttribute('data-valeur'));
+            });
+            input.addEventListener('blur', function () { setTimeout(function () { if (document.activeElement !== input) fermer(); }, 150); });
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') { e.preventDefault(); fermer(); return; }
+                if (e.key === 'Tab') { fermer(); return; }
+                if (ul.hidden && e.key === 'ArrowDown') { e.preventDefault(); ouvrir(); return; }
+                var items = ul.querySelectorAll('.filtre-item');
+                if (ul.hidden || !items.length) return;
+                if (e.key === 'ArrowDown') { e.preventDefault(); index = Math.min(items.length - 1, index + 1); surligner(); }
+                else if (e.key === 'ArrowUp') { e.preventDefault(); index = Math.max(0, index - 1); surligner(); }
+                else if (e.key === 'Enter' && items[index]) { e.preventDefault(); choisir(items[index].getAttribute('data-valeur')); }
+            });
+        }
+
         function applyFilters() {
             var fab = document.getElementById('db-fab').value;
             var annee = document.getElementById('db-annee').value;
-            var search = document.getElementById('db-search').value.toLowerCase().trim();
+            var search = normFiltre(document.getElementById('db-search').value);   // casse, espaces, tirets ignores
 
             // Pre-calculer d.bom pour TOUTES les machines (pas juste celles rendues),
             // sinon les filtres BOM voient 'na' pour les machines des pages suivantes.
@@ -1930,7 +2029,7 @@
                 if (fab && d.fab !== fab) return false;
                 // Skip year filter when search is active — show all years for matching models
                 if (annee && !search && d.annee !== annee) return false;
-                if (search && d.modele.toLowerCase().indexOf(search) === -1 && d.fab.toLowerCase().indexOf(search) === -1) return false;
+                if (search && normFiltre(d.modele).indexOf(search) === -1 && normFiltre(d.fab).indexOf(search) === -1) return false;
                 return true;
             });
 
@@ -2488,6 +2587,10 @@
         document.getElementById('db-fab').addEventListener('change', applyFilters);
         document.getElementById('db-annee').addEventListener('change', applyFilters);
         document.getElementById('db-search').addEventListener('input', applyFilters);
+        comboFab = creerComboFiltre(document.getElementById('db-fab'), document.getElementById('db-fab-filtre'),
+            document.getElementById('db-fab-resultats'), { vide: true,
+            compte: ['soum.filter_count_fab', '{n} fabricant(s) contenant « {f} »'], aucun: ['soum.filter_none_fab', 'Aucun fabricant ne contient « {f} »'] });
+        brancherListeRecherche();
         document.getElementById('db-prev').addEventListener('click', function() { currentPage--; renderPage(); });
         document.getElementById('db-next').addEventListener('click', function() { currentPage++; renderPage(); });
         }  // fin if (hasAccess) — listeners d'edition/navigation
