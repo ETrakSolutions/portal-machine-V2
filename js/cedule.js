@@ -45,6 +45,30 @@
     // ouvrables. Les cases restent vraies — le serveur renvoie desormais les 7 jours.
     function estFinSemaine(j) { var d = new Date(j + 'T12:00:00Z').getUTCDay(); return d === 0 || d === 6; }
 
+    // Bornes AM/PM (2026-11-04) : elles arrivent maintenant du serveur, en minutes depuis
+    // minuit, et la page les met en forme. Avant, la legende les ecrivait en dur dans la
+    // traduction pendant que le serveur les decidait de son cote — le jour ou on ajustait
+    // CEDULE_AM ou CEDULE_PM, la legende mentait sans que rien ne le signale.
+    // Les deux formats reproduisent EXACTEMENT les anciennes chaines : « 7 h 30 », « 12 h »
+    // en francais ; « 7:30 », « 12:00 », « 4:30 » (12 heures, sans suffixe) en anglais.
+    function fmtHeure(min) {
+        var h = Math.floor(min / 60), m = min % 60, mm = (m < 10 ? '0' : '') + m;
+        if (lang() === 'en') return ((h % 12) || 12) + ':' + mm;
+        return m ? h + ' h ' + mm : h + ' h';
+    }
+    function majHeures() {
+        var el = document.getElementById('ced-heures');
+        if (!el) return;
+        var h = DATA && DATA.heures;
+        // Repli sur l'ancienne chaine tant que le serveur ne renvoie pas ses bornes : la page
+        // part en ligne avant le backend, et le cache peut encore servir l'ancien format.
+        if (!h || !h.am || !h.pm) { el.textContent = t('ced.legend_hours'); return; }
+        el.textContent = t('ced.legend_hours_fmt', {
+            am0: fmtHeure(h.am[0]), am1: fmtHeure(h.am[1]),
+            pm0: fmtHeure(h.pm[0]), pm1: fmtHeure(h.pm[1])
+        });
+    }
+
     // Separe le nom de la competence entre parentheses : « Jean Mallet (limiteur ...) »
     function nomEtNote(n) {
         var m = /^(.*?)\s*\((.*)\)\s*$/.exec(n);
@@ -54,14 +78,17 @@
     function dessiner() {
         var grid = document.getElementById('ced-grid');
         if (!DATA) return;
-        if (!DATA.techs.length) { grid.className = 'ced-msg'; grid.textContent = t('ced.empty'); return; }
-        var lun = semaines[semaine], jours = [0, 1, 2, 3, 4, 5, 6].map(function (i) { return plus(lun, i); });
-        var auj = aujourdhui();
+        // Sous-titre et legende AVANT les sorties anticipees : ils ne dependent pas des
+        // techniciens, et une cedule vide doit quand meme suivre la langue choisie.
         // Le sous-titre annonçait « 4 semaines » en dur. CEDULE_JOURS vaut 28 jours CIVILS
         // a partir d'aujourd'hui : ca ne tombe sur quatre lundis que si on est un lundi, les
         // six autres jours la grille en porte cinq. On affiche le compte reel.
         var st = document.getElementById('ced-sous-titre');
         if (st) st.textContent = t('ced.subtitle', { n: semaines.length });
+        majHeures();
+        if (!DATA.techs.length) { grid.className = 'ced-msg'; grid.textContent = t('ced.empty'); return; }
+        var lun = semaines[semaine], jours = [0, 1, 2, 3, 4, 5, 6].map(function (i) { return plus(lun, i); });
+        var auj = aujourdhui();
         document.getElementById('ced-week').textContent = t('ced.week_of', { date: fmtJour(lun, { day: 'numeric', month: 'long', year: 'numeric' }) });
         document.getElementById('ced-prev').disabled = (semaine === 0);
         document.getElementById('ced-next').disabled = (semaine === semaines.length - 1);

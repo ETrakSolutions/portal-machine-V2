@@ -1183,7 +1183,13 @@ function _calculCedule(maintenant) {
   });
 
   techs.sort(function (x, y) { return x.nom.localeCompare(y.nom, 'fr'); });
-  return { genere: maintenant.toISOString(), jours: jours, techs: techs };
+  // Les bornes AM/PM partent avec la cedule (2026-11-04). Avant, la legende de la page
+  // les ecrivait en dur dans la traduction ced.legend_hours pendant que le serveur les
+  // decidait ici : deux sources de verite, et une legende qui aurait menti en silence le
+  // jour ou on ajuste CEDULE_AM ou CEDULE_PM. En minutes depuis minuit ; c'est la page
+  // qui met en forme, parce que le format differe en francais et en anglais.
+  return { genere: maintenant.toISOString(), jours: jours, techs: techs,
+           heures: { am: CEDULE_AM, pm: CEDULE_PM } };
 }
 
 // { action:'getcedule', token } -> { ok, cedule:{ genere, jours[], techs[{nom, cases{jour:[AM,PM]}}] } }
@@ -1195,16 +1201,17 @@ function getCedule(body) {
   var user = _findUser(sess.u);
   if (!user || user.active === false) return { error: 'authentication required' };
   if (!_roleHasAccess(user.role, 'ceduleAccess', CEDULE_ROLES)) return { error: 'forbidden' };
-  // Cle bumpee a _v2 le 2026-10-27 avec l'ajout du samedi et du dimanche : sinon le
+  // Cle bumpee a _v3 le 2026-11-04 (bornes AM/PM dans la cedule), _v2 le 2026-10-27
+  // avec l'ajout du samedi et du dimanche. La regle est la meme a chaque fois : sinon le
   // cache de 15 min aurait continue a servir l'ancienne cedule, sans les deux colonnes,
   // apres le redeploiement.
   var cache = CacheService.getScriptCache();
-  var hit = cache.get('cedule_v2');
+  var hit = cache.get('cedule_v3');
   if (hit) { try { return { ok: true, cedule: JSON.parse(hit) }; } catch (e) {} }
   var ced;
   try { ced = _calculCedule(new Date()); }
   catch (err) { Logger.log('getCedule : ' + err); return { error: 'cedule unavailable' }; }
-  try { cache.put('cedule_v2', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
+  try { cache.put('cedule_v3', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
   return { ok: true, cedule: ced };
 }
 
