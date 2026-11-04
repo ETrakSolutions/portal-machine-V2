@@ -174,7 +174,10 @@ def demander_phrase(titre='Cle de sauvegarde e-Trak'):
     f.pack()
     tk.Label(f, text='Phrase secrete des sauvegardes :', font=('Segoe UI', 10, 'bold')).pack(anchor='w')
     e = tk.Entry(f, show='●', width=44, font=('Segoe UI', 11))
-    e.pack(pady=(4, 8))
+    e.pack(pady=(4, 2))
+    voir = tk.BooleanVar()
+    tk.Checkbutton(f, text='Afficher la phrase', variable=voir,
+                   command=lambda: e.config(show='' if voir.get() else '●')).pack(anchor='w', pady=(0, 8))
 
     def ok(_=None):
         res['p'] = e.get()
@@ -190,12 +193,31 @@ def tester():
     prive = dossier_cle() / NOM_CLE_PRIVEE
     phrase = demander_phrase()
     essai = os.urandom(64)
+    err = ''
     try:
         ok = dechiffrer(chiffrer(essai), prive.read_bytes(), phrase) == essai
     except Exception as e:
         ok = False
-        print('Erreur : %s' % (e.__class__.__name__))
-    print('OK : la phrase ouvre bien la cle privee.' if ok else 'ECHEC : mauvaise phrase ou cle abimee.')
+        err = '%s: %s' % (e.__class__.__name__, str(e)[:120])
+    texte = ('OK : la phrase ouvre bien la cle privee.' if ok else
+             'ECHEC : la phrase ne correspond pas (ou cle abimee).' + chr(10) + err)
+    print(texte)
+    # Journal du resultat, JAMAIS la phrase : seulement OK/ECHEC, l'erreur et la longueur.
+    try:
+        with open(Path.home() / 'CLAUDE_CODE' / 'test_phrase_sauvegarde.log', 'a', encoding='utf-8') as j:
+            import time
+            j.write('%s  %s  longueur=%d  %s' % (time.strftime('%Y-%m-%d %H:%M:%S'),
+                                                   'OK' if ok else 'ECHEC', len(phrase), err) + chr(10))
+    except Exception:
+        pass
+    try:
+        import tkinter as tk
+        from tkinter import messagebox
+        r = tk.Tk(); r.withdraw(); r.attributes('-topmost', True)
+        (messagebox.showinfo if ok else messagebox.showerror)('Test de la phrase secrete', texte)
+        r.destroy()
+    except Exception:
+        pass
     return 0 if ok else 1
 
 
