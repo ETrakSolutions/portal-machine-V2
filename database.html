@@ -97,7 +97,6 @@
             background-position: right 0.6rem center;
         }
         .db-control-group .filtre-modele::placeholder { color: #fff; opacity: 1; }
-        .db-control-group .filtre-modele.db-search::placeholder { color: #888; }
         .db-control-group .filtre-modele:focus { cursor: text; }
         .db-control-group .filtre-resultats { min-width: 100%; width: max-content; max-width: 22rem; }
         .db-stats {
@@ -586,9 +585,9 @@
 <body>
     <header>
         <div class="header-content">
-            <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
+            <a href="index.html" class="header-back" title="Page precedente" data-i18n-title="common.back_page" onclick="try{sessionStorage.removeItem('db_state');}catch(e){} if(history.length > 1){event.preventDefault();history.back();}">&larr; <span data-i18n="common.retour">Retour</span></a>
             <div class="logo-section">
-                <a href="index.html" title="Retour au hub" data-i18n-title="common.back_hub">
+                <a href="index.html" title="Retour au hub" data-i18n-title="common.back_hub" onclick="try{sessionStorage.removeItem('db_state');}catch(e){}">
                     <img src="assets/logo-white.png" alt="e-Trak | GRYB" class="header-logo">
                 </a>
             </div>
@@ -630,7 +629,7 @@
                     <div class="combo-modele">
                         <input type="text" id="db-fab-filtre" class="filtre-modele" autocomplete="off" spellcheck="false"
                                role="combobox" aria-controls="db-fab-resultats" aria-expanded="false"
-                               data-i18n-placeholder="common.tous" placeholder="Tous">
+                               data-i18n-placeholder="soum.filter_ph" placeholder="-- Sélectionnez ou tapez --">
                         <ul id="db-fab-resultats" class="filtre-resultats" role="listbox" hidden></ul>
                         <select id="db-fab" class="select-cache" tabindex="-1" aria-hidden="true">
                             <option value="" data-i18n="common.tous">Tous</option>
@@ -650,7 +649,7 @@
                     <div class="combo-modele">
                         <input type="text" id="db-search" class="db-search filtre-modele" autocomplete="off" spellcheck="false"
                                role="combobox" aria-controls="db-search-resultats" aria-expanded="false"
-                               data-i18n-placeholder="db.search_placeholder" placeholder="Rechercher un modele...">
+                               data-i18n-placeholder="soum.filter_ph" placeholder="-- Sélectionnez ou tapez --">
                         <ul id="db-search-resultats" class="filtre-resultats" role="listbox" hidden></ul>
                     </div>
                 </div>

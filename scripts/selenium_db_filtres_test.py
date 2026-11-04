@@ -72,6 +72,26 @@ try:
     # Le tableau rend les lignes par blocs de 100, triees par fabricant : on lit le compte des stats.
     verif('Fabricant : « Tous » remet tous les fabricants', driver.find_element(By.ID, 'db-fab').get_attribute('value') == ''
           and fab.get_attribute('value') == '' and fab_cellules() != {'Hitachi'}, driver.find_element(By.ID, 'db-stats').text)
+    verif('Consignes dans les cases', fab.get_attribute('placeholder') == srch.get_attribute('placeholder') == '-- Sélectionnez ou tapez --',
+          (fab.get_attribute('placeholder'), srch.get_attribute('placeholder')))
+
+    # Retour d'une fiche machine : les filtres reviennent ; Retour au menu : on repart a zero (2026-11-04).
+    Select(driver.find_element(By.ID, 'db-annee')).select_by_index(1)
+    driver.execute_script("var s=document.getElementById('db-search'); s.value='ZW150'; s.dispatchEvent(new Event('input'));")
+    time.sleep(1)
+    driver.execute_script("document.querySelector('#db-tbody a[href*=\"edit-machine\"]').click();")
+    WebDriverWait(driver, 20).until(lambda d: 'edit-machine' in d.current_url)
+    driver.back()
+    WebDriverWait(driver, 30).until(lambda d: d.find_element(By.ID, 'db-search').get_attribute('value') == 'ZW150')
+    verif('Retour d\'une fiche : la recherche est restauree', True)
+    driver.find_element(By.CSS_SELECTOR, '.header-back').click()
+    WebDriverWait(driver, 20).until(lambda d: 'database' not in d.current_url)
+    driver.get(BASE + '/database.html')
+    WebDriverWait(driver, 45).until(lambda d: len(d.find_elements(By.CSS_SELECTOR, '#db-type option')) > 2)
+    time.sleep(3)
+    verif('Apres Retour au menu : filtres vides', driver.find_element(By.ID, 'db-type').get_attribute('value') == ''
+          and driver.find_element(By.ID, 'db-search').get_attribute('value') == '' and driver.find_element(By.ID, 'db-fab').get_attribute('value') == '',
+          (driver.find_element(By.ID, 'db-type').get_attribute('value'), driver.find_element(By.ID, 'db-search').get_attribute('value')))
     verif('Aucune erreur JS', not [l for l in driver.get_log('browser') if l['level'] == 'SEVERE' and 'database' in l['message']],
           [l['message'][:120] for l in driver.get_log('browser') if l['level'] == 'SEVERE'][:3])
 except Exception as e:
