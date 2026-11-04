@@ -58,6 +58,10 @@ EN_RETARD_APRES = 7             # jours sans sauvegarde reussie = due, quel que 
 PROJETS_LOCAUX = [Path.home() / 'CLAUDE_CODE' / n
                   for n in ('routes-vendeurs', 'otd-teles', 'liste-marche-etrak', 'portal-pieces')]
 EXCLUS_PROJETS = ('_geo/', '__pycache__/')
+# Depots dont le CODE n'est protege que s'il est commite ET pousse sur GitHub
+# (decision Jacquot 2026-11-04). Controle seulement : rien n'est commite a sa place.
+DEPOTS_A_SURVEILLER = PROJETS_LOCAUX + [Path.home() / 'Master e-Trak',
+                                        Path.home() / 'Classement Outlook', REPO]
 
 
 def journal(dest, msg):
@@ -226,6 +230,27 @@ def archive_projets(tmp, etat):
     return fichier
 
 
+def controle_depots(etat):
+    """Travail ni commite ni pousse dans les depots locaux. N'echoue jamais : avertit."""
+    retard = []
+    for d in DEPOTS_A_SURVEILLER:
+        try:
+            modifies = [l for l in git('status', '--porcelain', cwd=d).splitlines() if l.strip()]
+            try:
+                git('fetch', '-q', cwd=d)
+            except Exception:
+                pass
+            en_avance = int(git('rev-list', '--count', '@{u}..HEAD', cwd=d) or 0)
+        except Exception as e:
+            retard.append('%s (illisible : %s)' % (d.name, str(e)[:80]))
+            continue
+        if modifies or en_avance:
+            retard.append('%s (%d fichier(s) non commite(s), %d commit(s) non pousse(s))'
+                          % (d.name, len(modifies), en_avance))
+    etat['depots_locaux'] = {'surveilles': len(DEPOTS_A_SURVEILLER), 'en_retard': retard}
+    return retard
+
+
 def alerte(msg):
     try:
         subprocess.run(['msg', '*', '/TIME:0', msg], capture_output=True, timeout=20)
@@ -282,6 +307,14 @@ def main():
                 '%d comptes chiffres, %d fichiers de projets locaux chiffres'
                 % (etat['depot']['main'][:7], etat['depot']['commits_main'], etat['depot']['branches'],
                    etat['serveur']['cles'], etat['comptes']['comptes'], etat['projets_locaux']['fichiers']))
+        retard = controle_depots(etat)
+        (dest / 'etat.json').write_text(json.dumps(etat, ensure_ascii=False, indent=1), encoding='utf-8')
+        if retard:
+            journal(racine, 'AVERTISSEMENT  code pas sur GitHub : ' + ' ; '.join(retard))
+            alerte('Sauvegarde e-Trak OK, MAIS du code n est pas sur GitHub (a commiter et pousser) : '
+                   + ' ; '.join(retard))
+        else:
+            journal(racine, 'depots locaux : tout est commite et pousse (%d depots)' % len(DEPOTS_A_SURVEILLER))
     except Exception as e:
         etat['resultat'] = 'ECHEC'
         etat['erreur'] = str(e)[:500]
