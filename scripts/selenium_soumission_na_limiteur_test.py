@@ -106,6 +106,7 @@ try:
         t = aller(GIR, 'Atlas', '2015', '440VCS-A21L', lim)
         check('pas de 1500-0300 (avec cabine, N/A)', '1500-0300' not in t)
         check('1500-0303 sans cabine present', '1500-0303' in t)
+        check('note technicien hydraulique affichee', 'Installation hydraulique complexe' in t)
         ep = epicor()
         check('Epicor : H01B-0006 x%d (%s)' % (nb, [l for l in ep.split('\n') if 'H01B' in l]),
               'H01B-0006\t%d' % nb in ep)
@@ -123,6 +124,7 @@ try:
         t = aller(GIR, temoin[0], temoin[1], temoin[2], 'lim-hauteur')
         check('1500-0300 garde', '1500-0300' in t)
         check('pas de H01B-0006 (pas Atlas)', 'H01B-0006' not in t)
+        check('pas de note technicien (pas Atlas)', 'Installation hydraulique complexe' not in t)
     else:
         check('temoin girafe avec cabine trouve', False)
 
