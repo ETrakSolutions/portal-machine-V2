@@ -3173,6 +3173,23 @@ function limiteurRoleInfo(type, role) {
     return null;
 }
 
+// Etat d'un code du limiteur sur la machine choisie : la configuration de la machine
+// (overrides, y compris _removed) d'abord, sinon la valeur par defaut du catalogue
+// (_bom_labels .def) -- meme regle que le kit obligatoire (kitG plus haut).
+function limiteurCodeNA(type, pn) {
+    var code = String(pn).replace(/^\d+-/, '');
+    var ov = currentBomOverrides || {};
+    if (Array.isArray(ov._removed) && ov._removed.indexOf(code) >= 0) return true;
+    var o = ov[code];
+    if (o !== undefined && o !== null && o !== '') return o === 'na';
+    var labels = machinesData[type] && machinesData[type]._bom_labels;
+    if (!labels) return false;
+    for (var k in labels) {
+        if (k.split(' ')[0] === code) return ((labels[k] && labels[k].def) || '') === 'na';
+    }
+    return false;
+}
+
 function updateSelectedSummary() {
     try { updateAValiderWarning(); } catch (e) {}
     try { if (window.majLimExistant) window.majLimExistant(); } catch (e) {}
@@ -3219,13 +3236,11 @@ function updateSelectedSummary() {
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
     // Avertissement par machine : pilote par la donnee _warning (voir loadNotesForModel / #machine-warning).
     function pushLi(info, fbCode, fbDesc) {
-        // Nacelle : un code du limiteur rendu inactif ('na') sur la machine n'est pas emis.
-        // Cas du 2026-10-08 : Star 26 J et VJR 26, ou le reel 15 m 1500-0915 (obligatoire)
-        // remplace la Limitation Hauteur 1500-0901. Limite a la Nacelle : ailleurs, des
-        // milliers d'overrides 'na' portent sur ces codes (Telehandler 0401, Boom Truck
-        // 0300...) sans que la soumission en ait jamais tenu compte.
-        if (info && _selT === 'Nacelle' && currentBomOverrides
-            && currentBomOverrides[String(info.pn).replace(/^\d+-/, '')] === 'na') return;
+        // Un code du limiteur N/A sur la machine n'est pas emis, pour TOUS les types (Steve,
+        // 2026-11-05 ; avant : Nacelle seulement, cas Star 26 J / VJR 26 du 2026-10-08).
+        // Ex. camion girafe sans cabine : la base « avec cabine » 1500-0300 est N/A, le kit
+        // obligatoire porte deja 1500-0303 ; la soumission ajoutait quand meme 0300.
+        if (info && limiteurCodeNA(_selT, info.pn)) return;
         if (info) { items.push(fmtItem(info.pn, i18n.tBom(info.desc))); return; }
         // Repli sur les codes excavatrice UNIQUEMENT pour l'Excavatrice (ou type sans _bom_labels).
         // Pour un type connu sans ce role (ex. Telehandler sans hauteur dediee) : ne rien emettre
@@ -3266,6 +3281,14 @@ function updateSelectedSummary() {
         } else if (_selT === 'Excavatrice' || _selT === 'Retrocaveuse' || !_selHasLabels) {
             items.push(fmtItem('1500-0005', 'Limiteur Multi-axe'));
         }
+    }
+
+    // Camion girafe Atlas : 2 valves hydrauliques doubles H01B-0006 par limitation choisie
+    // (Hauteur -> 2, Rotation -> 2, Hauteur + Rotation -> 4). Steve, 2026-11-05.
+    if (_selT === 'Camion Girafe (Boom Truck)' && selectFabricant.value === 'Atlas') {
+        var nbValves = (limVal === 'Hauteur' || limVal === 'Hauteur + Rotation' ? 2 : 0)
+                     + (limVal === 'Rotation' || limVal === 'Hauteur + Rotation' ? 2 : 0);
+        if (nbValves) items.push(fmtItem('H01B-0006', 'Valve hydraulique double pour limiteur boom-truck - Coupure mécanique x' + nbValves));
     }
 
     // Options secondaires de la nacelle : cases independantes, montants cumules.
