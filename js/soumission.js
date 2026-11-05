@@ -3283,12 +3283,12 @@ function updateSelectedSummary() {
         }
     }
 
-    // Camion girafe Atlas : 2 valves hydrauliques doubles H01B-0006 par limitation choisie
-    // (Hauteur -> 2, Rotation -> 2, Hauteur + Rotation -> 4). Steve, 2026-11-05.
+    // Camion girafe Atlas : 1 valve hydraulique double H01B-0006 par limitation choisie
+    // (Hauteur -> 1, Rotation -> 1, Hauteur + Rotation -> 2). Steve, 2026-11-05.
     if (_selT === 'Camion Girafe (Boom Truck)' && selectFabricant.value === 'Atlas') {
-        var nbValves = (limVal === 'Hauteur' || limVal === 'Hauteur + Rotation' ? 2 : 0)
-                     + (limVal === 'Rotation' || limVal === 'Hauteur + Rotation' ? 2 : 0);
-        if (nbValves) items.push(fmtItem('H01B-0006', 'Valve hydraulique double pour limiteur boom-truck - Coupure mécanique x' + nbValves));
+        var nbValves = (limVal === 'Hauteur' || limVal === 'Hauteur + Rotation' ? 1 : 0)
+                     + (limVal === 'Rotation' || limVal === 'Hauteur + Rotation' ? 1 : 0);
+        if (nbValves) items.push(fmtItem('H01B-0006', 'Valve hydraulique double pour limiteur boom-truck - Coupure mécanique' + (nbValves > 1 ? ' x' + nbValves : '')));
     }
 
     // Options secondaires de la nacelle : cases independantes, montants cumules.

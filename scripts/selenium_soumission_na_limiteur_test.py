@@ -4,7 +4,7 @@
 - Un code du limiteur N/A sur la machine (override, sinon defaut du catalogue) n'est plus emis,
   pour TOUS les types (avant : Nacelle seulement). Ex. Atlas 440VCS-A21L sans cabine : plus de
   1500-0300 (avec cabine) en plus du 1500-0303 (sans cabine) du kit obligatoire.
-- Camion girafe Atlas : 2 x H01B-0006 par limitation (Hauteur 2, Rotation 2, Hauteur + Rotation 4).
+- Camion girafe Atlas : 1 x H01B-0006 par limitation (Hauteur 1, Rotation 1, Hauteur + Rotation 2).
 - Temoins : girafe avec cabine (0300 garde), grue Maeda MC104C (plus de 0800), nacelle inchangee.
 """
 import sys, io, os, json, threading, http.server, socketserver, time
@@ -101,7 +101,7 @@ try:
     dv.execute_script(SESSION_TEST_JS)
     dv.execute_script("localStorage.setItem('portal_lang','fr');")
 
-    for lim, nb in (('lim-hauteur', 2), ('lim-rotation', 2), ('lim-hr', 4)):
+    for lim, nb in (('lim-hauteur', 1), ('lim-rotation', 1), ('lim-hr', 2)):
         print('--- Atlas 440VCS-A21L 2015, %s ---' % lim)
         t = aller(GIR, 'Atlas', '2015', '440VCS-A21L', lim)
         check('pas de 1500-0300 (avec cabine, N/A)', '1500-0300' not in t)
