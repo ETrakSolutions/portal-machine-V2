@@ -30,7 +30,8 @@ if BASE != LIVE:
     class Q(http.server.SimpleHTTPRequestHandler):
         def log_message(self, *a): pass
     socketserver.TCPServer.allow_reuse_address = True
-    httpd = socketserver.TCPServer(('127.0.0.1', PORT), Q)
+    socketserver.ThreadingTCPServer.daemon_threads = True
+    httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Q)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
 print('CIBLE :', BASE)
 

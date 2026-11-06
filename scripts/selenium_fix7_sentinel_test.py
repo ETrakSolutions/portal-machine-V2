@@ -12,7 +12,8 @@ PORT = 8783; BASE='http://127.0.0.1:%d'%PORT
 os.chdir(REPO)
 class Q(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*a): pass
-httpd=socketserver.TCPServer(('127.0.0.1',PORT),Q)
+socketserver.ThreadingTCPServer.daemon_threads = True
+httpd=socketserver.ThreadingTCPServer(('127.0.0.1',PORT),Q)
 threading.Thread(target=httpd.serve_forever,daemon=True).start()
 opts=Options()
 for a in ['--headless=new','--no-sandbox','--disable-gpu','--window-size=1400,1000']: opts.add_argument(a)

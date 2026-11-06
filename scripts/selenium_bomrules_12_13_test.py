@@ -19,7 +19,8 @@ BASE = 'http://127.0.0.1:%d' % PORT
 os.chdir(REPO)
 class Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a): pass
-httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
+socketserver.ThreadingTCPServer.daemon_threads = True
+httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Quiet)
 threading.Thread(target=httpd.serve_forever, daemon=True).start()
 
 opts = Options()

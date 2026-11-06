@@ -26,7 +26,8 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 
 
 socketserver.TCPServer.allow_reuse_address = True
-httpd = socketserver.TCPServer(('127.0.0.1', PORT), Quiet)
+socketserver.ThreadingTCPServer.daemon_threads = True
+httpd = socketserver.ThreadingTCPServer(('127.0.0.1', PORT), Quiet)
 threading.Thread(target=httpd.serve_forever, daemon=True).start()
 
 CLIENT = {'username': 'client@napa.ca', 'email': 'client@napa.ca', 'name': 'Client Napa', 'role': 'dealer',
