@@ -46,7 +46,9 @@ def cedule_fabriquee():
     techs = []
     for i, nom in enumerate(['Alpha Test (hydraulique)', 'Bravo Test']):
         techs.append({'nom': nom, 'cases': {j: [(k + i) % 3 == 0, (k + i) % 4 == 0] for k, j in enumerate(jours)}})
-    return {'genere': datetime.datetime.utcnow().isoformat() + 'Z', 'jours': jours, 'techs': techs}
+    # Bornes AM/PM : le serveur les renvoie depuis le 2026-11-04 (CEDULE_AM / CEDULE_PM).
+    return {'genere': datetime.datetime.utcnow().isoformat() + 'Z', 'jours': jours, 'techs': techs,
+            'heures': {'am': [450, 720], 'pm': [720, 990]}}
 
 
 CED = json.load(open(arg('--fixture'), encoding='utf-8')) if arg('--fixture') else cedule_fabriquee()
@@ -222,6 +224,27 @@ try:
     dv.execute_script("window.fetch = window.__f;")
     dv.execute_script("document.getElementById('ced-auj').click();"); time.sleep(0.25)
 
+    print('--- 4c) heures AM/PM servies par le serveur (2026-11-04) ---')
+    leg = dv.execute_script("return document.getElementById('ced-heures').textContent;")
+    check('legende batie sur les bornes recues (%s)' % leg, leg == 'AM : 7 h 30 – 12 h · PM : 12 h – 16 h 30')
+    # Des bornes differentes doivent changer la legende : c'est ce qui prouve qu'elle vient
+    # du serveur et non d'une chaine figee.
+    autre = json.dumps({'ok': True, 'cedule': dict(CED, heures={'am': [480, 690], 'pm': [720, 1020]})})
+    dv.execute_script("window.__f = window.fetch; window.fetch = function(){ return Promise.resolve("
+                      "{ json: function(){ return Promise.resolve(" + autre + "); } }); };")
+    dv.execute_script("window.__cedCharger();"); time.sleep(0.8)
+    leg2 = dv.execute_script("return document.getElementById('ced-heures').textContent;")
+    check('bornes changees -> legende changee (%s)' % leg2, leg2 == 'AM : 8 h – 11 h 30 · PM : 12 h – 17 h')
+    # Repli : tant que le serveur n'envoie pas ses bornes (page deployee avant le backend,
+    # ou cache encore sur l'ancien format), la legende garde l'ancienne chaine.
+    sans = json.dumps({'ok': True, 'cedule': {k: v for k, v in CED.items() if k != 'heures'}})
+    dv.execute_script("window.fetch = function(){ return Promise.resolve("
+                      "{ json: function(){ return Promise.resolve(" + sans + "); } }); };")
+    dv.execute_script("window.__cedCharger();"); time.sleep(0.8)
+    leg3 = dv.execute_script("return document.getElementById('ced-heures').textContent;")
+    check('sans bornes : repli sur l ancienne chaine (%s)' % leg3, leg3 == 'AM : 7 h 30 – 12 h · PM : 12 h – 16 h 30')
+    dv.execute_script("window.fetch = window.__f; window.__cedCharger();"); time.sleep(0.8)
+
     print('--- 5) aucune donnee client ---')
     txt = dv.execute_script("return document.getElementById('ced-root').innerText;")
     check('ni client, ni adresse, ni type de tache dans la page',
@@ -237,6 +260,8 @@ try:
           dv.execute_script("return !!document.querySelector('table.ced') && document.getElementById('ced-week').textContent.indexOf('Week of') === 0;"))
     check('EN : cases « Open / Booked »', dv.execute_script(
         "var t=document.querySelector('table.ced').innerText; return t.indexOf('Open')>=0 || t.indexOf('Booked')>=0;"))
+    legEn = dv.execute_script("return document.getElementById('ced-heures').textContent;")
+    check('EN : heures a l anglaise (%s)' % legEn, legEn == 'AM: 7:30 – 12:00 · PM: 12:00 – 4:30')
     dv.execute_script("i18n.setLang('fr');")
     e = erreurs(dv)
     check('aucune erreur JS SEVERE (%d)' % len(e), not e)
