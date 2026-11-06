@@ -19,6 +19,10 @@ BD = RACINE / 'data' / 'machines.json'
 NEXT_GEN = {
     '320': 2018, '320 GC': 2018, '336': 2019, '336 GC': 2018,
     '315': 2020, '315 GC': 2020,
+    # Minis : Cat annonce le 308 CR "Next Generation" le 2018-11-05. 2018 garde le
+    # drain (annee de transition non confirmee). La fiche "308" sans suffixe
+    # regroupe l'ancien 308E2 CR et le 308 CR Next Gen : meme frontiere.
+    '308 CR': 2019, '308': 2019,
 }
 
 def main(ecrire):

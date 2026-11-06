@@ -27,9 +27,12 @@ CAS = [
     ('Caterpillar', '2024', '315 GC',  False, 'Next Gen'),
     ('Caterpillar', '2026', '320LU',   True,  'non Next Gen, inchange'),
     ('Caterpillar', '2019', '336F L',  True,  'serie F, inchange'),
-    ('Caterpillar', '2024', '316',     True,  'non verifie, inchange'),
-    ('Caterpillar', '2024', '350',     True,  'non verifie, inchange'),
-    ('Caterpillar', '2024', '308',     True,  'non verifie, inchange'),
+    ('Caterpillar', '2024', '316',     True,  'pas de 316 chenilles Next Gen chez Cat, inchange'),
+    ('Caterpillar', '2024', '350',     True,  'Cat ne le dit pas Next Gen, inchange'),
+    ('Caterpillar', '2024', '308',     False, 'mini Next Gen depuis nov. 2018'),
+    ('Caterpillar', '2019', '308',     False, 'premiere annee Next Gen'),
+    ('Caterpillar', '2018', '308',     True,  'annee de transition, garde le drain'),
+    ('Caterpillar', '2023', '308 CR',  False, 'mini Next Gen'),
     ('Case',        '2026', 'CX210E',  True,  'autre marque, non-regression'),
 ]
 
