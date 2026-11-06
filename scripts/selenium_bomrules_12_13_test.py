@@ -60,8 +60,9 @@ try:
     check('coerce 0001 j->j', dv.execute_script("return window.KitRules.coerceExcState('0001','j');"), 'j')
 
     # ---- 2) #12 : soumission, override 'r' sur code optionnel -> Obligatoire ----
-    # 308 (Caterpillar) : drain par defaut, non-mini, non-GC.
-    F, M, Y = 'Caterpillar', '308', '2026'
+    # 320LU (Caterpillar) : drain par defaut, non-mini, non-GC. (Le 308 servait ici
+    # jusqu'au 2026-11-06 : fiche retiree, et le 308 CR Next Gen n'a plus de drain.)
+    F, M, Y = 'Caterpillar', '320LU', '2026'
     print('--- 2) #12 override sur %s %s ---' % (F, M))
     check('defaut 0001 (sans override)', kit_status(F,M,Y,{}, '0001'), 'Optionnel')
     check('override 0001=r -> Obligatoire', kit_status(F,M,Y,{'0001':'r'}, '0001'), 'Obligatoire')

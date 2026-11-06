@@ -145,13 +145,17 @@ def get_harnais(fab, modele):
             return value
     return HARNAIS_DEFAULT
 
+# Replique de DRAIN_EXCLUS (js/kit-rules.js) : nom exact, pas de drain (Cat Next Gen)
+DRAIN_EXCLUS = ["320", "320 GC", "336", "336 GC", "315", "315 GC", "308 CR"]
+
 
 def compute_default_bom_excavatrice(specs, fab, modele):
     poids_kg = parse_kg(specs.get("Poids operationnel (kg / lbs)", ""))
     has_swing = (specs.get("Swing boom", "") or "").lower() == "oui"
     is_mini = 0 < poids_kg < 5000
     mod_up = (modele or "").upper()
-    is_drain = any(mod_up.startswith(p.upper()) for p in DRAIN_PREFIXES)
+    is_drain = (mod_up.strip() not in [x.upper() for x in DRAIN_EXCLUS]
+                and any(mod_up.startswith(p.upper()) for p in DRAIN_PREFIXES))
     return {
         "0000": "R",
         "0001": "J",

@@ -97,7 +97,7 @@ try:
         code = dv.execute_script("var e=document.getElementById('kit-harnais-code');return e?e.textContent.trim():'(absent)';")
         label = dv.execute_script("var e=document.getElementById('kit-harnais-label');return e?e.textContent.trim():'(absent)';")
         return code + '|' + label
-    check('UI Caterpillar 308', machine_harnais('Caterpillar','308'), 'Z03B-0080|Caterpillar')
+    check('UI Caterpillar 308 CR', machine_harnais('Caterpillar','308 CR'), 'Z03B-0080|Caterpillar')
     check('UI Hitachi ZX130-7', machine_harnais('Hitachi','ZX130-7'), 'Z03B-0121|Hitachi -7')
     check('UI John Deere 350', machine_harnais('John Deere','350'), 'Z03B-0031|Hitachi/JD')
 

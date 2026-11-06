@@ -34,6 +34,14 @@
     'EZ36'
   ];
 
+  // Exceptions au prefixe : modeles qui commencent par un prefixe DRAIN mais dont la
+  // version actuelle n'a PAS besoin de drain. Correspondance EXACTE sur le nom complet
+  // (320 GC exclu, 320F L et 320LU gardent leur drain).
+  // Caterpillar Next Gen : retour terrain de Kevin et de l'installateur en Ontario
+  // (2026-11-06). Les annees d'ancienne generation inscrites sous ces noms (320 2017,
+  // 336 2017-2018) gardent leur drain par override dans data/overrides/excavatrice.json.
+  var DRAIN_EXCLUS = ['320', '320 GC', '336', '336 GC', '315', '315 GC', '308 CR'];
+
   var EXC_CODES = ['0000', '0001', '0002', '0004', '0005', '0008', '0009', '0070', '0304'];
   var POMPE_CODES = ['0200', '0203', '0201', '0202', '0204', '0205', '0206', '0207', '0208', '0209'];
 
@@ -43,7 +51,8 @@
   }
   function isMini(specs) { var p = poidsKg(specs); return p > 0 && p <= 5000; }
   function isDrain(modele) {
-    var u = String(modele || '').toUpperCase();
+    var u = String(modele || '').toUpperCase().trim();
+    if (DRAIN_EXCLUS.some(function (x) { return x.toUpperCase() === u; })) return false;
     return DRAIN_PREFIXES.some(function (p) { return u.indexOf(p.toUpperCase()) === 0; });
   }
   // Boite GC (0070) obligatoire pour les modeles Caterpillar comportant "GC"
@@ -238,6 +247,7 @@
 
   window.KitRules = {
     DRAIN_PREFIXES: DRAIN_PREFIXES,
+    DRAIN_EXCLUS: DRAIN_EXCLUS,
     CODES_NON_COMMANDABLES: CODES_NON_COMMANDABLES,
     CODE_A_CONFIRMER: CODE_A_CONFIRMER,
     estCommandable: estCommandable,
