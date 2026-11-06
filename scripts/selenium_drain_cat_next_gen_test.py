@@ -36,6 +36,9 @@ CAS = [
     ('Caterpillar', '2019', '336F L',   True,  'serie F, inchange'),
     ('Caterpillar', '2024', '350',      True,  'Cat ne le dit pas Next Gen, inchange'),
     ('Caterpillar', '2024', '315FL',    True,  'ancienne generation, inchange'),
+    ('Caterpillar', '2026', '315FL',    True,  'ancienne generation, drain remis 2026-11-06'),
+    ('Caterpillar', '2025', '315FL',    True,  'ancienne generation, drain remis 2026-11-06'),
+    ('Caterpillar', '2026', '316F L',   True,  'ancienne generation, drain remis 2026-11-06'),
     ('Case',        '2026', 'CX210E',   True,  'autre marque, non-regression'),
 ]
 
