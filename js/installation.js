@@ -223,6 +223,33 @@
         var po = prodOptions(tA ? '' : t);
         remplir($('f-produit'), po, tx('Tous les produits', 'All products'), offerte(po, $('f-produit').value));
     }
+    // Fabricant et Modele : menu et filtre dans UNE case, comme la Soumission et la Base de
+    // donnees (js/combo-filtre.js, Steve 2026-11-09). Le vrai <select> reste dans la page, cache :
+    // tout le code ci-dessous le lit et l'ecrit comme avant ; la case suit sa valeur.
+    function comboSur(id, ph, vide, quoi) {
+        var sel = $(id), box = document.createElement('div'), inp = document.createElement('input'), ul = document.createElement('ul');
+        box.className = 'combo-modele';
+        inp.type = 'text'; inp.id = id + '-filtre'; inp.className = 'filtre-modele'; inp.autocomplete = 'off'; inp.spellcheck = false;
+        inp.setAttribute('role', 'combobox'); inp.setAttribute('aria-controls', id + '-resultats'); inp.setAttribute('aria-expanded', 'false');
+        inp.setAttribute('data-txp', ph);
+        ul.id = id + '-resultats'; ul.className = 'filtre-resultats'; ul.setAttribute('role', 'listbox'); ul.hidden = true;
+        sel.parentNode.insertBefore(box, sel);
+        box.appendChild(inp); box.appendChild(ul); box.appendChild(sel);
+        sel.classList.add('select-cache'); sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+        // En-tete de la liste filtree dans la langue de l'ecran (lu a chaque ouverture ;
+        // la cle vide fait prendre ce texte a texteI18n).
+        var fab = quoi === 'fab';
+        return creerComboFiltre(sel, inp, ul, { autre: AUTRE, montrerAutre: true, vide: vide,
+            compte: { 0: '', get 1() { return fab ? tx('{n} fabricant(s) contenant « {f} »', '{n} manufacturer(s) containing "{f}"')
+                                                  : tx('{n} modèle(s) contenant « {f} »', '{n} model(s) containing "{f}"'); } },
+            aucun: { 0: '', get 1() { return fab ? tx('Aucun fabricant ne contient « {f} »', 'No manufacturer contains "{f}"')
+                                                 : tx('Aucun modèle ne contient « {f} »', 'No model contains "{f}"'); } } });
+    }
+    comboSur('f-fab', 'Tous les fabricants — tapez pour filtrer|All manufacturers — type to filter', true, 'fab');
+    comboSur('f-modele', 'Tous les modèles — tapez pour filtrer|All models — type to filter', true, 'modele');
+    comboSur('e-fab', '— Choisir ou taper —|— Choose or type —', false, 'fab');
+    comboSur('e-modele', '— Choisir ou taper —|— Choose or type —', false, 'modele');
+
     ['f-type', 'f-fab', 'f-modele', 'f-produit'].forEach(function (id) {
         $(id).addEventListener('change', function () {
             if (id === 'f-type') { $('f-fab').value = ''; $('f-modele').value = ''; }

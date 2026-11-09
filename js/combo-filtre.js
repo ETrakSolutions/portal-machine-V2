@@ -1,6 +1,7 @@
 /*
  * combo-filtre.js : menu deroulant et filtre dans UNE case (Steve, 2026-10-08).
- * Charge par : soumission.html (Fabricant, Modele), database.html (Fabricant, 2026-11-04).
+ * Charge par : soumission.html (Fabricant, Modele), database.html (Fabricant, 2026-11-04),
+ * installation.html (Fabricant, Modele des filtres et du formulaire, 2026-11-09).
  */
 // Menus Fabricant et Modele avec filtre (Steve, 2026-10-08) : chacun est UNE case qui
 // ressemble aux autres menus. Un clic ouvre la liste complete ; taper ne garde que les
@@ -17,8 +18,9 @@ function texteI18n(k, fb, p) {
 // select : le vrai menu (cache) ; input / ul : la case et sa liste ; cfg.autre : valeur de
 // l'option « Ajout ... non repertorie » (toujours au bout) ; cfg.compte / cfg.aucun : cles
 // de l'en-tete quand on filtre ; cfg.vide : true pour proposer aussi l'option de valeur vide
-// (« Tous » de la Base de donnees) en tete de la liste complete. Les choix sont lus dans les
-// <option> du menu.
+// (« Tous » de la Base de donnees) en tete de la liste complete ; cfg.montrerAutre : la case
+// affiche le texte de l'option cfg.autre quand elle est choisie (Banque d'installation : « Autre… »,
+// « Autres (hors base) »). Les choix sont lus dans les <option> du menu.
 function creerComboFiltre(select, input, ul, cfg) {
     var index = -1;
     var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
@@ -30,7 +32,7 @@ function creerComboFiltre(select, input, ul, cfg) {
     function afficher() {
         if (document.activeElement === input) return;
         var o = select.options[select.selectedIndex];
-        input.value = (o && o.value && o.value !== cfg.autre) ? o.textContent : '';
+        input.value = (o && o.value && (o.value !== cfg.autre || cfg.montrerAutre)) ? o.textContent : '';
     }
     function fermer() {
         ul.hidden = true; ul.innerHTML = ''; index = -1;
