@@ -98,6 +98,8 @@ function doPost(e) {
     if (action === 'getprivate')     return jsonOut(getPrivate(body));
     if (action === 'listkeys')       return jsonOut(listKeys(body));
     if (action === 'quota')          return jsonOut(getQuota(body));
+    if (action === 'syncroutes')     return jsonOut(syncRoutes(body));
+    if (action === 'getroutesequipe') return jsonOut(getRoutesEquipe(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -159,7 +161,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
                       'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
-                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID',
+                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID',
                       'reinst_prix', 'REINST_USERS'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
@@ -2760,4 +2762,123 @@ function _diagMail() {
   Logger.log('Quota restant: ' + MailApp.getRemainingDailyQuota());
   MailApp.sendEmail('jcaron@gryb.com', 'TEST diag portail', 'Test direct MailApp depuis Apps Script.');
   Logger.log('sendEmail termine sans erreur');
+}
+
+// ===================== ROUTES VENDEURS (Jacquot, 2026-11-09) =====================
+// La page « Routes vendeurs e-Trak » (fichier HTML sur SharePoint, HORS du portail) garde
+// ici les routes sauvegardees de chaque vendeur : il les retrouve sur tous ses appareils,
+// et les administrateurs les consultent en lecture seule (« Routes de l'equipe »).
+// Decisions Jacquot 2026-11-09 : comptes INTERNES seulement (ROLES_EXTERNES refuses) ;
+// sont stockes le nom de la route, les cles, noms, villes et classes des clients de la
+// route, JAMAIS un montant ; chacun ne lit et n'ecrit que SES routes.
+// STOCKAGE : Google Sheet privee « Routes vendeurs - Portail e-Trak » (ROUTES_SHEET_ID,
+// SENSITIVE_KEYS), une ligne par route — PAS les proprietes (quota 500 Ko). Une route
+// supprimee reste une ligne « supprimee » (sinon l'autre appareil la recreerait). La plus
+// recente gagne (ts = horodatage en ms pose par la page a chaque changement).
+var ROUTES_COLS = ['utilisateur', 'id', 'territoire', 'nom', 'ts', 'supprimee', 'maj', 'donnees'];
+var ROUTES_COL_DONNEES = 8;
+var ROUTES_TERR = ['QC', 'CA', 'US'];
+var ROUTES_MAX = 200;          // routes par vendeur, supprimees comprises
+var ROUTES_MAX_ARRETS = 150;
+var ROUTES_MAX_JSON = 40000;   // caracteres par route (une cellule en porte 50 000)
+
+function _routesAppelant(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var u = _findUser(sess.u);
+  if (!u || u.active === false) return { error: 'authentication required' };
+  if (!u.role || ROLES_EXTERNES.indexOf(u.role) >= 0) return { error: 'forbidden' };
+  return { moi: _uname(u), nom: String(u.name || u.email || u.username || ''), admin: _isAdminRole(u.role) };
+}
+
+function _routesFeuille(creer) {
+  var id = PROPS.getProperty('ROUTES_SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id).getSheets()[0];
+  if (!creer) return null;
+  var ss = SpreadsheetApp.create('Routes vendeurs - Portail e-Trak');
+  var sh = ss.getSheets()[0];
+  sh.setName('Routes');
+  sh.appendRow(ROUTES_COLS);
+  sh.setFrozenRows(1);
+  PROPS.setProperty('ROUTES_SHEET_ID', ss.getId());
+  return sh;
+}
+
+function _routesLire(sh) {
+  var out = [];
+  if (!sh) return out;
+  var v = sh.getDataRange().getValues();
+  for (var i = 1; i < v.length; i++) {
+    var r;
+    try { r = JSON.parse(v[i][ROUTES_COL_DONNEES - 1]); } catch (e) { continue; }
+    if (r && r.id) out.push({ ligne: i + 1, u: String(v[i][0] || '').replace(/^'/, '').toLowerCase(), r: r });
+  }
+  return out;
+}
+
+// Route envoyee par la page : champs prevus seulement, longueurs bornees ; null = refusee.
+function _routeNette(x) {
+  if (!x || typeof x !== 'object') return null;
+  var str = function (v, n) { return String(v === null || v === undefined ? '' : v).trim().slice(0, n); };
+  var id = str(x.id, 40), ts = Number(x.ts);
+  if (!/^[A-Za-z0-9_-]{1,40}$/.test(id) || ROUTES_TERR.indexOf(x.t) < 0 || !isFinite(ts) || ts <= 0) return null;
+  if (x.supprimee) return { id: id, t: x.t, ts: ts, supprimee: true, nom: str(x.nom, 80) };
+  var cle = function (k) { return str(k, 60); };
+  var r = { id: id, t: x.t, ts: ts, nom: str(x.nom, 80) || 'Sans nom', cree: str(x.cree, 10), modif: str(x.modif, 10),
+            k: (Array.isArray(x.k) ? x.k : []).slice(0, ROUTES_MAX_ARRETS).map(cle).filter(String),
+            depart: str(x.depart, 200), arrivee: str(x.arrivee, 200),
+            minv: Math.max(5, Math.min(480, Number(x.minv) || 45)),
+            photo: (Array.isArray(x.photo) ? x.photo : []).slice(0, ROUTES_MAX_ARRETS + 50).map(function (p) {
+              p = p || {};
+              return { k: cle(p.k), nom: str(p.nom, 120), ville: str(p.ville, 80), st: str(p.st, 20), cl: str(p.cl, 8), sens: str(p.sens, 10) };
+            }),
+            ign: (Array.isArray(x.ign) ? x.ign : []).slice(0, 300).map(cle).filter(String) };
+  return JSON.stringify(r).length > ROUTES_MAX_JSON ? null : r;
+}
+
+// { action:'syncroutes', token, routes:[...] } -> { ok, routes, ecrites, refusees, admin, nom }
+// La page envoie TOUTES ses routes ; le serveur garde la plus recente de chaque id et
+// renvoie la liste complete du vendeur (supprimees comprises), que la page adopte.
+function syncRoutes(body) {
+  var a = _routesAppelant(body);
+  if (a.error) return a;
+  var recues = Array.isArray(body.routes) ? body.routes : [];
+  if (recues.length > ROUTES_MAX) return { error: 'too many routes' };
+  return _avecVerrou(function () {
+    var sh = _routesFeuille(recues.length > 0);
+    var miennes = {}, n = 0, ecrites = 0, refusees = 0, maj = new Date().toISOString();
+    _routesLire(sh).forEach(function (x) { if (x.u === a.moi) { miennes[x.r.id] = x; n++; } });
+    recues.forEach(function (brut) {
+      var r = _routeNette(brut);
+      if (!r) { refusees++; return; }
+      var ex = miennes[r.id];
+      if (ex && Number(ex.r.ts) >= r.ts) return;
+      if (!ex && n >= ROUTES_MAX) { refusees++; return; }
+      var ligne = [_diagCellule(a.moi), r.id, r.t, _diagCellule(r.nom), r.ts, r.supprimee ? 'oui' : '', maj, JSON.stringify(r)];
+      if (ex) sh.getRange(ex.ligne, 1, 1, ligne.length).setValues([ligne]);
+      else { sh.appendRow(ligne); n++; }
+      miennes[r.id] = { ligne: ex ? ex.ligne : sh.getLastRow(), u: a.moi, r: r };
+      ecrites++;
+    });
+    return { ok: true, routes: Object.keys(miennes).map(function (id) { return miennes[id].r; }),
+             ecrites: ecrites, refusees: refusees, admin: a.admin, nom: a.nom };
+  });
+}
+
+// { action:'getroutesequipe', token } -> { ok, routes:[{vendeur, ...route}] } — administrateurs
+// seulement, lecture seule, routes supprimees exclues ; le vendeur est designe par son nom.
+function getRoutesEquipe(body) {
+  var a = _routesAppelant(body);
+  if (a.error) return a;
+  if (!a.admin) return { error: 'forbidden' };
+  var noms = {};
+  _users().forEach(function (u) { noms[_uname(u)] = String(u.name || u.email || u.username || ''); });
+  var out = [];
+  _routesLire(_routesFeuille(false)).forEach(function (x) {
+    if (x.r.supprimee) return;
+    var r = { vendeur: noms[x.u] || x.u };
+    Object.keys(x.r).forEach(function (k) { if (k !== 'ign') r[k] = x.r[k]; });
+    out.push(r);
+  });
+  return { ok: true, routes: out };
 }
