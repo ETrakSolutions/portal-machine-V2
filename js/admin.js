@@ -185,6 +185,18 @@ function updateHubUI() {
                 .then(function (d) { if (d && d.ok) tileRI.style.display = 'block'; })
                 .catch(function () {});
         }
+        // Tuile « Routes vendeurs » (Jacquot, 2026-11-09) : le serveur (getroutesdata, verif)
+        // tranche — le representant de son territoire et les administrateurs. Une seule demande.
+        var tileRV = document.getElementById('hub-tile-routes');
+        if (tileRV && !currentUser.isGuest && currentUser.token && window.PORTAL_API_URL &&
+            ['dealer', 'distributeur', 'installateur'].indexOf(currentUser.role) < 0 && !window.__routesDemande) {
+            window.__routesDemande = true;
+            fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ action: 'getroutesdata', token: currentUser.token, verif: true }) })
+                .then(function (r) { return r.json(); })
+                .then(function (d) { if (d && d.ok) tileRV.style.display = 'block'; })
+                .catch(function () {});
+        }
         // Show hamburger (QR + share) for all logged in users
         if (hamburgerWrap) {
             hamburgerWrap.style.display = '';
