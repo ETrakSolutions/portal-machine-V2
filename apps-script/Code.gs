@@ -100,6 +100,8 @@ function doPost(e) {
     if (action === 'quota')          return jsonOut(getQuota(body));
     if (action === 'syncroutes')     return jsonOut(syncRoutes(body));
     if (action === 'getroutesequipe') return jsonOut(getRoutesEquipe(body));
+    if (action === 'setroutesdata')  return jsonOut(setRoutesData(body));
+    if (action === 'getroutesdata')  return jsonOut(getRoutesData(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -161,7 +163,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
                       'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
-                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID',
+                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID', 'ROUTES_DATA_FOLDER_ID', 'ROUTES_ACCES',
                       'reinst_prix', 'REINST_USERS'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
@@ -2881,4 +2883,140 @@ function getRoutesEquipe(body) {
     out.push(r);
   });
   return { ok: true, routes: out };
+}
+
+// ===================== ROUTES VENDEURS DANS LE PORTAIL (Jacquot, 2026-11-09) =====================
+// Tuile « Routes vendeurs » : la page vit dans le portail (routes-vendeurs.html, SANS donnees,
+// le site est public) pour marcher sur le telephone. Les fiches clients arrivent du serveur
+// apres connexion. Decisions Jacquot 2026-11-09 : AUCUN montant de vente (tendance en
+// fleches seulement, seuil +/-10 %, montants dans Master e-Trak) ; contacts des clients
+// inclus ; soumission ouverte = numero, date, objet, jamais le montant.
+// Publication : construire.py (routes-vendeurs) envoie chaque lundi une charge « commun »
+// et une par territoire (gzip + base64), avec le NIP. Le serveur REFUSE toute charge qui
+// porte un champ hors liste blanche (ROUTES_CHAMPS_*) : un montant ajoute un jour par
+// erreur dans construire.py ne peut pas arriver ici sans qu'on change ce code.
+// Stockage : fichiers texte du dossier Drive prive « Routes vendeurs - donnees - Portail
+// e-Trak » (ROUTES_DATA_FOLDER_ID, SENSITIVE_KEYS) — jamais les proprietes (quota 500 Ko).
+// Acces : administrateurs = tous les territoires ; vendeur = le territoire dont il est le
+// representant (nom du compte = nom inscrit dans « commun ».terr) ; ROUTES_ACCES (JSON
+// { courriel: ['QC', ...] }) en ajoute sans redeploiement. Comptes externes : jamais.
+var ROUTES_CHARGES = ['commun', 'QC', 'CA', 'US'];
+var ROUTES_CHAMPS_FICHE = ['k', 'src', 'st', 'nom', 'i', 't', 'prov', 'reg', 'lat', 'lon', 'prec', 'ville', 'rue', 'cp',
+  'tel', 'cat', 'ct', 'marques', 'id', 'rep', 'sf', 'sf_proprio', 'ancien', 'gryb', 'gryb_der', 'sf_act', 'der', 'mail',
+  'cl', 'fam', 'net', 'pl', 'a1', 'pf', 'cyc', 'sq', 'sqn', 'retard', 'pl_v', 'sf_notes', 'tA', 'tY', 'rk'];
+var ROUTES_CHAMPS_COMMUN = ['genere', 'fy', 'ref', 'ans', 'der_ecriture', 'coupure_ly', 'terr', 'croisees',
+  'sf_instance', 'sf_reps', 'noms_prov', 'stable'];
+var ROUTES_CHAMPS_TERR = ['recs', 'lieux', 'lieux_reg', 'rythme'];
+var ROUTES_DATA_MAX = 6000000;   // caracteres base64 par charge
+
+function _routesDossier(creer) {
+  var id = PROPS.getProperty('ROUTES_DATA_FOLDER_ID');
+  if (id) return DriveApp.getFolderById(id);
+  if (!creer) return null;
+  var d = DriveApp.createFolder('Routes vendeurs - donnees - Portail e-Trak');
+  PROPS.setProperty('ROUTES_DATA_FOLDER_ID', d.getId());
+  return d;
+}
+function _routesFichier(dossier, nom) {
+  if (!dossier) return null;
+  var it = dossier.getFilesByName(nom + '.gz.b64');
+  return it.hasNext() ? it.next() : null;
+}
+function _routesHors(obj, permis) {
+  return Object.keys(obj).filter(function (k) { return permis.indexOf(k) < 0; });
+}
+
+// Controle de contenu : null = conforme, sinon la raison du refus.
+function _routesChargeInvalide(nom, d) {
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return 'invalid payload';
+  if (nom === 'commun') {
+    var h = _routesHors(d, ROUTES_CHAMPS_COMMUN);
+    if (h.length) return 'field not allowed: ' + h.slice(0, 3).join(',');
+    if (!d.terr || typeof d.terr !== 'object') return 'missing terr';
+    return null;
+  }
+  var h2 = _routesHors(d, ROUTES_CHAMPS_TERR);
+  if (h2.length) return 'field not allowed: ' + h2.slice(0, 3).join(',');
+  if (!Array.isArray(d.recs)) return 'missing recs';
+  if (d.rythme && _routesHors(d.rythme, ['n4', 'n13']).length) return 'field not allowed: rythme';
+  for (var i = 0; i < d.recs.length; i++) {
+    var r = d.recs[i];
+    if (!r || typeof r !== 'object') return 'invalid record';
+    if (r.t !== nom) return 'record outside territory';
+    var hr = _routesHors(r, ROUTES_CHAMPS_FICHE);
+    if (hr.length) return 'field not allowed: ' + hr.slice(0, 3).join(',');
+    if (r.sq) {
+      if (!Array.isArray(r.sq)) return 'invalid sq';
+      for (var j = 0; j < r.sq.length; j++) if (!Array.isArray(r.sq[j]) || (r.sq[j][3] !== null && r.sq[j][3] !== undefined)) return 'amount in sq';
+    }
+  }
+  return null;
+}
+
+// { action:'setroutesdata', pin|token admin, charge:'commun'|'QC'|'CA'|'US', gz } -> { ok, charge, fiches }
+function setRoutesData(body) {
+  var auth = _authCheck(body);
+  if (!auth.ok || !auth.admin) return { error: 'admin role required' };
+  var nom = String(body.charge || '');
+  if (ROUTES_CHARGES.indexOf(nom) < 0) return { error: 'invalid charge' };
+  var gz = String(body.gz || '');
+  if (!gz || gz.length > ROUTES_DATA_MAX) return { error: 'invalid size' };
+  var d;
+  try { d = JSON.parse(_ungzB64(gz)); } catch (e) { return { error: 'invalid gz' }; }
+  var pb = _routesChargeInvalide(nom, d);
+  if (pb) return { error: pb };
+  return _avecVerrou(function () {
+    var dossier = _routesDossier(true);
+    var f = _routesFichier(dossier, nom);
+    if (f) f.setContent(gz); else dossier.createFile(nom + '.gz.b64', gz, 'text/plain');
+    return { ok: true, charge: nom, fiches: d.recs ? d.recs.length : 0 };
+  });
+}
+
+function _routesNorm(s) {
+  // Sans String.normalize (moteur Apps Script ancien) : accents usuels du francais.
+  var de = '\u00e0\u00e2\u00e4\u00e9\u00e8\u00ea\u00eb\u00ee\u00ef\u00f4\u00f6\u00f9\u00fb\u00fc\u00e7', en = 'aaaeeeeiioouuuc';
+  var t = String(s || '').toLowerCase().replace(/[\u00e0\u00e2\u00e4\u00e9\u00e8\u00ea\u00eb\u00ee\u00ef\u00f4\u00f6\u00f9\u00fb\u00fc\u00e7]/g,
+    function (c) { return en.charAt(de.indexOf(c)); });
+  return t.replace(/\s+/g, ' ').trim();
+}
+
+// Territoires remis a un compte interne : tous pour un administrateur, sinon ceux dont il est
+// le representant, plus ROUTES_ACCES.
+function _routesTerritoires(u, admin, commun) {
+  if (admin) return ['QC', 'CA', 'US'];
+  var out = [], nom = _routesNorm(u.name);
+  Object.keys((commun && commun.terr) || {}).forEach(function (t) {
+    if (nom && _routesNorm(commun.terr[t].rep) === nom && ROUTES_CHARGES.indexOf(t) > 0) out.push(t);
+  });
+  try {
+    var ext = JSON.parse(PROPS.getProperty('ROUTES_ACCES') || '{}');
+    _idsOf(u).forEach(function (id) {
+      (ext[id] || []).forEach(function (t) { if (ROUTES_CHARGES.indexOf(t) > 0 && out.indexOf(t) < 0) out.push(t); });
+    });
+  } catch (e) {}
+  return out;
+}
+
+// { action:'getroutesdata', token, verif? } -> { ok, acces:[...], commun:gz, terr:{QC:gz,...} }
+// verif:true = la tuile demande seulement si le compte a acces (rien de lourd).
+function getRoutesData(body) {
+  var a = _routesAppelant(body);
+  if (a.error) return a;
+  var u = _findUser(_getSession(body.token).u);
+  var dossier = _routesDossier(false);
+  var fc = _routesFichier(dossier, 'commun');
+  if (!fc) return { error: 'routes unavailable' };
+  var communGz = fc.getBlob().getDataAsString();
+  var commun;
+  try { commun = JSON.parse(_ungzB64(communGz)); } catch (e) { return { error: 'routes unreadable' }; }
+  var acces = _routesTerritoires(u, a.admin, commun);
+  if (!acces.length) return { error: 'forbidden' };
+  if (body.verif) return { ok: true, acces: acces };
+  var terr = {};
+  acces.forEach(function (t) {
+    var f = _routesFichier(dossier, t);
+    if (f) terr[t] = f.getBlob().getDataAsString();
+  });
+  return { ok: true, acces: acces, commun: communGz, terr: terr, nom: a.nom, admin: a.admin };
 }
