@@ -545,6 +545,7 @@
             : tx('La note restera en brouillon (visible de vous et des validateurs) jusqu\'à sa validation.', 'The note stays a draft (visible to you and the approvers) until it is approved.');
     }
     function ouvrirEdition(n) {
+        if (ETAT.enregistrement) { ok(tx('Enregistrement en cours : attendez la fin avant d\'ouvrir une autre note.', 'Saving in progress: wait until it ends before opening another note.')); return; }
         ETAT.edition = n || null;
         noteEdition(n);
         ['type', 'fab', 'modele'].forEach(function (k) { $('e-' + k + '-autre').value = ''; });
@@ -568,11 +569,13 @@
         ordonnerLangues($('in-edit'));
         document.querySelectorAll('.in-f.err').forEach(function (x) { x.classList.remove('err'); });
         $('e-alert').style.display = 'none';
+        $('e-doublon').style.display = 'none';
         // Creation ou modification : les filtres et la liste disparaissent (Steve, 2026-10-28) ;
         // « Retour aux notes » en haut, Annuler ou Enregistrer en bas y ramenent.
         $('in-vue-liste').style.display = 'none';
         $('in-edit').style.display = 'block';
         chargerPhotos($('in-edit'));
+        verifierDoublon();
         window.scrollTo(0, 0);
     }
     function fermerEdition() {
@@ -593,6 +596,59 @@
                  temps: $('e-temps').value.trim(), texte: $('e-texte').value.trim(), photos: photos, pieces: pieces, pieges: $('e-pieges').value.trim(),
                  en: { texte: $('e-texte-en').value.trim(), pieges: $('e-pieges-en').value.trim() } };
     }
+    // Fiche deja existante pour la meme machine et le meme produit (Steve, 2026-11-10) :
+    // meme type, fabricant, modele de base, produit et option. On ignore la fiche en cours
+    // de modification et les propositions qui la remplacent.
+    function doublonDe(x) {
+        var ed = ETAT.edition, moi = ed ? ed.id : '', orig = ed && ed.remplace ? ed.remplace : '';
+        var cle = function (n) { return [norm(n.type), norm(n.fabricant), norm(baseModele(n.modele)), n.produit || '', n.option || ''].join('|'); };
+        if (!x.type || !x.fabricant || !x.modele || !x.produit) return null;
+        var k = cle(x);
+        return ETAT.notes.filter(function (n) {
+            return n.id !== moi && n.id !== orig && !(moi && n.remplace === moi) && !(orig && n.remplace === orig) && cle(n) === k;
+        }).sort(function (a, b) { return (a.statut === 'valide' ? 0 : 1) - (b.statut === 'valide' ? 0 : 1); })[0] || null;
+    }
+    function lienFiche(n) { return location.pathname + '?fiche=' + encodeURIComponent(n.id); }
+    // Message au demandeur : la fiche existe, modifier l'originale, avec un lien pour s'y rendre.
+    function msgDoublon(n) {
+        var brouillon = n.statut === 'brouillon';
+        return esc(tx('Une fiche existe déjà pour {t}{b}. Pour éviter les doublons, modifiez la fiche originale plutôt que d\'en créer une nouvelle.',
+                      'A note already exists for {t}{b}. To avoid duplicates, edit the original note instead of creating a new one.',
+                      { t: titre(n), b: brouillon ? tx(' (brouillon à valider)', ' (draft to approve)') : '' })) +
+            ' <a class="in-lien" data-fiche="' + esc(n.id) + '" href="' + esc(lienFiche(n)) + '">' + esc(tx('Ouvrir la fiche existante →', 'Open the existing note →')) + '</a>' +
+            '<br><small>' + esc(tx('Ce que vous avez écrit ici n\'est pas enregistré : copiez-le avant d\'ouvrir la fiche si vous voulez le garder.',
+                                   'What you wrote here is not saved: copy it before opening the note if you want to keep it.')) + '</small>';
+    }
+    function verifierDoublon() {
+        var d = $('in-edit').style.display === 'block' ? doublonDe(lireEdition()) : null, z = $('e-doublon');
+        z.innerHTML = d ? msgDoublon(d) : '';
+        z.style.display = d ? 'block' : 'none';
+        return d;
+    }
+    // Aller a une fiche : filtres remis a zero, fiche ouverte et amenee a l'ecran.
+    function allerAFiche(id) {
+        if (!original(id)) return false;
+        if ($('in-edit').style.display === 'block') fermerEdition();
+        ['f-type', 'f-fab', 'f-modele', 'f-produit', 'f-q'].forEach(function (k) { $(k).value = ''; });
+        ETAT.vue = 'tout';
+        [].forEach.call(document.querySelectorAll('.in-chip'), function (x) { x.classList.toggle('on', x.getAttribute('data-vue') === 'tout'); });
+        dessinerFiltres();
+        ETAT.ouvertes = {}; ETAT.ouvertes[id] = true;
+        dessiner();
+        var c = [].filter.call($('in-liste').querySelectorAll('.in-card'), function (x) { return x.getAttribute('data-id') === id; })[0];
+        if (c) c.scrollIntoView({ block: 'start' });
+        try { history.replaceState(null, '', lienFiche(original(id))); } catch (e) {}
+        return true;
+    }
+    document.addEventListener('click', function (e) {
+        var a = e.target.closest('a[data-fiche]');
+        if (!a) return;
+        if (allerAFiche(a.getAttribute('data-fiche'))) e.preventDefault();
+    });
+    ['e-type', 'e-fab', 'e-modele', 'e-produit', 'e-option', 'e-type-autre', 'e-fab-autre', 'e-modele-autre'].forEach(function (id) {
+        $(id).addEventListener(/autre/.test(id) ? 'input' : 'change', function () { setTimeout(verifierDoublon, 0); });
+    });
+
     function valider(x) {
         var manque = [];
         var marque = function (id, ko, nom) { $(id).classList.toggle('err', ko); if (ko) manque.push(nom); };
@@ -609,20 +665,26 @@
         if (ETAT.envois > 0) { var a0 = $('e-alert'); a0.textContent = tx('Photos en cours d\'envoi : attendez quelques secondes.', 'Photos still uploading: wait a few seconds.'); a0.style.display = 'block'; return; }
         var x = lireEdition();
         if (!valider(x)) return;
-        if (ETAT.edition) x.id = ETAT.edition.id;
+        var dbl = verifierDoublon();
+        if (dbl) { var a1 = $('e-alert'); a1.innerHTML = msgDoublon(dbl); a1.style.display = 'block'; a1.scrollIntoView({ block: 'center' }); return; }
+        // L'edition en cours est retenue ICI : si une autre fiche est ouverte avant la reponse,
+        // la reponse ne doit ni la fermer ni la vider (doublon PC138 du 2026-11-10).
+        var enCours = ETAT.edition;
+        if (enCours) x.id = enCours.id;
+        ETAT.enregistrement = true;
         var b = $('b-enreg');
         b.disabled = true; b.textContent = tx('Enregistrement…', 'Saving…');
         var remettre = function () { b.disabled = false; b.textContent = tx('Enregistrer', 'Save'); };
         api({ action: 'saveinst', note: x }).then(function (d) {
-            remettre();
+            remettre(); ETAT.enregistrement = false;
             if (!d || !d.ok) { var a = $('e-alert'); a.textContent = msgErreur(d); a.style.display = 'block'; return; }
-            fermerEdition();
+            if (ETAT.edition === enCours) fermerEdition();
             ETAT.ouvertes = {}; ETAT.ouvertes[d.note.id] = true;
             ok(d.proposition ? tx('Proposition envoyée : elle attend la validation.', 'Proposal sent: it awaits approval.')
                : d.note.statut === 'brouillon' ? tx('Note enregistrée en brouillon : visible de toute l\'équipe après validation.', 'Note saved as draft: visible to the whole team after approval.')
                : tx('Note enregistrée et publiée.', 'Note saved and published.'));
             charger();
-        }, function () { remettre(); var a = $('e-alert'); a.textContent = tx('Serveur injoignable : rien n\'a été enregistré.', 'Server unreachable: nothing was saved.'); a.style.display = 'block'; });
+        }, function () { remettre(); ETAT.enregistrement = false; var a = $('e-alert'); a.textContent = tx('Serveur injoignable : rien n\'a été enregistré.', 'Server unreachable: nothing was saved.'); a.style.display = 'block'; });
     });
 
     window.addEventListener('langchange', function () {
@@ -639,6 +701,8 @@
             ETAT.peutValider = !!d.peutValider;
             dessinerFiltres();   // machines hors base des notes
             dessiner();
+            var fiche = ETAT.ficheDemandee; ETAT.ficheDemandee = null;
+            if (fiche && !allerAFiche(fiche)) ok(tx('Cette fiche n\'existe plus.', 'This note no longer exists.'));
         }, function () { $('in-compte').textContent = tx('Banque indisponible pour le moment (serveur injoignable).', 'Library unavailable for now (server unreachable).'); });
     }
     // Liste des pieces : celle de la demande SAV (meme droit d'acces).
@@ -650,6 +714,7 @@
         dessinerFiltres();
         // Arrivee depuis le Portail Machine : ?type=...&fab=...&modele=...&produit=...
         var qs = new URLSearchParams(location.search);
+        ETAT.ficheDemandee = qs.get('fiche') || null;   // lien vers une fiche (avis de doublon)
         if (qs.get('type')) { $('f-type').value = qs.get('type'); dessinerFiltres(); }
         if (qs.get('fab')) { $('f-fab').value = qs.get('fab'); dessinerFiltres(); }
         if (qs.get('modele')) { $('f-modele').value = baseModele(qs.get('modele')); dessinerFiltres(); }
