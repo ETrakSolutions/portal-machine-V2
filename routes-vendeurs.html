@@ -1472,6 +1472,7 @@ if (aOuvrir) { store.set("ouvrir", null); const i = parCle(aOuvrir); if (i>=0) {
 #f101-bulle .passer{border:0;background:none;color:var(--gris3);font:13px var(--police);cursor:pointer;text-decoration:underline;padding:4px}
 @media (max-width:600px){
   #f101-bulle{left:16px!important;right:16px!important;width:auto;bottom:16px!important;top:auto!important}
+  #f101-bulle.haut{top:16px!important;bottom:auto!important}
 }
 @media print{#f101-voile,#f101-trou,#f101-bulle,.f101-btn{display:none!important}}
 </style>
@@ -1537,6 +1538,17 @@ function placer(){
     bulle.style.top  = Math.max(16,(vh-bulle.offsetHeight)/2)+"px";
     return;
   }
+  // Telephone : la bulle est fixee en bas de l'ecran. On fait defiler la case AU-DESSUS
+  // d'elle (avant : case centree, cachee a 95 % par les bulles longues des etapes 12-14,
+  // Jacquot 2026-11-10) ; si la page ne peut plus defiler, la bulle passe en haut.
+  if (matchMedia("(max-width:600px)").matches){
+    bulle.classList.remove("haut");
+    const bh = bulle.offsetHeight, libre = vh - bh - 32;
+    let q = e.getBoundingClientRect();
+    const voulu = q.height < libre ? Math.max(8, (libre - q.height)/2) : 8;
+    if (Math.abs(q.top - voulu) > 4) { scrollBy(0, q.top - voulu); q = e.getBoundingClientRect(); }
+    if (q.top + Math.min(q.height, libre) > vh - bh - 16) bulle.classList.add("haut");
+  }
   const r = e.getBoundingClientRect();
   trou.style.left=(r.left-m)+"px"; trou.style.top=(r.top-m)+"px";
   trou.style.width=(r.width+2*m)+"px"; trou.style.height=(r.height+2*m)+"px";
@@ -1559,7 +1571,7 @@ function afficher(){
        ${i>0?'<button class="btn sec" data-f="prec">Précédent</button>':""}
        <button class="btn" data-f="${dernier?"fin":"suiv"}">${dernier?"Terminer":"Suivant"}</button></div>`;
   const e = cibleDe(p);
-  if (e) e.scrollIntoView({block:"center", behavior:"smooth"});
+  if (e && !matchMedia("(max-width:600px)").matches) e.scrollIntoView({block:"center", behavior:"smooth"});
   placer(); setTimeout(placer, 350);
   bulle.querySelector('[data-f="'+(dernier?"fin":"suiv")+'"]').focus();
 }
