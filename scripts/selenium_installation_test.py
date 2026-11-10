@@ -19,6 +19,7 @@ from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 RACINE = Path(__file__).resolve().parent.parent
 PAGE = (RACINE / 'installation.html').as_uri()
@@ -42,7 +43,7 @@ SERVEUR = """
     localStorage.setItem('portal_user', %(user)s);
     localStorage.setItem('portal_lang', %(lang)s);
     window.__appels = [];
-    var S = { notes: %(notes)s, valideur: %(valideur)s, n: 0, photos: {} };
+    var S = { notes: %(notes)s, valideur: %(valideur)s, n: 0, photos: %(photos)s };
     function vue(x) { return JSON.parse(JSON.stringify(x)); }
     var vraiFetch = window.fetch.bind(window);
     window.fetch = function (url, o) {
@@ -72,7 +73,7 @@ SERVEUR = """
 """
 
 
-def navigateur(role, valideur=False, notes=None, page=PAGE, lang='fr'):
+def navigateur(role, valideur=False, notes=None, page=PAGE, lang='fr', photos=None):
     o = Options()
     o.add_argument('--headless=new')
     o.add_argument('--window-size=1300,1600')
@@ -82,7 +83,7 @@ def navigateur(role, valideur=False, notes=None, page=PAGE, lang='fr'):
     user = {'token': 'TOK', 'role': role, 'name': 'Testeur', 'email': 't@e'}
     d.execute_cdp_cmd('Page.addScriptToEvaluateOnNewDocument', {'source': SERVEUR % {
         'user': json.dumps(json.dumps(user)), 'lang': json.dumps(lang), 'notes': json.dumps(notes or []),
-        'valideur': 'true' if valideur else 'false'}})
+        'valideur': 'true' if valideur else 'false', 'photos': json.dumps(photos or {})}})
     d.get(page)
     time.sleep(2.0)
     return d
@@ -342,6 +343,69 @@ def main():
     d = navigateur('technicien', notes=[EXEMPLE, AUTRE_FICHE], page=PAGE + '?fiche=v3')
     try:
         v("lien direct ?fiche=v3 : la fiche s'ouvre", d.execute_script("return [...document.querySelectorAll('.in-card.open')].map(c=>c.dataset.id)") == ['v3'])
+    finally:
+        d.quit()
+
+    print('7) Galerie : photo precedente / suivante sans fermer (Steve, 2026-11-10)')
+    import base64, io
+    def jpeg(c):
+        b = io.BytesIO(); Image.new('RGB', (40, 30), c).save(b, 'JPEG'); return base64.b64encode(b.getvalue()).decode()
+    PH = {'PHOTO_A0000001': jpeg('red'), 'PHOTO_B0000002': jpeg('green'), 'PHOTO_C0000003': jpeg('blue')}
+    AVEC = dict(EXEMPLE, photos=list(PH))
+    d = navigateur('technicien', notes=[AVEC], photos=PH)
+    try:
+        d.find_element(By.CSS_SELECTOR, '.in-card .in-head').click()
+        time.sleep(1.0)
+        src = lambda: d.execute_script("return document.querySelector('#in-boite img').getAttribute('src')||''")
+        cpt = lambda: d.find_element(By.ID, 'boite-compteur').text
+        vign = d.find_elements(By.CSS_SELECTOR, '.in-card.open .in-photo')
+        vign[1].click()
+        time.sleep(0.4)
+        v('ouverture sur la photo cliquee (2 / 3)', d.find_element(By.ID, 'in-boite').is_displayed() and cpt() == '2 / 3' and PH['PHOTO_B0000002'] in src(), cpt())
+        d.find_element(By.ID, 'boite-suiv').click(); time.sleep(0.3)
+        v('fleche suivante : 3 / 3, sans fermer', d.find_element(By.ID, 'in-boite').is_displayed() and cpt() == '3 / 3' and PH['PHOTO_C0000003'] in src(), cpt())
+        d.find_element(By.ID, 'boite-suiv').click(); time.sleep(0.3)
+        v('apres la derniere : retour a la 1re', cpt() == '1 / 3' and PH['PHOTO_A0000001'] in src(), cpt())
+        d.find_element(By.ID, 'boite-prec').click(); time.sleep(0.3)
+        v('fleche precedente : 3 / 3', cpt() == '3 / 3', cpt())
+        d.find_element(By.TAG_NAME, 'body').send_keys(Keys.ARROW_LEFT); time.sleep(0.3)
+        v('clavier fleche gauche : 2 / 3', cpt() == '2 / 3', cpt())
+        d.find_element(By.TAG_NAME, 'body').send_keys(Keys.ARROW_RIGHT); time.sleep(0.3)
+        v('clavier fleche droite : 3 / 3', cpt() == '3 / 3', cpt())
+        tr = lambda: d.execute_script("return document.querySelector('#in-boite img').style.transform")
+        d.find_element(By.ID, 'boite-zplus').click(); time.sleep(0.2)
+        v('bouton + : photo agrandie (scale 1.5)', 'scale(1.5)' in tr(), tr())
+        d.find_element(By.ID, 'boite-zplus').click(); time.sleep(0.2)
+        d.find_element(By.ID, 'boite-zmoins').click(); time.sleep(0.2)
+        v('bouton - : revient a 1.5', 'scale(1.5)' in tr(), tr())
+        d.execute_script("var i=document.querySelector('#in-boite img'),r=i.getBoundingClientRect();i.dispatchEvent(new WheelEvent('wheel',{deltaY:-100,clientX:r.left+r.width/2,clientY:r.top+r.height/2,bubbles:true,cancelable:true}))")
+        time.sleep(0.2)
+        v('molette : zoom plus fort (1.8)', 'scale(1.8)' in tr(), tr())
+        d.find_element(By.ID, 'boite-suiv').click(); time.sleep(0.3)
+        v('photo suivante : zoom remis a zero', tr() == '' and cpt() == '1 / 3', tr())
+        d.execute_script("var i=document.querySelector('#in-boite img'),r=i.getBoundingClientRect();i.dispatchEvent(new MouseEvent('dblclick',{clientX:r.left+r.width/2,clientY:r.top+r.height/2,bubbles:true}))")
+        time.sleep(0.2)
+        v('double-clic : zoom 2.5', 'scale(2.5)' in tr(), tr())
+        d.execute_script("var i=document.querySelector('#in-boite img'),r=i.getBoundingClientRect();i.dispatchEvent(new MouseEvent('dblclick',{clientX:r.left+r.width/2,clientY:r.top+r.height/2,bubbles:true}))")
+        time.sleep(0.2)
+        v('2e double-clic : retour a la taille normale', tr() == '', tr())
+        d.find_element(By.CSS_SELECTOR, '#in-boite img').click(); time.sleep(0.2)
+        v('clic sur la photo : ne ferme pas', d.find_element(By.ID, 'in-boite').is_displayed())
+        d.find_element(By.ID, 'boite-ferme').click(); time.sleep(0.3)
+        v('bouton X : ferme', not d.find_element(By.ID, 'in-boite').is_displayed())
+        vign[0].click(); time.sleep(0.3)
+        d.find_element(By.TAG_NAME, 'body').send_keys(Keys.ESCAPE); time.sleep(0.3)
+        v('Echap : ferme', not d.find_element(By.ID, 'in-boite').is_displayed())
+        v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+    UNE = dict(EXEMPLE, photos=['PHOTO_A0000001'])
+    d = navigateur('technicien', notes=[UNE], photos={'PHOTO_A0000001': PH['PHOTO_A0000001']})
+    try:
+        d.find_element(By.CSS_SELECTOR, '.in-card .in-head').click(); time.sleep(1.0)
+        d.find_element(By.CSS_SELECTOR, '.in-card.open .in-photo').click(); time.sleep(0.3)
+        v('une seule photo : pas de fleches ni de compteur', not d.find_element(By.ID, 'boite-prec').is_displayed()
+          and not d.find_element(By.ID, 'boite-suiv').is_displayed() and not d.find_element(By.ID, 'boite-compteur').is_displayed())
     finally:
         d.quit()
 

@@ -105,6 +105,21 @@
         .in-up input { display: none; }
         .in-boite { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.88); display: none; align-items: center; justify-content: center; padding: 16px; cursor: zoom-out; }
         .in-boite img { max-width: 100%; max-height: 100%; border-radius: 6px; }
+        /* Galerie : photo precedente / suivante sans fermer (Steve, 2026-11-10) */
+        .in-boite .bt { position: absolute; background: rgba(30,30,30,.75); color: #fff; border: 1px solid #555; border-radius: 50%;
+                        width: 48px; height: 48px; font-size: 1.6rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .in-boite .bt:hover { background: #FF8C00; color: #1a1a1a; border-color: #FF8C00; }
+        .in-boite .prec { left: 12px; top: 50%; transform: translateY(-50%); }
+        .in-boite .suiv { right: 12px; top: 50%; transform: translateY(-50%); }
+        .in-boite .ferme { right: 12px; top: 12px; width: 40px; height: 40px; font-size: 1.1rem; }
+        .in-boite { touch-action: none; overflow: hidden; }
+        .in-boite img { transform-origin: center center; touch-action: none; user-select: none; -webkit-user-drag: none; cursor: zoom-in; }
+        .in-boite img.zoome { cursor: grab; }
+        .in-boite img.tire { cursor: grabbing; }
+        .in-boite .zplus { right: 12px; bottom: 12px; width: 40px; height: 40px; }
+        .in-boite .zmoins { right: 60px; bottom: 12px; width: 40px; height: 40px; }
+        .in-boite .compteur { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); color: #ddd; font-size: .85rem;
+                              background: rgba(30,30,30,.75); padding: 3px 10px; border-radius: 10px; }
         .pl-btn { display:inline-block; background:#FF8C00; color:#1a1a1a; text-decoration:none; border-radius:10px; padding:12px 22px; font-weight:800; }
     </style>
 </head>
@@ -207,7 +222,13 @@
             </div>
         </div>
     </main>
-    <div class="in-boite" id="in-boite"><img alt=""></div>
+    <div class="in-boite" id="in-boite"><img alt="">
+        <button type="button" class="bt prec" id="boite-prec" aria-label="Photo précédente">‹</button>
+        <button type="button" class="bt suiv" id="boite-suiv" aria-label="Photo suivante">›</button>
+        <button type="button" class="bt ferme" id="boite-ferme" aria-label="Fermer">✕</button>
+        <button type="button" class="bt zmoins" id="boite-zmoins" aria-label="Dézoomer">−</button>
+        <button type="button" class="bt zplus" id="boite-zplus" aria-label="Zoomer">+</button>
+        <div class="compteur" id="boite-compteur"></div></div>
 
     <script src="js/config.js?v=2"></script>
     <script src="js/perm-access.js?v=4"></script>
