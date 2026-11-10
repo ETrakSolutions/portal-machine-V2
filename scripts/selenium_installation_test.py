@@ -423,6 +423,37 @@ def main():
         finally:
             d.quit()
 
+    print('9) Proposition de modification : ce qui change (Steve, 2026-11-10)')
+    import base64 as _b, io as _io
+    def _j(c):
+        bb = _io.BytesIO(); Image.new('RGB', (40, 30), c).save(bb, 'JPEG'); return _b.b64encode(bb.getvalue()).decode()
+    PH9 = {'PHOTO_A0000001': _j('red'), 'PHOTO_B0000002': _j('green'), 'PHOTO_C0000003': _j('blue')}
+    ORIG = dict(EXEMPLE, photos=['PHOTO_A0000001', 'PHOTO_B0000002'])
+    PROP = dict(EXEMPLE, id='p1', statut='brouillon', remplace='v1', temps='7 h', photos=['PHOTO_A0000001', 'PHOTO_C0000003'],
+                texte='Installer le capteur sur la flèche avec deux boulons', pieges='',
+                pieces=[{'txt': 'Z03B-0041 — Harnais', 'qte': '2'}], en=dict(EXEMPLE['en'], pieges=''))
+    d = navigateur('technicien', valideur=True, notes=[ORIG, PROP], photos=PH9)
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"p1\"] .in-head').click()")
+        time.sleep(1.0)
+        bloc = d.find_elements(By.CSS_SELECTOR, '.in-card[data-id="p1"] .in-diff')
+        tx9 = bloc[0].text if bloc else ''
+        v('bloc des changements visible sur la proposition', len(bloc) == 1 and 'Ce qui change' in tx9, tx9[:200])
+        v('resume : temps 6 h -> 7 h', '6 h' in tx9 and '7 h' in tx9)
+        v('resume : informations, mots ajoutes', 'Informations' in tx9 and 'ajouté' in tx9)
+        v('resume : pieges retires', 'Pièges connus' in tx9)
+        v('resume : photos 1 ajoutee, 1 retiree', '1 ajoutée(s), 1 retirée(s)' in tx9, tx9)
+        v('resume : piece modifiee (qte 1 -> 2)', 'Pièces' in tx9)
+        ins = d.execute_script("return [...document.querySelectorAll('.in-card[data-id=\"p1\"] .in-diff ins')].map(x=>x.textContent).join('|')")
+        v('texte ajoute en vert (ins)', 'deux boulons' in ins, ins)
+        v('photo ajoutee (vert) et retiree (rouge)', d.execute_script("return [document.querySelectorAll('.in-card[data-id=\"p1\"] .in-diff .in-photo.ajout').length, document.querySelectorAll('.in-card[data-id=\"p1\"] .in-diff .in-photo.retrait').length]") == [1, 1])
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] .in-head').click()")
+        time.sleep(0.5)
+        v('fiche publiee : pas de bloc de changements', not d.find_elements(By.CSS_SELECTOR, '.in-card[data-id="v1"] .in-diff'))
+        v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+
     print()
     print('RESULTAT: %s (%d OK, %d ECHEC)' % ('OK' if not ko else 'ECHEC', len(ok), len(ko)))
     sys.exit(1 if ko else 0)

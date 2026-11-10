@@ -316,13 +316,98 @@
             return '<div class="in-photo charge" data-pid="' + esc(pid) + '">' + (retirable ? '<button type="button" class="x" title="' + esc(tx('Retirer', 'Remove')) + '">✕</button>' : '') + '</div>';
         }).join('');
     }
+    // ---------- proposition de modification : differences avec la fiche publiee ----------
+    // Comme les « suggestions » d'un traitement de texte : texte ajoute en vert, retire en rouge
+    // barre, photos et pieces ajoutees / retirees, et un resume en tete (Steve, 2026-11-10).
+    function mots(t) { return String(t || '').match(/\s+|[^\s]+/g) || []; }
+    function diffMots(a, b) {
+        var A = mots(a), B = mots(b), n = A.length, m = B.length;
+        if (n * m > 4000000) return null;                       // texte enorme : pas de detail
+        var L = [];
+        for (var i = 0; i <= n; i++) { L.push(new Uint16Array(m + 1)); }
+        for (i = n - 1; i >= 0; i--) for (var j = m - 1; j >= 0; j--)
+            L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+        var out = [], aj = 0, re = 0; i = 0; j = 0;
+        var pousse = function (k, t) { var d = out[out.length - 1]; if (d && d.k === k) d.t += t; else out.push({ k: k, t: t }); };
+        while (i < n && j < m) {
+            if (A[i] === B[j]) { pousse('=', A[i]); i++; j++; }
+            else if (L[i + 1][j] >= L[i][j + 1]) { pousse('-', A[i]); if (/\S/.test(A[i])) re++; i++; }
+            else { pousse('+', B[j]); if (/\S/.test(B[j])) aj++; j++; }
+        }
+        for (; i < n; i++) { pousse('-', A[i]); if (/\S/.test(A[i])) re++; }
+        for (; j < m; j++) { pousse('+', B[j]); if (/\S/.test(B[j])) aj++; }
+        return { parts: out, ajout: aj, retrait: re };
+    }
+    // Rendu : on garde 12 mots de contexte autour de chaque changement, le reste est replie (« … »).
+    function rendreDiff(d) {
+        var h = '';
+        d.parts.forEach(function (p, k) {
+            if (p.k === '+') h += '<ins>' + esc(p.t) + '</ins>';
+            else if (p.k === '-') h += '<del>' + esc(p.t) + '</del>';
+            else {
+                var w = mots(p.t), premier = k === 0, dernier = k === d.parts.length - 1;
+                if (w.length <= 48) { h += esc(p.t); return; }
+                var debut = premier ? '' : w.slice(0, 24).join(''), fin = dernier ? '' : w.slice(-24).join('');
+                h += esc(debut) + '<span class="vu"> … </span>' + esc(fin);
+            }
+        });
+        return h;
+    }
+    function changementsDe(n, o) {
+        var r = { resume: [], blocs: '' };
+        var champ = function (lib, a, b) {
+            if ((a || '') === (b || '')) return;
+            r.resume.push(tx('{c} : « {a} » → « {b} »', '{c}: "{a}" → "{b}"', { c: lib, a: esc(a || '—'), b: esc(b || '—') }));
+        };
+        champ(tx('Machine', 'Machine'), o.type + ' ' + o.fabricant + ' ' + o.modele, n.type + ' ' + n.fabricant + ' ' + n.modele);
+        champ(tx('Produit', 'Product'), nomProduit(o.produit, o.type) + (o.option ? ' (' + nomOption(o.produit, o.option) + ')' : ''),
+              nomProduit(n.produit, n.type) + (n.option ? ' (' + nomOption(n.produit, n.option) + ')' : ''));
+        champ(tx('Temps d\'installation', 'Installation time'), o.temps, n.temps);
+        [['texte', tx('Informations d\'installation', 'Installation information')], ['pieges', tx('Pièges connus', 'Known pitfalls')]].forEach(function (c) {
+            var a = txt(o, c[0]), b = txt(n, c[0]);
+            if (a === b) return;
+            var d = diffMots(a, b);
+            if (!d) { r.resume.push(esc(c[1]) + ' : ' + esc(tx('modifié', 'changed'))); return; }
+            r.resume.push(esc(c[1]) + ' : ' + esc(tx('{a} mot(s) ajouté(s), {r} retiré(s)', '{a} word(s) added, {r} removed', { a: d.ajout, r: d.retrait })));
+            r.blocs += '<div class="bloc"><b>' + esc(c[1]) + '</b><div class="txt">' + rendreDiff(d) + '</div></div>';
+        });
+        var pa = o.photos || [], pb = n.photos || [];
+        var ajP = pb.filter(function (x) { return pa.indexOf(x) < 0; }), reP = pa.filter(function (x) { return pb.indexOf(x) < 0; });
+        var ordre = !ajP.length && !reP.length && pa.join() !== pb.join();
+        if (ajP.length || reP.length) {
+            r.resume.push(esc(tx('Photos : {a} ajoutée(s), {r} retirée(s)', 'Photos: {a} added, {r} removed', { a: ajP.length, r: reP.length })));
+            r.blocs += '<div class="bloc"><b>' + esc(tx('Photos (vert = ajoutée, rouge = retirée)', 'Photos (green = added, red = removed)')) + '</b><div class="in-photos">' +
+                vignettes(ajP).replace(/class="in-photo charge"/g, 'class="in-photo charge ajout"') +
+                vignettes(reP).replace(/class="in-photo charge"/g, 'class="in-photo charge retrait"') + '</div></div>';
+        } else if (ordre) r.resume.push(esc(tx('Photos : ordre changé', 'Photos: order changed')));
+        var cle = function (p) { return (p.txt || '').trim() + ' ×' + (p.qte || '1'); };
+        var ka = (o.pieces || []).map(cle), kb = (n.pieces || []).map(cle);
+        var ajX = kb.filter(function (x) { return ka.indexOf(x) < 0; }), reX = ka.filter(function (x) { return kb.indexOf(x) < 0; });
+        if (ajX.length || reX.length) {
+            r.resume.push(esc(tx('Pièces : {a} ajoutée(s) ou modifiée(s), {r} retirée(s)', 'Parts: {a} added or changed, {r} removed', { a: ajX.length, r: reX.length })));
+            r.blocs += '<div class="bloc"><b>' + esc(tx('Pièces et harnais', 'Parts and harnesses')) + '</b><div class="avant-apres">' +
+                ajX.map(function (x) { return '<div><ins>+ ' + esc(x) + '</ins></div>'; }).join('') +
+                reX.map(function (x) { return '<div><del>− ' + esc(x) + '</del></div>'; }).join('') + '</div></div>';
+        }
+        return r;
+    }
+    function blocDiff(n) {
+        var o = n.remplace ? original(n.remplace) : null;
+        if (!o || n.statut !== 'brouillon') return '';
+        var c = changementsDe(n, o);
+        return '<div class="in-diff"><h4>✎ ' + esc(tx('Ce qui change par rapport à la fiche publiée', 'What changes compared to the published note')) + '</h4>' +
+            (c.resume.length ? '<ul class="resume">' + c.resume.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>'
+                             : '<div class="resume">' + esc(tx('Aucune différence avec la fiche publiée.', 'No difference with the published note.')) + '</div>') +
+            c.blocs + '</div>';
+    }
+
     function carte(n) {
         var revue = ETAT.peutValider && n.statut === 'brouillon', lAutre = enAnglais() ? 'FR' : 'EN', manque = tx('— à traduire —', '— to translate —');
         var autreLigne = function (t) { return revue ? '<div class="in-autre"><b>' + lAutre + '</b>' + esc(t || manque) + '</div>' : ''; };
         var tags = '<span class="in-tag type">' + esc(n.type) + '</span> <span class="in-tag prod">' + esc(nomProduit(n.produit, n.type)) + '</span>' +
             (n.statut === 'brouillon' ? ' <span class="in-tag brouillon">' + esc(n.remplace ? tx('Proposition de modification', 'Proposed change') : tx('Brouillon à valider', 'Draft to approve')) + '</span>' : '') +
             (n.bilingue === false ? ' <span class="in-tag en-manque">' + esc(tx('Traduction incomplète', 'Incomplete translation')) + '</span>' : '');
-        var corps = '';
+        var corps = blocDiff(n);
         if (n.temps) corps += '<div class="in-sec">⏱ ' + esc(tx('Temps d\'installation', 'Installation time')) + ' : <span style="color:#eee;font-weight:400">' + esc(n.temps) + '</span></div>';
         if (txt(n, 'texte')) corps += '<div class="in-sec">' + esc(tx('Informations d\'installation', 'Installation information')) + '</div>' +
             '<div class="in-etape"><div class="in-txt">' + esc(txt(n, 'texte')) + '</div>' + autreLigne(txt(n, 'texte', true)) + '</div>';
