@@ -697,9 +697,19 @@
         var pieces = [].map.call($('e-pieces').children, function (r) { return { txt: r.querySelector('.p-txt').value.trim(), qte: r.querySelector('.p-qte').value || '1' }; })
             .filter(function (p) { return p.txt; });
         var val = function (k) { var v = $('e-' + k).value; return v === AUTRE ? $('e-' + k + '-autre').value.trim() : v; };
-        return { type: val('type'), fabricant: val('fab'), modele: baseModele(val('modele')), produit: $('e-produit').value, option: $('e-option').value,
+        var x = { type: val('type'), fabricant: val('fab'), modele: baseModele(val('modele')), produit: $('e-produit').value, option: $('e-option').value,
                  temps: $('e-temps').value.trim(), texte: $('e-texte').value.trim(), photos: photos, pieces: pieces, pieges: $('e-pieges').value.trim(),
                  en: { texte: $('e-texte-en').value.trim(), pieges: $('e-pieges-en').value.trim() } };
+        // Champ vide dans la langue de l'ecran = on veut l'effacer (Steve, 2026-11-10). L'autre langue
+        // est cachee : si on la laisse, le serveur la retraduit et le texte revient. On la vide donc
+        // aussi, sauf si elle a ete modifiee a la main pendant cette edition.
+        var o = ETAT.edition;
+        if (o) ['texte', 'pieges'].forEach(function (k) {
+            var ofr = o[k] || '', oen = enDe(o)[k] || '';
+            if (enAnglais()) { if (!x.en[k] && oen && x[k] === ofr) x[k] = ''; }
+            else if (!x[k] && ofr && x.en[k] === oen) x.en[k] = '';
+        });
+        return x;
     }
     // Fiche deja existante pour la meme machine et le meme produit (Steve, 2026-11-10) :
     // meme type, fabricant, modele de base, produit et option. On ignore la fiche en cours

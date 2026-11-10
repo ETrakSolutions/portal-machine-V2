@@ -409,6 +409,20 @@ def main():
     finally:
         d.quit()
 
+    print('8) Vider un champ efface aussi la traduction cachee (Steve, 2026-11-10)')
+    for lang, champ, autre in (('fr', 'e-pieges', 'en'), ('en', 'e-pieges-en', 'fr')):
+        d = navigateur('technicien', valideur=True, notes=[EXEMPLE], lang=lang)
+        try:
+            d.execute_script("document.querySelector('.in-card [data-act=modifier]').click()")
+            time.sleep(0.5)
+            d.find_element(By.ID, champ).clear()
+            d.find_element(By.ID, 'b-enreg').click(); time.sleep(0.6)
+            s8 = appels(d, 'saveinst'); n8 = s8[0]['note'] if s8 else {}
+            v(lang + ' : pieges vides dans les 2 langues', n8.get('pieges') == '' and n8.get('en', {}).get('pieges') == '', n8.get('pieges', '?') + ' | ' + n8.get('en', {}).get('pieges', '?'))
+            v(lang + ' : informations intactes', n8.get('texte') == EXEMPLE['texte'] and n8.get('en', {}).get('texte') == EXEMPLE['en']['texte'])
+        finally:
+            d.quit()
+
     print()
     print('RESULTAT: %s (%d OK, %d ECHEC)' % ('OK' if not ko else 'ECHEC', len(ok), len(ko)))
     sys.exit(1 if ko else 0)
