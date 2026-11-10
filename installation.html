@@ -72,6 +72,7 @@
         .in-msg { text-align: center; color: #bbb; padding: 3rem 1rem; }
         .in-note { color: #9aa7b2; font-size: 0.8rem; }
         .in-alert { background: rgba(231,76,60,.12); border: 1px solid rgba(231,76,60,.5); color: #ffb3aa; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin: 8px 0; display: none; }
+        .in-alert a.in-lien { color: #FFB347; font-weight: 600; text-decoration: underline; cursor: pointer; }
         .in-ok { background: rgba(46,204,113,.12); border: 1px solid rgba(46,204,113,.5); color: #9ff0bf; border-radius: 8px; padding: 8px 12px; font-size: 0.85rem; margin-bottom: 10px; display: none; }
         .in-edit { background: #1f1f1f; border: 1px solid #FF8C00; border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; display: none; }
         .in-edit h2 { color: #fff; font-size: 1rem; margin: 0 0 10px; }
@@ -152,6 +153,7 @@
                         <div class="in-f" id="w-produit"><label><span data-tx="Produit|Product">Produit</span> <span class="req">*</span></label><select id="e-produit"></select></div>
                         <div class="in-f"><label data-tx="Option (facultatif)|Option (optional)">Option (facultatif)</label><select id="e-option"></select></div>
                     </div>
+                    <div class="in-alert" id="e-doublon"></div>
                     <div class="in-ennote" data-tx="Écrivez dans la langue de l'écran : l'autre langue est traduite automatiquement à l'enregistrement. Pour voir ou corriger la traduction, changez la langue de l'écran (FR / EN). Le validateur révise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in the screen language: the other language is translated automatically when saving. To see or correct the translation, switch the screen language (FR / EN). The approver reviews the translation. No section is mandatory for now.">Écrivez dans votre langue.</div>
 
                     <h3 data-tx="Informations d'installation|Installation information">Informations d'installation</h3>

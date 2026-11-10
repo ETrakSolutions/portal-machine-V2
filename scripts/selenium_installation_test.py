@@ -64,6 +64,8 @@ SERVEUR = """
         else if (b.action === 'getinstphoto') r = S.photos[b.id] ? { ok: true, type: 'image/jpeg', data: S.photos[b.id] } : { error: 'not found' };
         else if (b.action === 'getsav') r = { ok: true, sav: { pieces: [['Z03B-0041', 'Harnais Link-Belt/Case']] } };
         else r = { ok: true };
+        // window.__lent (ms) : reponse de saveinst retardee, pour le test d'enregistrements qui se chevauchent
+        if (b.action === 'saveinst' && window.__lent) return new Promise(function (ok) { setTimeout(function () { ok({ json: function () { return Promise.resolve(r); } }); }, window.__lent); });
         return Promise.resolve({ json: function () { return Promise.resolve(r); } });
     };
     window.confirm = function () { return true; };
@@ -283,6 +285,63 @@ def main():
         time.sleep(0.3)
         ent = d.execute_script("return document.querySelector('#f-fab-resultats .filtre-entete').textContent")
         v('anglais : en-tete de la liste filtree', 'manufacturer' in ent, ent)
+    finally:
+        d.quit()
+
+    print('6) Fiches en double (Steve, 2026-11-10)')
+    AUTRE_FICHE = dict(EXEMPLE, id='v3', fabricant='Hitachi', modele='ZX490LC-6', option='')
+    d = navigateur('technicien', valideur=True, notes=[EXEMPLE, AUTRE_FICHE])
+    try:
+        d.find_element(By.ID, 'b-nouvelle').click()
+        time.sleep(0.4)
+        choisir(d, 'e-type', 'Excavatrice'); choisir(d, 'e-fab', 'Case'); choisir(d, 'e-modele', 'CX19')
+        choisir(d, 'e-produit', 'limiteur'); choisir(d, 'e-option', 'hauteur_rotation')
+        time.sleep(0.3)
+        z = d.find_element(By.ID, 'e-doublon')
+        v('avis des le choix de la machine et du produit', z.is_displayed() and 'existe déjà' in z.text and 'Case CX19' in z.text, z.text)
+        v('avis : lien vers la fiche existante', d.execute_script("var a=document.querySelector('#e-doublon a[data-fiche]'); return a && a.dataset.fiche==='v1' && /[?]fiche=v1$/.test(a.getAttribute('href'))"))
+        choisir(d, 'e-option', 'hauteur')
+        time.sleep(0.3)
+        v("autre option : plus d'avis", not z.is_displayed())
+        choisir(d, 'e-option', 'hauteur_rotation')
+        d.find_element(By.ID, 'e-texte').send_keys('Doublon')
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.6)
+        v('Enregistrer : rien envoye au serveur', not appels(d, 'saveinst'))
+        al = d.find_element(By.ID, 'e-alert')
+        v('Enregistrer : message au demandeur avec le lien', al.is_displayed() and 'modifiez la fiche originale' in al.text
+          and d.execute_script("return !!document.querySelector('#e-alert a[data-fiche=\"v1\"]')"), al.text)
+        d.find_element(By.CSS_SELECTOR, '#e-alert a[data-fiche]').click()
+        time.sleep(0.6)
+        v('lien : retour a la liste, fiche originale ouverte', d.find_element(By.ID, 'in-vue-liste').is_displayed()
+          and d.execute_script("return [...document.querySelectorAll('.in-card.open')].map(c=>c.dataset.id)") == ['v1'])
+        v('lien : adresse ?fiche=v1 (partageable)', d.execute_script("return location.search") == '?fiche=v1')
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] [data-act=modifier]').click()")
+        time.sleep(0.4)
+        v("modifier l'originale : aucun avis de doublon", not d.find_element(By.ID, 'e-doublon').is_displayed())
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.6)
+        s6 = appels(d, 'saveinst')
+        v("modifier l'originale : enregistree sur la meme fiche", len(s6) == 1 and s6[0]['note'].get('id') == 'v1', s6)
+        # Enregistrement lent + autre fiche ouverte avant la reponse (cause du doublon PC138)
+        d.execute_script("window.__lent = 1500")
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] [data-act=modifier]').click()")
+        time.sleep(0.4)
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.2)
+        d.execute_script("document.querySelector('.in-card[data-id=\"v3\"] [data-act=modifier]').click()")
+        time.sleep(0.3)
+        v('enregistrement en cours : autre fiche refusee, message', d.find_element(By.ID, 'in-ok').is_displayed()
+          and 'Enregistrement en cours' in d.find_element(By.ID, 'in-ok').text)
+        time.sleep(2.0)
+        v('apres la reponse : toujours 2 fiches, aucune creee', len(titres(d)) == 2 and len(appels(d, 'saveinst')) == 2
+          and all(a['note'].get('id') == 'v1' for a in appels(d, 'saveinst')), titres(d))
+        v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+    d = navigateur('technicien', notes=[EXEMPLE, AUTRE_FICHE], page=PAGE + '?fiche=v3')
+    try:
+        v("lien direct ?fiche=v3 : la fiche s'ouvre", d.execute_script("return [...document.querySelectorAll('.in-card.open')].map(c=>c.dataset.id)") == ['v3'])
     finally:
         d.quit()
 
