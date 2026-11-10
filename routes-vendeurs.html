@@ -98,6 +98,8 @@ dialog .fermer{float:right}
 .contacts .ct{padding:4px 0;border-top:1px solid var(--clair)}
 .contacts a{color:var(--accent)}
 .mesroutes{border:1px solid var(--bord);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:#fff}
+.hors-route{border:1px solid var(--baisse);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:#fdf0ee;font-size:13.5px}
+.hors-route .ligne{margin-top:6px;flex-wrap:wrap}
 .sugg-route{border:1px solid var(--accent);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:var(--accent-pale);font-size:13.5px}
 .sugg-route h3{margin:8px 0 4px;color:var(--accent)}
 .sugg-route .sg{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid var(--bord)}
@@ -243,6 +245,7 @@ table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-spa
       <button class="btn sec" id="b-annuler" disabled title="Revenir à la route d'avant la dernière modification">↶ Annuler</button>
       <button class="btn sec" id="b-vider" title="Retirer tous les arrêts et recommencer">Recommencer la route</button>
     </div>
+    <div id="hors-route"></div>
     <div id="sugg-route"></div>
     <div id="route"><div class="vide">Aucun arrêt. Cochez des clients dans la liste, ou utilisez « Ajouter les 8 plus prioritaires ».</div></div>
     <div id="bloc-ajouts" hidden>
@@ -922,16 +925,48 @@ function calculer(){
   const h = route/75 + etat.route.length*etat.minv/60;
   return {route, h};
 }
+// La route appartient au territoire, pas au secteur : changer de province ou de region
+// garde les arrets deja choisis (voulu : une route peut traverser deux regions). Mais un
+// vendeur qui change de province ne le voit pas (Robert 2026-11-10 : route BC qui gardait
+// 6 arrets de l'Alberta). On annonce donc les arrets hors du secteur, sans les retirer d'office.
+let horsGarde = "";
+function nomSecteur(){
+  if (etat.mode==="ray") return "moins de "+etat.rayon+" km de "+((centreCourant&&centreCourant.nom)||etat.centre);
+  return etat.region || nomProv(etat.prov);
+}
+function arretsHors(){
+  if (etat.mode==="reg" && !etat.region && !etat.prov) return [];
+  if (etat.mode==="ray" && !centreCourant) return [];
+  return etat.route.filter(i=>{ const r = RECS[i]; if (!r) return false;
+    if (etat.mode==="ray") return !!r.lat && km(centreCourant, r) > etat.rayon;
+    if (etat.region) return !!r.reg && r.reg!==etat.region;
+    return !!r.prov && r.prov!==etat.prov; });
+}
+function dessinerHors(hors){
+  const cle = nomSecteur()+"|"+hors.slice().sort((a,b)=>a-b).join(",");
+  if (!hors.length || cle===horsGarde) { $("hors-route").innerHTML = ""; return; }
+  const par = {}; hors.forEach(i=>{ const r = RECS[i]; const n = etat.region||etat.mode==="ray" ? (r.reg||r.ville||"?") : nomProv(r.prov);
+    par[n] = (par[n]||0)+1; });
+  const ou = Object.keys(par).map(n=>esc(n)+(Object.keys(par).length>1?" : "+par[n]:"")).join(", ");
+  $("hors-route").innerHTML = `<div class="hors-route"><b>⚠ ${hors.length} arrêt${hors.length>1?"s":""} hors de ${esc(nomSecteur())}</b> (${ou}).
+    <div class="sous">Ils étaient déjà dans la route avant le changement de secteur. Marqués « hors secteur » ci-dessous.</div>
+    <div class="ligne"><button class="btn" id="hors-x">Retirer ${hors.length>1?"ces "+hors.length+" arrêts":"cet arrêt"}</button>
+    <button class="btn sec" id="hors-ok" title="Garder ces arrêts : la route traverse volontairement deux secteurs">Les garder</button></div></div>`;
+  $("hors-x").onclick = ()=>{ memoriser(); const s = new Set(hors); etat.route = etat.route.filter(i=>!s.has(i));
+    majCarteCadre=false; maj(); };
+  $("hors-ok").onclick = ()=>{ horsGarde = cle; dessinerHors(hors); };
+}
 function dessinerRoute(){
   const n = etat.route.length;
   const {route,h} = calculer();
   $("t-arrets").textContent = n; $("t-km").textContent = Math.round(route).toLocaleString("fr-CA");
   $("t-h").textContent = n ? (Math.floor(h)+" h "+String(Math.round((h%1)*60)).padStart(2,"0")) : "0 h";
   $("t-aide").textContent = n ? ("Estimation : distance à vol d'oiseau × 1,3, à 75 km/h, plus "+etat.minv+" min par visite."+(villePt(etat.depart) ? (villePt(etat.arrivee) && cleVille(etat.arrivee)!==cleVille(etat.depart) ? " Départ de "+villePt(etat.depart).nom+", arrivée à "+villePt(etat.arrivee).nom+"." : " Aller-retour depuis "+villePt(etat.depart).nom+".") : (villePt(etat.arrivee) ? " Arrivée à "+villePt(etat.arrivee).nom+"." : " Sans point de départ : de la 1re à la dernière visite."))+(h>10?" Plus de 10 h : pensez à couper en deux jours.":"")) : "";
+  const hors = arretsHors(), horsS = new Set(hors); dessinerHors(hors);
   $("route").innerHTML = n ? etat.route.map((i,k)=>{ const r=RECS[i];
     return `<div class="arret"><span class="no">${k+1}</span><div><span class="nom" data-f="${i}">${esc(r.nom)}</span>
       <div class="sous">${esc([r.rue, r.ville].filter(Boolean).join(", "))}${r.lat&&r.prec!=="adresse"&&r.prec!=="rue"?' · <span title="Pas d’adresse exacte : le point est au centre de la ville. Google Maps utilisera quand même l’adresse.">position approx.</span>':""}</div>
-      <div class="sous">${ST[r.st].lib}${r.cl?" · "+r.cl:""}${r.sens==="baisse"?' · <span class="baisse">en baisse</span>':r.sens==="hausse"?' · <span class="hausse">en hausse</span>':""}${r.lat?"":" · non localisé"}</div></div>
+      <div class="sous">${ST[r.st].lib}${r.cl?" · "+r.cl:""}${r.sens==="baisse"?' · <span class="baisse">en baisse</span>':r.sens==="hausse"?' · <span class="hausse">en hausse</span>':""}${r.lat?"":" · non localisé"}${horsS.has(i)?' · <span class="baisse">hors secteur</span>':""}</div></div>
       <button class="x" data-x="${i}" title="Retirer cet arrêt de la route">Retirer</button></div>`; }).join("")
     : '<div class="vide">Aucun arrêt. Cochez des clients dans la liste, ou utilisez « Ajouter les 8 plus prioritaires ».</div>';
   ["b-optim","b-gmaps","b-waze","b-csv","b-vider"].forEach(id=>$(id).disabled=!n);
