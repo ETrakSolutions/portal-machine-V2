@@ -88,49 +88,39 @@
     };
   }
 
-  // Defauts Nacelle -> { code: etat }. Structure a TROIS niveaux (regle metier
-  // confirmee par Jacquot le 2026-08-05) :
-  //   1. 0900 = KIT DE BASE, obligatoire sur TOUTE nacelle, articulee comprise ;
-  //   2. options principales : 0901 Hauteur, 0902 Rotation ;
-  //   3. options secondaires : 0903 Articule, 0904 Gestion G-D, 0905 Drain...
-  //      Elles s'AJOUTENT au kit de base, elles ne le remplacent pas.
-  //
-  // Correction du 2026-08-05 : cette fonction mettait auparavant 0900 = 'na' et
-  // 0903 = 'r' sur les fleches articulees, donc supprimait le kit de base et
-  // facturait 1 190 $ au lieu de 3 430 $ sur 948 entrees (79 modeles). Elle
-  // contredisait aussi les valeurs 'def' du catalogue _bom_labels (0900 = r,
-  // le reste = j), d ou un jeton different entre la soumission et les autres
-  // tuiles. Les deux sources disent desormais la meme chose.
-  //
-  // « Articule » (0903) ne concerne QUE les fleches articulees (na ailleurs).
-  // 2026-08-12 (confirme par Jacquot en connaissance de l impact facturation ;
-  // A FAIRE VALIDER par Mathieu Robillard a son retour de vacances) : sur une
-  // fleche articulee, 0903 passe de « option » (j) a « OBLIGATOIRE » (r) ->
-  // l Articule (~1190$) s ajoute automatiquement au kit de base (3430$) et est
-  // facture sans choix du vendeur. Ceci revient en partie sur la decision du
-  // 2026-08-05 qui l avait mis a « j ». La base 0900 reste obligatoire sur toute
-  // nacelle ; le mat vertical garde le kit complet (statu quo).
-  function nacelleDefaults(specs) {
-    var cat = String((specs && (specs['Categorie'] || specs['Catégorie'])) || '').toLowerCase();
-    var artic = cat.indexOf('articul') >= 0;
-    return {
-      '0900': 'r',
-      '0901': 'j',
-      '0902': 'j',
-      '0903': artic ? 'r' : 'na',
-      '0904': 'j',
-      '0905': 'j',
-      '0906': 'j',
-      '0907': 'j',
-      // Reel 15 m (2026-10-08) : obligatoire seulement la ou un override le pose
-      // (Haulotte Star 26 J, Manitou VJR 26), absent ailleurs.
-      '0915': 'na'
-    };
+  // Defauts Nacelle -> { code: etat }. Refonte du 2026-11-11 (recettes par boom de
+  // Mathieu Robillard, decisions de Jacquot du 2026-10-29 et du 2026-11-11) :
+  //   1. 0900 = KIT DE BASE, obligatoire sur toute nacelle ;
+  //   2. le vendeur choisit Hauteur / Rotation / Hauteur + Rotation (tuile Limiteur) :
+  //      Hauteur = la RECETTE de la machine (codes 0910 a 0915, un par boom, un code
+  //      peut revenir : voir nacelleHauteur), Rotation = 0902 ;
+  //   3. 0904 (gestion gauche-droite du jib rotatif) en option, SEULEMENT si la recette
+  //      le prevoit ; 0905 / 0906 fermes par defaut (« sur modele designe », aucun connu :
+  //      un admin les ouvre par override).
+  // 0901 (hauteur reel), 0903 (articule) et 0907 (fleche) sont RETIRES : la recette par
+  // boom les remplace. Avant le 2026-11-11, 0903 etait facture d'office sur une fleche
+  // articulee et la hauteur etait un 0901 unique.
+  // `recette` = entree de data/nacelle-recettes.json ({h, o, v}) ou null. Sans recette
+  // connue (page qui ne charge pas le fichier), 0904 reste offert (comportement d'avant).
+  function nacelleDefaults(specs, recette) {
+    var o904 = recette ? (recette.o ? 'j' : 'na') : 'j';
+    return { '0900': 'r', '0902': 'j', '0904': o904, '0905': 'na', '0906': 'na' };
+  }
+
+  // Codes de hauteur d'une recette, regroupes en quantites dans l'ordre des booms :
+  // ['0912','0912','0910'] -> [{code:'0912', qty:2}, {code:'0910', qty:1}].
+  function nacelleHauteur(recette) {
+    var out = [], ix = {};
+    ((recette && recette.h) || []).forEach(function (c) {
+      if (ix[c] === undefined) { ix[c] = out.length; out.push({ code: c, qty: 0 }); }
+      out[ix[c]].qty++;
+    });
+    return out;
   }
 
   // Options SECONDAIRES de la nacelle : elles s'ajoutent au kit de base et se
   // cumulent librement (plusieurs peuvent etre choisies sur la meme machine).
-  var NACELLE_OPT_CODES = ['0903', '0904', '0905', '0906', '0907'];
+  var NACELLE_OPT_CODES = ['0904', '0905', '0906'];
 
   // Libelles canoniques du harnais par code d'override (H-code stocke dans _bom.harnais).
   // UNIQUE source pour TOUTES les tuiles + l'export. Ne pas dupliquer ailleurs.
@@ -258,7 +248,7 @@
     NACELLE_OPT_CODES: NACELLE_OPT_CODES,
     HARNAIS_LABELS: HARNAIS_LABELS,
     poidsKg: poidsKg, isMini: isMini, isDrain: isDrain, isGC: isGC,
-    excDefaults: excDefaults, pompeDefaults: pompeDefaults, nacelleDefaults: nacelleDefaults,
+    excDefaults: excDefaults, pompeDefaults: pompeDefaults, nacelleDefaults: nacelleDefaults, nacelleHauteur: nacelleHauteur,
     harnais: harnais, harnaisPN: harnaisPN, harnaisDefaultH: harnaisDefaultH,
     harnaisOverride: harnaisOverride,
     isOptionCode: isOptionCode, coerceExcState: coerceExcState, applyOverride: applyOverride

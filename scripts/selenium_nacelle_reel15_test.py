@@ -130,7 +130,9 @@ try:
         dv.execute_script("panier=[]; rendrePanier();")
 
     print('--- 2) controle : autre nacelle, total inchange ---')
-    aller('Nacelle', 'Genie', '2020', next(m for m in MJ['Nacelle']['Genie']['2020']))
+    # Rotation seule : depuis la refonte du 2026-11-11, la hauteur emet les codes 0910-0915
+    # (sans prix tant que la liste 2027 n'est pas publiee) ; la rotation 0902 a un prix.
+    aller('Nacelle', 'Genie', '2020', next(m for m in MJ['Nacelle']['Genie']['2020']), lim='lim-rotation')
     t = tableau()
     check('pas de 0915', '1500-0915' not in t)
     check('pas de « Prix à valider »', 'Prix à valider' not in t)
@@ -150,7 +152,7 @@ try:
     t = tableau()
     check('EN : « Price to be confirmed »', 'Price to be confirmed' in ligne('1500-0915'))
     check('EN : « Total not available »', 'Total not available' in t)
-    check('EN : libelle « 15M reel option for aerial lift »', '15M reel option for aerial lift' in t)
+    check('EN : libelle « Height limiting – vertical mast riser, 15 m reel »', 'Height limiting – vertical mast riser, 15 m reel' in t)
     dv.execute_script("localStorage.setItem('portal_lang','fr');")
 
     errs = [e for e in dv.get_log('browser') if e['level'] == 'SEVERE']

@@ -155,23 +155,17 @@ try:
     check('harnais generique en anglais (%s)' % (harn or '—'),
           len(harn) == 1 and harn[0] == 'Generic harness')
 
-    print('--- 3) options Nacelle 0906 / 0907 ---')
-    cible = premier_modele('Nacelle')
+    print('--- 3) recette de hauteur nacelle en anglais (refonte du 2026-11-11) ---')
     ouvrir_en()
     choisir('select-type', 'Nacelle')
-    choisir('select-fabricant', cible[0])
-    choisir('select-modele', cible[2])
-    choisir('select-annee', cible[1])
+    choisir('select-fabricant', 'Genie')
+    choisir('select-modele', 'Z-45 HF')
+    choisir('select-annee', '2024')
     dv.execute_script("document.getElementById('lim-hauteur').click();")
-    time.sleep(0.8)
-    for opt in ('nac-0906', 'nac-0907'):
-        dv.execute_script("var e=document.getElementById(arguments[0]);"
-                          "if(e && !e.checked){ e.click(); }", opt)
     time.sleep(1.2)
     lbl = libelles()
-    check('« Rack-and-pinion rotation option » affiche',
-          'Rack-and-pinion rotation option' in lbl)
-    check('« Boom lift jib option » affiche', 'Boom lift jib option' in lbl)
+    check('« Height limiting – riser section » affiche', any('Height limiting – riser section' in x for x in lbl))
+    check('aucun « Limitation hauteur » en anglais', not any('Limitation hauteur' in x for x in lbl))
 
     print('--- 4) invariant sur les 11 types : plus rien a traduire a l ecran ---')
     for typ in [t for t in MJ if not t.startswith('_')]:

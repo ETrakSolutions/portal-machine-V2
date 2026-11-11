@@ -927,9 +927,10 @@ function applyNacelleOptions() {
         specsN = machinesData[type][selectFabricant.value][selectAnnee.value][selectModele.value];
     } catch (ex) { specsN = null; }
     var KRn = window.KitRules || {};
-    var defN = (KRn.nacelleDefaults && specsN) ? KRn.nacelleDefaults(specsN) : {};
+    var defN = (KRn.nacelleDefaults && specsN) ? KRn.nacelleDefaults(specsN, recetteNacelle()) : {};
     var stN = KRn.applyOverride ? KRn.applyOverride(defN, currentBomOverrides || {}, false) : defN;
-    (KRn.NACELLE_OPT_CODES || ['0903', '0904', '0905', '0906', '0907']).forEach(function (code) {
+    var nbDispo = 0;
+    (KRn.NACELLE_OPT_CODES || ['0904', '0905', '0906']).forEach(function (code) {
         var lab = document.getElementById('sub-nac-' + code);
         var cb = document.getElementById('nac-' + code);
         var state = specsN ? (stN[code] || 'na') : 'j';
@@ -937,11 +938,74 @@ function applyNacelleOptions() {
         if (lab) lab.style.display = dispo ? '' : 'none';
         if (!cb) return;
         if (!dispo) { cb.checked = false; cb.disabled = false; return; }
-        // Option OBLIGATOIRE (r) — ex. « Articule » sur une nacelle articulee :
-        // cochee d'office et verrouillee -> toujours incluse et facturee.
+        nbDispo++;
+        // Option OBLIGATOIRE (r), posee par un admin : cochee d'office et verrouillee.
         if (state === 'r') { cb.checked = true; cb.disabled = true; }
         else { cb.disabled = false; }
     });
+    // Depuis la refonte du 2026-11-11, la plupart des nacelles n'ont AUCUNE option
+    // secondaire (0904 seulement si la recette le prevoit) : une tuile vide ne sert a rien.
+    if (specsN && !nbDispo) {
+        box.style.display = 'none';
+        box.classList.remove('active', 'open');
+    }
+}
+
+// ---- RECETTES DE HAUTEUR NACELLE (refonte du 2026-11-11) ----
+// data/nacelle-recettes.json, construit par scripts/construire_recettes_nacelle.py depuis le
+// classeur de Mathieu Robillard : {"Fabricant|Modele": {h:[codes], o:0904 offert, v:validee}}.
+// Hauteur = un code par boom (0910-0915, un code peut revenir). Recette absente = hauteur
+// non chiffree, le vendeur demande une analyse ; recette a v:0 = prix « sous reserve ».
+var NACELLE_RECETTES = {};
+fetch('data/nacelle-recettes.json', { cache: 'no-cache' }).then(function (r) { return r.json(); })
+    .then(function (d) {
+        NACELLE_RECETTES = d || {};
+        try { updateSelectedSummary(); } catch (e) {}
+    })
+    .catch(function () {});
+function recetteNacelle() {
+    if (!selectType || selectType.value !== 'Nacelle' || !selectModele || !selectModele.value) return null;
+    return NACELLE_RECETTES[selectFabricant.value + '|' + selectModele.value] || null;
+}
+var COURRIEL_ANALYSE_NACELLE = { to: 'm.robillard@e-trak.ca', cc: 'steve@gryb.ca' };
+// Hauteur demandee sur une nacelle sans recette validee -> avertissement + bouton d'analyse.
+// Retourne null si rien a signaler, sinon { recette, titre, texte }.
+function etatRecetteNacelle(limVal) {
+    if (!selectType || selectType.value !== 'Nacelle' || !selectModele || !selectModele.value) return null;
+    if (limVal !== 'Hauteur' && limVal !== 'Hauteur + Rotation') return null;
+    var rec = recetteNacelle();
+    if (rec && rec.v === 1) return null;
+    return rec
+        ? { recette: rec, titre: i18n.t('soumission.nac_rec_reserve_titre'), texte: i18n.t('soumission.nac_rec_reserve_texte') }
+        : { recette: null, titre: i18n.t('soumission.nac_rec_absente_titre'), texte: i18n.t('soumission.nac_rec_absente_texte') };
+}
+function majAvertissementRecetteNacelle(limVal) {
+    var w = document.getElementById('nacelle-recette-warning');
+    if (!w) return;
+    var et = etatRecetteNacelle(limVal);
+    if (!et) { w.style.display = 'none'; return; }
+    document.getElementById('nac-rec-titre').textContent = et.titre;
+    document.getElementById('nac-rec-texte').textContent = et.texte;
+    var vend = (currentUser && (currentUser.name || currentUser.username)) || '';
+    var selV = document.getElementById('soumission-vendeur');
+    if (selV && selV.value) vend = selV.value;
+    var corps = [
+        'Bonjour Mathieu,', '',
+        'Peux-tu analyser la recette de hauteur de cette nacelle ?', '',
+        'Fabricant : ' + selectFabricant.value,
+        'Modèle : ' + selectModele.value,
+        'Année : ' + (selectAnnee ? selectAnnee.value : ''),
+        'N° de série : ',
+        'Recette proposée : ' + (et.recette ? et.recette.h.join(' + ') : 'aucune'),
+        'Vendeur : ' + vend, '',
+        'Merci'
+    ].join('\r\n');
+    var sujet = 'Analyse de recette nacelle - ' + selectFabricant.value + ' ' + selectModele.value
+        + (selectAnnee && selectAnnee.value ? ' (' + selectAnnee.value + ')' : '');
+    document.getElementById('nac-rec-bouton').href = 'mailto:' + COURRIEL_ANALYSE_NACELLE.to
+        + '?cc=' + encodeURIComponent(COURRIEL_ANALYSE_NACELLE.cc)
+        + '&subject=' + encodeURIComponent(sujet) + '&body=' + encodeURIComponent(corps);
+    w.style.display = 'flex';
 }
 
 // Restrictions d'options par type de machine (tuile Soumission) :
@@ -1973,7 +2037,11 @@ function photoMachine() {
         specs: specs,
         notes: (currentNotes || '').trim(),
         installation: reponseInstall(),                 // 'oui' | 'non' | ''
-        aValider: aValiderItems(),
+        // + recette de hauteur nacelle absente ou non validee : la soumission le dit (« sous reserve »).
+        aValider: aValiderItems().concat((function () {
+            var et = etatRecetteNacelle(lim ? lim.value : '');
+            return et ? [{ code: '', name: et.titre }] : [];
+        })()),
         multiAxeRetro: !!(lim && lim.value === 'Multi-axe' && type === 'Retrocaveuse'),
         couverture360: window.couverture360Ligne ? window.couverture360Ligne() : '',   // js/couverture-360.js
         produits: produits.map(copie),                  // [{code, name, oblig}]
@@ -3294,6 +3362,8 @@ function updateSelectedSummary() {
     // Avertissement : Multi-axe sur retrocaveuse -> doit etre approuve par l'ingenierie.
     var _maw = document.getElementById('multiaxe-retro-warning');
     if (_maw) _maw.style.display = (limVal === 'Multi-axe' && _selT === 'Retrocaveuse') ? 'flex' : 'none';
+    // Nacelle : recette de hauteur absente ou non validee -> avertissement + bouton d'analyse.
+    try { majAvertissementRecetteNacelle(limVal); } catch (e) {}
     // Avertissement par machine : pilote par la donnee _warning (voir loadNotesForModel / #machine-warning).
     function pushLi(info, fbCode, fbDesc) {
         // Un code du limiteur N/A sur la machine n'est pas emis, pour TOUS les types (Steve,
@@ -3324,6 +3394,23 @@ function updateSelectedSummary() {
             if ((limVal === 'Hauteur' || limVal === 'Hauteur + Rotation') && _liH) items.push(fmtItem(_liH.pn, i18n.tBom(_liH.desc)));
             if ((limVal === 'Rotation' || limVal === 'Hauteur + Rotation') && _liR) items.push(fmtItem(_liR.pn, i18n.tBom(_liR.desc)));
         }
+    } else if (_selT === 'Nacelle') {
+        // Nacelle (refonte du 2026-11-11) : base 0900 + Hauteur = la RECETTE de la machine
+        // (un code par boom, en quantites : 0912 + 0912 + 0910 -> 0912 x2, 0910) + Rotation 0902.
+        // Sans recette, la hauteur n'est pas chiffree (avertissement + bouton d'analyse).
+        // Un code de hauteur deja OBLIGATOIRE par override (ex. 0915 des mats verticaux
+        // Star 26 J / VJR 26, pose le 2026-10-08) part deja avec le kit : pas de doublon.
+        if (limVal) pushLi(_liBase, '', '');
+        if ((limVal === 'Hauteur' || limVal === 'Hauteur + Rotation') && window.KitRules && window.KitRules.nacelleHauteur) {
+            var _ovN = currentBomOverrides || {};
+            window.KitRules.nacelleHauteur(recetteNacelle()).forEach(function (hc) {
+                if (_ovN[hc.code] === 'r') return;
+                var infoH = bomDescInfo('Nacelle', hc.code);
+                items.push(fmtItem((infoH && infoH.pn) ? infoH.pn : ('1500-' + hc.code),
+                                   i18n.tBom((infoH && infoH.desc) ? infoH.desc : hc.code)) + (hc.qty > 1 ? ' x' + hc.qty : ''));
+            });
+        }
+        if (limVal === 'Rotation' || limVal === 'Hauteur + Rotation') pushLi(_liR, '', '');
     } else if (limVal === 'Hauteur') {
         pushLi(_liBase, '1500-0000', 'Base limiteur');
         pushLi(_liH, '1500-0001', 'Limiteur Hauteur');

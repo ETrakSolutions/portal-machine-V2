@@ -9,6 +9,11 @@ let installedMachines = [];
 // Load installed machines list
 // cache:'no-cache' -> revalidation conditionnelle (ETag) : toujours a jour apres un save,
 // 304 leger si inchange. Voir aussi machines.json plus bas (meme strategie partout).
+// Recettes de hauteur nacelle (kit de la fiche machine) : voir js/soumission.js.
+fetch('data/nacelle-recettes.json', { cache: 'no-cache' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) { window.NACELLE_RECETTES = d || {}; })
+    .catch(function () {});
 fetch('data/installed_machines.json', { cache: 'no-cache' })
     .then(function(r) { return r.json(); })
     .then(function(data) { installedMachines = data; })
@@ -836,8 +841,11 @@ function showResults(modele, type, fab, annee, specs, isCustom) {
             var gDesc = document.getElementById('kit-generic-desc');
             if (gDesc) gDesc.textContent = fab + ' ' + modele + ' (' + annee + ')';
             var gBody = document.getElementById('kit-generic-tbody');
-            // Nacelle : base selon la categorie (articulee -> 0903, sinon 0900)
-            var nacDef = (type === 'Nacelle' && window.KitRules && window.KitRules.nacelleDefaults) ? window.KitRules.nacelleDefaults(specs) : null;
+            // Nacelle (refonte du 2026-11-11) : base 0900 + codes de hauteur de la RECETTE du
+            // modele (data/nacelle-recettes.json), offerts avec le choix « Hauteur ».
+            var nacRec = (type === 'Nacelle' && window.NACELLE_RECETTES) ? (window.NACELLE_RECETTES[fab + '|' + modele] || null) : null;
+            var nacDef = (type === 'Nacelle' && window.KitRules && window.KitRules.nacelleDefaults) ? window.KitRules.nacelleDefaults(specs, nacRec) : null;
+            if (nacDef && nacRec) nacRec.h.forEach(function (c) { nacDef[c] = 'j'; });
             var renderGeneric = function(ov) {
                 ov = ov || {};
                 var removed = Array.isArray(ov._removed) ? ov._removed : [];

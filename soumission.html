@@ -360,11 +360,9 @@
                     <span class="toggle-label" data-i18n="soumission.nac_options">Options nacelle</span>
                     <span class="toggle-status">OFF</span>
                     <div class="toggle-sub-panel" id="nacelle-opts-panel">
-                        <label class="sub-option" id="sub-nac-0903"><input type="checkbox" name="nacelle-opt" id="nac-0903" value="0903"> <span data-i18n="soumission.nac_articule">Nacelle articulee</span></label>
                         <label class="sub-option" id="sub-nac-0904"><input type="checkbox" name="nacelle-opt" id="nac-0904" value="0904"> <span data-i18n="soumission.nac_gestion">Gestion gauche-droite (swing gage)</span></label>
                         <label class="sub-option" id="sub-nac-0905"><input type="checkbox" name="nacelle-opt" id="nac-0905" value="0905"> <span data-i18n="soumission.nac_drain">Drainage</span></label>
                         <label class="sub-option" id="sub-nac-0906"><input type="checkbox" name="nacelle-opt" id="nac-0906" value="0906"> <span data-i18n="soumission.nac_pignon">Rotation pignon et cremaillere</span></label>
-                        <label class="sub-option" id="sub-nac-0907"><input type="checkbox" name="nacelle-opt" id="nac-0907" value="0907"> <span data-i18n="soumission.nac_fleche">Fleche de nacelle</span></label>
                         <span class="sub-note" data-i18n="soumission.nac_note">* Ces options s'ajoutent au kit de base et se cumulent.</span>
                     </div>
                 </div>
@@ -399,6 +397,17 @@
                 <div class="idc-warning-text">
                     <strong data-i18n="soumission.multiaxe_retro_title">Multi-axe sur retrocaveuse</strong><br>
                     <span data-i18n="soumission.multiaxe_retro_desc">Doit etre analyse par l'ingenierie avant la soumission.</span>
+                </div>
+            </div>
+
+            <!-- Nacelle : recette de hauteur absente ou non validee (refonte du 2026-11-11).
+                 Le bouton ouvre un courriel a l'ingenierie (Mathieu, Steve en copie). -->
+            <div id="nacelle-recette-warning" class="idc-warning" style="display:none; margin-top:12px;">
+                <span class="idc-warning-icon">&#9888;</span>
+                <div class="idc-warning-text">
+                    <strong id="nac-rec-titre"></strong><br>
+                    <span id="nac-rec-texte"></span><br>
+                    <a id="nac-rec-bouton" href="#" style="display:inline-block; margin-top:8px; padding:6px 14px; border-radius:6px; background:#e8a317; color:#1a1a1a; font-weight:600; text-decoration:none;" data-i18n="soumission.nac_rec_bouton">Demander une analyse</a>
                 </div>
             </div>
 
@@ -564,15 +573,15 @@
     </footer>
 
     <script src="js/config.js?v=2"></script>
-    <script src="js/translations.js?v=282"></script>
+    <script src="js/translations.js?v=283"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/overrides-loader.js?v=6"></script>
-    <script src="js/kit-rules.js?v=13"></script>
+    <script src="js/kit-rules.js?v=14"></script>
     <script src="js/machine-match.js?v=1"></script>
     <script src="js/combo-filtre.js?v=1"></script>
-    <script src="js/soumission.js?v=323"></script>
+    <script src="js/soumission.js?v=324"></script>
     <script src="js/couverture-360.js?v=7"></script>
     <script src="js/camera-grue.js?v=2"></script>
     <script src="js/camera-chariot.js?v=4"></script>
