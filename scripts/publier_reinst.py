@@ -71,7 +71,10 @@ INSTALLS_LIM = ['1500-0001', '1500-0002', '1500-0005',            # excavatrice
                 '1500-0501', '1500-0502',                         # camion vacuum
                 '1500-0201', '1500-0202', '1500-0204', '1500-0205', '1500-0206',  # pompe
                 '1500-0701', '1500-0702',                         # foreuse
-                '1500-0801', '1500-0802']                         # grue
+                '1500-0801', '1500-0802',                         # grue
+                '1500-0009', '1500-0604', '1500-0305', '1500-0403', '1500-0706']  # drains (installation)
+# Drains offerts au Limiteur (2026-11-11) : prix du produit publie sous DRAIN_<code>.
+DRAINS = ['1500-0009', '1500-0604', '1500-0305', '1500-0403', '1500-0706']
 
 
 def installations_lim(chemin, mini):
@@ -87,6 +90,12 @@ def installations_lim(chemin, mini):
             err.append('%s : installation absente de %s' % (code, Path(chemin).name))
         else:
             out['INST_' + code] = v
+    for code in DRAINS:
+        v = (pp.get(code) or {}).get('item')
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or v <= 0:
+            err.append('%s : prix du drain absent de %s' % (code, Path(chemin).name))
+        else:
+            out['DRAIN_' + code] = v
     m4 = (pp.get('1500-0004-Install') or {}).get('install')
     if m4 is None or Decimal(str(m4)) != Decimal(str(mini)):
         err.append('MINI = %s dans prix-reinstallation.json mais 1500-0004-Install = %s dans %s : '
@@ -217,7 +226,6 @@ def main():
         sys.exit('Liste maitresse introuvable : %s' % (a.fichier or '(dossier _Portail e-Trak absent)'))
     m = json.loads(Path(a.fichier).read_text(encoding='utf-8'))
     valider(m)
-    m['prix'] = {k: v for k, v in m['prix'].items() if k != 'INST_LIM'}   # remplace par INST_<code>
     m['prix'].update(installations_lim(a.prix_portail, m['prix']['MINI']))
     print('Installations du Limiteur : %s' % a.prix_portail)
     print('Liste : %s' % a.fichier)

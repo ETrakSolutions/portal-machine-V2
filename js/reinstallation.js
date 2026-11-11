@@ -77,16 +77,20 @@
     // [code produit, code d'installation Epicor, description]
     var LIM_TYPES = {
         exc:    { nom: 'Excavatrice', mini: true, ens: 'LIM',
+                  drain: ['1500-0009', '1500-0009-Install', 'Drain excavatrice'],
                   H: ['1500-0001', '1500-0001-Install', 'Installation limiteur hauteur excavatrice'],
                   R: ['1500-0002', '1500-0002-Install', 'Installation limiteur rotation excavatrice'],
                   M: ['1500-0005', '1500-0005-Install', 'Installation limiteur multi-axe excavatrice'] },
         retro:  { nom: 'Rétrocaveuse',
+                  drain: ['1500-0604', '1500-0604-Install', 'Drain rétrocaveuse'],
                   H: ['1500-0601', '1500-0601-Install', 'Installation option hauteur limiteur rétrocaveuse'],
                   R: ['1500-0602', '1500-0602-Install', 'Installation option rotation limiteur rétrocaveuse'] },
         boom:   { nom: 'Boom truck / camion girafe',
+                  drain: ['1500-0305', '1500-0305-Install', 'Drain camion girafe'],
                   H: ['1500-0301', '1500-0301-Install', 'Installation option hauteur limiteur camion girafe'],
                   R: ['1500-0302', '1500-0302-Install', 'Installation option rotation limiteur camion girafe'] },
         tele:   { nom: 'Téléhandler', sansRotSeule: true,
+                  drain: ['1500-0403', '1500-0403-Install', 'Drain limiteur téléhandler'],
                   H: ['1500-0400', '1500-0400-Install', 'Installation limiteur téléhandler (kit de base) hauteur'],
                   R: ['1500-0401', '1500-0401-Install', 'Installation option rotation limiteur téléhandler'] },
         vac:    { nom: 'Camion vacuum',
@@ -99,19 +103,25 @@
                              ['1500-0205', '1500-0205-install', 'Installation option 5 sections pompe à béton'],
                              ['1500-0206', '1500-0206-Install', 'Installation option 6 sections pompe à béton']] },
         foreuse: { nom: 'Foreuse',
+                  drain: ['1500-0706', '1500-0705-Install', 'Drain foreuse'],
                   H: ['1500-0701', '1500-0701-Install', 'Installation limiteur hauteur foreuse'],
                   R: ['1500-0702', '1500-0702-Install', 'Installation limiteur rotation foreuse'] },
         grue:   { nom: 'Grue',
                   H: ['1500-0801', '1500-0801-Install', 'Installation option hauteur limiteur grue'],
                   R: ['1500-0802', '1500-0802-Install', 'Installation option rotation limiteur grue'] }
     };
+    // Drain : montants serveur DRAIN_<code> (produit) et INST_<code> (installation).
+    // Foreuse : le code d'installation Epicor du drain est 1500-0705-Install (pas de 0706-Install).
+    // Ordre de la copie Epicor demande par Luna (2026-11-11) : SKM01, SHR01, SAT01,
+    // installations, drain, pieces de l'ensemble, pieces additionnelles, DIVERS-F.
+    // DIVERS-F porte tout ce qui n'a pas de code : hotel, repas, raccords LS7.
+    var RANG = { km: 1, shr: 2, sat: 3, inst: 4, mini: 5, drain: 6, drainInst: 7, ens: 8, ajout: 9, divers: 10 };
     var AXES = { H: 'Hauteur', R: 'Rotation', HR: 'Hauteur + rotation', M: 'Multi-axe' };
     var TITRES = { re: 'Désinstallation et réinstallation', ri: 'Réinstallation (système déjà retiré par le client)', de: 'Désinstallation' };
     // Remarques Epicor par code (constats du 2026-10-30 dans Epicor, societe ETRAK).
     var REMARQUES = {
         'Z01B-0009': 'Inactif dans Epicor (« NE PLUS UTILISER ») : code de remplacement à confirmer avec Steve.',
-        'Z01B-0071': "Absent de la liste de prix 2027 : vérifier son prix dans Epicor.",
-        '1400-0000': 'Inactif dans Epicor : à faire réactiver par Steve.'
+        'Z01B-0071': "Absent de la liste de prix 2027 : vérifier son prix dans Epicor."
     };
 
     var P = null;           // { CODE: montant en dollars } remis par le serveur
@@ -142,7 +152,7 @@
             type: document.querySelector('input[name=ri-type]:checked').value,
             sys: document.querySelector('input[name=ri-sys]:checked').value,
             gp: $('ri-gp').value, mini: $('ri-mini').checked,
-            lt: $('ri-lt').value, axes: $('ri-axes').value, sections: Number($('ri-sec').value) || 3,
+            lt: $('ri-lt').value, axes: $('ri-axes').value, drain: $('ri-drain').checked, sections: Number($('ri-sec').value) || 3,
             heures: heures(),
             raccords: entier('ri-fit') * 100,
             km: entier('ri-km'), nuits: entier('ri-nuits'), repas: entier('ri-repas'),
@@ -191,29 +201,37 @@
         if (s.type !== 'ri') {
             if (!s.heures) throw new Error('Heures de desinstallation manquantes');
             L.push({ lib: 'Désinstallation', note: String(s.heures).replace('.', ',') + ' h × ' + argent(c('TAUX_H')), c: Math.round(s.heures * c('TAUX_H')) });
-            E.push({ code: 'SHR01', desc: 'Désinstallation (taux horaire réparation)', qte: s.heures });
+            E.push({ r: RANG.shr, code: 'SHR01', desc: 'Désinstallation (taux horaire réparation)', qte: s.heures });
         }
         if (reinst) {
             installations(s).forEach(function (x) {
                 L.push({ lib: 'Réinstallation et calibration' + (x[3] ? ' — ' + x[3] : ''), note: x[1], c: c(x[0]) });
-                E.push({ code: x[1], desc: x[2], qte: 1 });
+                E.push({ r: RANG.inst, code: x[1], desc: x[2], qte: 1 });
             });
+            var TD = S.types ? LIM_TYPES[s.lt] : null;
+            if (TD && TD.drain && s.drain) {
+                L.push({ lib: 'Drain hydraulique', note: TD.drain[0], c: c('DRAIN_' + TD.drain[0]) });
+                L.push({ lib: 'Installation du drain', note: TD.drain[1], c: c('INST_' + TD.drain[0]) });
+                E.push({ r: RANG.drain, code: TD.drain[0], desc: TD.drain[2], qte: 1 });
+                E.push({ r: RANG.drainInst, code: TD.drain[1], desc: 'Installation ' + TD.drain[2].toLowerCase(), qte: 1 });
+            }
         }
         if (S.mini && s.mini && (!S.types || LIM_TYPES[s.lt].mini)) {
             L.push({ lib: 'Option mini-excavatrice', note: '1500-0004-Install', c: c('MINI') });
-            E.push({ code: '1500-0004-Install', desc: 'Option mini-excavatrice', qte: 1 });
+            E.push({ r: RANG.mini, code: '1500-0004-Install', desc: 'Option mini-excavatrice', qte: 1 });
         }
         if (reinst && S.lettre) {
             L.push({ lib: "Lettre d'attestation", note: 'SAT01', c: c('LETTRE') });
-            E.push({ code: 'SAT01', desc: "Lettre d'attestation de conformité CNESST", qte: 1 });
+            E.push({ r: RANG.sat, code: 'SAT01', desc: "Lettre d'attestation de conformité CNESST", qte: 1 });
         }
         var km = s.km * c('KM'), sejour = s.nuits * c('HOTEL') + s.repas * c('REPAS');
         var noteDep = [s.km + ' km aller-retour', s.nuits ? s.nuits + " nuit(s) d'hôtel" : '', s.repas ? s.repas + ' jour(s) de repas' : '']
             .filter(Boolean).join(' · ');
         L.push({ lib: 'Déplacement', note: noteDep, c: km + sejour });
-        if (s.km) E.push({ code: 'SKM01', desc: 'Frais de déplacement (km)', qte: s.km });
-        if (sejour) E.push({ code: '1400-0000', desc: 'Hôtel et repas', qte: 1,
-                             rem: REMARQUES['1400-0000'] + ' Prix à saisir : ' + argent(sejour) });
+        if (s.km) E.push({ r: RANG.km, code: 'SKM01', desc: 'Frais de déplacement (km)', qte: s.km });
+        var divers = [];          // [libelle, cents] : tout ce qui n'a pas de code -> DIVERS-F
+        if (s.nuits) divers.push([s.nuits + " nuit(s) d'hôtel", s.nuits * c('HOTEL')]);
+        if (s.repas) divers.push([s.repas + ' jour(s) de repas', s.repas * c('REPAS')]);
         if (reinst) {
             // Sans catalogue publie : l'ensemble au complet (PIECES_<X>), cases inactives.
             // Avec catalogue : il doit couvrir tout l'ensemble et en egaler PIECES_<X>.
@@ -230,18 +248,24 @@
                 L.push({ lib: 'Pièces remplacées (ensemble)', note: nRetire ? garde.length + ' pièce(s) sur ' + EN.liste.length + ', voir la liste ci-dessous' : 'Voir la liste ci-dessous',
                          c: montant });
             }
-            garde.forEach(function (x) { E.push({ code: x[0], desc: x[1], qte: 1, rem: REMARQUES[x[0]] }); });
+            garde.forEach(function (x) { E.push({ r: RANG.ens, code: x[0], desc: x[1], qte: 1, rem: REMARQUES[x[0]] }); });
         }
         if (reinst && S.raccords) {
             L.push({ lib: 'Raccords hydrauliques', note: 'À valider selon la machine avant la réinstallation', c: s.raccords });
-            E.push({ code: '', desc: 'Raccords hydrauliques', qte: 1,
-                     rem: 'Aucun code : à saisir à la main, ' + argent(s.raccords) + '. À valider avant la réinstallation.' });
+            if (s.raccords) divers.push(['raccords hydrauliques (à valider avant la réinstallation)', s.raccords]);
         }
         var extra = 0;
         s.ajouts.forEach(function (a) {
             extra += a.qte * cCat(a.pn);
-            E.push({ code: a.pn, desc: CAT[a.pn][0], qte: a.qte });
+            E.push({ r: RANG.ajout, code: a.pn, desc: CAT[a.pn][0], qte: a.qte });
         });
+        if (divers.length) {
+            var tDiv = divers.reduce(function (a, d) { return a + d[1]; }, 0);
+            E.push({ r: RANG.divers, code: 'DIVERS-F', desc: 'Charges diverses à la facturation', qte: 1,
+                     rem: 'Prix à saisir : ' + argent(tDiv) + ' (' + divers.map(function (d) { return d[0] + ' ' + argent(d[1]); }).join(' + ') + ')' });
+        }
+        // Tri stable dans l'ordre demande par Luna.
+        E = E.map(function (e, i) { e.i = i; return e; }).sort(function (a, b) { return (a.r - b.r) || (a.i - b.i); });
         if (s.ajouts.length) L.push({ lib: 'Pièces additionnelles', note: s.ajouts.length + ' code(s), voir la liste ci-dessous', c: extra });
         return { lignes: L, total: L.reduce(function (a, l) { return a + l.c; }, 0), epicor: E };
     }
@@ -290,6 +314,8 @@
         $('ri-lt-field').hidden = !T;
         $('ri-axes-field').hidden = !T || !reinst;
         $('ri-sec-field').hidden = !T || !T.sections || !reinst;
+        $('ri-drain-row').hidden = !T || !T.drain || !reinst;
+        if (T && T.drain) $('ri-drain-code').textContent = T.drain[0] + ' + ' + T.drain[1];
         $('ri-h-field').hidden = s.type === 'ri';
         $('ri-noens').hidden = !(reinst && T && !EN.liste.length);
         // Un texte de secours deja affiche ne doit jamais decrire une soumission precedente.
@@ -376,6 +402,7 @@
             var T = LIM_TYPES[k];
             ['H', 'R', 'M'].forEach(function (a) { if (T[a]) c('INST_' + T[a][0]); });
             (T.sections || []).forEach(function (x) { c('INST_' + x[0]); });
+            if (T.drain) { c('DRAIN_' + T.drain[0]); c('INST_' + T.drain[0]); }
         });
         $('ri-fit').value = String(c('RACCORDS') / 100);
         $('ri-km-hint').textContent = 'Départ : 1400, boul. Pierre-Roux Est, Victoriaville. ' + argent(c('KM')) + '/km.';
