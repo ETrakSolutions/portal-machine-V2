@@ -436,5 +436,10 @@
         if (el && d && d.v) { el.textContent = 'Portail Machine V2 · ' + String(d.v).slice(0, 10); }
     }).catch(function(){});
     </script>
+    <script>
+    // Retour au menu principal : les filtres de la Base de donnees machine repartent a zero (Steve, 2026-11-11)
+    try { sessionStorage.removeItem('db_state'); } catch (e) {}
+    window.addEventListener('pageshow', function () { try { sessionStorage.removeItem('db_state'); } catch (e) {} });
+    </script>
 </body>
 </html>
