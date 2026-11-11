@@ -23,6 +23,15 @@ Le jeton affiché = **règle de pré-remplissage + override par machine**. Les d
    `soumission.html` (via `js/soumission.js`), `export.html`.
 2. **`data/overrides/<type>.json` — les corrections par machine.** Un fichier par type,
    fusionné par `js/overrides-loader.js`. C'est là que vivent les décisions métier.
+3. **Nacelle : `data/nacelle-recettes.json` — la HAUTEUR** (refonte du 2026-11-11). Un code de
+   hauteur par boom (1500-0910 à 0915, un code peut revenir : 0912 + 0912 + 0910 = 0912 ×2),
+   `o` = 0904 offert en option, `v` = recette validée par l'ingénierie (Mathieu Robillard).
+   **Ne jamais l'éditer à la main** : il est produit par `scripts/construire_recettes_nacelle.py`
+   depuis le classeur « Nacelle - recettes par boom (lot 2 rév. N).xlsx » (Projet Liste de prix
+   `livrables`), plus la table `SUPPLEMENT` du script. Nouvelle révision du classeur = relancer
+   le script, puis `scripts/selenium_nacelle_recettes_test.py`. Recette absente ou `v` = 0 :
+   la soumission affiche l'avertissement et le bouton « Demander une analyse ». 0901, 0903 et
+   0907 n'existent plus ; un override nacelle qui les nomme est un reste à nettoyer.
 
 **Règle d'or : une décision métier va dans les OVERRIDES, jamais en dur dans la règle.**
 Mettre un item à obligatoire pour tout un type ou toute une marque = pré-remplissage en
