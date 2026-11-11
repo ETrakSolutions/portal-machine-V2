@@ -14,6 +14,13 @@
 // Soumission) ; pieces additionnelles au prix de la liste ; codes Epicor : desinstallation
 // SHR01 (heures), reinstallation 1000-1001, km SKM01, hotel + repas 1400-0000 ; raccords
 // LS7 sans code, a valider selon la machine avant la reinstallation.
+// Refonte du 2026-11-11 (Luna, par Jacquot) : plus de 1000-1001. Chaque reinstallation
+// porte les codes d'installation du produit (ex. 1500-0001-Install + 1500-0002-Install),
+// plus clair pour le client. Limiteur : type de machine, puis axes (H, R, H+R ; multi-axe
+// a l'excavatrice ; pas de rotation seule au telehandler) ; pompe : options de sections
+// cumulatives. Nacelle laissee de cote (sections 0910-0915 pas encore fixees). Heures de
+// desinstallation saisies par Luna. Ensemble de pieces par type : seule l'excavatrice en a
+// un ; les autres types attendent la liste de Luna ou Steve.
 (function () {
     'use strict';
     var $ = function (id) { return document.getElementById(id); };
@@ -34,8 +41,8 @@
     // Systemes : heures, options et pieces remplacees [code Epicor, libelle] (sans prix).
     // Les montants (INST_*, PIECES_*) sont lus dans la reponse du serveur.
     var SYSTEMES = {
-        lim: { nom: 'Limiteur', sous: 'Limit-Pro excavatrice', heures: 4, mini: true, lettre: true,
-               inst: 'INST_LIM', instCode: '1500-0005-Install', pieces: 'PIECES_LIM',
+        lim: { nom: 'Limiteur', sous: 'Limit-Pro, par type de machine', heures: 4, mini: true, lettre: true, types: true,
+               pieces: 'PIECES_LIM',
                liste: [['Z03B-0062', 'Harnais de capteur M12 angle 5 m'], ['E03A-0005', 'Câble CAN femelle M12, 10 m'],
                        ['Z05B-0001', 'Pré-kit de fusibles et accessoires'], ['Z01B-0009', "Kit d'assemblage universel de prox"],
                        ['Z04A-0003', 'Autocollant « Protégée par un limiteur »'], ['AH006', 'Apprêt 3M 94'],
@@ -45,6 +52,7 @@
                          ['1100-0011', '2 booms – 1 stick', 'INST_GP_1100-0011', '1100-0011-Install'],
                          ['1000-0007', 'Si déjà Limit-Pro, 1 boom', 'INST_GP_1000-0007', '1100-0007-Install'],
                          ['1000-0011', 'Si déjà Limit-Pro, 2 booms', 'INST_GP_1000-0011', '1100-0007-Install']],
+               instDesc: 'Installation Guide PRO système creusage 2D',
                pieces: 'PIECES_GP',
                liste: [['Z03B-0062', 'Harnais de capteur M12 angle 5 m'], ['E03A-0005', 'Câble CAN femelle M12, 10 m'],
                        ['Z05B-0001', 'Pré-kit de fusibles et accessoires'], ['Z01B-0009', "Kit d'assemblage universel de prox"],
@@ -53,16 +61,51 @@
                        ['Z01B-0071', "Support d'inclinomètre (godet)"], ['AH006', 'Apprêt 3M 94'],
                        ['P01A-0002', "Support d'écran autocollant"], ['KH1420', 'Collet Stauff 24 mm soudé']] },
         ls6: { nom: 'Balance LS6', sous: 'Scale Pro', heures: 4, mini: false, lettre: false,
-               inst: 'INST_LS6', instCode: '1200-0010-Install', pieces: 'PIECES_LS6',
+               inst: 'INST_LS6', instCode: '1200-0010-Install', instDesc: 'Installation Scale PRO, balance chargeur sur roues', pieces: 'PIECES_LS6',
                liste: [['Z03B-0063', 'Harnais de capteur M12 droit 10 m'], ['E03A-0005', 'Câble CAN femelle M12, 10 m'],
                        ['E03A-0009', 'Câble CAN M12, 5 m, 2 connecteurs'], ['E03A-0013', 'Câble CAN M12, 3 m, 2 connecteurs'],
                        ['Z05B-0001', 'Pré-kit de fusibles et accessoires'], ['P01A-0002', "Support d'écran autocollant"]] },
         ls7: { nom: 'Balance LS7', sous: 'Scale Pro', heures: 4, mini: false, lettre: false, raccords: true,
-               inst: 'INST_LS7', instCode: '1200-0010-Install', pieces: 'PIECES_LS7',
+               inst: 'INST_LS7', instCode: '1200-0010-Install', instDesc: 'Installation Scale PRO LS7, balance chargeur sur roues', pieces: 'PIECES_LS7',
                liste: [['E03A-0009', 'Câble CAN M12, 5 m, 2 connecteurs'], ['E03A-0013', 'Câble CAN M12, 3 m, 2 connecteurs'],
                        ['C02A-0020', 'Coude 90° pour capteur de pression'], ['Z05B-0001', 'Pré-kit de fusibles et accessoires'],
                        ['E03A-0019', 'Câble CAN M12, 2 m, 2 connecteurs'], ['Z01B-0052', "Support d'inclinomètre magnétique"]] }
     };
+    // Limiteur par type de machine : codes d'installation Epicor par axe (casse d'Epicor).
+    // Montants : cle serveur 'INST_<code produit>' (ex. INST_1500-0001), tiree de la liste
+    // de prix de l'annee (prix-portail.json) par scripts/publier_reinst.py.
+    // [code produit, code d'installation Epicor, description]
+    var LIM_TYPES = {
+        exc:    { nom: 'Excavatrice', mini: true, ens: 'LIM',
+                  H: ['1500-0001', '1500-0001-Install', 'Installation limiteur hauteur excavatrice'],
+                  R: ['1500-0002', '1500-0002-Install', 'Installation limiteur rotation excavatrice'],
+                  M: ['1500-0005', '1500-0005-Install', 'Installation limiteur multi-axe excavatrice'] },
+        retro:  { nom: 'Rétrocaveuse',
+                  H: ['1500-0601', '1500-0601-Install', 'Installation option hauteur limiteur rétrocaveuse'],
+                  R: ['1500-0602', '1500-0602-Install', 'Installation option rotation limiteur rétrocaveuse'] },
+        boom:   { nom: 'Boom truck / camion girafe',
+                  H: ['1500-0301', '1500-0301-Install', 'Installation option hauteur limiteur camion girafe'],
+                  R: ['1500-0302', '1500-0302-Install', 'Installation option rotation limiteur camion girafe'] },
+        tele:   { nom: 'Téléhandler', sansRotSeule: true,
+                  H: ['1500-0400', '1500-0400-Install', 'Installation limiteur téléhandler (kit de base) hauteur'],
+                  R: ['1500-0401', '1500-0401-Install', 'Installation option rotation limiteur téléhandler'] },
+        vac:    { nom: 'Camion vacuum',
+                  H: ['1500-0501', '1500-0501-Install', 'Installation option hauteur limiteur camion Vac'],
+                  R: ['1500-0502', '1500-0502-Install', 'Installation option rotation limiteur camion Vac'] },
+        pompe:  { nom: 'Pompe à béton',
+                  H: ['1500-0201', '1500-0201-Install', 'Installation limiteur pompe à béton hauteur'],
+                  R: ['1500-0202', '1500-0202-Install', 'Installation limiteur pompe à béton rotation'],
+                  sections: [['1500-0204', '1500-0204-Install', 'Installation option 4 sections pompe à béton'],
+                             ['1500-0205', '1500-0205-install', 'Installation option 5 sections pompe à béton'],
+                             ['1500-0206', '1500-0206-Install', 'Installation option 6 sections pompe à béton']] },
+        foreuse: { nom: 'Foreuse',
+                  H: ['1500-0701', '1500-0701-Install', 'Installation limiteur hauteur foreuse'],
+                  R: ['1500-0702', '1500-0702-Install', 'Installation limiteur rotation foreuse'] },
+        grue:   { nom: 'Grue',
+                  H: ['1500-0801', '1500-0801-Install', 'Installation option hauteur limiteur grue'],
+                  R: ['1500-0802', '1500-0802-Install', 'Installation option rotation limiteur grue'] }
+    };
+    var AXES = { H: 'Hauteur', R: 'Rotation', HR: 'Hauteur + rotation', M: 'Multi-axe' };
     var TITRES = { re: 'Désinstallation et réinstallation', ri: 'Réinstallation (système déjà retiré par le client)', de: 'Désinstallation' };
     // Remarques Epicor par code (constats du 2026-10-30 dans Epicor, societe ETRAK).
     var REMARQUES = {
@@ -76,7 +119,7 @@
     var VIGUEUR = '';
     var ajouts = [];        // [{ pn, qte }]
     var decoches = {};      // { 'sys:PN': true } pieces de l'ensemble retirees (cases decochees)
-    var sysAffiche = '';
+    var sysAffiche = '', sysPrec = '';
     var sansCatalogue = false;
     // Pieces inactives dans Epicor : jamais ajoutables a la main (elles restent cochables
     // dans leur ensemble standard, avec la remarque pour Luna).
@@ -99,11 +142,46 @@
             type: document.querySelector('input[name=ri-type]:checked').value,
             sys: document.querySelector('input[name=ri-sys]:checked').value,
             gp: $('ri-gp').value, mini: $('ri-mini').checked,
+            lt: $('ri-lt').value, axes: $('ri-axes').value, sections: Number($('ri-sec').value) || 3,
+            heures: heures(),
             raccords: entier('ri-fit') * 100,
             km: entier('ri-km'), nuits: entier('ri-nuits'), repas: entier('ri-repas'),
             ajouts: ajouts.slice(),
-            decoches: (function (sys) { var o = {}; Object.keys(decoches).forEach(function (k) { if (k.indexOf(sys + ':') === 0) o[k.slice(sys.length + 1)] = true; }); return o; })(document.querySelector('input[name=ri-sys]:checked').value)
+            decoches: (function (cle) { var o = {}; Object.keys(decoches).forEach(function (k) { if (k.indexOf(cle + ':') === 0) o[k.slice(cle.length + 1)] = true; }); return o; })(cleEnsemble())
         };
+    }
+    // Heures de desinstallation saisies par Luna (au quart d'heure) ; vide ou invalide = 0.
+    function heures() {
+        var v = Number(String($('ri-h').value).replace(',', '.'));
+        return isFinite(v) && v > 0 ? Math.round(v * 4) / 4 : 0;
+    }
+    function sysCoche() { return document.querySelector('input[name=ri-sys]:checked').value; }
+    // Cle de l'ensemble de pieces affiche : le Limiteur en a un par type de machine.
+    function cleEnsemble() { var k = sysCoche(); return k === 'lim' ? 'lim/' + $('ri-lt').value : k; }
+    // Ensemble de pieces remplacees : { liste, pieces } ; liste vide = pas d'ensemble etabli.
+    function ensemble(s) {
+        var S = SYSTEMES[s.sys];
+        if (!S.types || LIM_TYPES[s.lt].ens === 'LIM') return { liste: S.liste, pieces: S.pieces };
+        return { liste: [], pieces: '' };
+    }
+    // Codes d'installation d'une reinstallation : [[cle montant, code Epicor, description, libelle]].
+    function installations(s) {
+        var S = SYSTEMES[s.sys];
+        if (S.types) {
+            var T = LIM_TYPES[s.lt], ax = s.axes, out = [];
+            if (ax === 'M' && !T.M) ax = 'HR';
+            if (ax === 'R' && T.sansRotSeule) ax = 'HR';
+            if (ax === 'M') out.push([T.M, 'multi-axe']);
+            if (ax === 'H' || ax === 'HR') out.push([T.H, 'hauteur']);
+            if (ax === 'R' || ax === 'HR') out.push([T.R, 'rotation']);
+            if (T.sections) T.sections.slice(0, Math.max(0, Math.min(3, s.sections - 3))).forEach(function (x, i) { out.push([x, 'option ' + (i + 4) + ' sections']); });
+            return out.map(function (o) { return ['INST_' + o[0][0], o[0][1], o[0][2], o[1]]; });
+        }
+        if (S.modeles) {
+            var m = S.modeles.filter(function (x) { return x[0] === s.gp; })[0] || S.modeles[0];
+            return [[m[2], m[3], S.instDesc + ' (' + m[0] + ')', m[1]]];
+        }
+        return [[S.inst, S.instCode, S.instDesc, '']];
     }
 
     // Calcul pur : (etat) -> lignes de la soumission, total, et lignes Epicor. En cents.
@@ -111,20 +189,17 @@
         var S = SYSTEMES[s.sys], L = [], E = [];
         var reinst = s.type === 're' || s.type === 'ri';
         if (s.type !== 'ri') {
-            L.push({ lib: 'Désinstallation', note: S.heures + ' h × ' + argent(c('TAUX_H')), c: S.heures * c('TAUX_H') });
-            E.push({ code: 'SHR01', desc: 'Désinstallation (taux horaire réparation)', qte: S.heures });
+            if (!s.heures) throw new Error('Heures de desinstallation manquantes');
+            L.push({ lib: 'Désinstallation', note: String(s.heures).replace('.', ',') + ' h × ' + argent(c('TAUX_H')), c: Math.round(s.heures * c('TAUX_H')) });
+            E.push({ code: 'SHR01', desc: 'Désinstallation (taux horaire réparation)', qte: s.heures });
         }
         if (reinst) {
-            var inst = S.inst, code = S.instCode;
-            if (S.modeles) {
-                var m = S.modeles.filter(function (x) { return x[0] === s.gp; })[0] || S.modeles[0];
-                inst = m[2]; code = m[3];
-            }
-            L.push({ lib: 'Réinstallation et calibration', note: code, c: c(inst) });
-            E.push({ code: '1000-1001', desc: 'Réinstallation de système', qte: 1,
-                     rem: 'Prix à saisir dans Epicor : ' + argent(c(inst)) });
+            installations(s).forEach(function (x) {
+                L.push({ lib: 'Réinstallation et calibration' + (x[3] ? ' — ' + x[3] : ''), note: x[1], c: c(x[0]) });
+                E.push({ code: x[1], desc: x[2], qte: 1 });
+            });
         }
-        if (S.mini && s.mini) {
+        if (S.mini && s.mini && (!S.types || LIM_TYPES[s.lt].mini)) {
             L.push({ lib: 'Option mini-excavatrice', note: '1500-0004-Install', c: c('MINI') });
             E.push({ code: '1500-0004-Install', desc: 'Option mini-excavatrice', qte: 1 });
         }
@@ -142,16 +217,17 @@
         if (reinst) {
             // Sans catalogue publie : l'ensemble au complet (PIECES_<X>), cases inactives.
             // Avec catalogue : il doit couvrir tout l'ensemble et en egaler PIECES_<X>.
-            var garde = sansCatalogue ? S.liste : S.liste.filter(function (x) { return !s.decoches[x[0]]; });
-            var montant = c(S.pieces);
-            if (!sansCatalogue) {
-                var plein = S.liste.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
-                if (plein !== c(S.pieces)) throw new Error('Ensemble ' + S.pieces + ' incoherent avec le catalogue');
+            var EN = ensemble(s);
+            var garde = sansCatalogue ? EN.liste : EN.liste.filter(function (x) { return !s.decoches[x[0]]; });
+            var montant = EN.liste.length ? c(EN.pieces) : 0;
+            if (!sansCatalogue && EN.liste.length) {
+                var plein = EN.liste.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
+                if (plein !== c(EN.pieces)) throw new Error('Ensemble ' + EN.pieces + ' incoherent avec le catalogue');
                 montant = garde.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
             }
-            var nRetire = S.liste.length - garde.length;
+            var nRetire = EN.liste.length - garde.length;
             if (garde.length) {
-                L.push({ lib: 'Pièces remplacées (ensemble)', note: nRetire ? garde.length + ' pièce(s) sur ' + S.liste.length + ', voir la liste ci-dessous' : 'Voir la liste ci-dessous',
+                L.push({ lib: 'Pièces remplacées (ensemble)', note: nRetire ? garde.length + ' pièce(s) sur ' + EN.liste.length + ', voir la liste ci-dessous' : 'Voir la liste ci-dessous',
                          c: montant });
             }
             garde.forEach(function (x) { E.push({ code: x[0], desc: x[1], qte: 1, rem: REMARQUES[x[0]] }); });
@@ -194,36 +270,58 @@
     }
 
     function afficher() {
+        if (sysCoche() !== sysPrec) {      // nouveau systeme : ses heures par defaut
+            sysPrec = sysCoche();
+            $('ri-h').value = String(SYSTEMES[sysPrec].heures);
+        }
         var s = etat(), S = SYSTEMES[s.sys], reinst = s.type === 're' || s.type === 'ri', r;
+        var T = S.types ? LIM_TYPES[s.lt] : null;
+        if (T) {                           // axes offerts selon le type de machine
+            var offerts = ['H', 'R', 'HR', 'M'].filter(function (a) { return !(a === 'M' && !T.M) && !(a === 'R' && T.sansRotSeule); });
+            var cles = Array.prototype.map.call($('ri-axes').options, function (o) { return o.value; }).join();
+            if (cles !== offerts.join()) {
+                var avant = $('ri-axes').value;
+                $('ri-axes').innerHTML = offerts.map(function (a) { return '<option value="' + a + '">' + AXES[a] + '</option>'; }).join('');
+                $('ri-axes').value = offerts.indexOf(avant) >= 0 ? avant : 'HR';
+                s = etat();
+            }
+        }
+        var EN = ensemble(s), cle = cleEnsemble();
+        $('ri-lt-field').hidden = !T;
+        $('ri-axes-field').hidden = !T || !reinst;
+        $('ri-sec-field').hidden = !T || !T.sections || !reinst;
+        $('ri-h-field').hidden = s.type === 'ri';
+        $('ri-noens').hidden = !(reinst && T && !EN.liste.length);
         // Un texte de secours deja affiche ne doit jamais decrire une soumission precedente.
         ['ri-copy-fallback', 'ri-epi-fallback', 'ri-toast', 'ri-toast-epi'].forEach(function (id) { $(id).hidden = true; });
         $('ri-gp-field').hidden = s.sys !== 'gp';
-        $('ri-mini-row').hidden = !S.mini;
+        $('ri-mini-row').hidden = !S.mini || !!(T && !T.mini);
         $('ri-fit-field').hidden = !(S.raccords && reinst);
         $('ri-note-fit').hidden = !(S.raccords && reinst);
-        $('ri-std-field').hidden = !reinst;
-        if (sysAffiche !== s.sys) {
-            sysAffiche = s.sys;
-            $('ri-std').innerHTML = S.liste.map(function (x, i) {
+        $('ri-std-field').hidden = !reinst || !EN.liste.length;
+        if (sysAffiche !== cle) {
+            sysAffiche = cle;
+            $('ri-std').innerHTML = EN.liste.map(function (x, i) {
                 var on = !s.decoches[x[0]];
                 return '<label class="' + (on ? '' : 'off') + '" for="ri-std-' + i + '"><input type="checkbox" id="ri-std-' + i + '" data-pn="' + esc(x[0]) + '"' +
                     (on ? ' checked' : '') + '><span>' + esc(x[1]) + '<small>' + esc(x[0]) + '</small></span></label>';
             }).join('');
         }
         if (sansCatalogue) $('ri-std').querySelectorAll('input').forEach(function (i) { i.disabled = true; });
-        var gardees = sansCatalogue ? S.liste : S.liste.filter(function (x) { return !s.decoches[x[0]]; });
+        var gardees = sansCatalogue ? EN.liste : EN.liste.filter(function (x) { return !s.decoches[x[0]]; });
         $('ri-parts').hidden = !reinst || !gardees.length;
         $('ri-parts-box').hidden = !(reinst && gardees.length) && !s.ajouts.length;
         $('ri-parts-box').querySelector('h3').hidden = !(reinst && gardees.length);
         $('ri-extra-h').hidden = !s.ajouts.length;
         try { r = calculer(s); }
         catch (e) {
-            $('ri-lines').innerHTML = '<tr><td>Un montant manque sur le serveur : aucun total. Avise Jacquot.</td></tr>';
+            $('ri-lines').innerHTML = '<tr><td>' + (/^Heures/.test(e.message) ? 'Inscris les heures de désinstallation.' : 'Un montant manque sur le serveur : aucun total. Avise Jacquot.') + '</td></tr>';
             $('ri-epi-rows').innerHTML = '';
             texteCopie = ''; texteEpicor = '';
             return;
         }
-        $('ri-qtitle').textContent = TITRES[s.type] + ' — ' + S.nom;
+        $('ri-qtitle').textContent = TITRES[s.type] + ' — ' + S.nom + (T ? ', ' + T.nom.toLowerCase() +
+            (reinst ? ', ' + AXES[$('ri-axes').value].toLowerCase() + (T.sections && s.sections > 3 ? ', ' + s.sections + ' sections' : '') : '') : '');
         $('ri-qinfo').textContent = [$('ri-client').value.trim(), $('ri-machine').value.trim()].filter(Boolean).join(' · ');
         $('ri-lines').innerHTML = r.lignes.map(function (l) {
             return '<tr><td>' + esc(l.lib) + '<small>' + esc(l.note) + '</small></td><td class="amt">' + argent(l.c) + '</td></tr>';
@@ -270,6 +368,15 @@
         $('ri-gp').innerHTML = SYSTEMES.gp.modeles.map(function (m) {
             return '<option value="' + m[0] + '">' + m[0] + ' · ' + esc(m[1]) + ' · installation ' + argent(c(m[2])) + '</option>';
         }).join('');
+        $('ri-lt').innerHTML = Object.keys(LIM_TYPES).map(function (k) {
+            return '<option value="' + k + '">' + esc(LIM_TYPES[k].nom) + '</option>';
+        }).join('');
+        // Tous les montants du Limiteur doivent exister avant d'afficher la page.
+        Object.keys(LIM_TYPES).forEach(function (k) {
+            var T = LIM_TYPES[k];
+            ['H', 'R', 'M'].forEach(function (a) { if (T[a]) c('INST_' + T[a][0]); });
+            (T.sections || []).forEach(function (x) { c('INST_' + x[0]); });
+        });
         $('ri-fit').value = String(c('RACCORDS') / 100);
         $('ri-km-hint').textContent = 'Départ : 1400, boul. Pierre-Roux Est, Victoriaville. ' + argent(c('KM')) + '/km.';
         $('ri-date').textContent = new Date().toLocaleDateString('fr-CA', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -286,7 +393,7 @@
         }
         $('ri-std').addEventListener('change', function (e) {
             var cb = e.target; if (!cb.getAttribute('data-pn')) return;
-            var cle = document.querySelector('input[name=ri-sys]:checked').value + ':' + cb.getAttribute('data-pn');
+            var cle = cleEnsemble() + ':' + cb.getAttribute('data-pn');
             if (cb.checked) delete decoches[cle]; else decoches[cle] = true;
             cb.parentNode.classList.toggle('off', !cb.checked);
         });

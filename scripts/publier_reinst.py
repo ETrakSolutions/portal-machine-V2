@@ -28,8 +28,16 @@ Usage :
     py -3.12 scripts/publier_reinst.py              # envoie au portail
     py -3.12 scripts/publier_reinst.py --sans-catalogue   # montants seulement
 
+Installations du Limiteur par type de machine (refonte du 2026-11-11, Luna) : les montants
+INST_<code> (ex. INST_1500-0001) ne sont PAS dans prix-reinstallation.json. Ils sont lus
+dans la liste de prix de l'annee, prix-portail.json (champ "install" de chaque code), seul
+domicile des prix d'installation. Controle d'annee : MINI de prix-reinstallation.json doit
+egaler l'installation 1500-0004-Install de prix-portail.json, sinon les deux fichiers ne
+sont pas de la meme annee et la publication est refusee.
+
 Options :
     --fichier PATH   liste maitresse (defaut : prix-reinstallation.json dans _Portail e-Trak)
+    --prix-portail PATH  liste de prix de l'annee (defaut : prix-portail.json dans _Portail e-Trak)
     --pin-file PATH  NIP du portail (defaut : "PIN Portail.txt" a la racine du depot)
     --pieces PATH    catalogue (defaut : prix-pieces.json dans _Portail e-Trak)
     --env PATH       identifiants SQL Epicor (defaut : celui de sync_inventaire_epicor.py)
@@ -49,9 +57,43 @@ SITE = 'https://etraksolutions.github.io/portal-machine-V2/'
 
 # Codes attendus par js/reinstallation.js : un code manquant laisserait la page sans total.
 OBLIGATOIRES = ['TAUX_H', 'KM', 'HOTEL', 'REPAS', 'LETTRE', 'MINI', 'RACCORDS',
-                'INST_LIM', 'INST_GP_1100-0007', 'INST_GP_1100-0011', 'INST_GP_1000-0007',
+                'INST_GP_1100-0007', 'INST_GP_1100-0011', 'INST_GP_1000-0007',
                 'INST_GP_1000-0011', 'INST_LS6', 'INST_LS7',
                 'PIECES_LIM', 'PIECES_GP', 'PIECES_LS6', 'PIECES_LS7']
+
+
+# Codes produits dont js/reinstallation.js (LIM_TYPES) demande l'installation : garder
+# les deux listes identiques. Nacelle volontairement absente (decision du 2026-11-11).
+INSTALLS_LIM = ['1500-0001', '1500-0002', '1500-0005',            # excavatrice
+                '1500-0601', '1500-0602',                         # retrocaveuse
+                '1500-0301', '1500-0302',                         # boom truck
+                '1500-0400', '1500-0401',                         # telehandler
+                '1500-0501', '1500-0502',                         # camion vacuum
+                '1500-0201', '1500-0202', '1500-0204', '1500-0205', '1500-0206',  # pompe
+                '1500-0701', '1500-0702',                         # foreuse
+                '1500-0801', '1500-0802']                         # grue
+
+
+def installations_lim(chemin, mini):
+    """{ 'INST_<code>': montant } depuis prix-portail.json ; refuse un code absent ou sans
+    installation, et une liste d'une autre annee que prix-reinstallation.json."""
+    if not chemin or not Path(chemin).is_file():
+        sys.exit('Liste de prix introuvable : %s' % (chemin or '?'))
+    pp = json.loads(Path(chemin).read_text(encoding='utf-8'))
+    err, out = [], {}
+    for code in INSTALLS_LIM:
+        v = (pp.get(code) or {}).get('install')
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or v <= 0:
+            err.append('%s : installation absente de %s' % (code, Path(chemin).name))
+        else:
+            out['INST_' + code] = v
+    m4 = (pp.get('1500-0004-Install') or {}).get('install')
+    if m4 is None or Decimal(str(m4)) != Decimal(str(mini)):
+        err.append('MINI = %s dans prix-reinstallation.json mais 1500-0004-Install = %s dans %s : '
+                   'les deux fichiers ne sont pas de la meme annee' % (mini, m4, Path(chemin).name))
+    if err:
+        sys.exit('Liste refusee :\n  ' + '\n  '.join(err))
+    return out
 
 
 def dossier_portail():
@@ -168,12 +210,16 @@ def main():
     ap.add_argument('--pieces', default=str(d / 'prix-pieces.json') if d else '')
     ap.add_argument('--env', default='')
     ap.add_argument('--sans-catalogue', action='store_true')
+    ap.add_argument('--prix-portail', default=str(d / 'prix-portail.json') if d else '')
     a = ap.parse_args()
 
     if not a.fichier or not Path(a.fichier).is_file():
         sys.exit('Liste maitresse introuvable : %s' % (a.fichier or '(dossier _Portail e-Trak absent)'))
     m = json.loads(Path(a.fichier).read_text(encoding='utf-8'))
     valider(m)
+    m['prix'] = {k: v for k, v in m['prix'].items() if k != 'INST_LIM'}   # remplace par INST_<code>
+    m['prix'].update(installations_lim(a.prix_portail, m['prix']['MINI']))
+    print('Installations du Limiteur : %s' % a.prix_portail)
     print('Liste : %s' % a.fichier)
     print('En vigueur : %s | codes : %d' % (m['vigueur'], len(m['prix'])))
     for code in sorted(m['prix']):
