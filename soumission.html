@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-Trak | Demande de soumission</title>
     <link rel="stylesheet" href="css/style.css?v=176">
-    <link rel="stylesheet" href="css/soumission.css?v=212">
+    <link rel="stylesheet" href="css/soumission.css?v=213">
     <link rel="stylesheet" href="css/combo-filtre.css?v=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -269,6 +269,46 @@
                             <input type="number" id="cam-qte" class="soumission-input" min="1" step="1" value="1"
                                    style="max-width:7rem;margin-left:.5rem;">
                         </div>
+                        <!-- Caméra de grue (Steve, 2026-11-11) : APERÇU, ouvert par la case « Grue »
+                             de l'équipement (sans machine). Choix en cascade : chaque étape apparaît
+                             quand la précédente est répondue. Les prix sont affichés à côté de chaque
+                             choix, avant même de choisir. Logique : js/camera-grue.js. -->
+                        <div class="cam-calc cam-grue" id="cam-grue" style="display:none;">
+                            <div class="cam-calc-titre" data-i18n="grue.titre">Caméra de grue</div>
+                            <div class="grue-etape" id="grue-etape-1">
+                                <div class="grue-etape-titre"><span class="grue-num">1</span> <span data-i18n="grue.e1">Caméra</span> <span class="grue-inclus" data-i18n="grue.inclus">Inclus</span></div>
+                                <div class="grue-ligne grue-fixe"><span class="grue-code">1300-0225</span> <span data-i18n="grue.camera">Caméra de grue</span> <span class="grue-prix" data-code="1300-0225"></span></div>
+                            </div>
+                            <div class="grue-etape" id="grue-etape-2">
+                                <div class="grue-etape-titre"><span class="grue-num">2</span> <span data-i18n="grue.e2">Moniteur</span></div>
+                                <div class="grue-choix">
+                                    <label class="grue-ligne"><input type="radio" name="grue-moniteur" id="grue-mon-7" value="1300-0100"> <span class="grue-code">1300-0100</span> <span data-i18n="grue.mon7">Moniteur 7 po</span> <span class="grue-prix" data-code="1300-0100"></span></label>
+                                    <label class="grue-ligne"><input type="radio" name="grue-moniteur" id="grue-mon-10" value="1300-0101"> <span class="grue-code">1300-0101</span> <span data-i18n="grue.mon10">Moniteur 10 po</span> <span class="grue-prix" data-code="1300-0101"></span></label>
+                                </div>
+                            </div>
+                            <div class="grue-etape" id="grue-etape-3" style="display:none;">
+                                <div class="grue-etape-titre"><span class="grue-num">3</span> <span data-i18n="grue.e3">Pédale de contrôle du zoom</span> <span class="grue-code">1300-0230</span> <span class="grue-prix" data-code="1300-0230"></span></div>
+                                <div class="grue-choix">
+                                    <label class="grue-ligne"><input type="radio" name="grue-pedale" id="grue-pedale-oui" value="oui"> <span data-i18n="grue.oui">Oui</span></label>
+                                    <label class="grue-ligne"><input type="radio" name="grue-pedale" id="grue-pedale-non" value="non"> <span data-i18n="grue.non">Non</span></label>
+                                </div>
+                            </div>
+                            <div class="grue-etape" id="grue-etape-4" style="display:none;">
+                                <div class="grue-etape-titre"><span class="grue-num">4</span> <span data-i18n="grue.e4">Batterie mobile</span> <span class="grue-code">1300-0240</span> <span class="grue-prix" data-code="1300-0240" data-unite="1"></span></div>
+                                <div class="grue-choix">
+                                    <label class="grue-ligne"><span data-i18n="grue.qte">Quantité</span> <input type="number" id="grue-batterie" class="soumission-input grue-qte" min="0" step="1" placeholder="2"></label>
+                                    <span class="grue-reco" data-i18n="grue.reco_batterie">Qté recommandée : 2</span>
+                                </div>
+                            </div>
+                            <div class="grue-etape" id="grue-etape-5" style="display:none;">
+                                <div class="grue-etape-titre"><span class="grue-num">5</span> <span data-i18n="grue.e5">Chargeur</span> <span class="grue-code">1300-0141</span> <span class="grue-prix" data-code="1300-0141" data-unite="1"></span></div>
+                                <div class="grue-choix">
+                                    <label class="grue-ligne"><span data-i18n="grue.qte">Quantité</span> <input type="number" id="grue-chargeur" class="soumission-input grue-qte" min="0" step="1" placeholder="1"></label>
+                                    <span class="grue-reco" data-i18n="grue.reco_chargeur">Qté recommandée : 1</span>
+                                </div>
+                            </div>
+                            <div class="cam-kit-msg" id="grue-msg"></div>
+                        </div>
                     </div>
                 </div>
                 <!-- Options secondaires de la nacelle : s'ajoutent au kit de base (1500-0900)
@@ -481,7 +521,7 @@
     </footer>
 
     <script src="js/config.js?v=2"></script>
-    <script src="js/translations.js?v=277"></script>
+    <script src="js/translations.js?v=278"></script>
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
@@ -489,8 +529,9 @@
     <script src="js/kit-rules.js?v=13"></script>
     <script src="js/machine-match.js?v=1"></script>
     <script src="js/combo-filtre.js?v=1"></script>
-    <script src="js/soumission.js?v=318"></script>
+    <script src="js/soumission.js?v=319"></script>
     <script src="js/couverture-360.js?v=7"></script>
+    <script src="js/camera-grue.js?v=1"></script>
     <script src="js/data-refresh.js?v=3"></script>
 </body>
 </html>

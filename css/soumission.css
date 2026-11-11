@@ -741,3 +741,22 @@
 .cam-equip-titre { font-weight: 700; font-size: 0.82rem; color: #FF8C00; margin-bottom: 6px; }
 .apercu-badge { font-size: 0.68rem; font-weight: 700; color: #fff; background: #FF8C00; border-radius: 8px; padding: 1px 6px; margin-left: 4px; }
 .cam-equip-note { font-size: 0.78rem; font-style: italic; color: #888; margin-top: 4px; }
+
+/* Caméra de grue, choix en cascade (Steve, 2026-11-11) */
+.cam-grue { flex: 1 1 100%; margin-left: 0; }
+.grue-etape { padding: 8px 0; border-top: 1px solid rgba(255,255,255,0.08); }
+.grue-etape:first-of-type { border-top: 0; padding-top: 0; }
+.grue-etape-titre { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; color: #e6e6e6; margin-bottom: 6px; }
+.grue-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: #FF8C00; color: #1a1a1a; font-size: 0.7rem; }
+.grue-inclus { font-size: 0.66rem; font-weight: 700; color: #3ddc84; border: 1px solid #3ddc84; border-radius: 8px; padding: 0 6px; }
+.grue-choix { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.grue-ligne { display: flex; align-items: center; gap: 6px; color: #ccc; font-size: 0.8rem; padding: 4px 10px; border: 1px solid #444; border-radius: 6px; cursor: pointer; }
+.grue-ligne:has(input:checked) { color: #fff; border-color: #4DA8FF; }
+.grue-ligne input[type="radio"] { accent-color: #4DA8FF; width: 15px; height: 15px; }
+.grue-fixe { cursor: default; border-color: rgba(61,220,132,.5); width: fit-content; }
+.grue-code { font-family: 'JetBrains Mono', monospace; color: #9fb4c8; font-size: 0.76rem; font-weight: 400; }
+.grue-prix { color: #FFB45C; font-weight: 700; white-space: nowrap; }
+.grue-prix.grue-a-venir { color: #FF8C00; font-style: italic; font-weight: 600; }
+.grue-qte { max-width: 5rem; }
+.grue-reco { font-size: 0.76rem; color: #3ddc84; font-weight: 600; }
+.cam-grue.manquant { border-color: #ff5a5a; }

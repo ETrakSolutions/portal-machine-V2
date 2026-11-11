@@ -260,8 +260,11 @@ function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(
 // courriel) tant qu'une telle ligne est presente : un total partiel se lirait comme le
 // prix complet. Limite aux nacelles (decision du meme jour) : ailleurs, une ligne sans
 // prix (harnais Z03B, lignes _custom) garde son « — » et le total reste affiche.
+// Caméra de grue (Steve, 2026-11-11) : meme regle pour ses codes (window.GRUE_CODES,
+// js/camera-grue.js) tant que leur prix n'est pas dans la liste de prix.
 function prixAValider(code) {
-    if (!/^1500-09\d\d$/.test(String(code || ''))) return false;
+    var _grue = (window.GRUE_CODES || []).indexOf(String(code || '')) >= 0;
+    if (!_grue && !/^1500-09\d\d$/.test(String(code || ''))) return false;
     if (PRICE_CODES[code]) return false;
     var p = priceFor(code);
     return typeof p.item !== 'number' && typeof p.install !== 'number';
@@ -371,7 +374,8 @@ function hasActiveOptions() {
     var anyLim = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
     var anyIDC = document.querySelector('[data-option="Indicateur de charge"].active');
     var anyCreus = document.querySelector('#toggle-creusage input:checked');
-    var anyCam = document.querySelector('#toggle-camera input:checked:not([name="camera-equip"])');
+    var anyCam = document.querySelector('#toggle-camera input:checked:not([name="camera-equip"])')
+              || (window.grueActive && window.grueActive());
     var anyGodet = document.querySelector('#toggle-godet-avant.active');
     return !!(anyLim || anyIDC || anyCreus || anyCam || anyGodet);
 }
@@ -805,6 +809,7 @@ function showOptions() {
     if (window.couverture360Maj) window.couverture360Maj();
     document.querySelectorAll('input[name="camera-equip"]').forEach(function(r) { r.checked = false; });
     var _ceN = document.getElementById('cam-equip-note'); if (_ceN) _ceN.style.display = 'none';
+    if (window.grueVider) window.grueVider();
     // Reset sous-options Balance (modele + imprimante)
     document.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
             .forEach(function(r) { r.checked = false; });
@@ -1654,6 +1659,7 @@ if (submitBtn) {
         }
         // « Camera 360 » cochee sans kit (4 ou 6) choisi : rien ne part (Steve, 2026-10-14).
         if (window.kit360Manquant && window.kit360Manquant()) return;
+        if (window.grueManquant && window.grueManquant()) return;   // camera de grue incomplete
 
         if (_firstEmpty) { _firstEmpty.focus(); return; }
 
@@ -1701,7 +1707,12 @@ if (submitBtn) {
 
         // Camera
         var _camBox = document.getElementById('toggle-camera');
-        if (_camBox && _camBox.classList.contains('active')) {
+        if (window.grueActive && window.grueActive()) {
+            window.grueLignes().forEach(function (g) {
+                optionsOn.push(g.desc);
+                accessoires.push({ code: g.code, name: g.desc });
+            });
+        } else if (_camBox && _camBox.classList.contains('active')) {
             var _camRadio = _camBox.querySelector('input[name="camera-type"]:checked');
             if (_camRadio) {
                 var _camName = 'Camera ' + _camRadio.value;
@@ -2060,7 +2071,8 @@ function etatEcran() {
     var eq = document.getElementById('soumission-equipement'), cq = document.getElementById('cam-qte');
     return { type: selectType.value, fab: selectFabricant.value, annee: selectAnnee.value, modele: selectModele.value,
              equipement: eq ? eq.value : '', coches: coches, actives: actives,
-             camQte: cq ? cq.value : '', unites: String(unitesMachine()) };
+             camQte: cq ? cq.value : '', unites: String(unitesMachine()),
+             grue: window.grueEtat ? window.grueEtat() : null };
 }
 
 // Remet une machine a l'ecran : selecteurs (sans passer par la fenetre « Reinitialiser »),
@@ -2097,6 +2109,7 @@ function restaurerEtat(e) {
     if (c2b && !c2b.disabled && c2b.checked !== ((e.coches || []).indexOf('creus-2booms') >= 0)) c2b.click();
     var cq = document.getElementById('cam-qte');
     if (cq && e.camQte) { cq.value = e.camQte; cq.dispatchEvent(new Event('change', { bubbles: true })); }
+    if (e.grue && window.grueRestaurer) window.grueRestaurer(e.grue);
     var nb = document.getElementById('soumission-nb-systemes');
     if (nb) nb.value = e.unites || '';
     (e.coches || []).forEach(function (id) {
@@ -2126,6 +2139,7 @@ function machineEcranValide() {
     if (vide) { vide.focus(); vide.scrollIntoView({ block: 'center' }); return false; }
     if (selectionAInstallation() && !reponseInstall()) { signalerQuestionInstallation(); return false; }
     if (window.kit360Manquant && window.kit360Manquant()) return false;   // « Camera 360 » sans kit 4 / 6
+    if (window.grueManquant && window.grueManquant()) return false;       // camera de grue incomplete
     return true;
 }
 
@@ -3327,7 +3341,11 @@ function updateSelectedSummary() {
 
     // Camera with sub-option
     var camBox = document.getElementById('toggle-camera');
-    if (camBox && camBox.classList.contains('active')) {
+    if (window.grueMajPrix) { try { window.grueMajPrix(); } catch (e) {} }
+    if (window.grueActive && window.grueActive()) {
+        // Camera de grue : une ligne par piece choisie (js/camera-grue.js).
+        window.grueLignes().forEach(function (g) { items.push(fmtItem(g.code, g.desc)); });
+    } else if (camBox && camBox.classList.contains('active')) {
         var camRadio = camBox.querySelector('input[name="camera-type"]:checked');
         if (camRadio) {
             var camKey = 'Camera ' + camRadio.value;
@@ -3900,15 +3918,20 @@ function majCamEquip(actif) {
     if (!vis) {
         box.querySelectorAll('input[name="camera-equip"]').forEach(function (c) { c.checked = false; });
         var n = document.getElementById('cam-equip-note'); if (n) n.style.display = 'none';
+        if (window.grueVider) window.grueVider();
     }
+    if (window.grueMaj) window.grueMaj();
 }
 (function () {
     var cbs = document.querySelectorAll('input[name="camera-equip"]');
     cbs.forEach(function (cb) {
         cb.addEventListener('change', function () {
             if (this.checked) cbs.forEach(function (o) { if (o !== cb) o.checked = false; });
+            // La grue a sa fenêtre de choix (js/camera-grue.js) : la note « à venir » ne
+            // reste que pour le chariot élévateur.
             var n = document.getElementById('cam-equip-note');
-            if (n) n.style.display = document.querySelector('input[name="camera-equip"]:checked') ? '' : 'none';
+            var ch = document.getElementById('cam-equip-chariot');
+            if (n) n.style.display = (ch && ch.checked) ? '' : 'none';
         });
     });
 })();
