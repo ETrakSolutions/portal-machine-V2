@@ -735,3 +735,9 @@
 .cam-schema .v-tuyau { fill: none; stroke: #9aa2a8; stroke-width: 3; }
 .cam-schema .v-phare { fill: #ffe7a3; }
 .cam-schema .v-feu { fill: #e04a3a; }
+
+/* Aperçu « Équipement » de la caméra sans machine (Steve, 2026-11-11) */
+.cam-equip { border: 1px dashed #FF8C00; border-radius: 6px; padding: 6px 8px; margin-bottom: 8px; }
+.cam-equip-titre { font-weight: 700; font-size: 0.82rem; color: #FF8C00; margin-bottom: 6px; }
+.apercu-badge { font-size: 0.68rem; font-weight: 700; color: #fff; background: #FF8C00; border-radius: 8px; padding: 1px 6px; margin-left: 4px; }
+.cam-equip-note { font-size: 0.78rem; font-style: italic; color: #888; margin-top: 4px; }

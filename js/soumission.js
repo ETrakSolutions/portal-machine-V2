@@ -71,6 +71,11 @@ const SANS_MACHINE = '__sans_machine__';
 // Fabricant absent de la BD : ouvre la demande d'ajout (voir doFabChange).
 const OTHER_FAB = '__OTHER_FAB__';
 function estSansMachine() { return selectType && selectType.value === SANS_MACHINE; }
+// APERÇU (Steve, 2026-11-11) : comptes qui voient les nouveautés pas encore lancées
+// (ex. « Équipement : Chariot élévateur / Grue » de la caméra sans machine). Pour
+// lancer une nouveauté à tous, retirer sa condition estApercu(), pas vider cette liste.
+var APERCU_COMPTES = ['steve@gryb.ca'];
+function estApercu() { return APERCU_COMPTES.indexOf(courrielUtilisateur()) !== -1; }
 
 const selectType = document.getElementById('select-type');
 const selectFabricant = document.getElementById('select-fabricant');
@@ -366,7 +371,7 @@ function hasActiveOptions() {
     var anyLim = document.querySelector('#toggle-limiteur input[name="limiteur-type"]:checked');
     var anyIDC = document.querySelector('[data-option="Indicateur de charge"].active');
     var anyCreus = document.querySelector('#toggle-creusage input:checked');
-    var anyCam = document.querySelector('#toggle-camera input:checked');
+    var anyCam = document.querySelector('#toggle-camera input:checked:not([name="camera-equip"])');
     var anyGodet = document.querySelector('#toggle-godet-avant.active');
     return !!(anyLim || anyIDC || anyCreus || anyCam || anyGodet);
 }
@@ -407,6 +412,7 @@ function afficherModeSansMachine(actif) {
     if (box) box.style.display = actif ? '' : 'none';
     var qte = document.getElementById('cam-qte-box');
     if (qte) qte.style.display = actif ? '' : 'none';
+    majCamEquip(actif);
     // La question « Installation par e-Trak ? » ne depend PLUS du mode : elle est
     // posee sur toute soumission (2026-09-02) et vit au-dessus du tableau de prix.
     // C'est updateSelectedSummary qui l'affiche, selon qu'il y ait ou non quelque
@@ -797,6 +803,8 @@ function showOptions() {
     document.querySelectorAll('input[name="camera-type"]').forEach(function(r) { r.checked = false; });
     var _c360 = document.getElementById('cam-360-choix'); if (_c360) _c360.checked = false;
     if (window.couverture360Maj) window.couverture360Maj();
+    document.querySelectorAll('input[name="camera-equip"]').forEach(function(r) { r.checked = false; });
+    var _ceN = document.getElementById('cam-equip-note'); if (_ceN) _ceN.style.display = 'none';
     // Reset sous-options Balance (modele + imprimante)
     document.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
             .forEach(function(r) { r.checked = false; });
@@ -3877,6 +3885,30 @@ function updateAValiderWarning() {
                 status.textContent = 'OFF';
             }
             updateSelectedSummary();
+        });
+    });
+})();
+
+// APERÇU « Équipement » de la caméra sans machine (Steve, 2026-11-11) : Chariot élévateur
+// ou Grue, l'un ou l'autre. Ne coche pas la tuile et n'émet aucun code pour l'instant :
+// les codes suggérés et les options viendront ensuite.
+function majCamEquip(actif) {
+    var box = document.getElementById('cam-equip');
+    if (!box) return;
+    var vis = !!actif && estApercu();
+    box.style.display = vis ? '' : 'none';
+    if (!vis) {
+        box.querySelectorAll('input[name="camera-equip"]').forEach(function (c) { c.checked = false; });
+        var n = document.getElementById('cam-equip-note'); if (n) n.style.display = 'none';
+    }
+}
+(function () {
+    var cbs = document.querySelectorAll('input[name="camera-equip"]');
+    cbs.forEach(function (cb) {
+        cb.addEventListener('change', function () {
+            if (this.checked) cbs.forEach(function (o) { if (o !== cb) o.checked = false; });
+            var n = document.getElementById('cam-equip-note');
+            if (n) n.style.display = document.querySelector('input[name="camera-equip"]:checked') ? '' : 'none';
         });
     });
 })();
