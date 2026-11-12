@@ -79,6 +79,18 @@ r = post({ action: 'synccorrections', token: R, corrections: [corr('c9', 1000, {
 const lig = sh.rows[2];
 check('formule neutralisee dans la feuille, champ inconnu jamais stocke', String(lig[6]).startsWith("'+") && !/champ_inconnu|12345/.test(lig[8]));
 
+// --- v62 : fiche sans compte Salesforce ---
+const n0 = sh.rows.length;
+r = post({ action: 'synccorrections', token: R, corrections: [
+  corr('c10', 1000, { sfa: '', sfc: '', fnom: 'Pumpcrete Inc.', a: { rue: '161 Caldari Rd', ville: 'Concord', prov: 'ON', cp: 'L4K 3Z9', tel: '416-678-5728', pays: 'Canada', epicor: '6692017', st: 'actif', v: 99999 } }),
+  corr('c11', 1000, { sfa: '', sfc: '', fnom: 'X', a: { ville: 'Concord' } }),
+  corr('c12', 1000, { sfa: '', sfc: '', fnom: 'Sans adresse', a: {} })] });
+const c10 = r.corrections.find(x => x.id === 'c10');
+check('sans compte SF : acceptee avec nom, adresse et telephone de la fiche', c10 && c10.sfa === '' && c10.a.ville === 'Concord' && c10.a.epicor === '6692017');
+check("sans compte SF : champ inconnu de l'adresse jamais stocke", !/99999/.test(sh.rows[sh.rows.length - 1][8]));
+check('sans compte SF : nom trop court ou ni ville ni telephone -> refuse', r.refusees === 2 && sh.rows.length === n0 + 1);
+check('avec compte SF : pas de bloc adresse stocke', !('a' in JSON.parse(sh.rows[1][8])));
+
 // --- Chacun les siennes ---
 r = post({ action: 'synccorrections', token: S, corrections: [] });
 check('Simon ne voit pas celles de Robert', r.ok && r.corrections.length === 0);
@@ -87,7 +99,7 @@ check('Simon ne voit pas celles de Robert', r.ok && r.corrections.length === 0);
 check('getcorrections sans NIP : refuse', post({ action: 'getcorrections' }).error === 'authentication required');
 check('getcorrections avec session admin : refuse (NIP seulement)', post({ action: 'getcorrections', token: A, pin: A }).error === 'authentication required');
 let g = post({ action: 'getcorrections', pin: 'PINSECRET' });
-check('getcorrections NIP : 2 en attente, auteur nomme', g.ok && g.corrections.length === 2 && g.corrections[0].auteur === 'r@e' && g.corrections[0].auteur_nom === 'Robert Vendeur');
+check('getcorrections NIP : 3 en attente, auteur nomme', g.ok && g.corrections.length === 3 && g.corrections[0].auteur === 'r@e' && g.corrections[0].auteur_nom === 'Robert Vendeur');
 
 // --- Resultat ---
 check('setcorrections sans NIP : refuse', post({ action: 'setcorrections', resultats: [] }).error === 'authentication required');
@@ -102,7 +114,7 @@ const c1 = r.corrections.find(x => x.id === 'c1'), c9 = r.corrections.find(x => 
 check('le vendeur voit le resultat', c1.etat === 'faite' && /mis a jour/.test(c1.resultat) && c9.etat === 'refusee');
 r = post({ action: 'synccorrections', token: R, corrections: [corr('c1', 9000, { titre: 'Apres coup' })] });
 check('correction deja faite : plus modifiable', r.corrections.find(x => x.id === 'c1').titre === 'VP Operations');
-check('getcorrections : plus rien en attente', post({ action: 'getcorrections', pin: 'PINSECRET' }).corrections.length === 0);
+check('getcorrections : reste seulement la correction sans compte SF', (g = post({ action: 'getcorrections', pin: 'PINSECRET' }).corrections).length === 1 && g[0].id === 'c10');
 
 // --- Compte desactive ---
 comptes[2].active = false; store.authorized_users_v2 = JSON.stringify(comptes);

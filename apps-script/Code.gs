@@ -3081,12 +3081,20 @@ function _corrNette(x) {
   var id = str(x.id, 40), ts = Number(x.ts);
   if (!/^[A-Za-z0-9_-]{1,40}$/.test(id) || ROUTES_TERR.indexOf(x.t) < 0 || !isFinite(ts) || ts <= 0) return null;
   var sfa = str(x.sfa, 18), sfc = str(x.sfc, 18);
-  if (!/^001[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(sfa)) return null;          // compte Salesforce
+  // v62 (Jacquot 2026-11-12) : compte Salesforce facultatif. Sans compte, la fiche donne de quoi
+  // le retrouver ou le creer (nom, adresse, telephone) ; le script du poste decide, pas le serveur.
+  if (sfa && !/^001[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(sfa)) return null;   // compte Salesforce
   if (sfc && !/^003[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(sfc)) return null;   // contact Salesforce
   var c = { id: id, t: x.t, ts: ts, k: str(x.k, 60), fnom: str(x.fnom, 120), sfa: sfa, sfc: sfc,
             prenom: str(x.prenom, 40), nom: str(x.nom, 80), titre: str(x.titre, 128),
             tel: str(x.tel, 40), cell: str(x.cell, 40), courriel: str(x.courriel, 80).toLowerCase(),
             note: str(x.note, 300) };
+  if (!sfa) {
+    var a = x.a || {};
+    c.a = { rue: str(a.rue, 200), ville: str(a.ville, 80), prov: str(a.prov, 40), cp: str(a.cp, 20),
+            tel: str(a.tel, 40), pays: str(a.pays, 40), epicor: str(a.epicor, 20), st: str(a.st, 20) };
+    if (c.fnom.length < 2 || !(c.a.ville || c.a.tel)) return null;                 // de quoi retrouver le compte
+  }
   if (!c.nom) return null;                                                          // Salesforce exige le nom
   if (c.courriel && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.courriel)) return null;
   if (!(c.tel || c.cell || c.courriel || c.titre || c.prenom)) return null;         // rien a ecrire
