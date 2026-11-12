@@ -112,7 +112,7 @@ try:
     check('etape 1 seule visible', vis('ch-etape-1') and not vis('ch-etape-2') and not vis('ch-etape-5'))
     prix = J("var o={}; document.querySelectorAll('#cam-chariot .grue-prix').forEach(function(e){o[e.dataset.code]=e.textContent;}); return o;")
     print('     prix affiches :', prix)
-    check('prix de chaque code rempli (montant ou « Prix a venir »)', all(v.strip() for v in prix.values()) and len(prix) == 8)
+    check('prix de chaque code rempli (montant ou « Prix a venir »)', all(v.strip() for v in prix.values()) and len(prix) == 9)
     check('quantite generale cachee', not vis('cam-qte-box'))
 
     print('3. cascade')
@@ -135,16 +135,35 @@ try:
     print('6. lignes')
     L = lignes()
     print('     ', L)
-    attendu = ['1300-0126 | Caméra sur la fourche', '1300-0125 | Caméra sur la cabine (avant + arrière) ×2',
+    attendu = ['1300-0126 | Caméra sur la fourche', '1300-0125 | Caméra sur la cabine (arrière + avant) ×2',
                '1300-0100 | Moniteur 7 po', '1300-0140 | Batterie mobile 10 h ×6', '1300-0141 | Chargeur ×3']
     check('lignes attendues', L == attendu)
     ep = J("return epicorBlockText();")
     print('      Epicor :', repr(ep))
     check('Epicor : quantites', '1300-0125\t2' in ep and '1300-0140\t6' in ep and '1300-0141\t3' in ep and '1300-0126\t1' in ep)
 
+    print('6b. option aimants')
+    check('cabine : arriere avant avant', J("var e=document.querySelectorAll('#ch-etape-2 input[type=checkbox]'); return e[0].id+','+e[2].id;") == 'ch-cab-arriere,ch-cab-avant')
+    check('aimants arriere/avant visibles (cameras cochees)', vis('ch-aim-arriere') and vis('ch-aim-avant'))
+    check('aimants rack caches (fourche 0126)', not vis('ch-aim-rack'))
+    cliquer('ch-aim-arriere'); cliquer('ch-aim-avant')
+    L = lignes()
+    print('     ', L)
+    check('aimants : 4 AT0001 et 4 ecrous (2 cameras)', 'AT0001 | Aimants (2 par caméra) ×4' in L and '93625A250 | Écrous nylon M6 (2 par caméra) ×4' in L)
+    ep = J("return epicorBlockText();")
+    check('Epicor : AT0001 4 et 93625A250 4', 'AT0001	4' in ep and '93625A250	4' in ep)
+    check('prix aimant affiche', '12 $' in J("return document.querySelector('#ch-aim-arriere-lab .grue-prix').textContent;"))
+    check('aimants + ecrous a 0 $ : total pas « a valider »', J("return lignesFacturables().every(function(l){return !l.prixAValider;});"))
+    cliquer('ch-aim-avant')
+    check('1 camera aimantee : x2', 'AT0001 | Aimants (2 par caméra) ×2' in lignes())
+
     print('   rack + cabine arriere seulement + 30 h')
     cliquer('ch-fourche-0127'); cliquer('ch-cab-avant'); saisir('ch-batt-10', ''); saisir('ch-batt-30', '4')
     check('reco batteries 4 (2 cameras)', '4 au total' in texte('ch-reco-batt'))
+    check('aimants rack visibles (0127)', vis('ch-aim-rack'))
+    check('aimants avant decoches avec la camera avant', not J("return document.getElementById('ch-aim-avant').checked;") and not vis('ch-aim-avant'))
+    cliquer('ch-aim-rack')
+    check('rack + arriere aimantes : x4', 'AT0001 | Aimants (2 par caméra) ×4' in lignes())
     L = lignes()
     print('     ', L)
     check('lignes rack', L[:2] == ['1300-0127 | Caméra sur le rack entre les fourches', '1300-0125 | Caméra sur la cabine (arrière)']

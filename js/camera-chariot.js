@@ -9,6 +9,8 @@
 //   4. Batteries : 10 h 1300-0140 et/ou 30 h 1300-0240 ; recommandé = 2 par caméra
 //      (1 en service + 1 de rechange)
 //   5. Chargeur 1300-0141 : recommandé = 1 par caméra
+//   Option aimants (Steve, 2026-11-12) : caméra entre les fourches et caméras de cabine.
+//   Chaque caméra avec l'option ajoute 2 aimants AT0001 et 2 écrous nylon 93625A250.
 //
 // Chaque étape apparaît quand la précédente est répondue. Les prix sont affichés à côté de
 // chaque choix, avant de choisir. Un code sans prix affiche « Prix à venir » et retient le
@@ -25,7 +27,7 @@
         return v;
     };
 
-    var CODES = ['1300-0126', '1300-0127', '1300-0125', '1300-0100', '1300-0101', '1300-0140', '1300-0240', '1300-0141'];
+    var CODES = ['1300-0126', '1300-0127', '1300-0125', '1300-0100', '1300-0101', '1300-0140', '1300-0240', '1300-0141', 'AT0001', '93625A250'];
     window.CHARIOT_CODES = CODES;
 
     function actif() { return !!caseCh.checked && boite.style.display !== 'none'; }
@@ -46,6 +48,17 @@
         var n = parseInt(s, 10);
         return (isFinite(n) && n >= 0) ? n : '';
     }
+    // Option aimants, visible seulement quand sa caméra est choisie.
+    var AIMANTS = [['ch-aim-rack', function () { return fourche() === '1300-0127'; }],
+                   ['ch-aim-arriere', cabArriere], ['ch-aim-avant', cabAvant]];
+    function majAimants() {
+        AIMANTS.forEach(function (a) {
+            var on = a[1](), lab = $(a[0] + '-lab');
+            if (lab) lab.style.display = on ? '' : 'none';
+            if (!on && $(a[0])) $(a[0]).checked = false;
+        });
+    }
+    function nbAimantes() { return AIMANTS.filter(function (a) { return a[1]() && ($(a[0]) || {}).checked; }).length; }
     function battRepondu() { return qte('ch-batt-10') !== '' || qte('ch-batt-30') !== ''; }
 
     function majPrix() {
@@ -71,6 +84,7 @@
 
     // Étapes en cascade : la suivante apparaît quand la précédente est répondue.
     function majEtapes() {
+        majAimants();
         var e2 = !!fourche(), e3 = e2 && cabRepondu(), e4 = e3 && !!moniteur(), e5 = e4 && battRepondu();
         $('ch-etape-2').style.display = e2 ? '' : 'none';
         $('ch-etape-3').style.display = e3 ? '' : 'none';
@@ -175,7 +189,12 @@
         if (fourche() === '1300-0127') out.push({ code: '1300-0127', desc: 'Caméra sur le rack entre les fourches' });
         var nCab = (cabAvant() ? 1 : 0) + (cabArriere() ? 1 : 0);
         if (nCab) out.push({ code: '1300-0125', desc: 'Caméra sur la cabine (' +
-            [cabAvant() ? 'avant' : '', cabArriere() ? 'arrière' : ''].filter(Boolean).join(' + ') + ')' + x(nCab) });
+            [cabArriere() ? 'arrière' : '', cabAvant() ? 'avant' : ''].filter(Boolean).join(' + ') + ')' + x(nCab) });
+        var nA = nbAimantes();
+        if (nA) {
+            out.push({ code: 'AT0001', desc: 'Aimants (2 par caméra)' + x(2 * nA) });
+            out.push({ code: '93625A250', desc: 'Écrous nylon M6 (2 par caméra)' + x(2 * nA) });
+        }
         var m = moniteur();
         if (m === '1300-0100') out.push({ code: m, desc: 'Moniteur 7 po' });
         if (m === '1300-0101') out.push({ code: m, desc: 'Moniteur 10 po' });

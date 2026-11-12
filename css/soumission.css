@@ -765,3 +765,6 @@
    ils restent dans le tableau plus bas ; la quantité recommandée va sous le titre de l'étape. */
 .cam-grue .grue-code { display: none; }
 .cam-grue .grue-etape-titre + .grue-reco { display: block; margin: -2px 0 6px 24px; }
+
+/* Option aimants des caméras de chariot (2026-11-12) : petite case rattachée à sa caméra */
+.grue-aimant { font-size: 0.74rem; border-style: dashed; padding: 2px 8px; }
