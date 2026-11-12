@@ -9,7 +9,7 @@ jobs ne sont pas pretes pour l'installation et leur date n'est pas reelle (decis
 2026-11-03 ; avant, une section « En attente »). La page prep-jobs.html les montre toujours.
 
 Jobs a completer : installations et SAV des 30 prochains jours auxquels il manque la
-commande PDF, une ligne dans l'onglet Facture (2026-10-20), le contact sur place avec un
+commande PDF, le contact sur place avec un
 telephone de 10 chiffres, l'emplacement, ou (installation) une ligne vide du gabarit
 d'information client de la description, « Numero d'ordre » a « Information de la personne
 responsable » (2026-11-03 ; « N/A » si l'info ne s'applique pas).
@@ -101,9 +101,7 @@ def manques(j):
     m = []
     if not (est_sav(j) or j.get('commande')):
         m.append('commande PDF')
-    # Onglet Facture : au moins une ligne, sauf SAV (decision Jacquot, 2026-10-20)
-    if not est_sav(j) and j.get('lignes') is False:
-        m.append('lignes de facture')
+    # Onglet Facture : critere retire le 2026-11-12 (Luna : plus utile).
     if not (j.get('contactNom') and j.get('telOk')):
         if not j.get('contactNom') and not j.get('telChiffres'):
             m.append('contact sur place')
@@ -164,7 +162,6 @@ def construire(prep, maintenant, creneau):
         (urgentes if d and d <= limite else plus_tard).append(j)
     n = lambda f: sum(1 for j in jobs if f(j))
     n_cmd = n(lambda j: not (est_sav(j) or j.get('commande')))
-    n_fact = n(lambda j: not est_sav(j) and j.get('lignes') is False)
     n_contact = n(lambda j: not (j.get('contactNom') and j.get('telOk')))
     n_lieu = n(lambda j: not j.get('emplacement'))
     n_info = n(lambda j: j.get('infoClient'))
@@ -198,13 +195,13 @@ def construire(prep, maintenant, creneau):
     if creneau == 'matin':
         corps.append('<p style="margin-top:18px"><b>%d job(s) sur %d à compléter dans ProgressionLive</b> '
                      '(installations et SAV du %s au %s).<br>'
-                     '<span style="color:#555">%d sans commande PDF · %d sans ligne dans l\'onglet Facture · '
+                     '<span style="color:#555">%d sans commande PDF · '
                      '%d sans contact complet · %d sans emplacement · %d avec info client incomplète. '
-                     'Un SAV n\'exige ni commande ni ligne de facture. Info client : chaque ligne du gabarit, '
+                     'Un SAV n\'exige pas de commande. Info client : chaque ligne du gabarit, '
                      'de « Numéro d\'ordre » à « Information de la personne responsable », doit être remplie ; '
                      'écrire N/A si elle ne s\'applique pas. Les jobs à planifier, en HOLD ou pas prêtes '
                      'ne sont pas dans ce courriel.</span></p>' % (
-                         len(a_faire), len(jobs), e(prep.get('du', '')), e(prep.get('au', '')), n_cmd, n_fact, n_contact, n_lieu, n_info))
+                         len(a_faire), len(jobs), e(prep.get('du', '')), e(prep.get('au', '')), n_cmd, n_contact, n_lieu, n_info))
         if urgentes:
             corps.append('<h3 style="color:#c0392b;margin:18px 0 6px">Dans %d jours ou moins (%d)</h3>' % (URGENT_JOURS, len(urgentes)))
             corps.append(tableau(urgentes))

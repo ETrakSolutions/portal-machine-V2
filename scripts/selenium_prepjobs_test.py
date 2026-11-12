@@ -48,9 +48,9 @@ def jeu_fabrique():
         J('INS5', 9, confirme=True),
         J('SAV6', 3, type='SAV', commande=False),   # SAV sans PDF mais complet : commande non requise
         J('INS7', 1, tech='_A Planifier', emplacement=False),   # en attente : incomplete mais jamais urgente
-        J('INS8', 2, lignes=False),                 # seul manque : aucune ligne dans l'onglet Facture
-        J('SAV9', 4, type='SAV', lignes=False),      # SAV : ligne de facture non requise -> complet
-        J('INS10', 5),                              # serveur < v47 : pas de « lignes » -> non juge
+        J('INS8', 2, lignes=False),                 # onglet Facture vide : plus un critere (2026-11-12) -> complet
+        J('SAV9', 4, type='SAV', lignes=False),      # SAV : complet
+        J('INS10', 5),                              # complet
         J('INS11', 7, infoClient=['annee', 'demarrage']),   # gabarit info client incomplet (2026-11-03)
         J('INS12', 7, infoClient=[]),               # gabarit complet
     ]}
@@ -59,9 +59,8 @@ def jeu_fabrique():
 PREP = json.load(open(arg('--fixture'), encoding='utf-8')) if arg('--fixture') else jeu_fabrique()
 est_sav = lambda j: j['type'].strip().lower() == 'sav'
 cmd_ok = lambda j: est_sav(j) or j['commande']   # SAV : pas de commande avant la visite
-fact_ok = lambda j: est_sav(j) or j.get('lignes') is not False   # onglet Facture (2026-10-20), sauf SAV
 info_ok = lambda j: not j.get('infoClient')   # gabarit d'information client (2026-11-03)
-complete = lambda j: cmd_ok(j) and fact_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement'] and info_ok(j)
+complete = lambda j: cmd_ok(j) and j['contactNom'] and j['telOk'] and j['emplacement'] and info_ok(j)
 A_FAIRE = [j for j in PREP['jobs'] if not complete(j)]
 
 
@@ -158,7 +157,7 @@ try:
         return { code: tr.getAttribute('data-code'), urgent: tr.classList.contains('pj-urgent'),
                  nocmd: (tr.querySelector('.pj-nocmd').firstChild.textContent || '').trim(),
                  fix: tr.querySelectorAll('.pj-nocmd .pj-fix').length, col2: tr.cells[2].className,
-                 conf: v('.pj-conf'), cmd: v('.pj-cmd'), fact: v('.pj-fact'), contact: v('.pj-contact'), lieu: v('.pj-lieu'), info: v('.pj-info') }; });"""
+                 conf: v('.pj-conf'), cmd: v('.pj-cmd'), fact: tr.querySelectorAll('.pj-fact').length, contact: v('.pj-contact'), lieu: v('.pj-lieu'), info: v('.pj-info') }; });"""
     lignes = dv.execute_script(LIRE)
     check('par defaut : %d lignes = jobs a completer (%d)' % (len(lignes), len(A_FAIRE)), len(lignes) == len(A_FAIRE))
     dv.execute_script("document.getElementById('pj-todo').click();"); time.sleep(0.3)
@@ -177,9 +176,10 @@ try:
         if not j['telOk'] and j['telChiffres'] and (str(j['telChiffres']) + ' chiffres') not in l['contact']:
             bon = False; print('       chiffres absents :', l)
     check('chaque verdict = les donnees recues (commande, contact, emplacement)', bon)
-    att_fact = lambda j: 'Non requise (SAV)' if est_sav(j) else '—' if 'lignes' not in j else 'OK' if j['lignes'] else 'Aucune ligne'
-    mauvais = [(l['code'], l['fact']) for l in toutes if l['fact'] != att_fact(par_code[l['code']])]
-    check('onglet Facture : OK / « Aucune ligne » / SAV non requise / « — » si le serveur ne le dit pas %s' % (mauvais or ''), not mauvais)
+    # Onglet Facture retire le 2026-11-12 (Luna) : ni colonne ni en-tete
+    check('onglet Facture : aucune colonne', all(l['fact'] == 0 for l in toutes) and
+          not dv.execute_script("return /Onglet Facture/.test(document.querySelector('table.pj thead').innerText);"))
+    check('INS8 sans ligne de facture = complete (absente de la liste par defaut)', 'INS8' not in [l['code'] for l in lignes])
     INFO = {'annee': 'année', 'demarrage': 'code de démarrage', 'ordre': "n° d’ordre"}
     att_info = lambda j: 'Non requise (SAV)' if est_sav(j) else '—' if 'infoClient' not in j else 'OK' if not j['infoClient'] \
         else 'Manque : ' + ', '.join(INFO.get(c, c) for c in j['infoClient'])
@@ -195,10 +195,9 @@ try:
     resume = dv.execute_script("return document.getElementById('pj-summary').innerText;")
     n_cmd = sum(1 for j in PREP['jobs'] if not cmd_ok(j))
     n_lieu = sum(1 for j in PREP['jobs'] if not j['emplacement'])
-    n_fact = sum(1 for j in PREP['jobs'] if not fact_ok(j))
     check('resume chiffre (%s)' % resume.replace('\n', ' / '),
           ('%d job(s) sur %d' % (len(A_FAIRE), len(PREP['jobs']))) in resume and ('%d sans commande' % n_cmd) in resume
-          and ('%d sans emplacement' % n_lieu) in resume and ('%d sans ligne de facture' % n_fact) in resume)
+          and ('%d sans emplacement' % n_lieu) in resume and 'facture' not in resume)
 
     print('--- 4) urgence, copie ---')
     now = time.time()

@@ -159,9 +159,8 @@ function updateHubUI() {
                     var n = (d.prep.jobs || []).filter(function (j) {
                         var sav = String(j.type || '').trim().toLowerCase() === 'sav';
                         var cmd = j.commande || sav;                  // SAV : pas de commande avant la visite
-                        var fact = sav || j.lignes !== false;         // onglet Facture (2026-10-20) ; absent d'un serveur < v47 = pas juge
                         var info = !(j.infoClient && j.infoClient.length); // gabarit info client (2026-11-03)
-                        return !(cmd && fact && j.contactNom && j.telOk && j.emplacement && info); }).length;
+                        return !(cmd && j.contactNom && j.telOk && j.emplacement && info); }).length;
                     tilePJ.style.display = 'block';
                     var desc = document.getElementById('hub-tile-prepjobs-desc');
                     if (desc && n > 0 && typeof i18n !== 'undefined') {
