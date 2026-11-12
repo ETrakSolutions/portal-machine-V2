@@ -1084,6 +1084,11 @@ var CEDULE_TZ = 'America/Toronto';
 var CEDULE_AM = [450, 720], CEDULE_PM = [720, 990];  // minutes depuis minuit
 var CEDULE_JOURS = 28;
 var CEDULE_CACHE_S = 900;                            // 15 min
+// ProgressionLive filtre task/list sur le DEBUT de la tache (rv). Un conge d'une semaine
+// commence lundi n'etait donc plus lu des le mercredi : Michel paraissait libre alors qu'il
+// etait en conge (CONGE024659, lundi 2026-11-09 7 h, PT120H ; vu par Steve le 2026-11-12).
+// On relit les taches commencees jusqu'a 31 jours avant aujourd'hui.
+var CEDULE_RECUL_JOURS = 31;
 
 function _plGet(path, params) {
   var key = PROPS.getProperty('PROGRESSIONLIVE_API_KEY');
@@ -1160,8 +1165,9 @@ function _calculCedule(maintenant) {
     techs.push(t); parId[String(h.id)] = t;
   });
 
-  // On remonte d'un jour : une tache commencee la veille peut deborder sur aujourd'hui.
-  var debut = Utilities.formatDate(new Date(maintenant.getTime() - 86400000), CEDULE_TZ, 'yyyy-MM-dd');
+  // On remonte de CEDULE_RECUL_JOURS : une tache commencee avant aujourd'hui (conge d'une
+  // semaine, depart de plusieurs jours) peut deborder sur la periode affichee.
+  var debut = Utilities.formatDate(new Date(maintenant.getTime() - CEDULE_RECUL_JOURS * 86400000), CEDULE_TZ, 'yyyy-MM-dd');
   var taches = _plListe('/task/list', { rv: debut + ',' + jFin,
     onlyFieldsToInclude: 'rv,duration,humanResource,helpers,currentState,type' });
 
@@ -1208,17 +1214,17 @@ function getCedule(body) {
   var user = _findUser(sess.u);
   if (!user || user.active === false) return { error: 'authentication required' };
   if (!_roleHasAccess(user.role, 'ceduleAccess', CEDULE_ROLES)) return { error: 'forbidden' };
-  // Cle bumpee a _v3 le 2026-11-04 (bornes AM/PM dans la cedule), _v2 le 2026-10-27
+  // Cle bumpee a _v4 le 2026-11-12 (recul de 31 jours), a _v3 le 2026-11-04 (bornes AM/PM dans la cedule), _v2 le 2026-10-27
   // avec l'ajout du samedi et du dimanche. La regle est la meme a chaque fois : sinon le
   // cache de 15 min aurait continue a servir l'ancienne cedule, sans les deux colonnes,
   // apres le redeploiement.
   var cache = CacheService.getScriptCache();
-  var hit = cache.get('cedule_v3');
+  var hit = cache.get('cedule_v4');
   if (hit) { try { return { ok: true, cedule: JSON.parse(hit) }; } catch (e) {} }
   var ced;
   try { ced = _calculCedule(new Date()); }
   catch (err) { Logger.log('getCedule : ' + err); return { error: 'cedule unavailable' }; }
-  try { cache.put('cedule_v3', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
+  try { cache.put('cedule_v4', JSON.stringify(ced), CEDULE_CACHE_S); } catch (e) {}
   return { ok: true, cedule: ced };
 }
 

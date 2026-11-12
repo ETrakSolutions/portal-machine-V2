@@ -30,7 +30,9 @@ const ctx = {
       return { getResponseCode: () => +out.slice(i + 1), getContentText: () => out.slice(0, i) };
     }
     const u = new URL(url), start = +(u.searchParams.get('startResult') || 0);
-    const src2 = u.pathname.endsWith('/hr/list') ? FAUX.hr : FAUX.tasks;
+    let src2 = u.pathname.endsWith('/hr/list') ? FAUX.hr : FAUX.tasks;
+    const rv = u.searchParams.get('rv');           // comme le vrai : filtre sur le DEBUT de la tache
+    if (rv && src2 === FAUX.tasks) { const [a, b] = rv.split(','); src2 = src2.filter(t => t.rv.slice(0, 10) >= a && t.rv.slice(0, 10) <= b); }
     return { getResponseCode: () => 200, getContentText: () => JSON.stringify(src2.slice(start, start + 500)) };
   } },
   LockService: { getScriptLock: () => ({ waitLock() {}, releaseLock() {} }) },
@@ -75,6 +77,8 @@ const lundi = (() => { const d = new Date(); while (d.getDay() !== 1) d.setDate(
 const mardi = new Date(lundi + 'T12:00:00Z'); mardi.setUTCDate(mardi.getUTCDate() + 1); const MA = mardi.toISOString().slice(0, 10);
 const ven = new Date(lundi + 'T12:00:00Z'); ven.setUTCDate(ven.getUTCDate() + 4); const VE = ven.toISOString().slice(0, 10);
 const lun2 = new Date(lundi + 'T12:00:00Z'); lun2.setUTCDate(lun2.getUTCDate() + 7); const L2 = lun2.toISOString().slice(0, 10);
+const av2 = new Date(); av2.setDate(av2.getDate() - 2); const AV2 = av2.toISOString().slice(0, 10);
+const AUJ = new Date().toISOString().slice(0, 10);
 const off = d => { const m = new Intl.DateTimeFormat('en', { timeZone: 'America/Toronto', timeZoneName: 'shortOffset' }).format(new Date(d + 'T12:00:00Z')).match(/GMT([+-]\d+)/); return (m[1].startsWith('-') ? '-' : '+') + String(Math.abs(+m[1])).padStart(2, '0'); };
 const T = (hr, jour, h, dur, type = 'Installation', etat = 'Réparti', helpers = []) =>
   ({ rv: jour + 'T' + h + ':00' + off(jour), duration: dur, humanResource: hr ? { id: hr, label: 'x' } : null, helpers, type: { label: type }, currentState: { label: etat } });
@@ -89,6 +93,7 @@ FAUX.tasks = [
   T(4, MA, '07:30', 'PT4H30M'),                             // Autre tech -> exclu
   T(null, MA, '12:00', 'PT2H', 'SAV', 'Réparti', [{ id: 2, label: 'Michel' }]),  // Michel aide mardi PM
   T(2, L2, '16:30', 'PT30M'),                               // commence a la fin du PM -> rien
+  T(2, AV2, '07:00', 'PT120H', 'Congé'),                    // conge commence avant-hier, 5 jours (cas Michel 2026-11-12)
 ];
 let r = post({ action: 'getcedule', token: tok('v@e', 'V') });
 const c = r.cedule, P = c && c.techs.find(t => t.nom === 'Pierre'), M = c && c.techs.find(t => t.nom === 'Michel');
@@ -104,6 +109,7 @@ check('Michel mardi : annulee et feuille de temps ignorees, aide l apres-midi ->
 check('Pierre vendredi (conge 16 h 30) : ferme toute la journee', JSON.stringify(P.cases[VE]) === '[true,true]');
 check('Pierre lundi suivant : le conge ne deborde pas', JSON.stringify(P.cases[L2]) === '[false,false]');
 check('Michel : tache qui commence a 16 h 30 -> ne ferme rien', JSON.stringify(M.cases[L2]) === '[false,false]');
+check('Michel : conge commence avant-hier (5 jours) -> aujourd hui ferme (cas 2026-11-12)', JSON.stringify(M.cases[c.jours[0]]) === '[true,true]');
 const rep = JSON.stringify(r);
 check('reponse sans libelle de tache, client, type ni etat', !/Installation|SAV|Congé|Réparti|client|x"/.test(rep));
 check('cache : 2e appel sans nouvel appel a ProgressionLive', (() => { const n = appels.length; post({ action: 'getcedule', token: tok('t@e', 'T') }); return appels.length === n; })());
