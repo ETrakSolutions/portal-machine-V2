@@ -1906,25 +1906,17 @@ if (submitBtn) {
         // photoMachine(). Le reste du courriel (client, lieu, vendeur) est commun.
         var photo = photoMachine();
 
-        // Load product codes then build email
-        var pcApiKey = 'product_codes_' + fab.replace(/[^a-zA-Z0-9]/g,'_') + '_' + modele.replace(/[^a-zA-Z0-9]/g,'_') + '_' + annee;
-        fetch(API_URL + '?action=get&key=' + encodeURIComponent(pcApiKey))
-            .then(function(r) { return r.json(); })
-            .then(function(data) {
-                var productCodes = [];
-                if (data.value) { try { productCodes = JSON.parse(data.value); } catch(e) {} }
-                sendEmail(productCodes);
-            })
-            .catch(function() { sendEmail([]); });
-
-        function sendEmail(productCodes) {
-            var body = corpsDemandeMachine(photo, {
-                company: companyName, clientEmail: clientEmail, nbSystemes: nbSystemes, lieu: lieuInstall,
-                dateInstall: dateInstall, comment: comment, userName: userName
-            }, dest);
-            lancerCourriel(dest.toAll, subject, body, texteEpicor(photo.epicor));
-            viderInfosClient();
-        } // end sendEmail
+        // Le courriel part tout de suite. Les codes produit de la machine sont deja dans
+        // la liste de l'ecran (loadProductCodes au choix de la machine, repris par
+        // photoMachine depuis 449529b). La relecture serveur faite ici avant le
+        // 2026-11-12 etait ignoree et retardait l'ouverture de 1 a 15 s, sans rien a
+        // l'ecran : un 2e clic ouvrait alors deux courriels.
+        var body = corpsDemandeMachine(photo, {
+            company: companyName, clientEmail: clientEmail, nbSystemes: nbSystemes, lieu: lieuInstall,
+            dateInstall: dateInstall, comment: comment, userName: userName
+        }, dest);
+        lancerCourriel(dest.toAll, subject, body, texteEpicor(photo.epicor));
+        viderInfosClient();
     });
 }
 
