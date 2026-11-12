@@ -78,7 +78,7 @@ function estSansMachine() { return !!selectType && (selectType.value === SANS_MA
 // APERÇU (Steve, 2026-11-11) : comptes qui voient les nouveautés pas encore lancées
 // (ex. « Équipement : Chariot élévateur / Grue » de la caméra sans machine). Pour
 // lancer une nouveauté à tous, retirer sa condition estApercu(), pas vider cette liste.
-var APERCU_COMPTES = ['steve@gryb.ca'];
+var APERCU_COMPTES = ['steve@gryb.ca', 'jcaron@gryb.com'];  // Jacquot ajoute le 2026-11-12 (Steve)
 function estApercu() { return APERCU_COMPTES.indexOf(courrielUtilisateur()) !== -1; }
 
 const selectType = document.getElementById('select-type');
