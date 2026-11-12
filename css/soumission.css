@@ -770,3 +770,6 @@
 .grue-aimant { font-size: 0.74rem; border-style: dashed; padding: 2px 8px; }
 .grue-choix.grue-colonne { flex-direction: column; align-items: flex-start; }
 .grue-rang { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+
+/* Type « Chariot élévateur » (2026-11-12) : seule la fenêtre du lift dans la tuile Caméra */
+#camera-panel.mode-chariot > .sub-option, #camera-panel.mode-chariot > #cam-calc { display: none !important; }

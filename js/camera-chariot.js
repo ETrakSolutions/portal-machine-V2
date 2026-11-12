@@ -126,7 +126,7 @@
     }
 
     function majVisibilite() {
-        var vis = !!caseCh.checked && ($('cam-equip') || {}).style.display !== 'none';
+        var vis = !!caseCh.checked;     // cochée d'office par le type « Chariot élévateur »
         boite.style.display = vis ? '' : 'none';
         // La quantité générale ne s'applique pas : chaque ligne a la sienne.
         var qb = $('cam-qte-box');

@@ -2,7 +2,7 @@
 """Soumission : caméra de chariot élévateur, choix en cascade (Steve, 2026-11-12). APERÇU.
 
 Verifie :
-  1. compte hors apercu : la case Chariot reste cachee ;
+  1. compte hors apercu : pas de type « Chariot elevateur » ;
   2. apercu : cocher Chariot ouvre la fenetre, statut CHARIOT, etape 1 seule visible,
      prix affiches avant tout choix (« Prix a venir » si absent) ;
   3. cascade : fourche -> etape 2 ; cabine -> etape 3 ; moniteur -> etape 4 ; batteries -> etape 5 ;
@@ -88,9 +88,11 @@ def sans_machine(apercu=True):
     WebDriverWait(dv, 40).until(lambda d: d.execute_script(
         "return (typeof machinesData !== 'undefined') && Object.keys(machinesData).length > 0 && !!window.chariotLignes;"))
     if apercu:
-        J("APERCU_COMPTES.push('t@e');")
-    J("var s=document.getElementById('select-type'); s.value='__sans_machine__';"
-      "s.dispatchEvent(new Event('change',{bubbles:true}));")
+        J("APERCU_COMPTES.push('t@e'); var v=selectType.value; while (selectType.options.length > 1) selectType.remove(1);"
+          " populateTypes(); selectType.value=v;")
+    # Type « Chariot elevateur » (Steve, 2026-11-12) : plus de case dans « Autre machine ».
+    J("var s=document.getElementById('select-type'); s.value=arguments[0];"
+      "s.dispatchEvent(new Event('change',{bubbles:true}));", '__chariot__' if apercu else '__sans_machine__')
     time.sleep(1)
     if not J("return document.getElementById('toggle-camera').classList.contains('open');"):
         J("document.querySelector('#toggle-camera .toggle-label').click();")
@@ -100,11 +102,15 @@ def sans_machine(apercu=True):
 try:
     print('1. compte hors apercu')
     sans_machine(apercu=False)
-    check('case Chariot cachee', not vis('cam-equip-chariot'))
+    check('pas de type Chariot elevateur', not J("return [].some.call(selectType.options, function(o){return o.value==='__chariot__';});"))
+    check('« Autre machine » : fenetre chariot cachee', not vis('cam-chariot'))
 
-    print('2. apercu : cocher Chariot')
+    print('2. apercu : type Chariot elevateur')
     sans_machine()
-    cliquer('cam-equip-chariot')
+    check('type nomme Chariot élévateur', J("return selectType.options[selectType.selectedIndex].textContent;") == 'Chariot élévateur')
+    check('pas de fabricant / modele / annee', not vis('select-fabricant') and not vis('select-modele') and not vis('select-annee'))
+    check('autres cameras masquees', not vis('cam-recul') and not vis('cam-quad') and not vis('cam-360-choix'))
+    check('description facultative', 'facultatif' in J("return document.querySelector('label[for=soumission-equipement]').textContent;"))
     check('fenetre chariot visible', vis('cam-chariot'))
     check('fenetre grue cachee', not vis('cam-grue'))
     check('note « a venir » cachee', not vis('cam-equip-note'))
@@ -182,27 +188,25 @@ try:
     etat = J("return etatEcran();")
     J("restaurerEtat(arguments[0]);", etat)
     time.sleep(1)
-    J("APERCU_COMPTES.push('t@e'); majCamEquip(true);")
+    J("APERCU_COMPTES.push('t@e'); majCamEquip(selectType.value);")
     J("restaurerEtat(arguments[0]);", etat)
     time.sleep(1)
     L2 = lignes()
     print('      ', L2)
     check('etat restaure', any(l.startswith('1300-0125') for l in L2) and vis('cam-chariot'))
 
-    print('8. exclusivite')
-    cliquer('cam-equip-grue')
-    check('Grue decoche Chariot et cache sa fenetre', not J("return document.getElementById('cam-equip-chariot').checked;") and not vis('cam-chariot'))
-    check('fenetre grue visible', vis('cam-grue'))
-    cliquer('cam-equip-chariot')
-    check('Chariot : choix vides', not J("return !!document.querySelector('input[name=\"ch-fourche\"]:checked');"))
-    cliquer('cam-recul')
-    check('Recul decoche Chariot', not J("return document.getElementById('cam-equip-chariot').checked;") and not vis('cam-chariot'))
-    check('ligne recul seule', all(not l.startswith('1300-01') for l in lignes()))
+    print('8. changement de type')
+    J("selectType.value='__sans_machine__'; doTypeChange();")
+    time.sleep(0.5)
+    check('Autre machine : fenetre chariot cachee et choix vides', not vis('cam-chariot') and not J("return !!document.querySelector('input[name=\"ch-fourche\"]:checked');"))
+    check('Autre machine : cameras normales de retour', vis('cam-recul'))
+    J("selectType.value='__chariot__'; doTypeChange();")
+    time.sleep(0.5)
+    check('retour au chariot : fenetre ouverte', vis('cam-chariot'))
 
     print('9. anglais')
     J("if (typeof i18n !== 'undefined') { i18n.setLang('en'); }")
     time.sleep(0.5)
-    cliquer('cam-equip-chariot')
     check('titre anglais (Forklift camera)', 'Forklift camera' in J("return document.querySelector('#cam-chariot .cam-calc-titre').textContent;"))
 
     sev = [l for l in dv.get_log('browser') if l['level'] == 'SEVERE' and ('127.0.0.1' in l['message'] or 'github.io' in l['message'])

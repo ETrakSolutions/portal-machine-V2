@@ -81,7 +81,7 @@
     }
 
     function majVisibilite() {
-        var vis = !!caseGrue.checked && ($('cam-equip') || {}).style.display !== 'none';
+        var vis = !!caseGrue.checked;   // la case n'existe que sur une grue mobile (aperçu)
         boite.style.display = vis ? '' : 'none';
         // La quantité générale ne s'applique pas à la grue : chaque ligne a la sienne.
         var qb = $('cam-qte-box');

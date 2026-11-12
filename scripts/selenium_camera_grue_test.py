@@ -11,7 +11,7 @@ Verifie :
   5. lignes : 1300-0225, 1300-0101, 1300-0230, 1300-0240 x2, 1300-0141 ; bloc Epicor ;
   6. avec les 6 prix : total = somme exacte (quantites comprises) ;
   7. envoi bloque tant qu'un choix manque (grueManquant) ;
-  8. cocher Recul decoche Grue et vide ses choix ; Chariot aussi ;
+  8. cocher Recul decoche Grue et vide ses choix ; « Autre machine » : pas de case Grue ;
   9. panier : etat restaure (moniteur, pedale, quantites) ;
  10. anglais ; aucune erreur JS SEVERE.
 
@@ -93,9 +93,16 @@ def sans_machine(apercu=True):
     WebDriverWait(dv, 40).until(lambda d: d.execute_script(
         "return (typeof machinesData !== 'undefined') && Object.keys(machinesData).length > 0 && !!window.grueLignes;"))
     if apercu:
-        J("APERCU_COMPTES.push('t@e');")
-    J("var s=document.getElementById('select-type'); s.value='__sans_machine__';"
-      "s.dispatchEvent(new Event('change',{bubbles:true}));")
+        J("APERCU_COMPTES.push('t@e'); var v=selectType.value; while (selectType.options.length > 1) selectType.remove(1);"
+          " populateTypes(); selectType.value=v;")
+    # Grue mobile (Steve, 2026-11-12) : la camera de grue y vit maintenant, plus en « Autre machine ».
+    J("selectType.value='Grue Mobile'; doTypeChange();"
+      "selectFabricant.value=Object.keys(machinesData['Grue Mobile']).filter(function(f){return f.charAt(0)!=='_';})[0]; doFabChange();"
+      "var a=[].slice.call(selectAnnee.options).map(function(o){return o.value;}).filter(Boolean); selectAnnee.value=a[a.length-1];"
+      "selectAnnee.dispatchEvent(new Event('change',{bubbles:true}));")
+    time.sleep(0.5)
+    J("var m=[].slice.call(selectModele.options).map(function(o){return o.value;}).filter(Boolean); selectModele.value=m[0];"
+      "selectModele.dispatchEvent(new Event('change',{bubbles:true}));")
     time.sleep(1)
     camb = J("return document.getElementById('toggle-camera').classList.contains('open');")
     if not camb:
@@ -164,7 +171,7 @@ try:
     etat = J("return etatEcran();")
     J("restaurerEtat(arguments[0]);", etat)
     time.sleep(1)
-    J("APERCU_COMPTES.push('t@e'); majCamEquip(true);")
+    J("APERCU_COMPTES.push('t@e'); majCamEquip(selectType.value);")
     J("restaurerEtat(arguments[0]);", etat)
     time.sleep(1)
     L2 = lignes()
@@ -179,8 +186,12 @@ try:
     check('ligne recul seule', [l.split(' | ')[0] for l in lignes()] == ['1300-0001'])
     cliquer('cam-equip-grue')
     check('Grue decoche Recul', not J("return document.getElementById('cam-recul').checked;"))
-    cliquer('cam-equip-chariot')
-    check('Chariot decoche Grue et cache la fenetre', not vis('cam-grue'))
+    J("selectType.value='__sans_machine__'; doTypeChange();")
+    time.sleep(0.5)
+    check('« Autre machine » : pas de case Grue', not vis('cam-equip-grue-lab'))
+    check('« Autre machine » : nom du type', J("return selectType.options[selectType.selectedIndex].textContent;") == 'Autre machine')
+    sans_machine()
+    cliquer('cam-recul')
 
     print('10. anglais')
     cliquer('cam-equip-grue')

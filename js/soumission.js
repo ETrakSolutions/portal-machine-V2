@@ -70,7 +70,11 @@ var BALANCE_PRODUITS = {
 const SANS_MACHINE = '__sans_machine__';
 // Fabricant absent de la BD : ouvre la demande d'ajout (voir doFabChange).
 const OTHER_FAB = '__OTHER_FAB__';
-function estSansMachine() { return selectType && selectType.value === SANS_MACHINE; }
+// Type « Chariot élévateur » (Steve, 2026-11-12, APERÇU) : comme « Autre machine », sans
+// fabricant, modèle ni année ; seule la caméra de lift (js/camera-chariot.js) est offerte.
+const CHARIOT = '__chariot__';
+function estChariot() { return !!selectType && selectType.value === CHARIOT; }
+function estSansMachine() { return !!selectType && (selectType.value === SANS_MACHINE || selectType.value === CHARIOT); }
 // APERÇU (Steve, 2026-11-11) : comptes qui voient les nouveautés pas encore lancées
 // (ex. « Équipement : Chariot élévateur / Grue » de la caméra sans machine). Pour
 // lancer une nouveauté à tous, retirer sa condition estApercu(), pas vider cette liste.
@@ -369,6 +373,12 @@ function populateTypes() {
     // machine. Un distributeur qui achete une camera pour un lift, un camion benne
     // ou une betonniere n'a aucune machine a choisir ici — avant, il devait en
     // inventer une, ce qui salissait la soumission et la donnee.
+    if (estApercu()) {
+        const optCh = document.createElement('option');
+        optCh.value = CHARIOT;
+        optCh.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + CHARIOT) : 'Chariot élévateur';
+        selectType.appendChild(optCh);
+    }
     const optSM = document.createElement('option');
     optSM.value = SANS_MACHINE;
     optSM.textContent = (typeof i18n !== 'undefined')
@@ -423,7 +433,18 @@ function afficherModeSansMachine(actif) {
     if (box) box.style.display = actif ? '' : 'none';
     var qte = document.getElementById('cam-qte-box');
     if (qte) qte.style.display = actif ? '' : 'none';
-    majCamEquip(actif);
+    majCamEquip(selectType ? selectType.value : '');
+    // Chariot élévateur : description facultative ; Autre machine : obligatoire.
+    var eqLab = document.querySelector('label[for="soumission-equipement"]');
+    var eqIn = document.getElementById('soumission-equipement');
+    if (eqLab && typeof i18n !== 'undefined') {
+        var kL = estChariot() ? 'soumission.equipement_chariot' : 'soumission.equipement';
+        eqLab.setAttribute('data-i18n', kL); eqLab.textContent = i18n.t(kL);
+    }
+    if (eqIn && typeof i18n !== 'undefined') {
+        var kP = estChariot() ? 'soumission.equipement_chariot_placeholder' : 'soumission.equipement_placeholder';
+        eqIn.setAttribute('data-i18n-placeholder', kP); eqIn.placeholder = i18n.t(kP);
+    }
     // La question « Installation par e-Trak ? » ne depend PLUS du mode : elle est
     // posee sur toute soumission (2026-09-02) et vit au-dessus du tableau de prix.
     // C'est updateSelectedSummary qui l'affiche, selon qu'il y ait ou non quelque
@@ -568,16 +589,16 @@ function doTypeChange() {
 
     // Sans machine : on court-circuite toute la cascade. Rien ici ne doit indexer
     // machinesData avec cette valeur — elle n'y existe pas.
-    if (type === SANS_MACHINE) {
+    if (type === SANS_MACHINE || type === CHARIOT) {
         afficherModeSansMachine(true);
-        applyTypeRestrictions(SANS_MACHINE);
+        applyTypeRestrictions(type);
         optionsSection.style.display = 'block';
         emptyState.style.display = 'none';
         var _sb = document.getElementById('soumission-submit'); if (_sb) _sb.style.display = '';
         var titleEl = document.getElementById('options-title');
-        if (titleEl) titleEl.textContent = i18n.t('soumission.options_sans_machine');
+        if (titleEl) titleEl.textContent = i18n.t(type === CHARIOT ? 'soumission.options_chariot' : 'soumission.options_sans_machine');
         var descEl = document.getElementById('options-machine-desc');
-        if (descEl) descEl.textContent = i18n.t('soumission.options_sans_machine_desc');
+        if (descEl) descEl.textContent = i18n.t(type === CHARIOT ? 'soumission.options_chariot_desc' : 'soumission.options_sans_machine_desc');
         btnReset.style.display = 'inline-block';
         return;
     }
@@ -936,7 +957,7 @@ function applyTypeRestrictions(type) {
     // gamme. L'offrir sans machine produirait un kit que personne ne peut
     // valider — pire que le blocage qu'on corrige. On masque donc, et on
     // reinitialise, pour qu'aucune case laissee cochee ne parte dans la demande.
-    if (type === SANS_MACHINE) {
+    if (type === SANS_MACHINE || type === CHARIOT) {
         document.querySelectorAll('.toggle-box').forEach(function (box) {
             var garder = (box.id === 'toggle-camera');
             box.style.display = garder ? '' : 'none';
@@ -949,6 +970,7 @@ function applyTypeRestrictions(type) {
         });
         return;
     }
+    majCamEquip(type);   // case « Caméra de grue » sur une grue mobile (aperçu)
     // Retour au mode machine : rendre les tuiles masquees par le mode sans
     // machine, avant que les regles par type ci-dessous ne rejouent.
     document.querySelectorAll('.toggle-box').forEach(function (box) { box.style.display = ''; });
@@ -1637,7 +1659,7 @@ if (submitBtn) {
         if (doitChoisirVendeur()) {
             REQUIRED_FIELDS.unshift({ id: 'soumission-vendeur', reqKey: 'soumission.vendeur_required', phKey: null });
         }
-        if (estSansMachine()) {
+        if (selectType.value === SANS_MACHINE) {
             REQUIRED_FIELDS.unshift({ id: 'soumission-equipement',
                                       reqKey: 'soumission.equipement_required',
                                       phKey: 'soumission.equipement_placeholder' });
@@ -1973,7 +1995,9 @@ function texteMachine(p, dansPanier) {
     // Sans machine, le champ libre la remplace : « __sans_machine__ » ne dirait rien
     // aux ventes internes.
     if (!dansPanier) {
-        t += p.sansMachine
+        t += (p.type === CHARIOT)
+            ? i18n.t('email.machine_ligne', { machine: libelleMachine(p) }) + '\n'
+            : p.sansMachine
             ? i18n.t('email.equipement_ligne', { eq: p.equipement || '—' }) + '\n'
             : i18n.t('email.machine_ligne', { machine: i18n.t('type.' + p.type) + ' ' + libelleMachine(p) }) + '\n';
     }
@@ -2068,6 +2092,7 @@ function panierSauver() {
 }
 
 function libelleMachine(p) {
+    if (p.type === CHARIOT) return i18n.t('type.' + CHARIOT) + (p.equipement ? ' — ' + p.equipement : '');
     if (p.sansMachine) return p.equipement || i18n.t('panier.sans_machine');
     return p.fab + ' ' + p.modele + ' (' + p.annee + ')';
 }
@@ -2093,7 +2118,7 @@ function restaurerEtat(e) {
     var SOUS_PANNEAU = ['toggle-limiteur', 'toggle-camera', 'toggle-creusage', 'toggle-balance'];
     selectType.value = e.type;
     doTypeChange();
-    if (e.type === SANS_MACHINE) {
+    if (e.type === SANS_MACHINE || e.type === CHARIOT) {
         var eq = document.getElementById('soumission-equipement');
         if (eq) { eq.value = e.equipement || ''; eq.dispatchEvent(new Event('input', { bubbles: true })); }
     } else {
@@ -2144,7 +2169,7 @@ function machineEcranValide() {
     try { updateSelectedSummary(); } catch (e) {}
     if (!machineEcranPrete()) { alert(i18n.t('panier.rien_a_ajouter')); return false; }
     var champs = [{ id: 'soumission-nb-systemes', reqKey: 'soumission.nb_required', phKey: 'soumission.nb_systemes_placeholder' }];
-    if (estSansMachine()) {
+    if (selectType.value === SANS_MACHINE) {
         champs.unshift({ id: 'soumission-equipement', reqKey: 'soumission.equipement_required',
                          phKey: 'soumission.equipement_placeholder' });
     }
@@ -2177,7 +2202,7 @@ function viderEcranMachine() {
         var el = document.getElementById(id);
         if (el) el.value = '';
     });
-    if (type === SANS_MACHINE) {
+    if (type === SANS_MACHINE || type === CHARIOT) {
         doTypeChange();                 // reste en mode sans machine, equipement a ressaisir
     } else if (type && fab && machinesData[type] && machinesData[type][fab]) {
         doFabChange();                  // garde type + fabricant, vide annee / modele / options
@@ -3927,33 +3952,27 @@ function updateAValiderWarning() {
 // APERÇU « Équipement » de la caméra sans machine (Steve, 2026-11-11) : Chariot élévateur
 // ou Grue, l'un ou l'autre. Ne coche pas la tuile et n'émet aucun code pour l'instant :
 // les codes suggérés et les options viendront ensuite.
-function majCamEquip(actif) {
-    var box = document.getElementById('cam-equip');
-    if (!box) return;
-    var vis = !!actif && estApercu();
-    box.style.display = vis ? '' : 'none';
-    if (!vis) {
-        box.querySelectorAll('input[name="camera-equip"]').forEach(function (c) { c.checked = false; });
-        var n = document.getElementById('cam-equip-note'); if (n) n.style.display = 'none';
-        if (window.grueVider) window.grueVider();
-        if (window.chariotVider) window.chariotVider();
+function majCamEquip(type) {
+    var ap = estApercu();
+    var estCh = ap && type === CHARIOT;
+    var grueOk = ap && type === 'Grue Mobile';
+    var ch = document.getElementById('cam-equip-chariot');
+    var gr = document.getElementById('cam-equip-grue');
+    var grLab = document.getElementById('cam-equip-grue-lab');
+    if (grLab) grLab.style.display = grueOk ? '' : 'none';
+    if (gr && !grueOk && gr.checked) { gr.checked = false; if (window.grueVider) window.grueVider(); }
+    if (ch && ch.checked !== estCh) {
+        ch.checked = estCh;
+        if (!estCh && window.chariotVider) window.chariotVider();
     }
+    // Chariot élévateur : seules les étapes du lift ; les autres caméras sont masquées (CSS).
+    var panel = document.getElementById('camera-panel');
+    if (panel) panel.classList.toggle('mode-chariot', estCh);
+    var camBox = document.getElementById('toggle-camera');
+    if (camBox && estCh) camBox.classList.add('open');
     if (window.grueMaj) window.grueMaj();
     if (window.chariotMaj) window.chariotMaj();
 }
-(function () {
-    var cbs = document.querySelectorAll('input[name="camera-equip"]');
-    cbs.forEach(function (cb) {
-        cb.addEventListener('change', function () {
-            if (this.checked) cbs.forEach(function (o) { if (o !== cb) o.checked = false; });
-            // La grue a sa fenêtre de choix (js/camera-grue.js) : la note « à venir » ne
-            // reste que pour le chariot élévateur.
-            var n = document.getElementById('cam-equip-note');
-            var ch = document.getElementById('cam-equip-chariot');
-            if (n) n.style.display = 'none';   // grue et chariot ont chacun leur fenêtre (2026-11-12)
-        });
-    });
-})();
 
 // Camera sub-options logic (exclusive checkboxes — one at a time, but can uncheck)
 (function() {
