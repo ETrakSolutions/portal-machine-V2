@@ -152,7 +152,7 @@ try:
     check('aimants : 4 AT0001 et 4 ecrous (2 cameras)', 'AT0001 | Aimants (2 par caméra) ×4' in L and '93625A250 | Écrous nylon M6 (2 par caméra) ×4' in L)
     ep = J("return epicorBlockText();")
     check('Epicor : AT0001 4 et 93625A250 4', 'AT0001	4' in ep and '93625A250	4' in ep)
-    check('prix aimant affiche', '12 $' in J("return document.querySelector('#ch-aim-arriere-lab .grue-prix').textContent;"))
+    check('prix aimant affiche 24 $ / camera', '24 $ / caméra' in J("return document.querySelector('#ch-aim-arriere-lab .grue-prix').textContent;"))
     check('aimants + ecrous a 0 $ : total pas « a valider »', J("return lignesFacturables().every(function(l){return !l.prixAValider;});"))
     cliquer('ch-aim-avant')
     check('1 camera aimantee : x2', 'AT0001 | Aimants (2 par caméra) ×2' in lignes())

@@ -67,6 +67,15 @@
             el.classList.remove('grue-a-venir');
             if (cache) { el.textContent = ''; return; }
             var p = (typeof priceFor === 'function') ? priceFor(el.getAttribute('data-code')) : {};
+            if (el.getAttribute('data-aimants')) {
+                // Option aimants : 2 aimants AT0001 + 2 écrous 93625A250 par caméra (Steve, 2026-11-12).
+                var e = (typeof priceFor === 'function') ? priceFor('93625A250') : {};
+                if (typeof p.item === 'number' && typeof e.item === 'number') {
+                    el.textContent = fmtPrice(2 * p.item + 2 * e.item) + ' ' + t('chariot.par_camera', '/ caméra');
+                    return;
+                }
+                p = {};
+            }
             if (typeof p.item === 'number') {
                 el.textContent = fmtPrice(p.item) + (el.getAttribute('data-unite') ? ' ' + t('grue.par_unite', '/ unité') : '');
             } else {
