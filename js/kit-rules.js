@@ -127,7 +127,7 @@
   var HARNAIS_LABELS = {
     H0031: 'Hitachi/JD', H0032: 'Komatsu', H0033: 'Doosan', H0034: 'Volvo',
     H0041: 'Link-Belt/Case', H0080: 'Caterpillar', H0100: 'Caterpillar (ECU)',
-    H0121: 'Hitachi -7', H0043: 'Generique'
+    H0121: 'Hitachi -7', H0142: 'Komatsu -12 / Caterpillar (ECU)', H0043: 'Generique'
   };
 
   // 'H0080' -> 'Z03B-0080' (PN affiche). Tolere deja un Z03B-XXXX en entree.

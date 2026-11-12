@@ -116,6 +116,7 @@ function courrielMachineAjoutee(p, typeCle) {
     {v:'H0080', l:'0080 — Caterpillar'},
     {v:'H0100', l:'0100 — Caterpillar (ECU)'},
     {v:'H0121', l:'0121 — Hitachi-7'},
+    {v:'H0142', l:'0142 — Komatsu -12 / Caterpillar (ECU)'},
     {v:'H0043', l:'0043 — Generique'}
   ];
 
