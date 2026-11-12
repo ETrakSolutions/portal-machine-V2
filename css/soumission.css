@@ -760,3 +760,8 @@
 .grue-qte { max-width: 5rem; }
 .grue-reco { font-size: 0.76rem; color: #3ddc84; font-weight: 600; }
 .cam-grue.manquant { border-color: #ff5a5a; }
+
+/* Fenêtres grue / chariot (Steve, 2026-11-12) : codes cachés dans les choix (trop chargé),
+   ils restent dans le tableau plus bas ; la quantité recommandée va sous le titre de l'étape. */
+.cam-grue .grue-code { display: none; }
+.cam-grue .grue-etape-titre + .grue-reco { display: block; margin: -2px 0 6px 24px; }
