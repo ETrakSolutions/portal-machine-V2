@@ -270,7 +270,7 @@ function fmtPrice(v) {
 // Caméra de grue (Steve, 2026-11-11) : meme regle pour ses codes (window.GRUE_CODES,
 // js/camera-grue.js) tant que leur prix n'est pas dans la liste de prix.
 function prixAValider(code) {
-    var _grue = (window.GRUE_CODES || []).indexOf(String(code || '')) >= 0;
+    var _grue = (window.GRUE_CODES || []).concat(window.CHARIOT_CODES || []).indexOf(String(code || '')) >= 0;
     if (!_grue && !/^1500-09\d\d$/.test(String(code || ''))) return false;
     if (PRICE_CODES[code]) return false;
     var p = priceFor(code);
@@ -382,7 +382,7 @@ function hasActiveOptions() {
     var anyIDC = document.querySelector('[data-option="Indicateur de charge"].active');
     var anyCreus = document.querySelector('#toggle-creusage input:checked');
     var anyCam = document.querySelector('#toggle-camera input:checked:not([name="camera-equip"])')
-              || (window.grueActive && window.grueActive());
+              || (window.grueActive && window.grueActive()) || (window.chariotActive && window.chariotActive());
     var anyGodet = document.querySelector('#toggle-godet-avant.active');
     return !!(anyLim || anyIDC || anyCreus || anyCam || anyGodet);
 }
@@ -817,6 +817,7 @@ function showOptions() {
     document.querySelectorAll('input[name="camera-equip"]').forEach(function(r) { r.checked = false; });
     var _ceN = document.getElementById('cam-equip-note'); if (_ceN) _ceN.style.display = 'none';
     if (window.grueVider) window.grueVider();
+    if (window.chariotVider) window.chariotVider();
     // Reset sous-options Balance (modele + imprimante)
     document.querySelectorAll('input[name="balance-type"], input[name="balance-imp"]')
             .forEach(function(r) { r.checked = false; });
@@ -1667,6 +1668,7 @@ if (submitBtn) {
         // « Camera 360 » cochee sans kit (4 ou 6) choisi : rien ne part (Steve, 2026-10-14).
         if (window.kit360Manquant && window.kit360Manquant()) return;
         if (window.grueManquant && window.grueManquant()) return;   // camera de grue incomplete
+        if (window.chariotManquant && window.chariotManquant()) return;   // camera de chariot incomplete
 
         if (_firstEmpty) { _firstEmpty.focus(); return; }
 
@@ -1714,8 +1716,10 @@ if (submitBtn) {
 
         // Camera
         var _camBox = document.getElementById('toggle-camera');
-        if (window.grueActive && window.grueActive()) {
-            window.grueLignes().forEach(function (g) {
+        var _equipLignes = (window.grueActive && window.grueActive()) ? window.grueLignes()
+                         : (window.chariotActive && window.chariotActive()) ? window.chariotLignes() : null;
+        if (_equipLignes) {
+            _equipLignes.forEach(function (g) {
                 optionsOn.push(g.desc);
                 accessoires.push({ code: g.code, name: g.desc });
             });
@@ -2079,7 +2083,8 @@ function etatEcran() {
     return { type: selectType.value, fab: selectFabricant.value, annee: selectAnnee.value, modele: selectModele.value,
              equipement: eq ? eq.value : '', coches: coches, actives: actives,
              camQte: cq ? cq.value : '', unites: String(unitesMachine()),
-             grue: window.grueEtat ? window.grueEtat() : null };
+             grue: window.grueEtat ? window.grueEtat() : null,
+             chariot: window.chariotEtat ? window.chariotEtat() : null };
 }
 
 // Remet une machine a l'ecran : selecteurs (sans passer par la fenetre « Reinitialiser »),
@@ -2117,6 +2122,7 @@ function restaurerEtat(e) {
     var cq = document.getElementById('cam-qte');
     if (cq && e.camQte) { cq.value = e.camQte; cq.dispatchEvent(new Event('change', { bubbles: true })); }
     if (e.grue && window.grueRestaurer) window.grueRestaurer(e.grue);
+    if (e.chariot && window.chariotRestaurer) window.chariotRestaurer(e.chariot);
     var nb = document.getElementById('soumission-nb-systemes');
     if (nb) nb.value = e.unites || '';
     (e.coches || []).forEach(function (id) {
@@ -2147,6 +2153,7 @@ function machineEcranValide() {
     if (selectionAInstallation() && !reponseInstall()) { signalerQuestionInstallation(); return false; }
     if (window.kit360Manquant && window.kit360Manquant()) return false;   // « Camera 360 » sans kit 4 / 6
     if (window.grueManquant && window.grueManquant()) return false;       // camera de grue incomplete
+    if (window.chariotManquant && window.chariotManquant()) return false; // camera de chariot incomplete
     return true;
 }
 
@@ -3349,9 +3356,12 @@ function updateSelectedSummary() {
     // Camera with sub-option
     var camBox = document.getElementById('toggle-camera');
     if (window.grueMajPrix) { try { window.grueMajPrix(); } catch (e) {} }
-    if (window.grueActive && window.grueActive()) {
-        // Camera de grue : une ligne par piece choisie (js/camera-grue.js).
-        window.grueLignes().forEach(function (g) { items.push(fmtItem(g.code, g.desc)); });
+    if (window.chariotMajPrix) { try { window.chariotMajPrix(); } catch (e) {} }
+    var _equipL = (window.grueActive && window.grueActive()) ? window.grueLignes()
+                : (window.chariotActive && window.chariotActive()) ? window.chariotLignes() : null;
+    if (_equipL) {
+        // Camera de grue ou de chariot : une ligne par piece choisie (js/camera-grue.js, js/camera-chariot.js).
+        _equipL.forEach(function (g) { items.push(fmtItem(g.code, g.desc)); });
     } else if (camBox && camBox.classList.contains('active')) {
         var camRadio = camBox.querySelector('input[name="camera-type"]:checked');
         if (camRadio) {
@@ -3926,8 +3936,10 @@ function majCamEquip(actif) {
         box.querySelectorAll('input[name="camera-equip"]').forEach(function (c) { c.checked = false; });
         var n = document.getElementById('cam-equip-note'); if (n) n.style.display = 'none';
         if (window.grueVider) window.grueVider();
+        if (window.chariotVider) window.chariotVider();
     }
     if (window.grueMaj) window.grueMaj();
+    if (window.chariotMaj) window.chariotMaj();
 }
 (function () {
     var cbs = document.querySelectorAll('input[name="camera-equip"]');
@@ -3938,7 +3950,7 @@ function majCamEquip(actif) {
             // reste que pour le chariot élévateur.
             var n = document.getElementById('cam-equip-note');
             var ch = document.getElementById('cam-equip-chariot');
-            if (n) n.style.display = (ch && ch.checked) ? '' : 'none';
+            if (n) n.style.display = 'none';   // grue et chariot ont chacun leur fenêtre (2026-11-12)
         });
     });
 })();
