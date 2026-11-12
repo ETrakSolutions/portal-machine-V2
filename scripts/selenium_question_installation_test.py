@@ -105,9 +105,9 @@ return out;
 
 
 def montant(txt):
-    """« 11 060 $ » -> 11060 ; « — » -> None."""
-    n = re.sub(r'[^0-9]', '', txt or '')
-    return int(n) if n else None
+    """« 11 060,00 $ » -> 11060.0 ; « — » -> None (cents toujours affiches depuis le 2026-11-12)."""
+    n = re.sub(r'[^0-9,.]', '', txt or '').replace(',', '.')
+    return float(n) if n else None
 
 
 def tableau():
