@@ -316,7 +316,12 @@ try:
 
     repondre('oui')
     dv.execute_script("document.getElementById('soumission-submit').click();")
-    time.sleep(1.5)
+    # Le courriel n'est construit qu'apres la lecture des codes produit sur le
+    # serveur Apps Script (fetch ?action=get) : 5 a 7 s mesurees le 2026-11-12.
+    # L'ancienne attente fixe de 1,5 s faisait echouer ce controle a tort.
+    fin = time.time() + 30
+    while time.time() < fin and not dv.execute_script("return !!window.__lastSoumissionEmail;"):
+        time.sleep(0.5)
     corps = dv.execute_script("return window.__lastSoumissionEmail "
                               "? window.__lastSoumissionEmail.body : null;")
     check('le courriel est genere', bool(corps))
