@@ -102,6 +102,9 @@ function doPost(e) {
     if (action === 'getroutesequipe') return jsonOut(getRoutesEquipe(body));
     if (action === 'setroutesdata')  return jsonOut(setRoutesData(body));
     if (action === 'getroutesdata')  return jsonOut(getRoutesData(body));
+    if (action === 'synccorrections') return jsonOut(syncCorrections(body));
+    if (action === 'getcorrections')  return jsonOut(getCorrections(body));
+    if (action === 'setcorrections')  return jsonOut(setCorrections(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -163,7 +166,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
                       'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
-                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID', 'ROUTES_DATA_FOLDER_ID', 'ROUTES_ACCES',
+                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID', 'ROUTES_DATA_FOLDER_ID', 'ROUTES_ACCES', 'CORR_SHEET_ID',
                       'reinst_prix', 'REINST_USERS'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
@@ -3019,4 +3022,133 @@ function getRoutesData(body) {
     if (f) terr[t] = f.getBlob().getDataAsString();
   });
   return { ok: true, acces: acces, commun: communGz, terr: terr, nom: a.nom, admin: a.admin };
+}
+
+// ===================== CORRECTIONS DE CONTACTS -> SALESFORCE (Jacquot, 2026-11-12) =====================
+// Demande de Robert : ajouter ou corriger un contact depuis la fiche d'un client dans Routes
+// vendeurs, et que Salesforce suive. Decision Jacquot : FILE D'ATTENTE, pas d'ecriture directe.
+// La page depose la correction ici (compte interne connecte) ; un script sur le poste de
+// Jacquot (routes-vendeurs/appliquer_corrections.py, avec le NIP) la lit, l'ecrit dans
+// Salesforce avec ses propres verifications (comptes des vendeurs e-Trak seulement, jamais
+// GRYB) et renvoie le resultat. Le serveur ne parle jamais a Salesforce : aucun identifiant
+// Salesforce dans Google.
+// Stockage : Google Sheet privee « Corrections Salesforce - Portail e-Trak » (CORR_SHEET_ID,
+// SENSITIVE_KEYS), une ligne par correction. Une correction n'est modifiable par son auteur
+// que tant qu'elle est « attente ».
+var CORR_COLS = ['utilisateur', 'id', 'ts', 'etat', 'compte_sf', 'contact_sf', 'fiche', 'maj', 'donnees', 'resultat'];
+var CORR_COL_ETAT = 4, CORR_COL_DONNEES = 9, CORR_COL_RESULTAT = 10, CORR_COL_MAJ = 8;
+var CORR_ETATS = ['attente', 'faite', 'refusee'];
+var CORR_MAX = 300;   // par vendeur, toutes epoques confondues
+
+function _corrFeuille(creer) {
+  var id = PROPS.getProperty('CORR_SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id).getSheets()[0];
+  if (!creer) return null;
+  var ss = SpreadsheetApp.create('Corrections Salesforce - Portail e-Trak');
+  var sh = ss.getSheets()[0];
+  sh.setName('Corrections');
+  sh.appendRow(CORR_COLS);
+  sh.setFrozenRows(1);
+  PROPS.setProperty('CORR_SHEET_ID', ss.getId());
+  return sh;
+}
+
+function _corrLire(sh) {
+  var out = [];
+  if (!sh) return out;
+  var v = sh.getDataRange().getValues();
+  for (var i = 1; i < v.length; i++) {
+    var c;
+    try { c = JSON.parse(v[i][CORR_COL_DONNEES - 1]); } catch (e) { continue; }
+    if (!c || !c.id) continue;
+    out.push({ ligne: i + 1, u: String(v[i][0] || '').replace(/^'/, '').toLowerCase(), c: c,
+               etat: String(v[i][CORR_COL_ETAT - 1] || 'attente'), resultat: String(v[i][CORR_COL_RESULTAT - 1] || ''),
+               maj: String(v[i][CORR_COL_MAJ - 1] || '') });
+  }
+  return out;
+}
+
+// Correction envoyee par la page : champs prevus seulement ; null = refusee.
+function _corrNette(x) {
+  if (!x || typeof x !== 'object') return null;
+  var str = function (v, n) { return String(v === null || v === undefined ? '' : v).replace(/[\r\n\t]+/g, ' ').trim().slice(0, n); };
+  var id = str(x.id, 40), ts = Number(x.ts);
+  if (!/^[A-Za-z0-9_-]{1,40}$/.test(id) || ROUTES_TERR.indexOf(x.t) < 0 || !isFinite(ts) || ts <= 0) return null;
+  var sfa = str(x.sfa, 18), sfc = str(x.sfc, 18);
+  if (!/^001[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(sfa)) return null;          // compte Salesforce
+  if (sfc && !/^003[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(sfc)) return null;   // contact Salesforce
+  var c = { id: id, t: x.t, ts: ts, k: str(x.k, 60), fnom: str(x.fnom, 120), sfa: sfa, sfc: sfc,
+            prenom: str(x.prenom, 40), nom: str(x.nom, 80), titre: str(x.titre, 128),
+            tel: str(x.tel, 40), cell: str(x.cell, 40), courriel: str(x.courriel, 80).toLowerCase(),
+            note: str(x.note, 300) };
+  if (!c.nom) return null;                                                          // Salesforce exige le nom
+  if (c.courriel && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(c.courriel)) return null;
+  if (!(c.tel || c.cell || c.courriel || c.titre || c.prenom)) return null;         // rien a ecrire
+  return c;
+}
+
+// { action:'synccorrections', token, corrections:[...] } -> { ok, corrections:[{...c, etat, resultat}] }
+// Comptes internes (comme les routes). Renvoie toutes les corrections du vendeur avec leur etat.
+function syncCorrections(body) {
+  var a = _routesAppelant(body);
+  if (a.error) return a;
+  var recues = Array.isArray(body.corrections) ? body.corrections : [];
+  if (recues.length > 50) return { error: 'too many corrections' };
+  return _avecVerrou(function () {
+    var sh = _corrFeuille(recues.length > 0);
+    var miennes = {}, n = 0, refusees = 0, maj = new Date().toISOString();
+    _corrLire(sh).forEach(function (x) { if (x.u === a.moi) { miennes[x.c.id] = x; n++; } });
+    recues.forEach(function (brut) {
+      var c = _corrNette(brut);
+      if (!c) { refusees++; return; }
+      var ex = miennes[c.id];
+      if (ex && (ex.etat !== 'attente' || Number(ex.c.ts) >= c.ts)) return;     // deja traitee ou plus ancienne
+      if (!ex && n >= CORR_MAX) { refusees++; return; }
+      var ligne = [_diagCellule(a.moi), c.id, c.ts, 'attente', c.sfa, c.sfc, _diagCellule(c.fnom), maj, JSON.stringify(c), ''];
+      if (ex) sh.getRange(ex.ligne, 1, 1, ligne.length).setValues([ligne]);
+      else { sh.appendRow(ligne); n++; }
+      miennes[c.id] = { ligne: ex ? ex.ligne : sh.getLastRow(), u: a.moi, c: c, etat: 'attente', resultat: '', maj: maj };
+    });
+    return { ok: true, refusees: refusees, corrections: Object.keys(miennes).map(function (id) {
+      var x = miennes[id];
+      return Object.assign({}, x.c, { etat: x.etat, resultat: x.resultat, maj: x.maj });
+    }) };
+  });
+}
+
+function _corrPin(body) {
+  var pin = _prop('PIN', '');
+  return !!(body.pin && pin && body.pin === pin);
+}
+
+// { action:'getcorrections', pin } -> { ok, corrections:[{...c, auteur, auteur_nom}] } — en attente seulement.
+// Reserve au script du poste de Jacquot (NIP) : une session, meme admin, ne suffit pas.
+function getCorrections(body) {
+  if (!_corrPin(body)) return { error: 'authentication required' };
+  var noms = {};
+  _users().forEach(function (u) { noms[_uname(u)] = String(u.name || u.email || u.username || ''); });
+  return { ok: true, corrections: _corrLire(_corrFeuille(false)).filter(function (x) { return x.etat === 'attente'; })
+    .map(function (x) { return Object.assign({}, x.c, { auteur: x.u, auteur_nom: noms[x.u] || x.u }); }) };
+}
+
+// { action:'setcorrections', pin, resultats:[{id, auteur, etat:'faite'|'refusee', resultat}] } -> { ok, maj }
+function setCorrections(body) {
+  if (!_corrPin(body)) return { error: 'authentication required' };
+  var res = Array.isArray(body.resultats) ? body.resultats.slice(0, 200) : [];
+  return _avecVerrou(function () {
+    var sh = _corrFeuille(false);
+    if (!sh) return { ok: true, maj: 0 };
+    var parCle = {}, n = 0, quand = new Date().toISOString();
+    _corrLire(sh).forEach(function (x) { parCle[x.u + '|' + x.c.id] = x; });
+    res.forEach(function (r) {
+      r = r || {};
+      var x = parCle[String(r.auteur || '').toLowerCase() + '|' + String(r.id || '')];
+      if (!x || x.etat !== 'attente' || ['faite', 'refusee'].indexOf(r.etat) < 0) return;
+      sh.getRange(x.ligne, CORR_COL_ETAT, 1, 1).setValues([[r.etat]]);
+      sh.getRange(x.ligne, CORR_COL_MAJ, 1, 1).setValues([[quand]]);
+      sh.getRange(x.ligne, CORR_COL_RESULTAT, 1, 1).setValues([[_diagCellule(String(r.resultat || '').slice(0, 300))]]);
+      n++;
+    });
+    return { ok: true, maj: n };
+  });
 }
