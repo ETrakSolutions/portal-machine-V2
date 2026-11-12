@@ -252,7 +252,14 @@ fetch('data/price-codes.json', { cache: 'no-cache' }).then(function(r) { return 
     .catch(function() {});
 function sansAccesPrix() { return !currentUser || !currentUser.token || !!currentUser.isGuest; }
 function priceFor(code) { return priceData[code] || { item: null, install: null }; }
-function fmtPrice(v) { return (v === null || v === undefined) ? '—' : (Number(v).toLocaleString('fr-CA') + ' $'); }
+// Montant entier : sans decimales (1 320 $). Avec des cents : toujours 2 decimales
+// (1 032,50 $ et non 1 032,5 $ ; Steve, 2026-11-12, prix de la camera de grue).
+function fmtPrice(v) {
+    if (v === null || v === undefined) return '—';
+    var n = Number(v);
+    var o = (Math.round(n * 100) % 100 !== 0) ? { minimumFractionDigits: 2, maximumFractionDigits: 2 } : undefined;
+    return n.toLocaleString('fr-CA', o) + ' $';
+}
 
 // PRIX A VALIDER (Jacquot, 2026-10-08) : un code de nacelle (1500-09xx) dont le prix
 // n'est pas encore fixe — le reel 15 m 1500-0915 d'abord, puis les codes que Steve cree
