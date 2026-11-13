@@ -32,7 +32,7 @@ SAV = {
     # Liste de Steve du 2026-10-07, dans l'ordre des 3 colonnes lues de haut en bas.
     'produits': ["Limiteur d'excavatrice (LPE)", 'Creusage 2D (Guide-Pro GP)', 'Indicateur de charge (IDC)', 'Limiteur de rétrocaveuse',
                  'Limiteur de pompe à béton (LPB)', 'Limiteur de téléhandler (LPT)', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
-                 'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance (Scale-Pro / Lite)', 'Caméras', 'Autre'],
+                 'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance Scale Lite', 'Balance Scale Pro', 'Caméras', 'Autre'],
     'routage': [{'cle': 'mathieu', 'nom': 'Mathieu Robillard', 'courriel': '', 'regle': 'Machine arrêtée'},
                 {'cle': 'steve', 'nom': 'Steve Martineau', 'courriel': 'steve@test', 'regle': 'Pièce'},
                 {'cle': 'luna', 'nom': 'Luna Briceno', 'courriel': 'luna@test', 'regle': 'Déplacement'},
@@ -105,7 +105,7 @@ def main():
         v('bandeau : nombre de clients et de pieces', '4 clients et 2 pièces' in d.find_element(By.ID, 'sav-load').text,
           d.find_element(By.ID, 'sav-load').text)
         v('recu par = personne connectee', d.find_element(By.ID, 'f-recu').get_attribute('value') == 'Testeur Interne')
-        v('14 produits en cases', len(d.find_elements(By.CSS_SELECTOR, '#f-produits input')) == 14)
+        v('15 produits en cases', len(d.find_elements(By.CSS_SELECTOR, '#f-produits input')) == 15)
         pos = d.execute_script("return [...document.querySelectorAll('#f-produits label')].map(l => [l.innerText.trim(), Math.round(l.getBoundingClientRect().left), Math.round(l.getBoundingClientRect().top)])")
         xs = sorted({x for _, x, _ in pos})
         col = lambda t: [x for n, x, _ in pos if n == t][0]

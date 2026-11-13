@@ -38,7 +38,7 @@
     // Meme liste que la demande SAV (sav-reglages.json), si le serveur ne la renvoie pas.
     var PRODUITS_REPLI = ["Limiteur d'excavatrice (LPE)", 'Creusage 2D (Guide-Pro GP)', 'Indicateur de charge (IDC)', 'Limiteur de rétrocaveuse',
                           'Limiteur de pompe à béton (LPB)', 'Limiteur de téléhandler (LPT)', 'Limiteur de camion girafe', 'Limiteur de camion Vac',
-                          'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance (Scale-Pro / Lite)', 'Caméras', 'Autre'];
+                          'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance Scale Lite', 'Balance Scale Pro', 'Caméras', 'Autre'];
     var ETAT = { fiches: [], produits: PRODUITS_REPLI.slice(), peutValider: false, vue: 'tout', ouvertes: {}, edition: null };
 
     // Contenu dans la langue de l'ecran, l'autre langue en repli.
