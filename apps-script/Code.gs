@@ -2098,10 +2098,14 @@ function getInst(body) {
                        .map(function (n) { return _instVue(n, a); }) };
 }
 
-// { action:'saveinst', token, note:{ id?, type, fabricant, modele, produit, ... } } -> { ok, note, proposition? }
+// { action:'saveinst', token, note:{ id?, type, fabricant, modele, produit, ... }, proposer? } -> { ok, note, proposition? }
+// proposer:true (Steve, 2026-11-13) : un validateur enregistre comme un technicien — nouvelle note en
+// brouillon, modification d'une note validee = proposition — pour qu'un autre validateur (Kevin)
+// l'approuve. Sert a la tache hebdomadaire des fiches d'installation.
 function saveInst(body) {
   var a = _diagAppelant(body);
   if (a.error) return a;
+  var val = a.valideur && body.proposer !== true;   // validateur qui publie directement
   var c = _instContenu(body.note);
   if (c.error) return c;
   if (JSON.stringify(c).length * 2 > INST_MAX_NOTE) return { error: 'note trop longue' };   // x2 : la traduction
@@ -2113,7 +2117,7 @@ function saveInst(body) {
     for (var i = 0; i < toutes.length; i++) if (toutes[i].id === id) ex = toutes[i];
     if (id && !ex) return { error: 'not found' };
     var n;
-    if (ex && (a.valideur || (ex.statut === 'brouillon' && ex.auteur === a.moi))) {
+    if (ex && (val || (ex.statut === 'brouillon' && ex.auteur === a.moi))) {
       n = ex;                                       // modification en place
     } else if (ex && ex.statut === 'valide') {
       prop = true;                                  // proposition de modification
@@ -2130,8 +2134,8 @@ function saveInst(body) {
     } else if (ex) {
       return { error: 'forbidden' };                // brouillon d'un autre
     } else {
-      n = { id: Utilities.getUuid(), statut: a.valideur ? 'valide' : 'brouillon', auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
-      if (a.valideur) { n.valideParNom = a.nom; n.valideLe = maintenant; }
+      n = { id: Utilities.getUuid(), statut: val ? 'valide' : 'brouillon', auteur: a.moi, auteurNom: a.nom, creeLe: maintenant };
+      if (val) { n.valideParNom = a.nom; n.valideLe = maintenant; }
       if (a.externe) n.auteurExterne = a.user.role;
       avis = 'nouvelle';
     }

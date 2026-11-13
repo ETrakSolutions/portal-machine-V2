@@ -156,6 +156,25 @@ const idM = r.note.id;
 r = post({ action: 'saveinst', token: M, note: note({ id: idM, modele: 'CX26', produit: 'camera', texte: 'Mise a jour' }) });
 check('validateur modifie : en place, pas de courriel', r.ok && r.note.id === idM && r.note.statut === 'valide' && courriels.length === 3);
 
+// --- Validateur en mode proposition (proposer:true, Steve 2026-11-13 : tache hebdo, approbation par Kevin) ---
+r = post({ action: 'saveinst', token: M, proposer: true, note: note({ modele: 'CX27', produit: 'camera', option: '', texte: 'Nouvelle, a approuver' }) });
+check('validateur proposer : nouvelle note en brouillon, pas publiee', r.ok && r.note.statut === 'brouillon' && !r.note.valideParNom);
+const idMP = r.note.id;
+r = post({ action: 'saveinst', token: M, proposer: true, note: note({ id: idM, modele: 'CX26', produit: 'camera', texte: 'Suggestion du lundi' }) });
+check('validateur proposer sur note validee : proposition, original intact', r.ok && r.proposition === true && r.note.remplace === idM &&
+      post({ action: 'getinst', token: M }).notes.filter(n => n.id === idM)[0].texte === 'Mise a jour');
+const idMP2 = r.note.id;
+r = post({ action: 'saveinst', token: M, proposer: true, note: note({ id: idM, modele: 'CX26', produit: 'camera', texte: 'Suggestion du lundi v2' }) });
+check('2e proposition du meme validateur : met a jour la meme proposition', r.ok && r.note.id === idMP2);
+r = post({ action: 'saveinst', token: M, proposer: 'oui', note: note({ modele: 'CX28', produit: 'camera', option: '' }) });
+check('proposer autre que true : publie comme avant', r.ok && r.note.statut === 'valide');
+r = post({ action: 'validateinst', token: M, id: idMP2 });
+check('proposition du validateur approuvee : remplace l original', r.ok && r.remplacee === idM &&
+      post({ action: 'getinst', token: M }).notes.filter(n => n.id === idM)[0].texte === 'Suggestion du lundi v2');
+post({ action: 'deleteinst', token: M, id: idMP });
+post({ action: 'deleteinst', token: M, id: r && post({ action: 'getinst', token: M }).notes.filter(n => n.modele === 'CX28')[0].id });
+courriels.length = 3;
+
 // --- Courriel en panne ou liste vide : l'enregistrement passe quand meme ---
 panneCourriel = true;
 r = post({ action: 'saveinst', token: T, note: note({ modele: 'CX30' }) });

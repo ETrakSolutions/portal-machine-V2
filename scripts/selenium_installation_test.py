@@ -454,6 +454,38 @@ def main():
     finally:
         d.quit()
 
+    print('10) Validateur : case « Envoyer comme proposition » (Steve, 2026-11-13)')
+    d = navigateur('technicien', valideur=True, notes=[EXEMPLE])
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] .in-head').click()")
+        time.sleep(0.5)
+        d.execute_script("[...document.querySelectorAll('.in-card[data-id=\"v1\"] button')].find(b=>b.dataset.act==='modifier').click()")
+        time.sleep(0.6)
+        zone = d.find_element(By.ID, 'e-proposer-zone')
+        v('validateur : case visible et decochee', zone.is_displayed() and not d.find_element(By.ID, 'e-proposer').is_selected())
+        v('note : publiee des enregistrement', 'publiée dès' in d.find_element(By.ID, 'e-note').text)
+        d.find_element(By.ID, 'e-proposer').click()
+        time.sleep(0.2)
+        v('cochee : la note dit que original reste affiche', 'reste affichée' in d.find_element(By.ID, 'e-note').text, d.find_element(By.ID, 'e-note').text)
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.8)
+        s10 = appels(d, 'saveinst')
+        v('envoye avec proposer:true', len(s10) == 1 and s10[0].get('proposer') is True, s10[-1:] and {k: s10[-1].get(k) for k in ('proposer',)})
+        d.find_element(By.ID, 'b-nouvelle').click()
+        time.sleep(0.4)
+        v('nouvelle edition : case remise decochee', not d.find_element(By.ID, 'e-proposer').is_selected())
+        v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+    d = navigateur('technicien', valideur=False, notes=[EXEMPLE])
+    try:
+        d.find_element(By.ID, 'b-nouvelle').click()
+        time.sleep(0.4)
+        v('technicien : pas de case', not d.find_element(By.ID, 'e-proposer-zone').is_displayed())
+        d.find_element(By.ID, 'e-texte').send_keys('x')
+    finally:
+        d.quit()
+
     print()
     print('RESULTAT: %s (%d OK, %d ECHEC)' % ('OK' if not ko else 'ECHEC', len(ok), len(ko)))
     sys.exit(1 if ko else 0)

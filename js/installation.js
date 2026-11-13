@@ -727,16 +727,25 @@
     }
     $('b-piece').addEventListener('click', function () { lignePiece().querySelector('.p-txt').focus(); });
 
+    // Validateur : case « Envoyer comme proposition » (Steve, 2026-11-13) — le serveur enregistre alors
+    // comme pour un technicien (brouillon / proposition de modification) ; sert a la tache du lundi.
+    function proposerCoche() { return ETAT.peutValider && $('e-proposer').checked; }
     function noteEdition(n) {
-        var propose = n && n.statut === 'valide' && !ETAT.peutValider;
+        $('e-proposer-zone').style.display = ETAT.peutValider ? 'block' : 'none';
+        if (!$('e-proposer').dataset.lie) {
+            $('e-proposer').dataset.lie = '1';
+            $('e-proposer').addEventListener('change', function () { noteEdition(ETAT.edition); });
+        }
+        var propose = n && n.statut === 'valide' && (!ETAT.peutValider || proposerCoche());
         $('e-titre').textContent = !n ? tx('Nouvelle note d\'installation', 'New installation note') : propose ? tx('Proposer une modification', 'Propose a change') : tx('Modifier la note', 'Edit the note');
-        $('e-note').textContent = ETAT.peutValider ? tx('Vous êtes validateur : la note est publiée dès l\'enregistrement.', 'You are an approver: the note is published when saved.')
+        $('e-note').textContent = (ETAT.peutValider && !proposerCoche()) ? tx('Vous êtes validateur : la note est publiée dès l\'enregistrement.', 'You are an approver: the note is published when saved.')
             : propose ? tx('La note actuelle reste affichée telle quelle jusqu\'à ce que votre modification soit validée.', 'The current note stays as is until your change is approved.')
             : tx('La note restera en brouillon (visible de vous et des validateurs) jusqu\'à sa validation.', 'The note stays a draft (visible to you and the approvers) until it is approved.');
     }
     function ouvrirEdition(n) {
         if (ETAT.enregistrement) { ok(tx('Enregistrement en cours : attendez la fin avant d\'ouvrir une autre note.', 'Saving in progress: wait until it ends before opening another note.')); return; }
         ETAT.edition = n || null;
+        $('e-proposer').checked = false;
         noteEdition(n);
         ['type', 'fab', 'modele'].forEach(function (k) { $('e-' + k + '-autre').value = ''; });
         // Nouvelle note : reprend les filtres en cours (ex. Excavatrice > Case > CX19, Limiteur).
@@ -875,7 +884,7 @@
         var b = $('b-enreg');
         b.disabled = true; b.textContent = tx('Enregistrement…', 'Saving…');
         var remettre = function () { b.disabled = false; b.textContent = tx('Enregistrer', 'Save'); };
-        api({ action: 'saveinst', note: x }).then(function (d) {
+        api({ action: 'saveinst', note: x, proposer: proposerCoche() }).then(function (d) {
             remettre(); ETAT.enregistrement = false;
             if (!d || !d.ok) { var a = $('e-alert'); a.textContent = msgErreur(d); a.style.display = 'block'; return; }
             if (ETAT.edition === enCours) fermerEdition();
