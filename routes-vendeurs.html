@@ -135,6 +135,14 @@ dialog .fermer{float:right}
 .corr.faite{background:#E8F5E9;border-left-color:#2E7D32}.corr.refusee{background:#FFF3E0;border-left-color:#E65100}
 .corr-form label{display:block;font-size:12.5px;color:var(--gris);margin-top:8px}
 .corr-form .deux{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.notes{margin-top:8px;border-top:1px solid #E0E0E0;padding-top:6px}
+.note-it{background:#F6F7F9;border-left:3px solid #78909C;padding:6px 8px;margin:6px 0;font-size:13.5px}
+.note-it.mienne{border-left-color:var(--accent)}
+.note-it .txt{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:2px}
+.note-it .act a{font-size:12.5px;margin-right:10px}
+.corr-form textarea{width:100%;box-sizing:border-box;min-height:110px;font:inherit;padding:6px}
+.corr-form select,.corr-form input[type=date]{font:inherit;padding:4px}
+.sig.note{background:#ECEFF1;color:#37474F}
 @media (max-width:600px){.corr-form .deux{grid-template-columns:1fr}}
 .mesroutes{border:1px solid var(--bord);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:#fff}
 .hors-route{border:1px solid var(--baisse);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:#fdf0ee;font-size:13.5px}
@@ -445,6 +453,7 @@ const FAM_CAT = [
   ["Concessionnaires et distributeurs", /dealer|revendeur|distribut|concession/],
   ["Location d'équipement", /rental|locat/],
   ["Fabricants / OEM", /manufacturer|\boem\b/],
+  ["Ateliers et service", /atelier|garage|mecani|hydrauli|diesel|soudure|welding|repair|reparation|remorque|trailer/],
   ["Entrepreneurs et utilisateurs", /end user|utilisateur|contractor|construction|excavat|terrassement|pavage|carriere|mine|mining|transport|camionnage|recyclage|recycling|forest|agricult|demolition|entrepreneur|piscine/],
 ];
 function famCat(cat){
@@ -929,7 +938,7 @@ function maj(){
     const lignes = visibles.slice(0,600).map(r=>{
       const t = SM ? "" : (r.sens==="baisse" ? `<span class="baisse">▼ ${fmtPct(r.tAn)}</span>`
               : r.sens==="hausse" ? `<span class="hausse">▲ ${fmtPct(r.tAn)}</span>` : "")
-              + `<div>${r.retard?'<span class="sig retard" title="En retard sur son rythme d’achat">⏰ rythme</span>':""}${r.sqn?`<span class="sig soum" title="Soumissions ouvertes">📄 ${SM?"ouverte":fmt$(r.sqv)}</span>`:""}${(r.manque.length&&r.manque.length<META.croisees.length)?'<span class="sig croisee" title="Famille jamais achetée">＋ croisée</span>':""}</div>`;
+              + `<div>${r.retard?'<span class="sig retard" title="En retard sur son rythme d’achat">⏰ rythme</span>':""}${r.sqn?`<span class="sig soum" title="Soumissions ouvertes">📄 ${SM?"ouverte":fmt$(r.sqv)}</span>`:""}${(r.manque.length&&r.manque.length<META.croisees.length)?'<span class="sig croisee" title="Famille jamais achetée">＋ croisée</span>':""}${(NOTES_K||{})[r.k]?`<span class="sig note" title="Notes de l'équipe sur ce client">📝 ${NOTES_K[r.k]}</span>`:""}</div>`;
       const cl = r.st==="gryb" ? (r.gryb&&r.gryb!=="—"?`<span class="cl" title="Classe GRYB">G-${r.gryb}</span>`:"") : (r.cl?`<span class="cl ${r.cl}">${r.cl}</span>`:"");
       return `<tr class="${choisis.has(r.i)?"choisi":""}">
         <td><input type="checkbox" data-i="${r.i}" ${choisis.has(r.i)?"checked":""} aria-label="Ajouter à la route"></td>
@@ -1054,6 +1063,7 @@ function ficheHTML(r, num){
     ${r.note?`<div class="sous">Ma note : ${esc(r.note)}</div>`:""}
     ${r.cat?`<div class="sous">Segment : ${esc(r.cat)}</div>`:""}
     ${ventes}
+    ${notesBlocHTML(r)}
     ${r.der?`<div class="sous">Dernier achat e-Trak : ${esc(r.der)}</div>`:""}
     ${(r.fam||[]).length?`<div class="sous">Achète surtout : ${r.fam.map(esc).join(", ")}</div>`:""}
     ${(r.pf||[]).length?`<div class="sous">Produits finis déjà achetés : ${r.pf.map(esc).join(", ")}${r.manque&&r.manque.length?" · <b>jamais :</b> "+r.manque.map(esc).join(", "):""}</div>`:""}
@@ -1141,6 +1151,111 @@ async function syncCorr(iFiche){
     store.set("corrections", L);
     if (iFiche>=0 && $("dlg").open && !$("cr-ok")) fiche(iFiche);   // statut a jour sur la fiche ouverte
   } catch(e) {} finally { corrEnCours = false; }
+}
+// ---------- Notes et activites de l'equipe (demande des vendeurs, Jacquot 2026-11-16)
+// Une note par fait : « en baisse, Val-Trak a pris la releve », un appel, une visite... Elle part
+// au serveur du portail (toute l'equipe la voit tout de suite, auteur et date) et, dans l'heure
+// (jours ouvrables), devient une activite du compte Salesforce e-Trak. Chacun ne modifie ou ne
+// supprime que les siennes. Copie locale = affichage hors ligne et envoi a la reconnexion.
+const GENRES_NOTE = {note:"Note", appel:"Appel", visite:"Visite", courriel:"Courriel", rencontre:"Rencontre"};
+var NOTES_K = {};   // var : la liste peut se dessiner avant cette ligne
+function lesNotes(){ return store.get("notes")||[]; }
+function indexNotes(){
+  const K = {};
+  for (const n of lesNotes()) if (!n.supprimee) K[n.k] = (K[n.k]||0) + 1;
+  const avant = JSON.stringify(NOTES_K); NOTES_K = K;
+  return avant !== JSON.stringify(K);
+}
+indexNotes();
+function notesBlocHTML(r){
+  const jeton = store.get("jeton");
+  const L = lesNotes().filter(n=>n.k===r.k && !n.supprimee)
+    .sort((a,b)=>String(b.date).localeCompare(String(a.date)) || b.ts-a.ts);
+  const etats = {attente:"⏳ sera inscrite dans Salesforce dans l'heure (jours ouvrables)", faite:"✅ dans Salesforce", refusee:"⚠ pas dans Salesforce"};
+  const items = L.map(n=>`<div class="note-it${n.mienne?" mienne":""}">
+      <div class="sous"><b>${esc(GENRES_NOTE[n.genre]||"Note")}</b> · ${esc(n.date)} · ${esc(n.mienne?"vous":(n.auteur_nom||""))}</div>
+      <div class="txt">${esc(n.texte)}</div>
+      ${n.mienne?`<div class="sous act">${n.envoye===false?"pas encore envoyée au serveur":etats[n.sf_etat||"attente"]+(n.sf_resultat&&n.sf_etat==="refusee"?" : "+esc(n.sf_resultat):"")}
+        <br><a href="#" data-note="${esc(r.k)}" data-nid="${esc(n.id)}">✏️ modifier</a><a href="#" data-note-suppr="${esc(n.id)}">🗑 supprimer</a></div>`:""}
+    </div>`).join("");
+  return `<div class="notes"><b>Notes et activités de l'équipe${L.length?" ("+L.length+")":""}</b>
+    ${items || (jeton ? `<div class="sous">Aucune note pour ce client.</div>` : `<div class="sous">🔒 Connectez-vous avec votre compte du portail pour voir les notes de l'équipe.</div>`)}
+    <div style="margin-top:6px"><button class="btn sec" type="button" data-note="${esc(r.k)}" data-nid="">+ Ajouter une note ou une activité</button></div></div>`;
+}
+function ouvrirNote(k, nid){
+  const i = parCle(k); if (i<0) return;
+  const r = RECS[i];
+  if (!store.get("jeton")) {
+    $("dlg-c").innerHTML = `<h4>Notes et activités</h4><p>Pour que la note soit vue par l'équipe et inscrite dans Salesforce, connectez-vous une fois avec votre compte du portail (même courriel et mot de passe que pour vos soumissions).</p>
+      <div class="ligne"><button class="btn" id="nt-conn">Se connecter</button><button class="btn sec" id="nt-ret">Revenir à la fiche</button></div>`;
+    $("dlg").open || $("dlg").showModal();
+    $("nt-conn").onclick = ()=>connexion(); $("nt-ret").onclick = ()=>fiche(i);
+    return;
+  }
+  const n = nid ? lesNotes().find(x=>x.id===nid && x.mienne) : null;
+  const auj = aujourdhui();
+  $("dlg-c").innerHTML = `<h4>${n?"Modifier la note":"Nouvelle note"} — ${esc(r.nom)}</h4>
+    <p class="sous">Visible tout de suite par toute l'équipe (vendeurs et direction), avec votre nom et la date. Elle sera aussi inscrite comme activité dans le compte Salesforce du client${r.sf?"":" (le compte sera retrouvé, ou créé à votre nom)"}.</p>
+    <div class="corr-form">
+      <div class="deux"><div><label for="nt-genre">Genre</label><select id="nt-genre">${Object.entries(GENRES_NOTE).map(([g,l])=>`<option value="${g}"${(n?n.genre:"note")===g?" selected":""}>${l}</option>`).join("")}</select></div>
+        <div><label for="nt-date">Date</label><input type="date" id="nt-date" value="${esc(n?n.date:auj)}" max="${auj}"></div></div>
+      <label for="nt-txt">Note</label><textarea id="nt-txt" maxlength="1000" placeholder="Ex. : en baisse parce que Val-Trak a pris la relève; à rappeler au printemps.">${esc(n?n.texte:"")}</textarea>
+      <div class="aide" id="nt-n"></div>
+      <div class="aide" id="nt-err" style="color:var(--baisse,#C62828)"></div>
+      <div class="ligne" style="margin-top:12px;flex-wrap:wrap"><button class="btn" id="nt-ok">Enregistrer</button><button class="btn sec" id="nt-ann">Annuler</button></div>
+    </div>`;
+  $("dlg").open || $("dlg").showModal();
+  const compte = ()=>{ $("nt-n").textContent = $("nt-txt").value.length+" / 1000 caractères"; };
+  $("nt-txt").oninput = compte; compte(); $("nt-txt").focus();
+  $("nt-ann").onclick = ()=>fiche(i);
+  $("nt-ok").onclick = ()=>{
+    const texte = $("nt-txt").value.trim(), date = $("nt-date").value;
+    if (!texte) { $("nt-err").textContent = "Écrivez la note."; return; }
+    if (!/^20\d\d-\d\d-\d\d$/.test(date) || date > auj) { $("nt-err").textContent = "Date invalide (aujourd'hui ou avant)."; return; }
+    const L = lesNotes().filter(x=>!(n && x.id===n.id));
+    L.push(Object.assign({id:n?n.id:"n"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), t:r.t, k:r.k, fnom:r.nom,
+      sfa:r.sf||"", ts:Date.now(), date, genre:$("nt-genre").value, texte, mienne:true, envoye:false, sf_etat:"attente", sf_resultat:""},
+      r.sf ? {} : {a:{rue:r.rue||"", ville:r.ville||"", prov:r.prov||"", cp:r.cp||"", tel:r.tel||"",
+                      pays:r.t==="US"?"United States":"Canada", epicor:String(r.id||""), st:r.st||""}}));
+    store.set("notes", L); if (indexNotes()) { majCarteCadre=false; maj(); }
+    fiche(i); syncNotes(i);
+  };
+}
+function supprimerNote(nid){
+  const n = lesNotes().find(x=>x.id===nid && x.mienne); if (!n) return;
+  if (!confirm("Supprimer cette note ? Elle sera aussi retirée de Salesforce.")) return;
+  const L = lesNotes().filter(x=>x.id!==nid);
+  L.push({id:n.id, t:n.t, k:n.k, fnom:n.fnom, ts:Date.now(), supprimee:true, mienne:true, envoye:false});
+  store.set("notes", L); if (indexNotes()) { majCarteCadre=false; maj(); }
+  const i = parCle(n.k); if (i>=0) fiche(i);
+  syncNotes(i);
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest && e.target.closest("[data-note],[data-note-suppr]");
+  if (!b) return;
+  e.preventDefault();
+  if (b.dataset.noteSuppr) supprimerNote(b.dataset.noteSuppr); else ouvrirNote(b.dataset.note, b.dataset.nid);
+});
+let notesEnCours = false;
+async function syncNotes(iFiche){
+  const jeton = store.get("jeton"); if (!jeton || notesEnCours) return;
+  notesEnCours = true;
+  try {
+    const loc = lesNotes(), aEnvoyer = loc.filter(n=>n.mienne && n.envoye===false);
+    const d = await appelPortail({action:"syncnotes", token:jeton, notes:aEnvoyer.map(n=>{ const o = Object.assign({}, n);
+      delete o.mienne; delete o.envoye; delete o.sf_etat; delete o.sf_resultat; return o; })});
+    if (!d.ok) return;
+    const L = [];
+    for (const n of d.notes||[]) if (!n.supprimee) L.push(Object.assign({}, n, {envoye:true}));
+    // Une note locale pas encore acceptee (hors ligne, refusee) est gardee : rien ne se perd.
+    for (const n of aEnvoyer) {
+      const x = (d.notes||[]).find(y=>y.id===n.id && (y.mienne || y.supprimee));
+      if (!x || x.ts < n.ts) L.push(n);
+    }
+    store.set("notes", L);
+    if (indexNotes()) { majCarteCadre=false; maj(); }
+    if (iFiche>=0 && $("dlg").open && !$("nt-ok") && !$("cr-ok")) fiche(iFiche);
+  } catch(e) {} finally { notesEnCours = false; }
 }
 const telLien = t => `<a href="tel:${esc(String(t).replace(/\D/g,""))}">${esc(t)}</a>`;
 function contactsHTML(r){
@@ -1675,10 +1790,10 @@ function connexion(){
       // Autre personne sur ce navigateur : ses routes viennent du serveur, celles du
       // compte precedent ne passent JAMAIS dans son compte.
       const qui = String($("cx-u").value).trim().toLowerCase();
-      if (store.get("jeton_u") && store.get("jeton_u")!==qui) { for (const t of Object.keys(META.terr)) store.set("routes_"+t, []); mesRoutes = []; etat.routeId = null; }
+      if (store.get("jeton_u") && store.get("jeton_u")!==qui) { for (const t of Object.keys(META.terr)) store.set("routes_"+t, []); mesRoutes = []; etat.routeId = null; store.set("notes", []); indexNotes(); }
       store.set("jeton_u", qui);
       store.set("jeton", d.token); store.set("jeton_nom", (d.user&&(d.user.name||d.user.email))||"");
-      $("dlg").close(); etatSync(""); synchroniser();
+      $("dlg").close(); etatSync(""); synchroniser(); syncNotes();
     } catch(e) { $("cx-err").textContent = "Le serveur du portail ne répond pas. Vérifiez la connexion Internet."; }
   };
   $("cx-ok").onclick = go; $("cx-p").onkeydown = e=>{ if (e.key==="Enter") go(); };
@@ -1715,8 +1830,9 @@ $("b-equipe").onclick = async ()=>{
   });
 };
 etatSync();
-if (store.get("jeton")) { synchroniser(); syncCorr(); }
-addEventListener("online", ()=>{ synchroniser(); syncCorr(); });
+if (store.get("jeton")) { synchroniser(); syncCorr(); syncNotes(); }
+addEventListener("online", ()=>{ synchroniser(); syncCorr(); syncNotes(); });
+setInterval(()=>syncNotes(), 10*60*1000);
 setInterval(()=>{ if (mesCorr().some(c=>(c.etat||"attente")==="attente")) syncCorr(); }, 10*60*1000);
 
 appliquerEtat();
@@ -1793,7 +1909,7 @@ const PAS = [
    txt:"Chaque point est une fiche ; la couleur indique le statut (légende juste en dessous). Les gros points bleus sont les clients A.",
    astuce:"Besoin de plus de place ? Les boutons <b>+</b> et <b>−</b> sur les barres à côté de la carte élargissent ou rétrécissent chaque côté, ceux de la barre « Liste » agrandissent la liste du bas ; « ⛶ Agrandir la carte » la met en grand et « ↺ Affichage normal » remet tout comme au départ."},
   {cible:"#liste", titre:"9. La liste et la fiche client",
-   txt:"Cliquez un nom pour ouvrir sa fiche : ventes FY24 à aujourd'hui, contacts (Epicor, Salesforce, liste marché), soumissions ouvertes, suivi du Planner et l'encadré « Avant de se présenter ». Un contact manque ou est faux ? « ✏️ corriger » ou « + Ajouter un contact » : il part vers Salesforce (connexion au portail requise). Cochez la case pour l'ajouter à la route."},
+   txt:"Cliquez un nom pour ouvrir sa fiche : ventes FY24 à aujourd'hui, contacts (Epicor, Salesforce, liste marché), soumissions ouvertes, suivi du Planner et l'encadré « Avant de se présenter ». Un contact manque ou est faux ? « ✏️ corriger » ou « + Ajouter un contact » : il part vers Salesforce (connexion au portail requise). Section « Notes et activités » : écrivez pourquoi un client est en baisse, un appel, une visite. Toute l'équipe la voit tout de suite et elle s'inscrit dans Salesforce ; 📝 dans la liste = le client a des notes. Cochez la case pour l'ajouter à la route."},
   {cible:"#auto", titre:"10. Le raccourci",
    txt:"« Ajouter les 8 plus prioritaires » remplit la route d'un clic avec les clients les plus importants du secteur."},
   {cible:"#arrivee", titre:"11. Le départ et l'arrivée",
