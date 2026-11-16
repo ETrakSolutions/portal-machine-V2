@@ -372,7 +372,8 @@ function populateTypes() {
     // machine. Un distributeur qui achete une camera pour un lift, un camion benne
     // ou une betonniere n'a aucune machine a choisir ici — avant, il devait en
     // inventer une, ce qui salissait la soumission et la donnee.
-    if (estApercu()) {
+    // Chariot élévateur : offert à tous depuis le 2026-11-16 (Steve) ; aperçu avant.
+    {
         const optCh = document.createElement('option');
         optCh.value = CHARIOT;
         optCh.textContent = (typeof i18n !== 'undefined') ? i18n.t('type.' + CHARIOT) : 'Chariot élévateur';
@@ -4031,9 +4032,9 @@ function updateAValiderWarning() {
 // ou Grue, l'un ou l'autre. Ne coche pas la tuile et n'émet aucun code pour l'instant :
 // les codes suggérés et les options viendront ensuite.
 function majCamEquip(type) {
-    var ap = estApercu();
-    var estCh = ap && type === CHARIOT;
-    var grueOk = ap && type === 'Grue Mobile';
+    // Caméras de chariot et de grue offertes à tous depuis le 2026-11-16 (Steve) ; aperçu avant.
+    var estCh = type === CHARIOT;
+    var grueOk = type === 'Grue Mobile';
     var ch = document.getElementById('cam-equip-chariot');
     var gr = document.getElementById('cam-equip-grue');
     var grLab = document.getElementById('cam-equip-grue-lab');

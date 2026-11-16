@@ -111,9 +111,9 @@ def sans_machine(apercu=True):
 
 
 try:
-    print('1. compte hors apercu')
+    print('1. compte quelconque (offert a tous depuis le 2026-11-16)')
     sans_machine(apercu=False)
-    check('case Grue cachee', not vis('cam-equip-grue'))
+    check('case Grue offerte a tous sur une grue mobile', vis('cam-equip-grue-lab'))
 
     print('2. apercu : cocher Grue')
     sans_machine()

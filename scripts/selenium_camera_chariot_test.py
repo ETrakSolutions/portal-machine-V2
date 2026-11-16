@@ -100,9 +100,9 @@ def sans_machine(apercu=True):
 
 
 try:
-    print('1. compte hors apercu')
+    print('1. compte quelconque (offert a tous depuis le 2026-11-16)')
     sans_machine(apercu=False)
-    check('pas de type Chariot elevateur', not J("return [].some.call(selectType.options, function(o){return o.value==='__chariot__';});"))
+    check('type Chariot elevateur offert a tous', J("return [].some.call(selectType.options, function(o){return o.value==='__chariot__';});"))
     check('« Autre machine » : fenetre chariot cachee', not vis('cam-chariot'))
 
     print('2. apercu : type Chariot elevateur')
