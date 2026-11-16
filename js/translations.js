@@ -972,9 +972,13 @@ fr: {
 
     // -- Price list --
     'pl.title': 'Liste de prix',
-    'pl.card_title': 'Liste de prix — Juin 2026 (Options R1)',
-    'pl.card_sub': 'Document interne · acces e-Trak requis',
-    'pl.open_btn': 'Ouvrir la liste de prix ↗',
+    'pl.card_title': 'Listes de prix 2027',
+    'pl.card_sub': 'En vigueur le 16 novembre 2026 · document interne · accès e-Trak requis',
+    'pl.g_pf': 'Produits finis et installations',
+    'pl.g_pieces': 'Pièces',
+    'pl.g_services': 'Tarifs de service (techniciens)',
+    'pl.pf_cad': '$ CA ↗', 'pl.pf_us': '$ US ↗', 'pl.pieces_cad': '$ CA ↗', 'pl.pieces_us': '$ US ↗',
+    'pl.services': 'Ouvrir ↗',
     'pl.note': 'Le document s\'ouvre sur SharePoint. Une connexion avec votre compte e-Trak (Microsoft 365) est requise — il n\'est pas stocke sur le portail public.',
 
     // ============================================
@@ -2459,9 +2463,13 @@ en: {
 
     // -- Price list --
     'pl.title': 'Price List',
-    'pl.card_title': 'Price list — June 2026 (R1 Options)',
-    'pl.card_sub': 'Internal document · e-Trak access required',
-    'pl.open_btn': 'Open the price list ↗',
+    'pl.card_title': '2027 Price Lists',
+    'pl.card_sub': 'Effective November 16, 2026 · internal document · e-Trak access required',
+    'pl.g_pf': 'Finished products and installations',
+    'pl.g_pieces': 'Parts',
+    'pl.g_services': 'Service rates (technicians)',
+    'pl.pf_cad': 'CAD ↗', 'pl.pf_us': 'USD ↗', 'pl.pieces_cad': 'CAD ↗', 'pl.pieces_us': 'USD ↗',
+    'pl.services': 'Open ↗',
     'pl.note': 'The document opens on SharePoint. A connection with your e-Trak account (Microsoft 365) is required — it is not stored on the public portal.',
 
     // ============================================
