@@ -21,7 +21,25 @@ header .logo img{height:30px;display:block}
 header h1{font:700 1.3rem var(--police-titre);margin:0;min-width:0}
 header .meta{font-size:12.5px;opacity:.9;margin-left:auto;text-align:right}
 body{display:flex;flex-direction:column;height:100vh}
-main{display:grid;grid-template-columns:330px 1fr 380px;gap:0;flex:1;min-height:0}
+main{display:grid;grid-template-columns:var(--lg-g,330px) 10px minmax(0,1fr) 10px var(--lg-d,380px);gap:0;flex:1;min-height:0}
+main.sans-g>section.pan-g,main.sans-d>section.pan-d{padding:0;overflow:hidden;border:0;visibility:hidden}
+.poignee{position:relative;background:var(--clair);border-left:1px solid var(--bord);border-right:1px solid var(--bord);cursor:col-resize;touch-action:none}
+.poignee:hover,.poignee.tire{background:var(--accent-pale)}
+.poignee .pb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;gap:6px;z-index:2}
+.poignee button,.poignee-h button{width:18px;height:30px;padding:0;border:1px solid var(--accent);border-radius:4px;background:#fff;color:var(--accent);font:700 14px/1 var(--police);cursor:pointer}
+.poignee button:hover,.poignee-h button:hover{background:var(--accent);color:#fff}
+.poignee-h{position:relative;height:12px;flex:none;background:var(--clair);border-top:1px solid var(--bord);border-bottom:1px solid var(--bord);cursor:row-resize;touch-action:none}
+.poignee-h:hover,.poignee-h.tire{background:var(--accent-pale)}
+.poignee-h .pb{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:6px;z-index:2}
+.poignee-h button{width:30px;height:20px}
+.poignee-h .lib{font:600 11.5px var(--police);color:var(--gris);background:var(--clair);padding:0 4px}
+main.tire-h,main.tire-h *{cursor:row-resize!important;user-select:none}
+.carte-grand.carte-normal{top:46px}
+main.tire,main.tire *{cursor:col-resize!important;user-select:none}
+.carte-grand{position:absolute;top:10px;right:10px;z-index:500;background:#fff;color:var(--accent);border:2px solid rgba(0,0,0,.25);border-radius:4px;padding:5px 9px;font:600 13px var(--police);cursor:pointer}
+.carte-grand:hover{background:var(--accent-pale)}
+#carte{position:relative}
+main.grand #carte{height:72%!important}
 section{overflow:auto;padding:14px 16px;border-right:1px solid var(--bord)}
 section:last-child{border-right:0}
 h2{font:600 1.02rem var(--police-titre);margin:0 0 8px}
@@ -32,6 +50,21 @@ select,input[type=text],input[type=number]{font:inherit;padding:6px 8px;border:1
 .ligne{display:flex;gap:8px;align-items:center}
 .choix label{display:flex;align-items:center;gap:8px;padding:3px 0}
 .choix .n{margin-left:auto;color:var(--gris3);font-size:12.5px}
+/* Menus deroulants a cocher (Qui voir) — demande de Robert 2026-11-16 */
+.menu{position:relative;margin:0 0 6px}
+.menu>summary{list-style:none;display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--bord);border-radius:4px;background:#fff;cursor:pointer;font-size:14px}
+.menu>summary::-webkit-details-marker{display:none}
+.menu>summary .lib{font-weight:600;color:var(--gris);flex:none}
+.menu>summary .val{flex:1;min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--noir)}
+.menu>summary::after{content:"\25BE";color:var(--gris3);flex:none}
+.menu[open]>summary{border-color:var(--accent);border-radius:4px 4px 0 0}
+.menu .deroul{position:absolute;left:0;right:0;top:100%;z-index:800;background:#fff;border:1px solid var(--accent);border-top:0;border-radius:0 0 4px 4px;box-shadow:0 8px 20px rgba(0,0,0,.18);padding:6px 10px;max-height:min(60vh,380px);overflow:auto}
+.menu .actions{display:flex;gap:6px;border-top:1px solid var(--bord);margin-top:6px;padding-top:6px;flex-wrap:wrap}
+.menu .actions button{border:1px solid var(--accent);background:#fff;color:var(--accent);border-radius:4px;padding:4px 8px;font:600 12.5px var(--police);cursor:pointer}
+.menu .actions button:hover{background:var(--accent-pale)}
+.pied-filtres{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.pied-filtres .btn{padding:6px 10px;font-size:13px}
+#recherche{width:auto;flex:1 1 220px;min-width:150px}
 .pastille{display:inline-block;width:11px;height:11px;border-radius:50%;flex:none}
 .onglets{display:flex;gap:0;margin:4px 0 8px}
 .onglets button{flex:1;border:1px solid var(--accent);background:#fff;color:var(--accent);padding:6px;font:600 13px var(--police);cursor:pointer}
@@ -40,7 +73,7 @@ select,input[type=text],input[type=number]{font:inherit;padding:6px 8px;border:1
 .btn.sec{background:#fff;color:var(--accent);border:1px solid var(--accent)}
 .btn:disabled{opacity:.45;cursor:default}
 .aide{font-size:12.5px;color:var(--gris3);margin:4px 0}
-#carte{height:46%;min-height:260px;border-bottom:1px solid var(--bord);background:var(--clair)}
+#carte{height:var(--carte-h,46%);min-height:160px;border-bottom:1px solid var(--bord);background:var(--clair)}
 #carte .horsligne{padding:20px;color:var(--gris)}
 .colcentre{padding:0;display:flex;flex-direction:column}
 .liste-tete{padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--bord)}
@@ -97,6 +130,12 @@ dialog .fermer{float:right}
 .contacts{margin:8px 0 4px;font-size:13.5px}
 .contacts .ct{padding:4px 0;border-top:1px solid var(--clair)}
 .contacts a{color:var(--accent)}
+.corr-lien{font-size:12.5px;margin-left:6px}
+.corr{background:var(--accent-pale);border-left:3px solid var(--accent);padding:6px 8px;margin:6px 0;font-size:13px}
+.corr.faite{background:#E8F5E9;border-left-color:#2E7D32}.corr.refusee{background:#FFF3E0;border-left-color:#E65100}
+.corr-form label{display:block;font-size:12.5px;color:var(--gris);margin-top:8px}
+.corr-form .deux{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:600px){.corr-form .deux{grid-template-columns:1fr}}
 .mesroutes{border:1px solid var(--bord);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:#fff}
 .hors-route{border:1px solid var(--baisse);border-radius:6px;padding:8px 10px;margin:0 0 10px;background:#fdf0ee;font-size:13.5px}
 .hors-route .ligne{margin-top:6px;flex-wrap:wrap}
@@ -115,10 +154,13 @@ dialog .fermer{float:right}
 table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-space:nowrap}table.mini td,table.mini th{padding:3px 6px;position:static}
 @media (max-width:1100px){
   body{height:auto;display:block}
-  main{grid-template-columns:minmax(0,1fr);height:auto}
+  main,main.sans-g,main.sans-d{grid-template-columns:minmax(0,1fr);height:auto}
+  .poignee,.poignee-h,.carte-grand{display:none}
+  main.sans-g>section.pan-g,main.sans-d>section.pan-d{padding:14px 16px;visibility:visible;overflow:visible;border-bottom:1px solid var(--bord)}
+  main.grand #carte{height:340px!important}
   section{border-right:0;border-bottom:1px solid var(--bord);overflow:visible}
   #liste{max-height:60vh}
-  #carte{height:340px}
+  #carte{height:340px!important}
   .colcentre{min-height:auto}
 }
 @media (max-width:600px){
@@ -147,9 +189,9 @@ table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-spa
   <div class="meta" id="entete-meta"></div>
 </header>
 <div class="alertes" id="alertes"></div>
-<main>
+<main id="main">
   <!-- 1. Secteur et filtres -->
-  <section>
+  <section class="pan-g">
     <h2><span class="etape">1</span>Choisir le secteur</h2>
     <div id="bloc-trouver">
       <label class="aide" for="trouver" style="margin-top:0;display:block"><b>Trouver une compagnie</b> — par son nom, dans tous les territoires</label>
@@ -169,37 +211,45 @@ table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-spa
     </div>
 
     <h3>Qui voir</h3>
-    <div class="choix" id="statuts"></div>
+    <div id="bloc-qui">
+      <details class="menu" id="m-st"><summary><span class="lib">Type de fiche</span><span class="val" id="v-st"></span></summary>
+        <div class="deroul"><div class="choix" id="statuts"></div>
+          <div class="actions"><button type="button" id="st-tout">Tout cocher</button><button type="button" id="st-aucun">Tout décocher</button></div></div></details>
+      <details class="menu" id="m-cf"><summary><span class="lib">Catégorie</span><span class="val" id="v-cf"></span></summary>
+        <div class="deroul"><div class="aide" style="margin:0 0 4px">Cochez une ou plusieurs catégories. Rien de coché = toutes.</div><div class="choix" id="cats"></div>
+          <div class="actions"><button type="button" id="cf-aucun">Toutes les catégories</button></div></div></details>
+      <details class="menu" id="m-cl"><summary><span class="lib">Classe</span><span class="val" id="v-cl"></span></summary>
+        <div class="deroul"><div class="choix" id="classes"></div>
+          <div class="aide">A = clients qui font 80 % des ventes, B = 15 % suivants, C = le reste.</div></div></details>
+      <label class="aide" for="rep" style="display:block;margin-top:2px">Représentant assigné (Epicor)</label>
+      <select id="rep"><option value="">Tous</option></select>
+    </div>
 
     <h3>Signal à travailler</h3>
     <div class="choix" id="signaux"></div>
     <div class="aide">Rien de coché = toutes les fiches. Plusieurs cases = la fiche a au moins un des signaux cochés.</div>
 
-    <h3>Classe</h3>
-    <div class="choix ligne" id="classes"></div>
-
-    <h3>Représentant assigné (Epicor)</h3>
-    <select id="rep"><option value="">Tous</option></select>
-
-    <h3>Filtrer la liste du secteur</h3>
-    <input type="text" id="recherche" placeholder="Nom, ville, produit, contact…">
-    <div class="aide">Cherche seulement dans le secteur choisi. Pour une compagnie précise, utilisez « Trouver une compagnie » en haut.</div>
-
-    <div class="conf">
+    <div class="pied-filtres">
+      <button type="button" class="btn sec" id="b-effacer" title="Remettre Qui voir, Signal et la recherche de la liste comme au départ (le secteur ne change pas)">Effacer les filtres</button>
+      <button type="button" class="btn sec" id="b-lire">ⓘ Comment lire les chiffres</button>
+    </div>
+    <div id="conf-txt" hidden>
       <b>Comment lire les chiffres.</b> Ventes = ventes facturées e-Trak au grand livre (même source que la Finance), avant taxes, intercompagnie exclue.
       <span id="note-ex"></span> Classe A/B/C : rang du client dans les ventes e-Trak <span id="note-ref"></span> (A = clients qui font 80 % des ventes, B = 15 % suivants, C = 5 % restants).
       « Même période l'an passé » : exercice précédent jusqu'au <span id="note-ly"></span>.
       Les montants GRYB ne sont pas affichés : seule la classe GRYB sert à prioriser.
-      <br><br><b>Confidentiel — usage interne e-Trak.</b> Ne pas transmettre à un client ni à l'externe.
     </div>
   </section>
+  <div class="poignee" id="poi-g" title="Glisser pour élargir ou réduire · double-clic : largeur d'origine"><div class="pb"><button type="button" id="plus-g" title="Élargir le panneau de gauche">+</button><button type="button" id="pli-g" title="Masquer le panneau de gauche">‹</button><button type="button" id="moins-g" title="Rétrécir le panneau de gauche">−</button></div></div>
 
   <!-- 2. Carte et liste -->
   <section class="colcentre">
     <div id="carte"></div>
     <div class="legende" id="legende"></div>
+    <div class="poignee-h" id="poi-h" title="Glisser pour agrandir la carte ou la liste · double-clic : hauteur d'origine"><div class="pb"><button type="button" id="moins-h" title="Réduire la liste (carte plus haute)">−</button><span class="lib">Liste</span><button type="button" id="plus-h" title="Agrandir la liste (carte plus basse)">+</button></div></div>
     <div class="liste-tete">
       <span class="compte" id="compte"></span>
+      <input type="text" id="recherche" placeholder="Filtrer la liste : nom, ville, produit, contact…" title="Cherche seulement dans le secteur choisi. Pour une compagnie précise, utilisez « Trouver une compagnie » à gauche.">
       <button class="btn sec" id="auto">Ajouter les 8 plus prioritaires</button>
       <button class="btn sec" id="b-ajout">+ Ajouter un arrêt ou un prospect</button>
       <button class="btn sec" id="b-reseaux">Réseaux nationaux</button>
@@ -208,9 +258,10 @@ table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-spa
     <div class="aide" id="msg-ajouts" style="padding:0 16px"></div>
     <div id="liste"></div>
   </section>
+  <div class="poignee" id="poi-d" title="Glisser pour élargir ou réduire · double-clic : largeur d'origine"><div class="pb"><button type="button" id="plus-d" title="Élargir le panneau de droite">+</button><button type="button" id="pli-d" title="Masquer le panneau de droite">›</button><button type="button" id="moins-d" title="Rétrécir le panneau de droite">−</button></div></div>
 
   <!-- 3. Route -->
-  <section>
+  <section class="pan-d">
     <h2><span class="etape">2</span>La route</h2>
     <div class="mesroutes" id="mesroutes">
       <div class="aide" id="mr-nom" style="margin:0 0 6px">Route non sauvegardée</div>
@@ -373,8 +424,34 @@ function preparer(r) {
   r.manque = (r.st==="actif" && (r.pf||[]).length) ? META.croisees.filter(f=>!r.pf.includes(f)) : [];
   r.soumRec = (r.sq||[]).some(q=>q[1] >= ilYa(90));
   r.prio = priorite(r);
+  r.cf = famCat(r.cat);
   r.txt = [r.nom,r.ville,r.cat,contactsTxt(r),(r.fam||[]).join(" "),r.marques,r.sf_proprio,r.sf_notes,r.note].join(" ").toLowerCase()
           .normalize("NFD").replace(/[̀-ͯ]/g,"");
+}
+// Categorie : les sources (liste marche de Robert, Epicor, Salesforce, Planner) ont plus de
+// 80 libelles, souvent doublons (« Dealer », « Revendeurs Canada », « Heavy Machinery Dealer »).
+// Le menu Categorie les regroupe en familles (Jacquot 2026-11-16). Premiere regle qui
+// s'applique l'emporte : l'ordre compte (« Crane Distributor » = grue, pas concessionnaire).
+const FAM_AUTRE = "Autres / non classé";
+const FAM_CAT = [
+  ["Ferroviaire", /rail/],
+  ["Comptes nationaux", /national/],
+  ["Grues et levage", /crane|grue|nacelle|boom truck|lifting/],
+  ["Pompes à béton", /concrete pump|pompe a beton|beton/],
+  ["Hydrovac / hydro-excavation", /hydrovac|hydro excavation|vac+u+m/],
+  ["Manutention", /handling|telehandler|manutention/],
+  ["Installateurs", /^installers?$/],
+  ["Public (ministères, villes)", /ministry|municipal|\bmun\b|institutionnel|government|service public/],
+  ["Concessionnaires et distributeurs", /dealer|revendeur|distribut|concession/],
+  ["Location d'équipement", /rental|locat/],
+  ["Fabricants / OEM", /manufacturer|\boem\b/],
+  ["Entrepreneurs et utilisateurs", /end user|utilisateur|contractor|construction|excavat|terrassement|pavage|carriere|mine|mining|transport|camionnage|recyclage|recycling|forest|agricult|demolition|entrepreneur|piscine/],
+];
+function famCat(cat){
+  const c = String(cat||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[\s/]+/g," ");
+  if (!c.trim()) return FAM_AUTRE;
+  for (const [f, re] of FAM_CAT) if (re.test(c)) return f;
+  return FAM_AUTRE;
 }
 // Contacts : [nom, titre, telephone, cellulaire, courriel, source]
 function contactsTxt(r){
@@ -520,16 +597,20 @@ function ajouterRec(a){
 ajouts.filter(a=>(a.t||"QC")===TERR).forEach(ajouterRec);
 const reps = [...new Set(RECS.filter(r=>r.t===TERR).map(r=>r.rep).filter(Boolean))].sort();
 $("rep").innerHTML += reps.map(x=>`<option>${esc(x)}</option>`).join("");
+// Familles presentes dans le territoire, les plus nombreuses d'abord, « Autres » a la fin
+const nFam = {}; RECS.filter(r=>r.t===TERR).forEach(r=>nFam[r.cf]=(nFam[r.cf]||0)+1);
+const FAMS = Object.keys(nFam).sort((a,b)=>(a===FAM_AUTRE)-(b===FAM_AUTRE) || nFam[b]-nFam[a] || a.localeCompare(b,"fr"));
+$("cats").innerHTML = FAMS.map((f,j)=>`<label><input type="checkbox" data-cf="${esc(f)}">${esc(f)}<span class="n" id="n-cf-${j}"></span></label>`).join("");
 
 // Chaque territoire garde son propre etat (secteur, route, depart) : passer de l'un a
 // l'autre ne mele rien.
 const defStat = {actif:true, perdu:true, ancien:false, gryb:true, marche:TERR==="CA", sans_achat:false, sf:true, planner:true, ajout:true};
 const etat = Object.assign({mode:"reg", prov:"", region:"", centre:"", rayon:TERR==="QC"?60:120, classes:{A:true,B:true,C:true,"—":true},
-  signaux:{}, rep:"", q:"", depart:"", arrivee:"", minv:45}, store.get("etat_"+TERR)||(TERR==="QC"?store.get("etat"):null)||{});
+  signaux:{}, cats:{}, rep:"", q:"", depart:"", arrivee:"", minv:45}, store.get("etat_"+TERR)||(TERR==="QC"?store.get("etat"):null)||{});
 etat.statuts = Object.assign({}, defStat, etat.statuts||{});
 // Ancien etat (une seule liste deroulante « tendance ») : on le convertit en case cochee.
 if (etat.tendance) { etat.signaux = Object.assign({}, etat.signaux, {[etat.tendance]:true}); }
-delete etat.tendance; etat.signaux = etat.signaux || {};
+delete etat.tendance; etat.signaux = etat.signaux || {}; etat.cats = etat.cats || {};
 // La route est gardee par CLE stable (pas par numero de ligne, qui change a chaque regeneration).
 const parCle = k => RECS.findIndex(r=>r.k===k);
 etat.route = (etat.routeK||[]).map(parCle).filter(i=>i>=0);
@@ -555,6 +636,7 @@ function appliquerEtat(){
   document.querySelectorAll("[data-st]").forEach(c=>c.checked=!!etat.statuts[c.dataset.st]);
   document.querySelectorAll("[data-cl]").forEach(c=>c.checked=!!etat.classes[c.dataset.cl]);
   document.querySelectorAll("[data-sg]").forEach(c=>c.checked=!!etat.signaux[c.dataset.sg]);
+  document.querySelectorAll("[data-cf]").forEach(c=>c.checked=!!etat.cats[c.dataset.cf]);
   basculer(etat.mode);
 }
 function basculer(m){ etat.mode=m; $("o-reg").classList.toggle("on",m==="reg"); $("o-ray").classList.toggle("on",m==="ray");
@@ -571,6 +653,33 @@ $("prov").addEventListener("input", ()=>{ etat.prov = $("prov").value; etat.regi
 document.querySelectorAll("[data-st]").forEach(c=>c.onchange=()=>{etat.statuts[c.dataset.st]=c.checked;maj();});
 document.querySelectorAll("[data-cl]").forEach(c=>c.onchange=()=>{etat.classes[c.dataset.cl]=c.checked;maj();});
 document.querySelectorAll("[data-sg]").forEach(c=>c.onchange=()=>{etat.signaux[c.dataset.sg]=c.checked;maj();});
+document.querySelectorAll("[data-cf]").forEach(c=>c.onchange=()=>{etat.cats[c.dataset.cf]=c.checked;maj();});
+$("st-tout").onclick=()=>{ for (const k in ST) etat.statuts[k]=true; appliquerEtat(); maj(); };
+$("st-aucun").onclick=()=>{ for (const k in ST) etat.statuts[k]=false; appliquerEtat(); maj(); };
+$("cf-aucun").onclick=()=>{ etat.cats={}; appliquerEtat(); maj(); };
+// Un seul menu ouvert a la fois ; clic ailleurs ou Echap = fermer
+const MENUS = [...document.querySelectorAll("details.menu")];
+MENUS.forEach(d=>d.addEventListener("toggle", ()=>{ if (d.open) MENUS.forEach(x=>{ if (x!==d) x.open=false; }); }));
+document.addEventListener("click", e=>{ MENUS.forEach(d=>{ if (d.open && !d.contains(e.target)) d.open=false; }); });
+document.addEventListener("keydown", e=>{ if (e.key==="Escape") MENUS.forEach(d=>d.open=false); });
+$("b-effacer").onclick=()=>{
+  etat.statuts = Object.assign({}, defStat); etat.classes = {A:true,B:true,C:true,"—":true};
+  etat.signaux = {}; etat.cats = {}; etat.rep = ""; etat.q = "";
+  appliquerEtat(); maj(); };
+$("b-lire").onclick=()=>{
+  $("dlg-c").innerHTML = "<h4>Comment lire les chiffres</h4><p>"+$("conf-txt").innerHTML+"</p><p><b>Confidentiel — usage interne e-Trak.</b> Ne pas transmettre à un client ni à l'externe.</p>";
+  $("dlg").showModal(); };
+// Ce que chaque menu laisse passer, lisible sans l'ouvrir
+function majResumes(){
+  const st = Object.keys(ST).filter(k=>etat.statuts[k]);
+  $("v-st").textContent = st.length===Object.keys(ST).length ? "Tous" : !st.length ? "Aucun" : st.length<=2 ? st.map(k=>ST[k].lib).join(", ") : st.length+" sur "+Object.keys(ST).length;
+  const cf = FAMS.filter(f=>etat.cats[f]);
+  $("v-cf").textContent = !cf.length ? "Toutes" : cf.length<=2 ? cf.join(", ") : cf.length+" choisies";
+  const cl = ["A","B","C","—"].filter(c=>etat.classes[c]!==false);
+  $("v-cl").textContent = cl.length===4 ? "Toutes" : !cl.length ? "Aucune" : cl.map(c=>c==="—"?"sans classe":c).join(", ");
+  [["v-st",Object.keys(ST).every(k=>!!etat.statuts[k]===!!defStat[k])],["v-cf",!cf.length],["v-cl",cl.length===4]]
+    .forEach(([id,defaut])=>$(id).style.fontWeight = defaut ? "" : "700");
+}
 
 function km(a,b){ const R=6371, t=Math.PI/180, dLa=(b.lat-a.lat)*t, dLo=(b.lon-a.lon)*t;
   const h=Math.sin(dLa/2)**2+Math.cos(a.lat*t)*Math.cos(b.lat*t)*Math.sin(dLo/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
@@ -681,16 +790,21 @@ function filtre(){
   const secteur = RECS.filter(dansSecteur);
   // Le compteur de chaque statut tient compte des AUTRES filtres (classe, signal,
   // representant, recherche) : il annonce ce qui apparaitra vraiment si on coche.
-  const autres = r => etat.classes[(r.st==="gryb" ? r.gryb : r.clBase) || "—"] !== false
+  const base = r => etat.classes[(r.st==="gryb" ? r.gryb : r.clBase) || "—"] !== false
     && signaux(r)
     && (!etat.rep || r.rep===etat.rep)
     && (!q || r.txt.includes(q));
-  const passe = secteur.filter(autres);
+  const aucuneCat = !FAMS.some(f=>etat.cats[f]);
+  const catOk = r => aucuneCat || !!etat.cats[r.cf];
+  const passe = secteur.filter(r => base(r) && catOk(r));
+  // Compteur de chaque categorie : ce qui apparaitra si on la coche (autres filtres appliques)
+  const nCf = {}; for (const r of secteur) if (base(r) && etat.statuts[r.st]) nCf[r.cf] = (nCf[r.cf]||0)+1;
+  FAMS.forEach((f,j)=>{ const el=$("n-cf-"+j); if (el) el.textContent = nCf[f]||0; });
   const compte = {}, total = {}; for (const k in ST) { compte[k]=0; total[k]=0; }
   for (const r of secteur) total[r.st]++;
   for (const r of passe) compte[r.st]++;
   for (const k in ST) { const el=$("n-"+k); el.textContent = compte[k];
-    el.title = compte[k]<total[k] ? (total[k]-compte[k])+" autre(s) dans le secteur, cachée(s) par les filtres classe, signal, représentant ou recherche" : ""; }
+    el.title = compte[k]<total[k] ? (total[k]-compte[k])+" autre(s) dans le secteur, cachée(s) par les filtres catégorie, classe, signal, représentant ou recherche" : ""; }
   return passe.filter(r => etat.statuts[r.st])
     .sort((a,b)=>b.prio-a.prio || b.vRef-a.vRef || a.nom.localeCompare(b.nom,"fr"));
 }
@@ -708,10 +822,104 @@ if (window.L) {
   $("carte").style.height="auto";
 }
 
+// ---------- Panneaux gauche/droite : glisser, replier, « Agrandir la carte » (Jacquot 2026-11-11)
+// Ecran large seulement ; largeurs et etat gardes dans ce navigateur (rv_panneaux).
+// 2026-11-12 : boutons + / - par panneau et pour la liste du bas (hauteur de la carte en %),
+// poignee horizontale carte/liste, bouton « Affichage normal ».
+const PAN_DEF = {g:330, d:380, h:46}, PAN_MIN = 220, PAN_MAX = 700, PAN_PAS = 60, H_MIN = 15, H_MAX = 85, H_PAS = 10;
+const pan = Object.assign({g:PAN_DEF.g, d:PAN_DEF.d, h:PAN_DEF.h, sg:false, sd:false, grand:false}, store.get("panneaux")||{});
+const panNormal = ()=> pan.g===PAN_DEF.g && pan.d===PAN_DEF.d && pan.h===PAN_DEF.h && !pan.sg && !pan.sd && !pan.grand;
+const panMaxLarg = cote => Math.min(PAN_MAX, innerWidth - (cote==="g"?(pan.sd?0:pan.d):(pan.sg?0:pan.g)) - 380);
+function panAppliquer(){
+  const m = $("main");
+  m.style.setProperty("--lg-g", (pan.sg?0:pan.g)+"px"); m.style.setProperty("--lg-d", (pan.sd?0:pan.d)+"px");
+  m.classList.toggle("sans-g", pan.sg); m.classList.toggle("sans-d", pan.sd); m.classList.toggle("grand", pan.grand);
+  m.style.setProperty("--carte-h", pan.h+"%");
+  $("moins-h").disabled = pan.h>=H_MAX; $("plus-h").disabled = pan.h<=H_MIN;
+  const bn = document.querySelector(".carte-normal"); if (bn) bn.hidden = panNormal();
+  $("pli-g").textContent = pan.sg ? "›" : "‹"; $("pli-g").title = pan.sg ? "Afficher le panneau de gauche (secteur)" : "Masquer le panneau de gauche";
+  $("pli-d").textContent = pan.sd ? "‹" : "›"; $("pli-d").title = pan.sd ? "Afficher le panneau de droite (route)" : "Masquer le panneau de droite";
+  const bg = document.querySelector(".carte-grand");
+  if (bg) { bg.textContent = pan.grand ? "⤡ Réduire la carte" : "⛶ Agrandir la carte"; bg.title = pan.grand ? "Revenir à l'affichage normal" : "Masquer les deux panneaux et agrandir la carte"; }
+  store.set("panneaux", pan);
+  if (carte) requestAnimationFrame(()=>carte.invalidateSize());
+}
+function panPlier(cote){
+  pan["s"+cote] = !pan["s"+cote];
+  if (!pan["s"+cote]) pan.grand = false;   // rouvrir un panneau = sortir du mode « grand »
+  panAppliquer();
+}
+["g","d"].forEach(cote=>{
+  const poi = $("poi-"+cote);
+  $("pli-"+cote).onclick = e=>{ e.stopPropagation(); panPlier(cote); };
+  $("pli-"+cote).onpointerdown = e=>e.stopPropagation();
+  poi.ondblclick = ()=>{ pan[cote] = PAN_DEF[cote]; pan["s"+cote] = false; pan.grand = false; panAppliquer(); };
+  // + : plus large (un panneau replie se rouvre a la largeur minimale) ; - : plus etroit, puis replie
+  $("plus-"+cote).onclick = e=>{ e.stopPropagation();
+    if (pan["s"+cote]) { pan["s"+cote] = false; pan[cote] = PAN_MIN; } else pan[cote] = Math.min(panMaxLarg(cote), pan[cote] + PAN_PAS);
+    pan.grand = false; panAppliquer(); };
+  $("moins-"+cote).onclick = e=>{ e.stopPropagation();
+    if (pan["s"+cote]) return;
+    if (pan[cote] - PAN_PAS < PAN_MIN) pan["s"+cote] = true; else pan[cote] -= PAN_PAS;
+    panAppliquer(); };
+  ["plus-","moins-"].forEach(p=>$(p+cote).onpointerdown = e=>e.stopPropagation());
+  poi.onpointerdown = e=>{
+    if (e.button !== 0) return;
+    e.preventDefault(); poi.setPointerCapture(e.pointerId);
+    const x0 = e.clientX, l0 = pan["s"+cote] ? 0 : pan[cote], m = $("main");
+    m.classList.add("tire"); poi.classList.add("tire");
+    poi.onpointermove = ev=>{
+      const dx = cote==="g" ? ev.clientX - x0 : x0 - ev.clientX;
+      const max = panMaxLarg(cote);
+      let l = Math.round(l0 + dx);
+      if (l < PAN_MIN*0.6) { pan["s"+cote] = true; }            // tire jusqu'au bord : replie
+      else { pan["s"+cote] = false; pan[cote] = Math.max(PAN_MIN, Math.min(max, l)); }
+      pan.grand = false; panAppliquer();
+    };
+    poi.onpointerup = poi.onpointercancel = ()=>{ poi.onpointermove = null; m.classList.remove("tire"); poi.classList.remove("tire"); };
+  };
+});
+if (carte) {
+  const bg = document.createElement("button");
+  bg.type = "button"; bg.className = "carte-grand";
+  bg.onclick = e=>{ e.stopPropagation();
+    if (pan.grand) { pan.grand = false; pan.sg = !!pan.av_sg; pan.sd = !!pan.av_sd; }
+    else { pan.av_sg = pan.sg; pan.av_sd = pan.sd; pan.grand = true; pan.sg = pan.sd = true; }
+    panAppliquer(); };
+  L.DomEvent.disableClickPropagation(bg);
+  $("carte").appendChild(bg);
+}
+// Liste du bas : + = liste plus grande (carte plus basse), - = liste plus petite.
+$("plus-h").onclick = e=>{ e.stopPropagation(); pan.grand = false; pan.h = Math.max(H_MIN, pan.h - H_PAS); panAppliquer(); };
+$("moins-h").onclick = e=>{ e.stopPropagation(); pan.grand = false; pan.h = Math.min(H_MAX, pan.h + H_PAS); panAppliquer(); };
+["plus-h","moins-h"].forEach(id=>$(id).onpointerdown = e=>e.stopPropagation());
+$("poi-h").ondblclick = ()=>{ pan.h = PAN_DEF.h; pan.grand = false; panAppliquer(); };
+$("poi-h").onpointerdown = e=>{
+  if (e.button !== 0) return;
+  const poi = $("poi-h"), col = document.querySelector(".colcentre"), m = $("main");
+  e.preventDefault(); poi.setPointerCapture(e.pointerId);
+  const haut = col.getBoundingClientRect().top, H = col.clientHeight || 1;
+  m.classList.add("tire-h"); poi.classList.add("tire");
+  poi.onpointermove = ev=>{ pan.grand = false; pan.h = Math.round(Math.max(H_MIN, Math.min(H_MAX, (ev.clientY - haut) / H * 100))); panAppliquer(); };
+  poi.onpointerup = poi.onpointercancel = ()=>{ poi.onpointermove = null; m.classList.remove("tire-h"); poi.classList.remove("tire"); };
+};
+if (carte) {
+  const bn = document.createElement("button");
+  bn.type = "button"; bn.className = "carte-grand carte-normal"; bn.textContent = "↺ Affichage normal";
+  bn.title = "Remettre les panneaux, la carte et la liste à leur taille d'origine";
+  bn.onclick = e=>{ e.stopPropagation(); Object.assign(pan, {g:PAN_DEF.g, d:PAN_DEF.d, h:PAN_DEF.h, sg:false, sd:false, grand:false}); panAppliquer(); };
+  L.DomEvent.disableClickPropagation(bn);
+  $("carte").appendChild(bn);
+}
+// La Formation 101 montre les deux panneaux : on les rouvre avant le tour.
+window.panneauxNormaux = ()=>{ if (pan.sg || pan.sd || pan.grand) { pan.sg = pan.sd = pan.grand = false; panAppliquer(); } };
+panAppliquer();
+
 let visibles = [];
 function maj(){
   sauver();
   visibles = filtre();
+  majResumes();
   const choisis = new Set(etat.route);
   $("compte").textContent = visibles.length+" fiche"+(visibles.length>1?"s":"")+((etat.mode==="reg"&&!etat.region)?" — "+(etat.prov?nomProv(etat.prov):META.terr[TERR].nom)+" au complet. Choisissez une région pour monter une route":" dans le secteur");
   majAlertes();
@@ -855,15 +1063,94 @@ function ficheHTML(r, num){
     ${plannerHTML(r)}
   </div>`;
 }
+// ---------- Ajouter / corriger un contact -> Salesforce (demande de Robert, Jacquot 2026-11-12)
+// File d'attente : la correction s'affiche tout de suite ici, part au serveur du portail
+// (compte du vendeur), puis un script sur le poste de Jacquot l'inscrit dans Salesforce
+// (comptes des vendeurs e-Trak seulement) et renvoie le resultat, visible sur la fiche.
+function mesCorr(){ return store.get("corrections")||[]; }
+function corrBlocHTML(r){
+  // Une correction faite depuis plus de 14 jours est deja dans la fiche (mise a jour du lundi) : on ne l'affiche plus.
+  const L = mesCorr().filter(c=>c.k===r.k && !(c.etat==="faite" && c.maj && Date.now()-Date.parse(c.maj) > 14*864e5));
+  const etats = {attente:"⏳ En attente — sera inscrit dans Salesforce dans l'heure (jours ouvrables)", faite:"✅ Inscrit dans Salesforce", refusee:"⚠ Refusé par la mise à jour Salesforce"};
+  const lignes = L.map(c=>`<div class="corr ${esc(c.etat||"attente")}"><b>${esc([c.prenom,c.nom].filter(Boolean).join(" "))}</b>${c.titre?" — "+esc(c.titre):""}
+    <div>${[c.tel?"☎ "+esc(c.tel):"", c.cell?"cell. "+esc(c.cell):"", c.courriel?esc(c.courriel):""].filter(Boolean).join(" · ")}</div>
+    <div class="sous">${c.sfc?"Correction d'un contact existant":"Nouveau contact"} · ${etats[c.etat||"attente"]}${c.resultat?" : "+esc(c.resultat):""}${c.envoye?"":" · pas encore envoyé au serveur"}</div></div>`).join("");
+  const bouton = `<div style="margin-top:6px"><button class="btn sec" type="button" data-corr="${esc(r.k)}" data-ci="-1">+ Ajouter un contact</button></div>`;
+  return lignes + bouton;
+}
+function ouvrirCorr(k, ci){
+  const i = parCle(k); if (i<0) return;
+  const r = RECS[i], c = ci>=0 ? (r.ct||[])[ci] : null;
+  if (!store.get("jeton")) {
+    $("dlg-c").innerHTML = `<h4>Ajouter ou corriger un contact</h4><p>Pour que le contact se rende dans Salesforce, connectez-vous une fois avec votre compte du portail (même courriel et mot de passe que pour vos soumissions).</p>
+      <div class="ligne"><button class="btn" id="cr-conn">Se connecter</button><button class="btn sec" id="cr-ret">Revenir à la fiche</button></div>`;
+    $("dlg").open || $("dlg").showModal();
+    $("cr-conn").onclick = ()=>connexion(); $("cr-ret").onclick = ()=>fiche(i);
+    return;
+  }
+  const nomc = c && c[0] ? c[0].trim().split(/\s+/) : [];
+  const pre = nomc.length>1 ? nomc.slice(0,-1).join(" ") : "", nm = nomc.length ? nomc[nomc.length-1] : "";
+  const v = (x)=>esc(x||"");
+  $("dlg-c").innerHTML = `<h4>${c?"Corriger un contact":"Ajouter un contact"} — ${esc(r.nom)}</h4>
+    <p class="sous">${!r.sf?"Ce client n'a pas encore de compte Salesforce à votre nom : le compte sera retrouvé, ou créé à votre nom avec ce contact. S'il existe déjà au nom de quelqu'un d'autre (GRYB par exemple), Luna s'en occupera.":c&&c[6]?"Le contact existant sera mis à jour dans Salesforce.":c?"Ce contact n'est pas dans Salesforce (il vient de "+esc(c[5])+") : il y sera créé.":"Le contact sera créé dans Salesforce sur le compte de ce client."} Laissez vide ce que vous ne connaissez pas.</p>
+    <div class="corr-form">
+      <div class="deux"><div><label>Prénom</label><input type="text" id="cr-pre" value="${v(pre)}" maxlength="40"></div>
+        <div><label>Nom *</label><input type="text" id="cr-nom" value="${v(nm)}" maxlength="80"></div></div>
+      <label>Titre / poste</label><input type="text" id="cr-titre" value="${v(c&&c[1])}" maxlength="128">
+      <div class="deux"><div><label>Téléphone</label><input type="text" id="cr-tel" value="${v(c&&c[2])}" maxlength="40"></div>
+        <div><label>Cellulaire</label><input type="text" id="cr-cell" value="${v(c&&c[3])}" maxlength="40"></div></div>
+      <label>Courriel</label><input type="text" id="cr-mail" value="${v(c&&c[4])}" maxlength="80">
+      <div class="aide" id="cr-err" style="color:var(--baisse,#C62828)"></div>
+      <div class="ligne" style="margin-top:12px;flex-wrap:wrap"><button class="btn" id="cr-ok">Envoyer vers Salesforce</button><button class="btn sec" id="cr-ann">Annuler</button></div>
+    </div>`;
+  $("dlg").open || $("dlg").showModal();
+  $("cr-ann").onclick = ()=>fiche(i);
+  $("cr-ok").onclick = ()=>{
+    const x = {prenom:$("cr-pre").value.trim(), nom:$("cr-nom").value.trim(), titre:$("cr-titre").value.trim(),
+               tel:$("cr-tel").value.trim(), cell:$("cr-cell").value.trim(), courriel:$("cr-mail").value.trim().toLowerCase()};
+    if (!x.nom) { $("cr-err").textContent = "Le nom est obligatoire (Salesforce l'exige)."; return; }
+    if (x.courriel && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x.courriel)) { $("cr-err").textContent = "Courriel invalide."; return; }
+    if (!(x.prenom||x.titre||x.tel||x.cell||x.courriel)) { $("cr-err").textContent = "Ajoutez au moins un téléphone, un courriel ou un titre."; return; }
+    if (!r.sf && !(r.ville||r.tel)) { $("cr-err").textContent = "Cette fiche n'a ni ville ni téléphone : impossible de retrouver le compte. Demandez à Luna."; return; }
+    const L = mesCorr();
+    L.push(Object.assign({id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), t:r.t, ts:Date.now(), k:r.k,
+      fnom:r.nom, sfa:r.sf||"", sfc:(r.sf&&c&&c[6])||"", etat:"attente", envoye:false},
+      // Sans compte Salesforce (v62) : de quoi le retrouver ou le creer
+      r.sf ? {} : {a:{rue:r.rue||"", ville:r.ville||"", prov:r.prov||"", cp:r.cp||"", tel:r.tel||"",
+                      pays:r.t==="US"?"United States":"Canada", epicor:String(r.id||""), st:r.st||""}}, x));
+    store.set("corrections", L);
+    fiche(i); syncCorr(i);
+  };
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest && e.target.closest("[data-corr]");
+  if (!b) return;
+  e.preventDefault(); ouvrirCorr(b.dataset.corr, +b.dataset.ci);
+});
+let corrEnCours = false;
+async function syncCorr(iFiche){
+  const jeton = store.get("jeton"); if (!jeton || corrEnCours) return;
+  corrEnCours = true;
+  try {
+    const loc = mesCorr();
+    const d = await appelPortail({action:"synccorrections", token:jeton, corrections:loc.filter(c=>(c.etat||"attente")==="attente")});
+    if (!d.ok) return;
+    const srv = {}; for (const c of d.corrections||[]) srv[c.id] = c;
+    const L = loc.map(c=> srv[c.id] ? Object.assign({}, c, {etat:srv[c.id].etat, resultat:srv[c.id].resultat||"", envoye:true}) : c);
+    for (const id in srv) if (!L.some(c=>c.id===id)) L.push(Object.assign({}, srv[id], {envoye:true}));   // faites depuis un autre appareil
+    store.set("corrections", L);
+    if (iFiche>=0 && $("dlg").open && !$("cr-ok")) fiche(iFiche);   // statut a jour sur la fiche ouverte
+  } catch(e) {} finally { corrEnCours = false; }
+}
 const telLien = t => `<a href="tel:${esc(String(t).replace(/\D/g,""))}">${esc(t)}</a>`;
 function contactsHTML(r){
   const L = r.ct||[];
   const a1 = r.a1 ? `<div class="sous">Liste marché A1 : score ${r.a1[0]}/100${r.a1[1]?" · priorité "+esc(r.a1[1]):""}</div>` : "";
   const mail = r.mail ? `<div class="sous">Courriel général : <a href="mailto:${esc(r.mail)}">${esc(r.mail)}</a></div>` : "";
-  if (!L.length) return (mail||a1) ? mail+a1 : `<div class="sous">Aucun contact connu (Epicor, Salesforce, liste marché).</div>`;
-  return `<div class="contacts"><b>Contacts (${L.length})</b>${L.map(c=>`<div class="ct">${c[0]?`<b>${esc(c[0])}</b>`:"<i>Sans nom</i>"}${c[1]?" — "+esc(c[1]):""}
+  if (!L.length) return ((mail||a1) ? mail+a1 : `<div class="sous">Aucun contact connu (Epicor, Salesforce, liste marché).</div>`) + corrBlocHTML(r);
+  return `<div class="contacts"><b>Contacts (${L.length})</b>${L.map((c,j)=>`<div class="ct">${c[0]?`<b>${esc(c[0])}</b>`:(/\((payables|recevables)\)/.test(c[5])?`<i>Comptabilité (${/recevables/.test(c[5])?"recevables":"payables"})</i>`:"<i>Sans nom</i>")}${c[1]?" — "+esc(c[1]):""}
     <div>${[c[2]?"☎ "+telLien(c[2]):"", c[3]?"cell. "+telLien(c[3]):"", c[4]?`<a href="mailto:${esc(c[4])}">${esc(c[4])}</a>`:""].filter(Boolean).join(" · ")}
-    <span class="sous"> · source : ${esc(c[5])}</span></div></div>`).join("")}</div>${mail}${a1}`;
+    <span class="sous"> · source : ${esc(c[5])}</span><a href="#" class="corr-lien" data-corr="${esc(r.k)}" data-ci="${j}">✏️ corriger</a></div></div>`).join("")}</div>${mail}${a1}${corrBlocHTML(r)}`;
 }
 function plannerHTML(r){
   if (r.pl && r.pl.length) return `<div class="planner"><b>Suivi au Planner des prospects</b>${r.pl.map(p=>`<div class="pl">${esc(p[0])}${p[1]?" · statut <b>"+esc(p[1])+"</b>":""}${p[2]?" · étape "+esc(p[2]):""}${p[3]?" · suivi prévu "+esc(p[3]):""}${p[4]?" · potentiel "+esc(p[4]):""}${p[6]?" · "+esc(p[6]):""}${p[5]?`<div class="sous">${esc(p[5])}</div>`:""}</div>`).join("")}</div>`;
@@ -1428,8 +1715,9 @@ $("b-equipe").onclick = async ()=>{
   });
 };
 etatSync();
-if (store.get("jeton")) synchroniser();
-addEventListener("online", ()=>synchroniser());
+if (store.get("jeton")) { synchroniser(); syncCorr(); }
+addEventListener("online", ()=>{ synchroniser(); syncCorr(); });
+setInterval(()=>{ if (mesCorr().some(c=>(c.etat||"attente")==="attente")) syncCorr(); }, 10*60*1000);
 
 appliquerEtat();
 majAjouts();
@@ -1493,17 +1781,19 @@ const PAS = [
    txt:"Tapez quelques lettres du nom : la page propose les compagnies de tous les territoires. Cliquez pour ouvrir la fiche, avec ses contacts et son suivi."},
   {cible:"#p-reg", parent:true, titre:"4. Le secteur",
    txt:"Choisissez la province (ou l'État), puis la région. Ou passez à « Autour d'une ville » pour un rayon en km. Sans secteur choisi, on ne peut pas monter de route."},
-  {cible:"#statuts", titre:"5. Qui voir",
-   txt:"Cochez les types de fiches à afficher : clients actifs, clients qui n'achètent plus, prospects, clients GRYB à convertir…"},
+  {cible:"#bloc-qui", titre:"5. Qui voir",
+   txt:"Quatre menus : <b>Type de fiche</b> (clients actifs, clients qui n'achètent plus, prospects, clients GRYB à convertir…), <b>Catégorie</b> (grues, pompes à béton, concessionnaires, ferroviaire… une ou plusieurs), <b>Classe</b> et <b>Représentant</b>. Fermés, ils affichent ce qu'ils laissent passer ; en gras = un filtre est actif.",
+   astuce:"Classe : A = les clients qui font 80 % des ventes, B = les 15 % suivants, C = le reste. Règle e-Trak : A en personne chaque mois, B chaque trimestre, C par téléphone."},
   {cible:"#signaux", titre:"6. Les signaux à travailler",
    txt:"Cochez un ou plusieurs signaux : retard sur le rythme d'achat, soumission ouverte, vente croisée possible, ventes en baisse… Avec plusieurs cases, la liste montre les fiches qui ont au moins un des signaux cochés."},
-  {cible:"#classes", titre:"7. La classe",
-   txt:"A = les clients qui font 80 % des ventes. B = les 15 % suivants. C = le reste.",
-   astuce:"Règle e-Trak : A en personne chaque mois, B chaque trimestre, C par téléphone."},
+  {cible:"#recherche", titre:"7. Filtrer la liste et tout effacer",
+   txt:"Le champ « Filtrer la liste », au-dessus de la liste, cherche un nom, une ville, un produit ou un contact dans le secteur choisi. Le bouton « Effacer les filtres », à gauche, remet Qui voir, les signaux et cette recherche comme au départ.",
+   astuce:"« ⓘ Comment lire les chiffres », à gauche, explique les ventes, les classes et la période de comparaison."},
   {cible:"#carte", titre:"8. La carte",
-   txt:"Chaque point est une fiche ; la couleur indique le statut (légende juste en dessous). Les gros points bleus sont les clients A."},
+   txt:"Chaque point est une fiche ; la couleur indique le statut (légende juste en dessous). Les gros points bleus sont les clients A.",
+   astuce:"Besoin de plus de place ? Les boutons <b>+</b> et <b>−</b> sur les barres à côté de la carte élargissent ou rétrécissent chaque côté, ceux de la barre « Liste » agrandissent la liste du bas ; « ⛶ Agrandir la carte » la met en grand et « ↺ Affichage normal » remet tout comme au départ."},
   {cible:"#liste", titre:"9. La liste et la fiche client",
-   txt:"Cliquez un nom pour ouvrir sa fiche : ventes FY24 à aujourd'hui, contacts (Epicor, Salesforce, liste marché), soumissions ouvertes, suivi du Planner et l'encadré « Avant de se présenter ». Cochez la case pour l'ajouter à la route."},
+   txt:"Cliquez un nom pour ouvrir sa fiche : ventes FY24 à aujourd'hui, contacts (Epicor, Salesforce, liste marché), soumissions ouvertes, suivi du Planner et l'encadré « Avant de se présenter ». Un contact manque ou est faux ? « ✏️ corriger » ou « + Ajouter un contact » : il part vers Salesforce (connexion au portail requise). Cochez la case pour l'ajouter à la route."},
   {cible:"#auto", titre:"10. Le raccourci",
    txt:"« Ajouter les 8 plus prioritaires » remplit la route d'un clic avec les clients les plus importants du secteur."},
   {cible:"#arrivee", titre:"11. Le départ et l'arrivée",
@@ -1587,6 +1877,7 @@ function clavier(ev){
 }
 function lancer(){
   if (bulle) return;
+  if (window.panneauxNormaux) window.panneauxNormaux();
   i = 0;
   voile = document.createElement("div"); voile.id="f101-voile";
   trou  = document.createElement("div"); trou.id="f101-trou";
