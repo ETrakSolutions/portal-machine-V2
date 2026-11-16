@@ -53,7 +53,9 @@
                    ['ch-aim-arriere', cabArriere], ['ch-aim-avant', cabAvant]];
     function majAimants() {
         AIMANTS.forEach(function (a) {
-            var on = a[1](), lab = $(a[0] + '-lab');
+            // Pas d'aimants AT0001 en USD (Jacquot, 2026-11-16) : pas de prix US.
+            var usd = (typeof deviseUSD === 'function') && deviseUSD();
+            var on = a[1]() && !usd, lab = $(a[0] + '-lab');
             if (lab) lab.style.display = on ? '' : 'none';
             if (!on && $(a[0])) $(a[0]).checked = false;
         });

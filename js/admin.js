@@ -66,6 +66,45 @@ function getUserPermissions(role) {
     return ROLES[role] || { modifBom: false, createAccount: false, modifAccounts: false };
 }
 
+// ---- TUILES TRANCHEES PAR LE SERVEUR : memoire par compte (2026-11-16) ----
+var MEM_TUILES_CLE = 'portal_tuiles_srv';
+function lireMemTuiles(u) {
+    try {
+        var m = JSON.parse(localStorage.getItem(MEM_TUILES_CLE) || 'null');
+        if (m && u && m.u === String(u.username || '').toLowerCase()) return m;
+    } catch (e) {}
+    return {};
+}
+function ecrireMemTuile(u, cle, ok, n) {
+    if (!u) return;
+    try {
+        var m = lireMemTuiles(u);
+        m.u = String(u.username || '').toLowerCase();
+        m[cle] = !!ok;
+        if (cle === 'pj') m.pjN = ok ? (n || 0) : 0;
+        localStorage.setItem(MEM_TUILES_CLE, JSON.stringify(m));
+    } catch (e) {}
+}
+// Reponse du serveur : ok -> tuile affichee ; refus explicite -> retiree. Une panne
+// reseau (catch) ne retire rien : la memoire reste la meilleure information.
+function verdictTuile(tile, cle, d) {
+    if (d && d.ok) { tile.style.display = 'block'; ecrireMemTuile(currentUser, cle, true); }
+    else if (d && d.error) { tile.style.display = 'none'; ecrireMemTuile(currentUser, cle, false); }
+}
+function majBadgePrepJobs(n) {
+    var desc = document.getElementById('hub-tile-prepjobs-desc');
+    if (!desc || typeof i18n === 'undefined') return;
+    if (n > 0) {
+        desc.removeAttribute('data-i18n');
+        desc.textContent = i18n.t('hub.tile_prepjobs_badge', { n: n });
+        desc.style.color = '#ff9d90';
+    } else {
+        desc.setAttribute('data-i18n', 'hub.tile_prepjobs_desc');
+        desc.textContent = i18n.t('hub.tile_prepjobs_desc');
+        desc.style.color = '';
+    }
+}
+
 // ---- UI STATE ----
 function updateHubUI() {
     var loginBtn = document.getElementById('hub-login-btn');
@@ -147,6 +186,17 @@ function updateHubUI() {
         // Tuile « Preparation des jobs » : quatre personnes nommees (decision Jacquot,
         // 2026-10-15), pas un role. Le serveur (getprepjobs) tranche : la tuile n'apparait
         // que s'il repond ok, avec le nombre de jobs a completer. Une seule demande par page.
+        // Delai de quelques secondes signale par Jacquot (2026-11-16) : ces trois tuiles
+        // attendaient chacune un aller-retour Apps Script (2 a 5 s) avant de paraitre. On
+        // montre maintenant la derniere reponse du serveur pour CE compte (localStorage) des
+        // l'ouverture ; la reponse fraiche confirme ou retire la tuile. La page elle-meme
+        // reste protegee par le serveur : la memoire ne donne acces a rien.
+        var memTuiles = lireMemTuiles(currentUser);
+        [['hub-tile-prepjobs', 'pj'], ['hub-tile-reinst', 'ri'], ['hub-tile-routes', 'rv']].forEach(function (x) {
+            var el = document.getElementById(x[0]);
+            if (el && memTuiles[x[1]]) el.style.display = 'block';
+        });
+        if (memTuiles.pjN > 0) majBadgePrepJobs(memTuiles.pjN);
         var tilePJ = document.getElementById('hub-tile-prepjobs');
         if (tilePJ && !currentUser.isGuest && currentUser.token && window.PORTAL_API_URL &&
             ['dealer', 'distributeur'].indexOf(currentUser.role) < 0 && !window.__prepJobsDemande) {
@@ -155,19 +205,18 @@ function updateHubUI() {
                 body: JSON.stringify({ action: 'getprepjobs', token: currentUser.token }) })
                 .then(function (r) { return r.json(); })
                 .then(function (d) {
-                    if (!d || !d.ok || !d.prep) return;
+                    if (!d || !d.ok || !d.prep) {
+                        if (d && d.error) { tilePJ.style.display = 'none'; ecrireMemTuile(currentUser, 'pj', false); majBadgePrepJobs(0); }
+                        return;
+                    }
                     var n = (d.prep.jobs || []).filter(function (j) {
                         var sav = String(j.type || '').trim().toLowerCase() === 'sav';
                         var cmd = j.commande || sav;                  // SAV : pas de commande avant la visite
                         var info = !(j.infoClient && j.infoClient.length); // gabarit info client (2026-11-03)
                         return !(cmd && j.contactNom && j.telOk && j.emplacement && info); }).length;
                     tilePJ.style.display = 'block';
-                    var desc = document.getElementById('hub-tile-prepjobs-desc');
-                    if (desc && n > 0 && typeof i18n !== 'undefined') {
-                        desc.removeAttribute('data-i18n');
-                        desc.textContent = i18n.t('hub.tile_prepjobs_badge', { n: n });
-                        desc.style.color = '#ff9d90';
-                    }
+                    ecrireMemTuile(currentUser, 'pj', true, n);
+                    majBadgePrepJobs(n);
                 })
                 .catch(function () {});
         }
@@ -181,7 +230,7 @@ function updateHubUI() {
             fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ action: 'getreinst', token: currentUser.token }) })
                 .then(function (r) { return r.json(); })
-                .then(function (d) { if (d && d.ok) tileRI.style.display = 'block'; })
+                .then(function (d) { verdictTuile(tileRI, 'ri', d); })
                 .catch(function () {});
         }
         // Tuile « Routes vendeurs » (Jacquot, 2026-11-09) : le serveur (getroutesdata, verif)
@@ -193,7 +242,7 @@ function updateHubUI() {
             fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
                 body: JSON.stringify({ action: 'getroutesdata', token: currentUser.token, verif: true }) })
                 .then(function (r) { return r.json(); })
-                .then(function (d) { if (d && d.ok) tileRV.style.display = 'block'; })
+                .then(function (d) { verdictTuile(tileRV, 'rv', d); })
                 .catch(function () {});
         }
         // Show hamburger (QR + share) for all logged in users
@@ -272,12 +321,14 @@ function refreshSessionRole() {
         var changed = (fresh.role !== currentUser.role) ||
                       (fresh.name && fresh.name !== currentUser.name) ||
                       (fresh.email && fresh.email !== currentUser.email) ||
-                      ((fresh.vendeurEmail || '') !== (currentUser.vendeurEmail || ''));
+                      ((fresh.vendeurEmail || '') !== (currentUser.vendeurEmail || '')) ||
+                      ((fresh.devise || '') !== (currentUser.devise || ''));
         if (!changed) return;
         currentUser.role = fresh.role;
         if (fresh.name) currentUser.name = fresh.name;
         if (fresh.email) currentUser.email = fresh.email;
         currentUser.vendeurEmail = fresh.vendeurEmail || '';
+        currentUser.devise = fresh.devise || '';
         currentUser.permissions = getUserPermissions(currentUser.role);
         localStorage.setItem('portal_user', JSON.stringify(currentUser));
         updateHubUI();   // re-affiche les tuiles selon le nouveau role
@@ -532,7 +583,7 @@ function showChangePasswordModal(user, oldPassword) {
                 submitBtn.disabled = false;
                 if (data.ok && data.user) {
                     modal.remove();
-                    var sess = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role), vendeurEmail: data.user.vendeurEmail || '', consentVersion: data.user.consentVersion || 0 };
+                    var sess = { username: data.user.username, email: data.user.email || data.user.username, name: data.user.name, role: data.user.role, token: data.token, permissions: getUserPermissions(data.user.role), vendeurEmail: data.user.vendeurEmail || '', devise: data.user.devise || '', consentVersion: data.user.consentVersion || 0 };
                     proceedAfterAuth(sess, data.user);
                 } else {
                     errorEl.textContent = i18n.t('admin.err_pwd_change');
@@ -630,7 +681,7 @@ function showResetModal(prefill) {
                 if (d.ok && d.user) {
                     modal.remove();
                     var u = d.user;
-                    var sess = { username: u.username, email: u.email || u.username, name: u.name, role: u.role, token: d.token, permissions: getUserPermissions(u.role), vendeurEmail: u.vendeurEmail || '', consentVersion: u.consentVersion || 0 };
+                    var sess = { username: u.username, email: u.email || u.username, name: u.name, role: u.role, token: d.token, permissions: getUserPermissions(u.role), vendeurEmail: u.vendeurEmail || '', devise: u.devise || '', consentVersion: u.consentVersion || 0 };
                     proceedAfterAuth(sess, u);
                     return;
                 }
@@ -1578,6 +1629,13 @@ function openEditUserModal(idx) {
         '<select id="edit-user-role" class="login-input"' + (isOwner ? ' disabled style="opacity:0.5;"' : '') + '>' + roleOptions + '</select></div>' +
         '<div class="admin-form-group" id="edit-user-vendeur-group" style="margin-bottom:0.75rem;display:' + (showVendeur ? 'block' : 'none') + ';"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.vendeur_label') + '</label>' +
         '<select id="edit-user-vendeur" class="login-input">' + vendeurOptions + '</select></div>' +
+        // Devise des soumissions (Jacquot, 2026-11-16) : USD = liste US, sans installation.
+        // Dealer / distributeur : fixe (pas de bouton) ; autres roles : devise par defaut.
+        '<div class="admin-form-group" style="margin-bottom:0.75rem;"><label style="color:#999;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.3rem;">' + i18n.t('admin.devise_label') + '</label>' +
+        '<select id="edit-user-devise" class="login-input">' +
+            '<option value="">' + i18n.t('admin.devise_cad') + '</option>' +
+            '<option value="USD"' + (String(user.devise || '').toUpperCase() === 'USD' ? ' selected' : '') + '>' + i18n.t('admin.devise_usd') + '</option>' +
+        '</select></div>' +
         '<button type="button" id="edit-user-save" class="login-submit">' + i18n.t('admin.enregistrer') + '</button>' +
         '<button type="button" id="edit-user-resend" style="width:100%;margin-top:8px;background:transparent;border:1px solid #444;color:#aaa;padding:10px;border-radius:8px;cursor:pointer;font-size:0.88rem;">' + i18n.t('admin.resend_credentials') + '</button>' +
         '</div>';
@@ -1628,6 +1686,9 @@ function openEditUserModal(idx) {
             delete USERS[idx].vendeurEmail;
         }
         USERS[idx].password = newPassword;
+        var dsel = document.getElementById('edit-user-devise');
+        if (dsel && dsel.value === 'USD') USERS[idx].devise = 'USD';
+        else delete USERS[idx].devise;
 
         renderUsers();
         modal.remove();
@@ -1757,7 +1818,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             loginModal.style.display = 'none';
                             showChangePasswordModal(user, password);
                         } else {
-                            var sess = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role), vendeurEmail: user.vendeurEmail || '', consentVersion: user.consentVersion || 0 };
+                            var sess = { username: user.username, email: user.email || user.username, name: user.name, role: user.role, token: data.token, permissions: getUserPermissions(user.role), vendeurEmail: user.vendeurEmail || '', devise: user.devise || '', consentVersion: user.consentVersion || 0 };
                             proceedAfterAuth(sess, user);
                         }
                     } else {

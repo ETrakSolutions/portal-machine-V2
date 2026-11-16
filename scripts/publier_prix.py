@@ -7,7 +7,9 @@ portail vit sur SharePoint, a cote de la liste de prix officielle :
     E-Trak Production > General > _Portail e-Trak > prix-portail.json
 
 Format : { "<PN>": { "item": <nombre|null>, "install": <nombre|null>,
-                     "installCode": "<PN de pose>" (facultatif) } }
+                     "installCode": "<PN de pose>" (facultatif),
+                     "itemUS": <nombre> (facultatif : prix US, liste US sans pose),
+                     "tarifUSEleve": true (facultatif : note droits de douane US) } }
 
 Ce script :
   1. valide le fichier (montants numeriques ou null, aucun texte) ;
@@ -82,10 +84,14 @@ def valider(prix):
         if not isinstance(v, dict):
             erreurs.append('%s : pas un objet' % code)
             continue
-        for champ in ('item', 'install'):
+        for champ in ('item', 'install', 'itemUS'):
             x = v.get(champ)
             if x is not None and (isinstance(x, bool) or not isinstance(x, (int, float))):
                 erreurs.append('%s.%s = %r (doit etre un nombre ou null)' % (code, champ, x))
+        if 'tarifUSEleve' in v and not isinstance(v['tarifUSEleve'], bool):
+            erreurs.append('%s.tarifUSEleve = %r (doit etre vrai ou faux)' % (code, v['tarifUSEleve']))
+        if isinstance(v.get('itemUS'), (int, float)) and not isinstance(v.get('item'), (int, float)):
+            erreurs.append('%s : itemUS sans prix CAD' % code)
     if erreurs:
         sys.exit('Liste refusee :\n  ' + '\n  '.join(erreurs))
 

@@ -116,6 +116,16 @@ fetch(API_URL, {
             if (fullUser && fullUser.vendeurEmail) {
                 currentUser.vendeurEmail = fullUser.vendeurEmail;
             }
+            // Devise du compte (Administrateur > Modifier) : relue au serveur, la session
+            // locale peut dater d'avant le reglage.
+            if (fullUser && String(fullUser.devise || '') !== String(currentUser.devise || '')) {
+                currentUser.devise = fullUser.devise || '';
+                try { localStorage.setItem('portal_user', JSON.stringify(currentUser)); } catch (e) {}
+                if (!panierActif() && typeof initDevise === 'function') {
+                    initDevise();
+                    try { updateSelectedSummary(); } catch (e) {}
+                }
+            }
         }
     })
     .catch(function() {});
@@ -243,11 +253,15 @@ function chargerPrix() {
         .then(function(d) {
             if (!d || !d.ok || !d.prices) return;
             priceData = d.prices; prixRecus = true;
+            try { majDevise(); } catch (e) {}
+            majPrixCameras();
             try { updateSelectedSummary(); } catch (e) {}
         })
         .catch(function() {});
 }
 chargerPrix();
+document.addEventListener('DOMContentLoaded', function () { try { initDevise(); } catch (e) {} });
+if (document.readyState !== 'loading') { try { initDevise(); } catch (e) {} }
 // Codes tarifes SANS montants (public) : dit seulement quels codes ont une pose.
 // Sert a poser la question « Installation par e-Trak ? » meme sans prix (invite).
 var PRICE_CODES = {};
@@ -255,13 +269,95 @@ fetch('data/price-codes.json', { cache: 'no-cache' }).then(function(r) { return 
     .then(function(d) { PRICE_CODES = d || {}; try { updateSelectedSummary(); } catch (e) {} })
     .catch(function() {});
 function sansAccesPrix() { return !currentUser || !currentUser.token || !!currentUser.isGuest; }
-function priceFor(code) { return priceData[code] || { item: null, install: null }; }
+// DEVISE (Jacquot, 2026-11-16) : soumission en CAD ou en USD.
+//  - USD = colonne « Retail price (US $) » de la liste (champ itemUS remis par le serveur) ;
+//    la liste US n'a AUCUN prix d'installation : en USD, e-Trak n'installe pas (le
+//    distributeur installe), donc ni question d'installation ni ligne de pose.
+//  - Un code sans itemUS n'est pas offert en USD (aimants AT0001) ; tarifUSEleve =
+//    note « droits de douane US eleves » (cameras converties au taux de la liste).
+//  - Compte marque devise:'USD' (Administrateur > Modifier) = USD par defaut ; un dealer
+//    ou distributeur ne voit pas le bouton et reste dans la devise de son compte.
+//  - Le panier garde des montants deja calcules : on ne change pas de devise tant
+//    qu'il contient une machine (le bouton est grise).
+var DEVISE = 'CAD';
+function deviseUSD() { return DEVISE === 'USD'; }
+function deviseCompte() { return (currentUser && String(currentUser.devise || '').toUpperCase() === 'USD') ? 'USD' : 'CAD'; }
+function deviseChoixLibre() {
+    return !!(currentUser && currentUser.token && !currentUser.isGuest &&
+              ['dealer', 'distributeur'].indexOf(currentUser.role) < 0);
+}
+function priceFor(code) {
+    var p = priceData[code] || { item: null, install: null };
+    if (!deviseUSD()) return p;
+    var us = (typeof p.itemUS === 'number') ? p.itemUS : (p.item === 0 ? 0 : null);
+    return { item: us, install: null, installCode: null, tarifUSEleve: !!p.tarifUSEleve,
+             horsUSD: typeof p.item === 'number' && p.item !== 0 && us === null };
+}
 // Montants : toujours 2 decimales (1 320,00 $, 1 032,50 $ ; Steve, 2026-11-12).
 function fmtPrice(v) {
     if (v === null || v === undefined) return '—';
     var n = Number(v);
     // Toujours les cents (Steve, 2026-11-12) : « 511,00 $ » et non « 511 $ ».
-    return n.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+    return n.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + (deviseUSD() ? ' $ US' : ' $');
+}
+// Codes des lignes soumis a des droits de douane US eleves (note en USD seulement).
+function codesTarifUS(lignes) {
+    if (!deviseUSD()) return [];
+    var vus = {};
+    (lignes || []).forEach(function (l) { if (l.code && priceFor(l.code).tarifUSEleve) vus[l.code] = 1; });
+    return Object.keys(vus);
+}
+// Texte du courriel : devise et notes US. Vide en CAD (courriel inchange).
+function texteDevise(lignes, devise) {
+    if (devise !== 'USD') return '';
+    var t = i18n.t('devise.email_usd') + '\n';
+    var c = codesTarifUS(lignes);
+    if (c.length) t += i18n.t('devise.tarif_eleve', { codes: c.join(', ') }) + '\n';
+    return t;
+}
+// Bouton CAD / USD en tete de page. Rafraichit tout ce qui affiche un prix.
+function majDevise() {
+    var box = document.getElementById('devise-box');
+    if (!box) return;
+    var prix = !sansAccesPrix();
+    box.style.display = prix ? '' : 'none';
+    var libre = deviseChoixLibre();
+    var verrou = panierActif();
+    box.querySelectorAll('button[data-devise]').forEach(function (b) {
+        var actif = b.getAttribute('data-devise') === DEVISE;
+        b.classList.toggle('actif', actif);
+        b.setAttribute('aria-pressed', actif ? 'true' : 'false');
+        b.style.display = (libre || actif) ? '' : 'none';
+        b.disabled = !libre || (verrou && !actif);
+        b.title = (libre && verrou && !actif) ? i18n.t('devise.verrou_panier') : '';
+    });
+    var note = document.getElementById('devise-note');
+    if (note) note.hidden = !deviseUSD();
+}
+function changerDevise(d) {
+    if (d !== 'CAD' && d !== 'USD') return;
+    if (!deviseChoixLibre() || panierActif() || d === DEVISE) return;
+    DEVISE = d;
+    // La reponse a « Installation par e-Trak ? » ne vaut plus : on la retire en USD.
+    if (deviseUSD()) document.querySelectorAll('input[name="install-etrak"]').forEach(function (r) { r.checked = false; });
+    majDevise();
+    try { updateSelectedSummary(); } catch (e) {}
+    majPrixCameras();
+}
+document.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('#devise-box button[data-devise]');
+    if (b) changerDevise(b.getAttribute('data-devise'));
+});
+// Prix et options des cameras (grue, chariot) : l'option aimants n'existe pas en USD.
+function majPrixCameras() {
+    try { if (window.grueMajPrix) window.grueMajPrix(); } catch (e) {}
+    try { if (window.chariotMaj) window.chariotMaj(); } catch (e) {}
+}
+function initDevise() {
+    // Panier deja rempli (retour sur la page) : sa devise l'emporte.
+    var dp = panier.length && panier[0].photo && panier[0].photo.devise;
+    DEVISE = (dp === 'USD' || dp === 'CAD') ? dp : deviseCompte();
+    majDevise();
 }
 
 // PRIX A VALIDER (Jacquot, 2026-10-08) : un code de nacelle (1500-09xx) dont le prix
@@ -2024,6 +2120,7 @@ function photoMachine() {
         return lignes.some(function (l) { return l.seule && l.name === r.name; });
     });
     return {
+        devise: DEVISE,
         sansMachine: estSansMachine(),
         equipement: eq ? (eq.value || '').trim() : '',
         type: type, fab: fab, modele: modele, annee: annee,
@@ -2107,6 +2204,8 @@ function texteMachine(p, dansPanier) {
              '   |   ' + i18n.t('email.total_install') + ' : ' + fmtPrice(tot.installation) +
              '   ' + i18n.t('email.total_indicative') + '\n';
     }
+    var _dev = texteDevise(p.lignes, p.devise || 'CAD');
+    if (_dev) t += _dev;
     return t;
 }
 
@@ -2292,6 +2391,7 @@ function ajouterAuPanier() {
 }
 
 function rendrePanier() {
+    try { majDevise(); } catch (e) {}
     var sec = document.getElementById('panier-section'), liste = document.getElementById('panier-liste');
     if (!sec || !liste) return;
     sec.style.display = panierActif() ? '' : 'none';
@@ -3008,6 +3108,7 @@ function prixLigne(code) {
 // Avec un panier, le lieu reste exige tant qu'UNE machine (du panier ou a l'ecran) est
 // installee par e-Trak : il est commun a toute la soumission.
 function lieuFacultatif() {
+    if (deviseUSD()) return true;           // pas de pose e-Trak en USD
     var ecranNon = reponseInstall() === 'non';
     if (!panierActif()) return ecranNon;
     var panierNon = panier.every(function (it) { return it.photo.installation === 'non'; });
@@ -3021,6 +3122,7 @@ function majEtiquetteLieu() {
     lbl.textContent = i18n.t(cle);
 }
 function selectionAInstallation() {
+    if (deviseUSD()) return false;          // liste US : pas de pose e-Trak
     return (window.__selectionRows || []).some(function (r) {
         var pr = priceFor(r.code);
         if (typeof pr.install === 'number') return pr.install !== 0;
@@ -3686,6 +3788,13 @@ function updateSelectedSummary() {
                 '<td style="padding:8px 0 4px 8px;text-align:right;color:#FF8C00">'
                 + fmtPrice(total) + '</td>' +
                 '</tr>';
+        }
+        if (deviseUSD() && !sansPrix) {
+            var _cTar = codesTarifUS(_lignes);
+            totalRow += '<tr><td colspan="' + (showInv ? 3 : 2) + '" style="padding:8px 0 0;color:#9aa7b2;font-size:0.8rem">'
+                + i18n.t('devise.tbl_usd') + '</td></tr>';
+            if (_cTar.length) totalRow += '<tr><td colspan="' + (showInv ? 3 : 2) + '" style="padding:4px 0 0;color:#FF8C00;font-size:0.8rem">'
+                + i18n.t('devise.tarif_eleve', { codes: _cTar.join(', ') }) + '</td></tr>';
         }
         var noteRow = currentNotes
             ? '<tr><td colspan="' + ((showInv ? 3 : 2) - (sansPrix ? 1 : 0)) + '" style="padding:8px 0 0;color:#9fe0a0;font-style:italic">' + i18n.t('soum.tbl_note', { note: currentNotes }) + '</td></tr>'
