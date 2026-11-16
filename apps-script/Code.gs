@@ -105,6 +105,9 @@ function doPost(e) {
     if (action === 'synccorrections') return jsonOut(syncCorrections(body));
     if (action === 'getcorrections')  return jsonOut(getCorrections(body));
     if (action === 'setcorrections')  return jsonOut(setCorrections(body));
+    if (action === 'syncnotes')       return jsonOut(syncNotes(body));
+    if (action === 'getnotes')        return jsonOut(getNotes(body));
+    if (action === 'setnotes')        return jsonOut(setNotes(body));
 
     // Token de session valide OU PIN (scripts d'automatisation) pour toute ecriture
     var writeActions = ['save','delete','updatemachinebom','updatemachinebombulk','updatemachinespecs','updatemachinenotes','deletemachine','updatebomlabels','sendsoumission'];
@@ -166,7 +169,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
                       'GITHUB_REPO', 'GITHUB_BRANCH', 'GITHUB_FILE_PATH',
                       'inventory_etrak', 'PROGRESSIONLIVE_API_KEY', 'PREP_JOBS_USERS',
                       'GRAPH_TENANT_ID', 'GRAPH_CLIENT_ID', 'GRAPH_CLIENT_SECRET', 'GRAPH_SENDER',
-                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID', 'ROUTES_DATA_FOLDER_ID', 'ROUTES_ACCES', 'CORR_SHEET_ID',
+                      'DIAG_SHEET_ID', 'INST_SHEET_ID', 'INST_FOLDER_ID', 'ROUTES_SHEET_ID', 'ROUTES_DATA_FOLDER_ID', 'ROUTES_ACCES', 'CORR_SHEET_ID', 'NOTES_SHEET_ID',
                       'reinst_prix', 'REINST_USERS'];
 // Cles LISIBLES par le GET public (le portail en a besoin avant login) mais dont
 // l'ecriture exige un token admin. Sans ca, n'importe quel compte connecte (dealer
@@ -3165,6 +3168,160 @@ function setCorrections(body) {
       sh.getRange(x.ligne, CORR_COL_ETAT, 1, 1).setValues([[r.etat]]);
       sh.getRange(x.ligne, CORR_COL_MAJ, 1, 1).setValues([[quand]]);
       sh.getRange(x.ligne, CORR_COL_RESULTAT, 1, 1).setValues([[_diagCellule(String(r.resultat || '').slice(0, 300))]]);
+      n++;
+    });
+    return { ok: true, maj: n };
+  });
+}
+
+// ===================== NOTES ET ACTIVITES DES FICHES CLIENTS (Jacquot, 2026-11-16) =====================
+// Demande de l'equipe de vente : une section de notes sur chaque fiche de Routes vendeurs
+// (ex. « en baisse : Val-Trak a pris la releve ») qui sert aussi a inscrire les activites
+// du compte (appel, visite, courriel, rencontre). Decisions Jacquot 2026-11-16 :
+//  - la note vit ICI (la page est reconstruite chaque lundi) et toute l'equipe la voit tout
+//    de suite (comptes internes connectes, tous territoires) ; auteur et date sur chaque note ;
+//  - chacun ne modifie ou ne supprime que SES notes ;
+//  - chaque note est aussi inscrite comme activite (Task) dans le compte Salesforce e-Trak,
+//    par le script du poste de Jacquot (routes-vendeurs/appliquer_corrections.py, NIP) :
+//    meme file que les corrections de contacts, le serveur ne parle jamais a Salesforce.
+// Stockage : Google Sheet privee « Notes clients - Portail e-Trak » (NOTES_SHEET_ID,
+// SENSITIVE_KEYS), une ligne par note. Une note supprimee reste une ligne « supprimee »
+// (l'activite Salesforce est alors retiree par le script, et l'autre appareil ne la recree pas).
+// sf_etat : attente (a inscrire / a mettre a jour / a retirer), faite, refusee.
+var NOTES_COLS = ['utilisateur', 'id', 'ts', 'territoire', 'fiche', 'client', 'supprimee', 'maj', 'donnees',
+                  'sf_etat', 'sf_resultat', 'sf_tache'];
+var NOTES_COL_ETAT = 10;
+var NOTES_GENRES = ['note', 'appel', 'visite', 'courriel', 'rencontre'];
+var NOTES_MAX = 3000;        // par auteur, supprimees comprises
+var NOTES_TEXTE_MAX = 1000;
+
+function _notesFeuille(creer) {
+  var id = PROPS.getProperty('NOTES_SHEET_ID');
+  if (id) return SpreadsheetApp.openById(id).getSheets()[0];
+  if (!creer) return null;
+  var ss = SpreadsheetApp.create('Notes clients - Portail e-Trak');
+  var sh = ss.getSheets()[0];
+  sh.setName('Notes');
+  sh.appendRow(NOTES_COLS);
+  sh.setFrozenRows(1);
+  PROPS.setProperty('NOTES_SHEET_ID', ss.getId());
+  return sh;
+}
+
+function _notesLire(sh) {
+  var out = [];
+  if (!sh) return out;
+  var v = sh.getDataRange().getValues();
+  for (var i = 1; i < v.length; i++) {
+    var n;
+    try { n = JSON.parse(v[i][8]); } catch (e) { continue; }
+    if (!n || !n.id) continue;
+    out.push({ ligne: i + 1, u: String(v[i][0] || '').replace(/^'/, '').toLowerCase(), n: n,
+               etat: String(v[i][NOTES_COL_ETAT - 1] || 'attente'), resultat: String(v[i][10] || ''),
+               tache: String(v[i][11] || '').replace(/^'/, '') });
+  }
+  return out;
+}
+
+// Note envoyee par la page : champs prevus seulement, longueurs bornees ; null = refusee.
+function _noteNette(x) {
+  if (!x || typeof x !== 'object') return null;
+  var str = function (v, n) { return String(v === null || v === undefined ? '' : v).replace(/[\t]+/g, ' ').trim().slice(0, n); };
+  var ligne = function (v, n) { return str(v, n).replace(/[\r\n]+/g, ' '); };
+  var id = str(x.id, 40), ts = Number(x.ts);
+  if (!/^[A-Za-z0-9_-]{1,40}$/.test(id) || ROUTES_TERR.indexOf(x.t) < 0 || !isFinite(ts) || ts <= 0) return null;
+  var k = ligne(x.k, 60), fnom = ligne(x.fnom, 120);
+  if (!k || fnom.length < 2) return null;
+  if (x.supprimee) return { id: id, t: x.t, ts: ts, k: k, fnom: fnom, supprimee: true };
+  var sfa = ligne(x.sfa, 18);
+  if (sfa && !/^001[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(sfa)) return null;
+  var date = ligne(x.date, 10);
+  if (!/^20\d\d-[01]\d-[0-3]\d$/.test(date)) return null;
+  var genre = NOTES_GENRES.indexOf(x.genre) >= 0 ? x.genre : null;
+  if (!genre) return null;
+  var texte = str(x.texte, NOTES_TEXTE_MAX).replace(/\r\n?/g, '\n');
+  if (!texte) return null;
+  var n = { id: id, t: x.t, ts: ts, k: k, fnom: fnom, sfa: sfa, date: date, genre: genre, texte: texte };
+  if (!sfa) {   // de quoi retrouver ou creer le compte Salesforce (comme les corrections v62)
+    var a = x.a || {};
+    n.a = { rue: ligne(a.rue, 200), ville: ligne(a.ville, 80), prov: ligne(a.prov, 40), cp: ligne(a.cp, 20),
+            tel: ligne(a.tel, 40), pays: ligne(a.pays, 40), epicor: ligne(a.epicor, 20), st: ligne(a.st, 20) };
+  }
+  return n;
+}
+
+// { action:'syncnotes', token, notes:[...SES notes nouvelles ou modifiees] }
+//   -> { ok, notes:[toutes les notes de l'equipe, supprimees comprises (id seulement)], refusees, moi }
+function syncNotes(body) {
+  var a = _routesAppelant(body);
+  if (a.error) return a;
+  var recues = Array.isArray(body.notes) ? body.notes : [];
+  if (recues.length > 100) return { error: 'too many notes' };
+  var noms = {};
+  _users().forEach(function (u) { noms[_uname(u)] = String(u.name || u.email || u.username || ''); });
+  return _avecVerrou(function () {
+    var sh = _notesFeuille(recues.length > 0);
+    var toutes = _notesLire(sh), miennes = {}, n = 0, refusees = 0, maj = new Date().toISOString();
+    toutes.forEach(function (x) { if (x.u === a.moi) { miennes[x.n.id] = x; n++; } });
+    recues.forEach(function (brut) {
+      var c = _noteNette(brut);
+      if (!c) { refusees++; return; }
+      var ex = miennes[c.id];
+      if (ex && Number(ex.n.ts) >= c.ts) return;                       // plus ancienne
+      if (ex && ex.n.supprimee) return;                                 // supprimee = definitif
+      if (!ex && c.supprimee) return;                                   // jamais arrivee : rien a faire
+      if (!ex && n >= NOTES_MAX) { refusees++; return; }
+      if (ex && c.supprimee) c = Object.assign({}, ex.n, { ts: c.ts, supprimee: true });
+      // Salesforce : a inscrire, a mettre a jour, ou a retirer s'il y a une activite ; sinon rien.
+      var etat = c.supprimee && !(ex && ex.tache) ? 'faite' : 'attente';
+      var res = c.supprimee && etat === 'faite' ? 'supprimee avant Salesforce' : '';
+      var tache = ex ? ex.tache : '';
+      var ligne = [_diagCellule(a.moi), c.id, c.ts, c.t, _diagCellule(c.k), _diagCellule(c.fnom), c.supprimee ? 'oui' : '',
+                   maj, JSON.stringify(c), etat, res, tache];
+      if (ex) sh.getRange(ex.ligne, 1, 1, ligne.length).setValues([ligne]);
+      else { sh.appendRow(ligne); n++; }
+      var x = { ligne: ex ? ex.ligne : sh.getLastRow(), u: a.moi, n: c, etat: etat, resultat: res, tache: tache };
+      if (ex) toutes[toutes.indexOf(ex)] = x; else toutes.push(x);
+      miennes[c.id] = x;
+    });
+    return { ok: true, refusees: refusees, moi: a.moi, notes: toutes.map(function (x) {
+      if (x.n.supprimee) return { id: x.n.id, supprimee: true, ts: x.n.ts };
+      var o = { id: x.n.id, t: x.n.t, ts: x.n.ts, k: x.n.k, fnom: x.n.fnom, date: x.n.date, genre: x.n.genre,
+                texte: x.n.texte, auteur_nom: noms[x.u] || x.u, mienne: x.u === a.moi };
+      if (x.u === a.moi) { o.sf_etat = x.etat; o.sf_resultat = x.resultat; }
+      return o;
+    }) };
+  });
+}
+
+// { action:'getnotes', pin } -> { ok, notes:[{...note, auteur, auteur_nom, tache}] } — sf_etat « attente » seulement.
+// Reserve au script du poste de Jacquot (NIP), comme getcorrections.
+function getNotes(body) {
+  if (!_corrPin(body)) return { error: 'authentication required' };
+  var noms = {};
+  _users().forEach(function (u) { noms[_uname(u)] = String(u.name || u.email || u.username || ''); });
+  return { ok: true, notes: _notesLire(_notesFeuille(false)).filter(function (x) { return x.etat === 'attente'; })
+    .map(function (x) { return Object.assign({}, x.n, { auteur: x.u, auteur_nom: noms[x.u] || x.u, tache: x.tache }); }) };
+}
+
+// { action:'setnotes', pin, resultats:[{id, auteur, ts, etat:'faite'|'refusee', resultat, tache}] } -> { ok, maj }
+// ts = version de la note traitee : si l'auteur l'a modifiee entre-temps, elle reste « attente ».
+function setNotes(body) {
+  if (!_corrPin(body)) return { error: 'authentication required' };
+  var res = Array.isArray(body.resultats) ? body.resultats.slice(0, 300) : [];
+  return _avecVerrou(function () {
+    var sh = _notesFeuille(false);
+    if (!sh) return { ok: true, maj: 0 };
+    var parCle = {}, n = 0;
+    _notesLire(sh).forEach(function (x) { parCle[x.u + '|' + x.n.id] = x; });
+    res.forEach(function (r) {
+      r = r || {};
+      var x = parCle[String(r.auteur || '').toLowerCase() + '|' + String(r.id || '')];
+      if (!x || x.etat !== 'attente' || ['faite', 'refusee'].indexOf(r.etat) < 0) return;
+      if (Number(r.ts) !== Number(x.n.ts)) return;
+      var tache = String(r.tache === undefined ? x.tache : r.tache || '');
+      if (tache && !/^00T[A-Za-z0-9]{12}([A-Za-z0-9]{3})?$/.test(tache)) return;
+      sh.getRange(x.ligne, NOTES_COL_ETAT, 1, 3).setValues([[r.etat, _diagCellule(String(r.resultat || '').slice(0, 300)), tache]]);
       n++;
     });
     return { ok: true, maj: n };
