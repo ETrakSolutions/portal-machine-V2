@@ -1644,14 +1644,36 @@ $("b-sauver").onclick = ()=>{
   // On garde la photo des arrets deja sauvegardes : un recul non traite reste signale.
   const anc = Object.fromEntries((R.photo||[]).map(p=>[p.k,p]));
   Object.assign(R, {nom, ts:Date.now(), t:TERR, modif:aujourdhui(), k:clesRoute(), depart:etat.depart||"", arrivee:etat.arrivee||"", minv:+etat.minv||45,
+    sect:{mode:etat.mode, prov:etat.prov||"", region:etat.region||"", centre:etat.centre||"", rayon:+etat.rayon||0},
     photo:etat.route.map(i=>anc[RECS[i].k] || photo(RECS[i]))});
   etat.routeId = R.id; vueEquipe = null; sauverRoutes(); sauver(); majMesRoutes();
 };
+// Secteur de l'etape 1 a l'ouverture d'une route (Robert, 2026-11-17 : une route de la
+// Colombie-Britannique ouverte pendant qu'il travaillait en Alberta restait sur l'Alberta).
+// Secteur sauvegarde avec la route s'il contient tous ses arrets ; sinon (ancienne route,
+// ou secteur change avant de sauvegarder) on le deduit des arrets : une seule region ->
+// cette region ; une seule province -> la province ; sinon tout le territoire.
+function secteurDeRoute(R, idx){
+  const rs = idx.map(i=>RECS[i]);
+  const S = R.sect;
+  if (S && S.mode==="ray") {
+    const c = villePt(S.centre);
+    if (c && rs.every(r=>!r.lat || km(c, r) <= S.rayon)) return S;
+  } else if (S && S.mode==="reg" && (S.prov || S.region)) {
+    if (rs.every(r=>S.region ? r.reg===S.region : r.prov===S.prov)) return S;
+  }
+  const regs = new Set(rs.map(r=>r.reg).filter(Boolean)), provs = new Set(rs.map(r=>r.prov).filter(Boolean));
+  const prov = provs.size===1 ? [...provs][0] : "";
+  return {mode:"reg", prov, region: prov && regs.size===1 && rs.every(r=>r.reg) ? [...regs][0] : ""};
+}
 function ouvrirRoute(R){
   const R0 = routeOuverte();
   if (etat.route.length && modifiee(R0) && !confirm("La route en cours n'est pas sauvegardée. Ouvrir « "+R.nom+" » quand même ?")) return;
   memoriser();
   etat.route = R.k.map(parCle).filter(i=>i>=0 && RECS[i].st!=="supprime");
+  if (etat.route.length) { const S = secteurDeRoute(R, etat.route);
+    Object.assign(etat, {mode:S.mode, prov:S.prov||"", region:S.region||""});
+    if (S.mode==="ray") Object.assign(etat, {centre:S.centre, rayon:S.rayon}); }
   Object.assign(etat, {depart:R.depart||"", arrivee:R.arrivee||"", minv:R.minv||45, routeId:R.id}); vueEquipe = null;
   appliquerEtat(); etatVille("ok-depart", etat.depart); etatVille("ok-arrivee", etat.arrivee);
   if ($("dlg").open) $("dlg").close();
