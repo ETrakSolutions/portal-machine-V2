@@ -6,7 +6,7 @@ Verifie, avec un faux serveur de prix (comme _prix_test.py) :
   3. bascule en USD : prix = itemUS de la liste (« $ US »), aucune ligne de pose, question
      d'installation retiree, note USD, total = somme des itemUS ; courriel « Devise : USD » ;
   4. panier non vide : CAD grise, on ne change plus de devise ;
-  5. chariot en USD : aimants AT0001 retires, note des droits de douane US ;
+  5. chariot en USD : aimants AT0001 offerts en $ US (Jacquot, 2026-11-17), note des droits de douane US ;
   6. dealer dont le compte est en USD : USD seul, sans bouton CAD.
 
 Liste de prix : --prix <fichier> (defaut : la liste maitresse SharePoint ; tant qu'elle n'a
@@ -199,7 +199,7 @@ try:
     time.sleep(0.3)
     check('panier vide : CAD de nouveau permis', not boutons()['CAD']['off'])
 
-    print('5. chariot en USD : pas d\'aimants, note des tarifs')
+    print('5. chariot en USD : aimants offerts en $ US, note des tarifs')
     J("APERCU_COMPTES.push('t@e'); var v=selectType.value; while (selectType.options.length > 1) selectType.remove(1); populateTypes();")
     choisir('select-type', '__chariot__')
     time.sleep(1)
@@ -208,22 +208,25 @@ try:
     time.sleep(0.3)
     J("document.getElementById('ch-fourche-0127').click();")
     time.sleep(0.5)
-    check('option aimants cachee en USD', not vis('ch-aim-rack-lab'))
+    check('option aimants visible en USD', vis('ch-aim-rack-lab'))
     prix_ch = J("var o={}; document.querySelectorAll('#cam-chariot .grue-prix').forEach(function(e){o[e.dataset.code]=e.textContent;}); return o;")
     check('prix camera 1300-0127 en $ US', '$ US' in prix_ch.get('1300-0127', ''), prix_ch)
+    check('prix aimants en $ US', '$ US' in prix_ch.get('AT0001', ''), prix_ch)
     J("document.querySelector('#devise-box button[data-devise=CAD]').click();")
     time.sleep(0.6)
-    check('retour en CAD : option aimants revient', vis('ch-aim-rack-lab'))
+    check('en CAD : option aimants toujours la', vis('ch-aim-rack-lab'))
     J("document.querySelector('#devise-box button[data-devise=USD]').click();")
     time.sleep(0.6)
     J("document.getElementById('ch-cab-arriere').click(); document.getElementById('ch-mon-7').click();")
+    time.sleep(0.4)
+    J("document.getElementById('ch-aim-arriere').click();")
     time.sleep(0.4)
     J("var e=document.getElementById('ch-batt-10'); e.value='2'; e.dispatchEvent(new Event('input',{bubbles:true}));"
       "var c=document.getElementById('ch-chargeur'); c.value='2'; c.dispatchEvent(new Event('input',{bubbles:true}));")
     time.sleep(0.8)
     t = tableau()
     check('note des droits de douane US eleves', 'Droits de douane US' in t, t[-400:])
-    check('AT0001 absent', 'AT0001' not in t)
+    check('AT0001 present en USD', 'AT0001' in t, t[-600:])
 
     print('6. dealer au compte USD')
     ouvrir(DEALER_US)

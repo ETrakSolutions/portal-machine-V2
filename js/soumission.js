@@ -273,7 +273,7 @@ function sansAccesPrix() { return !currentUser || !currentUser.token || !!curren
 //  - USD = colonne « Retail price (US $) » de la liste (champ itemUS remis par le serveur) ;
 //    la liste US n'a AUCUN prix d'installation : en USD, e-Trak n'installe pas (le
 //    distributeur installe), donc ni question d'installation ni ligne de pose.
-//  - Un code sans itemUS n'est pas offert en USD (aimants AT0001) ; tarifUSEleve =
+//  - Un code sans itemUS n'est pas offert en USD (aucun depuis le 2026-11-17) ; tarifUSEleve =
 //    note « droits de douane US eleves » (cameras converties au taux de la liste).
 //  - Compte marque devise:'USD' (Administrateur > Modifier) = USD par defaut ; un dealer
 //    ou distributeur ne voit pas le bouton et reste dans la devise de son compte.
