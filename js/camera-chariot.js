@@ -184,7 +184,9 @@
         $(id).addEventListener('input', redessiner);
         $(id).addEventListener('change', redessiner);
     });
-    document.addEventListener('langchange', majVisibilite);
+    // i18n.setLang envoie « langchange » sur WINDOW (js/i18n.js) : écouter document ne recevait rien,
+    // et les messages restaient dans la langue du chargement (Steve, 2026-11-17).
+    window.addEventListener('langchange', majVisibilite);
 
     // ---------------- API pour soumission.js ----------------
     window.chariotMaj = majVisibilite;
@@ -194,24 +196,30 @@
     // Lignes de la soumission (code + libellé, quantité en suffixe « ×N » lue par lineQty).
     window.chariotLignes = function () {
         if (!actif()) return [];
+        // desc = français (courriel et panier) ; aff = libellé affiché dans la langue choisie (2026-11-17).
         var out = [], x = function (n) { return n > 1 ? ' ×' + n : ''; };
-        if (fourche() === '1300-0126') out.push({ code: '1300-0126', desc: 'Caméra sur la fourche' });
-        if (fourche() === '1300-0127') out.push({ code: '1300-0127', desc: 'Caméra sur le rack entre les fourches' });
+        var L = function (code, k, fr, sfx) { sfx = sfx || ''; return { code: code, desc: fr + sfx, aff: t(k, fr) + sfx }; };
+        if (fourche() === '1300-0126') out.push(L('1300-0126', 'chariot.fourche', 'Caméra sur la fourche'));
+        if (fourche() === '1300-0127') out.push(L('1300-0127', 'chariot.rack', 'Caméra sur le rack entre les fourches'));
         var nCab = (cabAvant() ? 1 : 0) + (cabArriere() ? 1 : 0);
-        if (nCab) out.push({ code: '1300-0125', desc: 'Caméra sur la cabine (' +
-            [cabArriere() ? 'arrière' : '', cabAvant() ? 'avant' : ''].filter(Boolean).join(' + ') + ')' + x(nCab) });
+        if (nCab) {
+            var posFr = [cabArriere() ? 'arrière' : '', cabAvant() ? 'avant' : ''].filter(Boolean).join(' + ');
+            var posAff = [cabArriere() ? t('chariot.pos_arriere', 'arrière') : '', cabAvant() ? t('chariot.pos_avant', 'avant') : ''].filter(Boolean).join(' + ');
+            out.push({ code: '1300-0125', desc: 'Caméra sur la cabine (' + posFr + ')' + x(nCab),
+                       aff: t('chariot.e2', 'Caméra sur la cabine') + ' (' + posAff + ')' + x(nCab) });
+        }
         var nA = nbAimantes();
         if (nA) {
-            out.push({ code: 'AT0001', desc: 'Aimants (2 par caméra)' + x(2 * nA) });
-            out.push({ code: '93625A250', desc: 'Écrous nylon M6 (2 par caméra)' + x(2 * nA) });
+            out.push(L('AT0001', 'chariot.l_aimants', 'Aimants (2 par caméra)', x(2 * nA)));
+            out.push(L('93625A250', 'chariot.l_ecrous', 'Écrous nylon M6 (2 par caméra)', x(2 * nA)));
         }
         var m = moniteur();
-        if (m === '1300-0100') out.push({ code: m, desc: 'Moniteur 7 po' });
-        if (m === '1300-0101') out.push({ code: m, desc: 'Moniteur 10 po' });
+        if (m === '1300-0100') out.push(L(m, 'grue.mon7', 'Moniteur 7 po'));
+        if (m === '1300-0101') out.push(L(m, 'grue.mon10', 'Moniteur 10 po'));
         var b10 = qte('ch-batt-10'), b30 = qte('ch-batt-30'), c = qte('ch-chargeur');
-        if (b10) out.push({ code: '1300-0140', desc: 'Batterie mobile 10 h' + x(b10) });
-        if (b30) out.push({ code: '1300-0240', desc: 'Batterie mobile 30 h' + x(b30) });
-        if (c) out.push({ code: '1300-0141', desc: 'Chargeur' + x(c) });
+        if (b10) out.push(L('1300-0140', 'chariot.l_batt10', 'Batterie mobile 10 h', x(b10)));
+        if (b30) out.push(L('1300-0240', 'chariot.l_batt30', 'Batterie mobile 30 h', x(b30)));
+        if (c) out.push(L('1300-0141', 'grue.e5', 'Chargeur', x(c)));
         return out;
     };
     // Envoi / ajout au panier : un choix manquant bloque, comme la grue et le kit 360.

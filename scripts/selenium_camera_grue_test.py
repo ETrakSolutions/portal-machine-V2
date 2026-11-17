@@ -199,7 +199,24 @@ try:
     time.sleep(0.5)
     titre = J("return document.querySelector('#cam-grue .cam-calc-titre').textContent;")
     check('titre anglais (%s)' % titre, titre == 'Crane camera')
+    # Changement de langue APRES le chargement (Steve, 2026-11-17) : les messages et les lignes
+    # du tableau de prix suivent la langue ; le courriel garde le français (desc).
+    msg = J("return document.getElementById('grue-msg').textContent;")
+    check('message anglais apres changement de langue (%s)' % msg, msg == 'Choose the monitor.')
+    cliquer('grue-mon-7')
+    cliquer('grue-pedale-oui')
+    saisir('grue-batterie', '2')
+    saisir('grue-chargeur', '1')
+    J("updateSelectedSummary();")
+    time.sleep(0.5)
+    tab = tableau()
+    check('tableau en anglais (Crane camera, 7 in. monitor, Zoom control pedal)',
+          'Crane camera' in tab and '7 in. monitor' in tab and 'Zoom control pedal' in tab and 'Caméra de grue' not in tab)
     J("i18n.setLang && i18n.setLang('fr');")
+    time.sleep(0.5)
+    J("updateSelectedSummary();")
+    time.sleep(0.5)
+    check('retour en francais : tableau', 'Caméra de grue' in tableau() and 'Moniteur 7 po' in tableau())
 
     sev = [l for l in dv.get_log('browser') if l['level'] == 'SEVERE' and 'favicon' not in l['message']]
     for s in sev:

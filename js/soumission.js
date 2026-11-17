@@ -3567,7 +3567,7 @@ function updateSelectedSummary() {
                 : (window.chariotActive && window.chariotActive()) ? window.chariotLignes() : null;
     if (_equipL) {
         // Camera de grue ou de chariot : une ligne par piece choisie (js/camera-grue.js, js/camera-chariot.js).
-        _equipL.forEach(function (g) { items.push(fmtItem(g.code, g.desc)); });
+        _equipL.forEach(function (g) { items.push(fmtItem(g.code, g.aff || g.desc)); });   // aff : libellé dans la langue choisie
     } else if (camBox && camBox.classList.contains('active')) {
         var camRadio = camBox.querySelector('input[name="camera-type"]:checked');
         if (camRadio) {

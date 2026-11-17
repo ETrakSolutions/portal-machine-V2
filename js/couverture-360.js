@@ -258,7 +258,9 @@
     ['cam-calc-av', 'cam-calc-ar'].forEach(function (id) { $(id).addEventListener('input', partieSaisie); });
     $('cam-calc-unite').addEventListener('change', uniteChangee);
     if (!$('cam-calc-h').value) $('cam-calc-h').value = '2';     // hauteur de base : 2 m (modifiable)
-    document.addEventListener('langchange', majVisibilite);
+    // i18n.setLang envoie « langchange » sur WINDOW (js/i18n.js) : écouter document ne recevait rien,
+    // et les messages restaient dans la langue du chargement (Steve, 2026-11-17).
+    window.addEventListener('langchange', majVisibilite);
 
     // Envoi / ajout au panier : « Camera 360 » cochee sans kit choisi -> on bloque.
     window.kit360Manquant = function () {

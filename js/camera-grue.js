@@ -129,7 +129,9 @@
         $(id).addEventListener('input', redessiner);
         $(id).addEventListener('change', redessiner);
     });
-    document.addEventListener('langchange', majVisibilite);
+    // i18n.setLang envoie « langchange » sur WINDOW (js/i18n.js) : écouter document ne recevait rien,
+    // et les messages restaient dans la langue du chargement (Steve, 2026-11-17).
+    window.addEventListener('langchange', majVisibilite);
 
     // ---------------- API pour soumission.js ----------------
     window.grueMaj = majVisibilite;
@@ -139,14 +141,17 @@
     // Lignes de la soumission (code + libellé, quantité en suffixe « ×N » lue par lineQty).
     window.grueLignes = function () {
         if (!actif()) return [];
-        var out = [{ code: '1300-0225', desc: 'Caméra de grue' }];
+        // desc = français (courriel et panier) ; aff = libellé affiché dans la langue choisie (2026-11-17).
+        var L = function (code, k, fr, sfx) { sfx = sfx || ''; return { code: code, desc: fr + sfx, aff: t(k, fr) + sfx }; };
+        var x = function (n) { return n > 1 ? ' ×' + n : ''; };
+        var out = [L('1300-0225', 'grue.camera', 'Caméra de grue')];
         var m = moniteur();
-        if (m === '1300-0100') out.push({ code: m, desc: 'Moniteur 7 po' });
-        if (m === '1300-0101') out.push({ code: m, desc: 'Moniteur 10 po' });
-        if (pedale() === 'oui') out.push({ code: '1300-0230', desc: 'Pédale de contrôle du zoom' });
+        if (m === '1300-0100') out.push(L(m, 'grue.mon7', 'Moniteur 7 po'));
+        if (m === '1300-0101') out.push(L(m, 'grue.mon10', 'Moniteur 10 po'));
+        if (pedale() === 'oui') out.push(L('1300-0230', 'grue.e3', 'Pédale de contrôle du zoom'));
         var b = qte('grue-batterie'), c = qte('grue-chargeur');
-        if (b) out.push({ code: '1300-0240', desc: 'Batterie mobile' + (b > 1 ? ' ×' + b : '') });
-        if (c) out.push({ code: '1300-0141', desc: 'Chargeur' + (c > 1 ? ' ×' + c : '') });
+        if (b) out.push(L('1300-0240', 'grue.e4', 'Batterie mobile', x(b)));
+        if (c) out.push(L('1300-0141', 'grue.e5', 'Chargeur', x(c)));
         return out;
     };
     // Envoi / ajout au panier : un choix manquant bloque, comme le kit 360.
