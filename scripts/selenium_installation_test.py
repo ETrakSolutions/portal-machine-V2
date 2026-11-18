@@ -213,6 +213,14 @@ def main():
         langues = d.execute_script("return [...document.querySelectorAll('#in-edit [data-l]')].map(x=>x.dataset.l+':'+(getComputedStyle(x).display!=='none'))")
         v('anglais : seulement les champs anglais', sorted(langues) == ['en:true', 'en:true', 'fr:false', 'fr:false'], langues)
         v('« Other… » en anglais', options(d, 'e-type')[-1] == 'Other…')
+        # Types de machine avec les termes de la Soumission (Steve, 2026-11-18)
+        ft, et = options(d, 'f-type'), options(d, 'e-type')
+        v('filtre Type en anglais (Excavator, pas Excavatrice)', 'Excavator' in ft and 'Excavatrice' not in ft, ft)
+        v('edition Type en anglais (Excavator)', 'Excavator' in et and 'Excavatrice' not in et, et)
+        v('valeur enregistree inchangee (Excavatrice)', d.execute_script(
+            "return [...document.getElementById('f-type').options].some(o=>o.value==='Excavatrice' && o.text==='Excavator')"))
+        tag = d.execute_script("var t=document.querySelector('.in-tag.type'); return t ? t.textContent : ''")
+        v('etiquette de la carte en anglais', tag in ('Excavator', 'Backhoe', 'Loader', 'Telehandler', 'Tractor', 'Mobile Crane') or tag == '', tag)
     finally:
         d.quit()
 

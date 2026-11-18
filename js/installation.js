@@ -87,6 +87,17 @@
         if (k === 'balance' && t === 'Tracteur') return tx('Balance Scale Lite', 'Scale Lite');
         var p = produit(k); return p ? (enAnglais() ? p.en : p.fr) : k;
     }
+    // Type de machine affiche avec les memes termes que la Soumission (cles « type.X » de
+    // js/translations.js : Retrocaveuse -> Rétrocaveuse / Backhoe). La valeur enregistree
+    // reste le nom de la base (Steve, 2026-11-18).
+    function nomType(t) {
+        var d = window.TRANSLATIONS || {}, k = 'type.' + t, L = enAnglais() ? 'en' : 'fr';
+        return (d[L] && d[L][k]) || (d.fr && d.fr[k]) || t;
+    }
+    function typeOptions(liste) {
+        return liste.map(function (t) { return { v: t, t: nomType(t) }; })
+            .sort(function (a, b) { return a.t.localeCompare(b.t, enAnglais() ? 'en' : 'fr', { sensitivity: 'base' }); });
+    }
     function nomOption(pk, ok) {
         var p = produit(pk), o = p && p.options.filter(function (x) { return x.k === ok; })[0];
         return o ? (enAnglais() ? o.en : o.fr) : (ok || '');
@@ -215,7 +226,7 @@
     function dessinerFiltres() {
         var autres = { v: AUTRE, t: tx('Autres (hors base)', 'Others (not in database)') };
         var t = $('f-type').value, f = $('f-fab').value, tA = t === AUTRE, fA = f === AUTRE;
-        remplir($('f-type'), types(true).concat([autres]), tx('Tous les types', 'All types'));
+        remplir($('f-type'), typeOptions(types(true)).concat([autres]), tx('Tous les types', 'All types'));
         remplir($('f-fab'), tA ? nomsNotes('fabricant', function (n) { return filtreType(n, t); })
                                : fabricants(t, true).concat([autres]), tx('Tous les fabricants', 'All manufacturers'));
         remplir($('f-modele'), tA || fA ? nomsNotes('modele', function (n) { return filtreType(n, t) && filtreFab(n, f); })
@@ -288,7 +299,8 @@
     function points(n, mots) {
         var e = enDe(n);
         // modele de base aussi : « CX19E » trouve la note du CX19D
-        var tete = racines([n.type, n.fabricant, n.modele, baseModele(n.modele), nomProduit(n.produit, n.type), produit(n.produit) ? produit(n.produit).en : '', nomOption(n.produit, n.option)].join(' '));
+        var dT = window.TRANSLATIONS || {}, kT = 'type.' + n.type;
+        var tete = racines([n.type, (dT.fr && dT.fr[kT]) || '', (dT.en && dT.en[kT]) || '', n.fabricant, n.modele, baseModele(n.modele), nomProduit(n.produit, n.type), produit(n.produit) ? produit(n.produit).en : '', nomOption(n.produit, n.option)].join(' '));
         var corps = racines(n.texte + ' ' + (e.texte || '') + ' ' + n.pieges + ' ' + (e.pieges || '') + ' ' + n.pieces.map(function (p) { return p.txt; }).join(' '));
         var total = 0;
         mots.forEach(function (m) {
@@ -359,7 +371,7 @@
             if ((a || '') === (b || '')) return;
             r.resume.push(tx('{c} : « {a} » → « {b} »', '{c}: "{a}" → "{b}"', { c: lib, a: esc(a || '—'), b: esc(b || '—') }));
         };
-        champ(tx('Machine', 'Machine'), o.type + ' ' + o.fabricant + ' ' + o.modele, n.type + ' ' + n.fabricant + ' ' + n.modele);
+        champ(tx('Machine', 'Machine'), nomType(o.type) + ' ' + o.fabricant + ' ' + o.modele, nomType(n.type) + ' ' + n.fabricant + ' ' + n.modele);
         champ(tx('Produit', 'Product'), nomProduit(o.produit, o.type) + (o.option ? ' (' + nomOption(o.produit, o.option) + ')' : ''),
               nomProduit(n.produit, n.type) + (n.option ? ' (' + nomOption(n.produit, n.option) + ')' : ''));
         champ(tx('Temps d\'installation', 'Installation time'), o.temps, n.temps);
@@ -404,7 +416,7 @@
     function carte(n) {
         var revue = ETAT.peutValider && n.statut === 'brouillon', lAutre = enAnglais() ? 'FR' : 'EN', manque = tx('— à traduire —', '— to translate —');
         var autreLigne = function (t) { return revue ? '<div class="in-autre"><b>' + lAutre + '</b>' + esc(t || manque) + '</div>' : ''; };
-        var tags = '<span class="in-tag type">' + esc(n.type) + '</span> <span class="in-tag prod">' + esc(nomProduit(n.produit, n.type)) + '</span>' +
+        var tags = '<span class="in-tag type">' + esc(nomType(n.type)) + '</span> <span class="in-tag prod">' + esc(nomProduit(n.produit, n.type)) + '</span>' +
             (n.statut === 'brouillon' ? ' <span class="in-tag brouillon">' + esc(n.remplace ? tx('Proposition de modification', 'Proposed change') : tx('Brouillon à valider', 'Draft to approve')) + '</span>' : '') +
             (n.bilingue === false ? ' <span class="in-tag en-manque">' + esc(tx('Traduction incomplète', 'Incomplete translation')) + '</span>' : '');
         var corps = blocDiff(n);
@@ -617,7 +629,7 @@
     }
     function dessinerChoixEdition() {
         var t = $('e-type').value;
-        avecAutre($('e-type'), types(), t);
+        avecAutre($('e-type'), typeOptions(types()), t);
         var tA = t === AUTRE;
         avecAutre($('e-fab'), tA ? [] : fabricants(t), tA ? AUTRE : $('e-fab').value);
         var f = $('e-fab').value, fA = f === AUTRE;
@@ -751,7 +763,7 @@
         // Nouvelle note : reprend les filtres en cours (ex. Excavatrice > Case > CX19, Limiteur).
         var fv = function (id) { var v = $(id).value; return v === AUTRE ? '' : v; };
         var src = n || { type: fv('f-type'), fabricant: fv('f-fab'), modele: fv('f-modele'), produit: $('f-produit').value, option: '' };
-        avecAutre($('e-type'), types(), src.type || '');
+        avecAutre($('e-type'), typeOptions(types()), src.type || '');
         avecAutre($('e-fab'), fabricants(src.type), src.fabricant || '');
         avecAutre($('e-modele'), src.fabricant ? modeles(src.type, src.fabricant) : [], baseModele(src.modele));
         remplir($('e-produit'), prodOptions(''), '', src.produit || '');
