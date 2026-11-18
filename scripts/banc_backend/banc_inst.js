@@ -124,6 +124,16 @@ const idT = r.note.id;
 check('vue : jamais le courriel de l\'auteur', JSON.stringify(r).indexOf('t@e') < 0);
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige' }) });
 check('auteur modifie son brouillon : pas de nouveau courriel, retraduit', r.ok && courriels.length === 1 && r.note.en.texte === 'EN:Texte corrige');
+// Temps d'installation traduit comme les autres champs (Steve, 2026-11-18)
+check('temps traduit vers l\'anglais', r.note.temps === '6 h' && r.note.en.temps === 'EN:6 h');
+r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '1 jour et demi', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '' } }) });
+check('temps francais modifie : anglais retraduit', r.ok && r.note.en.temps === 'EN:1 jour et demi');
+r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '1 jour et demi', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '1.5 days' } }) });
+check('temps anglais corrige a la main : garde', r.ok && r.note.en.temps === '1.5 days' && r.note.temps === '1 jour et demi');
+r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '6 h', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '' } }) });
+check('temps remis a 6 h : anglais retraduit', r.ok && r.note.en.temps === 'EN:6 h');
+check('temps vide ne bloque pas la validation (bilingue)', post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '' }) }).note.bilingue === true);
+post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige' }) });
 check('autre technicien ne voit pas le brouillon', post({ action: 'getinst', token: T2 }).notes.length === 0);
 check('autre technicien ne peut pas le modifier', post({ action: 'saveinst', token: T2, note: note({ id: idT }) }).error === 'forbidden');
 check('autre technicien ne peut pas le supprimer', post({ action: 'deleteinst', token: T2, id: idT }).error === 'forbidden');
@@ -228,6 +238,23 @@ delete store.roles_permissions;
 // --- Suppression ---
 check('validateur supprime une note', post({ action: 'deleteinst', token: M, id: idM }).ok === true);
 check('note supprimee : introuvable', post({ action: 'deleteinst', token: M, id: idM }).error === 'not found');
+
+// --- Rattrapage unique : temps des notes anciennes (Steve, 2026-11-18) ---
+const shI = feuilles[store.INST_SHEET_ID];
+const ancienne = { id: 'vieille', statut: 'valide', type: 'Excavatrice', fabricant: 'Case', modele: 'CX80', produit: 'camera', option: '',
+  temps: '3,1 à 5,4 h (médiane 4 h)', texte: 'x', pieges: '', photos: [], pieces: [], en: { texte: 'EN:x', pieges: '' }, src: { texte: 'fr' }, auteur: 'm@e' };
+shI.appendRow(['vieille', 'valide', 'Excavatrice', 'Case', 'CX80', 'camera', '', '', JSON.stringify(ancienne)]);
+const jumelle = Object.assign({}, ancienne, { id: 'jumelle', modele: 'CX81' });
+shI.appendRow(['jumelle', 'valide', 'Excavatrice', 'Case', 'CX81', 'camera', '', '', JSON.stringify(jumelle)]);
+let appels = 0; const trOrig = ctx.LanguageApp.translate;
+ctx.LanguageApp.translate = (t, de, vers) => { appels++; return trOrig(t, de, vers); };
+let rt = ctx.traduireTempsInstallations();
+const lue = id => post({ action: 'getinst', token: M }).notes.filter(n => n.id === id)[0];
+check('rattrapage : temps anciens traduits (2 notes, 1 seule traduction)', rt.traduites === 2 && appels === 1 && lue('vieille').en.temps === 'EN:3,1 à 5,4 h (médiane 4 h)' && lue('jumelle').en.temps === 'EN:3,1 à 5,4 h (médiane 4 h)');
+check('rattrapage : le reste de la note est intact', lue('vieille').en.texte === 'EN:x' && lue('vieille').temps === '3,1 à 5,4 h (médiane 4 h)');
+rt = ctx.traduireTempsInstallations();
+check('rattrapage relance : rien a refaire', rt.traduites === 0 && appels === 1);
+ctx.LanguageApp.translate = trOrig;
 
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
 process.exit(ko ? 1 : 0);

@@ -2021,7 +2021,7 @@ function _instVue(n, a) {
   return { id: n.id, statut: n.statut, type: n.type, fabricant: n.fabricant, modele: n.modele,
            produit: n.produit, option: n.option || '', temps: n.temps || '', texte: n.texte || '',
            photos: n.photos || [], pieces: (n.pieces || []).map(function (p) { return { txt: p.txt, qte: p.qte }; }),
-           pieges: n.pieges || '', en: { texte: en.texte || '', pieges: en.pieges || '' },
+           pieges: n.pieges || '', en: { texte: en.texte || '', pieges: en.pieges || '', temps: en.temps || '' },
            auteurNom: n.auteurNom || '', creeLe: n.creeLe || '', modifieParNom: n.modifieParNom || '',
            modifieLe: n.modifieLe || '', valideParNom: n.valideParNom || '', valideLe: n.valideLe || '',
            remplace: n.remplace || '', mien: n.auteur === a.moi, bilingue: _instBilingue(n) };
@@ -2035,7 +2035,7 @@ function _instContenu(x) {
   var c = { type: str(x.type, 80), fabricant: str(x.fabricant, 80), modele: str(x.modele, 80),
             produit: str(x.produit, 40), option: str(x.option, 40), temps: str(x.temps, 60),
             texte: str(x.texte, 10000), pieges: str(x.pieges, 3000), photos: [], pieces: [],
-            enSoumis: { texte: str(en.texte, 10000), pieges: str(en.pieges, 3000) } };
+            enSoumis: { texte: str(en.texte, 10000), pieges: str(en.pieges, 3000), temps: str(en.temps, 120) } };
   if (!c.type || !c.fabricant || !c.modele || !c.produit) return { error: 'modele et produit requis' };
   if (!INST_PRODUITS[c.produit]) return { error: 'produit inconnu' };
   (Array.isArray(x.photos) ? x.photos : []).forEach(function (p) {
@@ -2054,12 +2054,40 @@ var INST_CHAMPS = ['type', 'fabricant', 'modele', 'produit', 'option', 'temps', 
 function _instTraduire(c, avant) {
   avant = avant || {};
   var ae = avant.en || {}, as = avant.src || {}, so = c.enSoumis || {}, en = {}, src = {};
-  ['texte', 'pieges'].forEach(function (k) {
+  // temps : traduit aussi (Steve, 2026-11-18), mais pas exige pour valider (_instBilingue).
+  ['texte', 'pieges', 'temps'].forEach(function (k) {
     var r = _diagPaire(c[k], so[k], avant[k], ae[k], as[k]);
     c[k] = r.fr; en[k] = r.en; src[k] = r.src;
   });
   c.en = en; c.src = src;
   delete c.enSoumis;
+}
+
+// A EXECUTER UNE FOIS dans l'editeur apres le deploiement (Steve, 2026-11-18) : traduit en
+// anglais le « Temps d'installation » des notes enregistrees avant que ce champ soit traduit.
+// Ne touche que les notes qui ont un temps en francais et pas encore d'anglais. Les traductions
+// se font HORS verrou (une par valeur distincte), puis l'ecriture relit la feuille sous verrou.
+// Relancable sans risque : une note deja traduite est sautee.
+function traduireTempsInstallations() {
+  var avant = _instLire(_instFeuille(false)), trad = {}, nb = 0;
+  avant.forEach(function (n) {
+    var t = String(n.temps || '').trim();
+    if (t && !(n.en && n.en.temps) && !(t in trad)) trad[t] = _diagTraduire(t, 'fr', 'en');
+  });
+  var r = _avecVerrou(function () {
+    var sh = _instFeuille(false), echecs = 0;
+    _instLire(sh).forEach(function (n) {
+      var t = String(n.temps || '').trim();
+      if (!t || (n.en && n.en.temps)) return;
+      if (!trad[t]) { echecs++; return; }
+      n.en = n.en || {}; n.src = n.src || {};
+      n.en.temps = trad[t]; n.src.temps = 'fr';
+      _instEcrire(sh, n); nb++;
+    });
+    return { traduites: nb, valeurs: Object.keys(trad).length, echecs: echecs };
+  });
+  Logger.log('Temps d\'installation traduits : ' + JSON.stringify(r));
+  return r;
 }
 
 // Courriel d'avis — sujet different pour une proposition de modification (Steve, 2026-10-29).
