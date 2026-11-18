@@ -1780,14 +1780,15 @@ function _diagTraduire(t, de, vers) {
   try { return String(LanguageApp.translate(t, de, vers) || ''); }
   catch (e) { Logger.log('diag : traduction impossible : ' + e); return ''; }
 }
-function _diagPaire(fr, en, afr, aen, asrc) {
+function _diagPaire(fr, en, afr, aen, asrc, trad) {
+  var tr = trad || _diagTraduire;            // trad : traducteur particulier (temps d'installation)
   if (!fr && !en) return { fr: '', en: '', src: '' };
-  if (fr && !en) return { fr: fr, en: _diagTraduire(fr, 'fr', 'en'), src: 'fr' };
-  if (en && !fr) return { fr: _diagTraduire(en, 'en', 'fr'), en: en, src: 'en' };
+  if (fr && !en) return { fr: fr, en: tr(fr, 'fr', 'en'), src: 'fr' };
+  if (en && !fr) return { fr: tr(en, 'en', 'fr'), en: en, src: 'en' };
   var src = asrc === 'en' ? 'en' : 'fr';
   var frCh = fr !== (afr || ''), enCh = en !== (aen || '');
-  if (frCh && !enCh && src === 'fr') return { fr: fr, en: _diagTraduire(fr, 'fr', 'en'), src: 'fr' };
-  if (enCh && !frCh && src === 'en') return { fr: _diagTraduire(en, 'en', 'fr'), en: en, src: 'en' };
+  if (frCh && !enCh && src === 'fr') return { fr: fr, en: tr(fr, 'fr', 'en'), src: 'fr' };
+  if (enCh && !frCh && src === 'en') return { fr: tr(en, 'en', 'fr'), en: en, src: 'en' };
   return { fr: fr, en: en, src: src };      // inchange, correction de la traduction, ou les deux a la main
 }
 function _diagTraduireFiche(c, avant) {
@@ -2056,11 +2057,23 @@ function _instTraduire(c, avant) {
   var ae = avant.en || {}, as = avant.src || {}, so = c.enSoumis || {}, en = {}, src = {};
   // temps : traduit aussi (Steve, 2026-11-18), mais pas exige pour valider (_instBilingue).
   ['texte', 'pieges', 'temps'].forEach(function (k) {
-    var r = _diagPaire(c[k], so[k], avant[k], ae[k], as[k]);
+    var r = _diagPaire(c[k], so[k], avant[k], ae[k], as[k], k === 'temps' ? _instTraduireTemps : null);
     c[k] = r.fr; en[k] = r.en; src[k] = r.src;
   });
+  src.tempsV = 2;                             // traduit avec _instTraduireTemps (voir plus bas)
   c.en = en; c.src = src;
   delete c.enSoumis;
+}
+
+// Google lisait « 4 à 5 h » comme une heure de la journee (« 4 to 5 a.m. ») et « limiteur »
+// comme « speed limiter » (34 notes, 2026-11-18). On lui envoie donc « 4 à 5 heures » et
+// « limiteur de portée » ; le texte francais enregistre, lui, ne change pas.
+function _instPreparerTemps(t) {
+  return String(t || '').replace(/(\d)\s*h\b/g, '$1 heures')
+                        .replace(/\blimiteurs?\b(?! de portée)/gi, function (m) { return m + ' de portée'; });
+}
+function _instTraduireTemps(t, de, vers) {
+  return _diagTraduire(de === 'fr' ? _instPreparerTemps(t) : t, de, vers);
 }
 
 // A EXECUTER UNE FOIS dans l'editeur apres le deploiement (Steve, 2026-11-18) : traduit en
@@ -2071,23 +2084,32 @@ function _instTraduire(c, avant) {
 // Google refuse les rafales (« Trop d'appels effectues en peu de temps : translate ») : 1 s entre
 // deux traductions, et arret apres ~4 min 30 (limite de 6 min d'Apps Script) — relancer pour la
 // suite tant que « restantes » n'est pas 0 (Steve, 2026-11-18).
+// 2e passe (v68) : refait aussi les temps traduits par l'ancienne methode (src.temps 'fr' sans
+// src.tempsV = 2) — ceux du 1er rattrapage, dont les « a.m. ». Un temps ecrit en anglais
+// (src.temps 'en') n'est jamais touche.
+function _instTempsATraduire(n) {
+  var t = String(n.temps || '').trim(), en = n.en || {}, s = n.src || {};
+  if (!t) return false;
+  if (!en.temps) return true;
+  return s.temps === 'fr' && s.tempsV !== 2;
+}
 function traduireTempsInstallations() {
   var avant = _instLire(_instFeuille(false)), trad = {}, nb = 0, debut = Date.now(), coupe = false;
   avant.forEach(function (n) {
     var t = String(n.temps || '').trim();
-    if (!t || (n.en && n.en.temps) || (t in trad) || coupe) return;
+    if (!_instTempsATraduire(n) || (t in trad) || coupe) return;
     if (Date.now() - debut > 270000) { coupe = true; return; }
     if (Object.keys(trad).length) Utilities.sleep(1000);
-    trad[t] = _diagTraduire(t, 'fr', 'en');
+    trad[t] = _instTraduireTemps(t, 'fr', 'en');
   });
   var r = _avecVerrou(function () {
     var sh = _instFeuille(false), echecs = 0;
     _instLire(sh).forEach(function (n) {
       var t = String(n.temps || '').trim();
-      if (!t || (n.en && n.en.temps)) return;
+      if (!_instTempsATraduire(n)) return;
       if (!trad[t]) { echecs++; return; }
       n.en = n.en || {}; n.src = n.src || {};
-      n.en.temps = trad[t]; n.src.temps = 'fr';
+      n.en.temps = trad[t]; n.src.temps = 'fr'; n.src.tempsV = 2;
       _instEcrire(sh, n); nb++;
     });
     return { traduites: nb, valeurs: Object.keys(trad).length, restantes: echecs };

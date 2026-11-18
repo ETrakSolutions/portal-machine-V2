@@ -125,13 +125,13 @@ check('vue : jamais le courriel de l\'auteur', JSON.stringify(r).indexOf('t@e') 
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige' }) });
 check('auteur modifie son brouillon : pas de nouveau courriel, retraduit', r.ok && courriels.length === 1 && r.note.en.texte === 'EN:Texte corrige');
 // Temps d'installation traduit comme les autres champs (Steve, 2026-11-18)
-check('temps traduit vers l\'anglais', r.note.temps === '6 h' && r.note.en.temps === 'EN:6 h');
+check('temps traduit vers l\'anglais', r.note.temps === '6 h' && r.note.en.temps === 'EN:6 heures');
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '1 jour et demi', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '' } }) });
 check('temps francais modifie : anglais retraduit', r.ok && r.note.en.temps === 'EN:1 jour et demi');
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '1 jour et demi', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '1.5 days' } }) });
 check('temps anglais corrige a la main : garde', r.ok && r.note.en.temps === '1.5 days' && r.note.temps === '1 jour et demi');
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '6 h', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '' } }) });
-check('temps remis a 6 h : anglais retraduit', r.ok && r.note.en.temps === 'EN:6 h');
+check('temps remis a 6 h : anglais retraduit', r.ok && r.note.en.temps === 'EN:6 heures');
 const long = '≈ 7 h (4 à 11,5 h) ; plus long avec Guide Pro et coupure hydraulique, voir pièges ci-dessous';
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: long }) });
 check('temps de ' + long.length + ' caracteres garde en entier (max 120)', r.ok && r.note.temps === long);
@@ -255,10 +255,22 @@ let appels = 0; const trOrig = ctx.LanguageApp.translate;
 ctx.LanguageApp.translate = (t, de, vers) => { appels++; return trOrig(t, de, vers); };
 let rt = ctx.traduireTempsInstallations();
 const lue = id => post({ action: 'getinst', token: M }).notes.filter(n => n.id === id)[0];
-check('rattrapage : temps anciens traduits (2 notes, 1 seule traduction)', rt.traduites === 2 && appels === 1 && lue('vieille').en.temps === 'EN:3,1 à 5,4 h (médiane 4 h)' && lue('jumelle').en.temps === 'EN:3,1 à 5,4 h (médiane 4 h)');
+check('rattrapage : temps anciens traduits (2 notes, 1 seule traduction)', rt.traduites === 2 && appels === 1 && lue('vieille').en.temps === 'EN:3,1 à 5,4 heures (médiane 4 heures)' && lue('jumelle').en.temps === 'EN:3,1 à 5,4 heures (médiane 4 heures)');
 check('rattrapage : le reste de la note est intact', lue('vieille').en.texte === 'EN:x' && lue('vieille').temps === '3,1 à 5,4 h (médiane 4 h)');
 rt = ctx.traduireTempsInstallations();
 check('rattrapage relance : rien a refaire', rt.traduites === 0 && appels === 1);
+// v68 : « 4 à 5 h » lu comme une heure (« a.m. ») -> on envoie « heures » ; « limiteur » -> « limiteur de portée »
+check('temps : « h » envoye comme « heures » au traducteur', ctx._instPreparerTemps('4 à 5 h (≈ 4,5 h)') === '4 à 5 heures (≈ 4,5 heures)');
+check('temps : « limiteur » precise « de portée », sans doubler', ctx._instPreparerTemps('limiteur seul ; limiteur de portée') === 'limiteur de portée seul ; limiteur de portée');
+check('temps : « 8h30 » et « LS7 » intacts', ctx._instPreparerTemps('8h30, LS7') === '8h30, LS7');
+const vieilleMethode = Object.assign({}, ancienne, { id: 'amfaux', modele: 'CX82', temps: '4 à 5 h', en: { texte: 'EN:x', pieges: '', temps: '4 to 5 a.m.' }, src: { texte: 'fr', temps: 'fr' } });
+shI.appendRow(['amfaux', 'valide', 'Excavatrice', 'Case', 'CX82', 'camera', '', '', JSON.stringify(vieilleMethode)]);
+const ecritEn = Object.assign({}, ancienne, { id: 'ecriten', modele: 'CX83', temps: '4 à 5 h', en: { texte: 'EN:x', pieges: '', temps: '4 to 5 hours' }, src: { texte: 'fr', temps: 'en' } });
+shI.appendRow(['ecriten', 'valide', 'Excavatrice', 'Case', 'CX83', 'camera', '', '', JSON.stringify(ecritEn)]);
+rt = ctx.traduireTempsInstallations();
+check('2e passe : ancienne traduction (a.m.) refaite', lue('amfaux').en.temps === 'EN:4 à 5 heures' && rt.traduites === 1);
+check('2e passe : temps ecrit en anglais jamais touche', lue('ecriten').en.temps === '4 to 5 hours');
+check('2e passe relancee : rien a refaire', ctx.traduireTempsInstallations().traduites === 0);
 ctx.LanguageApp.translate = trOrig;
 
 console.log('\n' + ok + ' OK, ' + ko + ' ECHEC');
