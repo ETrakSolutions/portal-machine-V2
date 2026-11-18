@@ -76,7 +76,7 @@
         .in-autre b { color: #6f8396; font-weight: 600; margin-right: 4px; }
         .in-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .in-photo { width: 120px; height: 90px; border-radius: 8px; background: #333 center/cover no-repeat; border: 1px solid #444; cursor: zoom-in; position: relative; }
-        .in-photo.charge::after { content: '…'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #888; }
+        .in-photo.charge::after { content: 'â€¦'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #888; }
         .in-photo .x { position: absolute; top: 3px; right: 3px; background: rgba(0,0,0,.7); color: #fff; border: 0; border-radius: 99px; width: 22px; height: 22px; cursor: pointer; font-size: 12px; }
         .in-pieces { margin: 0; padding-left: 18px; color: #8bb8f0; font-size: 0.85rem; }
         .in-pieges { border-left: 3px solid #e74c3c; background: rgba(231,76,60,.08); border-radius: 0 8px 8px 0; padding: 9px 12px; }
@@ -157,8 +157,8 @@
         <div class="in-wrap">
             <div id="in-denied" class="in-msg" style="display:none;">
                 <div style="font-size:2.4rem">&#128274;</div>
-                <h2 style="color:#fff;" data-tx="Accès réservé à l'équipe e-Trak|Reserved for the e-Trak team">Accès réservé à l'équipe e-Trak</h2>
-                <p data-tx="La banque d'installation est réservée aux comptes internes.|The installation library is reserved for internal accounts.">La banque d'installation est réservée aux comptes internes.</p>
+                <h2 style="color:#fff;" data-tx="AccÃ¨s rÃ©servÃ© Ã  l'Ã©quipe e-Trak|Reserved for the e-Trak team">AccÃ¨s rÃ©servÃ© Ã  l'Ã©quipe e-Trak</h2>
+                <p data-tx="La banque d'installation est rÃ©servÃ©e aux comptes internes.|The installation library is reserved for internal accounts.">La banque d'installation est rÃ©servÃ©e aux comptes internes.</p>
                 <a href="index.html" class="pl-btn" data-tx="Retour au hub|Back to hub">Retour au hub</a>
             </div>
 
@@ -166,44 +166,44 @@
                 <div class="admin-hero" style="padding-bottom:0.2rem;">
                     <h1 class="admin-hero-title" data-tx="Banque d'installation|Installation library">Banque d'installation</h1>
                 </div>
-                <p class="in-sub" data-tx="Notes d'installation par modèle de machine et par produit : informations, photos, pièces et harnais, pièges connus, temps d'installation. Usage interne. Une note ajoutée ou modifiée reste en brouillon jusqu'à sa validation.|Installation notes by machine model and product: information, photos, parts and harnesses, known pitfalls, installation time. Internal use. A new or edited note stays a draft until it is approved.">Notes d'installation par modèle de machine et par produit.</p>
+                <p class="in-sub" data-tx="Notes d'installation par modÃ¨le de machine et par produit : informations, photos, piÃ¨ces et harnais, piÃ¨ges connus, temps d'installation. Usage interne. Une note ajoutÃ©e ou modifiÃ©e reste en brouillon jusqu'Ã  sa validation.|Installation notes by machine model and product: information, photos, parts and harnesses, known pitfalls, installation time. Internal use. A new or edited note stays a draft until it is approved.">Notes d'installation par modÃ¨le de machine et par produit.</p>
 
                 <div class="in-ok" id="in-ok"></div>
 
                 <section class="in-edit" id="in-edit">
-                    <button type="button" class="in-btn" id="b-retour" style="margin-bottom:12px;" data-tx="← Retour aux notes|← Back to notes">← Retour aux notes</button>
+                    <button type="button" class="in-btn" id="b-retour" style="margin-bottom:12px;" data-tx="â† Retour aux notes|â† Back to notes">â† Retour aux notes</button>
                     <h2 id="e-titre">Nouvelle note</h2>
                     <div class="in-note" id="e-note" style="margin-bottom:10px;"></div>
-                    <label id="e-proposer-zone" style="display:none;margin:-4px 0 10px;font-size:13px;cursor:pointer;"><input type="checkbox" id="e-proposer" style="vertical-align:middle;margin-right:6px;"><span data-tx="Envoyer comme proposition, à faire valider par un autre validateur|Send as a proposal, to be approved by another approver">Envoyer comme proposition, à faire valider par un autre validateur</span></label>
+                    <label id="e-proposer-zone" style="display:none;margin:-4px 0 10px;font-size:13px;cursor:pointer;"><input type="checkbox" id="e-proposer" style="vertical-align:middle;margin-right:6px;"><span data-tx="Envoyer comme proposition, Ã  faire valider par un autre validateur|Send as a proposal, to be approved by another approver">Envoyer comme proposition, Ã  faire valider par un autre validateur</span></label>
                     <div class="in-grid">
-                        <div class="in-f" id="w-type"><label><span data-tx="Type de machine|Machine type">Type de machine</span> <span class="req">*</span></label><select id="e-type"></select><input type="text" class="in-precis" id="e-type-autre" maxlength="60" style="display:none" data-txp="Préciser le type de machine|Specify the machine type"></div>
-                        <div class="in-f" id="w-fab"><label><span data-tx="Fabricant|Manufacturer">Fabricant</span> <span class="req">*</span></label><select id="e-fab"></select><input type="text" class="in-precis" id="e-fab-autre" maxlength="60" style="display:none" data-txp="Préciser le fabricant|Specify the manufacturer"></div>
-                        <div class="in-f" id="w-modele"><label><span data-tx="Modèle|Model">Modèle</span> <span class="req">*</span></label><select id="e-modele"></select><input type="text" class="in-precis" id="e-modele-autre" maxlength="60" style="display:none" data-txp="Préciser le modèle|Specify the model"></div>
-                        <div class="in-f"><label data-tx="Temps d'installation|Installation time">Temps d'installation</label><input type="text" id="e-temps" maxlength="60" data-txp="ex. 6 h, 1 jour et demi|e.g. 6 h, 1.5 days"></div>
+                        <div class="in-f" id="w-type"><label><span data-tx="Type de machine|Machine type">Type de machine</span> <span class="req">*</span></label><select id="e-type"></select><input type="text" class="in-precis" id="e-type-autre" maxlength="60" style="display:none" data-txp="PrÃ©ciser le type de machine|Specify the machine type"></div>
+                        <div class="in-f" id="w-fab"><label><span data-tx="Fabricant|Manufacturer">Fabricant</span> <span class="req">*</span></label><select id="e-fab"></select><input type="text" class="in-precis" id="e-fab-autre" maxlength="60" style="display:none" data-txp="PrÃ©ciser le fabricant|Specify the manufacturer"></div>
+                        <div class="in-f" id="w-modele"><label><span data-tx="ModÃ¨le|Model">ModÃ¨le</span> <span class="req">*</span></label><select id="e-modele"></select><input type="text" class="in-precis" id="e-modele-autre" maxlength="60" style="display:none" data-txp="PrÃ©ciser le modÃ¨le|Specify the model"></div>
+                        <div class="in-f"><label data-tx="Temps d'installation|Installation time">Temps d'installation</label><input type="text" id="e-temps" maxlength="120" data-txp="ex. 6 h, 1 jour et demi|e.g. 6 h, 1.5 days"></div>
                         <div class="in-f" id="w-produit"><label><span data-tx="Produit|Product">Produit</span> <span class="req">*</span></label><select id="e-produit"></select></div>
                         <div class="in-f"><label data-tx="Option (facultatif)|Option (optional)">Option (facultatif)</label><select id="e-option"></select></div>
                     </div>
                     <div class="in-alert" id="e-doublon"></div>
-                    <div class="in-ennote" data-tx="Écrivez dans la langue de l'écran : l'autre langue est traduite automatiquement à l'enregistrement. Pour voir ou corriger la traduction, changez la langue de l'écran (FR / EN). Le validateur révise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in the screen language: the other language is translated automatically when saving. To see or correct the translation, switch the screen language (FR / EN). The approver reviews the translation. No section is mandatory for now.">Écrivez dans votre langue.</div>
+                    <div class="in-ennote" data-tx="Ã‰crivez dans la langue de l'Ã©cran : l'autre langue est traduite automatiquement Ã  l'enregistrement. Pour voir ou corriger la traduction, changez la langue de l'Ã©cran (FR / EN). Le validateur rÃ©vise la traduction. Aucune section n'est obligatoire pour l'instant.|Write in the screen language: the other language is translated automatically when saving. To see or correct the translation, switch the screen language (FR / EN). The approver reviews the translation. No section is mandatory for now.">Ã‰crivez dans votre langue.</div>
 
                     <h3 data-tx="Informations d'installation|Installation information">Informations d'installation</h3>
                     <div class="in-grid">
-                        <div class="in-f full" data-l="fr"><label data-tx="Informations — français|Information — French">Informations — français</label><textarea id="e-texte" class="grand" maxlength="10000"></textarea></div>
-                        <div class="in-f full" data-l="en"><label data-tx="Informations — anglais|Information — English">Informations — anglais</label><textarea id="e-texte-en" class="grand" maxlength="10000"></textarea></div>
+                        <div class="in-f full" data-l="fr"><label data-tx="Informations â€” franÃ§ais|Information â€” French">Informations â€” franÃ§ais</label><textarea id="e-texte" class="grand" maxlength="10000"></textarea></div>
+                        <div class="in-f full" data-l="en"><label data-tx="Informations â€” anglais|Information â€” English">Informations â€” anglais</label><textarea id="e-texte-en" class="grand" maxlength="10000"></textarea></div>
                     </div>
                     <h3 data-tx="Photos|Photos">Photos</h3>
                     <div class="in-photos" id="e-photos"></div>
-                    <label class="in-btn in-up"><input type="file" accept="image/*" multiple id="e-file">📷 <span data-tx="Ajouter des photos|Add photos">Ajouter des photos</span></label>
+                    <label class="in-btn in-up"><input type="file" accept="image/*" multiple id="e-file">ðŸ“· <span data-tx="Ajouter des photos|Add photos">Ajouter des photos</span></label>
 
-                    <h3 data-tx="Pièces et harnais|Parts and harnesses">Pièces et harnais</h3>
+                    <h3 data-tx="PiÃ¨ces et harnais|Parts and harnesses">PiÃ¨ces et harnais</h3>
                     <div id="e-pieces"></div>
-                    <button type="button" class="in-btn" id="b-piece" data-tx="+ Ajouter une pièce|+ Add a part">+ Ajouter une pièce</button>
-                    <div class="in-note" style="margin-top:4px;" data-tx="Recherche par numéro ou par description, ou texte libre.|Search by number or description, or free text.">Recherche par numéro ou par description.</div>
+                    <button type="button" class="in-btn" id="b-piece" data-tx="+ Ajouter une piÃ¨ce|+ Add a part">+ Ajouter une piÃ¨ce</button>
+                    <div class="in-note" style="margin-top:4px;" data-tx="Recherche par numÃ©ro ou par description, ou texte libre.|Search by number or description, or free text.">Recherche par numÃ©ro ou par description.</div>
 
-                    <h3 data-tx="Pièges connus|Known pitfalls">Pièges connus</h3>
+                    <h3 data-tx="PiÃ¨ges connus|Known pitfalls">PiÃ¨ges connus</h3>
                     <div class="in-grid">
-                        <div class="in-f full" data-l="fr"><label data-tx="Pièges connus — français|Known pitfalls — French">Pièges connus — français</label><textarea id="e-pieges" maxlength="3000"></textarea></div>
-                        <div class="in-f full" data-l="en"><label data-tx="Pièges connus — anglais|Known pitfalls — English">Pièges connus — anglais</label><textarea id="e-pieges-en" maxlength="3000"></textarea></div>
+                        <div class="in-f full" data-l="fr"><label data-tx="PiÃ¨ges connus â€” franÃ§ais|Known pitfalls â€” French">PiÃ¨ges connus â€” franÃ§ais</label><textarea id="e-pieges" maxlength="3000"></textarea></div>
+                        <div class="in-f full" data-l="en"><label data-tx="PiÃ¨ges connus â€” anglais|Known pitfalls â€” English">PiÃ¨ges connus â€” anglais</label><textarea id="e-pieges-en" maxlength="3000"></textarea></div>
                     </div>
 
                     <div class="in-alert" id="e-alert"></div>
@@ -222,13 +222,13 @@
                     <select id="f-produit"></select>
                 </div>
                 <div class="in-bar2">
-                    <input type="text" id="f-q" autocomplete="off" data-txp="Rechercher : texte, pièce, piège…|Search: text, part, pitfall…">
+                    <input type="text" id="f-q" autocomplete="off" data-txp="Rechercher : texte, piÃ¨ce, piÃ¨geâ€¦|Search: text, part, pitfallâ€¦">
                     <button type="button" class="in-btn main" id="b-nouvelle" data-tx="+ Nouvelle note|+ New note">+ Nouvelle note</button>
                 </div>
                 <div class="in-filtres">
                     <button type="button" class="in-chip on" data-vue="tout" data-tx="Toutes|All">Toutes</button>
                     <button type="button" class="in-chip" data-vue="brouillons" id="c-brouillons">Brouillons</button>
-                    <span class="in-compte" id="in-compte">Chargement…</span>
+                    <span class="in-compte" id="in-compte">Chargementâ€¦</span>
                 </div>
                 </div>
                 <div class="in-titre-liste" data-tx="Notes d'installation|Installation notes">Notes d'installation</div>
@@ -238,10 +238,10 @@
         </div>
     </main>
     <div class="in-boite" id="in-boite"><img alt="">
-        <button type="button" class="bt prec" id="boite-prec" aria-label="Photo précédente">‹</button>
-        <button type="button" class="bt suiv" id="boite-suiv" aria-label="Photo suivante">›</button>
-        <button type="button" class="bt ferme" id="boite-ferme" aria-label="Fermer">✕</button>
-        <button type="button" class="bt zmoins" id="boite-zmoins" aria-label="Dézoomer">−</button>
+        <button type="button" class="bt prec" id="boite-prec" aria-label="Photo prÃ©cÃ©dente">â€¹</button>
+        <button type="button" class="bt suiv" id="boite-suiv" aria-label="Photo suivante">â€º</button>
+        <button type="button" class="bt ferme" id="boite-ferme" aria-label="Fermer">âœ•</button>
+        <button type="button" class="bt zmoins" id="boite-zmoins" aria-label="DÃ©zoomer">âˆ’</button>
         <button type="button" class="bt zplus" id="boite-zplus" aria-label="Zoomer">+</button>
         <div class="compteur" id="boite-compteur"></div></div>
 
@@ -252,6 +252,6 @@
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/combo-filtre.js?v=2"></script>
-    <script src="js/installation.js?v=5"></script>
+    <script src="js/installation.js?v=6"></script>
 </body>
 </html>
