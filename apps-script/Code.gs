@@ -2068,11 +2068,17 @@ function _instTraduire(c, avant) {
 // Ne touche que les notes qui ont un temps en francais et pas encore d'anglais. Les traductions
 // se font HORS verrou (une par valeur distincte), puis l'ecriture relit la feuille sous verrou.
 // Relancable sans risque : une note deja traduite est sautee.
+// Google refuse les rafales (« Trop d'appels effectues en peu de temps : translate ») : 1 s entre
+// deux traductions, et arret apres ~4 min 30 (limite de 6 min d'Apps Script) — relancer pour la
+// suite tant que « restantes » n'est pas 0 (Steve, 2026-11-18).
 function traduireTempsInstallations() {
-  var avant = _instLire(_instFeuille(false)), trad = {}, nb = 0;
+  var avant = _instLire(_instFeuille(false)), trad = {}, nb = 0, debut = Date.now(), coupe = false;
   avant.forEach(function (n) {
     var t = String(n.temps || '').trim();
-    if (t && !(n.en && n.en.temps) && !(t in trad)) trad[t] = _diagTraduire(t, 'fr', 'en');
+    if (!t || (n.en && n.en.temps) || (t in trad) || coupe) return;
+    if (Date.now() - debut > 270000) { coupe = true; return; }
+    if (Object.keys(trad).length) Utilities.sleep(1000);
+    trad[t] = _diagTraduire(t, 'fr', 'en');
   });
   var r = _avecVerrou(function () {
     var sh = _instFeuille(false), echecs = 0;
@@ -2084,7 +2090,7 @@ function traduireTempsInstallations() {
       n.en.temps = trad[t]; n.src.temps = 'fr';
       _instEcrire(sh, n); nb++;
     });
-    return { traduites: nb, valeurs: Object.keys(trad).length, echecs: echecs };
+    return { traduites: nb, valeurs: Object.keys(trad).length, restantes: echecs };
   });
   Logger.log('Temps d\'installation traduits : ' + JSON.stringify(r));
   return r;
