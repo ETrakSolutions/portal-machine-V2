@@ -132,6 +132,11 @@ r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte cor
 check('temps anglais corrige a la main : garde', r.ok && r.note.en.temps === '1.5 days' && r.note.temps === '1 jour et demi');
 r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '6 h', en: { texte: 'EN:Texte corrige', pieges: 'EN:Attention au cable', temps: '' } }) });
 check('temps remis a 6 h : anglais retraduit', r.ok && r.note.en.temps === 'EN:6 h');
+const long = '≈ 7 h (4 à 11,5 h) ; plus long avec Guide Pro et coupure hydraulique, voir pièges ci-dessous';
+r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: long }) });
+check('temps de ' + long.length + ' caracteres garde en entier (max 120)', r.ok && r.note.temps === long);
+r = post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: 'x'.repeat(130) }) });
+check('temps borne a 120 caracteres', r.ok && r.note.temps.length === 120);
 check('temps vide ne bloque pas la validation (bilingue)', post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige', temps: '' }) }).note.bilingue === true);
 post({ action: 'saveinst', token: T, note: note({ id: idT, texte: 'Texte corrige' }) });
 check('autre technicien ne voit pas le brouillon', post({ action: 'getinst', token: T2 }).notes.length === 0);

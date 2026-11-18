@@ -2033,7 +2033,7 @@ function _instContenu(x) {
   var str = function (v, n) { return String(v === null || v === undefined ? '' : v).trim().slice(0, n); };
   var en = (x.en && typeof x.en === 'object') ? x.en : {};
   var c = { type: str(x.type, 80), fabricant: str(x.fabricant, 80), modele: str(x.modele, 80),
-            produit: str(x.produit, 40), option: str(x.option, 40), temps: str(x.temps, 60),
+            produit: str(x.produit, 40), option: str(x.option, 40), temps: str(x.temps, 120),   // 60 -> 120 (Steve, 2026-11-18)
             texte: str(x.texte, 10000), pieges: str(x.pieges, 3000), photos: [], pieces: [],
             enSoumis: { texte: str(en.texte, 10000), pieges: str(en.pieges, 3000), temps: str(en.temps, 120) } };
   if (!c.type || !c.fabricant || !c.modele || !c.produit) return { error: 'modele et produit requis' };
