@@ -297,6 +297,57 @@ def main():
     finally:
         d.quit()
 
+    print('5b) Temps d\'installation traduit (Steve, 2026-11-18)')
+    TEMPS = dict(EXEMPLE, temps='1 jour et demi', en=dict(EXEMPLE['en'], temps='1.5 days'))
+    d = navigateur('technicien', valideur=True, notes=[TEMPS], lang='en')
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] .in-head').click()")
+        time.sleep(0.3)
+        corps = d.execute_script("return document.querySelector('.in-card[data-id=\"v1\"]').textContent")
+        v('anglais : temps affiche en anglais', '1.5 days' in corps and '1 jour et demi' not in corps, corps[:200])
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] [data-act=modifier]').click()")
+        time.sleep(0.4)
+        v('anglais : case Temps en anglais', d.find_element(By.ID, 'e-temps').get_attribute('value') == '1.5 days')
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.6)
+        s = appels(d, 'saveinst')
+        v('inchange : les 2 langues renvoyees telles quelles', len(s) == 1 and s[0]['note']['temps'] == '1 jour et demi'
+          and s[0]['note']['en']['temps'] == '1.5 days', s and s[0]['note'])
+    finally:
+        d.quit()
+    d = navigateur('technicien', valideur=True, notes=[TEMPS], lang='en')
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] [data-act=modifier]').click()")
+        time.sleep(0.4)
+        t = d.find_element(By.ID, 'e-temps'); t.clear(); t.send_keys('2 days')
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.6)
+        s = appels(d, 'saveinst')
+        v('anglais modifie : francais vide (le serveur retraduit)', len(s) == 1 and s[0]['note']['en']['temps'] == '2 days'
+          and s[0]['note']['temps'] == '', s and s[0]['note'])
+    finally:
+        d.quit()
+    d = navigateur('technicien', valideur=True, notes=[TEMPS])
+    try:
+        corps = d.execute_script("return document.querySelector('.in-card[data-id=\"v1\"]').textContent")
+        v('francais : temps en francais', '1 jour et demi' in corps and '1.5 days' not in corps)
+        d.execute_script("document.querySelector('.in-card[data-id=\"v1\"] [data-act=modifier]').click()")
+        time.sleep(0.4)
+        t = d.find_element(By.ID, 'e-temps'); t.clear(); t.send_keys('5 h')
+        d.find_element(By.ID, 'b-enreg').click()
+        time.sleep(0.6)
+        s = appels(d, 'saveinst')
+        v('francais modifie : anglais vide (le serveur retraduit)', len(s) == 1 and s[0]['note']['temps'] == '5 h'
+          and s[0]['note']['en']['temps'] == '', s and s[0]['note'])
+    finally:
+        d.quit()
+    d = navigateur('technicien', notes=[EXEMPLE], lang='en')
+    try:
+        corps = d.execute_script("return document.querySelector('.in-card[data-id=\"v1\"]').textContent")
+        v('note ancienne sans anglais : repli sur le francais', '6 h' in corps, corps[:200])
+    finally:
+        d.quit()
+
     print('6) Fiches en double (Steve, 2026-11-10)')
     AUTRE_FICHE = dict(EXEMPLE, id='v3', fabricant='Hitachi', modele='ZX490LC-6', option='')
     d = navigateur('technicien', valideur=True, notes=[EXEMPLE, AUTRE_FICHE])

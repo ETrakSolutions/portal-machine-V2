@@ -278,8 +278,8 @@
     });
 
     // ---------- contenu dans la langue de l'ecran (l'autre en repli) ----------
-    function enDe(n) { return n.en || { texte: '', pieges: '' }; }
-    // champ = 'texte' ou 'pieges' ; autreL vrai = l'autre langue (sans repli).
+    function enDe(n) { return n.en || { texte: '', pieges: '', temps: '' }; }
+    // champ = 'texte', 'pieges' ou 'temps' ; autreL vrai = l'autre langue (sans repli).
     function txt(n, champ, autreL) {
         var fr = n[champ] || '', en = enDe(n)[champ] || '';
         return (enAnglais() !== !!autreL) ? (en || (autreL ? '' : fr)) : (fr || (autreL ? '' : en));
@@ -374,7 +374,7 @@
         champ(tx('Machine', 'Machine'), nomType(o.type) + ' ' + o.fabricant + ' ' + o.modele, nomType(n.type) + ' ' + n.fabricant + ' ' + n.modele);
         champ(tx('Produit', 'Product'), nomProduit(o.produit, o.type) + (o.option ? ' (' + nomOption(o.produit, o.option) + ')' : ''),
               nomProduit(n.produit, n.type) + (n.option ? ' (' + nomOption(n.produit, n.option) + ')' : ''));
-        champ(tx('Temps d\'installation', 'Installation time'), o.temps, n.temps);
+        champ(tx('Temps d\'installation', 'Installation time'), txt(o, 'temps'), txt(n, 'temps'));
         [['texte', tx('Informations d\'installation', 'Installation information')], ['pieges', tx('Pièges connus', 'Known pitfalls')]].forEach(function (c) {
             var a = txt(o, c[0]), b = txt(n, c[0]);
             if (a === b) return;
@@ -420,7 +420,7 @@
             (n.statut === 'brouillon' ? ' <span class="in-tag brouillon">' + esc(n.remplace ? tx('Proposition de modification', 'Proposed change') : tx('Brouillon à valider', 'Draft to approve')) + '</span>' : '') +
             (n.bilingue === false ? ' <span class="in-tag en-manque">' + esc(tx('Traduction incomplète', 'Incomplete translation')) + '</span>' : '');
         var corps = blocDiff(n);
-        if (n.temps) corps += '<div class="in-sec">⏱ ' + esc(tx('Temps d\'installation', 'Installation time')) + ' : <span style="color:#eee;font-weight:400">' + esc(n.temps) + '</span></div>';
+        if (n.temps) corps += '<div class="in-sec">⏱ ' + esc(tx('Temps d\'installation', 'Installation time')) + ' : <span style="color:#eee;font-weight:400">' + esc(txt(n, 'temps')) + '</span></div>';
         if (txt(n, 'texte')) corps += '<div class="in-sec">' + esc(tx('Informations d\'installation', 'Installation information')) + '</div>' +
             '<div class="in-etape"><div class="in-txt">' + esc(txt(n, 'texte')) + '</div>' + autreLigne(txt(n, 'texte', true)) + '</div>';
         if (n.photos.length) corps += '<div class="in-sec">' + esc(tx('Photos', 'Photos')) + '</div><div class="in-photos">' + vignettes(n.photos) + '</div>';
@@ -438,7 +438,7 @@
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="in-btn" data-act="modifier">' + esc(tx('Modifier', 'Edit')) + '</button>');
         else if (n.statut === 'valide') b.push('<button type="button" class="in-btn" data-act="modifier">' + esc(tx('Proposer une modification', 'Propose a change')) + '</button>');
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="in-btn danger" data-act="supprimer">' + esc(tx('Supprimer', 'Delete')) + '</button>');
-        var resume = [n.photos.length ? '📷 ' + n.photos.length : '', n.temps ? '⏱ ' + n.temps : ''].filter(Boolean).join(' · ');
+        var resume = [n.photos.length ? '📷 ' + n.photos.length : '', n.temps ? '⏱ ' + txt(n, 'temps') : ''].filter(Boolean).join(' · ');
         return '<div class="in-card' + (n.statut === 'brouillon' ? ' brouillon' : '') + (ETAT.ouvertes[n.id] ? ' open' : '') + '" data-id="' + esc(n.id) + '">' +
             '<div class="in-head"><b>' + esc(titre(n)) + '</b>' + tags + '<span class="in-nb">' + esc(resume) + '</span></div>' +
             '<div class="in-body">' + corps + '<div class="in-meta">' + meta + '</div><div class="in-actions">' + b.join('') + '</div></div></div>';
@@ -769,7 +769,9 @@
         remplir($('e-produit'), prodOptions(''), '', src.produit || '');
         remplir($('e-option'), [], '', src.option || '');
         dessinerChoixEdition();
-        $('e-temps').value = n ? n.temps || '' : '';
+        // Une seule case, dans la langue de l'ecran ; l'autre langue est geree par lireEdition.
+        $('e-temps').value = n ? txt(n, 'temps') : '';
+        $('e-temps').dataset.initial = $('e-temps').value;
         $('e-pieges').value = n ? n.pieges || '' : '';
         $('e-pieges-en').value = n ? enDe(n).pieges || '' : '';
         $('e-texte').value = n ? n.texte || '' : '';
@@ -810,6 +812,13 @@
         // est cachee : si on la laisse, le serveur la retraduit et le texte revient. On la vide donc
         // aussi, sauf si elle a ete modifiee a la main pendant cette edition.
         var o = ETAT.edition;
+        // Temps d'installation (Steve, 2026-11-18) : une seule case, dans la langue de l'ecran.
+        // Inchange -> on renvoie les deux langues telles quelles ; modifie -> l'autre langue part
+        // vide et le serveur la retraduit ; vide -> efface dans les deux langues.
+        var tps = $('e-temps').value.trim(), ofrT = o ? o.temps || '' : '', oenT = o ? enDe(o).temps || '' : '';
+        if (o && tps === ($('e-temps').dataset.initial || '').trim()) { x.temps = ofrT; x.en.temps = oenT; }
+        else if (enAnglais()) { x.en.temps = tps; x.temps = ''; }
+        else { x.temps = tps; x.en.temps = ''; }
         if (o) ['texte', 'pieges'].forEach(function (k) {
             var ofr = o[k] || '', oen = enDe(o)[k] || '';
             if (enAnglais()) { if (!x.en[k] && oen && x[k] === ofr) x[k] = ''; }
