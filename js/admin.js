@@ -378,6 +378,7 @@ function showAdminSection() {
     loadNotesEmails();
     loadMachineReqEmails();
     loadInstallEmails();
+    loadSavEmails();
     renderPermTable();
     loadAllowedTypes();
 }
@@ -1267,6 +1268,73 @@ function renderInstallEmails() {
     });
 }
 
+// ---- SAV EMAILS (demande SAV envoyee par noreply@e-trak.ca, Steve 2026-11-20) ----
+// Lue par le serveur (sendsav). Tant que la liste n'a jamais ete enregistree, le serveur
+// envoie aux destinataires du reglage SAV (Kevin et Luna) : on les affiche, et le premier
+// ajout ou retrait les enregistre ici, pour qu'aucun ne disparaisse sans qu'on le voie.
+let savEmails = [];
+let savEmailsDefaut = false;
+
+function loadSavEmails() {
+    portalFetchKey('sav_emails')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.value) {
+                try { savEmails = JSON.parse(data.value) || []; } catch(e) { savEmails = []; }
+                savEmailsDefaut = false;
+                renderSavEmails();
+                return;
+            }
+            // Jamais enregistree : liste en vigueur = celle que le serveur donne a la page SAV.
+            return fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain'},
+                body: JSON.stringify({ action: 'getsav', token: portalToken() })
+            }).then(function(r) { return r.json(); }).then(function(d) {
+                savEmails = (d && d.ok && Array.isArray(d.dest)) ? d.dest.slice() : [];
+                savEmailsDefaut = savEmails.length > 0;
+                renderSavEmails();
+            });
+        })
+        .catch(function() { renderSavEmails(); });
+}
+
+function saveSavEmails() {
+    savEmailsDefaut = false;
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'text/plain'},
+        body: JSON.stringify({ action: 'save', key: 'sav_emails', value: JSON.stringify(savEmails), pin: portalToken() })
+    }).catch(function() {});
+}
+
+function renderSavEmails() {
+    var list = document.getElementById('admin-sav-email-list');
+    if (!list) return;
+    list.innerHTML = '';
+    savEmails.forEach(function(email, i) {
+        var item = document.createElement('div');
+        item.className = 'admin-list-item';
+        item.innerHTML = '<span>' + escHtml(email) + '</span><button class="admin-delete-btn" data-idx="' + i + '">✕ Supprimer</button>';
+        list.appendChild(item);
+    });
+    if (savEmailsDefaut) {
+        var note = document.createElement('p');
+        note.className = 'admin-card-desc';
+        note.textContent = i18n.t('admin.sav_emails_defaut');
+        list.appendChild(note);
+    }
+    list.querySelectorAll('.admin-delete-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var idx = parseInt(this.dataset.idx);
+            savEmails.splice(idx, 1);
+            saveSavEmails();
+            renderSavEmails();
+            showToast(i18n.t('admin.sav_email_deleted'));
+        });
+    });
+}
+
 // ---- MACHINE REQUEST EMAILS (demande d'ajout de machine) ----
 let machineReqEmails = [];
 
@@ -2034,6 +2102,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderInstallEmails();
                 input.value = '';
                 showToast(i18n.t('admin.install_email_added'));
+            }
+        };
+    }
+
+    // ADD SAV EMAIL
+    var addSavEmailBtn = document.getElementById('admin-add-sav-email-btn');
+    if (addSavEmailBtn) {
+        addSavEmailBtn.onclick = function() {
+            var input = document.getElementById('admin-add-sav-email');
+            var email = input.value.trim().toLowerCase();
+            if (/^[^@\s,;]+@[^@\s,;]+\.[^@\s,;]+$/.test(email) && savEmails.indexOf(email) < 0) {
+                savEmails.push(email);
+                saveSavEmails();
+                renderSavEmails();
+                input.value = '';
+                showToast(i18n.t('admin.sav_email_added'));
             }
         };
     }

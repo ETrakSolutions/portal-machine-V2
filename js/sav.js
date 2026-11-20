@@ -188,9 +188,11 @@
         return DEST_CLES.map(function (k) { return REF.routage.filter(function (r) { return r.cle === k && r.courriel; })[0]; })
             .filter(Boolean);
     }
+    // Depuis le 2026-11-20, le serveur envoie (noreply@e-trak.ca) aux adresses de la carte
+    // « Courriels demande SAV » de l'Administration : getsav les donne dans dest.
     function dessinerDest() {
-        var d = destinataires();
-        $('f-dest').textContent = d.length ? 'Le courriel part à : ' + d.map(function (r) { return r.nom; }).join(' et ') + '.'
+        var noms = (REF.dest && REF.dest.length) ? REF.dest.map(nomDe) : destinataires().map(function (r) { return r.nom; });
+        $('f-dest').textContent = noms.length ? 'La demande part à : ' + noms.join(' et ') + ' (envoi par noreply@e-trak.ca).'
             : 'Destinataires indisponibles (listes non chargées) : utilisez « Copier la fiche ».';
     }
 
@@ -356,13 +358,53 @@
         try { document.execCommand('copy'); } catch (e) {} t.remove();
         return Promise.resolve();
     }
-    function ok(msg) { var o = $('sav-ok'); o.textContent = msg; o.style.display = 'block'; setTimeout(function () { o.style.display = 'none'; }, 6000); }
+    // Un seul minuteur : le message precedent ne cache plus le nouveau avant ses 6 s.
+    var okMinuteur = null;
+    function ok(msg) {
+        var o = $('sav-ok'); o.textContent = msg; o.style.display = 'block';
+        clearTimeout(okMinuteur); okMinuteur = setTimeout(function () { o.style.display = 'none'; }, 6000);
+    }
 
+    // Envoi par le serveur, de noreply@e-trak.ca (Steve, 2026-11-20) : la fiche part COMPLETE,
+    // quelle que soit sa longueur. Avant, le lien mailto coupait les fiches longues et Kevin
+    // (iPhone) a envoye un courriel URGENT sans la fiche. Destinataires = carte « Courriels
+    // demande SAV » de l'Administration (le serveur les choisit, jamais la page). Si le
+    // serveur ne peut pas envoyer (liste vide, panne), on repasse par Outlook comme avant.
+    var envoiEnCours = false;
     $('b-envoyer').addEventListener('click', function () {
-        if (!valider()) return;
-        var dest = destinataires().map(function (r) { return r.courriel; });
-        if (!dest.length) { ok('Destinataires indisponibles : utilisez « Copier la fiche ».'); return; }
+        if (envoiEnCours || !valider()) return;
+        var bouton = $('b-envoyer'), libelle = bouton.textContent;
+        envoiEnCours = true; bouton.disabled = true; bouton.textContent = 'Envoi…';
+        var fin = function () { envoiEnCours = false; bouton.disabled = false; bouton.textContent = libelle; };
         var txt = fiche();
+        (window.__savEnvoi || function (corps) {
+            return fetch(window.PORTAL_API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(corps) }).then(function (r) { return r.json(); });
+        })({ action: 'sendsav', token: user.token, sujet: sujet(), texte: txt })
+            .then(function (d) {
+                fin();
+                if (d && d.ok) {
+                    copier(txt).then(function () {}, function () {});
+                    modifiee = false;
+                    var a = (d.a || []).map(nomDe).join(' et ');
+                    ok('Demande envoyée à ' + a + (d.cc ? '. Copie à ' + d.cc : '') + '.');
+                    demanderFermeture(true);
+                    return;
+                }
+                envoiOutlook(txt, d && d.error);
+            }, function () { fin(); envoiOutlook(txt, 'reseau'); });
+    });
+
+    function nomDe(courriel) {
+        var r = REF.routage.filter(function (x) { return x && String(x.courriel || '').toLowerCase() === courriel; })[0];
+        return r ? r.nom : courriel;
+    }
+
+    // Ancien envoi (lien mailto vers Outlook) : repli quand le serveur n'a pas pu envoyer.
+    function envoiOutlook(txt, raison) {
+        if (raison === 'too many requests') { ok('Trop d’envois en une heure depuis ce compte : réessayez plus tard ou utilisez « Copier la fiche ».'); return; }
+        var dest = (REF.dest && REF.dest.length) ? REF.dest.slice() : destinataires().map(function (r) { return r.courriel; });
+        if (!dest.length) { ok('Envoi impossible et destinataires indisponibles : utilisez « Copier la fiche ».'); return; }
         var cc = REF.cc.filter(function (x) { return x && dest.indexOf(x) < 0; });
         var corps = txt;
         // Outlook et Windows tronquent un lien mailto trop long : au-dela, la fiche
@@ -372,26 +414,28 @@
             (cc.length ? '&cc=' + cc.join(',') : '') + '&body=' + encodeURIComponent(b); };
         copier(txt).then(function () {}, function () {});
         modifiee = false;
+        var avis = 'Envoi par le portail impossible : courriel ouvert dans Outlook. ';
         if (url(corps).length > 1900) {
             corps = 'La fiche complète est dans votre presse-papiers : collez-la ici (Ctrl+V).\n\n' + sujet();
-            ok('Fiche copiée dans le presse-papiers : collez-la dans le courriel (Ctrl+V).');
+            ok(avis + 'Collez la fiche dans le courriel (Ctrl+V) avant d’envoyer.');
         } else {
-            ok('Courriel ouvert dans Outlook. La fiche est aussi dans le presse-papiers.');
+            ok(avis + 'La fiche est aussi dans le presse-papiers.');
         }
         (window.__savMailto || function (u) { window.location.href = u; })(url(corps));
-        demanderFermeture();
-    });
+        demanderFermeture(false);
+    }
 
-    // Apres l'envoi, la demande se ferme (Steve, 2026-10-14) : des que le courriel est ouvert,
-    // une fenetre demande « Retour a l'accueil ? ». Oui : retour au hub, la fiche n'est pas
-    // gardee. Non : on reste sur la fiche (pour corriger et renvoyer, par exemple).
-    function demanderFermeture() {
+    // Apres l'envoi, la demande se ferme (Steve, 2026-10-14) : une fenetre demande « Retour a
+    // l'accueil ? ». Oui : retour au hub, la fiche n'est pas gardee. Non : on reste sur la
+    // fiche (pour corriger et renvoyer, par exemple). envoyee = partie par le serveur.
+    function demanderFermeture(envoyee) {
         var ancien = $('sav-fin'); if (ancien) ancien.remove();
         var v = document.createElement('div');
         v.id = 'sav-fin'; v.className = 'sav-fin';
         v.innerHTML = '<div class="sav-fin-boite" role="dialog" aria-modal="true" aria-labelledby="sav-fin-titre">' +
             '<h3 id="sav-fin-titre">Retour à l’accueil ?</h3>' +
-            '<p>Le courriel de la demande est ouvert dans Outlook : envoyez-le, puis fermez la demande.</p>' +
+            '<p>' + (envoyee ? 'La demande est envoyée. Vous en recevez une copie par courriel.'
+                : 'Le courriel de la demande est ouvert dans Outlook : envoyez-le, puis fermez la demande.') + '</p>' +
             '<div class="sav-fin-btns">' +
             '<button type="button" class="sav-btn" id="b-fin-non">Non, rester sur la demande</button>' +
             '<button type="button" class="sav-btn main" id="b-fin-oui">Oui, retour à l’accueil</button>' +
@@ -473,7 +517,8 @@
                     return;
                 }
                 REF = { clients: d.sav.clients || [], pieces: d.sav.pieces || [], produits: d.sav.produits || [],
-                        routage: d.sav.routage || [], cc: d.sav.cc || [], contacts: d.sav.contacts || {} };
+                        routage: d.sav.routage || [], cc: d.sav.cc || [], contacts: d.sav.contacts || {},
+                        dest: Array.isArray(d.dest) ? d.dest : [] };
                 var up = d.sav.updated ? new Date(d.sav.updated) : null;
                 $('sav-load').textContent = REF.clients.length + ' clients et ' + REF.pieces.length + ' pièces'
                     + (up && !isNaN(up) ? ' · listes au ' + up.toLocaleDateString('fr-CA') : '');

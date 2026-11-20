@@ -64,8 +64,13 @@ def navigateur(role):
         window.__appels = [];
         window.fetch = function (url, o) {
             var b = JSON.parse((o && o.body) || '{}'); window.__appels.push(b.action);
+            if (b.action === 'sendsav') {
+                window.__envoi = b;
+                if (window.__sendsavRep === 'reseau') return Promise.reject(new Error('reseau'));
+            }
             var r = b.action === 'getsav' ? { ok: true, sav: %s }
                   : b.action === 'getcedule' ? { ok: true, cedule: { techs: [{ nom: 'Jean Mallet (limiteur grue)' }, { nom: 'Michel Landry' }] } }
+                  : b.action === 'sendsav' ? (window.__sendsavRep || { ok: true, a: ['kevin@test', 'luna@test'], cc: 't@e' })
                   : { ok: true };
             return Promise.resolve({ json: function () { return Promise.resolve(r); } });
         };
@@ -75,6 +80,20 @@ def navigateur(role):
     d.get(PAGE)
     time.sleep(1.5)
     return d
+
+
+def rien_parti(d):
+    """Ni envoi par le serveur (sendsav) ni courriel Outlook (mailto)."""
+    return not d.execute_script('return window.__mailto || window.__envoi')
+
+
+def remise(d):
+    d.execute_script('window.__mailto = null; window.__envoi = null; window.__sendsavRep = null;')
+
+
+def texte_envoye(d):
+    """Fiche envoyee au serveur (sendsav, envoi par noreply@e-trak.ca depuis le 2026-11-20)."""
+    return (d.execute_script('return window.__envoi && window.__envoi.texte') or '')
 
 
 def choisir(d, champ_id, texte, attendu):
@@ -192,8 +211,8 @@ def main():
           and not any(('Routage' in t or 'Suivi' in t) for t in titres), titres)
         v('aucun champ de routage ni de suivi', not d.find_elements(By.CSS_SELECTOR,
           'input[name=f-routage], #f-rappel, #f-action, input[name=f-res], #f-ferme-le, #f-ferme-par'))
-        v('destinataires annonces : Kevin et Luna', d.find_element(By.ID, 'f-dest').text
-          == 'Le courriel part à : Kevin Bérubé et Luna Briceno.', d.find_element(By.ID, 'f-dest').text)
+        v('destinataires annonces : Kevin et Luna, envoi par noreply', d.find_element(By.ID, 'f-dest').text
+          == 'La demande part à : Kevin Bérubé et Luna Briceno (envoi par noreply@e-trak.ca).', d.find_element(By.ID, 'f-dest').text)
         d.find_element(By.ID, 'b-piece').click(); time.sleep(0.2)
         p = d.find_element(By.CSS_SELECTOR, '#f-pieces .p-pn')
         p.send_keys('E03A'); time.sleep(0.4)
@@ -208,7 +227,7 @@ def main():
         alerte = d.find_element(By.ID, 'sav-alert').text
         v('envoi refuse tant que manquent contact, tel, produit, description',
           all(x in alerte for x in ('nom du contact', 'téléphone', 'produit', 'description'))
-          and 'routage' not in alerte and not d.execute_script('return window.__mailto'), alerte)
+          and 'routage' not in alerte and rien_parti(d), alerte)
         d.find_element(By.ID, 'f-contact').send_keys('Marc Exemple')
         d.find_element(By.ID, 'f-tel').send_keys('819-555-0101')
         d.find_elements(By.CSS_SELECTOR, '#f-produits input')[0].click()
@@ -217,22 +236,22 @@ def main():
         v('« Autre » coche : champ de precision affiche', d.find_element(By.ID, 'w-autre').is_displayed())
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
         v('« Autre » sans precision : envoi refuse', 'précision du produit « Autre »' in d.find_element(By.ID, 'sav-alert').text
-          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-alert').text)
+          and rien_parti(d), d.find_element(By.ID, 'sav-alert').text)
         d.find_element(By.CSS_SELECTOR, '#f-produits input[value="Autre"]').click(); time.sleep(0.2)
         v('« Autre » decoche : champ cache', not d.find_element(By.ID, 'w-autre').is_displayed())
         d.find_element(By.CSS_SELECTOR, '#f-produits input[value="Autre"]').click(); time.sleep(0.2)
         d.find_element(By.ID, 'f-autre').send_keys('Module GPS')
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.5)
-        u = d.execute_script('return window.__mailto') or ''
-        v('courriel ouvert', u.startswith('mailto:'), u[:60])
-        q = urllib.parse.urlparse(u)
-        dest = urllib.parse.unquote(q.path)
-        prm = urllib.parse.parse_qs(q.query)
-        corps = (prm.get('body') or [''])[0]
-        v('destinataires = Kevin et Luna, meme avec une piece et un bypass', dest == 'kevin@test,luna@test', dest)
-        v('pas de copie en double (Kevin deja destinataire)', not prm.get('cc'), prm.get('cc'))
+        env = d.execute_script('return window.__envoi') or {}
+        corps = env.get('texte') or ''
+        v('envoi par le serveur (sendsav, noreply) et PAS par Outlook', env.get('action') == 'sendsav'
+          and env.get('token') == 'TOK' and not d.execute_script('return window.__mailto'), env.get('action'))
+        v('la page n envoie AUCUN destinataire (le serveur choisit)', not any(k in env for k in ('to', 'a', 'cc', 'dest')), list(env))
+        v('message : envoyee a Kevin et Luna, copie a l auteur',
+          d.find_element(By.ID, 'sav-ok').text == 'Demande envoyée à Kevin Bérubé et Luna Briceno. Copie à t@e.',
+          d.find_element(By.ID, 'sav-ok').text)
         v('sujet : URGENT (bypass) + compagnie + produit',
-          (prm.get('subject') or [''])[0] == "SAV — URGENT — Gravier Modèle Demo — Limiteur d'excavatrice (LPE) / Autre : Module GPS", prm.get('subject'))
+          env.get('sujet') == "SAV — URGENT — Gravier Modèle Demo — Limiteur d'excavatrice (LPE) / Autre : Module GPS", env.get('sujet'))
         v('corps : produits avec la precision de « Autre »', "Produit : Limiteur d'excavatrice (LPE), Autre : Module GPS" in corps, corps[:400])
         v('corps : client et contact dans la phrase d en-tete, piece, bypass ; plus de routage ni de suivi',
           all(x in corps for x in ('Demande de Marc Exemple', 'chez Gravier Modèle Demo', '1 × E03A-0013',
@@ -240,7 +259,8 @@ def main():
           and not any(x in corps for x in ('ROUTAGE', 'SUIVI', 'Assigné à', 'Rappel promis')), corps[:200])
         print('6) Fermeture de la demande apres l envoi')
         fin = d.execute_script("var f=document.getElementById('sav-fin'); return f ? f.textContent : null;")
-        v('apres l envoi : fenetre « Retour a l accueil ? »', bool(fin) and 'Retour à l’accueil ?' in fin, fin)
+        v('apres l envoi : fenetre « Retour a l accueil ? » qui dit que c est envoye', bool(fin) and 'Retour à l’accueil ?' in fin
+          and 'La demande est envoyée' in fin and 'Outlook' not in fin, fin)
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
         v('« Non » : fenetre fermee, fiche conservee, pas de retour', not d.execute_script("return !!document.getElementById('sav-fin');")
           and d.find_element(By.ID, 'f-contact').get_attribute('value') == 'Marc Exemple' and not d.execute_script('return window.__accueil'))
@@ -260,14 +280,14 @@ def main():
         v('menu noms : techs ProgressionLive (sans la note) + Pierre ou Michel',
           noms == ['Jean Mallet', 'Michel Landry', 'Pierre ou Michel'], noms)
         v('noms demandes au serveur (getcedule)', 'getcedule' in d.execute_script('return window.__appels'))
-        d.execute_script('window.__mailto = null')
+        remise(d)
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
         v('Oui sans exigence : envoi refuse', 'type de technicien' in d.find_element(By.ID, 'sav-alert').text
-          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-alert').text)
+          and rien_parti(d), d.find_element(By.ID, 'sav-alert').text)
         Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('obligatoire'); time.sleep(0.2)
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
         v('obligatoire sans nom : envoi refuse', 'nom du technicien' in d.find_element(By.ID, 'sav-alert').text
-          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-alert').text)
+          and rien_parti(d), d.find_element(By.ID, 'sav-alert').text)
         Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('tous'); time.sleep(0.2)
         v("N'importe quel technicien : menu des noms grise", not d.find_element(By.ID, 'f-tech-nom').is_enabled())
         Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('prioritaire'); time.sleep(0.2)
@@ -291,7 +311,7 @@ def main():
         copie = d.execute_script('return window.__copie') or ''
         v('copie de la fiche : diagnostic, pieces a prevoir, technicien, temps', all(x in copie for x in attendus), copie[-400:])
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
-        corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
+        corps = texte_envoye(d)
         v('courriel : diagnostic, pieces a prevoir, technicien, temps', all(x in corps for x in attendus), corps[-400:])
         print('8) Mise en page du courriel, demandee par Luna (2026-10-27)')
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
@@ -301,9 +321,9 @@ def main():
         d.find_element(By.ID, 'f-nb').send_keys('2')
         d.find_element(By.ID, 'f-adresse').send_keys('1, rue de l’Atelier, Victoriaville, QC, G6P 0A1')
         d.find_element(By.ID, 'f-lieu').send_keys('chantier Lévis')
-        d.execute_script('window.__mailto = null')
+        remise(d)
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
-        corps = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
+        corps = texte_envoye(d)
         lignes = corps.split('\n')
         v('en-tete : contact, les DEUX telephones et le courriel dans une phrase',
           'Demande de Marc Exemple (819-555-0101 · 819-555-0102 · mexemple@test) chez Gravier Modèle Demo' in corps,
@@ -325,11 +345,47 @@ def main():
         d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
         for champ in ('f-diag', 'f-prevoir', 'f-adresse', 'f-lieu'):
             d.find_element(By.ID, champ).clear()
-        d.execute_script('window.__mailto = null')
+        remise(d)
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
-        vide = (urllib.parse.parse_qs(urllib.parse.urlparse(d.execute_script('return window.__mailto') or '').query).get('body') or [''])[0]
+        vide = texte_envoye(d)
         v('section vide : aucun titre orphelin',
           not any(x in vide for x in ('DIAGNOSTIC PRÉLIMINAIRE', 'PIÈCES À PRÉVOIR', 'EMPLACEMENT')), vide[-200:])
+
+        print('8b) Fiche longue : COMPLETE, rien a coller (cas de Kevin, 2026-11-20)')
+        d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
+        long_txt = 'Le limiteur coupe en pleine rotation. ' * 120
+        d.execute_script("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', {bubbles:true}));",
+                         d.find_element(By.ID, 'f-desc'), long_txt)
+        remise(d)
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
+        corps = texte_envoye(d)
+        v('fiche de plus de 4 000 caracteres envoyee en entier, sans « collez »', long_txt.strip() in corps and len(corps) > 4000
+          and 'presse-papiers' not in corps and not d.execute_script('return window.__mailto'), len(corps))
+
+        print('8c) Le serveur ne peut pas envoyer : repli sur Outlook, comme avant')
+        for rep, nom in (("{ error: 'send_failed' }", 'echec Graph'), ("{ error: 'no_recipients' }", 'liste vide'),
+                         ("'reseau'", 'reseau coupe'), ("{ error: 'unknown action: sendsav' }", 'ancien serveur')):
+            d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
+            remise(d)
+            d.execute_script('window.__sendsavRep = %s;' % rep)
+            d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.5)
+            u = d.execute_script('return window.__mailto') or ''
+            q = urllib.parse.urlparse(u)
+            prm = urllib.parse.parse_qs(q.query)
+            msg = d.find_element(By.ID, 'sav-ok').text
+            v(nom + ' : Outlook ouvert vers Kevin et Luna, avec l avis',
+              u.startswith('mailto:') and urllib.parse.unquote(q.path) == 'kevin@test,luna@test' and not prm.get('cc')
+              and msg.startswith('Envoi par le portail impossible') and 'collez-la ici' in (prm.get('body') or [''])[0], [u[:50], msg])
+        fin = d.execute_script("var f=document.getElementById('sav-fin'); return f ? f.textContent : null;") or ''
+        v('repli : la fenetre dit d envoyer le courriel ouvert dans Outlook', 'ouvert dans Outlook' in fin, fin)
+        d.find_element(By.ID, 'b-fin-non').click(); time.sleep(0.2)
+        remise(d)
+        d.execute_script("window.__sendsavRep = { error: 'too many requests' };")
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
+        v('trop d envois : message clair, ni envoi ni Outlook', 'Trop d’envois' in d.find_element(By.ID, 'sav-ok').text
+          and not d.execute_script('return window.__mailto'), d.find_element(By.ID, 'sav-ok').text)
+        remise(d)
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.4)
         d.find_element(By.ID, 'b-fin-oui').click(); time.sleep(0.2)
         v('« Oui » : retour a l accueil', d.execute_script('return window.__accueil') == 1)
         v('aucune erreur console', not [l for l in d.get_log('browser') if l['level'] == 'SEVERE'],
