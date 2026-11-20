@@ -768,6 +768,12 @@
 
 /* Option aimants des caméras de chariot (2026-11-12) : petite case rattachée à sa caméra */
 .grue-aimant { font-size: 0.74rem; border-style: dashed; padding: 2px 8px; }
+/* Plus visible (Steve, 2026-11-20) : pastille orange pleine, texte gras, coche orange. */
+.grue-ligne.grue-aimant { font-size: 0.8rem; font-weight: 700; color: #FFB45C; border: 1.5px solid #FF8C00;
+    background: rgba(255,140,0,.12); padding: 4px 10px; }
+.grue-ligne.grue-aimant input[type="checkbox"] { accent-color: #FF8C00; width: 15px; height: 15px; }
+.grue-ligne.grue-aimant:hover { background: rgba(255,140,0,.22); }
+.grue-ligne.grue-aimant:has(input:checked) { background: rgba(255,140,0,.28); color: #fff; }
 .grue-choix.grue-colonne { flex-direction: column; align-items: flex-start; }
 .grue-rang { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 
