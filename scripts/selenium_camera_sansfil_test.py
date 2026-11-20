@@ -102,7 +102,10 @@ def sans_machine(apercu=True):
 try:
     print('1. Autre machine : case Camera sans fil')
     sans_machine(apercu=False)
-    check('case Camera sans fil visible', vis('cam-sansfil'))
+    check('hors apercu : case Camera sans fil cachee', not vis('cam-sansfil'))
+    J("APERCU_COMPTES.push('t@e'); majCamEquip(selectType.value);")
+    time.sleep(0.3)
+    check('apercu : case Camera sans fil visible', vis('cam-sansfil'))
     check('fenetre cachee avant de cocher', not vis('cam-chariot'))
     cliquer('cam-recul')
     cliquer('cam-sansfil')
