@@ -82,6 +82,7 @@ function doPost(e) {
     if (action === 'setreinst')      return jsonOut(setReinst(body));
     if (action === 'getsav')         return jsonOut(getSav(body));
     if (action === 'setsav')         return jsonOut(setSav(body));
+    if (action === 'sendsav')        return jsonOut(sendSav(body));
     if (action === 'getdiag')        return jsonOut(getDiag(body));
     if (action === 'savediag')       return jsonOut(saveDiag(body));
     if (action === 'validediag')     return jsonOut(valideDiag(body));
@@ -179,7 +180,7 @@ var SENSITIVE_KEYS = ['authorized_users_v2', 'PIN', 'GITHUB_TOKEN',
 // Toutes ces cles ne sont ecrites que depuis la page Administration (modifAccounts).
 var ADMIN_WRITE_KEYS = ['roles_permissions', 'target_emails', 'sales_emails',
                         'kit_emails', 'notes_emails', 'machine_request_emails',
-                        'vendeurs_list', 'soumission_allowed_types', 'install_emails'];
+                        'vendeurs_list', 'soumission_allowed_types', 'install_emails', 'sav_emails'];
 
 function _isAdminOnlyKey(key) {
   return SENSITIVE_KEYS.indexOf(key) >= 0 || ADMIN_WRITE_KEYS.indexOf(key) >= 0;
@@ -201,7 +202,7 @@ function _isAdminOnlyKey(key) {
 // serveur et en a besoin pour router sa soumission (decision Jacquot 2026-10-06).
 var LECTURE_PUBLIQUE_FERMEE = true;   // etape 3 : fermee le 2026-10-06 (version 39)
 var PRIVATE_READ_KEYS = ['machine_requests', 'machine_request_emails', 'notes_emails',
-                         'target_emails', 'kit_emails', 'db_changelog', 'install_emails'];
+                         'target_emails', 'kit_emails', 'db_changelog', 'install_emails', 'sav_emails'];
 // Le nom de ces cles porte un courriel : lecture reservee a un admin (ecran Administration).
 var ADMIN_READ_PREFIXES = ['user_active_', 'inactivity_notice_'];
 
@@ -1557,7 +1558,73 @@ function getSav(body) {
   if (!_roleHasAccess(user.role, 'savAccess', SAV_ROLES)) return { error: 'forbidden' };
   var sav;
   try { sav = _readSav(); } catch (e) { return { error: 'sav unreadable' }; }
-  return { ok: true, sav: sav };
+  return { ok: true, sav: sav, dest: _savDestinataires(sav) };
+}
+
+// ---- ENVOI DE LA DEMANDE SAV PAR noreply@e-trak.ca (Steve, 2026-11-20) ----
+// Avant : la page ouvrait un lien mailto. Au-dela de ~1 900 caracteres, Outlook le coupe :
+// la fiche partait dans le presse-papiers et le courriel disait de la coller. Kevin, sur
+// iPhone, a envoye sans coller : courriel URGENT sans la fiche. Le serveur envoie
+// maintenant la fiche complete, sans limite de longueur.
+// Destinataires : cle sav_emails (carte « Courriels demande SAV » de l'Administration,
+// admin seulement, comme install_emails). Tant qu'elle n'a JAMAIS ete enregistree : les
+// courriels du routage « kevin » et « luna » de la liste SAV (= l'ancien mailto). Liste
+// enregistree vide -> no_recipients : la page repasse par Outlook.
+// Memes comptes que getsav ; « Repondre a » = l'auteur, qui recoit une copie.
+var SAV_EMAILS_KEY = 'sav_emails';
+var SAV_DEST_DEFAUT = ['kevin', 'luna'];
+var SAV_ENVOIS_MAX = 20;           // par compte et par heure : la page ne peut pas servir de relais
+var SAV_TEXTE_MAX = 30000;
+
+function _savCourrielValide(x) { return /^[^@\s,;<>"]+@[^@\s,;<>"]+\.[^@\s,;<>"]+$/.test(String(x || '')); }
+
+function _savDestinataires(sav) {
+  var brut = PROPS.getProperty(SAV_EMAILS_KEY), liste = [];
+  if (brut === null || brut === undefined || brut === '') {
+    if (sav === undefined) { try { sav = _readSav(); } catch (e) { sav = null; } }
+    var r = (sav && Array.isArray(sav.routage)) ? sav.routage : [];
+    liste = SAV_DEST_DEFAUT.map(function (k) {
+      var x = r.filter(function (y) { return y && y.cle === k; })[0];
+      return x ? x.courriel : '';
+    });
+  } else {
+    try { liste = JSON.parse(brut); } catch (e) { liste = []; }
+    if (!Array.isArray(liste)) liste = [];
+  }
+  var vus = {};
+  return liste.map(function (x) { return String(x || '').trim().toLowerCase(); })
+    .filter(function (x) { if (!_savCourrielValide(x) || vus[x]) return false; vus[x] = 1; return true; });
+}
+
+// { action:'sendsav', token, sujet, texte } -> { ok, a, cc } | { error }
+function sendSav(body) {
+  var sess = _getSession(body.token);
+  if (!sess) return { error: 'authentication required' };
+  var user = _findUser(sess.u);
+  if (!user || user.active === false) return { error: 'authentication required' };
+  if (!_roleHasAccess(user.role, 'savAccess', SAV_ROLES)) return { error: 'forbidden' };
+  var sujet = String(body.sujet || '').replace(/[\r\n\t]+/g, ' ').trim().slice(0, 200);
+  var texte = String(body.texte || '');
+  if (!sujet || !texte.trim()) return { error: 'invalid request' };
+  if (texte.length > SAV_TEXTE_MAX) return { error: 'too long' };
+  var dest = _savDestinataires();
+  if (!dest.length) return { error: 'no_recipients' };
+  var auteur = String(user.email || user.username || '').trim().toLowerCase();
+  if (!_savCourrielValide(auteur)) auteur = '';
+  var cache = CacheService.getScriptCache(), cle = 'sav_envois_' + (auteur || sess.u);
+  var nb = parseInt(cache.get(cle) || '0', 10) || 0;
+  if (nb >= SAV_ENVOIS_MAX) return { error: 'too many requests' };
+  var cc = (auteur && dest.indexOf(auteur) < 0) ? auteur : '';
+  var corps = 'Demande SAV envoyée depuis le Portail e-Trak par ' + (user.name || auteur || 'un utilisateur') +
+              (auteur ? ' (' + auteur + ')' : '') + '.\nRépondre à ce courriel lui répond directement.\n\n' + texte;
+  try {
+    _envoyerCourriel(dest.join(','), sujet, corps, '', 'Portail e-Trak', { cc: cc, replyTo: auteur });
+  } catch (err) {
+    Logger.log('sendSav error: ' + err);
+    return { error: 'send_failed' };
+  }
+  cache.put(cle, String(nb + 1), 3600);
+  return { ok: true, a: dest, cc: cc };
 }
 
 // { action:'setsav', sav | savGz (base64 d'un gzip du JSON), pin|token admin }
