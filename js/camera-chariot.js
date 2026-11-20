@@ -15,10 +15,16 @@
 // Chaque étape apparaît quand la précédente est répondue. Les prix sont affichés à côté de
 // chaque choix, avant de choisir. Un code sans prix affiche « Prix à venir » et retient le
 // total (prixAValider). Au moins une caméra (fourches ou cabine) est exigée.
+//
+// Mode « Caméra sans fil » (Steve, 2026-11-20) : case cam-sansfil du type « Autre machine ».
+// Même fenêtre sans l'étape des fourches ; l'étape cabine devient « Caméras sans fil » :
+// 1300-0125 en quantité libre, sans avant/arrière, une option aimants pour toutes les caméras.
 (function () {
     var boite = document.getElementById('cam-chariot');
     var caseCh = document.getElementById('cam-equip-chariot');
     if (!boite || !caseCh) return;
+    var caseSF = document.getElementById('cam-sansfil');
+    function sansFil() { return !!(caseSF && caseSF.checked); }
     var $ = function (id) { return document.getElementById(id); };
     var camBox = $('toggle-camera');
     var t = function (k, fb, p) {
@@ -30,7 +36,7 @@
     var CODES = ['1300-0126', '1300-0127', '1300-0125', '1300-0100', '1300-0101', '1300-0140', '1300-0240', '1300-0141', 'AT0001', '93625A250'];
     window.CHARIOT_CODES = CODES;
 
-    function actif() { return !!caseCh.checked && boite.style.display !== 'none'; }
+    function actif() { return (!!caseCh.checked || sansFil()) && boite.style.display !== 'none'; }
     function radio(n) { var r = document.querySelector('input[name="' + n + '"]:checked'); return r ? r.value : ''; }
     function fourche() { return radio('ch-fourche'); }               // '1300-0126' | '1300-0127' | 'aucune' | ''
     function moniteur() { return radio('ch-moniteur'); }
@@ -39,6 +45,7 @@
     function cabAucune() { return !!($('ch-cab-aucune') || {}).checked; }
     function cabRepondu() { return cabAvant() || cabArriere() || cabAucune(); }
     function nbCameras() {
+        if (sansFil()) return qte('ch-sf-qte') || 0;
         return ((fourche() === '1300-0126' || fourche() === '1300-0127') ? 1 : 0) + (cabAvant() ? 1 : 0) + (cabArriere() ? 1 : 0);
     }
     // Quantité saisie : '' = pas encore répondu ; sinon entier >= 0.
@@ -50,7 +57,7 @@
     }
     // Option aimants, visible seulement quand sa caméra est choisie.
     var AIMANTS = [['ch-aim-rack', function () { return fourche() === '1300-0127'; }],
-                   ['ch-aim-arriere', cabArriere], ['ch-aim-avant', cabAvant]];
+                   ['ch-aim-arriere', cabArriere], ['ch-aim-avant', cabAvant], ['ch-aim-sf', sansFil]];
     function majAimants() {
         AIMANTS.forEach(function (a) {
             // Aimants AT0001 offerts en USD aussi (Jacquot, 2026-11-17).
@@ -59,7 +66,13 @@
             if (!on && $(a[0])) $(a[0]).checked = false;
         });
     }
-    function nbAimantes() { return AIMANTS.filter(function (a) { return a[1]() && ($(a[0]) || {}).checked; }).length; }
+    // Sans fil : l'option aimants vaut pour toutes les caméras.
+    function nbAimantes() {
+        return AIMANTS.reduce(function (n, a) {
+            if (!(a[1]() && ($(a[0]) || {}).checked)) return n;
+            return n + (a[0] === 'ch-aim-sf' ? nbCameras() : 1);
+        }, 0);
+    }
     function battRepondu() { return qte('ch-batt-10') !== '' || qte('ch-batt-30') !== ''; }
 
     function majPrix() {
@@ -95,15 +108,18 @@
     // Étapes en cascade : la suivante apparaît quand la précédente est répondue.
     function majEtapes() {
         majAimants();
-        var e2 = !!fourche(), e3 = e2 && cabRepondu(), e4 = e3 && !!moniteur(), e5 = e4 && battRepondu();
+        var sf = sansFil();
+        var e2 = sf || !!fourche(), e3 = e2 && (sf ? nbCameras() > 0 : cabRepondu()), e4 = e3 && !!moniteur(), e5 = e4 && battRepondu();
+        $('ch-etape-1').style.display = sf ? 'none' : '';
         $('ch-etape-2').style.display = e2 ? '' : 'none';
         $('ch-etape-3').style.display = e3 ? '' : 'none';
         $('ch-etape-4').style.display = e4 ? '' : 'none';
         $('ch-etape-5').style.display = e5 ? '' : 'none';
         majRecos();
         var msg = '';
-        if (!fourche()) msg = t('chariot.choisir_fourche', 'Caméra au niveau des fourches : faites un choix.');
-        else if (!cabRepondu()) msg = t('chariot.choisir_cabine', 'Caméra sur la cabine : faites un choix.');
+        if (sf && !nbCameras()) msg = t('sansfil.choisir_qte', 'Entrez le nombre de caméras.');
+        else if (!sf && !fourche()) msg = t('chariot.choisir_fourche', 'Caméra au niveau des fourches : faites un choix.');
+        else if (!sf && !cabRepondu()) msg = t('chariot.choisir_cabine', 'Caméra sur la cabine : faites un choix.');
         else if (nbCameras() === 0) msg = t('chariot.aucune_camera', 'Choisissez au moins une caméra (fourches ou cabine).');
         else if (!moniteur()) msg = t('grue.choisir_moniteur', 'Choisissez le moniteur.');
         else if (!battRepondu()) msg = t('chariot.choisir_batt', 'Entrez la quantité de batteries.');
@@ -116,9 +132,9 @@
     function majBloc() {
         if (!camBox) return;
         var st = camBox.querySelector('.toggle-status');
-        if (caseCh.checked) {
+        if (caseCh.checked || sansFil()) {
             camBox.classList.add('active');
-            if (st) st.textContent = t('chariot.statut', 'CHARIOT');
+            if (st) st.textContent = sansFil() ? t('sansfil.statut', 'SANS FIL') : t('chariot.statut', 'CHARIOT');
         } else if (!camBox.querySelector('input[name="camera-type"]:checked') && !($('cam-360-choix') || {}).checked
                    && !(($('cam-equip-grue') || {}).checked)) {
             camBox.classList.remove('active');
@@ -127,8 +143,13 @@
     }
 
     function majVisibilite() {
-        var vis = !!caseCh.checked;     // cochée d'office par le type « Chariot élévateur »
+        var vis = !!caseCh.checked || sansFil();     // chariot : cochée d'office par le type « Chariot élévateur »
         boite.style.display = vis ? '' : 'none';
+        // Libellés et numéros d'étapes selon le mode (chariot ou sans fil).
+        var sf = sansFil();
+        boite.querySelectorAll('.ch-mode-ch').forEach(function (el) { el.style.display = sf ? 'none' : ''; });
+        boite.querySelectorAll('.ch-mode-sf').forEach(function (el) { el.style.display = sf ? '' : 'none'; });
+        boite.querySelectorAll('.grue-num[data-sf]').forEach(function (el) { el.textContent = el.getAttribute(sf ? 'data-sf' : 'data-ch'); });
         // La quantité générale ne s'applique pas : chaque ligne a la sienne.
         var qb = $('cam-qte-box');
         var autre = ($('cam-equip-grue') || {}).checked;
@@ -140,7 +161,7 @@
 
     function viderChoix() {
         boite.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function (r) { r.checked = false; });
-        ['ch-batt-10', 'ch-batt-30', 'ch-chargeur'].forEach(function (id) { if ($(id)) $(id).value = ''; });
+        ['ch-batt-10', 'ch-batt-30', 'ch-chargeur', 'ch-sf-qte'].forEach(function (id) { if ($(id)) $(id).value = ''; });
         boite.classList.remove('manquant');
     }
 
@@ -160,6 +181,17 @@
         }
         redessiner();
     });
+    // Caméra sans fil (Autre machine) : même exclusivité que le chariot.
+    if (caseSF) caseSF.addEventListener('change', function () {
+        if (caseSF.checked) {
+            document.querySelectorAll('input[name="camera-type"]').forEach(function (cb) { if (cb.checked) cb.click(); });
+            var c360 = $('cam-360-choix');
+            if (c360 && c360.checked) c360.click();
+        } else {
+            viderChoix();
+        }
+        redessiner();
+    });
     // Grue cochée : la case Chariot se décoche (soumission.js) sans événement.
     var caseGrue = $('cam-equip-grue');
     if (caseGrue) caseGrue.addEventListener('change', function () {
@@ -168,7 +200,11 @@
     // Une autre caméra cochée : le chariot se décoche.
     document.querySelectorAll('input[name="camera-type"], #cam-360-choix').forEach(function (cb) {
         cb.addEventListener('change', function () {
-            if (cb.checked && caseCh.checked) { caseCh.checked = false; viderChoix(); redessiner(); }
+            if (cb.checked && (caseCh.checked || sansFil())) {
+                caseCh.checked = false;
+                if (caseSF) caseSF.checked = false;
+                viderChoix(); redessiner();
+            }
         });
     });
     // Cabine : « Aucune » exclut Avant / Arrière, et l'inverse.
@@ -180,7 +216,7 @@
         if (this.checked) ['ch-cab-avant', 'ch-cab-arriere'].forEach(function (id) { $(id).checked = false; });
     });
     boite.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(function (r) { r.addEventListener('change', redessiner); });
-    ['ch-batt-10', 'ch-batt-30', 'ch-chargeur'].forEach(function (id) {
+    ['ch-batt-10', 'ch-batt-30', 'ch-chargeur', 'ch-sf-qte'].forEach(function (id) {
         $(id).addEventListener('input', redessiner);
         $(id).addEventListener('change', redessiner);
     });
@@ -199,6 +235,10 @@
         // desc = français (courriel et panier) ; aff = libellé affiché dans la langue choisie (2026-11-17).
         var out = [], x = function (n) { return n > 1 ? ' ×' + n : ''; };
         var L = function (code, k, fr, sfx) { sfx = sfx || ''; return { code: code, desc: fr + sfx, aff: t(k, fr) + sfx }; };
+        if (sansFil()) {
+            var nSF = nbCameras();
+            if (nSF) out.push(L('1300-0125', 'sansfil.l_cam', 'Caméra sans fil', x(nSF)));
+        }
         if (fourche() === '1300-0126') out.push(L('1300-0126', 'chariot.fourche', 'Caméra sur la fourche'));
         if (fourche() === '1300-0127') out.push(L('1300-0127', 'chariot.rack', 'Caméra sur le rack entre les fourches'));
         var nCab = (cabAvant() ? 1 : 0) + (cabArriere() ? 1 : 0);
@@ -225,7 +265,7 @@
     // Envoi / ajout au panier : un choix manquant bloque, comme la grue et le kit 360.
     window.chariotManquant = function () {
         if (!actif()) return false;
-        if (fourche() && cabRepondu() && nbCameras() > 0 && moniteur() && battRepondu() && qte('ch-chargeur') !== '') return false;
+        if ((sansFil() || (fourche() && cabRepondu())) && nbCameras() > 0 && moniteur() && battRepondu() && qte('ch-chargeur') !== '') return false;
         majEtapes();
         boite.classList.add('manquant');
         boite.scrollIntoView({ block: 'center' });
@@ -233,13 +273,15 @@
     };
     // Panier : les quantités ne sont pas des cases cochées, etatEcran les garde à part.
     window.chariotEtat = function () {
-        return { b10: ($('ch-batt-10') || {}).value || '', b30: ($('ch-batt-30') || {}).value || '', ch: ($('ch-chargeur') || {}).value || '' };
+        return { b10: ($('ch-batt-10') || {}).value || '', b30: ($('ch-batt-30') || {}).value || '', ch: ($('ch-chargeur') || {}).value || '',
+                 sf: ($('ch-sf-qte') || {}).value || '' };
     };
     window.chariotRestaurer = function (e) {
         if (!e) return;
         if ($('ch-batt-10')) $('ch-batt-10').value = e.b10 || '';
         if ($('ch-batt-30')) $('ch-batt-30').value = e.b30 || '';
         if ($('ch-chargeur')) $('ch-chargeur').value = e.ch || '';
+        if ($('ch-sf-qte')) $('ch-sf-qte').value = e.sf || '';
         majVisibilite();
     };
 

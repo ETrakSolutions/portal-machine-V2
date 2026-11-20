@@ -4149,6 +4149,12 @@ function majCamEquip(type) {
     var grLab = document.getElementById('cam-equip-grue-lab');
     if (grLab) grLab.style.display = grueOk ? '' : 'none';
     if (gr && !grueOk && gr.checked) { gr.checked = false; if (window.grueVider) window.grueVider(); }
+    // Caméra sans fil : type « Autre machine » seulement (Steve, 2026-11-20), fenêtre de js/camera-chariot.js.
+    var sfOk = type === SANS_MACHINE;
+    var sf = document.getElementById('cam-sansfil');
+    var sfLab = document.getElementById('cam-sansfil-lab');
+    if (sfLab) sfLab.style.display = sfOk ? '' : 'none';
+    if (sf && !sfOk && sf.checked) { sf.checked = false; if (window.chariotVider) window.chariotVider(); }
     if (ch && ch.checked !== estCh) {
         ch.checked = estCh;
         if (!estCh && window.chariotVider) window.chariotVider();

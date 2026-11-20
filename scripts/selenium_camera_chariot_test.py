@@ -149,7 +149,7 @@ try:
     check('Epicor : quantites', '1300-0125\t2' in ep and '1300-0140\t6' in ep and '1300-0141\t3' in ep and '1300-0126\t1' in ep)
 
     print('6b. option aimants')
-    check('cabine : arriere avant avant', J("var e=document.querySelectorAll('#ch-etape-2 input[type=checkbox]'); return e[0].id+','+e[2].id;") == 'ch-cab-arriere,ch-cab-avant')
+    check('cabine : arriere avant avant', J("var e=document.querySelectorAll('#ch-etape-2 .ch-mode-ch input[type=checkbox]'); return e[0].id+','+e[2].id;") == 'ch-cab-arriere,ch-cab-avant')
     check('aimants arriere/avant visibles (cameras cochees)', vis('ch-aim-arriere') and vis('ch-aim-avant'))
     check('aimants rack caches (fourche 0126)', not vis('ch-aim-rack'))
     cliquer('ch-aim-arriere'); cliquer('ch-aim-avant')
