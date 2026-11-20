@@ -2975,7 +2975,8 @@ function getRoutesEquipe(body) {
 var ROUTES_CHARGES = ['commun', 'QC', 'CA', 'US'];
 var ROUTES_CHAMPS_FICHE = ['k', 'src', 'st', 'nom', 'i', 't', 'prov', 'reg', 'lat', 'lon', 'prec', 'ville', 'rue', 'cp',
   'tel', 'cat', 'ct', 'marques', 'id', 'rep', 'sf', 'sf_proprio', 'ancien', 'gryb', 'gryb_der', 'sf_act', 'der', 'mail',
-  'cl', 'fam', 'net', 'pl', 'a1', 'pf', 'cyc', 'sq', 'sqn', 'retard', 'pl_v', 'sf_notes', 'tA', 'tY', 'rk'];
+  'cl', 'fam', 'net', 'pl', 'a1', 'pf', 'cyc', 'sq', 'sqn', 'retard', 'pl_v', 'sf_notes', 'tA', 'tY', 'rk',
+  'clv'];   // clv : raison d'une classe ajustee (dealer A d'office, achat unique -> B), jamais un montant (2026-11-20)
 var ROUTES_CHAMPS_COMMUN = ['genere', 'fy', 'ref', 'ans', 'der_ecriture', 'coupure_ly', 'terr', 'croisees',
   'sf_instance', 'sf_reps', 'noms_prov', 'stable'];
 var ROUTES_CHAMPS_TERR = ['recs', 'lieux', 'lieux_reg', 'rythme'];
