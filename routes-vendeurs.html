@@ -228,7 +228,7 @@ table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-spa
           <div class="actions"><button type="button" id="cf-aucun">Toutes les catégories</button></div></div></details>
       <details class="menu" id="m-cl"><summary><span class="lib">Classe</span><span class="val" id="v-cl"></span></summary>
         <div class="deroul"><div class="choix" id="classes"></div>
-          <div class="aide">A = clients qui font 80 % des ventes, B = 15 % suivants, C = le reste.</div></div></details>
+          <div class="aide">A = clients qui font 80 % des ventes, B = 15 % suivants, C = le reste. Tous les dealers sont A (leur classe selon les ventes est dans la fiche). Un seul achat en 3 ans : B au plus.</div></div></details>
       <label class="aide" for="rep" style="display:block;margin-top:2px">Représentant assigné (Epicor)</label>
       <select id="rep"><option value="">Tous</option></select>
     </div>
@@ -243,7 +243,7 @@ table.mini{font-size:12.5px;margin:6px 0}table.mini td:nth-child(-n+4){white-spa
     </div>
     <div id="conf-txt" hidden>
       <b>Comment lire les chiffres.</b> Ventes = ventes facturées e-Trak au grand livre (même source que la Finance), avant taxes, intercompagnie exclue.
-      <span id="note-ex"></span> Classe A/B/C : rang du client dans les ventes e-Trak <span id="note-ref"></span> (A = clients qui font 80 % des ventes, B = 15 % suivants, C = 5 % restants).
+      <span id="note-ex"></span> Classe A/B/C : rang du client dans les ventes e-Trak <span id="note-ref"></span> (A = clients qui font 80 % des ventes, B = 15 % suivants, C = 5 % restants). Exceptions : tous les dealers (concessionnaires et distributeurs), clients ou prospects, sont A d'office ; un client qui n'a fait qu'un achat en 3 ans est ramené de A à B. La fiche dit pourquoi.
       « Même période l'an passé » : exercice précédent jusqu'au <span id="note-ly"></span>.
       Les montants GRYB ne sont pas affichés : seule la classe GRYB sert à prioriser.
     </div>
@@ -506,7 +506,7 @@ function aDire(r){
   if (r.sqn) out.push(r.sqn+" soumission"+(r.sqn>1?"s":"")+" ouverte"+(r.sqn>1?"s":"")+(SM?"":" pour "+fmt$(r.sqv))+(r.sq&&r.sq[0]?" (la plus récente : n° "+r.sq[0][0]+" du "+r.sq[0][1]+(r.sq[0][4]?", "+r.sq[0][4]:"")+")":"")+". La relancer en personne.");
   if (r.manque && r.manque.length && r.manque.length < META.croisees.length) out.push("Achète déjà "+r.pf.join(", ")+". N'a jamais acheté : "+r.manque.join(", ")+". Demander quelles autres machines il a.");
   if (r.net) out.push("Fait partie du réseau "+r.net+" : voir les autres succursales avec le bouton « Réseaux nationaux ».");
-  if (r.st==="perdu") out.push("N'a rien acheté depuis le début de "+REF_LIB+der+". "+(r.cl?"C'était un client de classe "+r.clBase+". ":"")+"Comprendre pourquoi avant de proposer.");
+  if (r.st==="perdu") out.push("N'a rien acheté depuis le début de "+REF_LIB+der+". "+(r.clv?"":(r.cl?"C'était un client de classe "+r.clBase+". ":""))+"Comprendre pourquoi avant de proposer.");
   if (r.st==="ancien") out.push("Client de l'ancien système (2022 et avant), aucun achat depuis l'arrivée d'Epicor. Vérifier qui est le contact aujourd'hui.");
   if (r.st==="sans_achat") out.push("Fiche ouverte dans Epicor sans achat facturé : soumission non conclue ou compte créé d'avance.");
   if (r.gryb) out.push("Achète chez GRYB"+(r.gryb!=="—"?" (classe GRYB "+r.gryb+")":"")+", dernier achat GRYB le "+r.gryb_der+(r.st==="gryb"?". Déjà client du groupe : présenter les limiteurs et balances e-Trak.":"."));
@@ -799,7 +799,7 @@ function filtre(){
   const secteur = RECS.filter(dansSecteur);
   // Le compteur de chaque statut tient compte des AUTRES filtres (classe, signal,
   // representant, recherche) : il annonce ce qui apparaitra vraiment si on coche.
-  const base = r => etat.classes[(r.st==="gryb" ? r.gryb : r.clBase) || "—"] !== false
+  const base = r => etat.classes[(r.st==="gryb" && !r.cl ? r.gryb : r.clBase) || "—"] !== false
     && signaux(r)
     && (!etat.rep || r.rep===etat.rep)
     && (!q || r.txt.includes(q));
@@ -939,7 +939,7 @@ function maj(){
       const t = SM ? "" : (r.sens==="baisse" ? `<span class="baisse">▼ ${fmtPct(r.tAn)}</span>`
               : r.sens==="hausse" ? `<span class="hausse">▲ ${fmtPct(r.tAn)}</span>` : "")
               + `<div>${r.retard?'<span class="sig retard" title="En retard sur son rythme d’achat">⏰ rythme</span>':""}${r.sqn?`<span class="sig soum" title="Soumissions ouvertes">📄 ${SM?"ouverte":fmt$(r.sqv)}</span>`:""}${(r.manque.length&&r.manque.length<META.croisees.length)?'<span class="sig croisee" title="Famille jamais achetée">＋ croisée</span>':""}${(NOTES_K||{})[r.k]?`<span class="sig note" title="Notes de l'équipe sur ce client">📝 ${NOTES_K[r.k]}</span>`:""}</div>`;
-      const cl = r.st==="gryb" ? (r.gryb&&r.gryb!=="—"?`<span class="cl" title="Classe GRYB">G-${r.gryb}</span>`:"") : (r.cl?`<span class="cl ${r.cl}">${r.cl}</span>`:"");
+      const cl = r.st==="gryb" && !r.cl ? (r.gryb&&r.gryb!=="—"?`<span class="cl" title="Classe GRYB">G-${r.gryb}</span>`:"") : (r.cl?`<span class="cl ${r.cl}"${r.clv?` title="${esc(r.clv)}"`:""}>${r.cl}${r.clv?"*":""}</span>`:"");
       return `<tr class="${choisis.has(r.i)?"choisi":""}">
         <td><input type="checkbox" data-i="${r.i}" ${choisis.has(r.i)?"checked":""} aria-label="Ajouter à la route"></td>
         <td><span class="nom" data-f="${r.i}">${esc(r.nom)}</span><div class="sous">${esc(r.ville||"")}${r._dist!=null&&etat.mode==="ray"?" · "+Math.round(r._dist)+" km":""}${r.lat&&r.prec!=="adresse"&&r.prec!=="rue"?" · position approx.":""}${r.lat?"":" · non localisé"}</div></td>
@@ -1055,6 +1055,7 @@ function ficheHTML(r, num){
   return `<div class="fiche" style="border-left-color:${ST[r.st].coul}">
     <h4>${num?num+". ":""}${esc(r.nom)}</h4>
     <div><span class="tag" style="color:${ST[r.st].coul}">${ST[r.st].lib}</span> ${r.cl?`<span class="cl ${r.cl}">${r.cl}</span>`:""} ${r.gryb?`<span class="cl" title="Classe GRYB">GRYB${r.gryb!=="—"?" "+r.gryb:""}</span>`:""}</div>
+    ${r.clv?`<div class="sous" style="margin-top:2px">Classe ${esc(r.cl)} : ${esc(r.clv)}</div>`:""}
     <div class="sous" style="margin-top:4px">${esc(adr)}${r.prec&&r.prec!=="ville"?" (position approximative)":""}</div>
     ${r.tel?`<div>☎ <a href="tel:${esc(r.tel.replace(/\D/g,""))}">${esc(r.tel)}</a></div>`:""}
     ${contactsHTML(r)}
@@ -1587,7 +1588,7 @@ function suggRoute(R, cles){
     if (r.retard) why.push("en retard sur son rythme (achète tous les "+r.cyc[0]+" jours environ, dernier achat il y a "+r.cyc[1]+" jours)");
     if (r.sqn) why.push((r.soumRec?"soumission récente ouverte":"soumission ouverte")+(SM?"":" ("+fmt$(r.sqv)+")"));
     if (r.sens==="hausse") why.push("en hausse"+(SM?"":" de "+Math.round(r.tAn*100)+" %")+" en "+REF_LIB);
-    if (r.st==="perdu" && r.cl==="ex-A") why.push("ancien client A qui n'achète plus");
+    if (r.st==="perdu" && r.clBase==="A") why.push(r.clv&&r.clv.startsWith("Dealer")?"dealer qui n'achète plus":"ancien client A qui n'achète plus");
     if (!why.length && r.st==="actif" && (r.cl==="A"||r.cl==="B")) why.push("client "+r.cl+" absent de la route");
     if (!why.length) continue;
     let d = 1e9, pres = null;
