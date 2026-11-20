@@ -1,0 +1,3648 @@
+[
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL250",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl250/technical-data/tab",
+  "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 980 - 1,440 kg",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "980 - 1,440 kg / 2,161 - 3,175 lb",
+   "poids_operationnel": "1,890 - 2,140 kg / 4,167 - 4,718 lb",
+   "puissance": "18.4 kW / 25 PS / 24.7 HP"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL28",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl28/technical-data/tab",
+  "citation": "The low operating weight also allows the WL28 to be transported on a car trailer.",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "1,600 - 2,200 kg / 3,527 - 4,850 lb",
+   "poids_operationnel": "2,810 - 3,250 kg / 6,195 - 7,165 lb",
+   "puissance": "18.4 kW / 24.7 HP (option 33.3 kW / 44.7 HP ; option 40.1 kW / 53.8 HP)"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL34",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl34/technical-data/tab",
+  "citation": "WL34 Wheel Loader: The ideal entry-level model",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,443 - 2,539 kg / 5,386 - 5,598 lb",
+   "poids_operationnel": "3,900 kg / 8,598 lb",
+   "puissance": "45 kW / 61 PS / 60.3 HP (option 55.4 kW / 75 PS / 74.3 HP)"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL750",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl750/technical-data/tab",
+  "citation": "The WL750 wheel loader is the ideal model in the wheel loader class with 26.49ft³ bucket volume.",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,560 - 3,060 kg / 5,644 - 6,746 lb",
+   "poids_operationnel": "3,670 - 4,170 kg / 8,091 - 9,193 lb",
+   "puissance": "42 kW / 57 PS / 56.3 HP"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum. Le texte dit 26.49 ft3, la page de gamme affiche 22.95 ft3 (godet) : incohérence du site, sans effet sur l'ajout.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL38",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl38/technical-data/tab",
+  "citation": "WL38 Wheel Loader: The plus in performance and comfort",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "3,113 kg / 6,863 lb",
+   "poids_operationnel": "4,300 kg / 9,480 lb",
+   "puissance": "45 kW / 61 PS / 60.3 HP (option 55.4 kW / 75 PS / 74.3 HP)"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL950",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl950/technical-data/tab",
+  "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 3,070 - 3,410 kg",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "3,070 - 3,410 kg / 6,768 - 7,518 lb",
+   "poids_operationnel": "4,980 - 5,240 kg / 10,979 - 11,552 lb",
+   "puissance": "42 kW / 57 PS / 56.3 HP"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL1150",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl1150/technical-data/tab",
+  "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 3,150 - 3,500 kg",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "3,150 - 3,500 kg / 6,945 - 7,716 lb",
+   "poids_operationnel": "5,680 - 6,100 kg / 12,522 - 13,448 lb",
+   "puissance": "55.4 kW / 75 PS / 74.29 HP"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL60",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl60/technical-data/tab",
+  "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 3,030 kg",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "3,030 kg / 6,680 lb",
+   "poids_operationnel": "6,030 kg / 13,294 lb",
+   "puissance": "74.4 kW / 101.2 PS / 99.8 HP"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum. INCOHÉRENCE du site : la page de gamme US affiche 13,073 lb, l'onglet technique 6,030 kg / 13,294 lb (6 030 kg = 13 294 lb).",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL95",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl95/technical-data/tab",
+  "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 5,748 kg",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "5,748 kg / 12,672 lb",
+   "poids_operationnel": "10,390 kg / 22,906 lb",
+   "puissance": "100 kW / 136 PS / 134.1 HP (option 115 kW / 156 PS / 154.2 HP)"
+  },
+  "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum. Une génération antérieure de WL95 a peut-être existé ; non prouvée en NA.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL37",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.constructionequipmentguide.com/wacker-neuson-offers-new-articulated-wheel-loader/16119",
+  "citation": null,
+  "specs_vues": {},
+  "note": "Source tierce (CEG, 4 mai 2011, lancement du WL 37). Aucune page Wacker Neuson NA en ligne ; vente NA 2015+ non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl37 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl37-1/) renvoient 404 ; archive web inaccessible.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "ECHEC_HTTP",
+  "fab": "Wacker Neuson",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL20",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.co.uk/products/wheel-loaders/wl20",
+  "citation": null,
+  "specs_vues": {},
+  "note": "Modèle sur sites Wacker Neuson hors NA (UK, CEMEA) seulement ; absent des pages /us et /ca ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl20 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl20-1/) renvoient 404 ; archive web inaccessible.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL32",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://wackerneuson.com/cemea/products/wheel-loaders/wheel-loader-wl32/technical-data/tab",
+  "citation": null,
+  "specs_vues": {},
+  "note": "Modèle sur site CEMEA seulement ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl32 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl32-1/) renvoient 404 ; archive web inaccessible.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "ECHEC_HTTP",
+  "fab": "Wacker Neuson",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL44",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.com/au/products/wheel-loaders/wl44/technical-data/tab",
+  "citation": null,
+  "specs_vues": {},
+  "note": "Modèle sur sites AU/IN ; absent des pages /us et /ca ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl44 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl44-1/) renvoient 404 ; archive web inaccessible.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "ECHEC_HTTP",
+  "fab": "Wacker Neuson",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL70",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wackerneuson.co.uk/products/wheel-loaders/wl70",
+  "citation": null,
+  "specs_vues": {},
+  "note": "Modèle sur site UK ; absent des pages /us et /ca ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl70 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl70-1/) renvoient 404 ; archive web inaccessible.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Wacker Neuson",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Wacker Neuson",
+  "modele": "WL30",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.equipmentworld.com/roadbuilding/article/14961018/wacker-introduces-new-line-of-compact-wheel-loaders",
+  "citation": null,
+  "specs_vues": {},
+  "note": "Article tiers non daté (Equipment World, ligne US, Perkins 48 hp), probablement antérieur à 2015 ; page non ouverte. Les anciennes URL US (/us/products/wheel-loaders/wl30 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl30-1/) renvoient 404 ; archive web inaccessible.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "ECHEC_HTTP",
+  "fab": "Wacker Neuson",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "2060",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/wheel-loader/2060/technical-data/tab",
+  "citation": "Wheel loader 2060 | Weidemann",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,550 - 3,070 kg / 5,622 - 6,768 lb",
+   "poids_operationnel": "3,720 - 4,230 kg / 8,201 - 9,326 lb",
+   "puissance": "42 kW / 57 PS / 56.3 HP"
+  },
+  "note": "Chargeuse sur roues ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "4060",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": "4060T",
+  "url": "https://www.weidemann.com/us/products/wheel-loader/4060/technical-data/tab",
+  "citation": "Wheel loader 4060 | Weidemann",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,760 - 2,960 kg / 6,085 - 6,526 lb",
+   "poids_operationnel": "5,760 - 6,080 kg / 12,699 - 13,404 lb",
+   "puissance": "55.4 kW / 75 PS / 74.3 HP"
+  },
+  "note": "Chargeuse sur roues ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Distinct du 4060T (version télescopique, fiche séparée). Page de gamme : 12,566 - 13,448 lb ; onglet technique : 12,699 - 13,404 lb (incohérence du site).",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "2060T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/2060t/technical-data/tab",
+  "citation": "2060T",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,430 - 2,600 kg / 5,357 - 5,732 lb",
+   "poids_operationnel": "4,460 - 4,770 kg / 9,833 - 10,516 lb",
+   "puissance": "42 kW / 56.3 HP"
+  },
+  "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "2080T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/2080t-telescopic-wheel-loaders/technical-data/tab",
+  "citation": "Tele wheel loader 2080T | Weidemann",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,260 kg / 4,982 lb",
+   "poids_operationnel": "4,600 kg / 10,141 lb",
+   "puissance": "45 kW / 61 PS / 61 HP (option 55.4 kW / 75 PS / 75 HP)"
+  },
+  "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. « Limited Availability » sur la page de gamme US.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "3080T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/3080t/technical-data/tab",
+  "citation": "Tele wheel loader 3080T | Weidemann",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "2,411 kg / 5,315 lb",
+   "poids_operationnel": "5,400 kg / 11,905 lb",
+   "puissance": "55.4 kW / 75 PS / 74.3 HP"
+  },
+  "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. « Limited Availability » sur la page de gamme US.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "4060T",
+  "statut": "millesime",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": "4060T",
+  "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/4060t/technical-data/tab",
+  "citation": "4060T",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "3,100 - 3,230 kg / 6,834 - 7,121 lb",
+   "poids_operationnel": "5,830 - 6,050 kg / 12,853 - 13,338 lb",
+   "puissance": "55.4 kW / 75 PS / 74.3 HP"
+  },
+  "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. BD : 2024-2024 seulement ; toujours en vente sur la page US.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [
+   2024
+  ],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "5080T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/5080t/technical-data/tab",
+  "citation": "5080T",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "3,659 kg / 8,067 lb",
+   "poids_operationnel": "7,200 kg / 15,873 lb",
+   "puissance": "100 kW / 136 PS / 134.1 HP"
+  },
+  "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "9580T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/9580t/technical-data/tab",
+  "citation": "9580T",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "5,871 kg / 12,943 lb",
+   "poids_operationnel": "11,210 kg / 24,714 lb",
+   "puissance": "100 kW / 136 PS / 134.1 HP (option 115 kW / 156 PS / 154.2 HP)"
+  },
+  "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "1160",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/farm-loader/1160-hoftrac/technical-data/tab",
+  "citation": "Hoftrac 1160 | Weidemann",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "650 - 1,210 kg / 1,433 - 2,668 lb",
+   "poids_operationnel": "1,910 - 2,250 kg / 4,211 - 4,960 lb",
+   "puissance": "18.4 kW / 25 PS / 24.7 HP"
+  },
+  "note": "Hoftrac (chargeuse compacte articulée de ferme) ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Classé « Farm Loader » ; inclus comme compact articulé (gabarit du WL250) — à trancher.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "1260LP",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/farm-loader/1260lp-hoftrac/technical-data/tab",
+  "citation": "1260LP",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "980 - 1,440 kg / 2,161 - 3,175 lb",
+   "poids_operationnel": "1,830 - 2,240 kg / 4,034.459 - 4,938.355 lb",
+   "puissance": "18.4 kW / 25 PS / 24.7 HP"
+  },
+  "note": "Hoftrac (chargeuse compacte articulée de ferme) ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Classé « Farm Loader » ; à trancher.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Weidemann",
+  "modele": "1390",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.weidemann.com/us/products/farm-loader/1390-hoftrac/technical-data/tab",
+  "citation": "Hoftrac 1390 | Weidemann",
+  "specs_vues": {
+   "charge_basculement_godet_machine_pivotee": "1,250 - 1,910 kg / 2,756 - 4,211 lb",
+   "poids_operationnel": "2,750 - 3,230 kg / 6,063 - 7,121 lb",
+   "puissance": "18.4 kW / 25 PS / 24.7 HP (option 33.3 kW / 44.7 HP ; option 40.1 kW / 53.8 HP)"
+  },
+  "note": "Hoftrac (chargeuse compacte articulée de ferme) ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Classé « Farm Loader » ; à trancher.",
+  "lot": "g1",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "Weidemann",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Bobcat",
+  "modele": "L23",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders/l23",
+  "citation": "Bobcat L23 Small Articulated Loader",
+  "specs_vues": {
+   "Horsepower": "24.8 hp",
+   "Operating Weight": "3,790 lbs",
+   "Rated Operating Capacity (ISO), articulated": "1,159 lbs"
+  },
+  "note": "Chargeuse articulée compacte (incluse selon consignes). Lancement NA : CONEXPO 2020 selon presse (non officiel) : années 2020-2024 à confirmer. Tipping load non publié.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Bobcat",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Bobcat",
+  "modele": "L28",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders/l28",
+  "citation": "Bobcat L28 Small Articulated Loader",
+  "specs_vues": {
+   "Horsepower": "24.8 hp",
+   "Operating Weight": "4,195 lb",
+   "Rated Operating Capacity (ISO), articulated": "1,222 lb"
+  },
+  "note": "Bras télescopique. Même lancement que L23 (presse : CONEXPO 2020).",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Bobcat",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Bobcat",
+  "modele": "L35",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2026
+  ],
+  "annee_lancement": 2025,
+  "variante_bd_proche": null,
+  "url": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders/l35",
+  "citation": "WEST FARGO, N.D. (Oct. 16, 2025) – ... will be available at Bobcat dealerships across North America in November 2025.",
+  "specs_vues": {
+   "Horsepower": "57 hp",
+   "Operating Weight": "6,012 lbs",
+   "Rated Operating Capacity (ISO), articulated": "1,695 lbs"
+  },
+  "note": "Nouvelle génération. Communiqué : https://www.bobcat.com/na/en/company/news-media/press-releases/bobcat-l35-most-powerful-small-articulated-loader . Dispo NA nov. 2025 : ajouter 2025 si on suit l'année de mise en marché. La page se contredit sur le ROC (1,902 lbs dans le texte).",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Bobcat",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Bobcat",
+  "modele": "L65",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders/l65",
+  "citation": "L65 Compact Wheel Loader",
+  "specs_vues": {
+   "Horsepower": "55 hp",
+   "Operating Weight": "10,555 lb",
+   "Tipping Capacity with Bucket (Articulated)": "5,135 lb"
+  },
+  "note": "La page de gamme donne aussi 9,944 lbs dans la FAQ (incohérence de la page). Lancement NA 2021 selon presse (non officiel) : années 2021-2024 à confirmer.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Bobcat",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Bobcat",
+  "modele": "L95",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2024,
+   2025,
+   2026
+  ],
+  "annee_lancement": 2023,
+  "variante_bd_proche": null,
+  "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders/l95",
+  "citation": "WEST FARGO, N.D. (Oct. 9, 2023) – Bobcat ... has brought to market its largest and most powerful compact wheel loader yet - the Bobcat® L95.",
+  "specs_vues": {
+   "Horsepower": "74 hp",
+   "Operating Weight": "11,993 lbs",
+   "Tipping Capacity with Bucket (Articulated)": "6670 lbs"
+  },
+  "note": "Communiqué : https://www.bobcat.com/na/en/company/news-media/press-releases/bobcat-unleashes-l95-most-powerful-compact-wheel-loader",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Bobcat",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Bobcat",
+  "modele": "L85",
+  "statut": "absent",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders",
+  "citation": "« The L95 will join the L65 and L85 » (communiqué 2023) ; code de la page NA : title:\"L85\" ... lifecycle:\"Historical\"",
+  "specs_vues": {
+   "Horsepower": "68 hp",
+   "Operating Weight": "11,164 lbs",
+   "ROC (with bucket, articulated)": "3,257 lbs"
+  },
+  "note": "Modèle NA discontinué (Historical) mais vendu en NA dans la fenêtre 2015-2026 (environ 2021 à 2025). Années exactes non publiées : à trancher. Specs tirées de la FAQ de la page de gamme NA.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Bobcat",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "AL550",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/al550",
+  "citation": "AL550",
+  "specs_vues": {
+   "Static tipping load with bucket (full turn)": "3732 lb",
+   "Unladen weight (with forks, 4-post canopy)": "7470 lb",
+   "Engine power": "60 Hp / 45.50 kW"
+  },
+  "note": "Valeur aberrante sur la page (« Ground Plane to Bucket Edge Height 247 ft 2 in »). Lancement non publié.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "AL650",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/al650",
+  "citation": "AL650",
+  "specs_vues": {
+   "Static tipping load with bucket (full turn)": "4916 lb",
+   "Unladen weight (with forks, 4-post canopy)": "9149 lb",
+   "Engine power": "64.40 Hp / 48 kW"
+  },
+  "note": "Probable descendant du « 650 » lancé en NA en mai 2016 (presse) : même modèle ou non, à trancher.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "AL750",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/al750",
+  "citation": "AL750",
+  "specs_vues": {
+   "Static tipping load with bucket (full turn)": "5778 lb",
+   "Unladen weight (with forks), 4-post canopy": "10540 lb",
+   "Engine power": "74.30 Hp / 55 kW"
+  },
+  "note": "Probable descendant du « 750 » (mai 2016, presse).",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "ALT750",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/alt750",
+  "citation": "ALT750",
+  "specs_vues": {
+   "Static tipping load with bucket (full turn)": "4012 lb",
+   "Unladen weight (with forks and 4-post canopy)": "12300 lb",
+   "Engine power": "74.30 Hp / 55 kW"
+  },
+  "note": "Version à bras télescopique.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "ALT950",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/alt950",
+  "citation": "ALT950",
+  "specs_vues": {
+   "Static tipping load with forks (full turn)": "9143 lb",
+   "Unladen weight (with forks)": "18717 lb",
+   "Engine power": "143 Hp / 105 kW"
+  },
+  "note": "Télescopique ; tipping au godet non publié.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "AL330",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-CA/our-machines/articulated-loaders",
+  "citation": "Take the GEHL AL330, for instance – it's designed for powerful performance in even the tightest spaces.",
+  "specs_vues": {},
+  "note": "Cité dans le texte de la page NA mais aucune fiche en-US/en-CA. Statut NA et années inconnus.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "AL430",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.gehl.com/en-CA/our-machines/articulated-loaders",
+  "citation": "For jobs requiring extra reach, the GEHL AL430's longer boom gets the job done with ease.",
+  "specs_vues": {},
+  "note": "Idem AL330.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "140 / 340 / 540",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": 2010,
+  "variante_bd_proche": null,
+  "url": "https://maplelanefarmservice.ca/resources/specsheets/gehl/articulated-loader/Gehl_Articulated_Loaders.pdf",
+  "citation": "« © 2012 Manitou Americas, Inc. Gehl. ... AL-0412-3M » ; « Model 340 »",
+  "specs_vues": {},
+  "note": "Brochure Gehl 2012 chez un concessionnaire canadien ; lancement NA 2010 selon presse. Aucune preuve fabricant de vente en 2015+ (presse cite une brochure 2015 AL-0815-5M pour 340/540, non ouverte).",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Gehl",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Gehl",
+  "modele": "650 / 750",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": 2016,
+  "variante_bd_proche": null,
+  "url": "https://www.constructionequipmentguide.com/gehl-introduces-all-new-650-750-articulated-loaders-for-north-america/29214",
+  "citation": "additions to the Gehl family of articulated loaders (CEG, 2016-05-27)",
+  "specs_vues": {},
+  "note": "Source tierce seulement. Probablement à fusionner avec AL650/AL750.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Gehl",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW60 Series 2",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.takeuchi-us.com/equipment/wheel-loaders/tw60-series-2",
+  "citation": "TW60 Series 2 Compact Wheel Loader",
+  "specs_vues": {
+   "Operating weight": "10,692 lb (4,850 kg)",
+   "HP/Engine Output": "61.2 HP (45.6 kW)",
+   "ROC": "3,437 lb"
+  },
+  "note": "Trifold Takeuchi daté déc. 2019 (URL 404 aujourd'hui) : lancement vers 2020 non confirmé.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Takeuchi",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW80 Series 3",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.takeuchi-us.com/equipment/wheel-loaders/tw80-series-3",
+  "citation": "TW80 Series 3, Compact Wheel Loader",
+  "specs_vues": {
+   "Operating Weight": "12,699 lb (5,760 kg)",
+   "HP/Engine Output": "73.4 HP (54 kW)",
+   "ROC": "4,301 lb"
+  },
+  "note": "Trifold Takeuchi « Jan 2020 » (404) : vers 2020, non confirmé.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Takeuchi",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW95",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://takeuchi-us.com/equipment/wheel-loaders/tw95",
+  "citation": "TW95",
+  "specs_vues": {
+   "Operating weight": "18,188 lb (8 250 kg)",
+   "Engine": "114 HP (85 kW)",
+   "ROC": "6,326 lb"
+  },
+  "note": "Lancement non publié.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Takeuchi",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW80 Series 2",
+  "statut": "absent",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.smsequipment.com/getmedia/6efd1f68-4218-489c-85ba-32d2a0e1ba0a/TW80c2.pdf",
+  "citation": "FORM: TW80 Series 2 Wheel Loader Spec Sheet - Mar. 2017 ; © 2017 Takeuchi Manufacturing (U.S.), Ltd.",
+  "specs_vues": {
+   "Operating Weight - Cab": "12,700 lb (5,760 kg)",
+   "Tipping Load, Full Turn": "8,890 lb (4,033 kg)",
+   "Engine": "73 hp (54.0 kW)"
+  },
+  "note": "Génération antérieure (environ 2017-2020, remplacée par Series 3). Fiche fabricant chez SMS Equipment (concessionnaire Takeuchi au Canada). Années exactes à trancher.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Takeuchi",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW65 Series 2",
+  "statut": "absent",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://power-equip.com/wp-content/uploads/2016/08/Takeuchi-Compact-Wheel-Loader-TW65.pdf",
+  "citation": "TW65 SERIES 2 - Wheel Loader ... FORM: TW65 SERIES 2 Spec Sheet Aug. 2014",
+  "specs_vues": {
+   "Horsepower": "73 hp (54 kW)"
+  },
+  "note": "Génération antérieure, vendue au moins en 2015-2016. Mise en page du PDF ambiguë pour poids et tipping : non repris. Fin de vente inconnue.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Takeuchi",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW40",
+  "statut": "absent",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://power-equip.com/wp-content/uploads/2018/04/Takeuchi-Compact-Wheel-Loader-TW40.pdf",
+  "citation": "TW40 - Wheel Loader ... © 2015 Takeuchi Manufacturing (U.S.), Ltd. ... FORM: TW40 Spec Sheet Jun. 2015",
+  "specs_vues": {
+   "Horsepower": "39.4 hp (29.4 kW)"
+  },
+  "note": "Génération antérieure, présente en 2015. Poids/tipping : colonnes mal alignées dans le PDF, non repris. Fin de vente inconnue.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_ABSENT",
+  "fab": "Takeuchi",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Takeuchi",
+  "modele": "TW50 / TW80 (Series 1)",
+  "statut": "non_verifiable",
+  "annees_a_ajouter": [],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.constructionequipmentguide.com/takeuchi-introduces-new-wheel-loader-product-line/7648",
+  "citation": "TW50, TW60, TW65 and TW80 (presse)",
+  "specs_vues": {},
+  "note": "Fiches fabricant 2012 sur takeuchi-us.com = 404. Vente en 2015+ non prouvée.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Takeuchi",
+  "niv": "C Non prouvé"
+ },
+ {
+  "fabricant": "Yanmar",
+  "modele": "V4-7",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.yanmarce.com/product/v4-7/",
+  "citation": "V4-7",
+  "specs_vues": {
+   "Operating Weight (cab)": "8,422 lbs (3,820 kg)",
+   "Tipping Load, Articulated": "5,058 lbs (22.5 kN)",
+   "Output": "39 HP"
+  },
+  "note": "Déjà dans la gamme en 2017 selon presse ; année de début non trouvée.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Yanmar",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Yanmar",
+  "modele": "V7",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2024,
+   2025,
+   2026
+  ],
+  "annee_lancement": 2023,
+  "variante_bd_proche": null,
+  "url": "https://www.yanmarce.com/product/v7/",
+  "citation": "Grand Rapids, MN (December 4, 2023) ... fills the gap in the Yanmar wheel loader line between the V4-7 and the V8.",
+  "specs_vues": {
+   "Operating weight": "9,370 lbs. / 4,250 kg",
+   "Tipping load, articulated": "5,864 lbs / 26 kN",
+   "Engine output": "47.6 HP"
+  },
+  "note": "Communiqué Yanmar America : https://www.mynewsdesk.com/us/yanmar/pressreleases/yanmars-new-v7-compact-wheel-loader-features-premium-capabilities-and-speed-3290818",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Yanmar",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Yanmar",
+  "modele": "V8",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.yanmarce.com/product/v8/",
+  "citation": "Yanmar V8 Wheel Loader",
+  "specs_vues": {
+   "Operating weight": "10,802 lbs / 4,900 kg",
+   "Tipping Load, Articulated": "7,341 lbs",
+   "Engine": "62 hp / 46.2 kW"
+  },
+  "note": "Ajouté en 2017 selon presse (communiqué yanmar.com en 403) : 2017-2024 à confirmer.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Yanmar",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Yanmar",
+  "modele": "V10",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.yanmarce.com/product/v10/",
+  "citation": "V10",
+  "specs_vues": {
+   "Operating weight": "12,787 lbs (5,800 kg)",
+   "Tipping Load, Articulated": "8,510 lbs (3,860 kg)",
+   "Engine": "73 hp (53.7 kW)"
+  },
+  "note": "Idem V8.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Yanmar",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Yanmar",
+  "modele": "V12",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.yanmarce.com/product/v12/",
+  "citation": "Wheel Loader V12",
+  "specs_vues": {
+   "Operating weight": "15,432 lb (7,000 kg)",
+   "Tipping Load, Articulated": "9,700 lb (4,400 kg)",
+   "Engine": "100 hp (74.4 kW)"
+  },
+  "note": "Idem V8.",
+  "lot": "g2",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Yanmar",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "SANY",
+  "modele": "SW305K",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": "SW405K",
+  "url": "https://www.sanyamerica.com/products/construction-equipment/wheel-loaders/sw305k/",
+  "citation": "SW305K ... 31,967 lbs | 163 hp | 3.2 yd3 Bucket Capacity",
+  "specs_vues": {
+   "poids_operationnel": "31,967 lbs",
+   "puissance_nette": "163 hp",
+   "puissance_brute_max": "181 hp",
+   "charge_basculement_full_turn": "17,006 lbs (libelle 'Tipping Load @ Full Term')",
+   "charge_basculement_droit": "19,619 lbs"
+  },
+  "note": "La page SW940L parle du 'previous SW305K5' : SW305K vendu depuis plusieurs annees, annee de lancement non publiee.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "SANY",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "SANY",
+  "modele": "SW940L",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.sanyamerica.com/products/construction-equipment/wheel-loaders/sw940l/",
+  "citation": "SW940L ... next-gen ... completely redesigned from the previous SW305K5",
+  "specs_vues": {
+   "poids_operationnel": "32,849 lbs",
+   "puissance_nette": "173 hp",
+   "charge_basculement_full_turn": "19,731 lbs (libelle 'Tipping Load @ Full Term')",
+   "charge_basculement_droit": "22,818 lbs"
+  },
+  "note": "Nouvelle generation. Le tableau affiche un breakout '32,849 lbf' identique au poids (erreur probable du site ; le texte dit 27,652 lbf). 2026 seulement prouve par les noms de fichiers, pas comme annee de lancement.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": true,
+  "page": "NOM_TROUVE",
+  "fab": "SANY",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "XCMG",
+  "modele": "XC918U",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://xcmg-usa.com/products/wheel-loaders/xc918u/",
+  "citation": "XC918U ... 72.0 hp ... 13,889.1 lb ... 1.3 yd3",
+  "specs_vues": {
+   "poids_operationnel": "13,889.1 lb",
+   "puissance": "72.0 hp"
+  },
+  "note": "Chargeuse compacte. Brochure XCMG_Brochures_XC918U_0425_WEB.pdf (avril 2025).",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "XCMG",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "XCMG",
+  "modele": "XC938U",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://xcmg-usa.com/products/wheel-loaders/xc938u/",
+  "citation": "XC938U ... 133 hp ... 29,762 lb. ... 2.49 yd3",
+  "specs_vues": {
+   "poids_operationnel": "29,762 lb.",
+   "puissance": "133 hp"
+  },
+  "note": "Le tableau de la meme page indique 29,761 : ecart de 1 lb.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "XCMG",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "XCMG",
+  "modele": "XC948U",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://xcmg-usa.com/products/wheel-loaders/xc948u/",
+  "citation": "XC948U ... 200 hp ... 36,376 lb. ... 3.15 yd3",
+  "specs_vues": {
+   "poids_operationnel": "36,376 lb.",
+   "puissance": "200 hp"
+  },
+  "note": "",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "XCMG",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "XCMG",
+  "modele": "XC958U",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://xcmg-usa.com/products/wheel-loaders/xc958u/",
+  "citation": "XC958U ... 225.2 hp ... 40,810 lb. ... 4.58 yd3",
+  "specs_vues": {
+   "poids_operationnel": "40,810 lb.",
+   "puissance": "225.2 hp"
+  },
+  "note": "Godet : 4.58 yd3 en en-tete vs 4.18 au tableau de la meme page.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "XCMG",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "XCMG",
+  "modele": "XC968U",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://xcmg-usa.com/products/wheel-loaders/xc968u/",
+  "citation": "XC968U ... 295 hp ... 4.6 yd3",
+  "specs_vues": {
+   "poids_operationnel": "47,620 lbs",
+   "puissance": "295 hp"
+  },
+  "note": "Poids vu sur la page modele (absent de la grille de gamme). 'Rated Load 31,967 lbs' publie, valeur douteuse, non retenue.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "XCMG",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Wolf (Wolf America)",
+  "modele": "WL200",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://wolfamerica.com/products/wl200/",
+  "citation": "The WL200 offers both affordability and performance in snow, agricultural and construction working environments.",
+  "specs_vues": {
+   "poids_brut": "12,125 lbs (Gross Weight)",
+   "puissance": "74 hp"
+  },
+  "note": "Articulation non precisee sur la page. Fabricant a creer dans la BD si retenu.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Wolf America",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Wolf (Wolf America)",
+  "modele": "WL825T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wolfamerica.com/",
+  "citation": "WL825T ... Cummins Turbo Diesel ... 74 ... 12,550 (menu Products)",
+  "specs_vues": {
+   "poids_brut": "12,550 lbs (Gross Weight)",
+   "puissance": "74 hp"
+  },
+  "note": "Vu sur la page d'accueil seulement (page modele non ouverte).",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Wolf America",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Wolf (Wolf America)",
+  "modele": "Mini 780H",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wolfamerica.com/",
+  "citation": "Mini 780H ... Kubota Diesel ... 25 ... 4,630",
+  "specs_vues": {
+   "poids_brut": "4,630 lbs (Gross Weight)",
+   "puissance": "25 hp"
+  },
+  "note": "Mini-chargeuse ; pertinence pour une balance a valider.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Wolf America",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Wolf (Wolf America)",
+  "modele": "Mini 750T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.wolfamerica.com/",
+  "citation": "Mini 750T ... Perkins Diesel ... 25 ... 3,240",
+  "specs_vues": {
+   "poids_brut": "3,240 lbs (Gross Weight)",
+   "puissance": "25 hp"
+  },
+  "note": "Mini-chargeuse ; pertinence a valider.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Wolf America",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Wolf (Wolf America)",
+  "modele": "Mini 750",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://wolfamerica.com/products/mini-750/",
+  "citation": "the MINI750 loader is a simple yet powerful solution for those working on farms and construction sites.",
+  "specs_vues": {
+   "poids_brut": "3,240 lbs (Gross Weight)",
+   "puissance": "25 hp"
+  },
+  "note": "Mini-chargeuse ; pertinence a valider.",
+  "lot": "g3",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Wolf America",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G1200",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g1200/",
+  "citation": "Back G1200 Overview With its low weight (2400 lbs) ... the Giant G1200 wheel loader",
+  "specs_vues": {
+   "puissance": "25 hp (Kubota)",
+   "poids_service": "2,420 lbs",
+   "charge_basculement_publiee": "2,400 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Charge de basculement publiee sans precision droite/articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G1200 TELE",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g1200-tele/",
+  "citation": "Back G1200 TELE Overview ... the Giant G1200 telescopic wheel loader",
+  "specs_vues": {
+   "puissance": "25 hp (Kubota)",
+   "poids_service": "2,420 lbs",
+   "charge_basculement_publiee": "1,980 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Chargeuse articulee a bras telescopique (pas un telehandler).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G1500",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g1500-series/",
+  "citation": "Spec Comparison G1500 G1500 X-TRA",
+  "specs_vues": {
+   "puissance": "26 hp (Kubota) / X-TRA 25 hp (Kubota)",
+   "poids_service": "3,263 lbs. / X-TRA 3,362 lbs.",
+   "charge_basculement_publiee": "2,293 lbs. / X-TRA 3307 bs."
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Une fiche, deux fleches : G1500 et G1500 X-TRA.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G2200E",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g2200e-series/",
+  "citation": "With the Giant G2200E we introduce our first electric articulating wheel loader!",
+  "specs_vues": {
+   "moteurs": "Driving mechanism 6.5 kW Working hydraulics 12 kW",
+   "poids_service": "4,850 lbs",
+   "charge_basculement_publiee": "3,200 lbs / X-TRA 4,530 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Electrique. Fiche : G2200E et G2200E X-TRA.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G2300 HD",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g2300-series/",
+  "citation": "The GiANT G2300 HD compact articulating loader is the newest of the GiANT lineup!",
+  "specs_vues": {
+   "puissance": "26 hp (Kubota)",
+   "poids_service": "5,070 lbs / X-TRA HD 5,180 lbs",
+   "charge_basculement_publiee": "3,516 lbs / X-TRA HD 4,982 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Fiche : G2300 HD et G2300 X-TRA HD.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G2500 HD",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g2500-series/",
+  "citation": "Spec Comparison G2500 HD G2500 X-TRA HD",
+  "specs_vues": {
+   "puissance": "26 hp (Kubota)",
+   "poids_service": "5,291 lbs.",
+   "charge_basculement_publiee": "4,519 lbs. / X-TRA HD 5,732 lbs."
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Fiche : G2500 HD et G2500 X-TRA HD.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G2700 HD",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g2700-series/",
+  "citation": "Spec Comparison G2700 HD G2700 X-TRA HD G2700 HD+ G2700 X-TRA HD+",
+  "specs_vues": {
+   "puissance": "50 hp (Kubota)",
+   "poids_service": "5,622 lbs (HD) / 5,733 lbs. (HD+)",
+   "charge_basculement_publiee": "5,236 lbs (HD) / 6,283 lbs (X-TRA HD) / 5,291 lbs (HD+) / 6,393 lbs (X-TRA HD+)"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Une fiche, quatre variantes : G2700 HD, G2700 X-TRA HD, G2700 HD+, G2700 X-TRA HD+.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G2700 HD+ TELE",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g2700-tele-series/",
+  "citation": "the G2700 TELE provides additional reach ... The Giant G2700 HD+ TELE",
+  "specs_vues": {
+   "puissance": "50 HP (Kubota)",
+   "poids_service": "5,940 lbs.",
+   "charge_basculement_publiee": "5,381 to 1,854 lbs."
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Chargeuse articulee a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G2700E",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g2700e-series/",
+  "citation": "The G2700E combines the best of both worlds with the advantages of an articulated loader",
+  "specs_vues": {
+   "moteurs": "Driving mechanism 7kW - Working hydraulics 12kW",
+   "poids_service": "5,709 lbs.",
+   "charge_basculement_publiee": "4,938 lbs. / X-TRA 5,732 lbs."
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Electrique. Fiche : G2700E et version X-TRA.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G3500",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g3500-series/",
+  "citation": "Spec Comparison G3500 Z-Bar G3500 X-TRA G3500 TELE",
+  "specs_vues": {
+   "puissance": "66 hp (Kubota)",
+   "poids_service": "7,720 lbs (Z-Bar) / 7,500 lbs (X-TRA)",
+   "charge_basculement_publiee": "5,070 lbs. (Z-Bar) / 8,600 lbs. (X-TRA)"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Fiche : G3500 Z-Bar et G3500 X-TRA.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G3500 TELE",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g3500-tele-series/",
+  "citation": "Back G3500 TELE Series Overview With all the features of the G3500 Series, the G3500 TELE",
+  "specs_vues": {
+   "puissance": "66 hp (Kubota)",
+   "poids_service": "8,710 lbs",
+   "charge_basculement_publiee": "see table"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Chargeuse articulee a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G5000",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g5000-series/",
+  "citation": "Spec Comparison G5000 Z-Bar G5000 X-TRA G5000 TELE",
+  "specs_vues": {
+   "puissance": "75 hp (Kubota)",
+   "poids_service": "9,920 lbs (Z-Bar) / 9,700 lbs (X-TRA)",
+   "charge_basculement_publiee": "7,360 lbs. (Z-Bar) / 9,850 lbs. (X-TRA)"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Fiche : G5000 Z-Bar et G5000 X-TRA.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Giant (Tobroco-Giant)",
+  "modele": "G5000 TELE",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://giantloaders.com/products/g5000-tele-series/",
+  "citation": "Back G5000 TELE Series Overview With all the features of the G5000, the G5000 TELE",
+  "specs_vues": {
+   "puissance": "75 hp (Kubota)",
+   "poids_service": "10,140 lbs",
+   "charge_basculement_publiee": "see table"
+  },
+  "note": "Marque absente de la BD. Distributeur NA officiel : Tobroco Machinery LLC (Cedar Falls, IA) - 'North American distributor of Giant branded compact articulated wheel loaders' (https://giantloaders.com/loaders/). Chargeuse articulee a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Giant (Tobroco-Giant)",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 225",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/200-series/",
+  "citation": "data-title=\"AVANT 225\" data-linktitle=\"Discover the AVANT 225\"",
+  "specs_vues": {
+   "capacite_levage": "705 lb",
+   "puissance": "18.6 kW (25 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 423",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/400-series/",
+  "citation": "data-title=\"AVANT 423\" data-linktitle=\"Discover the AVANT 423\"",
+  "specs_vues": {
+   "capacite_levage": "1213 lb",
+   "puissance": "16 kW (22 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 523",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/500-series/",
+  "citation": "data-title=\"AVANT 523\" data-linktitle=\"Discover the AVANT 523\"",
+  "specs_vues": {
+   "capacite_levage": "1764 lb",
+   "puissance": "16 kW (22 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 528",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/500-series/",
+  "citation": "data-title=\"AVANT 528\" data-linktitle=\"Discover the AVANT 528\"",
+  "specs_vues": {
+   "capacite_levage": "2094 lb",
+   "puissance": "17,1 kW (23 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 530",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/500-series/",
+  "citation": "data-title=\"AVANT 530\" data-linktitle=\"Discover the AVANT 530\"",
+  "specs_vues": {
+   "capacite_levage": "2094 lb",
+   "puissance": "17,1 kW (23 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 635i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/600-series/",
+  "citation": "data-title=\"AVANT 635i\" data-linktitle=\"Discover the AVANT 635i\"",
+  "specs_vues": {
+   "capacite_levage": "2623 lb",
+   "puissance": "19 kW (26 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 640i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/600-series/",
+  "citation": "data-title=\"AVANT 640i\" data-linktitle=\"Discover the AVANT 640i\"",
+  "specs_vues": {
+   "capacite_levage": "2623 lb",
+   "puissance": "19 kW (26 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 645i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/600-series/",
+  "citation": "data-title=\"AVANT 645i\" data-linktitle=\"Discover the AVANT 645i\"",
+  "specs_vues": {
+   "capacite_levage": "2623 lb",
+   "puissance": "33 kW (44 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 650i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/600-series/",
+  "citation": "data-title=\"AVANT 650i\" data-linktitle=\"Discover the AVANT 650i\"",
+  "specs_vues": {
+   "capacite_levage": "2623 lb",
+   "puissance": "33 kW (44 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 735i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/700-series/",
+  "citation": "data-title=\"AVANT 735i\" data-linktitle=\"Discover the AVANT 735i\"",
+  "specs_vues": {
+   "capacite_levage": "3086 lb",
+   "puissance": "19 kW (26 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 755i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/700-series/",
+  "citation": "data-title=\"AVANT 755i\" data-linktitle=\"Discover the AVANT 755i\"",
+  "specs_vues": {
+   "capacite_levage": "3086 lb",
+   "puissance": "42 kW (56 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 760i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/700-series/",
+  "citation": "data-title=\"AVANT 760i\" data-linktitle=\"Discover the AVANT 760i\"",
+  "specs_vues": {
+   "capacite_levage": "3086 lb",
+   "puissance": "42 kW (56 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 855i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/800-series/",
+  "citation": "data-title=\"AVANT 855i\" data-linktitle=\"Discover the AVANT 855i\"",
+  "specs_vues": {
+   "capacite_levage": "4189 lb",
+   "puissance": "42 kW (56 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT 860i",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/800-series/",
+  "citation": "data-title=\"AVANT 860i\" data-linktitle=\"Discover the AVANT 860i\"",
+  "specs_vues": {
+   "capacite_levage": "4189 lb",
+   "puissance": "42 kW (56 hp)"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT e527",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/e500-series/",
+  "citation": "data-title=\"AVANT e527\" data-linktitle=\"Discover the AVANT e527\"",
+  "specs_vues": {
+   "capacite_levage": "1984 lb"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT e727",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/e700-series/",
+  "citation": "data-title=\"AVANT e727\" data-linktitle=\"Discover the AVANT e727\"",
+  "specs_vues": {
+   "capacite_levage": "3086 lb"
+  },
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Avant Tecno",
+  "modele": "AVANT e513",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://avanttecno.com/us/loaders/e500-series/",
+  "citation": "the e513 and e527 offer full functionality without compromising on performance",
+  "specs_vues": {},
+  "note": "Marque absente de la BD. Site US officiel (Avant Tecno USA). Chargeuse compacte articulee polyvalente. La valeur publiee est une 'lift capacity', PAS une charge de basculement. Citation = carte produit de la page de serie (data-title). ATTENTION : e513 nomme dans le texte et le tableau de recharge de la page US, mais SANS carte produit US (seul e527 a une fiche) - disponibilite NA a confirmer.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Avant Tecno",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "14e",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "14e Engine power: 9.6 kW Electric Tipping load: 1,874 lbs.*",
+  "specs_vues": {
+   "puissance": "9.6 kW Electric",
+   "charge_publiee": "Tipping load: 1,874 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "1422",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "1422 Engine power: 22 hp Tipping load: 1,763 lbs.*",
+  "specs_vues": {
+   "puissance": "22 hp",
+   "charge_publiee": "Tipping load: 1,763 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "24e",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "24e Engine power: 28 hp Tipping load: 3,726 lbs*",
+  "specs_vues": {
+   "puissance": "28 hp",
+   "charge_publiee": "Tipping load: 3,726 lbs*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique. Puissance '28 hp' publiee pour un modele electrique : valeur telle quelle, a faire confirmer.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "2428",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "2428 Engine power: 25 hp diesel Tipping load: 2,685 lbs.*",
+  "specs_vues": {
+   "puissance": "25 hp diesel",
+   "charge_publiee": "Tipping load: 2,685 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "2428 SLT",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "2428 SLT Engine power: 25 hp diesel Tipping load: 3,417 lbs.*",
+  "specs_vues": {
+   "puissance": "25 hp diesel",
+   "charge_publiee": "Tipping load: 3,417 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "2430",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "2430 Engine power: 25 hp diesel Tipping load: 3,373 lbs*",
+  "specs_vues": {
+   "puissance": "25 hp diesel",
+   "charge_publiee": "Tipping load: 3,373 lbs*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "2430 SLT",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "2430 SLT Engine power: 25 hp diesel Tipping load: 4,012 lbs.*",
+  "specs_vues": {
+   "puissance": "25 hp diesel",
+   "charge_publiee": "Tipping load: 4,012 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "2445 S",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "2445 S Engine power: 50 hp Tipping load: 5,335 lbs.*",
+  "specs_vues": {
+   "puissance": "50 hp",
+   "charge_publiee": "Tipping load: 5,335 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "2630 T SLT",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "2630 T SLT Engine power: 25 hp diesel Tipping load: 2,932 lbs (pallet fork)",
+  "specs_vues": {
+   "puissance": "25 hp diesel",
+   "charge_publiee": "Tipping load: 2,932 lbs (pallet fork)"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "3650 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "3650 T Engine power: 50 hp diesel (optional 58 hp) Tipping load: 3,770 lbs (pallet fork)",
+  "specs_vues": {
+   "puissance": "50 hp diesel (optional 58 hp)",
+   "charge_publiee": "Tipping load: 3,770 lbs (pallet fork)"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "3650 T SLT",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "3650 T SLT Engine power: 50 hp Tipping load: 3,770 lbs.*",
+  "specs_vues": {
+   "puissance": "50 hp",
+   "charge_publiee": "Tipping load: 3,770 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "4670 Z",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "4670 Z Engine power: 51 hp diesel (optional 66 hp) Tipping load: 4,674 lbs.*",
+  "specs_vues": {
+   "puissance": "51 hp diesel (optional 66 hp)",
+   "charge_publiee": "Tipping load: 4,674 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "4670 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "4670 T Engine power: 66 hp diesel Tipping load: 4,652 lbs.(pallet fork)",
+  "specs_vues": {
+   "puissance": "66 hp diesel",
+   "charge_publiee": "Tipping load: 4,652 lbs.(pallet fork)"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "5470 Z",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "5470 Z Engine power: 61 hp diesel (optional 75 hp) Tipping load: 7,275 lbs*",
+  "specs_vues": {
+   "puissance": "61 hp diesel (optional 75 hp)",
+   "charge_publiee": "Tipping load: 7,275 lbs*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "5680 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "5680 T Engine power: 75 hp diesel Max lift: 5,291 lbs.*",
+  "specs_vues": {
+   "puissance": "75 hp diesel",
+   "charge_publiee": "Max lift: 5,291 lbs.*"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "6680 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "6680 T Engine power: 75 hp diesel Max lift: 6,834 lbs",
+  "specs_vues": {
+   "puissance": "75 hp diesel",
+   "charge_publiee": "Max lift: 6,834 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "8620 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "8620 T Engine power: 102 hp diesel (optional 129 hp) Max lift: 9,259 lbs",
+  "specs_vues": {
+   "puissance": "102 hp diesel (optional 129 hp)",
+   "charge_publiee": "Max lift: 9,259 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "9640 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "9640 T Engine power: 143 hp diesel Max lift: 9,259 lbs",
+  "specs_vues": {
+   "puissance": "143 hp diesel",
+   "charge_publiee": "Max lift: 9,259 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Schäffer",
+  "modele": "9660 T",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://dfdloaders.com/wheel-loaders/",
+  "citation": "9660 T Engine power: 177 hp diesel (optional 204 hp) Max lift: 11,684 lbs",
+  "specs_vues": {
+   "puissance": "177 hp diesel (optional 204 hp)",
+   "charge_publiee": "Max lift: 11,684 lbs"
+  },
+  "note": "Marque absente de la BD. Distributeur exclusif US : DFD Loaders ('Now available in the US exclusively through DFD Loaders', https://dfdloaders.com/). Canada non confirme. Charges marquees * = godet droit ISO 8313 (pas articule). Modeles 'T' = chargeuses articulees a bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Schäffer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Manitou",
+  "modele": "MLA 5-60 H-Z",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.manitou.com/en-US/our-machines/articulated-loaders/mla-5-60-h-z",
+  "citation": "MLA 5-60 H-Z Articulated loaders Static tipping load with bucket (straight) 4828 lb",
+  "specs_vues": {
+   "puissance": "60 Hp",
+   "charge_basculement_godet_droit": "4828 lb",
+   "charge_basculement_godet_pivotee_full_turn": "3735 lb",
+   "poids_a_vide_fourches": "7470 lb"
+  },
+  "note": "Marque absente de la BD comme chargeuse (Manitou North America, site en-US). Gamme MLA = chargeuses articulees (orientation agricole).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Manitou",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Manitou",
+  "modele": "MLA 6-65 H-Z",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.manitou.com/en-US/our-machines/articulated-loaders/mla-6-65-h-z",
+  "citation": "MLA 6-65 H-Z Articulated loaders Static tipping load with bucket (straight) 6409 lb",
+  "specs_vues": {
+   "puissance": "65 Hp",
+   "charge_basculement_godet_droit": "6409 lb",
+   "charge_basculement_godet_pivotee_full_turn": "4916 lb",
+   "poids_a_vide_fourches": "9500 lb"
+  },
+  "note": "Marque absente de la BD comme chargeuse (Manitou North America, site en-US). Gamme MLA = chargeuses articulees (orientation agricole).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Manitou",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Manitou",
+  "modele": "MLA 7-75 H-Z",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.manitou.com/en-US/our-machines/articulated-loaders/mla-7-75-h-z-0",
+  "citation": "MLA 7-75 H-Z Articulated loaders Static tipping load with bucket (straight) 7447 lb",
+  "specs_vues": {
+   "puissance": "74.30 Hp",
+   "charge_basculement_godet_droit": "7447 lb",
+   "charge_basculement_godet_pivotee_full_turn": "5778 lb",
+   "poids_a_vide_fourches": "10919 lb"
+  },
+  "note": "Marque absente de la BD comme chargeuse (Manitou North America, site en-US). Gamme MLA = chargeuses articulees (orientation agricole).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Manitou",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Manitou",
+  "modele": "MLA-T 516-75 H",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.manitou.com/en-US/our-machines/articulated-loaders/mla-t-516-75-h",
+  "citation": "MLA-T 516-75 H Articulated loaders Static tipping load with bucket (straight) 7793 lb",
+  "specs_vues": {
+   "puissance": "74.30 Hp",
+   "charge_basculement_godet_droit": "7793 lb",
+   "charge_basculement_fourches_full_turn": "4409 lb",
+   "poids_a_vide_fourches": "12220 lb"
+  },
+  "note": "Marque absente de la BD comme chargeuse (Manitou North America, site en-US). Gamme MLA = chargeuses articulees (orientation agricole). Bras telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Manitou",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Manitou",
+  "modele": "MLA-T 533-145 V+ - ST5",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.manitou.com/en-US/our-machines/articulated-loaders/mla-t-533-145-v-plus-st5",
+  "citation": "MLA-T 533-145 V+ - ST5 Articulated loaders Static tipping load with forks (straight) 10975 lb",
+  "specs_vues": {
+   "puissance": "143 Hp",
+   "charge_basculement_fourches_droit": "10975 lb",
+   "charge_basculement_fourches_full_turn": "9143 lb",
+   "poids_a_vide_fourches": "18585 lb"
+  },
+  "note": "Marque absente de la BD comme chargeuse (Manitou North America, site en-US). Gamme MLA = chargeuses articulees (orientation agricole). Bras telescopique ; nom officiel avec suffixe '- ST5' (phase moteur) - nom BD a trancher (ex. 'MLA-T 533-145 V+').",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "ECHEC_HTTP",
+  "fab": "Manitou",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "MCL2",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/mcl2.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "18,4 kW",
+   "poids_operationnel": "1740 kg",
+   "charge_basculement_publiee": "1160 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : compacte articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "MCL4",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/mcl4.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "18,4 kW",
+   "poids_operationnel": "2400 kg",
+   "charge_basculement_publiee": "1860 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : compacte articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "MCL4+",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/mcl4plus.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "18,4 kW",
+   "poids_operationnel": "2340 kg",
+   "charge_basculement_publiee": "2130 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : compacte articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "MCL6",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/mcl6.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "36 kW",
+   "poids_operationnel": "2450 kg",
+   "charge_basculement_publiee": "1910 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : compacte articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "MCL6+",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/mcl6plus.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "36 kW",
+   "poids_operationnel": "2390 kg",
+   "charge_basculement_publiee": "2170 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : compacte articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "MCL8",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/mcl8.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "36 kW",
+   "poids_operationnel": "2850 kg",
+   "charge_basculement_publiee": "2320 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : compacte articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AS600",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/as600.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "poids_operationnel": "4400 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader chassis rigide.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AS750",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/as750.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "45 kW",
+   "poids_operationnel": "5000 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader chassis rigide.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AS850",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/as850.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "poids_operationnel": "5980 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader chassis rigide.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AS900tele",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/as900tele.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "55,4 kW",
+   "poids_operationnel": "7250 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AS1000",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/as1000.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "poids_operationnel": "6640 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader chassis rigide.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AS1600",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/as1600-1.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "100 kW",
+   "poids_operationnel": "10920 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader chassis rigide.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "eS1000",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/es1000.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "poids_operationnel": "7085 kg",
+   "charge_basculement_godet_droit": "4300 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader electrique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "eS900tele",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/es900tele.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "poids_operationnel": "7580 kg",
+   "charge_basculement_publiee": "2950 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : swing loader electrique telescopique.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AX850",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/ax-850-1.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "50 kW",
+   "poids_operationnel": "5050 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : chargeuse articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Mecalac",
+  "modele": "AX1000",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://mecalac.com/us/fiche-produit-machines/ax1000.html",
+  "citation": "Loaders - Compact articulated loaders MCL2 MCL4 MCL4+ MCL6 MCL6+ MCL8 Loaders - Swing loaders AS600 AS750 AS850 AS900tele AS1000 AS1600 eS1000 New eS900tele New Loaders - Articulated loaders AX850 AX1000",
+  "specs_vues": {
+   "puissance": "55,4 kW",
+   "poids_operationnel": "5410 kg"
+  },
+  "note": "Marque absente de la BD. Site mecalac.com/us/ + bureau de vente aux Etats-Unis ('eight sales offices ... and in the United States of America', https://mecalac.com/en/the-mecalac-distribution.html). DOUTE : le menu /us/ reprend le catalogue mondial et ne precise pas quels modeles sont vendus en NA ; a confirmer avec Mecalac North America. Type : chargeuse articulee.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Mecalac",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Hidromek",
+  "modele": "HMK 630 WL",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.hidromek.com/na-EN/products/wheel-loaders/hmk-630-wl",
+  "citation": "Bucket capacity 3,2 m3 ... Static tipping load 14700 kg OPERATING WEIGHT Operating Weight 19.800 kg",
+  "specs_vues": {
+   "puissance": "252 HP (188 kW)",
+   "poids_operationnel": "19.800 kg",
+   "charge_basculement_statique": "14700 kg"
+  },
+  "note": "Marque absente de la BD. Section Amerique du Nord officielle du site Hidromek (na-EN) listant 3 chargeuses ; filiale hidromekusa.com = 'Launching Soon' (aucun reseau de concessionnaires publie). DOUTE sur la distribution NA reelle - on inclut et on le dit.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Hidromek",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Hidromek",
+  "modele": "HMK 635 WL",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.hidromek.com/na-EN/products/wheel-loaders/hmk-635-wl",
+  "citation": "Static tipping load 15900 kgf OPERATING WEIGHT Operating Weight 20.600 kg",
+  "specs_vues": {
+   "puissance": "282 HP (210 kW)",
+   "poids_operationnel": "20.600 kg",
+   "charge_basculement_statique": "15900 kgf"
+  },
+  "note": "Marque absente de la BD. Section Amerique du Nord officielle du site Hidromek (na-EN) listant 3 chargeuses ; filiale hidromekusa.com = 'Launching Soon' (aucun reseau de concessionnaires publie). DOUTE sur la distribution NA reelle - on inclut et on le dit.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Hidromek",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Hidromek",
+  "modele": "HMK 640 WL",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.hidromek.com/na-EN/products/wheel-loaders/hmk-640-wl",
+  "citation": "Static tipping load 19.269 kgf OPERATING WEIGHT Operating Weight 26.300 kg",
+  "specs_vues": {
+   "puissance": "321 HP (240 kW)",
+   "poids_operationnel": "26.300 kg",
+   "charge_basculement_statique": "19.269 kgf"
+  },
+  "note": "Marque absente de la BD. Section Amerique du Nord officielle du site Hidromek (na-EN) listant 3 chargeuses ; filiale hidromekusa.com = 'Launching Soon' (aucun reseau de concessionnaires publie). DOUTE sur la distribution NA reelle - on inclut et on le dit.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Hidromek",
+  "niv": "B À trancher"
+ },
+ {
+  "fabricant": "Vermeer",
+  "modele": "ATX530",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.vermeer.com/na/compact-articulated-loaders/atx530",
+  "citation": "ATX530 Compact Articulated Loader",
+  "specs_vues": {
+   "puissance": "25 hp",
+   "capacite_nominale_articulee": "1141 lb",
+   "capacite_nominale_droite": "1343 lb"
+  },
+  "note": "Marque absente de la BD. Vermeer NA (site /na) ; chargeuses compactes articulees ATX fabriquees par MultiOne. Valeurs publiees = Rated operating capacity (pas charge de basculement).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Vermeer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Vermeer",
+  "modele": "ATX720",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.vermeer.com/na/compact-articulated-loaders/atx720",
+  "citation": "ATX720 Compact Articulated Loader",
+  "specs_vues": {
+   "puissance": "25 hp",
+   "capacite_nominale_articulee": "1437 lb",
+   "capacite_nominale_droite": "1917 lb"
+  },
+  "note": "Marque absente de la BD. Vermeer NA (site /na) ; chargeuses compactes articulees ATX fabriquees par MultiOne. Valeurs publiees = Rated operating capacity (pas charge de basculement).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Vermeer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Vermeer",
+  "modele": "ATX850",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.vermeer.com/na/compact-articulated-loaders/atx850",
+  "citation": "ATX850 Compact Articulated Loader",
+  "specs_vues": {
+   "puissance": "57 hp",
+   "capacite_nominale_articulee": "1887 lb",
+   "capacite_nominale_droite": "2517 lb"
+  },
+  "note": "Marque absente de la BD. Vermeer NA (site /na) ; chargeuses compactes articulees ATX fabriquees par MultiOne. Valeurs publiees = Rated operating capacity (pas charge de basculement).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Vermeer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "Vermeer",
+  "modele": "ATX960",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://www.vermeer.com/na/compact-articulated-loaders/atx960",
+  "citation": "ATX960 Compact Articulated Loader",
+  "specs_vues": {
+   "puissance": "57 hp",
+   "capacite_nominale_articulee": "2158 lb",
+   "capacite_nominale_droite": "3285 lb"
+  },
+  "note": "Marque absente de la BD. Vermeer NA (site /na) ; chargeuses compactes articulees ATX fabriquees par MultiOne. Valeurs publiees = Rated operating capacity (pas charge de basculement).",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "Vermeer",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "HEVI",
+  "modele": "H65L",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://gethevi.com/electric-heavy-equipment/electric-wheel-loaders/h65l/",
+  "citation": "Equipment Loaders H65L H55L GEL-5000 GEL-1800 ... Operating Weight 48,942 lbs Rated Load 14,330 lbs",
+  "specs_vues": {
+   "poids_operationnel": "48,942 lbs",
+   "charge_nominale": "14,330 lbs"
+  },
+  "note": "Marque absente de la BD. HEVI (fabricant US de machines electriques, site gethevi.com). Valeur publiee = 'Rated Load'.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "HEVI",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "HEVI",
+  "modele": "H55L",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://gethevi.com/electric-heavy-equipment/electric-wheel-loaders/h55l/",
+  "citation": "Equipment Loaders H65L H55L GEL-5000 GEL-1800 ... Operating Weight 39,242 lbs Rated Load 12,125 lbs",
+  "specs_vues": {
+   "poids_operationnel": "39,242 lbs",
+   "charge_nominale": "12,125 lbs"
+  },
+  "note": "Marque absente de la BD. HEVI (fabricant US de machines electriques, site gethevi.com). Valeur publiee = 'Rated Load'.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "HEVI",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "HEVI",
+  "modele": "GEL-5000",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://gethevi.com/electric-heavy-equipment/electric-wheel-loaders/gel-5000/",
+  "citation": "Equipment Loaders H65L H55L GEL-5000 GEL-1800 ... Operating Weight 39,683 lbs Rated Load 12,125 lbs",
+  "specs_vues": {
+   "poids_operationnel": "39,683 lbs",
+   "charge_nominale": "12,125 lbs"
+  },
+  "note": "Marque absente de la BD. HEVI (fabricant US de machines electriques, site gethevi.com). Valeur publiee = 'Rated Load'.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "HEVI",
+  "niv": "A Prêt"
+ },
+ {
+  "fabricant": "HEVI",
+  "modele": "GEL-1800",
+  "statut": "absent",
+  "annees_a_ajouter": [
+   2025,
+   2026
+  ],
+  "annee_lancement": null,
+  "variante_bd_proche": null,
+  "url": "https://gethevi.com/electric-heavy-equipment/electric-wheel-loaders/gel-1800/",
+  "citation": "Equipment Loaders H65L H55L GEL-5000 GEL-1800 ... Operating Weight 11,464 lbs Rated Load 3,968 lbs",
+  "specs_vues": {
+   "poids_operationnel": "11,464 lbs",
+   "charge_nominale": "3,968 lbs"
+  },
+  "note": "Marque absente de la BD. HEVI (fabricant US de machines electriques, site gethevi.com). Valeur publiee = 'Rated Load'.",
+  "lot": "g4",
+  "type": "Loader",
+  "bd_annees": [],
+  "fab_en_bd": false,
+  "page": "NOM_TROUVE",
+  "fab": "HEVI",
+  "niv": "A Prêt"
+ }
+]

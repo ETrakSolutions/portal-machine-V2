@@ -1,0 +1,501 @@
+{
+ "perimetre": "g1 : Wacker Neuson, Kramer, Weidemann (Loader)",
+ "mode": "complet 2015-2026",
+ "fabricants": [
+  {
+   "fabricant": "Wacker Neuson",
+   "page_gamme": "https://www.wackerneuson.com/us/products/wheel-loaders",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 10,
+   "commentaire": "Pages /us et /ca identiques : WL250, WL28, WL34, WL750, WL38, WL950, WL52, WL1150, WL60, WL95 ; chaque onglet technique US ouvert. 9 absents (WL52 déjà en BD). Générations 2015-2024 : aucune page Wacker Neuson NA encore en ligne (anciennes URL en 404, archive web bloquée), donc non_verifiable. Électriques WL20e/WL28e : sites CEMEA seulement."
+  },
+  {
+   "fabricant": "Kramer",
+   "page_gamme": "https://www.kramer-online.com/gateway",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 0,
+   "commentaire": "EXCLU (règle d'exclusion) : l'entrée « North America » du sélecteur renvoie au site mondial kramer-online.com/world ; /us et /ca en 404 ; aucun distributeur NA nommé. Des Kramer d'occasion se vendent au Canada (marketbook.ca), ce n'est pas une distribution officielle."
+  },
+  {
+   "fabricant": "Weidemann",
+   "page_gamme": "https://www.weidemann.com/us/products/wheel-loader",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 11,
+   "commentaire": "Site NA officiel (weidemann.com/us et /ca, groupe Wacker Neuson). Vus : wheel-loader 2060, 4060 ; telescopic-wheel-loader 2060T, 2080T, 3080T, 4060T, 5080T, 9580T ; farm-loader (Hoftrac) 1160, 1260LP, 1390. Un « 5080 » est cité en image sur l'accueil mais /us/products/wheel-loader/5080 = 404 : non retenu. Télescopiques T4512/T7042 exclus. Selon la presse (Producer, août 2026), arrivée au Canada en juillet 2026 via le réseau Wacker Neuson, Québec en premier ; non confirmé par Weidemann. Hoftrac à trancher."
+  }
+ ],
+ "manquants": [
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL250",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl250/technical-data/tab",
+   "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 980 - 1,440 kg",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "980 - 1,440 kg / 2,161 - 3,175 lb",
+    "poids_operationnel": "1,890 - 2,140 kg / 4,167 - 4,718 lb",
+    "puissance": "18.4 kW / 25 PS / 24.7 HP"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL28",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl28/technical-data/tab",
+   "citation": "The low operating weight also allows the WL28 to be transported on a car trailer.",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "1,600 - 2,200 kg / 3,527 - 4,850 lb",
+    "poids_operationnel": "2,810 - 3,250 kg / 6,195 - 7,165 lb",
+    "puissance": "18.4 kW / 24.7 HP (option 33.3 kW / 44.7 HP ; option 40.1 kW / 53.8 HP)"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL34",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl34/technical-data/tab",
+   "citation": "WL34 Wheel Loader: The ideal entry-level model",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,443 - 2,539 kg / 5,386 - 5,598 lb",
+    "poids_operationnel": "3,900 kg / 8,598 lb",
+    "puissance": "45 kW / 61 PS / 60.3 HP (option 55.4 kW / 75 PS / 74.3 HP)"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL750",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl750/technical-data/tab",
+   "citation": "The WL750 wheel loader is the ideal model in the wheel loader class with 26.49ft³ bucket volume.",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,560 - 3,060 kg / 5,644 - 6,746 lb",
+    "poids_operationnel": "3,670 - 4,170 kg / 8,091 - 9,193 lb",
+    "puissance": "42 kW / 57 PS / 56.3 HP"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum. Le texte dit 26.49 ft3, la page de gamme affiche 22.95 ft3 (godet) : incohérence du site, sans effet sur l'ajout."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL38",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl38/technical-data/tab",
+   "citation": "WL38 Wheel Loader: The plus in performance and comfort",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "3,113 kg / 6,863 lb",
+    "poids_operationnel": "4,300 kg / 9,480 lb",
+    "puissance": "45 kW / 61 PS / 60.3 HP (option 55.4 kW / 75 PS / 74.3 HP)"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL950",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl950/technical-data/tab",
+   "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 3,070 - 3,410 kg",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "3,070 - 3,410 kg / 6,768 - 7,518 lb",
+    "poids_operationnel": "4,980 - 5,240 kg / 10,979 - 11,552 lb",
+    "puissance": "42 kW / 57 PS / 56.3 HP"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL1150",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl1150/technical-data/tab",
+   "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 3,150 - 3,500 kg",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "3,150 - 3,500 kg / 6,945 - 7,716 lb",
+    "poids_operationnel": "5,680 - 6,100 kg / 12,522 - 13,448 lb",
+    "puissance": "55.4 kW / 75 PS / 74.29 HP"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL60",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl60/technical-data/tab",
+   "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 3,030 kg",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "3,030 kg / 6,680 lb",
+    "poids_operationnel": "6,030 kg / 13,294 lb",
+    "puissance": "74.4 kW / 101.2 PS / 99.8 HP"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum. INCOHÉRENCE du site : la page de gamme US affiche 13,073 lb, l'onglet technique 6,030 kg / 13,294 lb (6 030 kg = 13 294 lb)."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL95",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl95/technical-data/tab",
+   "citation": "Tipping load with bucket – machine pivoted, loading frame horizontal 5,748 kg",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "5,748 kg / 12,672 lb",
+    "poids_operationnel": "10,390 kg / 22,906 lb",
+    "puissance": "100 kW / 136 PS / 134.1 HP (option 115 kW / 156 PS / 154.2 HP)"
+   },
+   "note": "Listé sur https://www.wackerneuson.com/us/products/wheel-loaders et /ca/. Année de début NA non publiée : 2025-2026 au minimum. Une génération antérieure de WL95 a peut-être existé ; non prouvée en NA."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL37",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.constructionequipmentguide.com/wacker-neuson-offers-new-articulated-wheel-loader/16119",
+   "citation": null,
+   "specs_vues": {},
+   "note": "Source tierce (CEG, 4 mai 2011, lancement du WL 37). Aucune page Wacker Neuson NA en ligne ; vente NA 2015+ non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl37 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl37-1/) renvoient 404 ; archive web inaccessible."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL20",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.co.uk/products/wheel-loaders/wl20",
+   "citation": null,
+   "specs_vues": {},
+   "note": "Modèle sur sites Wacker Neuson hors NA (UK, CEMEA) seulement ; absent des pages /us et /ca ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl20 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl20-1/) renvoient 404 ; archive web inaccessible."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL32",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://wackerneuson.com/cemea/products/wheel-loaders/wheel-loader-wl32/technical-data/tab",
+   "citation": null,
+   "specs_vues": {},
+   "note": "Modèle sur site CEMEA seulement ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl32 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl32-1/) renvoient 404 ; archive web inaccessible."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL44",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.com/au/products/wheel-loaders/wl44/technical-data/tab",
+   "citation": null,
+   "specs_vues": {},
+   "note": "Modèle sur sites AU/IN ; absent des pages /us et /ca ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl44 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl44-1/) renvoient 404 ; archive web inaccessible."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL70",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.wackerneuson.co.uk/products/wheel-loaders/wl70",
+   "citation": null,
+   "specs_vues": {},
+   "note": "Modèle sur site UK ; absent des pages /us et /ca ; vente NA non prouvée. Les anciennes URL US (/us/products/wheel-loaders/wl70 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl70-1/) renvoient 404 ; archive web inaccessible."
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele": "WL30",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.equipmentworld.com/roadbuilding/article/14961018/wacker-introduces-new-line-of-compact-wheel-loaders",
+   "citation": null,
+   "specs_vues": {},
+   "note": "Article tiers non daté (Equipment World, ligne US, Perkins 48 hp), probablement antérieur à 2015 ; page non ouverte. Les anciennes URL US (/us/products/wheel-loaders/wl30 et /us/products/wheel-loaders/articulated-wheel-loaders/model/wl30-1/) renvoient 404 ; archive web inaccessible."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "2060",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/wheel-loader/2060/technical-data/tab",
+   "citation": "Wheel loader 2060 | Weidemann",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,550 - 3,070 kg / 5,622 - 6,768 lb",
+    "poids_operationnel": "3,720 - 4,230 kg / 8,201 - 9,326 lb",
+    "puissance": "42 kW / 57 PS / 56.3 HP"
+   },
+   "note": "Chargeuse sur roues ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "4060",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": "4060T",
+   "url": "https://www.weidemann.com/us/products/wheel-loader/4060/technical-data/tab",
+   "citation": "Wheel loader 4060 | Weidemann",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,760 - 2,960 kg / 6,085 - 6,526 lb",
+    "poids_operationnel": "5,760 - 6,080 kg / 12,699 - 13,404 lb",
+    "puissance": "55.4 kW / 75 PS / 74.3 HP"
+   },
+   "note": "Chargeuse sur roues ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Distinct du 4060T (version télescopique, fiche séparée). Page de gamme : 12,566 - 13,448 lb ; onglet technique : 12,699 - 13,404 lb (incohérence du site)."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "2060T",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/2060t/technical-data/tab",
+   "citation": "2060T",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,430 - 2,600 kg / 5,357 - 5,732 lb",
+    "poids_operationnel": "4,460 - 4,770 kg / 9,833 - 10,516 lb",
+    "puissance": "42 kW / 56.3 HP"
+   },
+   "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "2080T",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/2080t-telescopic-wheel-loaders/technical-data/tab",
+   "citation": "Tele wheel loader 2080T | Weidemann",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,260 kg / 4,982 lb",
+    "poids_operationnel": "4,600 kg / 10,141 lb",
+    "puissance": "45 kW / 61 PS / 61 HP (option 55.4 kW / 75 PS / 75 HP)"
+   },
+   "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. « Limited Availability » sur la page de gamme US."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "3080T",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/3080t/technical-data/tab",
+   "citation": "Tele wheel loader 3080T | Weidemann",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "2,411 kg / 5,315 lb",
+    "poids_operationnel": "5,400 kg / 11,905 lb",
+    "puissance": "55.4 kW / 75 PS / 74.3 HP"
+   },
+   "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. « Limited Availability » sur la page de gamme US."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "4060T",
+   "statut": "millesime",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": "4060T",
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/4060t/technical-data/tab",
+   "citation": "4060T",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "3,100 - 3,230 kg / 6,834 - 7,121 lb",
+    "poids_operationnel": "5,830 - 6,050 kg / 12,853 - 13,338 lb",
+    "puissance": "55.4 kW / 75 PS / 74.3 HP"
+   },
+   "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. BD : 2024-2024 seulement ; toujours en vente sur la page US."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "5080T",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/5080t/technical-data/tab",
+   "citation": "5080T",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "3,659 kg / 8,067 lb",
+    "poids_operationnel": "7,200 kg / 15,873 lb",
+    "puissance": "100 kW / 136 PS / 134.1 HP"
+   },
+   "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "9580T",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/9580t/technical-data/tab",
+   "citation": "9580T",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "5,871 kg / 12,943 lb",
+    "poids_operationnel": "11,210 kg / 24,714 lb",
+    "puissance": "100 kW / 136 PS / 134.1 HP (option 115 kW / 156 PS / 154.2 HP)"
+   },
+   "note": "Chargeuse sur roues télescopique ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "1160",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/farm-loader/1160-hoftrac/technical-data/tab",
+   "citation": "Hoftrac 1160 | Weidemann",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "650 - 1,210 kg / 1,433 - 2,668 lb",
+    "poids_operationnel": "1,910 - 2,250 kg / 4,211 - 4,960 lb",
+    "puissance": "18.4 kW / 25 PS / 24.7 HP"
+   },
+   "note": "Hoftrac (chargeuse compacte articulée de ferme) ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Classé « Farm Loader » ; inclus comme compact articulé (gabarit du WL250) — à trancher."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "1260LP",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/farm-loader/1260lp-hoftrac/technical-data/tab",
+   "citation": "1260LP",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "980 - 1,440 kg / 2,161 - 3,175 lb",
+    "poids_operationnel": "1,830 - 2,240 kg / 4,034.459 - 4,938.355 lb",
+    "puissance": "18.4 kW / 25 PS / 24.7 HP"
+   },
+   "note": "Hoftrac (chargeuse compacte articulée de ferme) ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Classé « Farm Loader » ; à trancher."
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele": "1390",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.weidemann.com/us/products/farm-loader/1390-hoftrac/technical-data/tab",
+   "citation": "Hoftrac 1390 | Weidemann",
+   "specs_vues": {
+    "charge_basculement_godet_machine_pivotee": "1,250 - 1,910 kg / 2,756 - 4,211 lb",
+    "poids_operationnel": "2,750 - 3,230 kg / 6,063 - 7,121 lb",
+    "puissance": "18.4 kW / 25 PS / 24.7 HP (option 33.3 kW / 44.7 HP ; option 40.1 kW / 53.8 HP)"
+   },
+   "note": "Hoftrac (chargeuse compacte articulée de ferme) ; direction articulée (« hydraulically activated articulated pendulum steering ») confirmée sur la page. Charges ISO 14397-1 au centre de gravité du godet. Début des ventes NA non publié par Weidemann. Classé « Farm Loader » ; à trancher."
+  }
+ ],
+ "a_verifier": [
+  {
+   "fabricant": "Wacker Neuson",
+   "modele_bd": "WL54",
+   "probleme": "En BD 2015-2026, mais absent des pages de gamme /us et /ca actuelles (/us/products/wheel-loaders/wl54 = 404). Probablement discontinué en NA : vérifier l'année de fin.",
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders"
+  },
+  {
+   "fabricant": "Wacker Neuson",
+   "modele_bd": "WL52",
+   "probleme": "En BD 2026 seulement ; en vente sur /us et /ca (machine pivotée 3,416 kg / 7,531 lb ; 5,100 kg / 11,244 lb ; 55.4 kW / 74.3 HP). Année de lancement NA non publiée : vérifier s'il faut ajouter 2025 et antérieures.",
+   "url": "https://www.wackerneuson.com/us/products/wheel-loaders/wl52/technical-data/tab"
+  },
+  {
+   "fabricant": "Weidemann",
+   "modele_bd": "4060T",
+   "probleme": "BD 2024-2024 alors que la presse situe le lancement canadien en juillet 2026 : vérifier l'origine du millésime 2024.",
+   "url": "https://www.weidemann.com/us/products/telescopic-wheel-loader/4060t/technical-data/tab"
+  }
+ ]
+}

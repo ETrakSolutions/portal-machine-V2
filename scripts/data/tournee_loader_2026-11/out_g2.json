@@ -1,0 +1,520 @@
+{
+ "perimetre": "g2 — Bobcat (chargeuses articulées L), Gehl (articulated loaders), Takeuchi, Yanmar, Kubota (wheel loaders)",
+ "mode": "complet 2015-2026 (Bobcat, Gehl, Takeuchi, Yanmar absents de la BD) ; Kubota comparé à l'inventaire",
+ "fabricants": [
+  {
+   "fabricant": "Bobcat",
+   "page_gamme": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders ; https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 6,
+   "commentaire": "Absent de la BD. Gamme NA actuelle : L23, L28, L35 (small articulated) + L65, L95 (compact wheel loaders). L85 encore décrit sur la page NA mais marqué lifecycle « Historical » dans le code de la page (lien non-current-models). Aucune chargeuse sur roues Bobcat en NA avant L23/L28 (CONEXPO 2020 selon presse) : rien pour 2015-2019. Bobcat EU a annoncé un L100 et un L85 mis à jour (GaLaBau, sept. 2026) : non vus sur le site NA, non retenus. Les pages NA publient la « Tipping Capacity (Articulated) » seulement pour L65/L95 ; L23/L28/L35 = ROC seulement."
+  },
+  {
+   "fabricant": "Gehl",
+   "page_gamme": "https://www.gehl.com/en-US/our-machines/articulated-loaders (et /en-CA/)",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 5,
+   "commentaire": "Absent de la BD. Gamme NA actuelle (fiches en-US) : AL550, AL650, AL750, ALT750, ALT950. AL330 et AL430 cités dans le texte de la page mais sans fiche en-US (l'URL retombe sur la liste) : non_verifiable. Générations antérieures (140, 340, 540 lancés en NA en 2010 ; 650 et 750 lancés en mai 2016) : brochure Gehl 2012 chez un concessionnaire + presse seulement, aucune preuve fabricant couvrant 2015+ : non_verifiable. Gehl publie « unladen weight », pas d'operating weight."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "page_gamme": "https://www.takeuchi-us.com/equipment/wheel-loaders/",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 3,
+   "commentaire": "Absent de la BD. Gamme NA actuelle : TW60 Series 2, TW80 Series 3, TW95 (filtre « > 10,001 lbs » affiché, aucun autre modèle exposé). Générations antérieures prouvées par fiches Takeuchi Manufacturing (U.S.) hébergées chez des concessionnaires : TW40 (juin 2015), TW65 Series 2 (août 2014), TW80 Series 2 (mars 2017). Anciennes fiches sur takeuchi-us.com = 404. Pages produits actuelles : ROC seulement, pas de tipping load."
+  },
+  {
+   "fabricant": "Yanmar",
+   "page_gamme": "https://www.yanmarce.com/wheel-loaders",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 5,
+   "commentaire": "Absent de la BD. yanmar.com/us refuse l'accès (403) ; gamme NA publiée par Yanmar Compact Equipment North America (yanmarce.com) : V4-7, V7, V8, V10, V12. V7 lancé en NA le 4 déc. 2023 (communiqué Yanmar America). V8/V10/V12 ajoutés en 2017 selon presse (communiqué yanmar.com 2017 en 403, non lu) : année non retenue. Aucune autre génération trouvée 2015-2024."
+  },
+  {
+   "fabricant": "Kubota",
+   "page_gamme": "https://www.kubotausa.com/products/construction/wheel-loaders",
+   "page_ouverte": true,
+   "modeles_vus_sur_page": 3,
+   "commentaire": "Gamme NA actuelle : R430, R540, R640, tous dans la BD jusqu'à 2026. R530/R630 (2015-2021) cohérents avec leur remplacement par R540/R640. Aucun manquant. Specs par modèle non publiées sur la page (seulement « NET HP 44.5 - 61.1 » pour la série)."
+  }
+ ],
+ "manquants": [
+  {
+   "fabricant": "Bobcat",
+   "modele": "L23",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders/l23",
+   "citation": "Bobcat L23 Small Articulated Loader",
+   "specs_vues": {
+    "Horsepower": "24.8 hp",
+    "Operating Weight": "3,790 lbs",
+    "Rated Operating Capacity (ISO), articulated": "1,159 lbs"
+   },
+   "note": "Chargeuse articulée compacte (incluse selon consignes). Lancement NA : CONEXPO 2020 selon presse (non officiel) : années 2020-2024 à confirmer. Tipping load non publié."
+  },
+  {
+   "fabricant": "Bobcat",
+   "modele": "L28",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders/l28",
+   "citation": "Bobcat L28 Small Articulated Loader",
+   "specs_vues": {
+    "Horsepower": "24.8 hp",
+    "Operating Weight": "4,195 lb",
+    "Rated Operating Capacity (ISO), articulated": "1,222 lb"
+   },
+   "note": "Bras télescopique. Même lancement que L23 (presse : CONEXPO 2020)."
+  },
+  {
+   "fabricant": "Bobcat",
+   "modele": "L35",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2026
+   ],
+   "annee_lancement": 2025,
+   "variante_bd_proche": null,
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/small-articulated-loaders/l35",
+   "citation": "WEST FARGO, N.D. (Oct. 16, 2025) – ... will be available at Bobcat dealerships across North America in November 2025.",
+   "specs_vues": {
+    "Horsepower": "57 hp",
+    "Operating Weight": "6,012 lbs",
+    "Rated Operating Capacity (ISO), articulated": "1,695 lbs"
+   },
+   "note": "Nouvelle génération. Communiqué : https://www.bobcat.com/na/en/company/news-media/press-releases/bobcat-l35-most-powerful-small-articulated-loader . Dispo NA nov. 2025 : ajouter 2025 si on suit l'année de mise en marché. La page se contredit sur le ROC (1,902 lbs dans le texte)."
+  },
+  {
+   "fabricant": "Bobcat",
+   "modele": "L65",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders/l65",
+   "citation": "L65 Compact Wheel Loader",
+   "specs_vues": {
+    "Horsepower": "55 hp",
+    "Operating Weight": "10,555 lb",
+    "Tipping Capacity with Bucket (Articulated)": "5,135 lb"
+   },
+   "note": "La page de gamme donne aussi 9,944 lbs dans la FAQ (incohérence de la page). Lancement NA 2021 selon presse (non officiel) : années 2021-2024 à confirmer."
+  },
+  {
+   "fabricant": "Bobcat",
+   "modele": "L95",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2024,
+    2025,
+    2026
+   ],
+   "annee_lancement": 2023,
+   "variante_bd_proche": null,
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders/l95",
+   "citation": "WEST FARGO, N.D. (Oct. 9, 2023) – Bobcat ... has brought to market its largest and most powerful compact wheel loader yet - the Bobcat® L95.",
+   "specs_vues": {
+    "Horsepower": "74 hp",
+    "Operating Weight": "11,993 lbs",
+    "Tipping Capacity with Bucket (Articulated)": "6670 lbs"
+   },
+   "note": "Communiqué : https://www.bobcat.com/na/en/company/news-media/press-releases/bobcat-unleashes-l95-most-powerful-compact-wheel-loader"
+  },
+  {
+   "fabricant": "Bobcat",
+   "modele": "L85",
+   "statut": "absent",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders",
+   "citation": "« The L95 will join the L65 and L85 » (communiqué 2023) ; code de la page NA : title:\"L85\" ... lifecycle:\"Historical\"",
+   "specs_vues": {
+    "Horsepower": "68 hp",
+    "Operating Weight": "11,164 lbs",
+    "ROC (with bucket, articulated)": "3,257 lbs"
+   },
+   "note": "Modèle NA discontinué (Historical) mais vendu en NA dans la fenêtre 2015-2026 (environ 2021 à 2025). Années exactes non publiées : à trancher. Specs tirées de la FAQ de la page de gamme NA."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "AL550",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/al550",
+   "citation": "AL550",
+   "specs_vues": {
+    "Static tipping load with bucket (full turn)": "3732 lb",
+    "Unladen weight (with forks, 4-post canopy)": "7470 lb",
+    "Engine power": "60 Hp / 45.50 kW"
+   },
+   "note": "Valeur aberrante sur la page (« Ground Plane to Bucket Edge Height 247 ft 2 in »). Lancement non publié."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "AL650",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/al650",
+   "citation": "AL650",
+   "specs_vues": {
+    "Static tipping load with bucket (full turn)": "4916 lb",
+    "Unladen weight (with forks, 4-post canopy)": "9149 lb",
+    "Engine power": "64.40 Hp / 48 kW"
+   },
+   "note": "Probable descendant du « 650 » lancé en NA en mai 2016 (presse) : même modèle ou non, à trancher."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "AL750",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/al750",
+   "citation": "AL750",
+   "specs_vues": {
+    "Static tipping load with bucket (full turn)": "5778 lb",
+    "Unladen weight (with forks), 4-post canopy": "10540 lb",
+    "Engine power": "74.30 Hp / 55 kW"
+   },
+   "note": "Probable descendant du « 750 » (mai 2016, presse)."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "ALT750",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/alt750",
+   "citation": "ALT750",
+   "specs_vues": {
+    "Static tipping load with bucket (full turn)": "4012 lb",
+    "Unladen weight (with forks and 4-post canopy)": "12300 lb",
+    "Engine power": "74.30 Hp / 55 kW"
+   },
+   "note": "Version à bras télescopique."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "ALT950",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-US/our-machines/articulated-loaders/alt950",
+   "citation": "ALT950",
+   "specs_vues": {
+    "Static tipping load with forks (full turn)": "9143 lb",
+    "Unladen weight (with forks)": "18717 lb",
+    "Engine power": "143 Hp / 105 kW"
+   },
+   "note": "Télescopique ; tipping au godet non publié."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "AL330",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-CA/our-machines/articulated-loaders",
+   "citation": "Take the GEHL AL330, for instance – it's designed for powerful performance in even the tightest spaces.",
+   "specs_vues": {},
+   "note": "Cité dans le texte de la page NA mais aucune fiche en-US/en-CA. Statut NA et années inconnus."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "AL430",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.gehl.com/en-CA/our-machines/articulated-loaders",
+   "citation": "For jobs requiring extra reach, the GEHL AL430's longer boom gets the job done with ease.",
+   "specs_vues": {},
+   "note": "Idem AL330."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "140 / 340 / 540",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": 2010,
+   "variante_bd_proche": null,
+   "url": "https://maplelanefarmservice.ca/resources/specsheets/gehl/articulated-loader/Gehl_Articulated_Loaders.pdf",
+   "citation": "« © 2012 Manitou Americas, Inc. Gehl. ... AL-0412-3M » ; « Model 340 »",
+   "specs_vues": {},
+   "note": "Brochure Gehl 2012 chez un concessionnaire canadien ; lancement NA 2010 selon presse. Aucune preuve fabricant de vente en 2015+ (presse cite une brochure 2015 AL-0815-5M pour 340/540, non ouverte)."
+  },
+  {
+   "fabricant": "Gehl",
+   "modele": "650 / 750",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": 2016,
+   "variante_bd_proche": null,
+   "url": "https://www.constructionequipmentguide.com/gehl-introduces-all-new-650-750-articulated-loaders-for-north-america/29214",
+   "citation": "additions to the Gehl family of articulated loaders (CEG, 2016-05-27)",
+   "specs_vues": {},
+   "note": "Source tierce seulement. Probablement à fusionner avec AL650/AL750."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW60 Series 2",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.takeuchi-us.com/equipment/wheel-loaders/tw60-series-2",
+   "citation": "TW60 Series 2 Compact Wheel Loader",
+   "specs_vues": {
+    "Operating weight": "10,692 lb (4,850 kg)",
+    "HP/Engine Output": "61.2 HP (45.6 kW)",
+    "ROC": "3,437 lb"
+   },
+   "note": "Trifold Takeuchi daté déc. 2019 (URL 404 aujourd'hui) : lancement vers 2020 non confirmé."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW80 Series 3",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.takeuchi-us.com/equipment/wheel-loaders/tw80-series-3",
+   "citation": "TW80 Series 3, Compact Wheel Loader",
+   "specs_vues": {
+    "Operating Weight": "12,699 lb (5,760 kg)",
+    "HP/Engine Output": "73.4 HP (54 kW)",
+    "ROC": "4,301 lb"
+   },
+   "note": "Trifold Takeuchi « Jan 2020 » (404) : vers 2020, non confirmé."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW95",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://takeuchi-us.com/equipment/wheel-loaders/tw95",
+   "citation": "TW95",
+   "specs_vues": {
+    "Operating weight": "18,188 lb (8 250 kg)",
+    "Engine": "114 HP (85 kW)",
+    "ROC": "6,326 lb"
+   },
+   "note": "Lancement non publié."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW80 Series 2",
+   "statut": "absent",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.smsequipment.com/getmedia/6efd1f68-4218-489c-85ba-32d2a0e1ba0a/TW80c2.pdf",
+   "citation": "FORM: TW80 Series 2 Wheel Loader Spec Sheet - Mar. 2017 ; © 2017 Takeuchi Manufacturing (U.S.), Ltd.",
+   "specs_vues": {
+    "Operating Weight - Cab": "12,700 lb (5,760 kg)",
+    "Tipping Load, Full Turn": "8,890 lb (4,033 kg)",
+    "Engine": "73 hp (54.0 kW)"
+   },
+   "note": "Génération antérieure (environ 2017-2020, remplacée par Series 3). Fiche fabricant chez SMS Equipment (concessionnaire Takeuchi au Canada). Années exactes à trancher."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW65 Series 2",
+   "statut": "absent",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://power-equip.com/wp-content/uploads/2016/08/Takeuchi-Compact-Wheel-Loader-TW65.pdf",
+   "citation": "TW65 SERIES 2 - Wheel Loader ... FORM: TW65 SERIES 2 Spec Sheet Aug. 2014",
+   "specs_vues": {
+    "Horsepower": "73 hp (54 kW)"
+   },
+   "note": "Génération antérieure, vendue au moins en 2015-2016. Mise en page du PDF ambiguë pour poids et tipping : non repris. Fin de vente inconnue."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW40",
+   "statut": "absent",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://power-equip.com/wp-content/uploads/2018/04/Takeuchi-Compact-Wheel-Loader-TW40.pdf",
+   "citation": "TW40 - Wheel Loader ... © 2015 Takeuchi Manufacturing (U.S.), Ltd. ... FORM: TW40 Spec Sheet Jun. 2015",
+   "specs_vues": {
+    "Horsepower": "39.4 hp (29.4 kW)"
+   },
+   "note": "Génération antérieure, présente en 2015. Poids/tipping : colonnes mal alignées dans le PDF, non repris. Fin de vente inconnue."
+  },
+  {
+   "fabricant": "Takeuchi",
+   "modele": "TW50 / TW80 (Series 1)",
+   "statut": "non_verifiable",
+   "annees_a_ajouter": [],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.constructionequipmentguide.com/takeuchi-introduces-new-wheel-loader-product-line/7648",
+   "citation": "TW50, TW60, TW65 and TW80 (presse)",
+   "specs_vues": {},
+   "note": "Fiches fabricant 2012 sur takeuchi-us.com = 404. Vente en 2015+ non prouvée."
+  },
+  {
+   "fabricant": "Yanmar",
+   "modele": "V4-7",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.yanmarce.com/product/v4-7/",
+   "citation": "V4-7",
+   "specs_vues": {
+    "Operating Weight (cab)": "8,422 lbs (3,820 kg)",
+    "Tipping Load, Articulated": "5,058 lbs (22.5 kN)",
+    "Output": "39 HP"
+   },
+   "note": "Déjà dans la gamme en 2017 selon presse ; année de début non trouvée."
+  },
+  {
+   "fabricant": "Yanmar",
+   "modele": "V7",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2024,
+    2025,
+    2026
+   ],
+   "annee_lancement": 2023,
+   "variante_bd_proche": null,
+   "url": "https://www.yanmarce.com/product/v7/",
+   "citation": "Grand Rapids, MN (December 4, 2023) ... fills the gap in the Yanmar wheel loader line between the V4-7 and the V8.",
+   "specs_vues": {
+    "Operating weight": "9,370 lbs. / 4,250 kg",
+    "Tipping load, articulated": "5,864 lbs / 26 kN",
+    "Engine output": "47.6 HP"
+   },
+   "note": "Communiqué Yanmar America : https://www.mynewsdesk.com/us/yanmar/pressreleases/yanmars-new-v7-compact-wheel-loader-features-premium-capabilities-and-speed-3290818"
+  },
+  {
+   "fabricant": "Yanmar",
+   "modele": "V8",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.yanmarce.com/product/v8/",
+   "citation": "Yanmar V8 Wheel Loader",
+   "specs_vues": {
+    "Operating weight": "10,802 lbs / 4,900 kg",
+    "Tipping Load, Articulated": "7,341 lbs",
+    "Engine": "62 hp / 46.2 kW"
+   },
+   "note": "Ajouté en 2017 selon presse (communiqué yanmar.com en 403) : 2017-2024 à confirmer."
+  },
+  {
+   "fabricant": "Yanmar",
+   "modele": "V10",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.yanmarce.com/product/v10/",
+   "citation": "V10",
+   "specs_vues": {
+    "Operating weight": "12,787 lbs (5,800 kg)",
+    "Tipping Load, Articulated": "8,510 lbs (3,860 kg)",
+    "Engine": "73 hp (53.7 kW)"
+   },
+   "note": "Idem V8."
+  },
+  {
+   "fabricant": "Yanmar",
+   "modele": "V12",
+   "statut": "absent",
+   "annees_a_ajouter": [
+    2025,
+    2026
+   ],
+   "annee_lancement": null,
+   "variante_bd_proche": null,
+   "url": "https://www.yanmarce.com/product/v12/",
+   "citation": "Wheel Loader V12",
+   "specs_vues": {
+    "Operating weight": "15,432 lb (7,000 kg)",
+    "Tipping Load, Articulated": "9,700 lb (4,400 kg)",
+    "Engine": "100 hp (74.4 kW)"
+   },
+   "note": "Idem V8."
+  }
+ ],
+ "a_verifier": [
+  {
+   "fabricant": "Kubota",
+   "modele_bd": "R630C",
+   "probleme": "BD : 2015 seulement ; aucun « R630C » vu sur la page Kubota USA. Variante ou doublon de R630 à confirmer.",
+   "url": "https://www.kubotausa.com/products/construction/wheel-loaders"
+  },
+  {
+   "fabricant": "Bobcat",
+   "modele_bd": "(aucun)",
+   "probleme": "Années de vente du L85 (Historical) et années de début de L23/L28/L65 (presse : 2020-2021, non officiel) à trancher avant ajout.",
+   "url": "https://www.bobcat.com/na/en/equipment/loaders/compact-wheel-loaders"
+  }
+ ]
+}
