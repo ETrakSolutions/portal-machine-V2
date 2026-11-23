@@ -1310,6 +1310,7 @@ function _champsACorriger(P, type) {
 // description le gabarit « Numéro d'ordre: … Information de la personne responsable… » et le
 // remplit avec le client. Chaque ligne doit porter une valeur sur la meme ligne, apres le
 // deux-points ; si l'info ne s'applique pas (ex. pas de code de demarrage), Luna ecrit « N/A ».
+// Variantes admises (2026-11-23, INS024801/802) : « Nom du client », « Personne responsable sur place ».
 // Sortie : les CODES des lignes vides ou absentes, jamais leur contenu. Un SAV n'a pas de gabarit.
 var PREP_INFO_CLIENT = [
   ['ordre', /^num[ée]ro d['’]ordre(?![a-z])[^:\n]*:(.*)$/im],
@@ -1320,8 +1321,8 @@ var PREP_INFO_CLIENT = [
   ['unite', /^num[ée]ro d['’]unit[ée](?![a-z])[^:\n]*:(.*)$/im],
   ['demarrage', /^code de d[ée]marrage(?![a-z])[^:\n]*:(.*)$/im],
   ['adresse', /^adresse de l['’]installation(?![a-z])[^:\n]*:(.*)$/im],
-  ['client', /^nom de votre client(?![a-z])[^:\n]*:(.*)$/im],
-  ['responsable', /^information de la personne responsable(?![a-z])[^:\n]*:(.*)$/im]
+  ['client', /^nom (?:de votre|du) client(?![a-z])[^:\n]*:(.*)$/im],
+  ['responsable', /^(?:information de la )?personne responsable(?![a-z])[^:\n]*:(.*)$/im]
 ];
 function _infoClientManquante(description) {
   var txt = String(description || '')
@@ -1376,7 +1377,10 @@ function _calculPrepJobs(maintenant) {
       telChiffres: contact.replace(/\D/g, '').length,
       emplacement: !!(t.location && (t.location.id || _labelDe(t.location))),
       lignes: !!(t.itemList && t.itemList.items && t.itemList.items.length),
-      infoClient: _norm(_labelDe(t.type)) === 'installation' ? _infoClientManquante(t.description) : []
+      // N° d'ordre = bon de commande du client : le champ « Bon de commande » rempli suffit (Jacquot, 2026-11-23)
+      infoClient: _norm(_labelDe(t.type)) !== 'installation' ? [] : _infoClientManquante(t.description).filter(function (c) {
+        return !(c === 'ordre' && String(_plProp(P, 'informations_generales', 'bon_commande') || '').trim());
+      })
     });
   });
   jobs.sort(function (a, b) { return (a.rv || '9') < (b.rv || '9') ? -1 : (a.rv || '9') > (b.rv || '9') ? 1 : 0; });

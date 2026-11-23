@@ -107,12 +107,18 @@ FAUX = [
   base('INS17', { itemList: undefined }),                                                 // pas d'onglet Facture
   base('INS18', { description: GABARIT.replace('Année: N/A', 'Année:').replace(': 4242', ':   ').replace(/\nNom de votre client[^\n]*/, '') }),
   base('INS19', { description: '<p>' + GABARIT.replace(/'/g, '&#39;').split('\n').join('</p><p>') + '</p>' }),  // HTML
+  // Pas de ligne « Numéro d'ordre » : le champ Bon de commande la remplace (INS22) ; vide = signale (INS23)
+  base('INS22', { description: GABARIT.replace(/Numéro d'ordre: 99887\n/, '') }),
+  base('INS23', { description: GABARIT.replace(/Numéro d'ordre: 99887\n/, ''), properties: { 'informations_generales.contact_sur_place': 'Paul Tremblay (819) 555-1234', 'informations_generales.numero_contact': '43854 - 12539' } }),
+  // Variante MAJUSCULES « NOM DU CLIENT / PERSONNE RESPONSABLE SUR PLACE » (INS024801, 2026-11-23)
+  base('INS21', { description: GABARIT.replace(/Nom de votre client \(compagnie\)/, 'NOM DU CLIENT ')
+    .replace(/Information de la personne responsable sur place incluant son téléphone/, 'PERSONNE RESPONSABLE SUR PLACE ') }),
   base('SAV20', { type: { label: 'SAV' }, description: 'Code de démarrage :' }),        // un SAV n'a pas de gabarit
 ];
 let r = post({ action: 'getprepjobs', token: tok('dluna@e-trak.ca', 'L') });
 const jobs = (r.prep && r.prep.jobs) || [], J_ = c => jobs.find(x => x.code === c) || {};
 check('reponse ok (Luna)', r.ok === true);
-check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS16', 'INS17', 'INS18', 'INS19', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2', 'SAV20']));
+check('seulement Installation et SAV non terminees, non annulees', JSON.stringify(jobs.map(x => x.code).sort()) === JSON.stringify(['INS1', 'INS11', 'INS13', 'INS15', 'INS16', 'INS17', 'INS18', 'INS19', 'INS21', 'INS22', 'INS23', 'INS3', 'INS4', 'INS5', 'SAV12', 'SAV14', 'SAV2', 'SAV20']));
 check('triees par date (SAV2 demain en premier)', jobs[0] && jobs[0].code === 'SAV2');
 check('INS1 complete', J_('INS1').commande && J_('INS1').contactNom && J_('INS1').telOk && J_('INS1').emplacement);
 check('SAV2 : photo seulement -> commande manquante', J_('SAV2').commande === false);
@@ -140,6 +146,8 @@ const IC = c => JSON.stringify(J_(c).infoClient);
 check('info client : gabarit rempli, N/A accepte (INS1)', IC('INS1') === '[]');
 check('info client : annee vide, code blanc, ligne client absente (INS18)', IC('INS18') === '["annee","demarrage","client"]');
 check('info client : description en HTML lue (INS19)', IC('INS19') === '[]');
+check('info client : « NOM DU CLIENT » et « PERSONNE RESPONSABLE SUR PLACE » acceptes (INS21)', IC('INS21') === '[]');
+check('info client : n° d\'ordre absent mais Bon de commande rempli -> OK (INS22) ; vide -> signale (INS23)', IC('INS22') === '[]' && IC('INS23') === '["ordre"]');
 check('info client : SAV jamais juge (SAV2, SAV20)', IC('SAV2') === '[]' && IC('SAV20') === '[]');
 check('info client : le contenu de la description ne sort jamais', !/Secrete|Cachee|SNSECRET|99887|4242/.test(JSON.stringify(r)));
 check('onglet Facture : une ligne -> lignes true (INS1)', J_('INS1').lignes === true);
