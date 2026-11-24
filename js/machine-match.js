@@ -78,6 +78,34 @@
         return res;
     }
 
+    // Meme modele, meme fabricant, mais rangé sous un AUTRE type de machine (Steve, 2026-11-24) :
+    // Luna a demandé une « Excavatrice Caterpillar 420 », alors que la 420 est une rétrocaveuse.
+    // Un fabricant n'utilise pas le même numéro pour deux types. Nom identique seulement (pas
+    // de « proche » : PC210 / PC220 d'un autre type ne veut rien dire). « CAT » = « Caterpillar ».
+    var ALIAS_FAB = { cat: 'caterpillar' };
+    function normFab(f) { var n = norm(f); return ALIAS_FAB[n] || n; }
+    // -> [{ type, fab, modele, annees:[...] }]
+    function autresTypes(data, type, fab, modele) {
+        var t = norm(modele), nf = normFab(fab), res = [];
+        if (!t || !nf || !data) return res;
+        Object.keys(data).filter(function (ty) { return ty !== type && ty.charAt(0) !== '_'; }).forEach(function (ty) {
+            Object.keys(data[ty] || {}).filter(function (f) { return f.charAt(0) !== '_' && normFab(f) === nf; }).forEach(function (f) {
+                var vus = {};
+                Object.keys(data[ty][f] || {}).filter(function (y) { return y.charAt(0) !== '_'; }).forEach(function (y) {
+                    var mods = data[ty][f][y];
+                    if (!mods || typeof mods !== 'object') return;
+                    Object.keys(mods).filter(function (m) { return m.charAt(0) !== '_'; }).forEach(function (m) {
+                        if (cles(m).indexOf(t) < 0) return;
+                        if (!vus[m]) { vus[m] = { type: ty, fab: f, modele: m, annees: [] }; res.push(vus[m]); }
+                        vus[m].annees.push(y);
+                    });
+                });
+            });
+        });
+        res.forEach(function (s) { s.annees.sort(); });
+        return res.slice(0, 6);
+    }
+
     function annees(liste) {
         if (liste.length <= 2) return liste.join(', ');
         return liste[0] + '–' + liste[liste.length - 1];
@@ -85,10 +113,14 @@
 
     // Avant de demander l'ajout : si la machine (ou une machine proche) est deja dans la base,
     // la fenetre `modal` le dit et propose de l'ouvrir. o = { data, type, fab, modele, annee,
-    // modal, onChoisir(annee, modele), onContinuer(), onAnnuler() }.
+    // modal, onChoisir(annee, modele), onContinuer(), onAnnuler(),
+    // onAutreType(type, fab, annee, modele) (facultatif) }.
+    // Ordre : 1) meme machine dans ce type ; 2) meme modele dans un AUTRE type ;
+    // 3) machines semblables dans ce type ; sinon la demande part.
     function verifierAvantDemande(o) {
         var r = chercher(o.data, o.type, o.fab, o.modele, o.annee);
-        if (!r.exact && !r.semblables.length) { o.onContinuer(); return; }
+        var autres = (!r.exact && o.onAutreType) ? autresTypes(o.data, o.type, o.fab, o.modele) : [];
+        if (!r.exact && !autres.length && !r.semblables.length) { o.onContinuer(); return; }
         var t = function (k, fb, p) {
             var v = (typeof i18n !== 'undefined') ? i18n.t(k, p) : k;
             if (!v || v === k) {
@@ -100,7 +132,23 @@
         var esc = function (s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
         var boite = o.modal.querySelector('.custom-modal') || o.modal;
         var html = '';
-        if (r.exact) {
+        var nomType = function (ty) { var v = t('type.' + ty, ty); return v; };
+        if (autres.length) {
+            html = '<h3>' + esc(t('mm.other_type_title', 'Ce modèle existe dans un autre type de machine')) + '</h3>' +
+                '<p class="modal-desc">' + esc(t('mm.other_type_desc',
+                    '« {fab} {saisi} » est inscrit comme {autre} dans la base, pas comme {type}. Un fabricant n\'utilise pas le même numéro de modèle pour deux types de machine : choisissez plutôt ce type.',
+                    { fab: o.fab, saisi: o.modele, autre: nomType(autres[0].type), type: nomType(o.type) })) + '</p>' +
+                '<div class="mm-liste" style="display:flex;flex-direction:column;gap:0.4rem;margin:0.6rem 0">';
+            autres.forEach(function (s) {
+                var y = s.annees.indexOf(String(o.annee)) >= 0 ? String(o.annee) : s.annees[s.annees.length - 1];
+                html += '<button type="button" class="modal-btn modal-btn-create" style="text-align:left" data-mm="autre" data-type="' + esc(s.type) + '" data-fab="' + esc(s.fab) + '" data-annee="' + esc(y) + '" data-modele="' + esc(s.modele) + '">' +
+                    esc(nomType(s.type)) + ' : ' + esc(s.fab) + ' <strong>' + esc(s.modele) + '</strong> — ' + esc(annees(s.annees)) + '</button>';
+            });
+            html += '</div><div class="modal-buttons">' +
+                '<button type="button" class="modal-btn modal-btn-cancel" data-mm="annuler">' + esc(t('common.annuler', 'Annuler')) + '</button>' +
+                '<button type="button" class="modal-btn" data-mm="suite">' + esc(t('mm.other_type_continue', 'Garder « {type} » et continuer', { type: nomType(o.type) })) + '</button>' +
+                '</div>';
+        } else if (r.exact) {
             html = '<h3>' + esc(t('mm.exists_title', 'Cette machine est déjà dans la base')) + '</h3>' +
                 '<p class="modal-desc">' + esc(o.fab) + ' <strong>' + esc(r.exact.modele) + '</strong> (' + esc(r.exact.annee) + ')</p>' +
                 '<p class="modal-desc">' + esc(t('mm.exists_desc', 'Vous avez tapé « {saisi} ». Ouvrez la fiche existante : aucune demande d\'ajout n\'est nécessaire.', { saisi: o.modele })) + '</p>' +
@@ -127,13 +175,17 @@
             b.addEventListener('click', function () {
                 var a = b.getAttribute('data-mm');
                 if (a === 'choisir') o.onChoisir(b.getAttribute('data-annee'), b.getAttribute('data-modele'));
+                else if (a === 'autre') o.onAutreType(b.getAttribute('data-type'), b.getAttribute('data-fab'), b.getAttribute('data-annee'), b.getAttribute('data-modele'));
                 else if (a === 'continuer') o.onContinuer();
+                // « continuer quand meme » apres l'avertissement d'autre type : on reprend la
+                // verification normale (semblables du type choisi) sans reposer la question.
+                else if (a === 'suite') { var o2 = {}; Object.keys(o).forEach(function (k) { o2[k] = o[k]; }); delete o2.onAutreType; verifierAvantDemande(o2); }
                 else o.onAnnuler();
             });
         });
-        var premier = boite.querySelector('[data-mm="choisir"]');
+        var premier = boite.querySelector('[data-mm="choisir"], [data-mm="autre"]');
         if (premier) premier.focus();
     }
 
-    window.machineMatch = { norm: norm, cles: cles, chercher: chercher, verifierAvantDemande: verifierAvantDemande };
+    window.machineMatch = { norm: norm, cles: cles, chercher: chercher, autresTypes: autresTypes, verifierAvantDemande: verifierAvantDemande };
 })();

@@ -422,6 +422,16 @@ function showCustomModelModal(type, fab, annee) {
                 populateModeles(type, fab, y);
                 selectModele.value = m;
                 selectModele.dispatchEvent(new Event('change'));
+            },
+            // Même modèle sous un autre type (Steve, 2026-11-24) : on bascule le type et on l'ouvre.
+            onAutreType: function (ty, f, y, m) {
+                modal.remove();
+                selectType.value = ty; selectType.dispatchEvent(new Event('change'));
+                selectFabricant.value = f; selectFabricant.dispatchEvent(new Event('change'));
+                selectAnnee.value = y;
+                populateModeles(ty, f, y);
+                selectModele.value = m;
+                selectModele.dispatchEvent(new Event('change'));
             }
         });
     });

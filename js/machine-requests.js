@@ -54,6 +54,20 @@ function courrielMachineAjoutee(p, typeCle) {
             return !!(fullData && fullData[type] && fullData[type][fab] && fullData[type][fab][annee] && fullData[type][fab][annee][modele]);
         }
 
+        // Même modèle déjà inscrit sous un AUTRE type (Steve, 2026-11-24 : « Excavatrice
+        // Caterpillar 420 » demandée, la 420 est une rétrocaveuse) : avis sous le modèle.
+        function autreTypeAvis(r) {
+            if (!window.machineMatch || !machineMatch.autresTypes || !fullData) return '';
+            if (machineExists(r.type, r.fab, r.annee, r.modele)) return '';
+            var a = machineMatch.autresTypes(fullData, r.type, r.fab, r.modele);
+            if (!a.length) return '';
+            return '<div class="mr-autre-type" style="color:#FFB45C;font-size:0.78rem;margin-top:2px">&#9888; ' +
+                a.map(function (s) {
+                    return esc(t('mr.other_type', 'Existe en {autre} : {fab} {modele}')
+                        .replace('{autre}', t('type.' + s.type, s.type)).replace('{fab}', s.fab).replace('{modele}', s.modele));
+                }).join('<br>&#9888; ') + '</div>';
+        }
+
         // ---- Chargement types (depuis machines.json) + demandes ----
         function populateTypes() {
             var sel = document.getElementById('mr-type');
@@ -107,7 +121,7 @@ function courrielMachineAjoutee(p, typeCle) {
                 html += '<tr data-id="' + esc(r.id) + '">' +
                     '<td>' + esc(t('type.' + r.type, r.type)) + '</td>' +
                     '<td>' + esc(r.fab) + '</td>' +
-                    '<td>' + esc(r.modele) + '</td>' +
+                    '<td>' + esc(r.modele) + autreTypeAvis(r) + '</td>' +
                     '<td>' + esc(r.annee) + '</td>' +
                     '<td>' + esc(r.requester) + '</td>' +
                     '<td>' + esc(r.date) + '</td>' +

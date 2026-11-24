@@ -91,9 +91,9 @@ def charger(page):
         "return (typeof machinesData !== 'undefined') && Object.keys(machinesData).length > 0;"))
 
 
-def demande_soumission(fab, modele, annee):
+def demande_soumission(fab, modele, annee, type_='Excavatrice'):
     charger('soumission.html')
-    choisir('select-type', 'Excavatrice')
+    choisir('select-type', type_)
     choisir('select-fabricant', fab)
     choisir('select-modele', '__OTHER__')
     time.sleep(0.4)
@@ -172,6 +172,22 @@ try:
         check('aucune fiche creee ni ecriture', dv.execute_script("return window.__ecrits.length;") == 0)
     else:
         print('  [--] « Autre modele » absent pour l invite sur la page Machine : etape non testee')
+
+    print('--- 6) Meme modele sous un AUTRE type (Steve, 2026-11-24 : Excavatrice Caterpillar 420) ---')
+    demande_soumission('Caterpillar', '420', '2019')
+    txt = modal_texte() or ''
+    check('fenetre « autre type » : 420 inscrite comme Retrocaveuse', 'autre type' in txt and '420' in txt and 'trocaveuse' in txt)
+    check('clic « Retrocaveuse : Caterpillar 420 »', bouton('Caterpillar 420'))
+    time.sleep(0.8)
+    check('type Retrocaveuse, 420 ouvert (%s / %s)' % tuple(dv.execute_script("return [selectType.value, selectModele.value];")),
+          dv.execute_script("return selectType.value === 'Retrocaveuse' && selectModele.value === '420' && selectFabricant.value === 'Caterpillar';"))
+    check('aucun panneau de demande', not dv.execute_script("return !!document.getElementById('soumission-request-panel');"))
+    demande_soumission('Caterpillar', '420', '2019')
+    check('« Garder Excavatrice et continuer »', bouton('continuer'))
+    time.sleep(0.5)
+    panneau = dv.execute_script("var p=document.getElementById('soumission-request-panel'); return p ? p.textContent : '';")
+    check('panneau de demande « Caterpillar 420 (2019) »', 'Caterpillar 420 (2019)' in panneau)
+    check('aucune ecriture', dv.execute_script("return window.__ecrits.length;") == 0)
 
     err = [l['message'] for l in dv.get_log('browser') if l['level'] == 'SEVERE'
            and 'version.json' not in l['message'] and 'favicon' not in l['message']]

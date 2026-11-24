@@ -1666,12 +1666,24 @@ function showSoumissionCustomModelModal(type, fab) {
         if (!/^\d{4}$/.test(yr)) { yearF.style.borderColor = 'red'; return; }
         var demander = function () { modal.remove(); showSoumissionRequestPanel(type, fb, nm, yr); };
         // La machine est-elle deja dans la base (autre casse, espaces, variante) ? (Steve, 2026-10-08)
-        if (fabLibre || !window.machineMatch) { demander(); return; }
+        // Fabricant tapé (absent de ce type) : seule la vérification « autre type » s'applique.
+        if (!window.machineMatch) { demander(); return; }
         machineMatch.verifierAvantDemande({
             data: machinesData, type: type, fab: fb, modele: nm, annee: yr, modal: modal,
             onContinuer: demander,
-            onAnnuler: function () { modal.remove(); selectModele.value = ''; hideOptions(); },
-            onChoisir: function (y, m) { modal.remove(); ouvrirMachineExistante(type, fb, y, m); }
+            onAnnuler: function () {
+                modal.remove();
+                if (fabLibre) { selectFabricant.value = ''; resetFrom('annee'); } else selectModele.value = '';
+                hideOptions();
+            },
+            onChoisir: function (y, m) { modal.remove(); ouvrirMachineExistante(type, fb, y, m); },
+            // Même modèle sous un autre type (Steve, 2026-11-24) : on bascule le type et on l'ouvre.
+            onAutreType: function (ty, f, y, m) {
+                modal.remove();
+                selectType.value = ty; doTypeChange();
+                selectFabricant.value = f; doFabChange();
+                ouvrirMachineExistante(ty, f, y, m);
+            }
         });
     });
     if (fabF) fabF.addEventListener('keydown', function(e){ if (e.key === 'Enter') nameF.focus(); if (e.key === 'Escape') document.getElementById('modal-cancel').click(); });
