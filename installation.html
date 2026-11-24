@@ -72,6 +72,27 @@
         .in-diff .in-photos .in-photo.ajout { outline: 3px solid #2ecc71; }
         .in-diff .in-photos .in-photo.retrait { outline: 3px solid #e74c3c; opacity: .55; }
         .in-diff .avant-apres { font-size: .85rem; color: #ccc; }
+        /* Validation avec choix (Steve, 2026-11-24) : garder un retrait, refuser un ajout */
+        .in-diff .aide { font-size: .78rem; color: #bbb; margin: -2px 0 8px; }
+        .in-diff .txt.choix { line-height: 1.75; }
+        .in-diff .chg ins, .in-diff .chg del { padding: 1px 2px; }
+        .in-diff .ch { display: inline-block; font: inherit; font-size: .7rem; font-weight: 700; border-radius: 99px; padding: 1px 7px; margin-left: 3px; cursor: pointer; border: 1px solid; vertical-align: 1px; background: #1f1f1f; white-space: nowrap; }
+        .in-diff .ch.garder { color: #FFB45C; border-color: #FF8C00; }
+        .in-diff .ch.refuser { color: #ffb3aa; border-color: #e74c3c; }
+        .in-diff .chg.choisi ins, .in-diff .chg.choisi del { background: rgba(160,160,160,.18); color: #999; text-decoration: line-through; }
+        .in-diff .chg.choisi.garde del { text-decoration: none; color: #ddd; background: rgba(255,140,0,.18); }
+        .in-diff .choisi .ch { background: #444; color: #fff; border-color: #888; }
+        .in-ph-ch { display: inline-flex; flex-direction: column; gap: 4px; }
+        .in-ph-ch .lab { font-size: .72rem; display: flex; justify-content: space-between; align-items: center; gap: 4px; }
+        .in-ph-ch.ajout .lab span { color: #9ff0bf; } .in-ph-ch.retrait .lab span { color: #ffb3aa; }
+        .in-diff .in-ph-ch.choisi.retrait .in-photo { outline-color: #FF8C00; opacity: 1; }
+        .in-diff .in-ph-ch.choisi.ajout .in-photo { outline-color: #888; opacity: .35; }
+        .in-choix-band { font-size: .8rem; color: #FFB45C; background: rgba(255,140,0,.1); border: 1px solid rgba(255,140,0,.4); border-radius: 8px; padding: 6px 10px; margin-top: 8px; }
+        .in-retirees { border: 1px dashed #e74c3c; border-radius: 10px; padding: 8px 10px; margin-top: 10px; background: rgba(231,76,60,.06); }
+        .in-retirees > b { font-size: .8rem; color: #ffb3aa; }
+        .in-retirees .aide { font-size: .78rem; color: #bbb; margin: 2px 0 6px; }
+        .in-retirees .in-photo { outline: 3px solid #e74c3c; opacity: .7; }
+        .in-retirees .ch { font: inherit; font-size: .72rem; font-weight: 700; border-radius: 99px; padding: 2px 8px; cursor: pointer; border: 1px solid #FF8C00; color: #FFB45C; background: #1f1f1f; }
         .in-autre { color: #9fb0c0; font-size: 0.8rem; margin-top: 4px; white-space: pre-wrap; }
         .in-autre b { color: #6f8396; font-weight: 600; margin-right: 4px; }
         .in-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
@@ -193,6 +214,7 @@
                     </div>
                     <h3 data-tx="Photos|Photos">Photos</h3>
                     <div class="in-photos" id="e-photos"></div>
+                    <div class="in-retirees" id="e-retirees" style="display:none"></div>
                     <label class="in-btn in-up"><input type="file" accept="image/*" multiple id="e-file">📷 <span data-tx="Ajouter des photos|Add photos">Ajouter des photos</span></label>
 
                     <h3 data-tx="Pièces et harnais|Parts and harnesses">Pièces et harnais</h3>
@@ -252,6 +274,6 @@
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
     <script src="js/combo-filtre.js?v=2"></script>
-    <script src="js/installation.js?v=6"></script>
+    <script src="js/installation.js?v=7"></script>
 </body>
 </html>

@@ -545,6 +545,99 @@ def main():
     finally:
         d.quit()
 
+    print('11) Validation avec choix : garder un retrait, refuser un ajout (Steve, 2026-11-24)')
+    O11 = dict(EXEMPLE, photos=['PHOTO_A0000001', 'PHOTO_B0000002'],
+               texte='Installer le capteur sur la flèche. Percer sous le siège pour le câble.',
+               en=dict(EXEMPLE['en'], texte='Install the sensor on the boom. Drill under the seat for the cable.'),
+               pieces=[{'txt': 'Z03B-0041 — Harnais', 'qte': '1'}, {'txt': '1500-0009 — Drain', 'qte': '1'}])
+    P11 = dict(O11, id='p1', statut='brouillon', remplace='v1', photos=['PHOTO_A0000001', 'PHOTO_C0000003'],
+               texte='Installer le capteur sur la flèche. Passer le câble derrière le siège.',
+               en=dict(EXEMPLE['en'], texte='Install the sensor on the boom. Route the cable behind the seat.'),
+               pieces=[{'txt': 'Z03B-0041 — Harnais', 'qte': '1'}])
+    sel = '.in-card[data-id="p1"] '
+    def clic_ch(d, texte):
+        d.execute_script("var z=[...document.querySelectorAll(arguments[0]+'[data-ch]')].find(z=>z.textContent.indexOf(arguments[1])>=0||z.getAttribute('data-ch').indexOf(arguments[1])>=0); z.querySelector('.ch').click()", sel, texte)
+        time.sleep(0.2)
+    d = navigateur('technicien', valideur=True, notes=[O11, P11], photos=PH9)
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"p1\"] .in-head').click()")
+        time.sleep(1.0)
+        nb = d.execute_script("return [document.querySelectorAll(arguments[0]+'.in-diff .ch.garder').length, document.querySelectorAll(arguments[0]+'.in-diff .ch.refuser').length]", sel)
+        v('boutons : 3 Garder (phrase, photo, piece), 2 Refuser (phrase, photo)', nb == [3, 2], nb)
+        v('aide affichee', 'Garder' in d.find_element(By.CSS_SELECTOR, sel + '.in-diff .aide').text)
+        val = lambda: d.find_element(By.CSS_SELECTOR, sel + '[data-act="valider"]').text
+        v('bouton Valider simple au depart', val() == '✓ Valider', val())
+        clic_ch(d, 'Percer sous le siège')
+        clic_ch(d, 'ph-:PHOTO_B0000002')
+        clic_ch(d, 'ph+:PHOTO_C0000003')
+        v('Valider avec mes choix (3)', val() == '✓ Valider avec mes choix (3)', val())
+        v('bandeau affiche', '3 changement(s)' in d.find_element(By.CSS_SELECTOR, sel + '.in-choix-band').text)
+        v('phrase gardee marquee', d.execute_script("return !!document.querySelector(arguments[0]+'.chg.choisi.garde')", sel))
+        clic_ch(d, 'ph+:PHOTO_C0000003')   # annuler ce choix
+        v('annuler un choix : (2)', val() == '✓ Valider avec mes choix (2)', val())
+        clic_ch(d, 'ph+:PHOTO_C0000003')
+        d.find_element(By.CSS_SELECTOR, sel + '[data-act="valider"]').click()
+        time.sleep(1.0)
+        s11, v11 = appels(d, 'saveinst'), appels(d, 'validateinst')
+        x = s11[0]['note'] if s11 else {}
+        v('saveinst puis validateinst', len(s11) == 1 and len(v11) == 1 and v11[0].get('id') == 'p1', [len(s11), len(v11)])
+        v('enregistre en place (proposer false, id de la proposition)', s11 and s11[0].get('proposer') is False and x.get('id') == 'p1')
+        v('texte FR : phrase gardee + phrase ajoutee', x.get('texte') == 'Installer le capteur sur la flèche. Percer sous le siège pour le câble. Passer le câble derrière le siège.', x.get('texte'))
+        v('texte EN : meme choix applique', x.get('en', {}).get('texte') == 'Install the sensor on the boom. Drill under the seat for the cable. Route the cable behind the seat.', x.get('en', {}).get('texte'))
+        v('photos : B gardee a sa place, C refusee', x.get('photos') == ['PHOTO_A0000001', 'PHOTO_B0000002'], x.get('photos'))
+        v('pieces : inchangees (aucun choix)', x.get('pieces') == [{'txt': 'Z03B-0041 — Harnais', 'qte': '1'}], x.get('pieces'))
+        v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+    # Anglais structure differente -> vide (le serveur retraduit) ; Annuler mes choix
+    P11b = dict(P11, en=dict(EXEMPLE['en'], texte='Install the sensor on the boom, route the cable behind the seat.'))
+    d = navigateur('technicien', valideur=True, notes=[O11, P11b], photos=PH9)
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"p1\"] .in-head').click()")
+        time.sleep(1.0)
+        clic_ch(d, 'pc-:1500-0009')
+        clic_ch(d, 'Percer sous le siège')
+        d.find_element(By.CSS_SELECTOR, sel + '[data-act="razchoix"]').click()
+        time.sleep(0.4)
+        v('Annuler mes choix : remis a zero', d.find_element(By.CSS_SELECTOR, sel + '[data-act="valider"]').text == '✓ Valider'
+          and not d.find_elements(By.CSS_SELECTOR, sel + '.choisi'))
+        clic_ch(d, 'pc-:1500-0009')
+        clic_ch(d, 'Percer sous le siège')
+        d.find_element(By.CSS_SELECTOR, sel + '[data-act="valider"]').click()
+        time.sleep(1.0)
+        x = (appels(d, 'saveinst') or [{}])[0].get('note', {})
+        v('EN de structure differente : vide pour retraduction', x.get('en', {}).get('texte') == '', x.get('en', {}).get('texte'))
+        v('piece retiree gardee', {'txt': '1500-0009 — Drain', 'qte': '1'} in (x.get('pieces') or []), x.get('pieces'))
+    finally:
+        d.quit()
+    # Formulaire Modifier : photos retirees avec « Remettre »
+    d = navigateur('technicien', valideur=True, notes=[O11, P11], photos=PH9)
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"p1\"] .in-head').click()")
+        time.sleep(0.6)
+        d.execute_script("[...document.querySelectorAll('.in-card[data-id=\"p1\"] button')].find(b=>b.dataset.act==='modifier').click()")
+        time.sleep(0.8)
+        z = d.find_element(By.ID, 'e-retirees')
+        v('Modifier : zone des photos retirees visible (1)', z.is_displayed() and '(1)' in z.text, z.text)
+        d.execute_script("document.querySelector('#e-retirees [data-remettre]').click()")
+        time.sleep(0.4)
+        ph = d.execute_script("return [...document.querySelectorAll('#e-photos .in-photo')].map(p=>p.dataset.pid)")
+        v('Remettre : photo replacee dans la liste', 'PHOTO_B0000002' in ph and not d.find_element(By.ID, 'e-retirees').is_displayed(), ph)
+        d.execute_script("document.querySelector('#e-photos .in-photo[data-pid=\"PHOTO_A0000001\"] .x').click()")
+        time.sleep(0.3)
+        v('retirer une photo d\'origine : elle revient dans la zone', 'PHOTO_A0000001' in d.find_element(By.ID, 'e-retirees').get_attribute('innerHTML'))
+        v('aucune erreur JS', not severes(d), severes(d))
+    finally:
+        d.quit()
+    # Technicien : pas de boutons de choix
+    d = navigateur('technicien', valideur=False, notes=[O11, dict(P11, mien=True)], photos=PH9)
+    try:
+        d.execute_script("document.querySelector('.in-card[data-id=\"p1\"] .in-head').click()")
+        time.sleep(0.8)
+        v('non-validateur : aucun bouton de choix', not d.find_elements(By.CSS_SELECTOR, sel + '.in-diff .ch'))
+    finally:
+        d.quit()
+
     print()
     print('RESULTAT: %s (%d OK, %d ECHEC)' % ('OK' if not ko else 'ECHEC', len(ok), len(ko)))
     sys.exit(1 if ko else 0)

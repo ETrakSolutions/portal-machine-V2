@@ -365,8 +365,109 @@
         });
         return h;
     }
+    // ---------- validation avec choix (Steve, 2026-11-24) ----------
+    // Le validateur peut garder un element retire ou refuser un element ajoute avant de valider,
+    // comme « accepter / refuser » une suggestion. Le texte se choisit par phrase ; pour une retouche
+    // plus fine, « Modifier ». Rien n'est enregistre avant « Valider avec mes choix ».
+    function phrases(t) { return String(t || '').match(/[^.!?\n]+[.!?]*[ \t]*|[.!?]+[ \t]*|\n+/g) || []; }
+    function diffSeq(A, B) {
+        var n = A.length, m = B.length;
+        if (n * m > 4000000) return null;
+        var K = function (s) { return s.trim() || s; }, L = [], i, j;
+        for (i = 0; i <= n; i++) L.push(new Uint16Array(m + 1));
+        for (i = n - 1; i >= 0; i--) for (j = m - 1; j >= 0; j--)
+            L[i][j] = K(A[i]) === K(B[j]) ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+        var out = []; i = 0; j = 0;
+        while (i < n && j < m) {
+            if (K(A[i]) === K(B[j])) { out.push({ k: '=', t: B[j] }); i++; j++; }
+            else if (L[i + 1][j] >= L[i][j + 1]) out.push({ k: '-', t: A[i++] });
+            else out.push({ k: '+', t: B[j++] });
+        }
+        for (; i < n; i++) out.push({ k: '-', t: A[i] });
+        for (; j < m; j++) out.push({ k: '+', t: B[j] });
+        return out;
+    }
+    function choixDe(id) { return (ETAT.choix = ETAT.choix || {})[id] || (ETAT.choix[id] = {}); }
+    function nbChoix(id) { var c = (ETAT.choix || {})[id] || {}; return Object.keys(c).filter(function (k) { return c[k]; }).length; }
+    function brut(n, k, l) { return (l === 'fr' ? n[k] : enDe(n)[k]) || ''; }
+    // Langue dans laquelle on choisit un champ : celle de l'ecran, sinon celle qui a du texte.
+    function langueChoix(n, o, k) {
+        var l = enAnglais() ? 'en' : 'fr', a = l === 'fr' ? 'en' : 'fr';
+        return (brut(o, k, l) || brut(n, k, l)) ? l : a;
+    }
+    function egal(t, premier, dernier) {
+        var w = mots(t);
+        if (w.length <= 48) return esc(t);
+        return esc(premier ? '' : w.slice(0, 24).join('')) + '<span class="vu"> … </span>' + esc(dernier ? '' : w.slice(-24).join(''));
+    }
+    function boutonCh(retrait, pris) {
+        return '<button type="button" class="ch ' + (retrait ? 'garder' : 'refuser') + '">' + esc(pris
+            ? (retrait ? tx('✓ Gardé — annuler', '✓ Kept — undo') : tx('✓ Refusé — annuler', '✓ Rejected — undo'))
+            : (retrait ? tx('↺ Garder', '↺ Keep') : tx('✕ Refuser', '✕ Reject'))) + '</button>';
+    }
+    function rendreChoix(ops, champ, C) {
+        var h = '', idx = 0;
+        ops.forEach(function (p, k) {
+            if (p.k === '=' || !/\S/.test(p.t)) { if (p.k !== '-') h += p.k === '=' ? egal(p.t, k === 0, k === ops.length - 1) : esc(p.t); return; }
+            var cle = champ + ':' + (idx++), pris = !!C[cle], r = p.k === '-';
+            h += '<span class="chg' + (pris ? ' choisi' + (r ? ' garde' : '') : '') + '" data-ch="' + esc(cle) + '">' +
+                (r ? '<del>' : '<ins>') + esc(p.t.replace(/\s+$/, '')) + (r ? '</del>' : '</ins>') + boutonCh(r, pris) + '</span> ';
+        });
+        return h;
+    }
+    function appliquerTexte(ops, prisDe) {
+        var out = '', idx = 0;
+        ops.forEach(function (p) {
+            if (p.k === '=') { out += p.t; return; }
+            if (!/\S/.test(p.t)) { if (p.k === '+') out += p.t; return; }
+            var pris = prisDe(idx++);
+            if ((p.k === '+' && !pris) || (p.k === '-' && pris)) { if (out && !/\s$/.test(out) && !/^\s/.test(p.t)) out += ' '; out += p.t; }
+        });
+        return out.replace(/[ \t]+\n/g, '\n').replace(/[ \t]{2,}/g, ' ').trim();
+    }
+    function signature(ops) { return (ops || []).filter(function (p) { return p.k !== '=' && /\S/.test(p.t); }).map(function (p) { return p.k; }).join(''); }
+    // Proposition corrigee selon les choix du validateur.
+    function noteAvecChoix(n) {
+        var o = original(n.remplace), C = choixDe(n.id);
+        var x = { id: n.id, type: n.type, fabricant: n.fabricant, modele: n.modele, produit: n.produit, option: n.option || '',
+                  temps: n.temps || '', texte: n.texte || '', pieges: n.pieges || '', photos: n.photos.slice(), pieces: n.pieces.slice(),
+                  en: { texte: enDe(n).texte || '', pieges: enDe(n).pieges || '', temps: enDe(n).temps || '' } };
+        ['texte', 'pieges'].forEach(function (k) {
+            var l = langueChoix(n, o, k), a = l === 'fr' ? 'en' : 'fr';
+            var ops = diffSeq(phrases(brut(o, k, l)), phrases(brut(n, k, l)));
+            if (!ops) return;
+            var pris = function (i) { return !!C[k + ':' + i]; };
+            var touche = signature(ops).split('').some(function (_, i) { return pris(i); });
+            if (!touche) return;
+            var pose = function (lg, v) { if (lg === 'fr') x[k] = v; else x.en[k] = v; };
+            pose(l, appliquerTexte(ops, pris));
+            // Autre langue : meme suite de changements -> memes choix ; sinon on la vide et le
+            // serveur la retraduit depuis la langue choisie.
+            var opsA = diffSeq(phrases(brut(o, k, a)), phrases(brut(n, k, a)));
+            pose(a, opsA && signature(opsA) === signature(ops) ? appliquerTexte(opsA, pris) : '');
+        });
+        var pa = o.photos || [];
+        x.photos = x.photos.filter(function (p) { return !(pa.indexOf(p) < 0 && C['ph+:' + p]); });
+        pa.forEach(function (p) {
+            if (n.photos.indexOf(p) >= 0 || !C['ph-:' + p]) return;
+            x.photos.splice(Math.min(pa.indexOf(p), x.photos.length), 0, p);
+        });
+        var cle = function (p) { return (p.txt || '').trim() + ' ×' + (p.qte || '1'); };
+        var ka = (o.pieces || []).map(cle), kb = n.pieces.map(cle);
+        x.pieces = x.pieces.filter(function (p) { return !(ka.indexOf(cle(p)) < 0 && C['pc+:' + cle(p)]); });
+        (o.pieces || []).forEach(function (p) { if (kb.indexOf(cle(p)) < 0 && C['pc-:' + cle(p)]) x.pieces.push({ txt: p.txt, qte: p.qte || '1' }); });
+        return x;
+    }
+    function majChoix(card, id) {
+        var nb = nbChoix(id), v = card.querySelector('[data-act="valider"]'), z = card.querySelector('[data-act="razchoix"]'), b = card.querySelector('.in-choix-band');
+        if (v) v.textContent = nb ? tx('✓ Valider avec mes choix ({n})', '✓ Approve with my choices ({n})', { n: nb }) : tx('✓ Valider', '✓ Approve');
+        if (z) z.style.display = nb ? '' : 'none';
+        if (b) { b.style.display = nb ? '' : 'none'; b.textContent = tx('{n} changement(s) ajusté(s) — la fiche publiée gardera ce que vous avez choisi.', '{n} change(s) adjusted — the published note will keep what you chose.', { n: nb }); }
+    }
+
     function changementsDe(n, o) {
         var r = { resume: [], blocs: '' };
+        var CH = ETAT.peutValider && n.statut === 'brouillon' && !!n.remplace, C = CH ? choixDe(n.id) : {};
         var champ = function (lib, a, b) {
             if ((a || '') === (b || '')) return;
             r.resume.push(tx('{c} : « {a} » → « {b} »', '{c}: "{a}" → "{b}"', { c: lib, a: esc(a || '—'), b: esc(b || '—') }));
@@ -381,33 +482,51 @@
             var d = diffMots(a, b);
             if (!d) { r.resume.push(esc(c[1]) + ' : ' + esc(tx('modifié', 'changed'))); return; }
             r.resume.push(esc(c[1]) + ' : ' + esc(tx('{a} mot(s) ajouté(s), {r} retiré(s)', '{a} word(s) added, {r} removed', { a: d.ajout, r: d.retrait })));
-            r.blocs += '<div class="bloc"><b>' + esc(c[1]) + '</b><div class="txt">' + rendreDiff(d) + '</div></div>';
+            var l = CH ? langueChoix(n, o, c[0]) : '', ops = CH ? diffSeq(phrases(brut(o, c[0], l)), phrases(brut(n, c[0], l))) : null;
+            r.blocs += '<div class="bloc"><b>' + esc(c[1]) + '</b>' + (ops
+                ? '<div class="txt choix">' + rendreChoix(ops, c[0], C) + '</div>'
+                : '<div class="txt">' + rendreDiff(d) + '</div>') + '</div>';
         });
         var pa = o.photos || [], pb = n.photos || [];
         var ajP = pb.filter(function (x) { return pa.indexOf(x) < 0; }), reP = pa.filter(function (x) { return pb.indexOf(x) < 0; });
         var ordre = !ajP.length && !reP.length && pa.join() !== pb.join();
         if (ajP.length || reP.length) {
             r.resume.push(esc(tx('Photos : {a} ajoutée(s), {r} retirée(s)', 'Photos: {a} added, {r} removed', { a: ajP.length, r: reP.length })));
+            var phCh = function (pid, retrait) {
+                var cle = (retrait ? 'ph-:' : 'ph+:') + pid, pris = !!C[cle];
+                return '<div class="in-ph-ch ' + (retrait ? 'retrait' : 'ajout') + (pris ? ' choisi' : '') + '" data-ch="' + esc(cle) + '">' +
+                    vignettes([pid]).replace(/class="in-photo charge"/, 'class="in-photo charge ' + (retrait ? 'retrait' : 'ajout') + '"') +
+                    '<div class="lab"><span>' + esc(retrait ? tx('retirée', 'removed') : tx('ajoutée', 'added')) + '</span>' + boutonCh(retrait, pris) + '</div></div>';
+            };
             r.blocs += '<div class="bloc"><b>' + esc(tx('Photos (vert = ajoutée, rouge = retirée)', 'Photos (green = added, red = removed)')) + '</b><div class="in-photos">' +
-                vignettes(ajP).replace(/class="in-photo charge"/g, 'class="in-photo charge ajout"') +
-                vignettes(reP).replace(/class="in-photo charge"/g, 'class="in-photo charge retrait"') + '</div></div>';
+                (CH ? ajP.map(function (p) { return phCh(p, false); }).join('') + reP.map(function (p) { return phCh(p, true); }).join('')
+                    : vignettes(ajP).replace(/class="in-photo charge"/g, 'class="in-photo charge ajout"') +
+                      vignettes(reP).replace(/class="in-photo charge"/g, 'class="in-photo charge retrait"')) + '</div></div>';
         } else if (ordre) r.resume.push(esc(tx('Photos : ordre changé', 'Photos: order changed')));
         var cle = function (p) { return (p.txt || '').trim() + ' ×' + (p.qte || '1'); };
         var ka = (o.pieces || []).map(cle), kb = (n.pieces || []).map(cle);
         var ajX = kb.filter(function (x) { return ka.indexOf(x) < 0; }), reX = ka.filter(function (x) { return kb.indexOf(x) < 0; });
         if (ajX.length || reX.length) {
             r.resume.push(esc(tx('Pièces : {a} ajoutée(s) ou modifiée(s), {r} retirée(s)', 'Parts: {a} added or changed, {r} removed', { a: ajX.length, r: reX.length })));
+            var pcCh = function (x, retrait) {
+                var cl = (retrait ? 'pc-:' : 'pc+:') + x, pris = !!C[cl];
+                return '<div><span class="chg' + (pris ? ' choisi' + (retrait ? ' garde' : '') : '') + '" data-ch="' + esc(cl) + '">' +
+                    (retrait ? '<del>− ' : '<ins>+ ') + esc(x) + (retrait ? '</del>' : '</ins>') + boutonCh(retrait, pris) + '</span></div>';
+            };
             r.blocs += '<div class="bloc"><b>' + esc(tx('Pièces et harnais', 'Parts and harnesses')) + '</b><div class="avant-apres">' +
-                ajX.map(function (x) { return '<div><ins>+ ' + esc(x) + '</ins></div>'; }).join('') +
-                reX.map(function (x) { return '<div><del>− ' + esc(x) + '</del></div>'; }).join('') + '</div></div>';
+                (CH ? ajX.map(function (x) { return pcCh(x, false); }).join('') + reX.map(function (x) { return pcCh(x, true); }).join('')
+                    : ajX.map(function (x) { return '<div><ins>+ ' + esc(x) + '</ins></div>'; }).join('') +
+                      reX.map(function (x) { return '<div><del>− ' + esc(x) + '</del></div>'; }).join('')) + '</div></div>';
         }
         return r;
     }
     function blocDiff(n) {
         var o = n.remplace ? original(n.remplace) : null;
         if (!o || n.statut !== 'brouillon') return '';
-        var c = changementsDe(n, o);
+        var c = changementsDe(n, o), aide = ETAT.peutValider && /class="ch /.test(c.blocs);
         return '<div class="in-diff"><h4>✎ ' + esc(tx('Ce qui change par rapport à la fiche publiée', 'What changes compared to the published note')) + '</h4>' +
+            (aide ? '<div class="aide">' + esc(tx('Rouge = retiré par la proposition · vert = ajouté. « Garder » annule un retrait, « Refuser » annule un ajout. Rien n\'est enregistré avant « Valider ». Pour garder une partie seulement, « Modifier ».',
+                'Red = removed by the proposal · green = added. "Keep" cancels a removal, "Reject" cancels an addition. Nothing is saved before "Approve". To keep only part of it, "Edit".')) + '</div>' : '') +
             (c.resume.length ? '<ul class="resume">' + c.resume.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>'
                              : '<div class="resume">' + esc(tx('Aucune différence avec la fiche publiée.', 'No difference with the published note.')) + '</div>') +
             c.blocs + '</div>';
@@ -434,14 +553,21 @@
                     n.valideParNom ? tx('validée par {nom} le {d}', 'approved by {nom} on {d}', { nom: esc(n.valideParNom), d: quand(n.valideLe) }) : ''].filter(Boolean).join(' · ');
         if (n.remplace) { var o = original(n.remplace); meta += '<br>' + esc(tx('Remplacera la note validée « {t} ».', 'Will replace the approved note "{t}".', { t: o ? titre(o) : '?' })); }
         var b = [], auteurBrouillon = n.statut === 'brouillon' && n.mien;
-        if (ETAT.peutValider && n.statut === 'brouillon') b.push('<button type="button" class="in-btn ok" data-act="valider">✓ ' + esc(tx('Valider', 'Approve')) + '</button>');
+        var nbC = n.remplace ? nbChoix(n.id) : 0;
+        if (ETAT.peutValider && n.statut === 'brouillon') b.push('<button type="button" class="in-btn ok" data-act="valider">' + esc(nbC
+            ? tx('✓ Valider avec mes choix ({n})', '✓ Approve with my choices ({n})', { n: nbC }) : tx('✓ Valider', '✓ Approve')) + '</button>');
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="in-btn" data-act="modifier">' + esc(tx('Modifier', 'Edit')) + '</button>');
         else if (n.statut === 'valide') b.push('<button type="button" class="in-btn" data-act="modifier">' + esc(tx('Proposer une modification', 'Propose a change')) + '</button>');
         if (ETAT.peutValider || auteurBrouillon) b.push('<button type="button" class="in-btn danger" data-act="supprimer">' + esc(tx('Supprimer', 'Delete')) + '</button>');
+        var bande = '';
+        if (ETAT.peutValider && n.statut === 'brouillon' && n.remplace) {
+            b.push('<button type="button" class="in-btn" data-act="razchoix"' + (nbC ? '' : ' style="display:none"') + '>' + esc(tx('Annuler mes choix', 'Undo my choices')) + '</button>');
+            bande = '<div class="in-choix-band"' + (nbC ? '' : ' style="display:none"') + '>' + esc(tx('{n} changement(s) ajusté(s) — la fiche publiée gardera ce que vous avez choisi.', '{n} change(s) adjusted — the published note will keep what you chose.', { n: nbC })) + '</div>';
+        }
         var resume = [n.photos.length ? '📷 ' + n.photos.length : '', n.temps ? '⏱ ' + txt(n, 'temps') : ''].filter(Boolean).join(' · ');
         return '<div class="in-card' + (n.statut === 'brouillon' ? ' brouillon' : '') + (ETAT.ouvertes[n.id] ? ' open' : '') + '" data-id="' + esc(n.id) + '">' +
             '<div class="in-head"><b>' + esc(titre(n)) + '</b>' + tags + '<span class="in-nb">' + esc(resume) + '</span></div>' +
-            '<div class="in-body">' + corps + '<div class="in-meta">' + meta + '</div><div class="in-actions">' + b.join('') + '</div></div></div>';
+            '<div class="in-body">' + corps + '<div class="in-meta">' + meta + '</div><div class="in-actions">' + b.join('') + '</div>' + bande + '</div></div>';
     }
     function dessiner() {
         var l = visibles(), nbB = ETAT.notes.filter(function (n) { return n.statut === 'brouillon'; }).length;
@@ -588,6 +714,16 @@
         var c = e.target.closest('.in-card');
         if (!c || e.target.closest('.in-photo')) return;
         var id = c.getAttribute('data-id'), act = e.target.closest('[data-act]');
+        var chb = e.target.closest('.in-diff .ch');
+        if (chb) {   // garder un retrait / refuser un ajout (rien n'est enregistre ici)
+            var z = chb.closest('[data-ch]'), k = z.getAttribute('data-ch'), C = choixDe(id), retrait = chb.classList.contains('garder');
+            C[k] = !C[k];
+            z.classList.toggle('choisi', C[k]);
+            if (z.classList.contains('chg')) z.classList.toggle('garde', C[k] && retrait);
+            chb.outerHTML = boutonCh(retrait, C[k]);
+            majChoix(c, id);
+            return;
+        }
         if (!act) {
             if (e.target.closest('.in-head')) {
                 // Une seule fiche ouverte a la fois (Steve, 2026-10-29)
@@ -601,14 +737,26 @@
         var n = original(id), a = act.getAttribute('data-act');
         if (a === 'modifier') ouvrirEdition(n);
         else if (a === 'valider') {
-            if (n.bilingue === false) { alert(msgErreur({ error: 'traduction incomplete' })); return; }
+            var avecChoix = n.remplace && nbChoix(id) > 0 && original(n.remplace);
+            if (n.bilingue === false && !avecChoix) { alert(msgErreur({ error: 'traduction incomplete' })); return; }
             act.disabled = true;
-            api({ action: 'validateinst', id: id }).then(function (d) {
-                if (!d || !d.ok) { alert(msgErreur(d)); act.disabled = false; return; }
+            // Avec des choix : la proposition est d'abord corrigee (en place), puis validee.
+            var etape = avecChoix
+                ? api({ action: 'saveinst', note: noteAvecChoix(n), proposer: false }).then(function (s) {
+                    if (!s || !s.ok) return s;
+                    return api({ action: 'validateinst', id: id });
+                })
+                : api({ action: 'validateinst', id: id });
+            etape.then(function (d) {
+                if (!d || !d.ok) { alert(msgErreur(d)); act.disabled = false; if (avecChoix) charger(); return; }
+                delete (ETAT.choix || {})[id];
                 ok(d.remplacee ? tx('Proposition validée : la note d\'origine est mise à jour.', 'Proposal approved: the original note is updated.')
                                : tx('Note validée : elle est maintenant visible de toute l\'équipe.', 'Note approved: it is now visible to the whole team.'));
                 charger();
             }, function () { alert(tx('Serveur injoignable.', 'Server unreachable.')); act.disabled = false; });
+        } else if (a === 'razchoix') {
+            delete (ETAT.choix || {})[id];
+            dessiner();
         } else if (a === 'supprimer') {
             if (!confirm(tx('Supprimer définitivement la note « {t} » ?', 'Permanently delete the note "{t}"?', { t: titre(n) }))) return;
             api({ action: 'deleteinst', id: id }).then(function (d) {
@@ -662,7 +810,35 @@
     }
     $('e-photos').addEventListener('click', function (e) {
         var x = e.target.closest('.in-photo .x');
-        if (x) x.parentNode.remove();
+        if (x) { x.parentNode.remove(); dessinerRetirees(); }
+    });
+    // Proposition de modification : les photos de la fiche publiee qui ne sont plus dans la
+    // proposition, avec « Remettre » (Steve, 2026-11-24). La photo est toujours dans le dossier.
+    function dessinerRetirees() {
+        var z = $('e-retirees'), ed = ETAT.edition, o = ed && ed.remplace ? original(ed.remplace) : null;
+        var cur = [].map.call($('e-photos').querySelectorAll('.in-photo[data-pid]'), function (p) { return p.getAttribute('data-pid'); });
+        var l = o && $('in-edit').style.display === 'block' ? (o.photos || []).filter(function (p) { return cur.indexOf(p) < 0; }) : [];
+        z.style.display = l.length ? '' : 'none';
+        z.innerHTML = l.length ? '<b>' + esc(tx('Photos retirées par la proposition ({n})', 'Photos removed by the proposal ({n})', { n: l.length })) + '</b>' +
+            '<div class="aide">' + esc(tx('Elles sont encore dans la fiche publiée. « Remettre » la replace dans la liste.', 'They are still in the published note. "Put back" returns it to the list.')) + '</div>' +
+            '<div class="in-photos">' + l.map(function (p) {
+                return '<div class="in-ph-ch retrait">' + vignettes([p]) + '<div class="lab"><span>' + esc(tx('retirée', 'removed')) + '</span>' +
+                    '<button type="button" class="ch" data-remettre="' + esc(p) + '">' + esc(tx('↺ Remettre', '↺ Put back')) + '</button></div></div>';
+            }).join('') + '</div>' : '';
+        chargerPhotos(z);
+    }
+    $('e-retirees').addEventListener('click', function (e) {
+        var b = e.target.closest('[data-remettre]');
+        if (!b) return;
+        var pid = b.getAttribute('data-remettre'), o = original(ETAT.edition.remplace), zone = $('e-photos');
+        var cur = [].map.call(zone.querySelectorAll('.in-photo[data-pid]'), function (p) { return p.getAttribute('data-pid'); });
+        // a sa place d'origine : avant la premiere photo de la liste qui la suivait dans la fiche publiee
+        var apres = (o.photos || []).slice(o.photos.indexOf(pid) + 1).filter(function (p) { return cur.indexOf(p) >= 0; })[0];
+        var t = document.createElement('div'); t.innerHTML = vignettes([pid], true);
+        var el = t.firstChild, ref = apres ? zone.querySelector('.in-photo[data-pid="' + apres + '"]') : null;
+        if (ref) zone.insertBefore(el, ref); else zone.appendChild(el);
+        chargerPhotos(zone);
+        dessinerRetirees();
     });
 
     // Photo reduite AVANT l'envoi : cote max 1600 px, JPEG, sous ~350 Ko (une photo de
@@ -788,11 +964,12 @@
         $('in-vue-liste').style.display = 'none';
         $('in-edit').style.display = 'block';
         chargerPhotos($('in-edit'));
+        dessinerRetirees();
         verifierDoublon();
         window.scrollTo(0, 0);
     }
     function fermerEdition() {
-        $('in-edit').style.display = 'none'; ETAT.edition = null;
+        $('in-edit').style.display = 'none'; ETAT.edition = null; $('e-retirees').style.display = 'none';
         $('in-vue-liste').style.display = '';
         window.scrollTo(0, 0);
     }
@@ -918,7 +1095,8 @@
     });
 
     window.addEventListener('langchange', function () {
-        traduireZone(document); dessinerFiltres(); dessiner();
+        ETAT.choix = {};   // les choix sont faits sur le texte d'une langue
+        traduireZone(document); dessinerFiltres(); dessiner(); dessinerRetirees();
         if ($('in-edit').style.display === 'block') { noteEdition(ETAT.edition); dessinerChoixEdition(); ordonnerLangues($('in-edit')); }
     });
 
