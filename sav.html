@@ -79,6 +79,20 @@
         .sav-fin-boite h3 { margin: 0 0 8px; color: #fff; font-size: 1.1rem; }
         .sav-fin-boite p { margin: 0 0 16px; color: #bbb; font-size: 0.88rem; line-height: 1.45; }
         .sav-fin-btns { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+        /* Compagnie en vedette (Steve, 2026-11-24) : le texte d'aide gris clair passait pour un nom
+           deja saisi. Champ plus gros, contour orange et loupe ; vert une fois rempli. */
+        #w-compagnie > label { color: #fff; font-weight: 700; font-size: 0.86rem; }
+        .sav-loupe { position: relative; }
+        .sav-loupe svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px;
+                         stroke: #FF8C00; pointer-events: none; }
+        .sav-f #f-compagnie { border: 2px solid #FF8C00; padding: 11px 12px 11px 40px; font-size: 1rem; background: #2b2218; }
+        #f-compagnie::placeholder { color: #6f6f6f; font-style: italic; }
+        #w-compagnie.rempli #f-compagnie { border-color: #3ddc84; background: #1e2a22; font-weight: 600; }
+        #w-compagnie.rempli .sav-loupe svg { stroke: #3ddc84; }
+        .sav-f.err #f-compagnie { border-color: #e74c3c; }
+        /* Technicien « Autres » : note obligatoire (Steve, 2026-11-24). */
+        #w-tech-note { margin-top: 10px; border-left: 3px solid #FF8C00; padding-left: 10px; }
+        #w-tech-note label { color: #FFB45C; }
         .pl-btn { display:inline-block; background:#FF8C00; color:#1a1a1a; text-decoration:none; border-radius:10px; padding:12px 22px; font-weight:800; }
     </style>
 </head>
@@ -122,8 +136,9 @@
                 <section class="sav-sec"><h2><span class="n">2</span> Client</h2>
                     <div class="sav-grid">
                         <div class="sav-f full sav-ac" id="w-compagnie"><label>Compagnie <span class="req">*</span> <span id="f-type-tag"></span></label>
-                            <input type="text" id="f-compagnie" placeholder="Tapez quelques lettres du nom ou de la ville…">
-                            <div class="sav-ac-list" id="ac-clients"></div>
+                            <div class="sav-loupe"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+                            <input type="text" id="f-compagnie" placeholder="Rechercher : quelques lettres du nom ou de la ville…">
+                            <div class="sav-ac-list" id="ac-clients"></div></div>
                             <div class="sav-hint" id="f-compagnie-hint">Choisissez dans la liste Epicor, ou gardez le nom tapé s'il s'agit d'un nouveau client.</div></div>
                         <div class="sav-f full" id="w-contacts" style="display:none;"><label>Contacts de ce client (Epicor, ou Salesforce si Epicor n'en a pas) — cliquez pour remplir</label>
                             <div class="sav-contacts" id="f-contacts"></div>
@@ -176,7 +191,9 @@
                                 <option value="tous">N'importe quel technicien</option></select>
                                 <select id="f-tech-nom"><option value="">— Technicien —</option></select>
                                 <input type="text" id="f-tech-temps" placeholder="Temps approximatif prévu (ex. 4 h, 1 jour)" title="Temps approximatif prévu"></div>
-                            <div class="sav-hint" id="f-tech-hint">Liste des techniciens de ProgressionLive (comme la Cédule).</div></div>
+                            <div class="sav-hint" id="f-tech-hint">Liste des techniciens de ProgressionLive (comme la Cédule).</div>
+                            <div class="sav-f" id="w-tech-note" style="display:none;"><label>Notes sur le technicien <span class="req">*</span></label>
+                                <textarea id="f-tech-note" placeholder="ex. Besoin de Mathieu sur place, besoin de Kevin en support…"></textarea></div></div>
                     </div>
                 </section>
 
@@ -199,6 +216,6 @@
     <script src="js/i18n.js?v=167"></script>
     <script src="js/heartbeat.js?v=5"></script>
     <script src="js/version-check.js?v=2"></script>
-    <script src="js/sav.js?v=15"></script>
+    <script src="js/sav.js?v=16"></script>
 </body>
 </html>

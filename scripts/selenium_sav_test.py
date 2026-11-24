@@ -277,8 +277,27 @@ def main():
         exig = [o.text for o in Select(d.find_element(By.ID, 'f-tech-exig')).options][1:]
         v('menu exigence : 3 choix', exig == ['Technicien obligatoire', 'Technicien prioritaire', "N'importe quel technicien"], exig)
         noms = [o.text for o in Select(d.find_element(By.ID, 'f-tech-nom')).options][1:]
-        v('menu noms : techs ProgressionLive (sans la note) + Pierre ou Michel',
-          noms == ['Jean Mallet', 'Michel Landry', 'Pierre ou Michel'], noms)
+        v('menu noms : techs ProgressionLive (sans la note) + Pierre ou Michel + Autres',
+          noms == ['Jean Mallet', 'Michel Landry', 'Pierre ou Michel', 'Autres'], noms)
+        # « Autres » : note obligatoire, reprise dans la fiche (Steve, 2026-11-24).
+        v('note technicien cachee par defaut', not d.find_element(By.ID, 'w-tech-note').is_displayed())
+        Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value('obligatoire'); time.sleep(0.2)
+        Select(d.find_element(By.ID, 'f-tech-nom')).select_by_visible_text('Autres'); time.sleep(0.2)
+        v('Autres : note technicien affichee', d.find_element(By.ID, 'w-tech-note').is_displayed())
+        remise(d)
+        d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)
+        v('Autres sans note : envoi refuse', 'notes sur le technicien' in d.find_element(By.ID, 'sav-alert').text
+          and rien_parti(d), d.find_element(By.ID, 'sav-alert').text)
+        d.find_element(By.ID, 'f-tech-note').send_keys('Besoin de Mathieu sur place')
+        d.execute_script("window.__copie = null; navigator.clipboard.writeText = function (t) { window.__copie = t; return Promise.resolve(); };")
+        d.find_element(By.ID, 'b-copier').click(); time.sleep(0.3)
+        copie = d.execute_script('return window.__copie') or ''
+        v('fiche : Autres + note', 'Technicien obligatoire : Autres' in copie and 'Notes : Besoin de Mathieu sur place' in copie, copie[-300:])
+        Select(d.find_element(By.ID, 'f-tech-nom')).select_by_visible_text('Pierre ou Michel'); time.sleep(0.2)
+        v('autre nom : note cachee et videe', not d.find_element(By.ID, 'w-tech-note').is_displayed()
+          and d.find_element(By.ID, 'f-tech-note').get_attribute('value') == '')
+        Select(d.find_element(By.ID, 'f-tech-exig')).select_by_value(''); Select(d.find_element(By.ID, 'f-tech-nom')).select_by_value('')
+        d.execute_script("document.getElementById('f-tech-exig').dispatchEvent(new Event('change'))"); time.sleep(0.2)
         v('noms demandes au serveur (getcedule)', 'getcedule' in d.execute_script('return window.__appels'))
         remise(d)
         d.find_element(By.ID, 'b-envoyer').click(); time.sleep(0.3)

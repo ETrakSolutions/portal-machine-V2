@@ -144,6 +144,7 @@
     function majClientTag() {
         majContacts();
         var v = $('f-compagnie').value.trim();
+        $('w-compagnie').classList.toggle('rempli', !!v);
         $('f-type-tag').innerHTML = clientChoisi ? tagType(clientChoisi[3]) || '<span class="sav-tag interco">Epicor</span>'
             : (v ? '<span class="sav-tag nouveau">nouveau client</span>' : '');
     }
@@ -203,10 +204,13 @@
     // « N'importe quel technicien » n'exige pas de nom : le menu des noms est alors grise.
     var TECH_EXIG = { obligatoire: 'Technicien obligatoire', prioritaire: 'Technicien prioritaire', tous: "N'importe quel technicien" };
     var TECH_DUO = 'Pierre ou Michel';
+    // « Autres » (Steve, 2026-11-24) : toujours dernier ; fait apparaitre une note obligatoire
+    // (« Besoin de Mathieu sur place », « Besoin de Kevin en support »…) reprise dans le courriel.
+    var TECH_AUTRES = 'Autres';
     function dessinerTechs(noms, note) {
         var choix = $('f-tech-nom').value;
         $('f-tech-nom').innerHTML = '<option value="">— Technicien —</option>' +
-            noms.concat([TECH_DUO]).map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
+            noms.concat([TECH_DUO, TECH_AUTRES]).map(function (n) { return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
         $('f-tech-nom').value = choix;
         if (note) $('f-tech-hint').textContent = note;
     }
@@ -229,9 +233,13 @@
         var tous = $('f-tech-exig').value === 'tous';
         if (tous) $('f-tech-nom').value = '';
         $('f-tech-nom').disabled = tous;
+        var autres = $('f-tech-nom').value === TECH_AUTRES;
+        $('w-tech-note').style.display = autres ? '' : 'none';
+        if (!autres) { $('f-tech-note').value = ''; $('w-tech-note').classList.remove('err'); }
     }
     document.querySelectorAll('input[name="f-depl"]').forEach(function (r) { r.addEventListener('change', majDepl); });
     $('f-tech-exig').addEventListener('change', majDepl);
+    $('f-tech-nom').addEventListener('change', majDepl);
     function techTexte() {
         var e = $('f-tech-exig').value;
         if (val('f-depl') !== 'oui' || !e) return '';
@@ -292,7 +300,8 @@
         bloc('EMPLACEMENT', [txt('f-adresse'), txt('f-lieu')]);
         if (val('f-depl') === 'oui') {
             bloc('TECHNICIEN', joint([techTexte(),
-                txt('f-tech-temps') ? 'temps prévu : ' + txt('f-tech-temps') : '']));
+                txt('f-tech-temps') ? 'temps prévu : ' + txt('f-tech-temps') : ''])
+                + ($('f-tech-nom').value === TECH_AUTRES && txt('f-tech-note') ? '\nNotes : ' + txt('f-tech-note') : ''));
         }
         var dt = $('f-date').value ? $('f-date').value.replace('T', ' ') : '';
         bloc('APPEL', [
@@ -346,6 +355,8 @@
         var depl = val('f-depl') === 'oui', exig = $('f-tech-exig').value;
         marque('w-tech', depl && (!exig || (exig !== 'tous' && !$('f-tech-nom').value)),
             !exig ? 'type de technicien (obligatoire, prioritaire…)' : 'nom du technicien');
+        marque('w-tech-note', depl && $('f-tech-nom').value === TECH_AUTRES && !$('f-tech-note').value.trim(),
+            'notes sur le technicien (« Autres »)');
         var a = $('sav-alert');
         a.style.display = manque.length ? 'block' : 'none';
         a.textContent = manque.length ? 'À compléter avant l’envoi : ' + manque.join(', ') + '.' : '';
