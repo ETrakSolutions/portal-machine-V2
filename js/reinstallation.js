@@ -38,13 +38,17 @@
         return;
     }
 
-    // Systemes : heures, options et pieces remplacees [code Epicor, libelle] (sans prix).
+    // Systemes : heures, options et pieces remplacees [code Epicor, libelle, quantite (1 si absente)] (sans prix).
+    // Prox (Jacquot 2026-11-25) : Z01B-0009 est inactif et aucun kit ne l'a remplace ; les pieces
+    // posees en direct par la nomenclature 1500-0002 R1 (2025-12-08) le remplacent.
     // Les montants (INST_*, PIECES_*) sont lus dans la reponse du serveur.
     var SYSTEMES = {
         lim: { nom: 'Limiteur', sous: 'Limit-Pro, par type de machine', heures: 4, mini: true, lettre: true, types: true,
                pieces: 'PIECES_LIM',
                liste: [['Z03B-0062', 'Harnais de capteur M12 angle 5 m'], ['E03A-0005', 'Câble CAN femelle M12, 10 m'],
-                       ['Z05B-0001', 'Pré-kit de fusibles et accessoires'], ['Z01B-0009', "Kit d'assemblage universel de prox"],
+                       ['Z05B-0001', 'Pré-kit de fusibles et accessoires'],
+                       ['E02A-0002', 'Capteur de proximité M12 45 mm', 2], ['E02A-0001', 'Capteur de proximité M12 65 mm', 2],
+                       ['Z01A-0006', 'Support de prox long'], ['Z01A-0082', 'Support de prox court'], ['KH1250', 'Kit standoff long'],
                        ['Z04A-0003', 'Autocollant « Protégée par un limiteur »'], ['AH006', 'Apprêt 3M 94'],
                        ['P01A-0002', "Support d'écran autocollant"]] },
         gp:  { nom: 'Guide Pro', sous: 'Creusage 2D', heures: 5, mini: true, lettre: false,
@@ -55,7 +59,9 @@
                instDesc: 'Installation Guide PRO système creusage 2D',
                pieces: 'PIECES_GP',
                liste: [['Z03B-0062', 'Harnais de capteur M12 angle 5 m'], ['E03A-0005', 'Câble CAN femelle M12, 10 m'],
-                       ['Z05B-0001', 'Pré-kit de fusibles et accessoires'], ['Z01B-0009', "Kit d'assemblage universel de prox"],
+                       ['Z05B-0001', 'Pré-kit de fusibles et accessoires'],
+                       ['E02A-0002', 'Capteur de proximité M12 45 mm', 2], ['E02A-0001', 'Capteur de proximité M12 65 mm', 2],
+                       ['Z01A-0006', 'Support de prox long'], ['Z01A-0082', 'Support de prox court'], ['KH1250', 'Kit standoff long'],
                        ['Z04A-0003', 'Autocollant « Protégée par un limiteur »'], ['E03A-0006', 'Câble CAN M12, 10 m, 2 connecteurs'],
                        ['E03A-0019', 'Câble CAN M12, 2 m, 2 connecteurs'], ['Z01X-0001', "Support d'inclinomètre soudé universel"],
                        ['Z01B-0071', "Support d'inclinomètre (godet)"], ['AH006', 'Apprêt 3M 94'],
@@ -119,10 +125,7 @@
     var AXES = { H: 'Hauteur', R: 'Rotation', HR: 'Hauteur + rotation', M: 'Multi-axe' };
     var TITRES = { re: 'Désinstallation et réinstallation', ri: 'Réinstallation (système déjà retiré par le client)', de: 'Désinstallation' };
     // Remarques Epicor par code (constats du 2026-10-30 dans Epicor, societe ETRAK).
-    var REMARQUES = {
-        'Z01B-0009': 'Inactif dans Epicor (« NE PLUS UTILISER ») : code de remplacement à confirmer avec Steve.',
-        'Z01B-0071': "Absent de la liste de prix 2027 : vérifier son prix dans Epicor."
-    };
+    var REMARQUES = {};
 
     var P = null;           // { CODE: montant en dollars } remis par le serveur
     var CAT = null;         // { PN: [description, prix] } remis par le serveur
@@ -143,6 +146,7 @@
         return Math.round(v * 100);
     }
     function cCat(pn) { return Math.round(CAT[pn][1] * 100); }
+    function qteEns(x) { return x[2] || 1; }      // quantite d'une piece de l'ensemble
     function entier(id) { var n = Math.floor(Number($(id).value)); return isFinite(n) && n > 0 ? n : 0; }
     function argent(cents) { return (cents / 100).toLocaleString('fr-CA', { style: 'currency', currency: 'CAD' }); }
     function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -239,16 +243,16 @@
             var garde = sansCatalogue ? EN.liste : EN.liste.filter(function (x) { return !s.decoches[x[0]]; });
             var montant = EN.liste.length ? c(EN.pieces) : 0;
             if (!sansCatalogue && EN.liste.length) {
-                var plein = EN.liste.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
+                var plein = EN.liste.reduce(function (a, x) { return a + qteEns(x) * cCat(x[0]); }, 0);
                 if (plein !== c(EN.pieces)) throw new Error('Ensemble ' + EN.pieces + ' incoherent avec le catalogue');
-                montant = garde.reduce(function (a, x) { return a + cCat(x[0]); }, 0);
+                montant = garde.reduce(function (a, x) { return a + qteEns(x) * cCat(x[0]); }, 0);
             }
             var nRetire = EN.liste.length - garde.length;
             if (garde.length) {
                 L.push({ lib: 'Pièces remplacées (ensemble)', note: nRetire ? garde.length + ' pièce(s) sur ' + EN.liste.length + ', voir la liste ci-dessous' : 'Voir la liste ci-dessous',
                          c: montant });
             }
-            garde.forEach(function (x) { E.push({ r: RANG.ens, code: x[0], desc: x[1], qte: 1, rem: REMARQUES[x[0]] }); });
+            garde.forEach(function (x) { E.push({ r: RANG.ens, code: x[0], desc: x[1], qte: qteEns(x), rem: REMARQUES[x[0]] }); });
         }
         if (reinst && S.raccords) {
             L.push({ lib: 'Raccords hydrauliques', note: 'À valider selon la machine avant la réinstallation', c: s.raccords });
@@ -330,7 +334,7 @@
             $('ri-std').innerHTML = EN.liste.map(function (x, i) {
                 var on = !s.decoches[x[0]];
                 return '<label class="' + (on ? '' : 'off') + '" for="ri-std-' + i + '"><input type="checkbox" id="ri-std-' + i + '" data-pn="' + esc(x[0]) + '"' +
-                    (on ? ' checked' : '') + '><span>' + esc(x[1]) + '<small>' + esc(x[0]) + '</small></span></label>';
+                    (on ? ' checked' : '') + '><span>' + esc(x[1]) + (qteEns(x) > 1 ? ' × ' + qteEns(x) : '') + '<small>' + esc(x[0]) + '</small></span></label>';
             }).join('');
         }
         if (sansCatalogue) $('ri-std').querySelectorAll('input').forEach(function (i) { i.disabled = true; });
@@ -352,7 +356,7 @@
         $('ri-lines').innerHTML = r.lignes.map(function (l) {
             return '<tr><td>' + esc(l.lib) + '<small>' + esc(l.note) + '</small></td><td class="amt">' + argent(l.c) + '</td></tr>';
         }).join('') + '<tr class="tot"><td>Total</td><td class="amt">' + argent(r.total) + '</td></tr>';
-        $('ri-parts').innerHTML = gardees.map(function (x) { return '<li>' + esc(x[1]) + '</li>'; }).join('');
+        $('ri-parts').innerHTML = gardees.map(function (x) { return '<li>' + esc(x[1]) + (qteEns(x) > 1 ? ' × ' + qteEns(x) : '') + '</li>'; }).join('');
         $('ri-extra').innerHTML = s.ajouts.map(function (a) {
             return '<li>' + esc(CAT[a.pn][0]) + (a.qte > 1 ? ' × ' + a.qte : '') + '</li>';
         }).join('');
@@ -368,7 +372,7 @@
             $('ri-qtitle').textContent, $('ri-qinfo').textContent, ''
         ].concat(r.lignes.map(function (l) { return l.lib + ' (' + l.note + ') : ' + argent(l.c); }))
          .concat(['TOTAL : ' + argent(r.total) + ' (CAD, avant taxes)', ''])
-         .concat(reinst && gardees.length ? ['Pièces remplacées incluses :'].concat(gardees.map(function (x) { return '- ' + x[1]; })).concat(['']) : [])
+         .concat(reinst && gardees.length ? ['Pièces remplacées incluses :'].concat(gardees.map(function (x) { return '- ' + x[1] + (qteEns(x) > 1 ? ' × ' + qteEns(x) : ''); })).concat(['']) : [])
          .concat(s.ajouts.length ? ['Pièces additionnelles :'].concat(s.ajouts.map(function (a) {
              return '- ' + CAT[a.pn][0] + (a.qte > 1 ? ' × ' + a.qte : ''); })).concat(['']) : [])
          .concat(noteFit)
