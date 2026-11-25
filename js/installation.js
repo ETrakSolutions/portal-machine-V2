@@ -432,7 +432,7 @@
         var x = { id: n.id, type: n.type, fabricant: n.fabricant, modele: n.modele, produit: n.produit, option: n.option || '',
                   temps: n.temps || '', texte: n.texte || '', pieges: n.pieges || '', photos: n.photos.slice(), pieces: n.pieces.slice(),
                   en: { texte: enDe(n).texte || '', pieges: enDe(n).pieges || '', temps: enDe(n).temps || '' } };
-        ['texte', 'pieges'].forEach(function (k) {
+        ['temps', 'texte', 'pieges'].forEach(function (k) {   // temps : choix aussi (Steve, 2026-11-25)
             var l = langueChoix(n, o, k), a = l === 'fr' ? 'en' : 'fr';
             var ops = diffSeq(phrases(brut(o, k, l)), phrases(brut(n, k, l)));
             if (!ops) return;
@@ -476,12 +476,14 @@
         champ(tx('Produit', 'Product'), nomProduit(o.produit, o.type) + (o.option ? ' (' + nomOption(o.produit, o.option) + ')' : ''),
               nomProduit(n.produit, n.type) + (n.option ? ' (' + nomOption(n.produit, n.option) + ')' : ''));
         champ(tx('Temps d\'installation', 'Installation time'), txt(o, 'temps'), txt(n, 'temps'));
-        [['texte', tx('Informations d\'installation', 'Installation information')], ['pieges', tx('Pièges connus', 'Known pitfalls')]].forEach(function (c) {
+        // Temps d'installation : aussi en couleur (ancien barre en rouge, nouveau en vert), comme les
+        // informations d'installation (Steve, 2026-11-25) ; son resume reste « ancien → nouveau » ci-dessus.
+        [['temps', tx('Temps d\'installation', 'Installation time')], ['texte', tx('Informations d\'installation', 'Installation information')], ['pieges', tx('Pièges connus', 'Known pitfalls')]].forEach(function (c) {
             var a = txt(o, c[0]), b = txt(n, c[0]);
             if (a === b) return;
             var d = diffMots(a, b);
             if (!d) { r.resume.push(esc(c[1]) + ' : ' + esc(tx('modifié', 'changed'))); return; }
-            r.resume.push(esc(c[1]) + ' : ' + esc(tx('{a} mot(s) ajouté(s), {r} retiré(s)', '{a} word(s) added, {r} removed', { a: d.ajout, r: d.retrait })));
+            if (c[0] !== 'temps') r.resume.push(esc(c[1]) + ' : ' + esc(tx('{a} mot(s) ajouté(s), {r} retiré(s)', '{a} word(s) added, {r} removed', { a: d.ajout, r: d.retrait })));
             var l = CH ? langueChoix(n, o, c[0]) : '', ops = CH ? diffSeq(phrases(brut(o, c[0], l)), phrases(brut(n, c[0], l))) : null;
             r.blocs += '<div class="bloc"><b>' + esc(c[1]) + '</b>' + (ops
                 ? '<div class="txt choix">' + rendreChoix(ops, c[0], C) + '</div>'
