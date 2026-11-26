@@ -45,6 +45,9 @@
     // enregistree reste le nom francais de la liste SAV (cles « prod.X » de js/translations.js).
     function nomProd(p) { if (!enAnglais()) return p; var d = (window.TRANSLATIONS || {}).en || {}; return d['prod.' + p] || p; }
     function pieceTxt(t) { return window.i18n && i18n.tPiece ? i18n.tPiece(t) : t; }
+    // Code d'erreur : texte libre, table exacte seulement (les regles de vocabulaire des pieces
+    // donnaient un melange, ex. « 4 points qui flash and distance »).
+    function codeTxt(t) { var d = (window.TRANSLATIONS || {}).en || {}; return d['bom.' + t] || t; }
     // Contenu dans la langue de l'ecran, l'autre langue en repli.
     function en(f) { return f.en || { symptome: '', motsCles: '', causes: [] }; }
     function frDe(f, champ, i) { return (i == null ? f[champ] : (f.causes[i] || {})[champ]) || ''; }
@@ -132,7 +135,7 @@
     function original(id) { return ETAT.fiches.filter(function (f) { return f.id === id; })[0]; }
     function carte(f) {
         var prop = f.remplace ? original(f.remplace) : null;
-        var tags = '<span class="dg-tag prod">' + esc(nomProd(f.produit)) + '</span>' + (f.code ? ' <span class="dg-tag code">' + esc(enAnglais() ? ((f.en && f.en.code) || pieceTxt(f.code)) : f.code) + '</span>' : '') +
+        var tags = '<span class="dg-tag prod">' + esc(nomProd(f.produit)) + '</span>' + (f.code ? ' <span class="dg-tag code">' + esc(enAnglais() ? ((f.en && f.en.code) || codeTxt(f.code)) : f.code) + '</span>' : '') +
             (f.statut === 'brouillon' ? ' <span class="dg-tag brouillon">' + esc(f.remplace ? T('diag.tag_proposition', 'Proposition de modification') : T('diag.tag_brouillon', 'Brouillon à valider')) + '</span>' : '') +
             (f.bilingue === false ? ' <span class="dg-tag en-manque">' + esc(T('diag.tag_trad', 'Traduction incomplète')) + '</span>' : '');
         // Validateur, brouillon : l'autre langue sous chaque ligne, pour reviser la traduction.
