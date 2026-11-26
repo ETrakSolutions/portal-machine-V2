@@ -946,7 +946,9 @@ function showCredentialsPopup(name, email, password, roleLabel, mode) {
         };
     }
 
-    var lang = 'fr';
+    // Langue de l'ecran par defaut (audit anglais, Steve 2026-11-26) : un distributeur anglophone
+    // voyait la fenetre et le courriel prepare en francais. Les boutons FR / EN restent la.
+    var lang = (window.i18n && i18n.getLang && i18n.getLang() === 'en') ? 'en' : 'fr';
     var overlay = document.createElement('div');
     overlay.id = 'cred-popup-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;';

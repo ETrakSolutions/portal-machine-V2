@@ -41,6 +41,10 @@
                           'Limiteur de nacelle', 'Limiteur de grue', 'Limiteur de foreuse', 'Balance Scale Lite', 'Balance Scale Pro', 'Caméras', 'Autre'];
     var ETAT = { fiches: [], produits: PRODUITS_REPLI.slice(), peutValider: false, vue: 'tout', ouvertes: {}, edition: null };
 
+    // Nom de produit et pieces affiches en anglais (audit anglais, Steve 2026-11-26). La valeur
+    // enregistree reste le nom francais de la liste SAV (cles « prod.X » de js/translations.js).
+    function nomProd(p) { if (!enAnglais()) return p; var d = (window.TRANSLATIONS || {}).en || {}; return d['prod.' + p] || p; }
+    function pieceTxt(t) { return window.i18n && i18n.tPiece ? i18n.tPiece(t) : t; }
     // Contenu dans la langue de l'ecran, l'autre langue en repli.
     function en(f) { return f.en || { symptome: '', motsCles: '', causes: [] }; }
     function frDe(f, champ, i) { return (i == null ? f[champ] : (f.causes[i] || {})[champ]) || ''; }
@@ -73,10 +77,10 @@
     // ---------- liste ----------
     function dessinerProduits() {
         var f = $('f-produit'), v = f.value;
-        f.innerHTML = '<option value="">' + esc(T('diag.tous_produits', 'Tous les produits')) + '</option>' + ETAT.produits.map(function (p) { return '<option>' + esc(p) + '</option>'; }).join('');
+        f.innerHTML = '<option value="">' + esc(T('diag.tous_produits', 'Tous les produits')) + '</option>' + ETAT.produits.map(function (p) { return '<option value="' + esc(p) + '">' + esc(nomProd(p)) + '</option>'; }).join('');
         f.value = ETAT.produits.indexOf(v) >= 0 ? v : '';
         var e = $('e-produit'), ev = e.value;
-        e.innerHTML = '<option value="">' + esc(T('diag.choisir', '— Choisir —')) + '</option>' + ETAT.produits.map(function (p) { return '<option>' + esc(p) + '</option>'; }).join('');
+        e.innerHTML = '<option value="">' + esc(T('diag.choisir', '— Choisir —')) + '</option>' + ETAT.produits.map(function (p) { return '<option value="' + esc(p) + '">' + esc(nomProd(p)) + '</option>'; }).join('');
         if (ev) e.value = ev;
     }
     // Recherche par pertinence (Steve, 2026-10-13) : une description dans les mots du client
@@ -128,7 +132,7 @@
     function original(id) { return ETAT.fiches.filter(function (f) { return f.id === id; })[0]; }
     function carte(f) {
         var prop = f.remplace ? original(f.remplace) : null;
-        var tags = '<span class="dg-tag prod">' + esc(f.produit) + '</span>' + (f.code ? ' <span class="dg-tag code">' + esc(f.code) + '</span>' : '') +
+        var tags = '<span class="dg-tag prod">' + esc(nomProd(f.produit)) + '</span>' + (f.code ? ' <span class="dg-tag code">' + esc(enAnglais() ? ((f.en && f.en.code) || pieceTxt(f.code)) : f.code) + '</span>' : '') +
             (f.statut === 'brouillon' ? ' <span class="dg-tag brouillon">' + esc(f.remplace ? T('diag.tag_proposition', 'Proposition de modification') : T('diag.tag_brouillon', 'Brouillon à valider')) + '</span>' : '') +
             (f.bilingue === false ? ' <span class="dg-tag en-manque">' + esc(T('diag.tag_trad', 'Traduction incomplète')) + '</span>' : '');
         // Validateur, brouillon : l'autre langue sous chaque ligne, pour reviser la traduction.
@@ -137,7 +141,7 @@
         var causes = f.causes.map(function (c, i) {
             return '<div class="dg-cause"><h4>' + (i + 1) + '. ' + esc(dans(f, 'cause', i)) + '</h4>' + ligneAutre(autre(f, 'cause', i)) +
                 '<div class="dg-sol">' + esc(dans(f, 'solution', i)) + '</div>' + ligneAutre(autre(f, 'solution', i)) +
-                (c.pieces ? '<div class="dg-pieces">' + esc(T('diag.pieces', 'Pièces')) + ' : ' + esc(c.pieces) + '</div>' : '') + '</div>';
+                (c.pieces ? '<div class="dg-pieces">' + esc(T('diag.pieces', 'Pièces')) + ' : ' + esc(enAnglais() ? (enDe(f, 'pieces', i) || pieceTxt(c.pieces)) : c.pieces) + '</div>' : '') + '</div>';
         }).join('');
         if (revue) causes = ligneAutre(autre(f, 'symptome')) + causes;
         var meta = [f.auteurNom ? T('diag.ecrite_par', 'Écrite par {nom}', { nom: esc(f.auteurNom) }) + (quand(f.creeLe) ? ' ' + T('diag.le', 'le {date}', { date: quand(f.creeLe) }) : '') : '',

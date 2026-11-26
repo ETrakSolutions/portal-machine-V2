@@ -546,7 +546,7 @@
             '<div class="in-etape"><div class="in-txt">' + esc(txt(n, 'texte')) + '</div>' + autreLigne(txt(n, 'texte', true)) + '</div>';
         if (n.photos.length) corps += '<div class="in-sec">' + esc(tx('Photos', 'Photos')) + '</div><div class="in-photos">' + vignettes(n.photos) + '</div>';
         if (n.pieces.length) corps += '<div class="in-sec">' + esc(tx('Pièces et harnais', 'Parts and harnesses')) + '</div><ul class="in-pieces">' +
-            n.pieces.map(function (p) { return '<li>' + esc(p.qte || '1') + ' × ' + esc(p.txt) + '</li>'; }).join('') + '</ul>';
+            n.pieces.map(function (p) { return '<li>' + esc(p.qte || '1') + ' × ' + esc(window.i18n && i18n.tPiece ? i18n.tPiece(p.txt) : p.txt) + '</li>'; }).join('') + '</ul>';
         if (n.pieges || enDe(n).pieges) corps += '<div class="in-sec">⚠ ' + esc(tx('Pièges connus', 'Known pitfalls')) + '</div><div class="in-pieges"><div class="in-txt">' +
             esc(txt(n, 'pieges')) + '</div>' + autreLigne(txt(n, 'pieges', true)) + '</div>';
         if (!corps) corps = '<div class="in-note">' + esc(tx('Note vide pour l\'instant.', 'Empty note for now.')) + '</div>';

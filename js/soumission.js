@@ -4039,7 +4039,7 @@ function updateAValiderWarning() {
     var items = aValiderItems();
     if (items.length) {
         var listEl = document.getElementById('bom-avalider-list');
-        if (listEl) listEl.textContent = items.map(function (i) { return i.name + (i.code ? ' (' + i.code + ')' : ''); }).join('  ;  ');
+        if (listEl) listEl.textContent = items.map(function (i) { return (window.i18n && i18n.tBom ? i18n.tBom(i.name) : i.name) + (i.code ? ' (' + i.code + ')' : ''); }).join('  ;  ');
         warn.style.display = 'flex';
     } else {
         warn.style.display = 'none';
