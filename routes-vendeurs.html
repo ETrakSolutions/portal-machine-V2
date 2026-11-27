@@ -140,6 +140,13 @@ dialog .fermer{float:right}
 .note-it.mienne{border-left-color:var(--accent)}
 .note-it .txt{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:2px}
 .note-it .act a{font-size:12.5px;margin-right:10px}
+.sig-ferme{display:inline-block;background:#C62828;color:#fff;border-radius:4px;padding:1px 6px;font-size:12px;font-weight:600}
+.sig-etq{display:inline-block;background:#FFF3CD;color:#7A5A00;border-radius:4px;padding:1px 6px;font-size:12px;font-weight:600;margin-right:4px}
+.sig-form .choix{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 2px}
+.sig-form .choix label{display:inline-flex;align-items:center;gap:5px;margin:0;font-size:14px;color:var(--noir,#1A1A1A)}
+.sig-form input[type=text]{width:100%;box-sizing:border-box;font:inherit;padding:5px}
+.sig-form .panneau{display:none;margin-top:6px}.sig-form .panneau.on{display:block}
+.fermes{margin:8px 0;padding:8px 10px;background:#FBE9E7;border-left:3px solid #C62828;font-size:13px}
 .corr-form textarea{width:100%;box-sizing:border-box;min-height:110px;font:inherit;padding:6px}
 .corr-form select,.corr-form input[type=date]{font:inherit;padding:4px}
 .sig.note{background:#ECEFF1;color:#37474F}
@@ -797,6 +804,7 @@ function geocoderAdresse(t){
       GEO_ADR[k] = p && km(v,p) <= 40 ? Object.assign(p, {prec: x.addresstype==="road" ? "rue" : "adresse"}) : {lat:0};
       const cles = Object.keys(GEO_ADR); if (cles.length > 200) delete GEO_ADR[cles[0]];
       store.set("geo_adr", GEO_ADR);
+      if (RECS.some(r=>r.adrSig)) { appliquerSignalements(); majCarteCadre=false; maj(); }
       etatVille("ok-depart", etat.depart); etatVille("ok-arrivee", etat.arrivee||""); dessinerRoute();
       if (etat.mode==="ray" && cleAdr(etat.centre)===k) maj();
     })
@@ -842,7 +850,7 @@ function signaux(r){ const on = Object.keys(etat.signaux).filter(k=>etat.signaux
 function filtre(){
   const q = (etat.q||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
   centreCourant = etat.mode==="ray" ? villePt(etat.centre) : null;
-  const secteur = RECS.filter(dansSecteur);
+  const secteur = RECS.filter(r=>!r.ferme && dansSecteur(r));   // ferme (signalement) = hors secteur
   // Le compteur de chaque statut tient compte des AUTRES filtres (classe, signal,
   // representant, recherche) : il annonce ce qui apparaitra vraiment si on coche.
   const base = r => etat.classes[(r.st==="gryb" && !r.cl ? r.gryb : r.clBase) || "—"] !== false
@@ -1001,6 +1009,7 @@ function maj(){
            : `<th class="num">${REF_LIB}<div class="sous">année complète</div></th><th class="num masque-mobile">FY${FY} à date<div class="sous">vs même période ${REF_LIB}</div></th><th>${REF_LIB} vs FY${REF-1}<div class="sous">années complètes · signaux</div></th>`}<th class="masque-mobile">Dernier achat</th></tr></thead><tbody>${lignes}</tbody></table>`
       + (visibles.length>600?'<div class="vide">Les 600 premières fiches par priorité sont affichées. Resserrez le secteur ou les filtres.</div>':"");
   }
+  $("liste").insertAdjacentHTML("beforeend", fermesHTML());
   if (carte) {
     couche.clearLayers();
     const pts = [];
@@ -1102,7 +1111,8 @@ function ficheHTML(r, num){
     <h4>${num?num+". ":""}${esc(r.nom)}</h4>
     <div><span class="tag" style="color:${ST[r.st].coul}">${ST[r.st].lib}</span> ${r.cl?`<span class="cl ${r.cl}">${r.cl}</span>`:""} ${r.gryb?`<span class="cl" title="Classe GRYB">GRYB${r.gryb!=="—"?" "+r.gryb:""}</span>`:""}</div>
     ${r.clv?`<div class="sous" style="margin-top:2px">Classe ${esc(r.cl)} : ${esc(r.clv)}</div>`:""}
-    <div class="sous" style="margin-top:4px">${esc(adr)}${r.lat&&r.prec!=="adresse"&&r.prec!=="rue"?" (position approximative : centre de la ville)":""}</div>
+    ${r.ferme?`<div class="dire" style="border-color:#C62828"><span class="sig-ferme">FERMÉ</span> ${esc(r.ferme.raison||"")} — signalé par ${esc(r.ferme.par)} le ${esc(r.ferme.date)}${r.ferme.txt?" : "+esc(r.ferme.txt):""}. Retiré de la carte, des compteurs et des routes. Pour annuler : supprimer le signalement ci-dessous.</div>`:""}
+    <div class="sous" style="margin-top:4px">${esc(adr)}${r.adrSig?` <b>(nouvelle adresse signalée par ${esc(r.adrSig.par)} le ${esc(r.adrSig.date)})</b>`:""}${r.lat&&r.prec!=="adresse"&&r.prec!=="rue"?" (position approximative : centre de la ville)":""}</div>
     ${r.tel?`<div>☎ <a href="tel:${esc(r.tel.replace(/\D/g,""))}">${esc(r.tel)}</a></div>`:""}
     ${contactsHTML(r)}
     ${r.rep?`<div class="sous">Représentant assigné : ${esc(r.rep)}</div>`:""}
@@ -1221,14 +1231,141 @@ function notesBlocHTML(r){
   const etats = {attente:"⏳ sera inscrite dans Salesforce dans l'heure (jours ouvrables)", faite:"✅ dans Salesforce", refusee:"⚠ pas dans Salesforce"};
   const items = L.map(n=>`<div class="note-it${n.mienne?" mienne":""}">
       <div class="sous"><b>${esc(GENRES_NOTE[n.genre]||"Note")}</b> · ${esc(n.date)} · ${esc(n.mienne?"vous":(n.auteur_nom||""))}</div>
-      <div class="txt">${esc(n.texte)}</div>
+      <div class="txt">${texteNoteHTML(n)}</div>
       ${n.mienne?`<div class="sous act">${n.envoye===false?"pas encore envoyée au serveur":etats[n.sf_etat||"attente"]+(n.sf_resultat&&n.sf_etat==="refusee"?" : "+esc(n.sf_resultat):"")}
         <br><a href="#" data-note="${esc(r.k)}" data-nid="${esc(n.id)}">✏️ modifier</a><a href="#" data-note-suppr="${esc(n.id)}">🗑 supprimer</a></div>`:""}
     </div>`).join("");
   return `<div class="notes"><b>Notes et activités de l'équipe${L.length?" ("+L.length+")":""}</b>
     ${items || (jeton ? `<div class="sous">Aucune note pour ce client.</div>` : `<div class="sous">🔒 Connectez-vous avec votre compte du portail pour voir les notes de l'équipe.</div>`)}
-    <div style="margin-top:6px"><button class="btn sec" type="button" data-note="${esc(r.k)}" data-nid="">+ Ajouter une note ou une activité</button></div></div>`;
+    <div style="margin-top:6px"><button class="btn sec" type="button" data-note="${esc(r.k)}" data-nid="">+ Ajouter une note ou une activité</button>
+      <button class="btn sec" type="button" data-signaler="${esc(r.k)}" title="Reclasser A/B/C, client fermé, changement d'adresse">⚑ Signaler…</button></div></div>`;
 }
+// ---------- Signalements (demande de Jacquot 2026-11-27) : reclasser A/B/C, fermer un client,
+// changer son adresse. Un signalement EST une note (meme serveur, meme activite Salesforce,
+// visible par toute l'equipe) dont le texte commence par une etiquette entre crochets :
+//   [Classe B] raison · [Fermé : faillite] commentaire · [Nouvelle adresse] rue, ville, QC G0X 0X0 — commentaire
+// La page l'applique tout de suite (classe, retrait de la carte, nouvelle position) ; le
+// lundi, construire.py l'applique a la source (_data/signalements.json, tenu par
+// appliquer_corrections.py), et Luna recoit adresses et fermetures pour Epicor et Salesforce.
+const SIG_RE = /^\[(Classe ([ABC])|Fermé(?: : ([^\]]*))?|Nouvelle adresse)\]\s*/;
+const SIG_RAISONS = {existe_plus:"n'existe plus", faillite:"faillite", autre:"autre"};
+function lireSignalement(n){
+  const m = SIG_RE.exec(n.texte||""); if (!m) return null;
+  const reste = (n.texte||"").slice(m[0].length).trim();
+  if (m[2]) return {type:"classe", cl:m[2], txt:reste, etq:"Classe "+m[2]};
+  if (m[1].indexOf("Fermé")===0) return {type:"ferme", raison:m[3]||"", txt:reste, etq:m[1]};
+  const [adr, ...com] = reste.split(" — ");
+  const p = adr.split(",").map(x=>x.trim());
+  const pc = /^([A-Za-z]{2})?\s*([A-Za-z]\d[A-Za-z]\s?\d[A-Za-z]\d|\d{5})?$/.exec(p[2]||"") || [];
+  return {type:"adresse", rue:p[0]||"", ville:p[1]||"", prov:(pc[1]||"").toUpperCase(), cp:(pc[2]||"").toUpperCase(), adr, txt:com.join(" — "), etq:"Nouvelle adresse"};
+}
+function texteNoteHTML(n){
+  const s = lireSignalement(n);
+  if (!s) return esc(n.texte);
+  return `<span class="sig-etq">⚑ ${esc(s.etq)}</span>${esc(s.type==="adresse" ? s.adr+(s.txt?" — "+s.txt:"") : s.txt)}`;
+}
+var SIGN = {};
+function indexSignalements(){
+  const S = {};
+  for (const n of lesNotes()) {
+    if (n.supprimee) continue;
+    const s = lireSignalement(n); if (!s) continue;
+    const d = S[n.k] || (S[n.k] = {}), cur = d[s.type];
+    if (!cur || cur.ts < n.ts) d[s.type] = Object.assign(s, {ts:n.ts, date:n.date, par:n.mienne ? (store.get("jeton_nom")||"vous") : (n.auteur_nom||"l'équipe")});
+  }
+  const avant = JSON.stringify(SIGN); SIGN = S; return avant !== JSON.stringify(S);
+}
+function pointAdresseSig(r, s){
+  const t = [s.rue, s.ville||r.ville].filter(Boolean).join(", ");
+  const v = villePt(t);                       // adresse exacte si deja connue, sinon centre de la ville
+  if (!v) return null;
+  if (!v.exact) geocoderAdresse(t);           // cherchee une fois ; la carte se replace a la reponse
+  return {lat:v.lat, lon:v.lon, prec:v.exact ? "adresse" : "ville", reg:v.reg};
+}
+function appliquerSignalements(){
+  let nRoute = 0;
+  for (const r of RECS) {
+    if (r._sig) { Object.assign(r, r._sig); delete r._sig; delete r.adrSig; if (!SIGN[r.k]) preparer(r); }   // signalement retire : fiche d'origine
+    const s = SIGN[r.k]; if (!s) continue;
+    r._sig = {cl:r.cl, clv:r.clv, rue:r.rue, ville:r.ville, cp:r.cp, lat:r.lat, lon:r.lon, prec:r.prec, reg:r.reg, ferme:undefined};
+    if (s.classe) { r.cl = s.classe.cl; r.clv = "reclassé "+s.classe.cl+" par "+s.classe.par+" le "+s.classe.date+(s.classe.txt?" : "+s.classe.txt:""); }
+    if (s.ferme) r.ferme = s.ferme;
+    if (s.adresse) {
+      r.rue = s.adresse.rue; if (s.adresse.ville) r.ville = s.adresse.ville; if (s.adresse.cp) r.cp = s.adresse.cp; r.adrSig = s.adresse;
+      const p = pointAdresseSig(r, s.adresse); if (p) { r.lat = p.lat; r.lon = p.lon; r.prec = p.prec; if (p.reg) r.reg = p.reg; }
+    }
+    preparer(r);
+  }
+  if (typeof etat!=="undefined" && etat.route) { const n = etat.route.length; etat.route = etat.route.filter(i=>!RECS[i].ferme); nRoute = n - etat.route.length; }
+  return nRoute;
+}
+function apresNotes(){
+  const a = indexNotes(), b = indexSignalements();
+  if (b) appliquerSignalements();
+  if (a || b) { majCarteCadre=false; maj(); }
+}
+function fermesHTML(){
+  const F = RECS.filter(r=>r.ferme && dansSecteur(r));
+  if (!F.length) return "";
+  const n = F.length;
+  return `<div class="fermes">🚫 ${n} client${n>1?"s":""} fermé${n>1?"s":""} signalé${n>1?"s":""} par l'équipe, retiré${n>1?"s":""} de la carte et des compteurs : ${F.slice(0,25).map(r=>`<a href="#" data-f="${r.i}">${esc(r.nom)}</a>`).join(", ")}${n>25?" …":""}</div>`;
+}
+function ouvrirSignalement(k){
+  const i = parCle(k); if (i<0) return;
+  const r = RECS[i];
+  if (!store.get("jeton")) { ouvrirNote(k, ""); return; }   // meme invitation a se connecter que les notes
+  const s = SIGN[r.k] || {};
+  const clCour = (r._sig ? r._sig.cl : r.cl) || "";
+  $("dlg-c").innerHTML = `<h4>Signaler — ${esc(r.nom)}</h4>
+    <p class="sous">Appliqué tout de suite dans Routes vendeurs (toute l'équipe le voit, avec votre nom). Les changements d'adresse et les fermetures sont transmis chaque jour à Luna pour Epicor et Salesforce.</p>
+    <div class="corr-form sig-form">
+      <div class="choix"><label><input type="radio" name="sg-type" value="classe" checked> Reclasser A / B / C</label>
+        <label><input type="radio" name="sg-type" value="ferme"> Client fermé</label>
+        <label><input type="radio" name="sg-type" value="adresse"> Changement d'adresse</label></div>
+      <div class="panneau on" id="sg-p-classe">
+        <div class="sous">Classe actuelle : <b>${esc(clCour||"aucune")}</b>${s.classe?` (déjà reclassé ${esc(s.classe.cl)} par ${esc(s.classe.par)} le ${esc(s.classe.date)})`:""}. La classe calculée par les ventes reste visible pour la direction.</div>
+        <div class="choix">${["A","B","C"].map(c=>`<label><input type="radio" name="sg-cl" value="${c}"${(s.classe?s.classe.cl:"")===c?" checked":""}> <b>${c}</b></label>`).join("")}</div>
+        <label for="sg-cl-txt">Pourquoi (facultatif)</label><input type="text" id="sg-cl-txt" maxlength="300" placeholder="Ex. : flotte de 12 pelles, potentiel A" value="${esc(s.classe?s.classe.txt:"")}">
+      </div>
+      <div class="panneau" id="sg-p-ferme">
+        <div class="choix">${Object.entries(SIG_RAISONS).map(([v,l])=>`<label><input type="radio" name="sg-raison" value="${v}"${v==="existe_plus"?" checked":""}> ${esc(l.charAt(0).toUpperCase()+l.slice(1))}</label>`).join("")}</div>
+        <label for="sg-f-txt">Commentaire (facultatif)</label><input type="text" id="sg-f-txt" maxlength="300" placeholder="Ex. : repris par Excavation XYZ">
+        <div class="sous" style="margin-top:4px">Le client sort de la carte, des compteurs et des routes. Il reste dans Epicor et Salesforce jusqu'à ce que Luna le ferme là aussi.</div>
+      </div>
+      <div class="panneau" id="sg-p-adresse">
+        <div class="sous">Adresse actuelle : ${esc([r._sig?r._sig.rue:r.rue, r._sig?r._sig.ville:r.ville, r._sig?r._sig.cp:r.cp].filter(Boolean).join(", ")||"aucune")}</div>
+        <label for="sg-rue">Numéro et rue</label><input type="text" id="sg-rue" maxlength="120" placeholder="Ex. : 115 Gaston-Dumoulin, local 105" value="${esc(s.adresse?s.adresse.rue:"")}">
+        <div class="deux"><div><label for="sg-ville">Ville</label><input type="text" id="sg-ville" maxlength="80" value="${esc(s.adresse?s.adresse.ville:(r.ville||""))}"></div>
+          <div><label for="sg-cp">Code postal</label><input type="text" id="sg-cp" maxlength="10" placeholder="J7C 6B4" value="${esc(s.adresse?s.adresse.cp:"")}"></div></div>
+        <label for="sg-a-txt">Commentaire (facultatif)</label><input type="text" id="sg-a-txt" maxlength="300" placeholder="Ex. : déménagé en octobre">
+      </div>
+      <div class="aide" id="sg-err" style="color:var(--baisse,#C62828)"></div>
+      <div class="ligne" style="margin-top:12px;flex-wrap:wrap"><button class="btn" id="sg-ok">Enregistrer</button><button class="btn sec" id="sg-ann">Annuler</button></div>
+    </div>`;
+  $("dlg").open || $("dlg").showModal();
+  const montrer = ()=>{ const t = document.querySelector('[name="sg-type"]:checked').value;
+    ["classe","ferme","adresse"].forEach(x=>$("sg-p-"+x).classList.toggle("on", x===t)); };
+  document.querySelectorAll('[name="sg-type"]').forEach(x=>x.onchange=montrer);
+  $("sg-ann").onclick = ()=>fiche(i);
+  $("sg-ok").onclick = ()=>{
+    const t = document.querySelector('[name="sg-type"]:checked').value; let texte = "";
+    if (t==="classe") { const c = document.querySelector('[name="sg-cl"]:checked'); if (!c) { $("sg-err").textContent = "Choisissez A, B ou C."; return; }
+      texte = "[Classe "+c.value+"] "+$("sg-cl-txt").value.trim(); }
+    else if (t==="ferme") { texte = "[Fermé : "+SIG_RAISONS[document.querySelector('[name="sg-raison"]:checked').value]+"] "+$("sg-f-txt").value.trim(); }
+    else { const rue = $("sg-rue").value.trim().replace(/,/g," ").replace(/\s+/g," "), ville = $("sg-ville").value.trim().replace(/,/g," ").replace(/\s+/g," "), cp = $("sg-cp").value.trim().toUpperCase();
+      if (!rue || !ville) { $("sg-err").textContent = "Il faut au moins le numéro, la rue et la ville."; return; }
+      if (!villeDe(ville)) { $("sg-err").textContent = "Ville non reconnue : écrivez-la comme sur la carte (ex. « Saint-Georges », « Blainville »)."; return; }
+      if (cp && !/^([A-Z]\d[A-Z] ?\d[A-Z]\d|\d{5})$/.test(cp)) { $("sg-err").textContent = "Code postal invalide (ex. J7C 6B4)."; return; }
+      const com = $("sg-a-txt").value.trim();
+      texte = "[Nouvelle adresse] "+rue+", "+ville+", "+[r.prov||"", cp].filter(Boolean).join(" ")+(com?" — "+com:""); }
+    enregistrerNote(r, null, aujourdhui(), "note", texte.trim());
+    fiche(i); syncNotes(i);
+  };
+}
+document.addEventListener("click", e=>{
+  const b = e.target.closest && e.target.closest("[data-signaler]"); if (!b) return;
+  e.preventDefault(); ouvrirSignalement(b.dataset.signaler);
+});
 function ouvrirNote(k, nid){
   const i = parCle(k); if (i<0) return;
   const r = RECS[i];
@@ -1259,21 +1396,25 @@ function ouvrirNote(k, nid){
     const texte = $("nt-txt").value.trim(), date = $("nt-date").value;
     if (!texte) { $("nt-err").textContent = "Écrivez la note."; return; }
     if (!/^20\d\d-\d\d-\d\d$/.test(date) || date > auj) { $("nt-err").textContent = "Date invalide (aujourd'hui ou avant)."; return; }
-    const L = lesNotes().filter(x=>!(n && x.id===n.id));
-    L.push(Object.assign({id:n?n.id:"n"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), t:r.t, k:r.k, fnom:r.nom,
-      sfa:r.sf||"", ts:Date.now(), date, genre:$("nt-genre").value, texte, mienne:true, envoye:false, sf_etat:"attente", sf_resultat:""},
-      r.sf ? {} : {a:{rue:r.rue||"", ville:r.ville||"", prov:r.prov||"", cp:r.cp||"", tel:r.tel||"",
-                      pays:r.t==="US"?"United States":"Canada", epicor:String(r.id||""), st:r.st||""}}));
-    store.set("notes", L); if (indexNotes()) { majCarteCadre=false; maj(); }
+    enregistrerNote(r, n, date, $("nt-genre").value, texte);
     fiche(i); syncNotes(i);
   };
+}
+function enregistrerNote(r, n, date, genre, texte){
+  const o = r._sig || r;      // adresse d'ORIGINE pour retrouver le compte Salesforce
+  const L = lesNotes().filter(x=>!(n && x.id===n.id));
+  L.push(Object.assign({id:n?n.id:"n"+Date.now().toString(36)+Math.random().toString(36).slice(2,6), t:r.t, k:r.k, fnom:r.nom,
+    sfa:r.sf||"", ts:Date.now(), date, genre, texte, mienne:true, envoye:false, sf_etat:"attente", sf_resultat:""},
+    r.sf ? {} : {a:{rue:o.rue||"", ville:o.ville||"", prov:r.prov||"", cp:o.cp||"", tel:r.tel||"",
+                    pays:r.t==="US"?"United States":"Canada", epicor:String(r.id||""), st:r.st||""}}));
+  store.set("notes", L); apresNotes();
 }
 function supprimerNote(nid){
   const n = lesNotes().find(x=>x.id===nid && x.mienne); if (!n) return;
   if (!confirm("Supprimer cette note ? Elle sera aussi retirée de Salesforce.")) return;
   const L = lesNotes().filter(x=>x.id!==nid);
   L.push({id:n.id, t:n.t, k:n.k, fnom:n.fnom, ts:Date.now(), supprimee:true, mienne:true, envoye:false});
-  store.set("notes", L); if (indexNotes()) { majCarteCadre=false; maj(); }
+  store.set("notes", L); apresNotes();
   const i = parCle(n.k); if (i>=0) fiche(i);
   syncNotes(i);
 }
@@ -1300,8 +1441,8 @@ async function syncNotes(iFiche){
       if (!x || x.ts < n.ts) L.push(n);
     }
     store.set("notes", L);
-    if (indexNotes()) { majCarteCadre=false; maj(); }
-    if (iFiche>=0 && $("dlg").open && !$("nt-ok") && !$("cr-ok")) fiche(iFiche);
+    apresNotes();
+    if (iFiche>=0 && $("dlg").open && !$("nt-ok") && !$("cr-ok") && !$("sg-ok")) fiche(iFiche);
   } catch(e) {} finally { notesEnCours = false; }
 }
 const telLien = t => `<a href="tel:${esc(String(t).replace(/\D/g,""))}">${esc(t)}</a>`;
@@ -1909,6 +2050,7 @@ appliquerEtat();
 majAjouts();
 etatVille("ok-depart", etat.depart); etatVille("ok-arrivee", etat.arrivee||"");
 etat.route = etat.route.filter(i=>RECS[i]);
+indexSignalements(); appliquerSignalements();
 brancherVille("centre"); brancherVille("depart"); brancherVille("arrivee");
 $("centre").addEventListener("input", ()=>{ if (estAdresse($("centre").value)) chercherAdresseExacte(); });
 // « Trouver une compagnie » : par le nom, dans TOUS les territoires (demande de Robert)
@@ -1980,7 +2122,7 @@ const PAS = [
    txt:"Chaque point est une fiche ; la couleur indique le statut (légende juste en dessous). Les gros points bleus sont les clients A.",
    astuce:"Besoin de plus de place ? Les boutons <b>+</b> et <b>−</b> sur les barres à côté de la carte élargissent ou rétrécissent chaque côté, ceux de la barre « Liste » agrandissent la liste du bas ; « ⛶ Agrandir la carte » la met en grand et « ↺ Affichage normal » remet tout comme au départ."},
   {cible:"#liste", titre:"9. La liste et la fiche client",
-   txt:"Cliquez un nom pour ouvrir sa fiche : ventes FY24 à aujourd'hui, contacts (Epicor, Salesforce, liste marché), soumissions ouvertes, suivi du Planner et l'encadré « Avant de se présenter ». Un contact manque ou est faux ? « ✏️ corriger » ou « + Ajouter un contact » : il part vers Salesforce (connexion au portail requise). Section « Notes et activités » : écrivez pourquoi un client est en baisse, un appel, une visite. Toute l'équipe la voit tout de suite et elle s'inscrit dans Salesforce ; 📝 dans la liste = le client a des notes. Cochez la case pour l'ajouter à la route."},
+   txt:"Cliquez un nom pour ouvrir sa fiche : ventes FY24 à aujourd'hui, contacts (Epicor, Salesforce, liste marché), soumissions ouvertes, suivi du Planner et l'encadré « Avant de se présenter ». Un contact manque ou est faux ? « ✏️ corriger » ou « + Ajouter un contact » : il part vers Salesforce (connexion au portail requise). Section « Notes et activités » : écrivez pourquoi un client est en baisse, un appel, une visite. Toute l'équipe la voit tout de suite et elle s'inscrit dans Salesforce ; 📝 dans la liste = le client a des notes. « ⚑ Signaler » : reclasser A/B/C, client fermé, changement d'adresse. Cochez la case pour l'ajouter à la route."},
   {cible:"#auto", titre:"10. Le raccourci",
    txt:"« Ajouter les 8 plus prioritaires » remplit la route d'un clic avec les clients les plus importants du secteur."},
   {cible:"#arrivee", titre:"11. Le départ et l'arrivée",
